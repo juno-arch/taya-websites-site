@@ -1,0 +1,599 @@
+<title>Websites by Taya</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    /* fog-green paper, garden ink, orchid-plum accent */
+    --paper: #f1efe7;
+    --paper-2: #e9e6da;
+    --card: #f6f4ec;
+    --ink: #272c25;
+    --ink-soft: #6d7264;
+    --hairline: #d9d6c7;
+    --plum: #7b3763;
+    --plum-deep: #5e2a4c;
+    --plum-wash: #efe2ea;
+    --moss: #59674a;
+    --on-plum: #f6ecf2;
+    --band: #272c25;
+    --band-text: #ece9dc;
+    --band-soft: #b9bcab;
+    --focus: #7b3763;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1e221d;
+      --paper-2: #171a16;
+      --card: #262b24;
+      --ink: #e7e4d7;
+      --ink-soft: #a3a795;
+      --hairline: #3a4036;
+      --plum: #c47fa9;
+      --plum-deep: #d79cbf;
+      --plum-wash: #35293100;
+      --moss: #93a37f;
+      --on-plum: #241522;
+      --band: #14170f;
+      --band-text: #e7e4d7;
+      --band-soft: #9a9e8c;
+      --focus: #c47fa9;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1e221d;
+    --paper-2: #171a16;
+    --card: #262b24;
+    --ink: #e7e4d7;
+    --ink-soft: #a3a795;
+    --hairline: #3a4036;
+    --plum: #c47fa9;
+    --plum-deep: #d79cbf;
+    --plum-wash: #35293100;
+    --moss: #93a37f;
+    --on-plum: #241522;
+    --band: #14170f;
+    --band-text: #e7e4d7;
+    --band-soft: #9a9e8c;
+    --focus: #c47fa9;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+    font-size: 18.5px;
+    line-height: 1.65;
+  }
+  .gutter { padding-inline: 22px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .narrow { max-width: 660px; }
+
+  h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif; line-height: 1.12; text-wrap: balance; margin: 0; }
+  a { color: var(--plum); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--moss);
+  }
+
+  /* ---------- header ---------- */
+  header.site {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    max-width: 980px; margin: 0 auto; padding-block: 26px 0;
+  }
+  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--plum); }
+  header.site nav { display: flex; gap: 22px; flex-wrap: wrap; }
+  header.site nav a {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; text-decoration: none; color: var(--ink-soft);
+  }
+  header.site nav a:hover { color: var(--plum); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: 72px 64px; }
+  .hero h1 {
+    font-size: clamp(38px, 7vw, 64px); font-weight: 700; letter-spacing: -0.015em; max-width: 15ch;
+  }
+  .hero h1 em { font-style: normal; color: var(--plum); }
+  .hero p.lede { font-size: 21px; max-width: 33em; margin: 22px 0 0; }
+  .hero .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; align-items: center; }
+  .btn {
+    display: inline-block; text-decoration: none; cursor: pointer; text-align: center;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px;
+    padding: 13px 26px; border-radius: 10px;
+    background: var(--plum); color: var(--on-plum); border: 1px solid var(--plum);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
+  .btn.secondary { background: transparent; color: var(--plum); }
+  .btn.secondary:hover { background: var(--plum-wash); }
+  :root[data-theme="dark"] .btn.secondary:hover, .btn.secondary:hover { text-decoration: underline; }
+
+  .hero .aside-note {
+    margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--hairline);
+    display: flex; gap: 10px 34px; flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft);
+  }
+
+  /* ---------- sections ---------- */
+  section { padding-block: 58px; }
+  section > .gutter > .wrap > .eyebrow { display: block; margin-bottom: 10px; }
+  h2 { font-size: clamp(27px, 4.4vw, 36px); font-weight: 600; letter-spacing: -0.01em; }
+  .section-lede { font-size: 19px; color: var(--ink-soft); max-width: 36em; margin: 14px 0 0; }
+
+  /* ---------- how it works ---------- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 38px; }
+  .step { border-top: 3px solid var(--plum); padding-top: 16px; }
+  .step .eyebrow { color: var(--plum); }
+  .step h3 { font-size: 20px; font-weight: 600; margin: 8px 0 8px; }
+  .step p { margin: 0; font-size: 17px; color: var(--ink-soft); }
+
+  /* ---------- portfolio ---------- */
+  .work { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 38px; }
+  .piece {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .thumb { height: 190px; position: relative; display: flex; flex-direction: column; padding: 22px 26px; }
+  /* mini mock-ups drawn in each site's real palette */
+  .thumb.juliet { background: #3c3129; }
+  .thumb.juliet .t-brand { color: #f4e9db; font-family: Georgia, serif; font-style: italic; font-size: 15px; }
+  .thumb.juliet .t-line { background: #f4e9db; opacity: 0.85; }
+  .thumb.juliet .t-btn { background: #78814b; }
+  .thumb.faery { background: #4a1942; }
+  .thumb.faery .t-brand { color: #f6eef4; font-family: Georgia, serif; font-size: 15px; }
+  .thumb.faery .t-line { background: #f6eef4; opacity: 0.85; }
+  .thumb.faery .t-btn { background: #c98bb8; }
+  .t-brand { margin-bottom: auto; }
+  .t-line { height: 9px; border-radius: 4px; width: 70%; margin-top: 10px; }
+  .t-line.short { width: 45%; }
+  .t-btn { height: 26px; width: 96px; border-radius: 999px; margin-top: 16px; }
+  .piece .about { padding: 20px 26px 24px; }
+  .piece h3 { font-size: 20px; font-weight: 600; }
+  .piece p { font-size: 16.5px; color: var(--ink-soft); margin: 8px 0 0; }
+  .piece .meta { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--moss); margin-top: 14px; }
+
+  /* ---------- your data ---------- */
+  .adage {
+    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 500;
+    font-size: clamp(21px, 3.4vw, 26px); line-height: 1.4; color: var(--plum);
+    border-left: 3px solid var(--plum); padding-left: 20px; margin: 26px 0 0; max-width: 24em;
+  }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 38px; }
+  .compare .col { border-radius: 16px; padding: 28px 30px; }
+  .compare .them { background: var(--paper-2); border: 1px solid var(--hairline); }
+  .compare .us { background: var(--card); border: 2px solid var(--plum); }
+  .compare h3 { font-size: 20px; font-weight: 700; }
+  .compare .them h3 { color: var(--ink-soft); }
+  .compare ul { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 11px; }
+  .compare li { font-size: 16.5px; padding-left: 24px; position: relative; color: var(--ink-soft); }
+  .compare .them li::before { content: "\2717"; position: absolute; left: 0; color: var(--ink-soft); font-weight: 700; }
+  .compare .us li { color: var(--ink); }
+  .compare .us li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
+  .data-close { margin-top: 30px; font-size: 19px; max-width: 40em; }
+  .data-close em { color: var(--plum); font-style: italic; }
+  @media (max-width: 860px) { .compare { grid-template-columns: 1fr; } }
+
+  /* ---------- pricing band ---------- */
+  .band { background: var(--band); color: var(--band-text); padding-block: 66px 74px; }
+  .band .eyebrow { color: var(--band-soft); }
+  .band h2 { color: var(--band-text); }
+  .band .section-lede { color: var(--band-soft); }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 42px; align-items: start; }
+  .tier {
+    background: var(--card); color: var(--ink);
+    border: 1px solid var(--hairline); border-radius: 16px; padding: 26px 26px 28px;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .tier.featured { border: 2px solid var(--plum); position: relative; }
+  .tier .pick {
+    position: absolute; top: -13px; left: 24px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--plum); color: var(--on-plum); padding: 4px 12px; border-radius: 999px;
+  }
+  .tier .eyebrow { color: var(--moss); }
+  .tier h3 { font-size: 24px; font-weight: 700; margin-top: 6px; }
+  .tier .price { font-family: 'Bricolage Grotesque', sans-serif; margin-top: 14px; }
+  .tier .price strong { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tier .price span { font-size: 15px; color: var(--ink-soft); }
+  .tier .blurb { font-size: 16.5px; color: var(--ink-soft); margin: 12px 0 0; }
+  .tier .who {
+    margin: 14px 0 0; padding: 12px 15px; background: var(--paper-2); border-radius: 10px;
+    font-size: 15.5px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .tier .who strong { color: var(--ink); font-weight: 500; font-style: italic; }
+  .tier ul { list-style: none; margin: 18px 0 0; padding: 18px 0 0; border-top: 1px solid var(--hairline); display: grid; gap: 9px; }
+  .tier li { font-size: 16px; padding-left: 22px; position: relative; }
+  .tier li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
+  .tier li strong { color: var(--plum); font-weight: 700; }
+  .tier .btn { margin-top: 24px; }
+  .solo-tier {
+    margin-top: 22px; background: transparent; color: var(--band-text);
+    border: 1px dashed var(--band-soft); border-radius: 16px; padding: 26px 30px;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .solo-tier .eyebrow { color: var(--band-soft); }
+  .solo-tier h3 { font-size: 24px; font-weight: 700; margin-top: 6px; color: var(--band-text); }
+  .solo-tier p { font-size: 16.5px; color: var(--band-soft); margin: 10px 0 0; max-width: 46em; }
+  .solo-tier .price { font-family: 'Bricolage Grotesque', sans-serif; white-space: nowrap; }
+  .solo-tier .price strong { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .solo-tier .price span { display: block; font-size: 14px; color: var(--band-soft); }
+  .solo-tier .btn.secondary { color: var(--band-text); border-color: var(--band-soft); margin-top: 14px; }
+  .solo-tier .btn.secondary:hover { background: transparent; }
+  .band .fineprint {
+    margin-top: 30px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--band-soft); max-width: 62em;
+  }
+
+  /* ---------- faq ---------- */
+  .faq { display: grid; gap: 0; margin-top: 30px; max-width: 720px; }
+  .faq details { border-bottom: 1px solid var(--hairline); }
+  .faq summary {
+    cursor: pointer; padding: 18px 0; font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--plum); font-weight: 700; }
+  .faq details[open] summary::after { content: "\2212"; }
+  .faq details p { margin: 0 0 20px; color: var(--ink-soft); max-width: 60ch; }
+
+  /* ---------- contact ---------- */
+  .contact-card {
+    margin-top: 34px; background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
+    padding: 34px 36px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .contact-card .portrait {
+    width: 128px; height: 128px; border-radius: 50%; overflow: hidden;
+    border: 3px solid var(--plum); flex-shrink: 0;
+  }
+  .contact-card .portrait img {
+    display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 24%;
+    transform: scale(1.6); transform-origin: 50% 24%;
+  }
+  .contact-card .intro { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .contact-card h3 { font-size: 24px; font-weight: 700; }
+  .contact-card p { margin: 8px 0 0; color: var(--ink-soft); max-width: 34em; }
+
+  footer.site {
+    border-top: 1px solid var(--hairline); margin-top: 30px; padding: 26px 0 40px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .steps, .tiers { grid-template-columns: 1fr; }
+    .work { grid-template-columns: 1fr; }
+    .tier.featured { order: -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="gutter">
+  <header class="site">
+    <a class="brand" href="#top">Websites <span>by Taya</span></a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#work">Recent work</a>
+      <a href="#data">Your data</a>
+      <a href="#care">Plans</a>
+      <a href="#contact">Say hello</a>
+    </nav>
+  </header>
+</div>
+
+<div class="gutter" id="top">
+  <div class="wrap hero">
+    <h1>Handmade websites for <em>real people.</em></h1>
+    <p class="lede">
+      I build small, beautiful websites for one-person businesses — massage therapists,
+      gardeners, makers, healers. Not a template, not a subscription that holds your site
+      hostage. Just a site that sounds like you, that you own outright, cared for by an
+      actual human who writes back.
+    </p>
+    <div class="actions">
+      <a class="btn" href="#care">See the three plans</a>
+      <a class="btn secondary" href="#work">Look at recent work</a>
+    </div>
+    <div class="aside-note">
+      <span>One woman, start to finish</span>
+      <span>You own every file</span>
+      <span>McKinleyville, CA &amp; anywhere</span>
+    </div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="gutter"><div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2>Three visits, like any good house call.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="eyebrow">First</span>
+        <h3>We talk</h3>
+        <p>Over tea or a friendly email thread — whatever's comfortable. You tell me about your work,
+           your people, and what the site needs to do. That's the whole meeting.</p>
+      </div>
+      <div class="step">
+        <span class="eyebrow">Then</span>
+        <h3>I build it</h3>
+        <p>A fast, mobile-friendly site designed around your actual practice — your colors,
+           your words, your photos. You see a real draft, not a wireframe, and we shape it together.</p>
+      </div>
+      <div class="step">
+        <span class="eyebrow">Finally</span>
+        <h3>It's yours</h3>
+        <p>The whole site lives in one tidy file under your own account. If we ever part ways,
+           you keep everything and it keeps running. No hostage situations.</p>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<section id="work">
+  <div class="gutter"><div class="wrap">
+    <span class="eyebrow">Recent work</span>
+    <h2>Small sites, made with care.</h2>
+    <div class="work">
+      <article class="piece">
+        <div class="thumb juliet" aria-hidden="true">
+          <div class="t-brand">Juliet O'Barr <em>Studio</em></div>
+          <div class="t-line"></div>
+          <div class="t-line short"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="about">
+          <h3>Juliet O'Barr Studio</h3>
+          <p>A calm, earthy home for a Muscle Activation Techniques practice in McKinleyville —
+             what MAT is, who it helps, and a simple contact card in place of a pushy funnel.</p>
+          <div class="meta">MAT&reg; practice &middot; single-page site</div>
+        </div>
+      </article>
+      <article class="piece">
+        <div class="thumb faery" aria-hidden="true">
+          <div class="t-brand">Garden Faery</div>
+          <div class="t-line"></div>
+          <div class="t-line short"></div>
+          <div class="t-btn"></div>
+        </div>
+        <div class="about">
+          <h3>gardenfaery.love</h3>
+          <p>My own garden-care business — a whimsical, seasonal site with booking, a photo
+             gallery, and colors that quietly change with the time of year. My working proof.</p>
+          <div class="meta">Garden care &middot; booking &middot; newsletter</div>
+        </div>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<section id="data">
+  <div class="gutter"><div class="wrap">
+    <span class="eyebrow">The quiet part</span>
+    <h2>Most websites watch their visitors. Yours won't.</h2>
+    <p class="adage">"If it says it's free, you're the product."</p>
+    <p class="section-lede">That's the oldest rule of the internet, and it's how most website tools
+       work: "free" and cheap platforms pay for themselves by tracking the people who visit —
+       building advertising profiles out of your clients' clicks, searches, and habits. It has a name:
+       surveillance capitalism. You don't have to participate in it.</p>
+
+    <div class="compare">
+      <div class="col them">
+        <h3>The usual deal</h3>
+        <ul>
+          <li>Trackers and ad pixels ride along on every page, reporting your visitors to companies you've never heard of</li>
+          <li>Your client list, inquiries, and traffic live on a platform's servers, under their terms — read the fine print</li>
+          <li>Cookie pop-ups on every visit, because there's a lot to confess</li>
+          <li>The profiles built from your visitors get monetized — and you see none of it</li>
+        </ul>
+      </div>
+      <div class="col us">
+        <h3>A site I build you</h3>
+        <ul>
+          <li>No trackers, no ad pixels, no analytics quietly phoning home</li>
+          <li>When a client writes to you, it goes to <em>you</em> — not into someone's marketing database</li>
+          <li>No cookie banner, because there's nothing to confess</li>
+          <li>Your files, your domain, your client relationships — yours to keep, forever</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="data-close">Your clients trust you with their bodies, their gardens, their homes.
+       A website should honor that trust the same way — <em>quietly, and completely.</em></p>
+  </div></div>
+</section>
+
+<section class="band" id="care">
+  <div class="gutter"><div class="wrap">
+    <span class="eyebrow">Plans</span>
+    <h2>Every site gets built with the same care.<br>The plans are about what happens after.</h2>
+    <p class="section-lede">Pick how much tending you want — updates, new features, and how quickly
+       you can reach me. Move between plans anytime; nothing is locked.</p>
+
+    <div class="tiers">
+      <article class="tier">
+        <span class="eyebrow">For set-and-forget sites</span>
+        <h3>Planted</h3>
+        <div class="price"><strong>$400</strong> <span>to build &middot; $12/mo</span></div>
+        <p class="blurb">Your site, live and yours. I keep the lights on and fix anything that breaks.</p>
+        <p class="who"><strong>This is you if:</strong> your business is steady — same services, same
+           hours, same story. Your site is a beautiful business card that's always right about the basics.</p>
+        <ul>
+          <li>Custom site, built by hand</li>
+          <li>Hosting &amp; domain set up for you</li>
+          <li>A tending visit <strong>four times a year</strong> — bring me your batch of changes each season</li>
+          <li>Anything broken, fixed free — that never counts as a visit</li>
+          <li>Email support, answered <strong>within the week</strong></li>
+        </ul>
+        <a class="btn secondary" href="#contact">Start with Planted</a>
+      </article>
+
+      <article class="tier featured">
+        <span class="pick">Most folks pick this</span>
+        <span class="eyebrow">For living, changing businesses</span>
+        <h3>Tended</h3>
+        <div class="price"><strong>$650</strong> <span>to build &middot; $45/mo</span></div>
+        <p class="blurb">Everything in Planted, plus regular tending so the site grows with you.</p>
+        <p class="who"><strong>This is you if:</strong> your prices, hours, photos, or offerings shift
+           through the year, and you want the site to always be right without ever thinking about it.</p>
+        <ul>
+          <li>A tending visit <strong>every month</strong> — hours, prices, photos, news, always current</li>
+          <li>Contact form &amp; newsletter signup</li>
+          <li>Seasonal freshening — new photos and wording swapped in as the year turns (pictures come from you, or add a Photo Day)</li>
+          <li>Priority email, answered <strong>in a day or two</strong></li>
+        </ul>
+        <a class="btn" href="#contact">Start with Tended</a>
+      </article>
+
+      <article class="tier">
+        <span class="eyebrow">For the full white-glove</span>
+        <h3>In Bloom</h3>
+        <div class="price"><strong>$950+</strong> <span>to build &middot; $90/mo</span></div>
+        <p class="blurb">Everything in Tended, plus features and a direct line whenever you need it.</p>
+        <p class="who"><strong>This is you if:</strong> the website is a working part of your business —
+           clients book, browse, and pay through it — and you want a real person who gets right back to you.</p>
+        <ul>
+          <li>Online booking, galleries, or payments</li>
+          <li>Simple, private visitor counts — see how many people stop by, with no tracking, ever</li>
+          <li>Tending <strong>whenever you need it</strong> — changes made the same week you ask</li>
+          <li>A seasonal design refresh every year</li>
+          <li>A direct line to my inbox — a real answer <strong>within 24 hours</strong></li>
+        </ul>
+        <a class="btn secondary" href="#contact">Start with In Bloom</a>
+      </article>
+    </div>
+
+    <div class="solo-tier">
+      <div>
+        <span class="eyebrow">The non-attachment option</span>
+        <h3>Wildflower</h3>
+        <p>Don't want a monthly anything? I build your site, hand over every file, account, and
+           password, and wish you well. It's yours as-is — bring it to any web person on earth
+           (or back to me) whenever it needs changing. No plan, no strings, no hard feelings.
+           And wildflowers are always welcome back — one-off changes happen as flat-rate
+           tending visits, no plan required.</p>
+      </div>
+      <div>
+        <div class="price"><strong>$700</strong> <span>once. That's it.</span></div>
+        <a class="btn secondary" href="#contact">Go Wildflower</a>
+      </div>
+    </div>
+
+    <div class="solo-tier">
+      <div>
+        <span class="eyebrow">Add-on &middot; any plan</span>
+        <h3>Photo Day</h3>
+        <p>Good photos are half of what makes a site feel like you — and phone snapshots in bad
+           light are what make one feel cheap. I come to your studio, garden, or shop with good
+           light and a patient eye, spend three hours photographing you and your work, then edit
+           the keepers and set them straight into your site.</p>
+      </div>
+      <div>
+        <div class="price"><strong>$150</strong> <span>one 3-hour session &middot; photos yours forever</span></div>
+        <a class="btn secondary" href="#contact">Book a Photo Day</a>
+      </div>
+    </div>
+
+    <p class="fineprint">Whatever you pick, the site is yours: your files, your domain, your accounts.
+       Pause or cancel the monthly care anytime and the site stays up — you just tend it yourself.</p>
+  </div></div>
+</section>
+
+<section id="faq">
+  <div class="gutter"><div class="wrap">
+    <span class="eyebrow">Fair questions</span>
+    <h2>The things people ask first.</h2>
+    <div class="faq">
+      <details>
+        <summary>Do I actually own the site?</summary>
+        <p>Yes — completely. The site lives in an account under your name, the domain is registered
+           to you, and the whole thing is one tidy file you could hand to any other web person on
+           earth. When I built Juliet's site, it was designed from day one to be transferred to her
+           outright. That's the standard.</p>
+      </details>
+      <details>
+        <summary>What if I stop paying the monthly?</summary>
+        <p>The site stays up. The monthly covers my tending — updates, fixes, support — not the
+           site's existence. Hosting for a site like this is free or nearly free, and a domain runs
+           about $12 a year.</p>
+      </details>
+      <details>
+        <summary>Why not Squarespace or Wix?</summary>
+        <p>They're fine tools that charge rent forever, look like everyone else, and hold your site
+           hostage the day you stop paying. I'd rather build you something faster, more personal,
+           and permanently yours — then charge only for the care you actually want.</p>
+      </details>
+      <details>
+        <summary>What if I need a change but I'm not on a plan?</summary>
+        <p>You book a tending visit: a flat-rate session where you bring me your pile of changes —
+           new hours, fresh photos, reworded pages — and I work through it. No plan needed, no
+           per-change haggling. If you find yourself booking visits every month, one of the care
+           plans will simply be cheaper, and you can hop on (or off) anytime.</p>
+      </details>
+      <details>
+        <summary>Can my site take bookings or payments?</summary>
+        <p>Yes — that's In Bloom territory. I build it on trusted, boring tools rather than
+           inventing my own: scheduling through Cal.com and payments through Stripe, set up under
+           accounts that belong to <em>you</em>. Your clients' money goes straight to you — it
+           never passes through me — and you change your own availability from a simple app on
+           your phone, no website edit needed. My job is the wiring, and keeping it humming.</p>
+      </details>
+      <details>
+        <summary>How much does a site cost to keep running?</summary>
+        <p>Almost nothing — that's part of the point. Hosting for a hand-built site like this is
+           free, and your domain name (the yourbusiness.com part) runs about $12 a year, paid
+           straight to the registrar under your own account. There is no meter running in the
+           background and no platform fee waiting to surprise you.</p>
+      </details>
+      <details>
+        <summary>Will people find me on Google?</summary>
+        <p>The sites are built to be found: they load fast, work beautifully on phones, and are
+           written the way search engines like — all things Google genuinely rewards. On the care
+           plans I also help with local search: making sure your Google map listing, your pages,
+           and your wording match what neighbors actually type when they look for someone like you.
+           What I won't do is promise you'll outrank a national chain — anyone who promises that
+           is selling something.</p>
+      </details>
+      <details>
+        <summary>How long does it take?</summary>
+        <p>You'll see a real first draft — your name, your words, a design made for you — within
+           about a week of our first conversation. Most sites are live within two to three weeks,
+           and the slowest part is usually gathering your photos, not the building.</p>
+      </details>
+      <details>
+        <summary>Can you work with what I already have?</summary>
+        <p>Usually, yes. If you've got an old site, a logo, a shoebox of photos, or just a business
+           card you like, we start from there. If you have nothing but the work itself, that's
+           enough too.</p>
+      </details>
+    </div>
+  </div></div>
+</section>
+
+<section id="contact">
+  <div class="gutter"><div class="wrap">
+    <div class="contact-card">
+      <div class="intro">
+        <span class="portrait"><img src="taya.jpg" alt="Taya smiling in the sun, lying against a mossy tree trunk"></span>
+        <div>
+          <h3>Hi, I'm Taya. Tell me about your work.</h3>
+          <p>Write a few lines about what you do and what you'd want a website to say for you.
+             I'll reply personally — no forms, no funnels.</p>
+        </div>
+      </div>
+      <a class="btn" href="mailto:taya@gardenfaery.love">Email taya@gardenfaery.love</a>
+    </div>
+    <footer class="site">
+      <span>Websites by Taya &middot; McKinleyville, California</span>
+      <span>Made by hand, like everything I ship.</span>
+    </footer>
+  </div></div>
+</section>
