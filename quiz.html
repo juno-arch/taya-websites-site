@@ -178,15 +178,6 @@
         { t: "Freshened up — new photos, current words", s: { tended: 2 } },
         { t: "Grown — new offerings, maybe new pages", s: { tended: 1, bloom: 1 } }
       ]
-    },
-    {
-      title: "And how do you feel about a monthly relationship?",
-      why: "There's no wrong answer — one of my plans has no strings at all.",
-      answers: [
-        { t: "Happily — take this off my plate", s: { tended: 1, bloom: 1 } },
-        { t: "A small one, sure", s: { planted: 1 } },
-        { t: "None for me — build it, hand me everything, hug goodbye", s: { wildflower: 5 } }
-      ]
     }
   ];
 
@@ -220,16 +211,6 @@
         "A direct line to my inbox, answered within 24 hours"
       ],
       also: "Payments, galleries, and a yearly design refresh live here too."
-    },
-    wildflower: {
-      name: "Wildflower",
-      because: "You want the craft without the commitment — built with love, handed over completely, free to grow wherever you take it.",
-      points: [
-        "One price, once — every file, account, and password is yours",
-        "Bring it to any web person on earth (or back to me)",
-        "One-off updates at a flat rate whenever you want them — no plan required"
-      ],
-      also: "The non-attachment option. No strings, no hard feelings, always welcome back."
     }
   };
 
@@ -262,17 +243,12 @@
   }
 
   function finish() {
-    var score = { planted: 0, tended: 0, bloom: 0, wildflower: 0 };
+    var score = { planted: 0, tended: 0, bloom: 0 };
     picks.forEach(function (p, qi) {
       var s = QUESTIONS[qi].answers[p].s;
       for (var k in s) score[k] += s[k];
     });
-    // Wildflower is a philosophy, not a score: choosing "none for me" decides it —
-    // unless they also asked for booking, which needs the ongoing relationship.
-    var winner;
-    if (score.wildflower > 0 && score.bloom < 3) winner = 'wildflower';
-    else if (score.bloom >= 3) winner = 'bloom';
-    else winner = (score.tended >= score.planted) ? 'tended' : 'planted';
+    var winner = (score.bloom >= 3) ? 'bloom' : ((score.tended >= score.planted) ? 'tended' : 'planted');
 
     var r = RESULTS[winner];
     document.getElementById('r-name').textContent = r.name;
@@ -286,9 +262,6 @@
     });
     var also = document.getElementById('r-also');
     also.textContent = r.also;
-    if (winner === 'wildflower' && score.bloom > 0) {
-      also.textContent = "One note: you leaned toward booking too — booking needs ongoing care, so it lives in In Bloom. Worth a conversation; we'll find your shape.";
-    }
     document.getElementById('quiz').style.display = 'none';
     document.getElementById('result').classList.add('show');
     window.scrollTo({ top: 0 });
