@@ -1,6 +1,6 @@
-# Websites by Taya
+# Web Faery
 
-Taya's shop-front for the web-design side business — hand-built websites for
+Web Faery — Taya's (Pollen's) web-design side business: shop-front site — hand-built websites for
 one-person businesses (like Juliet's MAT site), with a three-tier care system.
 
 ## What's in here
@@ -32,7 +32,7 @@ Push this folder to a new GitHub repo, then
 
 ## Still to decide / fill in
 
-- The name — "Websites by Taya" is a working title
+- Name DECIDED (Sept 2026): **Web Faery** — sister brand to Garden Faery. Domain to buy: **webfaery.love** (webfaery.com is taken)
 - Real prices for the three plans + Wildflower buyout (current numbers are placeholders)
 - The "tending visit" flat rate for off-plan changes (mentioned in FAQ, no number yet)
 - Contact email (currently taya@gardenfaery.love)
