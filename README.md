@@ -17,12 +17,11 @@ one-person businesses (like Juliet's MAT site), with a three-tier care system.
 | Tended | $650 | $45/mo | Monthly updates, forms + newsletter, priority email/text |
 | In Bloom | $950+ | $90/mo | Booking/galleries/payments, private visitor counts, same-week changes, yearly refresh, phone support |
 | Wildflower | $700 | none | Buy outright: full handover of files/accounts, no ongoing relationship |
-| Photo Day (add-on) | $150/visit | — | Morning photo shoot at their place, edited + placed on the site |
 
 Update cadence: Planted = seasonal tending visit (4/yr), Tended = monthly,
 In Bloom = whenever (same-week). Broken things fixed free at every tier.
 Off-plan/Wildflower changes = flat-rate tending visits (rate TBD).
-Juliet is the Photo Day pilot (texted her Sept 2026).
+Photo Day offering SHELVED (Sept 2026) until Taya learns photography — Jason is shooting Juliet's photos instead.
 
 ## Going live (one time, ~1 minute)
 
