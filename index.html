@@ -223,6 +223,11 @@
   .solo-tier .eyebrow { color: var(--band-soft); }
   .solo-tier h3 { font-size: 24px; font-weight: 700; margin-top: 6px; color: var(--band-text); }
   .solo-tier p { font-size: 16.5px; color: var(--band-soft); margin: 10px 0 0; max-width: 46em; }
+  .solo-tier ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+  .solo-tier li { padding-left: 24px; position: relative; font-size: 16px; color: var(--band-soft); }
+  .solo-tier li::before { content: "\2713"; position: absolute; left: 0; color: var(--band-text); font-weight: 700; }
+  .solo-tier li.no { color: var(--band-soft); }
+  .solo-tier li.no::before { content: "\2717"; color: var(--band-soft); }
   .solo-tier .price { font-family: 'Bricolage Grotesque', sans-serif; white-space: nowrap; }
   .solo-tier .price strong { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .solo-tier .price span { display: block; font-size: 14px; color: var(--band-soft); }
@@ -477,14 +482,18 @@
       <div>
         <span class="eyebrow">The non-attachment option</span>
         <h3>Wildflower</h3>
-        <p>Don't want a monthly anything? I build your full custom site — working contact form,
-           newsletter signup, gallery, the lot, each wired to simple tools in <em>your own</em>
-           name — free at a one-person scale — so they keep working without me — then I hand over every file, account, and
-           password and wish you well. It's yours as-is: bring it to any web person on earth
-           (or back to me) whenever it needs changing, via flat-rate tending visits, no plan
-           required. One honest boundary: online booking is a living machine that needs
-           tending, so it lives in In Bloom only — a Wildflower site keeps a simple
-           contact card instead.</p>
+        <p>Don't want a monthly anything? I build it, hand you everything, and wish you well.</p>
+        <ul>
+          <li>Your full custom site — every file, account, and password handed over whole</li>
+          <li>Working contact form (Web3Forms) and newsletter signup (Buttondown or
+              MailerLite) — in your own name, free at a one-person scale, running
+              without me forever</li>
+          <li>Photo gallery, map, and anything else that simply <em>is</em></li>
+          <li>Bring it to any web person on earth, or back to me for a flat-rate
+              tending visit — no plan required, always welcome</li>
+          <li class="no">No online booking — that's a living machine that needs tending
+              (In Bloom territory); Wildflowers keep a simple contact card</li>
+        </ul>
       </div>
       <div>
         <div class="price"><strong>$700</strong> <span>once. That's it.</span></div>
