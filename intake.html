@@ -112,6 +112,7 @@
       <h1>Tell me <em>about you.</em></h1>
       <p class="lede">Pour some tea — this takes about ten minutes, there are no wrong answers,
          and nothing here is set in stone. Your answers are the seeds the whole site grows from.</p>
+      <p class="lede" id="plan-note" hidden></p>
     </div>
 
     <form id="intake" novalidate>
@@ -264,6 +265,16 @@
     extra.classList.toggle('show', bookingBox.checked);
   });
 
+  var pickedPlan = '';
+  try {
+    pickedPlan = new URLSearchParams(location.search).get('plan') || '';
+    if (pickedPlan) {
+      var pn = document.getElementById('plan-note');
+      pn.textContent = 'Starting with the ' + pickedPlan + ' plan — lovely. Nothing is locked; we\u2019ll confirm the fit together.';
+      pn.hidden = false;
+    }
+  } catch (e) {}
+
   function val(id) { return (document.getElementById(id).value || '').trim(); }
   function checked(name) {
     return Array.prototype.map.call(
@@ -296,6 +307,7 @@
       'Who comes to them:', (val('f-who') || '—'),
       '',
       'Site should do: ' + (checked('does') || '—'),
+      'Plan picked on the site: ' + (pickedPlan || 'none — came straight to the form'),
     ];
     if (bookingBox.checked) {
       lines = lines.concat([
