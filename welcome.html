@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome aboard &middot; Web Faery</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f1efe7; --paper-2: #e9e6da; --card: #f6f4ec;
+    --ink: #272c25; --ink-soft: #6d7264; --hairline: #d9d6c7;
+    --plum: #7b3763; --plum-deep: #5e2a4c; --moss: #59674a;
+    --on-plum: #f6ecf2; --focus: #7b3763;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+      --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+      --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+      --on-plum: #241522; --focus: #c47fa9;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+    --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+    --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+    --on-plum: #241522; --focus: #c47fa9;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 26px 22px 90px; }
+  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--plum); }
+
+  .head { padding-block: 40px 8px; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--plum); }
+  .lede { color: var(--ink-soft); margin: 16px 0 0; max-width: 34em; }
+
+  section.card {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
+    padding: 26px 26px 28px; margin-top: 24px;
+  }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); display: block; margin-bottom: 8px;
+  }
+  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px; margin: 0 0 12px; }
+
+  /* timeline */
+  .tl { display: grid; gap: 0; margin-top: 4px; }
+  .tl-step { display: grid; grid-template-columns: 30px 1fr; gap: 14px; }
+  .tl-dot { display: flex; flex-direction: column; align-items: center; }
+  .tl-dot i {
+    width: 12px; height: 12px; border-radius: 50%; background: var(--plum); flex-shrink: 0; margin-top: 7px;
+  }
+  .tl-dot::after { content: ""; flex: 1; width: 2px; background: var(--hairline); margin-top: 4px; }
+  .tl-step:last-child .tl-dot::after { display: none; }
+  .tl-step .body { padding-bottom: 22px; }
+  .tl-step b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; }
+  .tl-step p { margin: 4px 0 0; font-size: 16.5px; color: var(--ink-soft); }
+
+  ul.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  ul.list li { padding-left: 26px; position: relative; font-size: 16.5px; }
+  ul.list li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
+  ul.list li small { display: block; color: var(--ink-soft); font-size: 14.5px; }
+  ul.list.never li::before { content: "\2717"; color: var(--ink-soft); }
+
+  .yours { border: 2px solid var(--plum); }
+  .promise {
+    margin-top: 24px; font-family: 'Newsreader', Georgia, serif; font-style: italic;
+    font-size: 19px; color: var(--plum); border-left: 3px solid var(--plum); padding-left: 18px; max-width: 30em;
+  }
+  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
+  footer a { color: var(--plum); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="index.html">Web <span>Faery</span></a>
+
+  <div class="head">
+    <h1>Welcome <em>aboard.</em></h1>
+    <p class="lede">Here's the whole journey from here to your site being live — what I'm doing,
+       the few things I'll need from you, and what lands in your hands at the end.
+       No surprises, no homework you didn't sign up for.</p>
+  </div>
+
+  <section class="card">
+    <span class="kicker">The path</span>
+    <h2>What happens now</h2>
+    <div class="tl">
+      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
+        <b>I build your draft</b>
+        <p>Within about a week you get a link to a real, working version of your site —
+           not a sketch. It'll already sound like you, because it's grown from our conversation.</p>
+      </div></div>
+      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
+        <b>You react, I shape</b>
+        <p>You tell me what's off — a list, a voice memo, comments right on the page, however
+           it comes out of you. We go back and forth until it feels like home.</p>
+      </div></div>
+      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
+        <b>The dress rehearsal</b>
+        <p>If your site takes bookings or payments, you and I test everything with pretend
+           clients first — you'll book a fake appointment from your own phone and watch it
+           land in your booking book. Nothing goes public until you've driven it yourself.</p>
+      </div></div>
+      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
+        <b>We go live</b>
+        <p>Your site opens at your own web address. I watch it closely the first couple of
+           weeks, then we settle into whichever care plan you chose.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <span class="kicker">Your part</span>
+    <h2>The few things I'll need from you</h2>
+    <ul class="list">
+      <li>Your words, when you have them
+        <small>Changes, corrections, the story in your voice — any format, any time. There's no wrong way to send them.</small></li>
+      <li>Photos of you and your work
+        <small>Yours, a friend's, or we book a Photo Day and I come make them with you.</small></li>
+      <li>Your web address, bought under your own name
+        <small>About $12 a year. I'll sit with you for the ten-minute purchase — it matters that it's registered to you, not to me.</small></li>
+      <li>If you take payments: your own payment account
+        <small>Ten minutes, together. Your clients' money must flow straight to you — it never touches me.</small></li>
+      <li>If you take bookings: your session types, prices, hours, and how close to a session someone may cancel
+        <small>Four small decisions. I set up everything else.</small></li>
+    </ul>
+  </section>
+
+  <section class="card yours">
+    <span class="kicker">The handover</span>
+    <h2>What lands in your hands</h2>
+    <ul class="list">
+      <li>Your live site, at your address</li>
+      <li>A login to your own booking book (if you have booking)
+        <small>Change your hours, block off a vacation, see your week — from your phone, no website edits ever.</small></li>
+      <li>Your site's ingredients, on one page
+        <small>Your exact colors, fonts, and wordmark — so flyers, cards, and posts can always match your site.</small></li>
+      <li>Every account that should be yours, in your name
+        <small>Domain, payments — with the passwords in your hands.</small></li>
+      <li>The standing promise: if we ever part ways, everything comes with you
+        <small>Every file, handed over whole. That's the deal, in writing, forever.</small></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <span class="kicker">And breathe</span>
+    <h2>What you never have to do</h2>
+    <ul class="list never">
+      <li>Learn code, hosting, or any tech vocabulary</li>
+      <li>Create accounts on platforms you don't care about
+        <small>Only two accounts are truly yours to hold: your web address and (if you take money) your payment account. Everything else lives under my roof, included in your plan.</small></li>
+      <li>Keep the machinery running — that's my whole job</li>
+      <li>Wonder what's happening — you can always just ask me, in person-words</li>
+    </ul>
+    <p class="promise">"You don't need to decide anything technical. Tell me how you work,
+       and it'll be built around that."</p>
+  </section>
+
+  <footer>Web Faery &middot; <a href="index.html">webfaery.love</a></footer>
+</div>
+</body>
+</html>
