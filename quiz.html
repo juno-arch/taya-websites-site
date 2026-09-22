@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which plan fits? &middot; Websites by Taya</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f1efe7; --paper-2: #e9e6da; --card: #f6f4ec;
+    --ink: #272c25; --ink-soft: #6d7264; --hairline: #d9d6c7;
+    --plum: #7b3763; --plum-deep: #5e2a4c; --moss: #59674a;
+    --on-plum: #f6ecf2; --focus: #7b3763;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+      --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+      --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+      --on-plum: #241522; --focus: #c47fa9;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+    --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+    --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+    --on-plum: #241522; --focus: #c47fa9;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.6;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 26px 22px 90px; }
+  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--plum); }
+
+  .head { padding-block: 40px 6px; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--plum); }
+  .lede { color: var(--ink-soft); margin: 14px 0 0; max-width: 32em; }
+
+  .progress {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--moss); margin: 30px 0 10px;
+  }
+  .qcard {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
+    padding: 26px 26px 28px;
+  }
+  .qcard h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px; margin: 0 0 4px; text-wrap: balance; }
+  .qcard .why { font-size: 15px; color: var(--ink-soft); font-style: italic; margin: 0 0 18px; }
+  .answers { display: grid; gap: 10px; }
+  .answers button {
+    text-align: left; cursor: pointer; font-family: 'Newsreader', Georgia, serif; font-size: 17px;
+    color: var(--ink); background: var(--paper); border: 1px solid var(--hairline);
+    border-radius: 10px; padding: 13px 16px; line-height: 1.5;
+  }
+  .answers button:hover { border-color: var(--plum); background: var(--paper-2); }
+  .answers button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .answers small { display: block; color: var(--ink-soft); font-size: 14px; }
+  .back {
+    margin-top: 16px; background: none; border: none; cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-soft); padding: 4px 0;
+  }
+  .back:hover { color: var(--plum); }
+
+  .result { display: none; }
+  .result.show { display: block; }
+  .verdict {
+    background: var(--card); border: 2px solid var(--plum); border-radius: 16px;
+    padding: 30px 30px 32px; margin-top: 26px;
+  }
+  .verdict .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--moss); display: block; margin-bottom: 8px;
+  }
+  .verdict h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 34px; margin: 0; color: var(--plum); }
+  .verdict .because { margin: 14px 0 0; }
+  .verdict ul { margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid var(--hairline); list-style: none; display: grid; gap: 8px; }
+  .verdict li { padding-left: 22px; position: relative; font-size: 16.5px; }
+  .verdict li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
+  .also { font-size: 15px; color: var(--ink-soft); margin-top: 18px; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+  .btn {
+    display: inline-block; text-decoration: none; text-align: center; cursor: pointer;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16px;
+    padding: 12px 24px; border-radius: 10px;
+    background: var(--plum); color: var(--on-plum); border: 1px solid var(--plum);
+  }
+  .btn:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
+  .btn.secondary { background: transparent; color: var(--plum); }
+  .retake { margin-top: 20px; }
+
+  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
+  footer a { color: var(--plum); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="index.html">Websites <span>by Taya</span></a>
+
+  <div class="head">
+    <h1>Which plan <em>fits you?</em></h1>
+    <p class="lede">Five little questions, no email required, no wrong answers.
+       At the end you'll know which plan matches how your business actually lives.</p>
+  </div>
+
+  <div id="quiz">
+    <div class="progress" id="progress">Question 1 of 5</div>
+    <div class="qcard">
+      <h2 id="q-title"></h2>
+      <p class="why" id="q-why"></p>
+      <div class="answers" id="q-answers"></div>
+    </div>
+    <button class="back" id="back" hidden>&larr; Back a question</button>
+  </div>
+
+  <div class="result" id="result">
+    <div class="verdict">
+      <span class="eyebrow">Sounds like you're</span>
+      <h2 id="r-name"></h2>
+      <p class="because" id="r-because"></p>
+      <ul id="r-points"></ul>
+      <p class="also" id="r-also"></p>
+      <div class="cta-row">
+        <a class="btn" id="r-link" href="index.html#care">See the plan</a>
+        <a class="btn secondary" href="intake.html">Start the intake</a>
+      </div>
+    </div>
+    <button class="back retake" id="retake">&#8635; Take it again</button>
+  </div>
+
+  <footer>Websites by Taya &middot; <a href="index.html">back to the main page</a></footer>
+</div>
+
+<script>
+  var QUESTIONS = [
+    {
+      title: "How often do the facts of your business change?",
+      why: "Hours, prices, services, the story you tell — the living parts.",
+      answers: [
+        { t: "Hardly ever — I do what I do", s: { planted: 2 } },
+        { t: "With the seasons — a few times a year", s: { planted: 1, tended: 1 } },
+        { t: "Most months something's different", s: { tended: 2 } },
+        { t: "Constantly — my business is a living thing", s: { tended: 1, bloom: 1 } }
+      ]
+    },
+    {
+      title: "Should people book or pay through your site?",
+      why: "This is the biggest fork in the road.",
+      answers: [
+        { t: "No — I like being reached the old way", sub: "Calls, texts, emails", s: { planted: 1 } },
+        { t: "Maybe someday, not yet", s: { tended: 1 } },
+        { t: "Yes — booking, please", sub: "Clients pick a time; you both get reminders", s: { bloom: 3 } },
+        { t: "Yes — booking AND payments", s: { bloom: 3 } }
+      ]
+    },
+    {
+      title: "When something needs changing, you want it done…",
+      why: "Be honest about your patience, not your politeness.",
+      answers: [
+        { t: "Whenever — I'll batch things up", s: { planted: 2 } },
+        { t: "Within the month is plenty", s: { tended: 2 } },
+        { t: "That week — while it's still relevant", s: { bloom: 2 } }
+      ]
+    },
+    {
+      title: "How should your site feel a year from now?",
+      why: "",
+      answers: [
+        { t: "Same as day one — timeless and steady", s: { planted: 2 } },
+        { t: "Freshened up — new photos, current words", s: { tended: 2 } },
+        { t: "Grown — new offerings, maybe new pages", s: { tended: 1, bloom: 1 } }
+      ]
+    },
+    {
+      title: "And how do you feel about a monthly relationship?",
+      why: "There's no wrong answer — one of my plans has no strings at all.",
+      answers: [
+        { t: "Happily — take this off my plate", s: { tended: 1, bloom: 1 } },
+        { t: "A small one, sure", s: { planted: 1 } },
+        { t: "None for me — build it, hand me everything, hug goodbye", s: { wildflower: 5 } }
+      ]
+    }
+  ];
+
+  var RESULTS = {
+    planted: {
+      name: "Planted",
+      because: "Your business is steady and your site should be too — a beautiful, true thing that quietly does its job while you do yours.",
+      points: [
+        "A tending visit four times a year for your batch of changes",
+        "Anything broken, fixed free",
+        "The gentlest monthly of the bunch"
+      ],
+      also: "If change speeds up someday, hopping up to Tended takes one email."
+    },
+    tended: {
+      name: "Tended",
+      because: "Your business breathes with the year, and your site should keep up without you ever thinking about it.",
+      points: [
+        "A tending visit every month — hours, prices, photos, news",
+        "Contact form and newsletter signup",
+        "Seasonal freshening as the year turns"
+      ],
+      also: "Most folks land here. If you ever want booking, In Bloom is one step up."
+    },
+    bloom: {
+      name: "In Bloom",
+      because: "Your website isn't a brochure — it's a working part of your business. Clients book, browse, and pay through it, so it deserves real tending and a fast line to a real person.",
+      points: [
+        "Online booking with reminders — you manage your own schedule from your phone",
+        "Changes made the same week you ask",
+        "A direct line to my inbox, answered within 24 hours"
+      ],
+      also: "Payments, galleries, and a yearly design refresh live here too."
+    },
+    wildflower: {
+      name: "Wildflower",
+      because: "You want the craft without the commitment — built with love, handed over completely, free to grow wherever you take it.",
+      points: [
+        "One price, once — every file, account, and password is yours",
+        "Bring it to any web person on earth (or back to me)",
+        "Tending visits at a flat rate whenever you want one — no plan required"
+      ],
+      also: "The non-attachment option. No strings, no hard feelings, always welcome back."
+    }
+  };
+
+  var idx = 0;
+  var picks = [];
+
+  function render() {
+    var q = QUESTIONS[idx];
+    document.getElementById('progress').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
+    document.getElementById('q-title').textContent = q.title;
+    var why = document.getElementById('q-why');
+    why.textContent = q.why;
+    why.hidden = !q.why;
+    var box = document.getElementById('q-answers');
+    box.innerHTML = '';
+    q.answers.forEach(function (a, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = a.t + (a.sub ? '<small>' + a.sub + '</small>' : '');
+      b.addEventListener('click', function () { pick(i); });
+      box.appendChild(b);
+    });
+    document.getElementById('back').hidden = (idx === 0);
+  }
+
+  function pick(i) {
+    picks[idx] = i;
+    if (idx < QUESTIONS.length - 1) { idx++; render(); }
+    else { finish(); }
+  }
+
+  function finish() {
+    var score = { planted: 0, tended: 0, bloom: 0, wildflower: 0 };
+    picks.forEach(function (p, qi) {
+      var s = QUESTIONS[qi].answers[p].s;
+      for (var k in s) score[k] += s[k];
+    });
+    // Wildflower is a philosophy, not a score: choosing "none for me" decides it —
+    // unless they also asked for booking, which needs the ongoing relationship.
+    var winner;
+    if (score.wildflower > 0 && score.bloom < 3) winner = 'wildflower';
+    else if (score.bloom >= 3) winner = 'bloom';
+    else winner = (score.tended >= score.planted) ? 'tended' : 'planted';
+
+    var r = RESULTS[winner];
+    document.getElementById('r-name').textContent = r.name;
+    document.getElementById('r-because').textContent = r.because;
+    var ul = document.getElementById('r-points');
+    ul.innerHTML = '';
+    r.points.forEach(function (p) {
+      var li = document.createElement('li');
+      li.textContent = p;
+      ul.appendChild(li);
+    });
+    var also = document.getElementById('r-also');
+    also.textContent = r.also;
+    if (winner === 'wildflower' && score.bloom > 0) {
+      also.textContent = "One note: you leaned toward booking too — booking needs ongoing care, so it lives in In Bloom. Worth a conversation; we'll find your shape.";
+    }
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('result').classList.add('show');
+    window.scrollTo({ top: 0 });
+  }
+
+  document.getElementById('back').addEventListener('click', function () {
+    if (idx > 0) { idx--; render(); }
+  });
+  document.getElementById('retake').addEventListener('click', function () {
+    idx = 0; picks = [];
+    document.getElementById('result').classList.remove('show');
+    document.getElementById('quiz').style.display = '';
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>
