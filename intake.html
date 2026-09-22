@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tell me about you &middot; Websites by Taya</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f1efe7; --paper-2: #e9e6da; --card: #f6f4ec;
+    --ink: #272c25; --ink-soft: #6d7264; --hairline: #d9d6c7;
+    --plum: #7b3763; --plum-deep: #5e2a4c; --moss: #59674a;
+    --on-plum: #f6ecf2; --focus: #7b3763; --err: #a03d2e; --ok: #4c6b3c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+      --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+      --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+      --on-plum: #241522; --focus: #c47fa9; --err: #d98a75; --ok: #9dbb85;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+    --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+    --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+    --on-plum: #241522; --focus: #c47fa9; --err: #d98a75; --ok: #9dbb85;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.6;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 26px 22px 90px; }
+
+  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--plum); }
+
+  .head { padding-block: 40px 8px; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--plum); }
+  .lede { color: var(--ink-soft); margin: 16px 0 0; max-width: 34em; }
+
+  fieldset {
+    border: 1px solid var(--hairline); border-radius: 14px; background: var(--card);
+    padding: 24px 24px 26px; margin: 26px 0 0;
+  }
+  legend {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); padding-inline: 8px;
+  }
+  .q { margin-top: 18px; }
+  .q:first-of-type { margin-top: 6px; }
+  label.main { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin-bottom: 4px; }
+  .hint { font-size: 15px; color: var(--ink-soft); margin: 0 0 8px; font-style: italic; }
+  input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+    width: 100%; background: var(--paper); color: var(--ink);
+    border: 1px solid var(--hairline); border-radius: 8px;
+    font-family: 'Newsreader', Georgia, serif; font-size: 17px; padding: 11px 13px;
+  }
+  textarea { min-height: 92px; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible {
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
+  ::placeholder { color: var(--ink-soft); opacity: 0.7; }
+
+  .opts { display: grid; gap: 8px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+    background: var(--paper); border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 10px 13px; font-size: 16.5px;
+  }
+  .opt:has(:checked) { border-color: var(--plum); background: var(--paper-2); }
+  .opt input { margin-top: 5px; accent-color: var(--plum); }
+  .opt small { display: block; color: var(--ink-soft); font-size: 14px; }
+
+  #booking-extra { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--hairline); }
+  #booking-extra.show { display: block; }
+
+  .send-row { margin-top: 30px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  button.send {
+    cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px;
+    padding: 14px 30px; border-radius: 10px;
+    background: var(--plum); color: var(--on-plum); border: 1px solid var(--plum);
+  }
+  button.send:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
+  button.send:disabled { opacity: 0.5; cursor: wait; }
+  .status { font-size: 16px; min-height: 24px; }
+  .status.ok { color: var(--ok); }
+  .status.err { color: var(--err); }
+  .status a { color: var(--plum); }
+
+  .done { display: none; text-align: center; padding: 70px 10px; }
+  .done.show { display: block; }
+  .done h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; margin: 0 0 10px; }
+  .done p { color: var(--ink-soft); max-width: 30em; margin: 0 auto; }
+
+  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="index.html">Websites <span>by Taya</span></a>
+
+  <div id="form-side">
+    <div class="head">
+      <h1>Tell me <em>about you.</em></h1>
+      <p class="lede">Pour some tea — this takes about ten minutes, there are no wrong answers,
+         and nothing here is set in stone. Your answers are the seeds the whole site grows from.</p>
+    </div>
+
+    <form id="intake" novalidate>
+      <fieldset>
+        <legend>You</legend>
+        <div class="q">
+          <label class="main" for="f-name">Your name</label>
+          <input type="text" id="f-name" required autocomplete="name">
+        </div>
+        <div class="q">
+          <label class="main" for="f-biz">Your business name</label>
+          <p class="hint">If it's just your name, that counts. If you're still deciding, tell me the candidates.</p>
+          <input type="text" id="f-biz">
+        </div>
+        <div class="q">
+          <label class="main" for="f-what">What do you do, in your own words?</label>
+          <p class="hint">Say it like you'd say it to a friend — not like a brochure.</p>
+          <textarea id="f-what" required></textarea>
+        </div>
+        <div class="q">
+          <label class="main" for="f-who">Who comes to you — and who do you wish found you more often?</label>
+          <textarea id="f-who"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>What the site should do</legend>
+        <div class="q">
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="does" value="Tell my story + easy contact"> <span>Tell my story, and make it easy to reach me<small>The heart of every site</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Online booking" id="wants-booking"> <span>Let people book sessions online<small>They pick a time, you both get confirmations &amp; reminders</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Take payments"> <span>Take payments<small>Money goes straight to you — never through me</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Photo gallery"> <span>Show off my work in a gallery</span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Newsletter signup"> <span>Collect emails for a newsletter</span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Not sure yet"> <span>Not sure yet — let's talk it through</span></label>
+          </div>
+        </div>
+
+        <div id="booking-extra">
+          <div class="q">
+            <label class="main" for="f-sessions">Your sessions — what kinds, how long, what price?</label>
+            <p class="hint">e.g. "60-min massage $90 &middot; first visit 90 min $120"</p>
+            <textarea id="f-sessions"></textarea>
+          </div>
+          <div class="q">
+            <label class="main" for="f-hours">When do you usually work?</label>
+            <p class="hint">Days and rough hours — you'll be able to change these yourself anytime.</p>
+            <input type="text" id="f-hours" placeholder="e.g. Tue–Fri, 10 to 5">
+          </div>
+          <div class="q">
+            <label class="main" for="f-cancel">How close to a session can someone cancel or reschedule?</label>
+            <select id="f-cancel">
+              <option value="">Choose one…</option>
+              <option>24 hours ahead</option>
+              <option>48 hours ahead</option>
+              <option>I'm flexible — life happens</option>
+              <option>Not sure — help me decide</option>
+            </select>
+          </div>
+          <div class="q">
+            <label class="main" for="f-remind">How should reminders reach your clients?</label>
+            <select id="f-remind">
+              <option value="">Choose one…</option>
+              <option>Email is plenty</option>
+              <option>Text me the details on text reminders</option>
+              <option>Both, ideally</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>The feel of it</legend>
+        <div class="q">
+          <label class="main">Which moods feel like you?</label>
+          <p class="hint">Pick any that ring true.</p>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="vibe" value="Earthy & calm"> <span>Earthy &amp; calm</span></label>
+            <label class="opt"><input type="checkbox" name="vibe" value="Bright & joyful"> <span>Bright &amp; joyful</span></label>
+            <label class="opt"><input type="checkbox" name="vibe" value="Moody & elegant"> <span>Moody &amp; elegant</span></label>
+            <label class="opt"><input type="checkbox" name="vibe" value="Clean & simple"> <span>Clean &amp; simple</span></label>
+            <label class="opt"><input type="checkbox" name="vibe" value="Whimsical & playful"> <span>Whimsical &amp; playful</span></label>
+            <label class="opt"><input type="checkbox" name="vibe" value="Surprise me"> <span>Surprise me — I trust you</span></label>
+          </div>
+        </div>
+        <div class="q">
+          <label class="main" for="f-colors">Colors you love? Colors you can't stand?</label>
+          <input type="text" id="f-colors" placeholder="e.g. love sage green, please no neon orange">
+        </div>
+        <div class="q">
+          <label class="main" for="f-words">Words or phrases you love — and words that make you cringe?</label>
+          <p class="hint">This shapes the site's voice more than anything else.</p>
+          <textarea id="f-words"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Raw materials</legend>
+        <div class="q">
+          <label class="main">Photos of you and your work?</label>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="photos" value="I have good ones"> <span>I have good ones ready to send</span></label>
+            <label class="opt"><input type="radio" name="photos" value="I have some, not sure they're right"> <span>I have some — not sure they're right</span></label>
+            <label class="opt"><input type="radio" name="photos" value="None - tell me about a Photo Day"> <span>Barely any — tell me about a Photo Day<small>I come to you, three hours, photos are yours forever</small></span></label>
+          </div>
+        </div>
+        <div class="q">
+          <label class="main" for="f-domain">Your web address</label>
+          <p class="hint">Like <em>yourname.com</em>. If you have one, tell me what it is. If not, write "help me choose" — that conversation is a fun one.</p>
+          <input type="text" id="f-domain">
+        </div>
+        <div class="q">
+          <label class="main" for="f-loves">Any websites you love? Anything else I should know?</label>
+          <textarea id="f-loves"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Reaching you</legend>
+        <div class="q">
+          <label class="main" for="f-email">Best email</label>
+          <input type="email" id="f-email" required autocomplete="email">
+        </div>
+        <div class="q">
+          <label class="main" for="f-phone">Phone, if you like</label>
+          <input type="tel" id="f-phone" autocomplete="tel">
+        </div>
+      </fieldset>
+
+      <div class="send-row">
+        <button class="send" type="submit">Send it to Taya</button>
+        <div class="status" id="status" role="status"></div>
+      </div>
+    </form>
+  </div>
+
+  <div class="done" id="done">
+    <h2>It's in my hands now. 🌱</h2>
+    <p>Thank you — this is exactly what I need to start. I'll read every word and be in
+       touch within a couple of days to set up our first real conversation.</p>
+  </div>
+
+  <footer>Websites by Taya &middot; your answers go straight to Taya's inbox and nowhere else</footer>
+</div>
+
+<script>
+  var bookingBox = document.getElementById('wants-booking');
+  var extra = document.getElementById('booking-extra');
+  bookingBox.addEventListener('change', function () {
+    extra.classList.toggle('show', bookingBox.checked);
+  });
+
+  function val(id) { return (document.getElementById(id).value || '').trim(); }
+  function checked(name) {
+    return Array.prototype.map.call(
+      document.querySelectorAll('input[name="' + name + '"]:checked'),
+      function (el) { return el.value; }
+    ).join(', ');
+  }
+
+  document.getElementById('intake').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var status = document.getElementById('status');
+    var btn = document.querySelector('button.send');
+
+    if (!val('f-name') || !val('f-what') || !val('f-email')) {
+      status.textContent = 'A name, what you do, and an email are the only musts.';
+      status.className = 'status err';
+      return;
+    }
+
+    var lines = [
+      'NEW CLIENT INTAKE — Websites by Taya',
+      '',
+      'Name: ' + val('f-name'),
+      'Business: ' + (val('f-biz') || '—'),
+      'Email: ' + val('f-email'),
+      'Phone: ' + (val('f-phone') || '—'),
+      '',
+      'What they do:', val('f-what'),
+      '',
+      'Who comes to them:', (val('f-who') || '—'),
+      '',
+      'Site should do: ' + (checked('does') || '—'),
+    ];
+    if (bookingBox.checked) {
+      lines = lines.concat([
+        '',
+        '— BOOKING DETAILS —',
+        'Sessions: ' + (val('f-sessions') || '—'),
+        'Hours: ' + (val('f-hours') || '—'),
+        'Cancellation window: ' + (val('f-cancel') || '—'),
+        'Reminders: ' + (val('f-remind') || '—'),
+      ]);
+    }
+    lines = lines.concat([
+      '',
+      'Vibes: ' + (checked('vibe') || '—'),
+      'Colors: ' + (val('f-colors') || '—'),
+      'Words love/cringe:', (val('f-words') || '—'),
+      '',
+      'Photos: ' + (checked('photos') || '—'),
+      'Domain: ' + (val('f-domain') || '—'),
+      '',
+      'Sites they love / anything else:', (val('f-loves') || '—'),
+    ]);
+
+    btn.disabled = true;
+    status.textContent = 'Sending…';
+    status.className = 'status';
+
+    fetch('https://bookings.gardenfaery.love/api/contact-submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Intake: ' + val('f-name'),
+        email: val('f-email'),
+        phone: val('f-phone'),
+        message: lines.join('\n')
+      })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('server');
+      return r.json();
+    }).then(function (data) {
+      if (data.status !== 'sent') throw new Error('send');
+      document.getElementById('form-side').style.display = 'none';
+      var done = document.getElementById('done');
+      done.classList.add('show');
+      window.scrollTo({ top: 0 });
+    }).catch(function () {
+      btn.disabled = false;
+      status.innerHTML = 'Hmm, that didn’t go through. Try once more, or just email your answers to <a href="mailto:taya@gardenfaery.love">taya@gardenfaery.love</a>.';
+      status.className = 'status err';
+    });
+  });
+</script>
+</body>
+</html>
