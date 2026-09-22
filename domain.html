@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting your web address &middot; Web Faery</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f1efe7; --paper-2: #e9e6da; --card: #f6f4ec;
+    --ink: #272c25; --ink-soft: #6d7264; --hairline: #d9d6c7;
+    --plum: #7b3763; --plum-deep: #5e2a4c; --moss: #59674a;
+    --on-plum: #f6ecf2; --focus: #7b3763; --ok: #4c6b3c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+      --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+      --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+      --on-plum: #241522; --focus: #c47fa9; --ok: #9dbb85;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1e221d; --paper-2: #171a16; --card: #262b24;
+    --ink: #e7e4d7; --ink-soft: #a3a795; --hairline: #3a4036;
+    --plum: #c47fa9; --plum-deep: #d79cbf; --moss: #93a37f;
+    --on-plum: #241522; --focus: #c47fa9; --ok: #9dbb85;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 26px 22px 90px; }
+  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--plum); }
+
+  .head { padding-block: 40px 8px; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--plum); }
+  .lede { color: var(--ink-soft); margin: 16px 0 0; max-width: 34em; }
+
+  .step {
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
+    padding: 26px 26px 28px; margin-top: 24px;
+  }
+  .step .kicker {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); display: block; margin-bottom: 8px;
+  }
+  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px; margin: 0 0 10px; }
+  .step p { margin: 10px 0 0; }
+  .step p.soft { color: var(--ink-soft); font-size: 16px; }
+  .step ol { margin: 12px 0 0; padding-left: 22px; }
+  .step ol li { margin-bottom: 10px; }
+  .step li::marker { color: var(--plum); font-weight: 600; }
+  a { color: var(--plum); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .records { margin-top: 16px; display: grid; gap: 8px; }
+  .rec {
+    display: grid; grid-template-columns: 70px 1fr auto; gap: 10px; align-items: center;
+    background: var(--paper); border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 10px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13.5px;
+  }
+  .rec .t { color: var(--moss); font-weight: 500; }
+  .rec .v { overflow-wrap: anywhere; }
+  .rec button {
+    cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: transparent; color: var(--plum); border: 1px solid var(--plum);
+    border-radius: 999px; padding: 4px 12px;
+  }
+  .rec button:hover { background: var(--paper-2); }
+  .rec button.copied { color: var(--ok); border-color: var(--ok); }
+  .note { font-size: 15px; color: var(--ink-soft); font-style: italic; margin-top: 12px; }
+
+  .done-card { border: 2px solid var(--plum); }
+  .done-card p.big { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 19px; }
+
+  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
+  footer a { color: var(--plum); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="index.html">Web <span>Faery</span></a>
+
+  <div class="head">
+    <h1>Getting your <em>web address.</em></h1>
+    <p class="lede">This is the one piece of your website that should be bought by you, in your
+       name — so it's truly, legally yours. It takes about fifteen minutes, costs around $12 a
+       year, and you can do it with a cup of tea whenever you like. No rush, no tech knowledge
+       needed — follow along and you can't go wrong.</p>
+  </div>
+
+  <div class="step">
+    <span class="kicker">Step one &middot; ~5 minutes</span>
+    <h2>Make yourself a Porkbun account</h2>
+    <p>Porkbun (yes, really) is the friendly little shop where web addresses are sold. Go to
+       <a href="https://porkbun.com" rel="noopener">porkbun.com</a>, tap <b>Sign up</b>, and use
+       your everyday email and a good password.</p>
+    <p class="soft">Why Porkbun? Fair prices, no upsell circus, and privacy protection included
+       free — your home address won't be published in any public directory, which some other
+       registrars charge extra to hide.</p>
+  </div>
+
+  <div class="step">
+    <span class="kicker">Step two &middot; ~5 minutes</span>
+    <h2>Buy your address</h2>
+    <ol>
+      <li>In the search box, type the address we agreed on (for example <b>yourname.com</b>) and search.</li>
+      <li>Tap <b>+</b> next to it, then head to the cart and check out. One year is perfect.</li>
+      <li>Leave <b>auto-renew ON</b> — this is what keeps your address from ever accidentally
+          expiring and being snapped up by a stranger.</li>
+    </ol>
+    <p class="soft">Whois Privacy comes switched on by itself — nothing to do there.</p>
+  </div>
+
+  <div class="step">
+    <span class="kicker">Step three &middot; ~5 minutes</span>
+    <h2>Point it at your website</h2>
+    <p>Now we tell your new address where your website lives. In Porkbun, find your domain and
+       tap the little <b>DNS</b> button next to it. If any records are already listed, delete
+       them (they're just parking signs). Then add these five, one at a time — tap
+       <b>copy</b> here and paste over there. For each one: the <b>Host</b> field stays
+       <b>empty</b> except the last one (put <b>www</b>), and everything else keeps its
+       normal settings.</p>
+    <div class="records">
+      <div class="rec"><span class="t">A</span><span class="v">185.199.108.153</span><button data-copy="185.199.108.153">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.109.153</span><button data-copy="185.199.109.153">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.110.153</span><button data-copy="185.199.110.153">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.111.153</span><button data-copy="185.199.111.153">copy</button></div>
+      <div class="rec"><span class="t">CNAME</span><span class="v">www &rarr; juno-arch.github.io</span><button data-copy="juno-arch.github.io">copy</button></div>
+    </div>
+    <p class="note">These point your address at the home your site lives in. If this step feels
+       like too much, stop here and just tell me — it's genuinely fine, I can walk you through
+       it in five minutes whenever.</p>
+  </div>
+
+  <div class="step done-card">
+    <span class="kicker">Step four &middot; the whole message</span>
+    <h2>Tell me: "done!"</h2>
+    <p class="big">That's everything. Send me one message — "domain's bought and pointed" — and
+       I'll flip the switches on my side.</p>
+    <p class="soft">Never send me your password — I don't need it, and I'll never ask for it.
+       The address may take a few hours to wake up across the internet; that's normal, like
+       mail forwarding kicking in. Then your site goes live at your very own address. 🌱</p>
+  </div>
+
+  <footer>Web Faery &middot; <a href="index.html">back to the main page</a></footer>
+</div>
+
+<script>
+  document.querySelectorAll('.rec button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = b.getAttribute('data-copy');
+      function done() {
+        b.textContent = 'copied!';
+        b.classList.add('copied');
+        setTimeout(function () { b.textContent = 'copy'; b.classList.remove('copied'); }, 1800);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+</script>
+</body>
+</html>
