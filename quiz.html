@@ -96,6 +96,9 @@
   .btn:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
   .btn.secondary { background: transparent; color: var(--plum); }
   .retake { margin-top: 20px; }
+  /* headings get focus from script (so keyboard and screen reader users land on the new
+     question or the result); they are not controls, so no focus ring */
+  #q-title:focus, #r-name:focus { outline: none; }
 
   footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
   footer a { color: var(--plum); }
@@ -107,14 +110,14 @@
 
   <div class="head">
     <h1>Which plan <em>fits you?</em></h1>
-    <p class="lede">Five little questions, no email required, no wrong answers.
+    <p class="lede">Four little questions, no email required, no wrong answers.
        At the end you'll know which plan matches how your business actually lives.</p>
   </div>
 
   <div id="quiz">
-    <div class="progress" id="progress">Question 1 of 5</div>
+    <div class="progress" id="progress">Question 1 of 4</div>
     <div class="qcard">
-      <h2 id="q-title"></h2>
+      <h2 id="q-title" tabindex="-1"></h2>
       <p class="why" id="q-why"></p>
       <div class="answers" id="q-answers"></div>
     </div>
@@ -124,7 +127,7 @@
   <div class="result" id="result">
     <div class="verdict">
       <span class="eyebrow">Sounds like you're</span>
-      <h2 id="r-name"></h2>
+      <h2 id="r-name" tabindex="-1"></h2>
       <p class="because" id="r-because"></p>
       <ul id="r-points"></ul>
       <p class="also" id="r-also"></p>
@@ -238,17 +241,29 @@
 
   function pick(i) {
     picks[idx] = i;
-    if (idx < QUESTIONS.length - 1) { idx++; render(); }
+    if (idx < QUESTIONS.length - 1) { idx++; render(); focusQuestion(); }
     else { finish(); }
   }
 
-  function finish() {
+  function focusQuestion() { document.getElementById('q-title').focus(); }
+
+  // Crone (bloom) is only for people who want booking or selling: question 2's two
+  // "Yes" answers. Everyone else is Maiden or Mother, and anyone who wants changes
+  // "That week" without booking gets Mother. _tests/quiz-paths.test.mjs checks every path.
+  function recommend(picks) {
+    var wantsBooking = picks[1] >= 2;
+    if (wantsBooking) return 'bloom';
+    if (picks[2] === 2) return 'tended';
     var score = { planted: 0, tended: 0, bloom: 0 };
     picks.forEach(function (p, qi) {
       var s = QUESTIONS[qi].answers[p].s;
       for (var k in s) score[k] += s[k];
     });
-    var winner = (score.bloom >= 3) ? 'bloom' : ((score.tended >= score.planted) ? 'tended' : 'planted');
+    return (score.tended >= score.planted) ? 'tended' : 'planted';
+  }
+
+  function finish() {
+    var winner = recommend(picks);
 
     var r = RESULTS[winner];
     document.getElementById('r-name').textContent = r.name;
@@ -266,16 +281,18 @@
     document.getElementById('quiz').style.display = 'none';
     document.getElementById('result').classList.add('show');
     window.scrollTo({ top: 0 });
+    document.getElementById('r-name').focus({ preventScroll: true });
   }
 
   document.getElementById('back').addEventListener('click', function () {
-    if (idx > 0) { idx--; render(); }
+    if (idx > 0) { idx--; render(); focusQuestion(); }
   });
   document.getElementById('retake').addEventListener('click', function () {
     idx = 0; picks = [];
     document.getElementById('result').classList.remove('show');
     document.getElementById('quiz').style.display = '';
     render();
+    focusQuestion();
   });
 
   render();
