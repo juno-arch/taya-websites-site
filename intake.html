@@ -59,7 +59,7 @@
   }
   .q { margin-top: 18px; }
   .q:first-of-type { margin-top: 6px; }
-  label.main { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin-bottom: 4px; }
+  .main { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin: 0 0 4px; }
   .hint { font-size: 15px; color: var(--ink-soft); margin: 0 0 8px; font-style: italic; }
   input[type="text"], input[type="email"], input[type="tel"], textarea, select {
     width: 100%; background: var(--paper); color: var(--ink);
@@ -190,9 +190,9 @@
       <fieldset>
         <legend>The feel of it</legend>
         <div class="q">
-          <label class="main">Which moods feel like you?</label>
-          <p class="hint">Pick any that ring true.</p>
-          <div class="opts">
+          <p class="main" id="l-moods">Which moods feel like you?</p>
+          <p class="hint" id="h-moods">Pick any that ring true.</p>
+          <div class="opts" role="group" aria-labelledby="l-moods" aria-describedby="h-moods">
             <label class="opt"><input type="checkbox" name="vibe" value="Earthy & calm"> <span>Earthy &amp; calm</span></label>
             <label class="opt"><input type="checkbox" name="vibe" value="Bright & joyful"> <span>Bright &amp; joyful</span></label>
             <label class="opt"><input type="checkbox" name="vibe" value="Moody & elegant"> <span>Moody &amp; elegant</span></label>
@@ -215,8 +215,8 @@
       <fieldset>
         <legend>Raw materials</legend>
         <div class="q">
-          <label class="main">Photos of you and your work?</label>
-          <div class="opts">
+          <p class="main" id="l-photos">Photos of you and your work?</p>
+          <div class="opts" role="radiogroup" aria-labelledby="l-photos">
             <label class="opt"><input type="radio" name="photos" value="I have good ones"> <span>I have good ones ready to send</span></label>
             <label class="opt"><input type="radio" name="photos" value="I have some, not sure they're right"> <span>I have some, not sure they're right</span></label>
             <label class="opt"><input type="radio" name="photos" value="Barely any"> <span>Barely any, let&rsquo;s figure it out together</span></label>
