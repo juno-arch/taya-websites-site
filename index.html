@@ -282,8 +282,10 @@
     font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px;
   }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; color: var(--plum); font-weight: 700; }
-  .faq details[open] summary::after { content: "\2212"; }
+  /* the + / minus marks are decoration: the '/ ""' part keeps screen readers from reading them
+     (the first content line is the fallback for browsers without that syntax) */
+  .faq summary::after { content: "+"; content: "+" / ""; color: var(--plum); font-weight: 700; }
+  .faq details[open] summary::after { content: "\2212"; content: "\2212" / ""; }
   .faq details p { margin: 0 0 20px; color: var(--ink-soft); max-width: 60ch; }
 
   /* ---------- contact ---------- */
