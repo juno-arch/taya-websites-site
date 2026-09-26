@@ -100,6 +100,30 @@
   .status.err { color: var(--err); }
   .status a { color: var(--plum); }
 
+  /* character budget: the form server only accepts about 4,000 characters in all */
+  .budget { margin: 30px 0 0; font-size: 15px; font-style: italic; color: var(--ink-soft); }
+  .budget.near { color: var(--moss); }
+  .budget.over { color: var(--err); font-style: normal; }
+  .budget + .send-row { margin-top: 14px; }
+
+  /* shown when the answers can't be sent: everything in one box, ready to copy */
+  .rescue {
+    margin-top: 22px; background: var(--card); border: 2px solid var(--plum); border-radius: 14px;
+    padding: 20px 22px 22px;
+  }
+  .rescue-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin: 0; }
+  .rescue .note { font-size: 16px; margin: 4px 0 12px; }
+  .rescue .note a { color: var(--plum); }
+  .rescue textarea { min-height: 220px; font-size: 15px; line-height: 1.5; }
+  .rescue-row { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+  button.copy {
+    cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16px;
+    padding: 10px 22px; border-radius: 10px;
+    background: transparent; color: var(--plum); border: 1px solid var(--plum);
+  }
+  button.copy:hover { background: var(--paper-2); }
+  .copy-status { font-size: 15px; color: var(--ok); }
+
   .done { display: none; text-align: center; padding: 70px 10px; }
   .done.show { display: block; }
   .done h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; margin: 0 0 10px; }
@@ -126,7 +150,7 @@
         <legend>You</legend>
         <div class="q">
           <label class="main" for="f-name">Your name <span class="req" aria-hidden="true">(needed)</span></label>
-          <input type="text" id="f-name" required aria-required="true" autocomplete="name">
+          <input type="text" id="f-name" required aria-required="true" autocomplete="name" maxlength="112">
         </div>
         <div class="q">
           <label class="main" for="f-biz">Your business name</label>
@@ -240,19 +264,30 @@
         <legend>Reaching you</legend>
         <div class="q">
           <label class="main" for="f-email">Best email <span class="req" aria-hidden="true">(needed)</span></label>
-          <input type="email" id="f-email" required aria-required="true" autocomplete="email">
+          <input type="email" id="f-email" required aria-required="true" autocomplete="email" maxlength="200">
         </div>
         <div class="q">
           <label class="main" for="f-phone">Phone, if you like</label>
-          <input type="tel" id="f-phone" autocomplete="tel">
+          <input type="tel" id="f-phone" autocomplete="tel" maxlength="40">
         </div>
       </fieldset>
 
+      <p class="budget" id="budget"></p>
       <div class="send-row">
         <button class="send" type="submit">Send it to Taya</button>
         <div class="status" id="status" role="status"></div>
       </div>
     </form>
+
+    <div class="rescue" id="rescue" hidden>
+      <p class="rescue-title" id="rescue-title">All your answers, ready to copy</p>
+      <p class="note">Paste them into an email to <a href="mailto:taya@gardenfaery.love">taya@gardenfaery.love</a> and I&rsquo;ll take it from there.</p>
+      <textarea id="rescue-text" readonly aria-labelledby="rescue-title"></textarea>
+      <div class="rescue-row">
+        <button class="copy" type="button" id="rescue-copy">Copy my answers</button>
+        <span class="copy-status" id="copy-status" role="status"></span>
+      </div>
+    </div>
   </div>
 
   <div class="done" id="done">
@@ -302,6 +337,94 @@
     ).join(', ');
   }
 
+  // Everything is sent as one message. The form server turns away any message longer
+  // than 4,000 characters (form-proxy.pb.js), labels included, so keep LIMIT in step with it.
+  var LIMIT = 4000;
+
+  function buildMessage() {
+    var lines = [
+      'NEW CLIENT INTAKE: Web Faery',
+      '',
+      'Name: ' + val('f-name'),
+      'Business: ' + (val('f-biz') || '(blank)'),
+      'Email: ' + val('f-email'),
+      'Phone: ' + (val('f-phone') || '(blank)'),
+      '',
+      'What they do:', val('f-what'),
+      '',
+      'Who comes to them:', (val('f-who') || '(blank)'),
+      '',
+      'Site should do: ' + (checked('does') || '(blank)'),
+      'Plan picked on the site: ' + (pickedPlan || 'none, came straight to the form'),
+    ];
+    if (bookingBox.checked) {
+      lines = lines.concat([
+        '',
+        '-- BOOKING DETAILS --',
+        'Sessions: ' + (val('f-sessions') || '(blank)'),
+        'Hours: ' + (val('f-hours') || '(blank)'),
+        'Cancellation window: ' + (val('f-cancel') || '(blank)'),
+        'Reminders: ' + (val('f-remind') || '(blank)'),
+      ]);
+    }
+    lines = lines.concat([
+      '',
+      'Vibes: ' + (checked('vibe') || '(blank)'),
+      'Colors: ' + (val('f-colors') || '(blank)'),
+      'Words love/cringe:', (val('f-words') || '(blank)'),
+      '',
+      'Photos: ' + (checked('photos') || '(blank)'),
+      'Domain: ' + (val('f-domain') || '(blank)'),
+      '',
+      'Sites they love / anything else:', (val('f-loves') || '(blank)'),
+    ]);
+    return lines.join('\n');
+  }
+
+  var budget = document.getElementById('budget');
+  var rescue = document.getElementById('rescue');
+  var rescueText = document.getElementById('rescue-text');
+  var copyStatus = document.getElementById('copy-status');
+
+  function chars(n) { return n.toLocaleString('en-US') + (n === 1 ? ' character' : ' characters'); }
+
+  function updateBudget() {
+    var left = LIMIT - buildMessage().length;
+    if (left >= 0) {
+      budget.textContent = chars(left) + ' of room left, shared across all your answers.';
+      budget.className = 'budget' + (left < 400 ? ' near' : '');
+    } else {
+      budget.textContent = 'That\u2019s ' + chars(-left) + ' more than the form can carry. Trim an answer or two, or press Send to get everything ready to copy into an email.';
+      budget.className = 'budget over';
+    }
+    if (!rescue.hidden) rescueText.value = buildMessage();
+  }
+  document.getElementById('intake').addEventListener('input', updateBudget);
+  document.getElementById('intake').addEventListener('change', updateBudget);
+  updateBudget();
+
+  function showRescue() {
+    rescueText.value = buildMessage();
+    copyStatus.textContent = '';
+    rescue.hidden = false;
+  }
+
+  document.getElementById('rescue-copy').addEventListener('click', function () {
+    function copied() { copyStatus.textContent = 'Copied!'; }
+    function byHand() {
+      rescueText.focus();
+      rescueText.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      copyStatus.textContent = ok ? 'Copied!' : 'Couldn\u2019t copy it automatically. The text is selected, so copy it the usual way.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(rescueText.value).then(copied, byHand);
+    } else {
+      byHand();
+    }
+  });
+
   document.getElementById('intake').addEventListener('submit', function (e) {
     e.preventDefault();
     var status = document.getElementById('status');
@@ -324,42 +447,13 @@
       return;
     }
 
-    var lines = [
-      'NEW CLIENT INTAKE — Web Faery',
-      '',
-      'Name: ' + val('f-name'),
-      'Business: ' + (val('f-biz') || '—'),
-      'Email: ' + val('f-email'),
-      'Phone: ' + (val('f-phone') || '—'),
-      '',
-      'What they do:', val('f-what'),
-      '',
-      'Who comes to them:', (val('f-who') || '—'),
-      '',
-      'Site should do: ' + (checked('does') || '—'),
-      'Plan picked on the site: ' + (pickedPlan || 'none — came straight to the form'),
-    ];
-    if (bookingBox.checked) {
-      lines = lines.concat([
-        '',
-        '— BOOKING DETAILS —',
-        'Sessions: ' + (val('f-sessions') || '—'),
-        'Hours: ' + (val('f-hours') || '—'),
-        'Cancellation window: ' + (val('f-cancel') || '—'),
-        'Reminders: ' + (val('f-remind') || '—'),
-      ]);
+    var message = buildMessage();
+    if (message.length > LIMIT) {
+      status.textContent = 'It\u2019s a little too long to send through the form, so everything you wrote is in the box below, ready to copy.';
+      status.className = 'status err';
+      showRescue();
+      return;
     }
-    lines = lines.concat([
-      '',
-      'Vibes: ' + (checked('vibe') || '—'),
-      'Colors: ' + (val('f-colors') || '—'),
-      'Words love/cringe:', (val('f-words') || '—'),
-      '',
-      'Photos: ' + (checked('photos') || '—'),
-      'Domain: ' + (val('f-domain') || '—'),
-      '',
-      'Sites they love / anything else:', (val('f-loves') || '—'),
-    ]);
 
     btn.disabled = true;
     status.textContent = 'Sending…';
@@ -372,7 +466,7 @@
         name: 'Intake: ' + val('f-name'),
         email: val('f-email'),
         phone: val('f-phone'),
-        message: lines.join('\n')
+        message: message
       })
     }).then(function (r) {
       if (!r.ok) throw new Error('server');
@@ -388,6 +482,9 @@
       btn.disabled = false;
       status.innerHTML = 'Hmm, that didn’t go through. Try once more, or just email your answers to <a href="mailto:taya@gardenfaery.love">taya@gardenfaery.love</a>.';
       status.className = 'status err';
+      showRescue();
+      // disabling the button while sending drops keyboard focus; put it back
+      if (!document.activeElement || document.activeElement === document.body) btn.focus();
     });
   });
 </script>
