@@ -1,26 +1,72 @@
 <!doctype html>
 <html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web Faery · Handmade websites for real people</title>
-<meta name="description" content="Small, beautiful, hand-built websites for one-person businesses: massage therapists, gardeners, makers, healers. A site that sounds like you, that you own outright, cared for by an actual human.">
+<title>Web Faery · Hand-built websites for small local businesses</title>
+<meta name="description" content="Hand-built websites for small local businesses in Humboldt County and beyond. Paid once and yours to keep, with care only if you want it and every cost said plainly.">
 <link rel="canonical" href="https://webfaery.love/">
+<meta name="theme-color" content="#221a2b">
+<link rel="preload" as="image" href="images/hero.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" href="fonts/bricolage-grotesque-latin.woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://webfaery.love/">
 <meta property="og:site_name" content="Web Faery">
-<meta property="og:title" content="Web Faery · Handmade websites for real people">
-<meta property="og:description" content="Small, beautiful, hand-built websites for massage therapists, gardeners, makers and healers. Yours to own, cared for by a real person.">
-<meta property="og:image" content="https://webfaery.love/taya.jpg">
-<meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="fonts/fonts.css">
+<meta property="og:title" content="Hand-built websites for small local businesses">
+<meta property="og:description" content="Buy your site once and own it. Add care only if you want someone looking after it. Every cost said plainly.">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hand-built websites for small local businesses">
+<meta name="twitter:description" content="Buy your site once and own it. Add care only if you want someone looking after it. Every cost said plainly.">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
+<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Web Faery",
+  "url": "https://webfaery.love/",
+  "email": "taya@webfaery.love",
+  "image": "https://webfaery.love/images/share.jpg",
+  "description": "Hand-built websites for small local businesses, with a soft spot for healers and bodyworkers. Buy the site once and own it; care is optional.",
+  "founder": { "@type": "Person", "name": "Taya" },
+  "address": { "@type": "PostalAddress", "addressRegion": "CA", "addressCountry": "US" },
+  "areaServed": { "@type": "AdministrativeArea", "name": "Humboldt County, California" },
+  "priceRange": "$600 to $1,800",
+  "makesOffer": [
+    { "@type": "Offer", "name": "Maiden: a one-page website", "price": "600", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Mother: a full website", "price": "1200", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Crone: a full website with booking, selling, or both", "price": "1800", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Care plan (optional)", "price": "69", "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "69", "priceCurrency": "USD", "unitText": "MONTH" } },
+    { "@type": "Offer", "name": "Care plan (optional), paid yearly", "price": "690", "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "690", "priceCurrency": "USD", "unitText": "YEAR" } },
+    { "@type": "Offer", "name": "Founding clients: care plan locked in", "price": "49", "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "49", "priceCurrency": "USD", "unitText": "MONTH" } },
+    { "@type": "Offer", "name": "Founding clients: care plan locked in, paid yearly", "price": "490", "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "490", "priceCurrency": "USD", "unitText": "YEAR" } },
+    { "@type": "Offer", "name": "Changes to your site without a care plan, priced before I start", "description": "Send one email with everything you would like changed. I reply with a price before any work starts, and nothing starts until you say yes.", "price": "100", "priceCurrency": "USD",
+      "priceSpecification": { "@type": "UnitPriceSpecification", "price": "100", "priceCurrency": "USD", "unitCode": "HUR", "unitText": "hour" } }
+  ]
+}
+</script>
 <style>
+  /* ============ tokens ============
+     parchment paper, plum and aubergine ink, candlelight gold, and living moss (sampled from the
+     photos' moss: a leafy green, never olive). Light is the default; dark follows the visitor's
+     system setting (or data-theme="dark"). */
   :root {
-    /* fog-green paper, garden ink, orchid-plum accent */
     --paper: #f3eee4;
-    --paper-2: #eae3d4;
     --card: #f8f4ea;
     --ink: #2e2433;
-    --ink-soft: #6a5e72;
+    --ink-soft: #574e62;
     --hairline: #ddd2c2;
     --plum: #6d2b56;
     --plum-deep: #521f41;
@@ -28,639 +74,1009 @@
     --mark: #ecd3e2;
     --moonlight: #efe6d6;
     --moonglow: rgba(239, 230, 214, 0.45);
-    --moss: #7e6428;
+    --moss: #2e5c29;          /* small labels, numbers and underlines on the light part of the page */
+    --moss-fill: #387332;     /* filled moss (step numbers, the spots-left pill) with light text on it */
+    --moss-bright: #a2d496;   /* moss on the dark part of the page */
+    --moss-glow: 79, 155, 62; /* moss light, for edges and glows on the dark part */
+    /* the soft moss glows on the light part. A see-through leafy green fading straight into lavender passes
+       through grey (they sit across the color wheel from each other), so each glow fades the cool way round:
+       moss at its heart, then mint, then periwinkle, then nothing. It stays colored all the way out. */
+    --glow: rgba(178, 226, 150, 0.62) 0%, rgba(160, 222, 180, 0.42) 24%, rgba(170, 205, 230, 0.22) 46%, rgba(200, 190, 240, 0) 70%;
+    --moss-line: rgba(56, 115, 50, 0.55);
+    --on-moss: #f6f7ef;
     --on-plum: #f8ecf3;
     --band: #221a2b;
-    --band-text: #ece4da;
-    --band-soft: #b3a7bb;
-    --focus: #6d2b56;
+    --candle: #e3c27e;
+    --on-candle: #221a2b;
+    --focus: #2e5c29;
+    --shadow: 34, 26, 43;
+    --photo-dim: 1;
+    --gut: clamp(20px, 4vw, 40px);
+    --wrap: 1120px;
+    --sec-pad: clamp(76px, 10vw, 128px);
+
+    /* ONE page gradient, below the hero: deep aubergine, then lighter and lighter purple, ending in a
+       soft light lavender. It's painted in four pieces pinned to the content, each picking up exactly
+       where the one above leaves off, so it reads as one continuous wash and the dark-to-light turn
+       always happens behind the moon cards and the price panel (never behind bare text), at every
+       screen size and however many questions are open. The dark part climbs gently too (light text
+       still passes 5:1 at its lightest, #56446e), so it's lighter and lighter all the way down.
+       Colors were stepped in OKLCH, so no banding and no grey middle. */
+    --grad-work:  linear-gradient(180deg, #1d1526 0%, #281e34 25%, #342743 50%, #403152 75%, #4c3b62 100%);
+    --grad-head:  linear-gradient(180deg, #4c3b62 0, #56446e 320px);
+    --grad-turn:  linear-gradient(180deg, #56446e 0%, #5b4974 10%, #655280 20%, #725f8f 30%, #826fa0 40%, #9381b2 50%, #a494c3 60%, #b4a6d1 70%, #c2b6db 80%, #cdc2e4 90%, #d2c8e8 100%);
+    --grad-light: linear-gradient(180deg, #d2c8e8 0%, #dad1ec 25%, #e2dbf1 50%, #e9e4f5 75%, #f1eefa 100%);
+    --g0: #1d1526;   /* first color under the hero */
+    --g4: #f1eefa;   /* last color, at the footer */
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --paper: #171221;
-      --paper-2: #110d19;
       --card: #211a2e;
       --ink: #e8e1d6;
-      --ink-soft: #a99db4;
+      --ink-soft: #bbb0c6;
       --hairline: #3a3048;
       --plum: #d08cc0;
       --plum-deep: #e0a8d0;
-      --plum-wash: #35293100;
+      --plum-wash: rgba(208, 140, 192, 0.12);
       --mark: rgba(208, 140, 192, 0.24);
       --moonlight: #ece3d3;
       --moonglow: rgba(236, 227, 211, 0.35);
-      --moss: #c9a35c;
+      --moss: #a2d496;
+      --moss-line: rgba(162, 212, 150, 0.55);
+      --glow: rgba(78, 160, 64, 0.24) 0%, rgba(52, 134, 104, 0.16) 24%, rgba(52, 92, 140, 0.08) 46%, rgba(60, 50, 110, 0) 70%;
+      --band: #0f0b16;
       --on-plum: #2a1224;
-      --band: #100c17;
-      --band-text: #e8e1d6;
-      --band-soft: #9c8fa8;
-      --focus: #d08cc0;
+      --focus: #a2d496;
+      --shadow: 0, 0, 0;
+      --photo-dim: 0.88;
+      /* dark and calm: deepest plum at the top, easing to a slightly lighter aubergine at the bottom */
+      --grad-work:  linear-gradient(180deg, #140d1b 0%, #1c1426 100%);
+      --grad-head:  linear-gradient(180deg, #1c1426 0, #20172a 320px);
+      --grad-turn:  linear-gradient(180deg, #20172a 0%, #231a2e 50%, #261c32 100%);
+      --grad-light: linear-gradient(180deg, #261c32 0%, #2c2239 50%, #332841 100%);
+      --g0: #140d1b;
+      --g4: #332841;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
     --paper: #171221;
-    --paper-2: #110d19;
     --card: #211a2e;
     --ink: #e8e1d6;
-    --ink-soft: #a99db4;
+    --ink-soft: #bbb0c6;
     --hairline: #3a3048;
     --plum: #d08cc0;
     --plum-deep: #e0a8d0;
-    --plum-wash: #35293100;
+    --plum-wash: rgba(208, 140, 192, 0.12);
     --mark: rgba(208, 140, 192, 0.24);
     --moonlight: #ece3d3;
     --moonglow: rgba(236, 227, 211, 0.35);
-    --moss: #c9a35c;
+    --moss: #a2d496;
+    --moss-line: rgba(162, 212, 150, 0.55);
+    --glow: rgba(78, 160, 64, 0.24) 0%, rgba(52, 134, 104, 0.16) 24%, rgba(52, 92, 140, 0.08) 46%, rgba(60, 50, 110, 0) 70%;
+    --band: #0f0b16;
     --on-plum: #2a1224;
-    --band: #100c17;
-    --band-text: #e8e1d6;
-    --band-soft: #9c8fa8;
-    --focus: #d08cc0;
+    --focus: #a2d496;
+    --shadow: 0, 0, 0;
+    --photo-dim: 0.88;
+    --grad-work:  linear-gradient(180deg, #140d1b 0%, #1c1426 100%);
+    --grad-head:  linear-gradient(180deg, #1c1426 0, #20172a 320px);
+    --grad-turn:  linear-gradient(180deg, #20172a 0%, #231a2e 50%, #261c32 100%);
+    --grad-light: linear-gradient(180deg, #261c32 0%, #2c2239 50%, #332841 100%);
+    --g0: #140d1b;
+    --g4: #332841;
     color-scheme: dark;
   }
 
-  * { box-sizing: border-box; }
+  /* the dark part of the page (recent work and the prices heading) always carries light text */
+  .on-dark {
+    color: var(--ink);
+    --ink: #f4ecdf;
+    --ink-soft: #d6cadf;
+    --moss: #a2d496;
+    --moss-line: rgba(162, 212, 150, 0.6);
+    --focus: #a2d496;
+  }
+
+  /* ============ base ============ */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: var(--g4); }
+  /* smooth only for taps on in-page links: the script adds .smooth after load, so arriving
+     from another page at index.html#costs lands straight there instead of racing down the page */
+  html.smooth { scroll-behavior: smooth; }
   body {
     margin: 0;
-    background: var(--paper);
+    background: var(--g4);
     color: var(--ink);
     font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
     font-size: 18.5px;
     line-height: 1.65;
+    font-optical-sizing: auto;
   }
-  .gutter { padding-inline: 22px; }
-  .wrap { max-width: 980px; margin: 0 auto; }
-  .narrow { max-width: 660px; }
+  img { max-width: 100%; }
+  figure { margin: 0; }
+  h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif; line-height: 1.1; text-wrap: balance; margin: 0; }
+  p, li { text-wrap: pretty; }
+  a { color: var(--plum); text-underline-offset: 4px; text-decoration-thickness: 1.5px; text-decoration-color: var(--moss-line); }
+  a:hover { text-decoration-color: currentColor; }
+  .on-dark a { color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--mark); color: var(--ink); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .nowrap { white-space: nowrap; }
+  .skip {
+    position: absolute; left: 12px; top: -80px; z-index: 50;
+    background: var(--candle); color: var(--on-candle); padding: 10px 16px; border-radius: 10px;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; text-decoration: none;
+  }
+  .skip:focus { top: 12px; }
 
-  h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif; line-height: 1.12; text-wrap: balance; margin: 0; }
-  a { color: var(--plum); }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
+  .gutter { padding-inline: var(--gut); }
+  .wrap { max-width: var(--wrap); margin-inline: auto; }
 
   .eyebrow {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--moss);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--moss); margin: 0;
+    line-height: 1.5;
   }
+  section { padding-block: var(--sec-pad); }
+  .sec-head { max-width: 760px; }
+  .sec-head.center { margin-inline: auto; text-align: center; }
+  .sec-head .eyebrow { margin-bottom: 16px; }
+  h2 { font-size: clamp(31px, 4.6vw, 52px); font-weight: 600; letter-spacing: -0.018em; line-height: 1.07; }
+  h2 em {
+    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
+    letter-spacing: -0.005em; color: var(--plum);
+  }
+  .on-dark h2 em { color: var(--candle); }
+  .lede { font-size: clamp(18.5px, 1.6vw, 20.5px); color: var(--ink-soft); max-width: 36em; margin: 18px 0 0; }
+  .sec-head.center .lede { margin-inline: auto; text-wrap: balance; }
 
-  /* ---------- header ---------- */
-  header.site {
-    display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap;
-    max-width: 980px; margin: 0 auto; padding-block: 26px 0;
-  }
-  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
-  .brand span { color: var(--plum); }
-  header.site nav { display: flex; gap: 22px; flex-wrap: wrap; }
-  header.site nav a {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.14em;
-    text-transform: uppercase; text-decoration: none; color: var(--ink-soft);
-  }
-  header.site nav a:hover { color: var(--plum); }
-
-  /* ---------- hero ---------- */
-  .hero { padding-block: 72px 64px; }
-  .hero h1 {
-    font-size: clamp(38px, 7vw, 64px); font-weight: 700; letter-spacing: -0.015em; max-width: 15ch;
-  }
-  .hero h1 em { font-style: normal; color: var(--plum); }
-  .hero p.lede { font-size: 21px; max-width: 33em; margin: 22px 0 0; }
-  .hero .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; align-items: center; }
   .btn {
-    display: inline-block; text-decoration: none; cursor: pointer; text-align: center;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 50px; padding: 12px 30px; border-radius: 999px;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px; line-height: 1.2;
+    text-decoration: none; text-align: center; cursor: pointer; text-wrap: balance;
+    background: var(--plum); color: var(--on-plum); border: 1.5px solid var(--plum);
+    transition: background-color .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease;
+  }
+  .btn:hover { background: var(--moss-fill); border-color: var(--moss-fill); color: var(--on-moss); }
+
+  /* ============ scroll reveal (only below-the-fold elements get .pre, and only with JS) ============ */
+  .reveal.pre { opacity: 0; transform: translateY(30px); }
+  .reveal.in { opacity: 1; transform: none; transition: opacity .9s cubic-bezier(.2,.7,.3,1), transform .9s cubic-bezier(.2,.7,.3,1); }
+  .stagger > .reveal.in:nth-child(2) { transition-delay: .12s; }
+  .stagger > .reveal.in:nth-child(3) { transition-delay: .24s; }
+  .stagger > .reveal.in:nth-child(4) { transition-delay: .36s; }
+
+  /* ============ site header (sits over the hero, visible from the start) ============ */
+  .site-head {
+    position: absolute; inset: 0 0 auto 0; z-index: 10;
+    background: linear-gradient(rgba(20, 14, 26, 0.55), rgba(20, 14, 26, 0));
+    padding-bottom: 28px;
+  }
+  .site-head .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; padding-top: 18px; }
+  .brand {
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.01em;
+    color: #f4ecdf; text-decoration: none; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
+  }
+  .brand svg { width: 20px; height: 20px; flex: none; color: var(--candle); }
+  .brand .wm span { color: var(--candle); }
+  .site-head nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px 16px; flex-wrap: wrap; justify-content: flex-end; }
+  .site-head nav a {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; text-decoration: none; color: #f4ecdf; opacity: 0.86; padding-inline: 4px;
+  }
+  .site-head nav a:hover { opacity: 1; text-decoration: underline; text-decoration-color: var(--moss-bright); text-underline-offset: 6px; }
+  .site-head :focus-visible { outline-color: #f4ecdf; }
+
+  /* ============ hero ============
+     The photo arrives first and settles from a slow zoom, then the aubergine veil deepens,
+     then the words glide up one at a time. The script right after the hero holds everything
+     back (.wait) and plays the intro (.go) only once the photo has fully arrived; if it's slow,
+     everything shows at rest instead. Without JavaScript or with reduced motion, all at rest. */
+  .hero-band {
+    position: relative; isolation: isolate; overflow: hidden;
+    min-height: 100vh; min-height: 100svh;
+    padding-block: 0;
+    display: flex; flex-direction: column;
+    background: #1c1524; color: #f4ecdf;
+  }
+  .hero-img { position: absolute; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; object-position: 44% 50%; }
+  .hero-band::before {
+    content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(ellipse 64% 50% at 50% 55%, rgba(22, 15, 29, 0.58), rgba(22, 15, 29, 0) 74%),
+      linear-gradient(180deg, rgba(22, 15, 29, 0.62) 0, rgba(22, 15, 29, 0.22) 26%, rgba(22, 15, 29, 0.30) 58%, rgba(22, 15, 29, 0.80) 100%);
+  }
+  /* the photo's foot melts into the first color of the page gradient, so there's no seam */
+  .hero-band::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 16%; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--g0));
+  }
+  .hero-center {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding-block: 128px 96px;
+  }
+  .hero-center .eyebrow { color: #f4ecdf; letter-spacing: 0.26em; margin-bottom: 26px; }
+  /* a soft dark glow keeps the words readable where they cross the brightest mushroom caps */
+  .hero-center .hero-lede, .hero-cta .quiet { text-shadow: 0 1px 2px rgba(22, 15, 29, 0.7), 0 0 18px rgba(22, 15, 29, 0.65); }
+  .hero-center .eyebrow { text-shadow: 0 1px 2px rgba(22, 15, 29, 0.85), 0 0 8px rgba(22, 15, 29, 0.8), 0 0 20px rgba(22, 15, 29, 0.6); }
+  .hero-center h1 {
+    font-size: clamp(42px, 6.6vw, 96px); font-weight: 600; letter-spacing: -0.028em; line-height: 1.0;
+    margin-inline: auto; color: #f7efe3; text-shadow: 0 2px 30px rgba(22, 15, 29, 0.35);
+  }
+  .hero-center h1 .h1a, .hero-center h1 .h1b { display: block; }
+  .hero-center h1 .h1b {
+    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
+    letter-spacing: -0.02em; color: var(--candle); margin-top: 0.08em; line-height: 1.04;
+    text-shadow: 0 2px 4px rgba(22, 15, 29, 0.55), 0 0 28px rgba(22, 15, 29, 0.6);
+  }
+  .hero-center .hero-lede {
+    max-width: 30em; margin: 28px auto 0; font-size: clamp(18.5px, 1.7vw, 21.5px); line-height: 1.55;
+    color: #f4ecdf; text-wrap: balance;
+  }
+  .hero-cta { display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 38px; }
+  .hero-cta .btn { background: var(--candle); border-color: var(--candle); color: var(--on-candle); padding-inline: 36px; }
+  /* hover: the gold gives way to living moss */
+  .hero-cta .btn:hover { background: var(--moss-bright); border-color: var(--moss-bright); color: var(--on-candle); box-shadow: 0 0 0 6px rgba(162, 212, 150, 0.18), 0 0 34px rgba(var(--moss-glow), 0.45); }
+  .hero-cta .quiet {
+    display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px;
     font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px;
-    padding: 13px 26px; border-radius: 10px;
-    background: var(--plum); color: var(--on-plum); border: 1px solid var(--plum);
-    transition: background 0.15s ease, border-color 0.15s ease;
+    color: #f4ecdf; text-decoration-color: rgba(162, 212, 150, 0.75);
   }
-  .btn:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
-  .btn.secondary { background: transparent; color: var(--plum); }
-  .btn.secondary:hover { background: var(--plum-wash); }
-  :root[data-theme="dark"] .btn.secondary:hover, .btn.secondary:hover { text-decoration: underline; }
+  .hero-cta .quiet:hover { text-decoration-color: var(--moss-bright); }
+  .hero-cta :focus-visible { outline-color: #f4ecdf; }
 
-  .hero .aside-note {
-    margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--hairline);
-    display: flex; gap: 10px 34px; flex-wrap: wrap;
-    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft);
+  .hero-band.wait .hero-img, .hero-band.wait::before,
+  .hero-band.wait .hero-center .eyebrow, .hero-band.wait .h1a, .hero-band.wait .h1b,
+  .hero-band.wait .hero-lede, .hero-band.wait .hero-cta { opacity: 0; }
+  .hero-band.go .hero-img { animation: hero-photo 3.6s cubic-bezier(.22,1,.36,1) both; }
+  .hero-band.go::before { animation: hero-fade 2.4s ease .8s both; }
+  .hero-band.go .hero-center .eyebrow { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.6s both; }
+  .hero-band.go .h1a { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 1.95s both; }
+  .hero-band.go .h1b { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 2.45s both; }
+  .hero-band.go .hero-lede { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 3.05s both; }
+  .hero-band.go .hero-cta { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.6s both; }
+  /* once anyone focuses into the hero (say, tabbing to the button mid-intro), the button simply
+     stays shown; the script adds .seen and never takes it away, so nothing can replay */
+  .hero-band.seen .hero-cta { animation: none; opacity: 1; }
+  @keyframes hero-photo { from { opacity: 0; transform: scale(1.2); } 20% { opacity: 1; } to { opacity: 1; transform: none; } }
+  @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hero-rise { from { opacity: 0; transform: translateY(64px); } to { opacity: 1; transform: none; } }
+  @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+
+  /* ============ the page gradient, piece by piece ============ */
+  .work { background: var(--grad-work); position: relative; isolation: isolate; overflow: hidden; }
+  .prices { background: var(--grad-head); position: relative; isolation: isolate; overflow: hidden; padding-bottom: 0; }
+  .turn { position: relative; margin-top: clamp(44px, 6vw, 68px); padding-bottom: var(--sec-pad); }
+  .turn::before {
+    content: ""; position: absolute; z-index: -2; top: 0; bottom: 0; left: -50vw; right: -50vw; pointer-events: none;
+    background: var(--grad-turn);
   }
+  .flow-light { background: var(--grad-light); }
 
-  /* ---------- sections ---------- */
-  section { padding-block: 58px; }
-  section > .gutter > .wrap > .eyebrow { display: block; margin-bottom: 10px; }
-  h2 { font-size: clamp(27px, 4.4vw, 36px); font-weight: 600; letter-spacing: -0.01em; }
-  .section-lede { font-size: 19px; color: var(--ink-soft); max-width: 36em; margin: 14px 0 0; }
-
-  /* ---------- how it works ---------- */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 38px; }
-  .step { border-top: 3px solid var(--plum); padding-top: 16px; }
-  .step .eyebrow { color: var(--plum); }
-  .step h3 { font-size: 20px; font-weight: 600; margin: 8px 0 8px; }
-  .step p { margin: 0; font-size: 17px; color: var(--ink-soft); }
-
-  /* ---------- portfolio ---------- */
-  .work { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 38px; }
-  .piece {
-    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
-    overflow: hidden; display: flex; flex-direction: column;
+  /* ============ framed photos: settle from a soft zoom, then drift a few px against the scroll ============ */
+  .photo-block { position: relative; overflow: hidden; margin: 0; border-radius: 26px; background: #2d2338; }
+  .photo-block img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    scale: 1.08; translate: 0 var(--drift, 0px);
+    transition: scale 1.8s cubic-bezier(.2,.7,.3,1);
+    filter: brightness(var(--photo-dim));
   }
-  .thumb { height: 190px; position: relative; display: flex; flex-direction: column; padding: 22px 26px; }
-  /* mini mock-ups drawn in each site's real palette */
-  .thumb.juliet { background: #3c3129; }
-  .thumb.juliet .t-brand { color: #f4e9db; font-family: Georgia, serif; font-style: italic; font-size: 15px; }
-  .thumb.juliet .t-line { background: #f4e9db; opacity: 0.85; }
-  .thumb.juliet .t-btn { background: #78814b; }
-  .thumb.faery { background: #4a1942; }
-  .thumb.faery .t-brand { color: #f6eef4; font-family: Georgia, serif; font-size: 15px; }
-  .thumb.faery .t-line { background: #f6eef4; opacity: 0.85; }
-  .thumb.faery .t-btn { background: #c98bb8; }
-  .t-brand { margin-bottom: auto; }
-  .t-line { height: 9px; border-radius: 4px; width: 70%; margin-top: 10px; }
-  .t-line.short { width: 45%; }
-  .t-btn { height: 26px; width: 96px; border-radius: 999px; margin-top: 16px; }
-  .piece .about { padding: 20px 26px 24px; }
-  .piece h3 { font-size: 20px; font-weight: 600; }
-  .piece h3 a { color: inherit; text-decoration: none; }
-  .piece h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .piece p { font-size: 16.5px; color: var(--ink-soft); margin: 8px 0 0; }
-  .piece .meta { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--moss); margin-top: 14px; }
+  .photo-block.reveal.pre img { scale: 1.16; }
+  /* a candlelit wash so the stock photos sit inside the plum and parchment palette */
+  .photo-block::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(226, 190, 140, 0.24); mix-blend-mode: soft-light; }
+  .photo-block::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 0 80px rgba(34, 26, 43, 0.22); }
 
-  /* ---------- your data ---------- */
-  .adage {
-    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 500;
-    font-size: clamp(21px, 3.4vw, 26px); line-height: 1.4; color: var(--plum);
-    border-left: 3px solid var(--plum); padding-left: 20px; margin: 26px 0 0; max-width: 24em;
+  /* text + edge-to-edge photo, matching heights */
+  .split-sec { overflow-x: clip; --bleed: max(var(--gut), calc((100vw - var(--wrap)) / 2)); }
+  .split { display: grid; gap: 44px; }
+
+  /* ============ recent work ============ */
+  .work-list { display: grid; gap: clamp(72px, 9vw, 120px); margin-top: clamp(48px, 7vw, 80px); }
+  .piece { display: grid; gap: 34px; align-items: center; }
+  .shots { position: relative; display: block; padding-bottom: 14%; text-decoration: none; }
+  .browser {
+    width: 88%; border-radius: 12px; overflow: hidden; background: #2a2036;
+    border: 1px solid rgba(244, 236, 223, 0.14);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 34px 64px -28px rgba(8, 4, 12, 0.8);
   }
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 38px; }
-  .compare .col { border-radius: 16px; padding: 28px 30px; }
-  .compare .them { background: var(--paper-2); border: 1px solid var(--hairline); }
-  .compare .us { background: var(--card); border: 2px solid var(--plum); }
-  .compare h3 { font-size: 20px; font-weight: 700; }
-  .compare .them h3 { color: var(--ink-soft); }
-  .compare ul { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 11px; }
-  .compare li { font-size: 16.5px; padding-left: 24px; position: relative; color: var(--ink-soft); }
-  .compare .them li::before { content: "\2717"; position: absolute; left: 0; color: var(--ink-soft); font-weight: 700; }
-  .compare .us li { color: var(--ink); }
-  .compare .us li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
-  .data-close { margin-top: 30px; font-size: 19px; max-width: 40em; }
-  .data-close em { color: var(--plum); font-style: italic; }
-  @media (max-width: 860px) { .compare { grid-template-columns: 1fr; } }
+  .browser .chrome { display: flex; align-items: center; gap: 12px; height: 30px; padding-inline: 12px; background: #2a2036; border-bottom: 1px solid rgba(244, 236, 223, 0.08); }
+  .browser .dots { display: flex; gap: 6px; }
+  .browser .dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(244, 236, 223, 0.22); display: block; }
+  .browser .url {
+    flex: 1; max-width: 60%; margin-inline: auto; transform: translateX(-24px);
+    height: 18px; border-radius: 999px; background: rgba(244, 236, 223, 0.08);
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; line-height: 18px; color: #d6cadf;
+    text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
+  .browser .screen { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #2d2338; }
+  .browser .screen img, .phone .screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .browser .screen img { transition: scale 1.6s cubic-bezier(.2,.7,.3,1); }
+  .piece.reveal.pre .browser .screen img { scale: 1.05; }
+  .phone {
+    position: absolute; right: 0; bottom: 0; width: 27%;
+    padding: 5px; border-radius: 26px; background: #16111c;
+    box-shadow: 0 0 0 1px rgba(244, 236, 223, 0.14), 0 26px 46px -18px rgba(8, 4, 12, 0.85);
+    translate: 0 var(--drift, 0px);
+  }
+  .phone .screen { aspect-ratio: 480 / 1039; border-radius: 21px; overflow: hidden; background: #2d2338; }
+  .piece.flip .browser { margin-left: auto; }
+  .piece.flip .phone { right: auto; left: 0; }
 
-  /* ---------- pricing band ---------- */
-  .band { background: var(--band); color: var(--band-text); padding-block: 66px 74px; }
-  .band .eyebrow { color: var(--band-soft); }
-  .band h2 { color: var(--band-text); }
-  .band .section-lede { color: var(--band-soft); }
-  .band .quiz-link { color: var(--band-text); text-underline-offset: 3px; }
-  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 118px; align-items: start; }
+  .piece-text .eyebrow { margin-bottom: 12px; }
+  .piece-text .eyebrow, .about-card .eyebrow { color: var(--moss); }
+  .piece-text h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 600; letter-spacing: -0.015em; }
+  .piece-text p { margin: 12px 0 0; color: var(--ink-soft); max-width: 30em; }
+  .visit {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 12px;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px;
+  }
+  .visit svg { width: 14px; height: 14px; color: var(--moss); }
+
+  /* ============ prices ============ */
+  .tiers { display: grid; gap: 28px; align-items: stretch; }
   .tier {
+    position: relative; display: flex; flex-direction: column;
     background: var(--card); color: var(--ink);
-    border: 1px solid var(--hairline);
-    /* arched top, like a temple window; a moon rises above each card */
-    border-radius: 150px 150px 18px 18px / 96px 96px 18px 18px;
-    padding: 66px 26px 28px; position: relative;
-    display: flex; flex-direction: column; gap: 0;
+    border-radius: 200px 200px 22px 22px / 130px 130px 22px 22px;
+    overflow: hidden; border: 1px solid rgba(var(--moss-glow), 0.22);
+    box-shadow: 0 2px 4px rgba(var(--shadow), 0.08), 0 30px 60px -30px rgba(var(--shadow), 0.55);
   }
-  .tier::before {
-    content: ""; position: absolute; left: 50%; top: -88px;
-    width: 58px; height: 58px; margin-left: -29px; border-radius: 50%;
-    filter: drop-shadow(0 0 9px var(--moonglow));
+  /* a night sky with a mossy rise at its foot, so each moon hangs over moss like the photos */
+  .tier-sky {
+    height: 124px; display: grid; place-items: center;
+    background:
+      radial-gradient(ellipse 72% 54% at 50% 124%, #4b8342 0%, #3d7036 48%, #325f2d 70%, rgba(50, 95, 45, 0.45) 78%, rgba(50, 95, 45, 0) 88%),
+      radial-gradient(ellipse 80% 90% at 50% 75%, #3b2d49 0%, #271d33 60%, #1d1626 100%);
   }
-  /* triple moon: waxing (lit toward the center), full, waning */
-  .tier.maiden::before { box-shadow: inset -15px 0 0 0 var(--moonlight); }
-  .tier.mother::before { background: var(--moonlight); }
-  .tier.crone::before { box-shadow: inset 15px 0 0 0 var(--moonlight); }
-  .tier .eyebrow, .tier h3, .tier .price, .tier .dom { text-align: center; }
-  .tier.featured { border: 2px solid var(--plum); position: relative; }
-  .tier .pick {
-    align-self: center; margin: -30px 0 12px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    background: var(--plum); color: var(--on-plum); padding: 4px 12px; border-radius: 999px;
+  .tier-sky svg { width: 54px; height: 54px; margin-top: -10px; overflow: visible; filter: drop-shadow(0 0 10px var(--moonglow)) drop-shadow(0 0 22px rgba(239, 230, 214, 0.18)); }
+  .tier-body { flex: 1; display: flex; flex-direction: column; padding: 24px 26px 26px; text-align: center; }
+  .tier h3 { font-size: 30px; font-weight: 600; letter-spacing: -0.015em; }
+  .tier .does { margin: 10px 0 0; font-size: 17.5px; line-height: 1.55; color: var(--ink-soft); }
+  .tier .money { margin-top: auto; padding-top: 22px; }
+  .tier .price { margin: 0; font-family: 'Bricolage Grotesque', sans-serif; line-height: 1; }
+  .tier .price strong { font-size: 46px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .tier .price span { display: block; margin-top: 8px; font-size: 15.5px; font-weight: 400; color: var(--ink-soft); }
+  .tier .founding {
+    display: inline-flex; align-items: baseline; gap: 8px; margin: 14px 0 0; padding: 6px 14px; border-radius: 999px;
+    background: var(--plum-wash); color: var(--plum);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.04em;
   }
-  .tier .eyebrow { color: var(--moss); }
-  .tier h3 { font-size: 24px; font-weight: 700; margin-top: 6px; }
-  .tier h3 .moon { display: none; }
-  .tier h3 .plain, .solo-tier h3 .plain { font-family: 'Newsreader', Georgia, serif; font-size: 15px; font-weight: 400; font-style: italic; color: var(--ink-soft); }
-  .solo-tier h3 .plain { color: var(--band-soft); }
-  .tier .price { font-family: 'Bricolage Grotesque', sans-serif; margin-top: 14px; }
-  .tier .price strong { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .tier .price span { font-size: 15px; color: var(--ink-soft); }
-  .tier .dom, .solo-tier .dom {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.5;
-    color: var(--moss); margin-top: 7px;
-  }
-  .solo-tier .dom { color: var(--band-soft); max-width: 21em; }
-  .tier .blurb { font-size: 16.5px; color: var(--ink-soft); margin: 12px 0 0; }
-  .tier .who {
-    margin: 14px 0 0; padding: 12px 15px; background: var(--paper-2); border-radius: 10px;
-    font-size: 15.5px; line-height: 1.55; color: var(--ink-soft);
-  }
-  .tier .who strong { color: var(--ink); font-weight: 500; font-style: italic; }
-  .tier ul { list-style: none; margin: 18px 0 0; padding: 18px 0 0; border-top: 1px solid var(--hairline); display: grid; gap: 9px; }
-  .tier li { font-size: 16px; padding-left: 22px; position: relative; }
-  .tier li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
-  .tier li strong { color: var(--plum); font-weight: 700; }
-  .tier li b.diff { color: var(--ink); font-weight: 700; background: linear-gradient(transparent 55%, var(--mark) 55%); padding-inline: 1px; }
-  .tier .btn { margin-top: 24px; }
-  .solo-tier {
-    margin-top: 22px; background: transparent; color: var(--band-text);
-    border: 1px dashed var(--band-soft); border-radius: 16px; padding: 26px 30px;
-    display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
-  }
-  .solo-tier .eyebrow { color: var(--band-soft); }
-  .solo-tier h3 { font-size: 24px; font-weight: 700; margin-top: 6px; color: var(--band-text); }
-  .solo-tier p { font-size: 16.5px; color: var(--band-soft); margin: 10px 0 0; max-width: 46em; }
-  .solo-tier ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
-  .solo-tier li { padding-left: 24px; position: relative; font-size: 16px; color: var(--band-soft); }
-  .solo-tier li::before { content: "\2713"; position: absolute; left: 0; color: var(--band-text); font-weight: 700; }
-  .solo-tier li.no { color: var(--band-soft); }
-  .solo-tier li.no::before { content: "\2717"; color: var(--band-soft); }
-  .solo-tier .price { font-family: 'Bricolage Grotesque', sans-serif; white-space: nowrap; }
-  .solo-tier .price strong { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .solo-tier .price span { display: block; font-size: 14px; color: var(--band-soft); }
-  .solo-tier .btn.secondary { color: var(--band-text); border-color: var(--band-soft); margin-top: 14px; }
-  .solo-tier .btn.secondary:hover { background: transparent; }
-  .band .fineprint {
-    margin-top: 30px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--band-soft); max-width: 62em;
+  .tier .founding b { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; }
+  /* Mother, the middle moon, glows a little greener */
+  .tier.mother {
+    border-color: rgba(var(--moss-glow), 0.7);
+    box-shadow: 0 0 0 1px rgba(var(--moss-glow), 0.45), 0 0 46px -6px rgba(var(--moss-glow), 0.5), 0 30px 60px -30px rgba(var(--shadow), 0.55);
   }
 
-  /* ---------- faq ---------- */
-  .faq { display: grid; gap: 0; margin-top: 30px; max-width: 720px; }
-  .faq details { border-bottom: 1px solid var(--hairline); }
+  /* the fine print, in one calm panel: the founding line, what every build includes, and the one cost sentence */
+  .panel {
+    margin: clamp(36px, 5vw, 56px) auto 0; max-width: 860px;
+    background: var(--card); color: var(--ink); border-radius: 24px;
+    border: 1px solid rgba(var(--moss-glow), 0.22);
+    box-shadow: 0 2px 4px rgba(var(--shadow), 0.06), 0 30px 60px -34px rgba(var(--shadow), 0.5);
+    padding: clamp(24px, 4vw, 40px) clamp(22px, 4.4vw, 48px);
+  }
+  .panel p { margin: 0; }
+  .panel > * + * { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(var(--moss-glow), 0.28); }
+  /* arriving at index.html#founding (from the quiz and the questions page) lands with the panel's top edge in view */
+  #founding { scroll-margin-top: calc(clamp(24px, 4vw, 40px) + 24px); }
+  /* #care is the old site's link to the plans; it now lands on the moon cards */
+  #care { scroll-margin-top: 24px; }
+  .founding-line p { display: flex; gap: 14px; align-items: flex-start; font-size: 18px; line-height: 1.55; }
+  .founding-line svg { flex: none; width: 26px; height: 26px; margin-top: 1px; color: var(--moss-fill); }
+  .founding-line b {
+    display: inline-block; margin-left: 2px; padding: 0 10px; border-radius: 999px; white-space: nowrap;
+    background: var(--moss-fill); color: var(--on-moss);
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.6;
+  }
+  .panel .every { font-size: 17.5px; color: var(--ink-soft); }
+  .panel .lead { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; color: var(--ink); }
+  .panel .after { font-size: clamp(19px, 2vw, 21.5px); line-height: 1.5; }
+  /* (the vertical padding makes each a comfortable tap without changing the line height) */
+  .panel .after a, .panel .quiz a { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px; white-space: nowrap; padding-block: 13px; }
+  .panel .after a::after, .panel .quiz a::after { content: " \2192"; content: " \2192" / ""; font-family: 'Newsreader', Georgia, serif; }
+  .panel .quiz { font-size: 17px; color: var(--ink-soft); }
+
+  /* ============ how it works ============ */
+  .how { position: relative; isolation: isolate; }
+  .steps { list-style: none; padding: 0; margin: 36px 0 0; counter-reset: step; display: grid; }
+  .steps li { counter-increment: step; position: relative; padding: 0 0 26px 62px; }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: -3px;
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px;
+    background: var(--moss-fill); color: var(--on-moss);
+    box-shadow: 0 0 0 5px rgba(var(--moss-glow), 0.16);
+  }
+  /* the thread between steps, like a strand of moss */
+  .steps li::after { content: ""; position: absolute; left: 20px; top: 44px; bottom: 4px; width: 2px; border-radius: 2px; background: rgba(var(--moss-glow), 0.4); transform: translateX(-50%); }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps li:last-child::after { display: none; }
+  .steps h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+  .steps p { margin: 4px 0 0; font-size: 17.5px; color: var(--ink-soft); }
+  .ready-line {
+    margin: 34px 0 0; padding-top: 22px; border-top: 1px solid rgba(var(--moss-glow), 0.35);
+    font-size: 17.5px; color: var(--ink-soft); max-width: 34em;
+  }
+  .ready-line b { color: var(--ink); font-weight: 500; }
+
+  /* ============ about ============ */
+  .about-card { display: grid; gap: 26px; align-items: start; max-width: 860px; margin-inline: auto; }
+  .portrait {
+    width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+    border: 3px solid var(--moss-fill); box-shadow: 0 0 0 6px rgba(var(--moss-glow), 0.16), 0 12px 30px -12px rgba(var(--shadow), 0.5);
+  }
+  .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .about-card h2 { font-size: clamp(30px, 4vw, 44px); }
+  .about-card p { margin: 16px 0 0; color: var(--ink-soft); max-width: 36em; }
+  .about-card p:first-of-type { margin-top: 18px; }
+  .about-card .eyebrow { margin-bottom: 12px; }
+
+  /* ============ questions ============ */
+  .faq-grid { display: grid; gap: 34px; }
+  .faq { max-width: 780px; }
+  .faq details { border-bottom: 1px solid rgba(var(--moss-glow), 0.35); }
+  .faq details:first-child { border-top: 1px solid rgba(var(--moss-glow), 0.35); }
+  /* arriving at index.html#costs lands with the question in view, not tucked under the top edge */
+  .faq details { scroll-margin-top: 24px; }
   .faq summary {
-    cursor: pointer; padding: 18px 0; font-family: 'Bricolage Grotesque', sans-serif;
-    font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px;
+    cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 18px;
+    padding: 18px 0; min-height: 64px; text-wrap: balance;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 19px; line-height: 1.35;
   }
   .faq summary::-webkit-details-marker { display: none; }
-  /* the + / minus marks are decoration: the '/ ""' part keeps screen readers from reading them
-     (the first content line is the fallback for browsers without that syntax) */
-  .faq summary::after { content: "+"; content: "+" / ""; color: var(--plum); font-weight: 700; }
-  .faq details[open] summary::after { content: "\2212"; content: "\2212" / ""; }
-  .faq details p { margin: 0 0 20px; color: var(--ink-soft); max-width: 60ch; }
+  .faq summary:hover { color: var(--plum); }
+  /* the plus / minus is decoration: the '/ ""' keeps screen readers quiet (first line is the fallback) */
+  .faq summary::after {
+    content: "+"; content: "+" / ""; flex: none; width: 30px; height: 30px; border-radius: 50%;
+    display: grid; place-items: center; border: 1.5px solid var(--moss-line);
+    color: var(--moss); font-weight: 500; font-size: 20px; line-height: 1;
+    transition: background-color .2s ease;
+  }
+  .faq details[open] summary::after { content: "\2212"; content: "\2212" / ""; background: rgba(var(--moss-glow), 0.16); }
+  .faq details p { margin: 0 0 22px; color: var(--ink-soft); max-width: 62ch; }
+  .faq details p + p { margin-top: -8px; }
 
-  /* ---------- contact ---------- */
-  .contact-card {
-    margin-top: 34px; background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
-    padding: 34px 36px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
+  /* ============ contact ============ */
+  .contact { position: relative; isolation: isolate; }
+  /* a mossy haze low in the page, as if the photo's moss were glowing onto the lavender */
+  .contact::before {
+    content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 80% 34% at 50% 40%, var(--glow));
   }
-  .contact-card .portrait {
-    width: 128px; height: 128px; border-radius: 50%; overflow: hidden;
-    border: 3px solid var(--plum); flex-shrink: 0;
-  }
-  /* taya.jpg is already cropped to the face (256px square, 2x the circle) */
-  .contact-card .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .contact-card .intro { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-  .contact-card h3 { font-size: 24px; font-weight: 700; }
-  .contact-card p { margin: 8px 0 0; color: var(--ink-soft); max-width: 34em; }
+  .contact-text { align-self: center; }
+  .contact-text .lede { max-width: 30em; }
+  .contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 32px; }
+  .contact .btn { font-size: 17.5px; padding-inline: 30px; }
+  .contact-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 26px; }
+  .contact-links a { display: inline-flex; min-height: 44px; align-items: center; }
 
-  footer.site {
-    border-top: 1px solid var(--hairline); margin-top: 30px; padding: 26px 0 40px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft);
-    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  footer.site-foot { padding-block: 10px 40px; font-size: 15.5px; color: var(--ink-soft); }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 30px; padding-top: 26px; border-top: 1px solid rgba(var(--moss-glow), 0.3); }
+  .site-foot .brand { font-size: 18px; color: var(--ink); }
+  .site-foot .brand svg { color: var(--plum); }
+  .site-foot .brand .wm span { color: var(--plum); }
+  .site-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 22px; }
+  .site-foot a:not(.brand) { display: inline-flex; min-height: 44px; align-items: center; }
+  .site-foot .fine { width: 100%; margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
+
+  /* ============ wider screens ============ */
+  @media (min-width: 640px) {
+    .about-card { grid-template-columns: auto 1fr; gap: 40px; }
+    /* the photo is 256px square: small and crisp */
+    .about-card .portrait { width: 132px; height: 132px; margin-top: 8px; }
+  }
+  @media (min-width: 760px) {
+    .tiers { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  }
+  @media (min-width: 900px) {
+    .piece { grid-template-columns: 1.45fr 1fr; gap: 64px; }
+    .piece.flip { grid-template-columns: 1fr 1.45fr; }
+    .piece.flip .shots { order: 2; }
+    .tiers { gap: 26px; }
+    .faq-grid { grid-template-columns: 0.8fr 1.6fr; gap: 60px; align-items: start; }
+    .faq-grid .sec-head { position: sticky; top: 40px; }
+
+    /* photo splits: each photo runs from its column out to the edge of the screen, as tall as its text */
+    .split { grid-template-columns: 1fr 1fr; gap: clamp(48px, 6vw, 88px); align-items: stretch; }
+    .split .photo-block { min-height: 460px; }
+    .how .photo-block { margin-left: calc(-1 * var(--bleed)); border-radius: 0 28px 28px 0; }
+    .contact .photo-block { margin-right: calc(-1 * var(--bleed)); border-radius: 28px 0 0 28px; order: 2; min-height: 440px; }
+    /* soft moss light spilling off the photos onto the lavender */
+    .how::before {
+      content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 34% 46% at 47% 50%, var(--glow));
+    }
+    .contact::before { background: radial-gradient(ellipse 42% 44% at 54% 54%, var(--glow)); }
+  }
+  @media (min-width: 1100px) {
+    .how .split { grid-template-columns: 0.95fr 1.05fr; }
   }
 
-  /* ---------- responsive ---------- */
-  @media (max-width: 860px) {
-    .steps, .tiers { grid-template-columns: 1fr; }
-    .tiers { row-gap: 112px; }
-    .work { grid-template-columns: 1fr; }
-    .tier.featured { order: -1; }
+  /* ============ phones and tablets ============ */
+  @media (max-width: 899px) {
+    /* photos run edge to edge above their text, starting right at the section's top edge */
+    .split-sec { padding-top: 0; }
+    .split .photo-block { margin-inline: calc(-1 * var(--gut)); border-radius: 0; aspect-ratio: 5 / 4; }
+    .how .photo-block img { object-position: 50% 40%; }
+    .contact .photo-block img { object-position: 40% 50%; }
+    .tiers { max-width: 480px; margin-inline: auto; }
   }
+  /* iPad portrait and phones held sideways: the three moons side by side */
+  @media (min-width: 760px) and (max-width: 899px) {
+    .tiers { max-width: none; gap: 14px; }
+    .tier-body { padding: 22px 14px 22px; }
+    .tier h3 { font-size: 26px; }
+    .tier .does { font-size: 16.5px; }
+    .tier .price strong { font-size: 38px; }
+    .split .photo-block { aspect-ratio: 16 / 9; }
+  }
+  @media (max-width: 700px) {
+    .nav-more { display: none; }
+    .site-head .bar { gap: 12px; }
+    .site-head nav ul { gap: 0 8px; }
+    .site-head nav a { font-size: 12px; letter-spacing: 0.1em; }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 18px; }
+    /* on phones the words cover more of the photo, so the veil is a touch deeper where they sit */
+    .hero-band::before {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(22, 15, 29, 0.5), rgba(22, 15, 29, 0) 74%),
+        linear-gradient(180deg, rgba(22, 15, 29, 0.62) 0, rgba(22, 15, 29, 0.46) 14%, rgba(22, 15, 29, 0.42) 30%, rgba(22, 15, 29, 0.36) 58%, rgba(22, 15, 29, 0.80) 100%);
+    }
+    .hero-cta { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; margin-inline: auto; gap: 8px; }
+    .hero-cta .quiet { justify-content: center; }
+    .hero-center { padding-block: 112px 72px; }
+    .hero-center .eyebrow { letter-spacing: 0.2em; font-size: 11.5px; }
+    .shots { padding-bottom: 18%; }
+    .browser { width: 92%; }
+    .browser .chrome { height: 24px; }
+    .browser .url { font-size: 9.5px; height: 15px; line-height: 15px; }
+    .phone { width: 30%; padding: 4px; border-radius: 18px; }
+    .phone .screen { border-radius: 14px; }
+    .founding-line p { gap: 12px; }
+    .about-card { justify-items: start; }
+  }
+  @media (max-width: 380px) {
+    .brand { font-size: 18px; gap: 7px; }
+    .brand svg { width: 17px; height: 17px; }
+    .site-head nav a { font-size: 11.5px; letter-spacing: 0.1em; }
+    .site-head nav ul { gap: 0 2px; }
+    .site-head .bar { gap: 8px; }
+    .steps li { padding-left: 54px; }
+    .tier-body { padding-inline: 20px; }
+    .founding-line svg { display: none; }
+  }
+  @media (max-width: 345px) {
+    .brand { font-size: 16.5px; gap: 6px; }
+    .brand svg { width: 15px; height: 15px; }
+    .site-head nav a { font-size: 11px; letter-spacing: 0.08em; padding-inline: 3px; }
+  }
+  /* phones held sideways, and short laptop windows */
+  @media (max-height: 520px) and (orientation: landscape) {
+    .hero-center { padding-block: 72px 28px; }
+    .hero-center .eyebrow { margin-bottom: 10px; }
+    .hero-center h1 { font-size: clamp(34px, 5.2vw, 52px); }
+    .hero-center .hero-lede { margin-top: 12px; font-size: 17px; line-height: 1.45; }
+    .hero-cta { margin-top: 18px; }
+    .hero-cta .btn { min-height: 46px; padding-block: 10px; }
+    .split .photo-block { aspect-ratio: auto; height: 78vh; }
+  }
+  @media (min-width: 900px) and (max-height: 760px) {
+    .hero-center { padding-block: 104px 64px; }
+    .hero-center h1 { font-size: clamp(42px, 6.2vw, 84px); }
+  }
+
+  /* ============ reduced motion: everything at rest ============ */
   @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; }
+    html.smooth { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    .reveal.pre { opacity: 1; transform: none; }
+    .photo-block img, .photo-block.reveal.pre img { scale: 1; translate: none; }
+    .phone { translate: none; }
+    .piece.reveal.pre .browser .screen img { scale: 1; }
+  }
+  /* ============ print: everything shown, nothing waiting for a scroll that never comes ============ */
+  @media print {
+    .reveal.pre { opacity: 1 !important; transform: none !important; }
+    .hero-band.wait .hero-img, .hero-band.wait::before, .hero-band.wait .hero-center .eyebrow, .hero-band.wait .h1a,
+    .hero-band.wait .h1b, .hero-band.wait .hero-lede, .hero-band.wait .hero-cta { opacity: 1 !important; }
+    .hero-band *, .hero-band::before { animation: none !important; }
+    .faq-grid .sec-head { position: static !important; }
   }
 </style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
 
-<div class="gutter">
-  <header class="site">
-    <a class="brand" href="#top">Web <span>Faery</span></a>
-    <nav>
-      <a href="#how">How it works</a>
-      <a href="#work">Recent work</a>
-      <a href="#care">Plans</a>
-      <a href="#data">Your data</a>
-      <a href="#contact">Say hello</a>
+<!-- the brand name lives in a few places only (title, meta, JSON-LD, this header, the footer), so a rename stays easy -->
+<header class="site-head">
+  <div class="gutter"><div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Web Faery, back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="currentColor" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="nav-more"><a href="#work">Work</a></li>
+        <li><a href="#prices">Prices</a></li>
+        <li class="nav-more"><a href="#faq">Questions</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
-  </header>
-</div>
+  </div></div>
+</header>
 
-<div class="gutter" id="top">
-  <div class="wrap hero">
-    <h1>Handmade websites for <em>real people.</em></h1>
-    <p class="lede">
-      I build small, beautiful websites for one-person businesses: massage therapists,
-      gardeners, makers, healers. Not a template, not a subscription that holds your site
-      hostage. Just a site that sounds like you, that you own outright, cared for by an
-      actual human who writes back.
-    </p>
-    <div class="actions">
-      <a class="btn" href="#care">See the three plans</a>
-      <a class="btn secondary" href="#work">Look at recent work</a>
-    </div>
-    <div class="aside-note">
-      <span>One woman, start to finish</span>
-      <span>You own every file</span>
+<main id="main">
+
+<section class="hero-band" id="top" aria-labelledby="hero-title">
+  <picture><source type="image/webp" srcset="images/hero.webp"><img class="hero-img" src="images/hero.jpg" width="2000" height="1333" alt="" fetchpriority="high" decoding="async"></picture>
+  <div class="hero-center gutter">
+    <p class="eyebrow">Humboldt County, California</p>
+    <h1 id="hero-title"><span class="h1a">Hand-built websites</span> <span class="h1b">for small local businesses.</span></h1>
+    <p class="hero-lede">With a soft spot for healers and bodyworkers. Paid once, and yours to keep.</p>
+    <div class="hero-cta">
+      <a class="btn" href="#prices">See prices</a>
+      <a class="quiet" href="#work">Recent work</a>
     </div>
   </div>
-</div>
+</section>
+<script>
+  /* hero intro: wait until the photo has fully arrived, then play. If it's still on its way after
+     4 seconds (a slow connection), show everything at rest instead, so a half-loaded photo never
+     animates. No JS or reduced motion = everything shows at rest. */
+  (function () {
+    var h = document.querySelector('.hero-band');
+    var img = h && h.querySelector('.hero-img');
+    if (!img || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    h.classList.add('wait');
+    var settled = false;
+    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
+    var go = function () {
+      if (settled) return; settled = true;
+      h.classList.remove('wait'); h.classList.add('go');
+      /* when the last line has risen, drop .go so nothing can ever replay */
+      var cta = h.querySelector('.hero-cta');
+      if (cta) cta.addEventListener('animationend', function (e) { if (e.target === cta) h.classList.remove('go'); });
+    };
+    h.addEventListener('focusin', function () { h.classList.add('seen'); });
+    var ready = function () { if (img.decode) img.decode().then(go, go); else go(); };
+    if (img.complete && img.naturalWidth) { ready(); return; }
+    img.addEventListener('load', ready);
+    img.addEventListener('error', rest);
+    setTimeout(rest, 4000);
+  })();
+</script>
 
-<section id="how">
+<!-- ============ recent work (dark part of the page: light text) ============ -->
+<section id="work" class="work on-dark" aria-labelledby="work-title">
   <div class="gutter"><div class="wrap">
-    <span class="eyebrow">How it works</span>
-    <h2>Three steps, start to finish.</h2>
-    <div class="steps">
-      <div class="step">
-        <span class="eyebrow">First</span>
-        <h3>We talk</h3>
-        <p>Over tea or a friendly email thread, whatever's comfortable. You tell me about your work,
-           your people, and what the site needs to do. That's the whole meeting.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow">Recent work</p>
+      <h2 id="work-title">Real sites, <em>live right now.</em></h2>
+    </div>
+
+    <div class="work-list">
+      <article class="piece reveal">
+        <a class="shots" href="https://jomastudios.com" tabindex="-1" aria-hidden="true">
+          <figure class="browser">
+            <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="url">jomastudios.com</span></div>
+            <div class="screen"><img src="images/work-juliet-desktop.jpg" srcset="images/work-juliet-desktop-640.jpg 640w, images/work-juliet-desktop.jpg 1280w" sizes="(min-width: 1200px) 560px, (min-width: 900px) 46vw, 88vw" width="1280" height="750" loading="lazy" decoding="async" alt="Juliet’s home page on a laptop: a warm photo of a session, and the headline A different way of listening to your body"></div>
+          </figure>
+          <figure class="phone">
+            <div class="screen"><img src="images/work-juliet-phone.jpg" srcset="images/work-juliet-phone-240.jpg 240w, images/work-juliet-phone.jpg 480w" sizes="(min-width: 900px) 170px, 30vw" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone, with big Get in touch and How it works buttons"></div>
+          </figure>
+        </a>
+        <div class="piece-text">
+          <p class="eyebrow">Bodywork</p>
+          <h3>Juliet O’Barr, muscle activation</h3>
+          <p>A calm, warm home for a hands-on practice, with her rates and kind words from clients.</p>
+          <a class="visit" href="https://jomastudios.com">Visit jomastudios.com <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </article>
+
+      <article class="piece flip reveal">
+        <a class="shots" href="https://gardenfaery.love" tabindex="-1" aria-hidden="true">
+          <figure class="browser">
+            <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="url">gardenfaery.love</span></div>
+            <div class="screen"><img src="images/work-gardenfaery-desktop.jpg" srcset="images/work-gardenfaery-desktop-640.jpg 640w, images/work-gardenfaery-desktop.jpg 1280w" sizes="(min-width: 1200px) 560px, (min-width: 900px) 46vw, 88vw" width="1280" height="800" loading="lazy" decoding="async" alt="Garden Faery’s home page on a laptop: a garden photo, the headline Your garden, tended with magic, and a Book with me button"></div>
+          </figure>
+          <figure class="phone">
+            <div class="screen"><img src="images/work-gardenfaery-phone.jpg" srcset="images/work-gardenfaery-phone-240.jpg 240w, images/work-gardenfaery-phone.jpg 480w" sizes="(min-width: 900px) 170px, 30vw" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone, with this week’s planting tip across the top"></div>
+          </figure>
+        </a>
+        <div class="piece-text">
+          <p class="eyebrow">Garden care</p>
+          <h3>Garden Faery, my own business</h3>
+          <p>Where I try everything first: online booking, a newsletter, and a planting tip that changes with the seasons.</p>
+          <a class="visit" href="https://gardenfaery.love">Visit gardenfaery.love <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ prices ============ -->
+<section id="prices" class="prices" aria-labelledby="prices-title">
+  <div class="gutter"><div class="wrap">
+    <div class="sec-head center on-dark reveal">
+      <p class="eyebrow">Prices</p>
+      <h2 id="prices-title">Paid once, <em>yours to keep.</em></h2>
+      <p class="lede">Three sizes, named for the triple moon.</p>
+    </div>
+
+    <!-- .turn: the page gradient turns from dark to light behind these cards and the panel -->
+    <div class="turn" id="care">
+      <div class="tiers stagger">
+        <article class="tier maiden reveal" aria-labelledby="t-maiden">
+          <div class="tier-sky" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="7.6" cy="12" r="9" fill="black"/></mask></defs><circle cx="12" cy="12" r="9" fill="var(--moonlight)" mask="url(#moon-wax)"/></svg>
+          </div>
+          <div class="tier-body">
+            <h3 id="t-maiden">Maiden</h3>
+            <p class="does">One beautiful page with everything people need to find you and reach you.</p>
+            <div class="money">
+              <p class="price"><strong>$600</strong> <span>paid once</span></p>
+              <p class="founding">Founding price <b>$300</b></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="tier mother reveal" aria-labelledby="t-mother">
+          <div class="tier-sky" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="var(--moonlight)"/></svg>
+          </div>
+          <div class="tier-body">
+            <h3 id="t-mother">Mother</h3>
+            <p class="does">A full site with a contact form, newsletter signup and a Book now button to the booking app you already use.</p>
+            <div class="money">
+              <p class="price"><strong>$1,200</strong> <span>paid once</span></p>
+              <p class="founding">Founding price <b>$600</b></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="tier crone reveal" aria-labelledby="t-crone">
+          <div class="tier-sky" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="16.4" cy="12" r="9" fill="black"/></mask></defs><circle cx="12" cy="12" r="9" fill="var(--moonlight)" mask="url(#moon-wan)"/></svg>
+          </div>
+          <div class="tier-body">
+            <h3 id="t-crone">Crone</h3>
+            <p class="does">Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items).</p>
+            <div class="money">
+              <p class="price"><strong>$1,800</strong> <span>paid once</span></p>
+              <p class="founding">Founding price <b>$900</b></p>
+            </div>
+          </div>
+        </article>
       </div>
-      <div class="step">
-        <span class="eyebrow">Then</span>
-        <h3>I build it</h3>
-        <p>A fast, mobile-friendly site designed around your actual practice: your colors,
-           your words, your photos. You see a real draft, not a wireframe, and we shape it together.</p>
-      </div>
-      <div class="step">
-        <span class="eyebrow">Finally</span>
-        <h3>It's yours</h3>
-        <p>The whole site lives in one tidy file under your own account. If we ever part ways,
-           you keep everything and it keeps running. Changes are baked into every plan. Just email me.</p>
+
+      <div class="panel reveal">
+        <!-- the one place to update the founding count as spots fill -->
+        <div class="founding-line" id="founding">
+          <p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8.5M12 12.5C12 8 9 5.2 4.2 5.2c0 4.6 3 7.3 7.8 7.3Zm0 0c0-3.6 2.5-6 6.6-6 0 3.7-2.6 6-6.6 6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><span class="lead">Founding clients:</span> half off the build, and care locked at $49 a month (or $490 a year). 5&nbsp;spots through Dec&nbsp;31,&nbsp;2026: <b>4 left</b></span></p>
+        </div>
+        <p class="every"><span class="lead">Every build:</span> your words written for you from a <span class="nowrap">45-minute</span> chat, a <span class="nowrap">phone-first</span> design, <span class="nowrap">Google-ready,</span> your web address’s first year, and 30 days of tweaks after launch.</p>
+        <p class="after"><span class="lead">After launch:</span> care is $69 a month and I make your changes whenever you ask, or skip it and pay as you go: <span class="nowrap">$100 an hour</span>, and I’ll give you the price before I&nbsp;start. Your only other cost is your web address, about $12 a year. <a href="#costs">Optional extras</a></p>
+        <p class="quiz">Not sure which? <a href="quiz.html">Take the quiz</a></p>
       </div>
     </div>
   </div></div>
 </section>
 
-<section id="work">
-  <div class="gutter"><div class="wrap">
-    <span class="eyebrow">Recent work</span>
-    <h2>Small sites, made with care.</h2>
-    <div class="work">
-      <article class="piece">
-        <div class="thumb juliet" aria-hidden="true">
-          <div class="t-brand">Juliet O'Barr <em>Studio</em></div>
-          <div class="t-line"></div>
-          <div class="t-line short"></div>
-          <div class="t-btn"></div>
-        </div>
-        <div class="about">
-          <h3>Juliet O'Barr Studio</h3>
-          <p>A calm, earthy home for a Muscle Activation Techniques practice,
-             what MAT is, who it helps, and a simple contact card in place of a pushy funnel.</p>
-          <div class="meta">MAT&reg; practice &middot; single-page site</div>
-        </div>
-      </article>
-      <article class="piece">
-        <div class="thumb faery" aria-hidden="true">
-          <div class="t-brand">Garden Faery</div>
-          <div class="t-line"></div>
-          <div class="t-line short"></div>
-          <div class="t-btn"></div>
-        </div>
-        <div class="about">
-          <h3><a href="https://gardenfaery.love">gardenfaery.love</a></h3>
-          <p>My own garden-care business: a whimsical, seasonal site with booking, a photo
-             gallery, and colors that quietly change with the time of year. My working proof.</p>
-          <div class="meta">Garden care &middot; booking &middot; newsletter</div>
-        </div>
-      </article>
-    </div>
-  </div></div>
-</section>
+<!-- everything below sits on the light part of the gradient: dark text -->
+<div class="flow-light">
 
-<section class="band" id="care">
-  <div class="gutter"><div class="wrap">
-    <span class="eyebrow">Plans</span>
-    <h2>The build is about what your site can do.<br>The monthly is about the care that comes after.</h2>
-    <p class="section-lede">Maiden, Mother, Crone: pick the one that fits where your business is
-       right now, and move between them anytime as it grows. Nothing is locked.
-       <a href="quiz.html" class="quiz-link">Not sure? Take the two-minute quiz &rarr;</a></p>
-
-    <div class="tiers">
-      <article class="tier maiden">
-        <span class="eyebrow">For set-and-forget sites</span>
-        <h3><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="8.2" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wax)"/></svg>Maiden <span class="plain">&middot; the essentials</span></h3>
-        <div class="price"><strong>$444</strong> <span>to build &middot; $22/mo</span></div>
-        <div class="dom">+ your own web address, included</div>
-        <p class="blurb">The beautiful beginning: your site, live and yours, with your web address and email kept running for you.</p>
-        <p class="who"><strong>This is you if:</strong> your business is steady: same services, same
-           hours, same story. Your site is a beautiful business card that's always right about the basics.</p>
-        <ul>
-          <li><strong>Updates:</strong> <b class="diff">four times a year</b>, at the equinoxes and solstices. Bring your batch of changes each turn of the wheel, I make them all</li>
-          <li><strong>Reach me:</strong> email, answered <b class="diff">within the week</b></li>
-          <li><strong>Included:</strong> custom hand-built site, free hosting forever, your web address and email kept running, and the SEO basics built in so Google can find you</li>
-        </ul>
-        <a class="btn secondary" href="intake.html?plan=Maiden">Start with Maiden</a>
-      </article>
-
-      <article class="tier mother featured">
-        <span class="pick">Most folks pick this</span>
-        <span class="eyebrow">For living, changing businesses</span>
-        <h3><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>Mother <span class="plain">&middot; monthly care</span></h3>
-        <div class="price"><strong>$666</strong> <span>to build &middot; $44/mo</span></div>
-        <div class="dom">+ your own web address, included</div>
-        <p class="blurb">Everything in Maiden, but where Maiden is a portrait, Mother is alive: current every month, and gathering people while you work.</p>
-        <p class="who"><strong>This is you if:</strong> your prices, hours, photos, or offerings shift
-           through the year, and you want the site to always be right without ever thinking about it.</p>
-        <ul>
-          <li><strong>Updates:</strong> <b class="diff">every month</b>: hours, prices, photos, news, always current</li>
-          <li><strong>Reach me:</strong> priority email, answered <b class="diff">in a day or two</b></li>
-          <li><strong>Adds:</strong> <b class="diff">contact form, newsletter signup</b>, fresh photos and wording through the year</li>
-        </ul>
-        <a class="btn" href="intake.html?plan=Mother">Start with Mother</a>
-      </article>
-
-      <article class="tier crone">
-        <span class="eyebrow">For businesses that book and sell</span>
-        <h3><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="15.8" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wan)"/></svg>Crone <span class="plain">&middot; full service + booking</span></h3>
-        <div class="price"><strong>$888</strong> <span>to build &middot; $66/mo</span></div>
-        <div class="dom">+ your own web address, included</div>
-        <p class="blurb">Everything in Mother, plus the site steps into its full power: it books, it sells, it works.</p>
-        <p class="who"><strong>This is you if:</strong> the website is a working part of your business.
-           Clients book, browse, and pay through it, and you want a real person who gets right back to you.</p>
-        <ul>
-          <li><strong>Updates:</strong> <b class="diff">whenever you need them</b>, made the same week you ask</li>
-          <li><strong>Reach me:</strong> a direct line to my inbox, a real answer <b class="diff">within 24 hours</b></li>
-          <li><strong>Adds:</strong> <b class="diff">online booking</b>, <b class="diff">selling online</b> (gift certificates, deposits,
-              pay-now buttons through your own Stripe), plus galleries, private visitor counts
-              (no tracking, ever), and a yearly design refresh</li>
-        </ul>
-        <a class="btn secondary" href="intake.html?plan=Crone">Start with Crone</a>
-      </article>
-    </div>
-
-
-
-    <p class="fineprint">Whatever you pick, the site is yours: your files, your accounts, and your web address.
-       I register your address as part of the build (first year included) and it moves into
-       your own name whenever you say the word, a free ten minute handover. After that it's
-       about $12 a year paid straight to the registrar, never through me; until then the
-       renewal is simply included in your plan. And you can pause or cancel the monthly care
-       anytime. The site stays up, one-off changes are always there at $111 a session, and
-       we part as friends.</p>
-  </div></div>
-</section>
-
-<section id="data">
-  <div class="gutter"><div class="wrap">
-    <span class="eyebrow">The quiet part</span>
-    <h2>Most websites watch their visitors. Yours won't.</h2>
-    <p class="adage">"If it says it's free, you're the product."</p>
-    <p class="section-lede">That's the oldest rule of the internet, and it's how most website tools
-       work: "free" and cheap platforms pay for themselves by tracking the people who visit,
-       building advertising profiles out of your clients' clicks, searches, and habits. It has a name:
-       surveillance capitalism. You don't have to participate in it.</p>
-
-    <div class="compare">
-      <div class="col them">
-        <h3>The usual deal</h3>
-        <ul>
-          <li>Trackers and ad pixels ride along on every page, reporting your visitors to companies you've never heard of</li>
-          <li>Your client list, inquiries, and traffic live on a platform's servers, under their terms. Read the fine print</li>
-          <li>Cookie pop-ups on every visit, because there's a lot to confess</li>
-          <li>The profiles built from your visitors get monetized, and you see none of it</li>
-        </ul>
+<!-- ============ how it works ============ -->
+<section id="how" class="how split-sec" aria-labelledby="how-title">
+  <div class="gutter"><div class="wrap split">
+    <figure class="photo-block reveal"><picture><source type="image/webp" srcset="images/forest-800.webp 800w, images/forest-1200.webp 1200w, images/forest.webp 1600w" sizes="(min-width: 900px) 50vw, 100vw"><img src="images/forest.jpg" srcset="images/forest-1200.jpg 1200w, images/forest.jpg 1600w" sizes="(min-width: 900px) 50vw, 100vw" width="1600" height="1066" loading="lazy" decoding="async" alt=""></picture></figure>
+    <div class="how-text">
+      <div class="sec-head reveal">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-title">Four steps, <em>start to finish.</em></h2>
       </div>
-      <div class="col us">
-        <h3>A site I build you</h3>
-        <ul>
-          <li>No trackers, no ad pixels, no analytics quietly phoning home</li>
-          <li>When a client writes to you, it goes to <em>you</em>, not into someone's marketing database</li>
-          <li>No cookie banner, because there's nothing to confess</li>
-          <li>Your files, your domain, your client relationships: yours to keep, forever</li>
-        </ul>
+      <ol class="steps stagger" role="list">
+        <li class="reveal">
+          <h3>We chat</h3>
+          <p>45 minutes about your work. I write your words from it, so you don’t have to.</p>
+        </li>
+        <li class="reveal">
+          <h3>I draft</h3>
+          <p>A first draft in about a week, on a private link you can open on your phone.</p>
+        </li>
+        <li class="reveal">
+          <h3>You tweak</h3>
+          <p>Two rounds of changes. Put everything for each round in one email.</p>
+        </li>
+        <li class="reveal">
+          <h3>It goes live</h3>
+          <p>At your own web address, plus 30 days of <span class="nowrap">settling-in</span> tweaks on me.</p>
+        </li>
+      </ol>
+      <p class="ready-line reveal">Ready in about <b>2, 3 or 4 weeks</b> (Maiden, Mother, Crone) from when your content is in.</p>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ about ============ -->
+<section id="about" class="about" aria-labelledby="about-title">
+  <div class="gutter"><div class="wrap">
+    <div class="about-card reveal">
+      <span class="portrait"><img src="taya.jpg" width="256" height="256" loading="lazy" decoding="async" alt="Taya smiling in the sun, leaning against a mossy tree trunk"></span>
+      <div>
+        <p class="eyebrow">Who you’d be working with</p>
+        <h2 id="about-title">Hi, I’m Taya.</h2>
+        <p>I tend gardens here in Humboldt County, and I build websites for the small businesses around me. I made my own garden business’s site first, then one for my friend Juliet, and loved it so much it turned into this.</p>
+        <p>I’m happy to build for any small local business, here or anywhere. It’s just me, so I only take a few new builds a month, and when you write, I’m the one who writes back. (I’m also the one reading your About page out loud to make sure it sounds like you 😂)</p>
       </div>
     </div>
-
-    <p class="data-close">Your clients trust you with their bodies, their gardens, their homes.
-       A website should honor that trust the same way: <em>quietly, and completely.</em></p>
   </div></div>
 </section>
 
-<section id="faq">
-  <div class="gutter"><div class="wrap">
-    <span class="eyebrow">Fair questions</span>
-    <h2>The things people ask first.</h2>
+<!-- ============ questions ============ -->
+<section id="faq" aria-labelledby="faq-title">
+  <div class="gutter"><div class="wrap faq-grid">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Questions</p>
+      <h2 id="faq-title">Every detail, <em>said plainly.</em></h2>
+      <p class="lede">Something missing? <a href="mailto:taya@webfaery.love">Email me</a> and I’ll answer it straight.</p>
+    </div>
     <div class="faq">
-      <details>
-        <summary>Do I actually own the site?</summary>
-        <p>Yes, completely. The site lives in an account under your name, the domain is yours to
-           claim into your own account the moment you want it, and the whole thing is one tidy
-           file you could hand to any other web person on earth. When I built Juliet's site, it was designed from day one to be transferred to her
-           outright. That's the standard.</p>
+      <details id="costs">
+        <summary>Any other costs?</summary>
+        <p>Just one you can count on: your web address, about $12 a year. Your first year is included in your build, and with care it’s covered.</p>
+        <p>Everything else is optional, only if you want it. Sending email from your own address is about $3 a month. A newsletter is free up to 100 subscribers, then about $9 a month (care covers both, the newsletter up to 1,000 subscribers). Online booking lives in your own Cal.com account, free for one person, and it can take payments through your own Stripe. Taking card payments costs about 3% + 30¢ per payment (it varies a little by payment company).</p>
+        <p>Hosting is free, forever (and if that ever changed, I’d move your site for free). These are estimates as of September 2026.</p>
       </details>
       <details>
-        <summary>What if I stop paying the monthly?</summary>
-        <p>The site stays up, exactly as it is. The monthly covers my care work, not the site's
-           existence. From there, come back for a flat-rate update session whenever something
-           needs changing. If you have online booking, it already lives in a free account in your
-           own name, so appointments never skip a beat and there's nothing to move or pay for.
-           Your web address comes with you too: I push
-           it into your own account (free, ten minutes) and the ~$12/yr renewal your plan had
-           been covering becomes yours, paid straight to the registrar. Your call, no hard
-           feelings, door always open.</p>
+        <summary>What does care include?</summary>
+        <p>I make your changes whenever you ask, by email, and reply within 2 business days. Your web address, sending email from your own address and your newsletter (up to 1,000 subscribers) are all covered. Anything big, like a new page, I’ll quote first.</p>
+        <p>It’s $69 a month, or $690 a year (two months free), and billing starts after your 30 days of settling in, not at launch. Cancel anytime, and your site stays yours. Fixes for anything I got wrong are always free, with or without care.</p>
       </details>
       <details>
-        <summary>Why not Squarespace or Wix?</summary>
-        <p>Run the numbers: Wix and Squarespace charge roughly $17&ndash;36 a month for a
-           template you build yourself, alone, with a support chatbot. Stop paying, and
-           Squarespace takes your site offline, and Wix strips your web address and covers the
-           site in their ads. Either way, the site your clients knew is gone.
-           My plans start at $22 a month for a site I built by
-           hand, tend for you, and that you own outright, which stays up even if you cancel.
-           You're not paying more for a human. You're often paying less.</p>
+        <summary>How do changes work without care?</summary>
+        <p>Send me one email with everything you’d like changed. I’ll reply with a price before I&nbsp;start (<span class="nowrap">$100 an hour</span>; most small changes, like new hours, a price or a photo, come to about <span class="nowrap">$25 to $50</span>). Nothing starts until you say yes. Fixes for anything I got wrong are always free.</p>
       </details>
       <details>
-        <summary>What if I need a change but I'm not on a plan?</summary>
-        <p>You book a flat-rate update session, $111, however many changes fit in one sitting:
-           bring me your pile (new hours, fresh photos, reworded pages) and I work through it. No plan needed, no
-           per-change haggling. If you find yourself booking sessions every month, one of the care
-           plans will simply be cheaper, and you can hop on (or off) anytime.</p>
-      </details>
-      <details>
-        <summary>Can my site take bookings or payments?</summary>
-        <p>Yes, that's Crone territory. I build it on trusted, boring scheduling tools rather
-           than inventing my own, woven in so seamlessly your clients never notice the seams, and
-           I hand you the keys to a simple backend where you set your own hours and manage your
-           own appointments from your phone, no website edit needed. Payments run through Stripe
-           under an account that belongs to <em>you</em>: your clients' money goes straight to you
-           and never passes through me. One honest cost so nothing surprises you: Stripe, like
-           any card machine, keeps a small processing fee on each sale (about 3%). The booking
-           tool itself is free and set up in your own name, so there's no separate software bill.
-           My job is the wiring, and keeping it humming.</p>
-      </details>
-      <details>
-        <summary>Who owns my web address?</summary>
-        <p>You do. I register it as part of your build (first year included), point it at your
-           site, and hold it safe only until you claim it. Claiming is a free ten minute handover
-           into an account of your own (<a href="domain.html">here's exactly how it works</a>),
-           and from then on it's about $12 a year paid straight to the registrar, never through
-           me. Not ready to claim it? Then the renewal is included in your monthly plan, nothing
-           extra. Either way the standing promise holds: the address is yours, it leaves with you
-           if we ever part ways, and it points wherever you tell it to. Prefer to buy it yourself
-           from day one? Wonderful, the guide covers that too.</p>
-      </details>
-      <details>
-        <summary>Do I get an email address at my domain?</summary>
-        <p>Yes. A matching address (hello@yourname.com) comes free with every plan: anything sent
-           there flows straight into the inbox you already check, nothing new to log into. And if you
-           want your replies to come FROM that address too, just say the word: that's included
-           in your plan. (If you ever move off your plan, keeping the sending part running is about
-           $3 a month on your own account.)</p>
-      </details>
-      <details>
-        <summary>How much does a site cost to keep running?</summary>
-        <p>Almost nothing, and that's part of the point. Hosting for a hand-built site like this
-           is free, forever. Your domain's first year is included in the build; after that it's
-           about $12 a year (included in your plan while I hold it for you, straight to the
-           registrar once it's in your name). Email at your address, receiving and sending, is
-           included while you're on a plan; if you ever move off your plan, keeping the sending
-           part running is about $3 a month on your own account. That's the whole list. No meter running in the background,
-           no platform fee waiting to surprise you.</p>
-      </details>
-      <details>
-        <summary>Will people find me on Google? (SEO)</summary>
-        <p>The sites are built to be found: they load fast, work beautifully on phones, and are
-           written the way search engines like: all things Google genuinely rewards. Every site
-           comes with the SEO basics built in: clear page titles and descriptions for Google, your
-           business details written so Google can read them, and a link preview with your photo
-           when someone texts your site to a friend. On the care
-           plans I also help with local search: making sure your Google map listing, your pages,
-           and your wording match what neighbors actually type when they look for someone like you.
-           What I won't do is promise you'll outrank a national chain. Anyone who promises that
-           is selling something.</p>
+        <summary>How does paying work?</summary>
+        <p>Half to start (it holds your spot) and half at launch, by card or bank transfer.</p>
+        <p>Founding clients get half off the build, and care locked at $49 a month or $490 a year.</p>
       </details>
       <details>
         <summary>How long does it take?</summary>
-        <p>You'll see a real first draft (your name, your words, a design made for you) within
-           about a week of our first conversation. Most sites are live within two to three weeks,
-           and the slowest part is usually gathering your photos, not the building.</p>
+        <p>About 2 weeks for Maiden, 3 for Mother and 4 for Crone, counted from when your content is in. You’ll see a draft in about a week, then two rounds of changes. More rounds are priced the same way (<span class="nowrap">$100 an hour</span>), and I’ll tell you the price first.</p>
+        <p>No rush, but if your content isn’t in 30 days after you say yes, I’ll nudge you kindly, and at 60 days the project closes so neither of us is left hanging. Your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</p>
+      </details>
+      <!-- id="data": the old site's link to this answer -->
+      <details id="data">
+        <summary>What if I want to leave?</summary>
+        <p>It’s easy and free. Everything is yours, and your web address is already in your name. I move it all over to you within a week, and your site never goes down. That’s your web address, your site files and your newsletter list.</p>
+        <p>Monthly care ends at the end of the month you’ve paid for, and with yearly care, unused full months are refunded.</p>
       </details>
       <details>
-        <summary>Can you work with what I already have?</summary>
-        <p>Usually, yes. If you've got an old site, a logo, a shoebox of photos, or just a business
-           card you like, we start from there. If you have nothing but the work itself, that's
-           enough too.</p>
+        <summary>Will people find me on Google? (SEO)</summary>
+        <p>Your site is built to be found: fast, <span class="nowrap">phone-first,</span> with clear titles and descriptions for Google, your business details written so Google can read them, and a photo preview when someone texts your link. Mother and Crone also set up your Google Business Profile, the listing on the map.</p>
+        <p>What I won’t do is promise you’ll outrank a national chain. Nobody honestly can.</p>
+      </details>
+      <details>
+        <summary>Do I have to write everything?</summary>
+        <p>Nope. We talk for 45 minutes about your work, and I write your words from that. You read them, tell me anything that doesn’t sound like you, and I fix it.</p>
       </details>
     </div>
   </div></div>
 </section>
 
-<section id="contact">
-  <div class="gutter"><div class="wrap">
-    <div class="contact-card">
-      <div class="intro">
-        <span class="portrait"><img src="taya.jpg" width="122" height="122" loading="lazy" decoding="async" alt="Taya smiling in the sun, lying against a mossy tree trunk"></span>
-        <div>
-          <h3>Hi, I'm Taya. Tell me about your work.</h3>
-          <p>Write a few lines about what you do and what you'd want a website to say for you.
-             I'll reply personally. No forms, no funnels.</p>
-        </div>
+<!-- ============ contact ============ -->
+<section id="contact" class="contact split-sec" aria-labelledby="contact-title">
+  <div class="gutter"><div class="wrap split">
+    <figure class="photo-block reveal"><picture><source type="image/webp" srcset="images/mushrooms.webp"><img src="images/mushrooms.jpg" width="1600" height="1068" loading="lazy" decoding="async" alt=""></picture></figure>
+    <div class="contact-text reveal">
+      <p class="eyebrow">Say hello</p>
+      <h2 id="contact-title">Tell me about <em>your work.</em></h2>
+      <p class="lede">A few lines about what you do and what you’d like a website to do for you is plenty. I’ll write back personally.</p>
+      <div class="contact-actions">
+        <a class="btn" href="mailto:taya@webfaery.love">Email taya@webfaery.love</a>
+        <ul class="contact-links">
+          <li><a href="intake.html"><span>Answer the <span class="nowrap">getting-started</span> questions</span></a></li>
+          <li><a href="quiz.html">Take the two-minute quiz</a></li>
+        </ul>
       </div>
-      <a class="btn" href="mailto:taya@webfaery.love">Email taya@webfaery.love</a>
     </div>
-    <footer class="site">
-      <span>Web Faery</span>
-      <span>Made by hand, like everything I ship.</span>
-    </footer>
   </div></div>
 </section>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="gutter"><div class="wrap">
+    <a class="brand" href="#top" aria-label="Web Faery, back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="currentColor" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="quiz.html">Which build?</a></li>
+      <li><a href="intake.html">Getting started</a></li>
+      <li><a href="domain.html">Web address guide</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
+  </div></div>
+</footer>
+
+<script>
+  (function () {
+    /* "Every other cost" (and index.html#costs from the other pages) opens that answer as it lands */
+    var openFor = function (hash) {
+      var el = null;
+      try { el = hash.length > 1 && document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) {}
+      var d = el && (el.tagName === 'DETAILS' ? el : el.closest && el.closest('details'));
+      if (d) d.open = true;
+    };
+    openFor(location.hash);
+    window.addEventListener('hashchange', function () { openFor(location.hash); });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (a) openFor(a.getAttribute('href'));
+    });
+
+    var still = !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (still) return;
+
+    /* smooth scrolling for taps on in-page links, turned on only after the page has settled,
+       so a link from another page to index.html#costs lands there directly */
+    var smoothOn = function () { setTimeout(function () { document.documentElement.classList.add('smooth'); }, 300); };
+    if (document.readyState === 'complete') smoothOn(); else window.addEventListener('load', smoothOn);
+
+    /* photo drift: framed photos (and the phones in Recent work) move a few px against the scroll */
+    var frames = [].slice.call(document.querySelectorAll('.photo-block, .phone'));
+    var ticking = false;
+    var drift = function () {
+      ticking = false;
+      var vh = window.innerHeight;
+      frames.forEach(function (f) {
+        var r = f.getBoundingClientRect();
+        if (r.bottom < -80 || r.top > vh + 80) return;
+        var p = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+        p = Math.max(-1, Math.min(1, p));
+        var k = f.classList.contains('phone') ? 0.07 : 0.035;
+        f.style.setProperty('--drift', (p * r.height * k).toFixed(1) + 'px');
+      });
+    };
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(drift); }
+    }, { passive: true });
+    window.addEventListener('resize', drift);
+    drift();
+
+    /* scroll reveals: only elements below the fold get hidden first,
+       so the page is fully readable at rest, in thumbnails and without JS */
+    if ('IntersectionObserver' in window) {
+      var show = function (entries, obs) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); en.target.classList.remove('pre'); obs.unobserve(en.target); }
+        });
+      };
+      var io = new IntersectionObserver(show, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      /* tall things start as soon as their top edge is in view, so they never leave an empty gap */
+      var ioTall = new IntersectionObserver(show, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+      /* arriving at index.html#founding (or any #spot): whatever you land on, and everything
+         above it, is already in place, so the page lands exactly on the spot */
+      var target = null;
+      try { target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (e) {}
+      var landLine = target ? target.getBoundingClientRect().top + window.innerHeight : -1;
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top <= window.innerHeight * 0.92) return;
+        if (target && (r.top < landLine || el.contains(target))) return;
+        el.classList.add('pre');
+        (r.height > window.innerHeight * 0.8 ? ioTall : io).observe(el);
+      });
+    }
+  })();
+</script>
+</body>
+</html>

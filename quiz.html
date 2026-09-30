@@ -3,296 +3,555 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Which plan fits? &middot; Web Faery</title>
+<title>Which build fits? &middot; Web Faery</title>
+<meta name="description" content="Six quick questions: find the build that fits what your site needs to do (Maiden, Mother or Crone), and whether care is worth it for you, with every cost shown.">
+<link rel="canonical" href="https://webfaery.love/quiz.html">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webfaery.love/quiz.html">
+<meta property="og:site_name" content="Web Faery">
+<meta property="og:title" content="Which build fits you? A two-minute quiz">
+<meta property="og:description" content="Six quick taps: find the build that fits what your site needs to do, and whether care is worth it for you, with every cost shown.">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Which build fits you? A two-minute quiz">
+<meta name="twitter:description" content="Six quick taps: find the build that fits what your site needs to do, and whether care is worth it for you, with every cost shown.">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
+<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="pages.css">
 <style>
-  :root {
-    color-scheme: light;
-    --paper: #f3eee4; --paper-2: #eae3d4; --card: #f8f4ea;
-    --ink: #2e2433; --ink-soft: #6a5e72; --hairline: #ddd2c2;
-    --plum: #6d2b56; --plum-deep: #521f41; --moss: #7e6428;
-    --on-plum: #f8ecf3; --focus: #6d2b56;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-      --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-      --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-      --on-plum: #2a1224; --focus: #d08cc0;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-    --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-    --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-    --on-plum: #2a1224; --focus: #d08cc0;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.6;
-  }
-  .wrap { max-width: 640px; margin: 0 auto; padding: 26px 22px 90px; }
-  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
-  .brand span { color: var(--plum); }
-
-  .head { padding-block: 40px 6px; }
-  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
-  h1 em { font-style: normal; color: var(--plum); }
-  .lede { color: var(--ink-soft); margin: 14px 0 0; max-width: 32em; }
-
   .progress {
     font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--moss); margin: 30px 0 10px;
+    text-transform: uppercase; color: var(--moss); margin: 34px 0 10px;
   }
   .qcard {
-    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
-    padding: 26px 26px 28px;
+    background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
+    padding: 26px 24px 26px;
   }
-  .qcard h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px; margin: 0 0 4px; text-wrap: balance; }
-  .qcard .why { font-size: 15px; color: var(--ink-soft); font-style: italic; margin: 0 0 18px; }
+  .qcard h2 { font-size: 23px; font-weight: 600; margin: 0 0 4px; }
+  .qcard .why { font-size: 15.5px; color: var(--ink-soft); font-style: italic; margin: 0 0 18px; }
   .answers { display: grid; gap: 10px; }
   .answers button {
-    text-align: left; cursor: pointer; font-family: 'Newsreader', Georgia, serif; font-size: 17px;
+    text-align: left; cursor: pointer; font-family: 'Newsreader', Georgia, serif; font-size: 17.5px;
     color: var(--ink); background: var(--paper); border: 1px solid var(--hairline);
-    border-radius: 10px; padding: 13px 16px; line-height: 1.5;
+    border-radius: 10px; padding: 13px 16px; line-height: 1.45; width: 100%;
   }
   .answers button:hover { border-color: var(--plum); background: var(--paper-2); }
-  .answers button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-  .answers small { display: block; color: var(--ink-soft); font-size: 14px; }
+  .answers small { display: block; color: var(--ink-soft); font-size: 14.5px; margin-top: 2px; }
   .back {
-    margin-top: 16px; background: none; border: none; cursor: pointer;
+    margin-top: 14px; background: none; border: none; cursor: pointer;
     font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--ink-soft); padding: 4px 0;
+    text-transform: uppercase; color: var(--ink-soft); padding: 12px 0; min-height: 44px;
   }
   .back:hover { color: var(--plum); }
 
   .result { display: none; }
   .result.show { display: block; }
-  .verdict {
-    background: var(--card); border: 2px solid var(--plum); border-radius: 16px;
-    padding: 30px 30px 32px; margin-top: 26px;
-  }
-  .verdict .eyebrow {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--moss); display: block; margin-bottom: 8px;
-  }
-  .verdict h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 34px; margin: 0; color: var(--plum); }
-  .verdict .because { margin: 14px 0 0; }
-  .verdict ul { margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid var(--hairline); list-style: none; display: grid; gap: 8px; }
-  .verdict li { padding-left: 22px; position: relative; font-size: 16.5px; }
-  .verdict li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
-  .also { font-size: 15px; color: var(--ink-soft); margin-top: 18px; }
-  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-  .btn {
-    display: inline-block; text-decoration: none; text-align: center; cursor: pointer;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16px;
-    padding: 12px 24px; border-radius: 10px;
-    background: var(--plum); color: var(--on-plum); border: 1px solid var(--plum);
-  }
-  .btn:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
-  .btn.secondary { background: transparent; color: var(--plum); }
-  .retake { margin-top: 20px; }
-  /* headings get focus from script (so keyboard and screen reader users land on the new
-     question or the result); they are not controls, so no focus ring */
-  #q-title:focus, #r-name:focus { outline: none; }
 
-  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
-  footer a { color: var(--plum); }
+  /* the build: a dark band with its moon, like the build cards on the main page */
+  .verdict {
+    margin-top: 40px; position: relative; text-align: center;
+    /* a soft moss halo behind the moon, like the moss under the mushrooms in the photos */
+    background: radial-gradient(circle at 50% 66px, rgba(120, 180, 96, 0.3), rgba(120, 180, 96, 0) 150px), var(--band);
+    color: var(--band-text); border: 1px solid var(--hairline);
+    border-radius: 150px 150px 18px 18px / 96px 96px 18px 18px;
+    padding: 118px 26px 30px;
+  }
+  /* the moon rises inside the arch, so it glows on the dark band in light and dark themes */
+  .verdict .orb {
+    position: absolute; left: 50%; top: 40px; width: 52px; height: 52px; margin-left: -26px;
+    border-radius: 50%; filter: drop-shadow(0 0 9px var(--moonglow));
+  }
+  /* triple moon: waxing, full, waning */
+  .verdict .orb.maiden { box-shadow: inset -13px 0 0 0 var(--moonlight); }
+  .verdict .orb.mother { background: var(--moonlight); }
+  .verdict .orb.crone { box-shadow: inset 13px 0 0 0 var(--moonlight); }
+  .verdict .eyebrow { color: var(--band-soft); display: block; }
+  .verdict h2 { font-size: 40px; font-weight: 700; margin-top: 8px; color: var(--band-text); }
+  .verdict h2:focus { outline: none; }
+  .verdict .what { font-style: italic; color: var(--band-soft); margin: 4px 0 0; font-size: 17px; }
+  .verdict .price { font-family: 'Bricolage Grotesque', sans-serif; margin: 18px 0 0; }
+  .verdict .price strong { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .verdict .price span { font-size: 15.5px; color: var(--band-soft); }
+  .verdict .founding { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--band-soft); margin: 6px 0 0; }
+  .verdict .ready { font-size: 16px; color: var(--band-soft); margin: 10px auto 0; max-width: 30em; }
+  .verdict .because { margin: 18px auto 0; max-width: 36rem; text-align: left; }
+  .verdict ul { text-align: left; margin: 18px auto 0; padding: 18px 0 0; border-top: 1px solid rgba(179, 167, 187, 0.35); list-style: none; display: grid; gap: 9px; max-width: 36rem; }
+  .verdict li { padding-left: 24px; position: relative; font-size: 16.5px; }
+  .verdict li::before { content: "\2713"; position: absolute; left: 0; color: var(--band-text); font-weight: 700; }
+  .verdict .also { font-size: 15.5px; color: var(--band-soft); margin: 16px auto 0; max-width: 36rem; text-align: left; }
+
+  .after h3, .plainly h3 { font-size: 26px; font-weight: 700; margin-top: 6px; color: var(--plum); }
+  .after .because { margin-top: 12px; }
+  .after ul.checks { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+  .after .also { font-size: 15.5px; color: var(--ink-soft); margin-top: 14px; }
+  .plainly ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 0; }
+  .plainly li { padding: 10px 0; border-bottom: 1px solid var(--hairline); font-size: 16.5px; }
+  .plainly li:last-child { border-bottom: none; }
+  .plainly li b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; }
+  .plainly .dated { font-size: 14.5px; color: var(--ink-soft); font-style: italic; margin-top: 8px; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+  .retake { margin-top: 12px; }
+  #q-title:focus { outline: none; }
+  @media (max-width: 420px) {
+    .qcard { padding: 22px 18px; }
+    .card { padding: 22px 20px 24px; }
+    .verdict { padding: 112px 20px 26px; }
+    .cta-row .btn { flex: 1 1 100%; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="brand" href="index.html">Web <span>Faery</span></a>
-
-  <div class="head">
-    <h1>Which plan <em>fits you?</em></h1>
-    <p class="lede">Four little questions, no email required, no wrong answers.
-       At the end you'll know which plan matches how your business actually lives.</p>
+<header class="page-hero short">
+  <picture><source type="image/webp" srcset="images/mushrooms.webp"><img class="photo" src="images/mushrooms.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 32% 62%"></picture>
+  <div class="bar">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
+  <div class="words">
+    <span class="eyebrow">A two-minute quiz</span>
+    <h1>Which build <em>fits you?</em></h1>
+    <p class="lede">Six quick taps, no email needed. You’ll get a build size from what your site
+       needs to do, and an honest take on whether care is worth it for you, with the costs.</p>
+  </div>
+</header>
+<script>
+  (function () {
+    var h = document.querySelector('.page-hero');
+    if (!h || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ph = h.querySelector('.photo');
+    h.classList.add('wait');
+    // play the intro only once the photo has fully arrived; if it's still on its way after
+    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
+    var settled = false;
+    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
+    var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
+    var ready = function () { if (ph.decode) ph.decode().then(go, go); else go(); };
+    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
+      });
+    }, { passive: true });
+  })();
+</script>
 
-  <div id="quiz">
-    <div class="progress" id="progress">Question 1 of 4</div>
+<main class="gutter"><div class="wrap">
+  <noscript><div class="card"><p>This little quiz needs JavaScript. Every build and every cost is also on
+    <a href="index.html">the main page</a>, or just email <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p></div></noscript>
+
+  <div id="quiz" hidden>
+    <div class="progress" id="progress">Question 1 of 6</div>
     <div class="qcard">
-      <h2 id="q-title" tabindex="-1"></h2>
+      <h2 id="q-title" tabindex="-1" aria-describedby="progress"></h2>
       <p class="why" id="q-why"></p>
       <div class="answers" id="q-answers"></div>
     </div>
-    <button class="back" id="back" hidden>&larr; Back a question</button>
+    <button class="back" id="back" type="button" hidden>&larr; Back a question</button>
   </div>
 
   <div class="result" id="result">
     <div class="verdict">
-      <span class="eyebrow">Sounds like you're</span>
-      <h2 id="r-name" tabindex="-1"></h2>
-      <p class="because" id="r-because"></p>
-      <ul id="r-points"></ul>
-      <p class="also" id="r-also"></p>
-      <div class="cta-row">
-        <a class="btn" id="r-link" href="index.html#care">See the plan</a>
-        <a class="btn secondary" href="intake.html">Start the intake</a>
-      </div>
+      <span class="orb" id="r-orb" aria-hidden="true"></span>
+      <span class="eyebrow">Your build</span>
+      <h2 id="r-build-name" tabindex="-1"></h2>
+      <p class="what" id="r-build-what"></p>
+      <p class="price"><strong id="r-build-price"></strong> <span>paid once</span></p>
+      <p class="founding" id="r-build-founding"></p>
+      <p class="ready" id="r-build-ready"></p>
+      <p class="because" id="r-build-because"></p>
+      <ul id="r-build-points"></ul>
+      <p class="also" id="r-build-also"></p>
     </div>
-    <button class="back retake" id="retake">&#8635; Take it again</button>
+
+    <section class="card after" aria-labelledby="r-care-name">
+      <span class="kicker">After launch</span>
+      <h3 id="r-care-name"></h3>
+      <p class="because" id="r-care-because"></p>
+      <ul class="checks" id="r-care-points"></ul>
+      <p class="also" id="r-care-also"></p>
+    </section>
+
+    <section class="card plainly" aria-labelledby="plainly-title">
+      <span class="kicker">Every cost, plainly</span>
+      <h3 id="plainly-title">What yours would cost</h3>
+      <ul id="r-costs"></ul>
+      <p class="dated">My prices are fixed; other companies’ prices are estimates as of September 2026.
+         Founding clients (5 spots, through Dec 31, 2026) get half off the build, and care locked at
+         $49 a month (or $490 a year). <a href="index.html#founding">See how many are left</a>.</p>
+    </section>
+
+    <div class="cta-row">
+      <a class="btn" id="r-start" href="intake.html">Start with this build</a>
+      <a class="btn secondary" href="index.html#prices">See all the prices</a>
+    </div>
+    <button class="back retake" id="retake" type="button">&#8635; Take it again</button>
   </div>
+</div></main>
 
-  <footer>Web Faery &middot; <a href="index.html">back to the main page</a></footer>
-</div>
+<footer class="site-foot">
+  <div class="foot-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="quiz.html" aria-current="page">Which build?</a></li>
+      <li><a href="intake.html">Getting started</a></li>
+      <li><a href="domain.html">Web address guide</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
+  </div>
+</footer>
 
-<script>
+<script id="quiz-logic">
+  // Questions 1 to 3 pick the BUILD (what the site does). Questions 4 to 6 pick CARE or
+  // WITHOUT CARE (how often things change, and the extras care covers). The two answers are separate on purpose.
+  // _tests/quiz-paths.test.mjs clicks through every path and checks the rules below.
   var QUESTIONS = [
     {
-      title: "How often do the facts of your business change?",
-      why: "Hours, prices, services, the story you tell. The living parts.",
+      part: 'the build',
+      title: 'How much do you have to tell people?',
+      why: 'Think about what a new client needs to know before they reach out.',
       answers: [
-        { t: "Hardly ever. I do what I do", s: { planted: 2 } },
-        { t: "With the seasons, a few times a year", s: { planted: 1, tended: 1 } },
-        { t: "Most months something's different", s: { tended: 2 } },
-        { t: "Constantly. My business is a living thing", s: { tended: 1, bloom: 1 } }
+        { t: 'Just the essentials', sub: 'Who I am, what I offer, my prices, how to reach me' },
+        { t: 'Quite a bit', sub: 'Several services, my story, the questions people always ask' }
       ]
     },
     {
-      title: "Should people book or pay through your site?",
-      why: "This is the biggest fork in the road.",
+      part: 'the build',
+      title: 'Should the site gather anything for you?',
+      why: 'Beyond showing your phone number and email.',
       answers: [
-        { t: "No, I like being reached the old way", sub: "Calls, texts, emails", s: { planted: 1 } },
-        { t: "Maybe someday, not yet", s: { tended: 1 } },
-        { t: "Yes: booking, please", sub: "Clients pick a time; you both get reminders", s: { bloom: 3 } },
-        { t: "Yes: booking AND payments", s: { bloom: 3 } }
+        { t: 'No, a phone number and email are plenty' },
+        { t: 'Yes, something like that', sub: 'Messages through a form, newsletter signups, or forms clients download' },
+        { t: 'Not sure yet', sub: 'We can sort it out when we talk' }
       ]
     },
     {
-      title: "When something needs changing, you want it done…",
-      why: "Be honest about your patience, not your politeness.",
+      part: 'the build',
+      title: 'Should people be able to book or pay right on your site?',
+      why: 'This is the biggest fork in the road.',
       answers: [
-        { t: "Whenever. I'll batch things up", s: { planted: 2 } },
-        { t: "Within the month is plenty", s: { tended: 2 } },
-        { t: "That week, while it's still relevant", s: { bloom: 2 } }
+        { t: 'No, I like being reached the old way', sub: 'Calls, texts, emails' },
+        { t: 'Maybe someday, not yet' },
+        { t: 'Yes, and I already use a booking app', sub: 'A Book now button linked to it is plenty' },
+        { t: 'Yes, set booking up for me', sub: 'Services, hours, reminders, payments' },
+        { t: 'Yes, selling', sub: 'Gift certificates, deposits, or a small shop' }
       ]
     },
     {
-      title: "How should your site feel a year from now?",
-      why: "",
+      part: 'after launch',
+      title: 'After launch, how often would something on the site need changing?',
+      why: 'Hours, prices, photos, new offerings. A few little things sent together in one email count once.',
       answers: [
-        { t: "Same as day one: timeless and steady", s: { planted: 2 } },
-        { t: "Freshened up: new photos, current words", s: { tended: 2 } },
-        { t: "Grown: new offerings, maybe new pages", s: { tended: 1, bloom: 1 } }
+        { t: 'Once or twice a year' },
+        { t: 'A few times a year, with the seasons' },
+        { t: 'About once a month' },
+        { t: 'Every week or two' }
+      ]
+    },
+    {
+      part: 'after launch',
+      title: 'Would you like email from your own address, or a newsletter?',
+      why: 'Both are optional. Care covers them; without care, each has a small cost of its own.',
+      answers: [
+        { t: 'No, my everyday email is fine' },
+        { t: 'Email from my own address', sub: 'Like hello@yourname.com. About $3 a month without care' },
+        { t: 'A newsletter', sub: 'Free up to 100 subscribers, then about $9 a month without care' },
+        { t: 'Both, please' }
+      ]
+    },
+    {
+      part: 'after launch',
+      title: 'Which sounds more like you?',
+      why: 'No wrong answer. It only matters when the math is close.',
+      answers: [
+        { t: 'Keep my costs as low as possible', sub: 'I’m happy paying for changes as they come' },
+        { t: 'One bill, and someone looking after it', sub: 'I’d rather not think about it' },
+        { t: 'No idea yet' }
       ]
     }
   ];
 
-  var RESULTS = {
-    planted: {
-      name: "Maiden",
-      because: "Your business is steady and your site should be too: a beautiful, true thing that quietly does its job while you do yours.",
+  var BUILDS = {
+    Maiden: {
+      orb: 'maiden', what: 'One beautiful page', price: 600, founding: 300, ready: 'about 2 weeks',
+      because: 'Everything a new client needs fits on one lovely page, and nothing needs gathering. Simple is a strength here.',
       points: [
-        "Updates four times a year, at the equinoxes and solstices",
-        "Your web address and email kept running",
-        "The gentlest monthly of the bunch"
+        'One page: who you are, what you offer, prices, how to reach you, photos',
+        'Google-ready: clear titles and descriptions, business details Google can read, a photo preview when someone texts your link',
+        'The words written for you from a 45-minute chat'
       ],
-      also: "If change speeds up someday, growing into Mother takes one email."
+      also: 'Want more pages or booking later? What you paid counts toward the bigger build.'
     },
-    tended: {
-      name: "Mother",
-      because: "Your business breathes with the year, and your site should keep up without you ever thinking about it.",
+    Mother: {
+      orb: 'mother', what: 'A full site', price: 1200, founding: 600, ready: 'about 3 weeks',
+      because: 'You have more to share than one page can hold, or you’d like the site to gather things for you: messages, newsletter signups, forms.',
       points: [
-        "Updates every month: hours, prices, photos, news",
-        "Contact form and newsletter signup",
-        "Seasonal freshening as the year turns"
+        'About, services, FAQ and a contact form',
+        'A newsletter signup and downloadable forms, if you need them',
+        'A Book now button linked to the booking app you use (or a free one in your name)',
+        'Your Google Business Profile set up: the listing that shows on Google Maps'
       ],
-      also: "Most folks land here. If you ever want booking, Crone is one step up."
+      also: 'If you ever want booking or selling, what you paid counts toward Crone.'
     },
-    bloom: {
-      name: "Crone",
-      because: "Your website isn't a brochure. It's a working part of your business. Clients book, browse, and pay through it, so it deserves real care and a fast line to a real person.",
+    Crone: {
+      orb: 'crone', what: 'A full site that books, sells, or both', price: 1800, founding: 900, ready: 'about 4 weeks',
+      because: 'People could book a time or pay you right on the site, so it becomes a working part of your business, not just a brochure.',
       points: [
-        "Online booking with reminders. You manage your own schedule from your phone",
-        "Changes made the same week you ask",
-        "A direct line to my inbox, answered within 24 hours"
+        'Everything in Mother',
+        'Online booking, selling, or both (gift certificates, deposits, a small shop of up to about 20 items), set up in your own accounts, with a hand-off lesson',
+        'The money goes straight to you, never through me'
       ],
-      also: "Payments, galleries, and a yearly design refresh live here too."
+      also: 'We test it all with pretend clients before anything goes public.'
     }
   };
+
+  // Without care: $100 an hour, and I give the price before I start (one email with everything in it). Most small
+  // changes come to about $25 to $50, so the comparison counts each change at the middle, $37.50, plus the web
+  // address, plus any extras they want.
+  var CHANGE = 37.5;
+  var PER_YEAR = [[1, 2], [3, 4], [12, 12], [26, 52]];   // changes a year, low and high
+  var WEB_ADDRESS = 12;                                  // about $12 a year (included with care)
+  // own-address email about $3 a month; a newsletter is free up to 100 subscribers, then about $9 a month
+  var EXTRAS = [[0, 0], [36, 36], [0, 108], [36, 144]];
+  var CARE_MONTH = 69;
+  var CARE_YEAR = CARE_MONTH * 12;   // $828 paid monthly
+  var CARE_PREPAID = 690;            // paid yearly (two months free)
+  var CLOSE_CALL = 450;              // within about $250 a year of care (about a change a month): then what they'd like decides
+  var FREQ_WORDS = ['A change or two a year', 'Three or four changes a year', 'About a change a month', 'A change every week or two'];
+  var EXTRA_WORDS = ['your web address', 'your web address and email from your own address',
+    'your web address and a newsletter', 'your web address, email from your own address and a newsletter'];
+  var WANTS_WORDS = ['', 'email from your own address, and care covers it', 'a newsletter, and care covers it',
+    'your own email address and a newsletter, and care covers both'];
+
+  function money(n) { return '$' + n.toLocaleString('en-US'); }
+  function withoutCare(p) {
+    return [PER_YEAR[p[3]][0] * CHANGE + WEB_ADDRESS + EXTRAS[p[4]][0], PER_YEAR[p[3]][1] * CHANGE + WEB_ADDRESS + EXTRAS[p[4]][1]];
+  }
+  function middle(p) { var r = withoutCare(p); return (r[0] + r[1]) / 2; }
+  function roughly(n) { return money(Math.max(10, Math.round(n / 10) * 10)); }
+  // keep a few phrases on one line ("$25 / to $50" or "before I / start" read badly split)
+  var KEEP_TOGETHER = ['I start', '$25 to $50', '$100 an hour'];
+  function glue(t) {
+    KEEP_TOGETHER.forEach(function (k) { t = t.split(k).join(k.replace(/ /g, '\u00a0')); });
+    return t;
+  }
+  function rangeWords(r) {
+    var lo = roughly(r[0]), hi = roughly(r[1]);
+    return lo === hi ? 'about ' + lo + ' a year' : 'about ' + lo + ' to ' + hi + ' a year';
+  }
+  var CARE_PRICE_WORDS = 'Care is ' + money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year if you pay yearly';
+
+  // The build comes only from what the site needs to do.
+  function recommendBuild(p) {
+    if (p[2] >= 3) return 'Crone';                 // "Yes, set booking up for me" or "Yes, selling"
+    if (p[2] === 2) return 'Mother';               // already uses a booking app: Mother's Book now button
+    if (p[0] === 1 || p[1] === 1) return 'Mother'; // lots to say, or something to gather
+    return 'Maiden';
+  }
+
+  // Care or not comes only from the after-launch answers: the yearly cost without care against care
+  // paid yearly. When it's close, "one bill" tips it to care, and so does wanting the extras care covers,
+  // unless they asked to keep costs as low as possible.
+  function recommendCare(p) {
+    var mid = middle(p);
+    if (mid >= CARE_PREPAID) return 'care';
+    if (mid >= CLOSE_CALL && (p[5] === 1 || (p[5] === 2 && p[4] > 0))) return 'care';
+    return 'payg';
+  }
+
+  function careCopy(p, which) {
+    var r = withoutCare(p);
+    var mid = middle(p);
+    var pace = FREQ_WORDS[p[3]] + ' at about $25 to $50 each, plus ' + EXTRA_WORDS[p[4]] + ', comes to ' + rangeWords(r) + ' without care.';
+    if (which === 'care') {
+      var because;
+      if (mid >= CARE_YEAR) {
+        because = pace + ' ' + CARE_PRICE_WORDS + ', so care costs less, and I make your changes whenever you ask.';
+      } else if (mid >= CARE_PREPAID) {
+        because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, care comes out about the same or a little less; paid monthly, a little more. Either way it’s one bill, and I make your changes whenever you ask.';
+      } else {
+        because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, that’s about ' + roughly(CARE_PREPAID - mid) + ' a year more than going without. ' +
+          (p[5] === 1
+            ? 'Since you’d like one bill and someone looking after it, care fits.'
+            : 'Since you’d like ' + WANTS_WORDS[p[4]] + ', care fits.');
+      }
+      return {
+        name: 'Care, ' + money(CARE_MONTH) + ' a month',
+        because: because,
+        points: [
+          'I make your changes whenever you ask, and reply within 2 business days',
+          'Anything big, like a new page, I’ll quote first',
+          'Your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered',
+          'Billing starts after your 30 days of settling in, not at launch',
+          'Cancel anytime. Your site stays yours and stays up'
+        ],
+        also: 'Fixes for anything I got wrong are always free, with or without care.'
+      };
+    }
+    var why;
+    if (mid >= CLOSE_CALL) {
+      why = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '.' + (p[5] === 0
+        // they want costs low: say plainly which way it leans
+        ? ' Since you’d like to keep costs low, start without care: you only pay when something changes. If you find yourself writing to me more than once or twice a month, care starts to win, and you can add it anytime.'
+        : ' Going without care keeps it simple: you only pay when something changes. If you find yourself writing to me more than once or twice a month, care is there anytime.');
+    } else {
+      why = pace + ' ' + CARE_PRICE_WORDS + ', so going without care makes more sense for you.';
+      // they asked for one bill and someone looking after it, but the math says otherwise: name the difference
+      if (p[5] === 1) why += ' You said you’d like one bill and someone looking after it. Care is there anytime; at this pace it would cost about ' +
+        roughly(CARE_PREPAID - mid) + ' a year more, even paid yearly.';
+    }
+    return {
+      name: 'Without care, $100 an hour',
+      because: why,
+      points: [
+        'Send one email with everything you’d like changed, and I’ll reply with a price before I start ($100 an hour)',
+        'Most small changes, like new hours, a price or a photo, come to about $25 to $50. Anything big is quoted the same way, and nothing starts until you say yes',
+        'Your web address moves into your own account at launch. The first year is included; after that it’s about $12 a year on your card',
+        'Fixes for anything I got wrong: always free'
+      ],
+      also: 'If things start changing more often, care is there anytime: ' + money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year.'
+    };
+  }
+
+  function costLines(p, build, care) {
+    var b = BUILDS[build];
+    var lines = [
+      ['The build', money(b.price) + ' once (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or bank transfer.']
+    ];
+    if (care === 'care') {
+      lines.push(['Care', money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year (two months free). I make your changes whenever you ask, and your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Billing starts after your 30 days of settling in, not at launch. Founding clients: $49 a month, or $490 a year.']);
+    } else {
+      var changes = [PER_YEAR[p[3]][0] * CHANGE, PER_YEAR[p[3]][1] * CHANGE];
+      lines.push(['Changes', 'About $25 to $50 a change, quoted first ($100 an hour). At the pace you described, that’s ' + rangeWords(changes) + '. Anything big is quoted the same way.']);
+      lines.push(['Your web address', 'The first year is included. After that, about $12 a year on your own card. It’s the only cost you must pay each year.']);
+      var extras = [];
+      if (p[4] === 1 || p[4] === 3) extras.push('Email from your own address, about $3 a month.');
+      if (p[4] === 2 || p[4] === 3) extras.push('A newsletter: free up to 100 subscribers, then about $9 a month.');
+      if (extras.length) lines.push(['The extras you wanted', extras.join(' ')]);
+      else lines.push(['Optional, only if you want them', 'Email from your own address, about $3 a month. A newsletter: free up to 100 subscribers, then about $9 a month.']);
+    }
+    lines.push(['Hosting', 'Free, forever. If that ever changed, I’d move your site for free.']);
+    if (build !== 'Crone' && p[2] === 2) {
+      lines.push(['Booking', 'The booking app you already use stays on your own account, at whatever it costs you now. Cal.com is free for one person, if you’d like a free one.']);
+    }
+    if (build === 'Crone') {
+      lines.push(['Booking', 'Your own booking account. Cal.com is free for one person (paid upgrades optional).']);
+      lines.push(['Card payments', 'The payment company keeps about 3% + 30¢ per payment (it varies a little by payment company), taken from your sales.']);
+    }
+    lines.push(['Fixes for my mistakes', 'Always free.']);
+    return lines;
+  }
 
   var idx = 0;
   var picks = [];
 
+  function el(id) { return document.getElementById(id); }
+  function fillList(id, items) {
+    var ul = el(id);
+    ul.textContent = '';
+    items.forEach(function (t) {
+      var li = document.createElement('li');
+      li.textContent = t;
+      ul.appendChild(li);
+    });
+  }
+
   function render() {
+    el('quiz').hidden = false;
     var q = QUESTIONS[idx];
-    document.getElementById('progress').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length;
-    document.getElementById('q-title').textContent = q.title;
-    var why = document.getElementById('q-why');
+    el('progress').textContent = 'Question ' + (idx + 1) + ' of ' + QUESTIONS.length + ' · ' + q.part;
+    el('q-title').textContent = q.title;
+    var why = el('q-why');
     why.textContent = q.why;
     why.hidden = !q.why;
-    var box = document.getElementById('q-answers');
-    box.innerHTML = '';
+    var box = el('q-answers');
+    box.textContent = '';
     q.answers.forEach(function (a, i) {
       var b = document.createElement('button');
       b.type = 'button';
-      b.innerHTML = a.t + (a.sub ? '<small>' + a.sub + '</small>' : '');
+      b.textContent = a.t;
+      if (a.sub) {
+        var s = document.createElement('small');
+        s.textContent = a.sub;
+        b.appendChild(s);
+      }
       b.addEventListener('click', function () { pick(i); });
       box.appendChild(b);
     });
-    document.getElementById('back').hidden = (idx === 0);
+    el('back').hidden = (idx === 0);
   }
 
   function pick(i) {
     picks[idx] = i;
-    if (idx < QUESTIONS.length - 1) { idx++; render(); focusQuestion(); }
+    if (idx < QUESTIONS.length - 1) { idx++; render(); el('q-title').focus(); }
     else { finish(); }
   }
 
-  function focusQuestion() { document.getElementById('q-title').focus(); }
-
-  // Crone (bloom) is only for people who want booking or selling: question 2's two
-  // "Yes" answers. Everyone else is Maiden or Mother, and anyone who wants changes
-  // "That week" without booking gets Mother. _tests/quiz-paths.test.mjs checks every path.
-  function recommend(picks) {
-    var wantsBooking = picks[1] >= 2;
-    if (wantsBooking) return 'bloom';
-    if (picks[2] === 2) return 'tended';
-    var score = { planted: 0, tended: 0, bloom: 0 };
-    picks.forEach(function (p, qi) {
-      var s = QUESTIONS[qi].answers[p].s;
-      for (var k in s) score[k] += s[k];
-    });
-    return (score.tended >= score.planted) ? 'tended' : 'planted';
-  }
-
   function finish() {
-    var winner = recommend(picks);
+    var build = recommendBuild(picks);
+    var care = recommendCare(picks);
+    var b = BUILDS[build];
+    el('r-orb').className = 'orb ' + b.orb;
+    el('r-build-name').textContent = build;
+    el('r-build-what').textContent = b.what;
+    el('r-build-price').textContent = money(b.price);
+    el('r-build-founding').textContent = 'Founding clients ' + money(b.founding) + ' (5 founding spots, through Dec 31, 2026)';
+    el('r-build-ready').textContent = 'Ready in ' + b.ready + ', counted from the day all your content is in.';
+    el('r-build-because').textContent = b.because;
+    fillList('r-build-points', b.points);
+    var also = b.also;
+    if (picks[2] === 1 && build !== 'Crone') also = 'When you’re ready for booking, what you paid counts toward Crone.';
+    if (picks[2] === 2) also = 'Your Book now button links straight to the booking app you already use. If you’d ever like booking fully set up for you, what you paid counts toward Crone.';
+    if (picks[2] === 4) also = 'Need a full online store (catalog, inventory, shipping)? That’s quoted separately, before anything starts. ' + also;
+    el('r-build-also').textContent = also;
 
-    var r = RESULTS[winner];
-    document.getElementById('r-name').textContent = r.name;
-    document.querySelector('.cta-row .btn.secondary').href = 'intake.html?plan=' + encodeURIComponent(r.name);
-    document.getElementById('r-because').textContent = r.because;
-    var ul = document.getElementById('r-points');
-    ul.innerHTML = '';
-    r.points.forEach(function (p) {
+    var c = careCopy(picks, care);
+    el('r-care-name').textContent = c.name;
+    el('r-care-because').textContent = glue(c.because);
+    fillList('r-care-points', c.points.map(glue));
+    el('r-care-also').textContent = c.also;
+
+    var ul = el('r-costs');
+    ul.textContent = '';
+    costLines(picks, build, care).forEach(function (pair) {
       var li = document.createElement('li');
-      li.textContent = p;
+      var label = document.createElement('b');
+      label.textContent = pair[0] + ': ';
+      li.appendChild(label);
+      li.appendChild(document.createTextNode(glue(pair[1])));
       ul.appendChild(li);
     });
-    var also = document.getElementById('r-also');
-    also.textContent = r.also;
-    document.getElementById('quiz').style.display = 'none';
-    document.getElementById('result').classList.add('show');
-    window.scrollTo({ top: 0 });
-    document.getElementById('r-name').focus({ preventScroll: true });
+
+    var start = el('r-start');
+    start.textContent = 'Start with ' + build;
+    start.href = 'intake.html?plan=' + encodeURIComponent(build) + '&care=' + care;
+
+    el('quiz').style.display = 'none';
+    el('result').classList.add('show');
+    window.scrollTo({ top: el('result').getBoundingClientRect().top + window.scrollY - 30 });
+    el('r-build-name').focus({ preventScroll: true });
   }
 
-  document.getElementById('back').addEventListener('click', function () {
-    if (idx > 0) { idx--; render(); focusQuestion(); }
+  el('back').addEventListener('click', function () {
+    if (idx > 0) { idx--; render(); el('q-title').focus(); }
   });
-  document.getElementById('retake').addEventListener('click', function () {
+  el('retake').addEventListener('click', function () {
     idx = 0; picks = [];
-    document.getElementById('result').classList.remove('show');
-    document.getElementById('quiz').style.display = '';
+    el('result').classList.remove('show');
+    el('quiz').style.display = '';
     render();
-    focusQuestion();
+    el('q-title').focus();
   });
 
   render();

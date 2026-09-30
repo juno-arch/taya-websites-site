@@ -3,204 +3,245 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Getting your web address &middot; Web Faery</title>
+<title>Your web address &middot; Web Faery</title>
 <meta name="robots" content="noindex">
+<meta name="description" content="Where your web address lives, what it costs, and the few easy steps to move it into your own account or point one you already have.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webfaery.love/domain.html">
+<meta property="og:site_name" content="Web Faery">
+<meta property="og:title" content="Your web address, step by step">
+<meta property="og:description" content="Where it lives, what it costs, and the few easy steps to make it yours. Legally yours either way.">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your web address, step by step">
+<meta name="twitter:description" content="Where it lives, what it costs, and the few easy steps to make it yours. Legally yours either way.">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
+<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="pages.css">
 <style>
-  :root {
-    color-scheme: light;
-    --paper: #f3eee4; --paper-2: #eae3d4; --card: #f8f4ea;
-    --ink: #2e2433; --ink-soft: #6a5e72; --hairline: #ddd2c2;
-    --plum: #6d2b56; --plum-deep: #521f41; --moss: #7e6428;
-    --on-plum: #f8ecf3; --focus: #6d2b56; --ok: #4c6b3c;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-      --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-      --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-      --on-plum: #2a1224; --focus: #d08cc0; --ok: #9dbb85;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-    --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-    --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-    --on-plum: #2a1224; --focus: #d08cc0; --ok: #9dbb85;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65;
-  }
-  .wrap { max-width: 680px; margin: 0 auto; padding: 26px 22px 90px; }
-  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
-  .brand span { color: var(--plum); }
-
-  .head { padding-block: 40px 8px; }
-  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
-  h1 em { font-style: normal; color: var(--plum); }
-  .lede { color: var(--ink-soft); margin: 16px 0 0; max-width: 34em; }
-
-  .step {
-    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
-    padding: 26px 26px 28px; margin-top: 24px;
-  }
-  .step .kicker {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); display: block; margin-bottom: 8px;
-  }
-  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px; margin: 0 0 10px; }
-  .step p { margin: 10px 0 0; }
-  .step p.soft { color: var(--ink-soft); font-size: 16px; }
-  .step ol { margin: 12px 0 0; padding-left: 22px; }
-  .step ol li { margin-bottom: 10px; }
-  .step li::marker { color: var(--plum); font-weight: 600; }
-  a { color: var(--plum); }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .card ol { margin: 12px 0 0; padding-left: 22px; }
+  .card ol li { margin-bottom: 10px; }
+  .card li::marker { color: var(--plum); font-weight: 600; }
+  .section-head { margin: 56px 0 0; }
+  .section-head h2 { font-size: clamp(27px, 5vw, 34px); font-weight: 700; letter-spacing: -0.01em; }
+  .section-head h2 em { font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.005em; color: var(--plum); }
+  .section-head p { color: var(--ink-soft); margin: 12px 0 0; }
 
   .records { margin-top: 16px; display: grid; gap: 8px; }
   .rec {
-    display: grid; grid-template-columns: 70px 1fr auto; gap: 10px; align-items: center;
+    display: grid; grid-template-columns: 62px 1fr auto; gap: 10px; align-items: center;
     background: var(--paper); border: 1px solid var(--hairline); border-radius: 8px;
-    padding: 10px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13.5px;
+    padding: 8px 8px 8px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13.5px;
   }
   .rec .t { color: var(--moss); font-weight: 500; }
   .rec .v { overflow-wrap: anywhere; }
   .rec button {
     cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
-    letter-spacing: 0.06em; text-transform: uppercase;
+    letter-spacing: 0.06em; text-transform: uppercase; min-height: 44px; min-width: 64px;
     background: transparent; color: var(--plum); border: 1px solid var(--plum);
     border-radius: 999px; padding: 4px 12px;
   }
   .rec button:hover { background: var(--paper-2); }
   .rec button.copied { color: var(--ok); border-color: var(--ok); }
-  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-  .note { font-size: 15px; color: var(--ink-soft); font-style: italic; margin-top: 12px; }
-
-  .done-card { border: 2px solid var(--plum); }
-  .done-card p.big { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 19px; }
-
-  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
-  footer a { color: var(--plum); }
+  .big { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 19px; }
+  @media (max-width: 420px) {
+    .card { padding: 22px 20px 24px; }
+  }
+  /* narrow phones: the record type gets its own small line so each value stays on one line */
+  @media (max-width: 400px) {
+    .rec { grid-template-columns: 1fr auto; row-gap: 2px; }
+    .rec .t { grid-column: 1 / -1; font-size: 11.5px; }
+    .rec .v { overflow-wrap: normal; }
+  }
+  @media (max-width: 380px) {
+    .card { padding: 20px 16px 22px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="brand" href="index.html">Web <span>Faery</span></a>
-
-  <div class="head">
+<header class="page-hero">
+  <picture><source type="image/webp" srcset="images/mushrooms.webp"><img class="photo" src="images/mushrooms.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 30% 60%"></picture>
+  <div class="bar">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
+  </div>
+  <div class="words">
+    <span class="eyebrow">Web address guide</span>
     <h1>Your <em>web address.</em></h1>
-    <p class="lede">Here's a little secret: I already gift-wrapped this part. While building your
-       site I registered your address, pointed it at your new home, and covered the first year.
-       There is nothing you need to do today. Whenever you're ready, it moves into your own name
-       with the little ritual below, about ten minutes, no tech knowledge needed.</p>
+    <p class="lede">It’s the <em>yourname.com</em> people type to find you. The first year comes with
+       every build. After launch it lives in one of two places, depending on whether you choose care,
+       and either way it’s legally yours.</p>
+  </div>
+</header>
+<script>
+  (function () {
+    var h = document.querySelector('.page-hero');
+    if (!h || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ph = h.querySelector('.photo');
+    h.classList.add('wait');
+    // play the intro only once the photo has fully arrived; if it's still on its way after
+    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
+    var settled = false;
+    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
+    var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
+    var ready = function () { if (ph.decode) ph.decode().then(go, go); else go(); };
+    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
+      });
+    }, { passive: true });
+  })();
+</script>
+
+<main class="gutter"><div class="wrap">
+
+  <section class="card yours reveal" aria-labelledby="t-glance">
+    <span class="kicker">At a glance</span>
+    <h2 id="t-glance">Where it lives, and what it costs</h2>
+    <table class="money">
+      <thead><tr><th scope="col"><span class="sr-only">What</span></th><th scope="col">Without care</th><th scope="col">With care</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Who holds it</th>
+            <td data-col="Without care">You, in your own Porkbun account. It moves there at launch.</td>
+            <td data-col="With care">I hold it for you, with you listed as the legal owner.</td></tr>
+        <tr><th scope="row">The first year</th>
+            <td data-col="Without care">Included in your build</td>
+            <td data-col="With care">Included in your build</td></tr>
+        <tr><th scope="row">After that</th>
+            <td data-col="Without care">About $12 a year, renewing on your card</td>
+            <td data-col="With care">Included in care</td></tr>
+        <tr><th scope="row">Email forwarding<small>Mail to hello@yourname.com lands in your inbox</small></th>
+            <td data-col="Without care">Free</td>
+            <td data-col="With care">Free</td></tr>
+        <tr><th scope="row">Sending from your own address</th>
+            <td data-col="Without care">Optional, about $3 a month ($36 a year) from Porkbun</td>
+            <td data-col="With care">Included</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Porkbun’s prices are estimates as of September 2026. Hosting your site is free
+       either way, forever. If that ever changed, I’d move your site for free.</p>
+  </section>
+
+  <div class="section-head reveal">
+    <h2>Without care: <em>it moves to you at launch</em></h2>
+    <p>About ten minutes of your time, free, and nothing about your website blinks while it moves.
+       We do it around launch day. Happy to do it together on a call if you’d rather.</p>
   </div>
 
-  <div class="step done-card">
-    <span class="kicker">The promise, first</span>
-    <h2>It's yours. Full stop.</h2>
-    <p>Your address is held safe under my roof only until you claim it. Claim it next week or
-       next year; until then I tend the renewal as part of your plan, and the moment you ask,
-       it slides into your hands. If we ever part ways, it goes with you. That's the deal,
-       in writing, forever.</p>
-  </div>
-
-  <div class="step">
-    <span class="kicker">Claiming it &middot; step one &middot; ~5 minutes</span>
-    <h2>Make yourself a free Porkbun account</h2>
+  <section class="card reveal" aria-labelledby="t-step1">
+    <span class="kicker">Step one &middot; about 5 minutes</span>
+    <h2 id="t-step1">Make yourself a free Porkbun account</h2>
     <p>Porkbun (yes, really) is the friendly little shop where your address lives. Go to
        <a href="https://porkbun.com" rel="noopener">porkbun.com</a>, tap <b>Sign up</b>, and use
-       your everyday email and a good password. The account is free.</p>
-    <p class="soft">Why Porkbun? Fair prices, no upsell circus, and privacy protection included
-       free: your home address won't be published in any public directory, which some other
-       registrars charge extra to hide.</p>
-  </div>
+       your everyday email and a good password. The account is free. Porkbun asks new accounts
+       for a quick ID check before an address can move in, so it’s worth doing right away.</p>
+    <p class="soft">Why Porkbun? Fair prices, no pushy extras, and privacy protection included
+       free: your home address won’t be published in any public directory.</p>
+  </section>
 
-  <div class="step">
-    <span class="kicker">Claiming it &middot; step two &middot; one message</span>
-    <h2>Tell me the email you signed up with</h2>
-    <p>That's it, that's the step. I'll send your address over from my account to yours.
-       Porkbun does this for free, and nothing about your website blinks while it travels.</p>
-  </div>
+  <section class="card reveal" aria-labelledby="t-step2">
+    <span class="kicker">Step two &middot; one message</span>
+    <h2 id="t-step2">Tell me your Porkbun username</h2>
+    <p>That’s the whole step. I send your address from my account to yours (Porkbun calls it a
+       push), and Porkbun does this for free.</p>
+  </section>
 
-  <div class="step">
-    <span class="kicker">Claiming it &middot; step three &middot; ~3 minutes</span>
-    <h2>Accept it and put your card on it</h2>
+  <section class="card reveal" aria-labelledby="t-step3">
+    <span class="kicker">Step three &middot; about 3 minutes</span>
+    <h2 id="t-step3">Accept it and put your card on it</h2>
     <ol>
-      <li>Porkbun emails you about the incoming address; accept it.</li>
-      <li>Add your card to your account and leave <b>auto-renew ON</b>. This is what keeps
-          your address from ever accidentally expiring and being snapped up by a stranger.
-          Renewal is about $12 a year, paid straight to Porkbun, never to me.</li>
-      <li>Send me one message: "claimed!" and I'll raise a glass. 🌱</li>
+      <li>Porkbun emails you about the incoming address. Click <b>Accept</b> within 3 days
+          (if it slips by, no harm; I’ll just send it again).</li>
+      <li>Add your card to your account and leave <b>auto-renew ON</b>. This keeps your address
+          from ever accidentally expiring and being snapped up by a stranger. Renewal is about
+          $12 a year, starting a year after it was first registered, paid straight to Porkbun,
+          never to me.</li>
+      <li>Send me one message: “got it!” 🌱</li>
     </ol>
-    <p class="soft">Never send me your password. I don't need it, and I'll never ask for it.</p>
+    <p class="soft">Never send me your password. I don’t need it, and I’ll never ask for it.</p>
+  </section>
+
+  <div class="section-head reveal">
+    <h2>With care: <em>nothing to do</em></h2>
   </div>
 
-  <div class="head">
-    <h1>Rather buy it <em>yourself?</em></h1>
-    <p class="lede">Wonderful, and simpler than you'd think. Some folks want their address in
-       their own name from its very first breath; I salute you. Fifteen minutes, about $12 a
-       year, cup of tea optional but encouraged. Or we do it together; just ask.</p>
+  <section class="card reveal" aria-labelledby="t-care">
+    <span class="kicker">Held for you</span>
+    <h2 id="t-care">I keep it renewed and pointed at your site</h2>
+    <p>Your address stays in my Porkbun account with you listed as its legal owner, so it’s
+       always legally yours. The renewal is part of care, and so is sending email from your own
+       address if you want it.</p>
+    <p>If you ever stop care, your site stays up and the address moves into your own account
+       with the three steps above: free, about ten minutes of your time.</p>
+  </section>
+
+  <div class="section-head reveal">
+    <h2>Already have <em>an address?</em></h2>
+    <p>Wonderful. Keep it right where it is; we just point it at your new site. Tell me where it
+       lives (Porkbun, GoDaddy, Squarespace, anywhere) and we can do it together on a short call,
+       or follow along below.</p>
+    <p>With care, you can choose: I can move it into my Porkbun account (you stay the legal
+       owner) so the renewal is included, or you keep it where it is and keep paying for it there.</p>
   </div>
 
-  <div class="step">
-    <span class="kicker">Buying it &middot; step one &middot; ~5 minutes</span>
-    <h2>Make yourself a Porkbun account</h2>
-    <p>Same friendly little shop as above: go to
-       <a href="https://porkbun.com" rel="noopener">porkbun.com</a>, tap <b>Sign up</b>, and use
-       your everyday email and a good password.</p>
-  </div>
-
-  <div class="step">
-    <span class="kicker">Buying it &middot; step two &middot; ~5 minutes</span>
-    <h2>Buy your address</h2>
-    <ol>
-      <li>In the search box, type the address we agreed on (for example <b>yourname.com</b>) and search.</li>
-      <li>Tap <b>+</b> next to it, then head to the cart and check out. One year is perfect.</li>
-      <li>Leave <b>auto-renew ON</b>. This is what keeps your address from ever accidentally
-          expiring and being snapped up by a stranger.</li>
-    </ol>
-    <p class="soft">Whois Privacy comes switched on by itself, nothing to do there.</p>
-  </div>
-
-  <div class="step">
-    <span class="kicker">Buying it &middot; step three &middot; ~5 minutes</span>
-    <h2>Point it at your website</h2>
-    <p>Now we tell your new address where your website lives. In Porkbun, find your domain and
-       tap the little <b>DNS</b> button next to it. If any records are already listed, delete
-       them (they're just parking signs). Then add these five, one at a time: tap
-       <b>copy</b> here and paste over there. For each one: the <b>Host</b> field stays
-       <b>empty</b> except the last one (put <b>www</b>), and everything else keeps its
-       normal settings.</p>
+  <section class="card reveal" aria-labelledby="t-point">
+    <span class="kicker">Pointing it &middot; about 5 minutes</span>
+    <h2 id="t-point">Point it at your website</h2>
+    <p>Where your address lives, find its <b>DNS</b> settings. Add these nine records, one at a
+       time: tap <b>copy</b> here and paste over there. For the A and AAAA records, the <b>Host</b>
+       (or <b>Name</b>) field stays <b>empty</b>, or <b>@</b> if your registrar asks for something.
+       For the last one, the CNAME, put <b>www</b>. Everything else keeps its normal settings.</p>
     <div class="records">
-      <div class="rec"><span class="t">A</span><span class="v">185.199.108.153</span><button data-copy="185.199.108.153" aria-label="Copy 185.199.108.153">copy</button></div>
-      <div class="rec"><span class="t">A</span><span class="v">185.199.109.153</span><button data-copy="185.199.109.153" aria-label="Copy 185.199.109.153">copy</button></div>
-      <div class="rec"><span class="t">A</span><span class="v">185.199.110.153</span><button data-copy="185.199.110.153" aria-label="Copy 185.199.110.153">copy</button></div>
-      <div class="rec"><span class="t">A</span><span class="v">185.199.111.153</span><button data-copy="185.199.111.153" aria-label="Copy 185.199.111.153">copy</button></div>
-      <div class="rec"><span class="t">CNAME</span><span class="v">www &rarr; juno-arch.github.io</span><button data-copy="juno-arch.github.io" aria-label="Copy juno-arch.github.io">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.108.153</span><button type="button" data-copy="185.199.108.153" aria-label="Copy 185.199.108.153">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.109.153</span><button type="button" data-copy="185.199.109.153" aria-label="Copy 185.199.109.153">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.110.153</span><button type="button" data-copy="185.199.110.153" aria-label="Copy 185.199.110.153">copy</button></div>
+      <div class="rec"><span class="t">A</span><span class="v">185.199.111.153</span><button type="button" data-copy="185.199.111.153" aria-label="Copy 185.199.111.153">copy</button></div>
+      <div class="rec"><span class="t">AAAA</span><span class="v">2606:50c0:8000::153</span><button type="button" data-copy="2606:50c0:8000::153" aria-label="Copy 2606:50c0:8000::153">copy</button></div>
+      <div class="rec"><span class="t">AAAA</span><span class="v">2606:50c0:8001::153</span><button type="button" data-copy="2606:50c0:8001::153" aria-label="Copy 2606:50c0:8001::153">copy</button></div>
+      <div class="rec"><span class="t">AAAA</span><span class="v">2606:50c0:8002::153</span><button type="button" data-copy="2606:50c0:8002::153" aria-label="Copy 2606:50c0:8002::153">copy</button></div>
+      <div class="rec"><span class="t">AAAA</span><span class="v">2606:50c0:8003::153</span><button type="button" data-copy="2606:50c0:8003::153" aria-label="Copy 2606:50c0:8003::153">copy</button></div>
+      <div class="rec"><span class="t">CNAME</span><span class="v"><span class="nowrap">www &rarr;</span> <span class="nowrap">juno-arch.github.io</span></span><button type="button" data-copy="juno-arch.github.io" aria-label="Copy juno-arch.github.io">copy</button></div>
     </div>
     <p class="sr-only" id="copy-status" role="status"></p>
-    <p class="note">These point your address at the home your site lives in. If any step feels
-       like too much, stop and just tell me. It's genuinely fine, we'll do it together,
-       and everything stays in your name either way.</p>
-  </div>
+    <p class="note">If there are old A, AAAA or www records pointing somewhere else, those get
+       replaced by these. If you already use email at this address, don’t delete
+       anything else: the email records stay exactly as they are. When in doubt, send me a
+       screenshot and we’ll do it together.</p>
+  </section>
 
-  <div class="step done-card">
-    <span class="kicker">Buying it &middot; step four &middot; the whole message</span>
-    <h2>Tell me: "done!"</h2>
-    <p class="big">That's everything. Send me one message, "domain's bought and pointed", and
-       I'll flip the switches on my side.</p>
-    <p class="soft">Never send me your password. I don't need it, and I'll never ask for it.
-       The address may take a few hours to wake up across the internet; that's normal, like
-       mail forwarding kicking in. Then your site goes live at your very own address. 🌱</p>
-  </div>
+  <section class="card yours reveal" aria-labelledby="t-done">
+    <span class="kicker">Last step &middot; one message</span>
+    <h2 id="t-done">Tell me: “done!”</h2>
+    <p class="big">That’s everything. Send me one message and I’ll flip the switches on my side.</p>
+    <p class="soft">Never send me your password. The address may take a few hours to wake up
+       across the internet; that’s normal, like mail forwarding kicking in. Then your site goes
+       live at your very own address. 🌱</p>
+  </section>
+</div></main>
 
-  <footer>Web Faery &middot; <a href="index.html">back to the main page</a></footer>
-</div>
+<footer class="site-foot">
+  <div class="foot-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="quiz.html">Which build?</a></li>
+      <li><a href="intake.html">Getting started</a></li>
+      <li><a href="domain.html" aria-current="page">Web address guide</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
+  </div>
+</footer>
 
 <script>
   document.querySelectorAll('.rec button').forEach(function (b) {
@@ -213,16 +254,36 @@
         said.textContent = 'Copied ' + text;
         setTimeout(function () { b.textContent = 'copy'; b.classList.remove('copied'); said.textContent = ''; }, 1800);
       }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, function () {});
-      } else {
+      function byHand() {
         var ta = document.createElement('textarea');
         ta.value = text; document.body.appendChild(ta); ta.select();
-        try { document.execCommand('copy'); done(); } catch (e) {}
+        try { if (document.execCommand('copy')) done(); } catch (e) {}
         document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, byHand);
+      } else {
+        byHand();
       }
     });
   });
+
+  // gentle fade-up for cards below the fold; the page is fully readable without it
+  (function () {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var show = function (entries, obs) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
+      });
+    };
+    var io = new IntersectionObserver(show, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    // tall cards start as soon as their top edge is in view, so they never leave an empty gap
+    var ioTall = new IntersectionObserver(show, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.92) { el.classList.add('pre'); (r.height > window.innerHeight * 0.8 ? ioTall : io).observe(el); }
+    });
+  })();
 </script>
 </body>
 </html>

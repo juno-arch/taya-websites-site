@@ -5,106 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tell me about you &middot; Web Faery</title>
 <meta name="robots" content="noindex">
+<meta name="description" content="The getting-started questions: about ten minutes, no wrong answers, and sending them doesn’t commit you to anything.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webfaery.love/intake.html">
+<meta property="og:site_name" content="Web Faery">
+<meta property="og:title" content="Tell me about you: the getting-started questions">
+<meta property="og:description" content="About ten minutes, no wrong answers, and sending them doesn’t commit you to anything.">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tell me about you: the getting-started questions">
+<meta name="twitter:description" content="About ten minutes, no wrong answers, and sending them doesn’t commit you to anything.">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
+<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="pages.css">
 <style>
-  :root {
-    color-scheme: light;
-    --paper: #f3eee4; --paper-2: #eae3d4; --card: #f8f4ea;
-    --ink: #2e2433; --ink-soft: #6a5e72; --hairline: #ddd2c2;
-    --plum: #6d2b56; --plum-deep: #521f41; --moss: #7e6428;
-    --on-plum: #f8ecf3; --focus: #6d2b56; --err: #a03d2e; --ok: #4c6b3c;
-    --field-edge: #8c8072;
+  .plan-note {
+    margin: 30px 0 0; padding: 14px 18px; border-left: 3px solid var(--plum);
+    background: var(--card); border-radius: 0 10px 10px 0; font-size: 17px;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-      --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-      --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-      --on-plum: #2a1224; --focus: #d08cc0; --err: #d98a75; --ok: #9dbb85;
-      --field-edge: #7a6d8c;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-    --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-    --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-    --on-plum: #2a1224; --focus: #d08cc0; --err: #d98a75; --ok: #9dbb85;
-    --field-edge: #7a6d8c;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.6;
-  }
-  .wrap { max-width: 680px; margin: 0 auto; padding: 26px 22px 90px; }
-
-  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
-  .brand span { color: var(--plum); }
-
-  .head { padding-block: 40px 8px; }
-  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
-  h1 em { font-style: normal; color: var(--plum); }
-  .lede { color: var(--ink-soft); margin: 16px 0 0; max-width: 34em; }
-
   fieldset {
-    border: 1px solid var(--hairline); border-radius: 14px; background: var(--card);
-    padding: 24px 24px 26px; margin: 26px 0 0;
+    border: 1px solid var(--hairline); border-radius: 16px; background: var(--card);
+    padding: 24px 24px 26px; margin: 26px 0 0; min-width: 0;
   }
   legend {
     font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
     letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); padding-inline: 8px;
   }
-  .q { margin-top: 18px; }
+  .q { margin-top: 20px; }
   .q:first-of-type { margin-top: 6px; }
-  .main { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin: 0 0 4px; }
-  .hint { font-size: 15px; color: var(--ink-soft); margin: 0 0 8px; font-style: italic; }
+  .main { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
+  .hint { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 10px; font-style: italic; line-height: 1.5; }
   .req { font-family: 'Newsreader', Georgia, serif; font-weight: 400; font-size: 15px; font-style: italic; color: var(--ink-soft); }
   input[type="text"], input[type="email"], input[type="tel"], textarea, select {
     width: 100%; background: var(--paper); color: var(--ink);
     border: 1px solid var(--field-edge); border-radius: 8px;
-    font-family: 'Newsreader', Georgia, serif; font-size: 17px; padding: 11px 13px;
+    font-family: 'Newsreader', Georgia, serif; font-size: 17px; padding: 11px 13px; min-height: 46px;
   }
   textarea { min-height: 92px; resize: vertical; }
   input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--err); }
-  input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible {
-    outline: 2px solid var(--focus); outline-offset: 2px;
-  }
-  ::placeholder { color: var(--ink-soft); opacity: 0.7; }
+  input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  ::placeholder { color: var(--ink-soft); opacity: 1; }
 
   .opts { display: grid; gap: 8px; }
   .opt {
     display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
-    background: var(--paper); border: 1px solid var(--hairline); border-radius: 8px;
-    padding: 10px 13px; font-size: 16.5px;
+    background: var(--paper); border: 1px solid var(--hairline); border-radius: 10px;
+    padding: 11px 13px; font-size: 16.5px; line-height: 1.45;
+    text-wrap: pretty; /* no one-word last lines, in the answers or their small print */
   }
   .opt:has(:checked) { border-color: var(--plum); background: var(--paper-2); }
-  .opt input { margin-top: 5px; accent-color: var(--plum); }
-  .opt small { display: block; color: var(--ink-soft); font-size: 14px; }
+  .opt input { margin-top: 5px; accent-color: var(--plum); flex-shrink: 0; }
+  .opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .opt small { display: block; color: var(--ink-soft); font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
+  .opt b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; }
+  .opt .moon { font-size: 17px; margin-right: 6px; }
 
-  #booking-extra { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--hairline); }
+  #booking-extra { display: none; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--hairline); }
   #booking-extra.show { display: block; }
 
-  .send-row { margin-top: 30px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .next-note { margin: 30px 0 0; font-size: 16.5px; color: var(--ink-soft); }
+  .send-row { margin-top: 18px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
   button.send {
     cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px;
-    padding: 14px 30px; border-radius: 10px;
-    background: var(--plum); color: var(--on-plum); border: 1px solid var(--plum);
+    min-height: 50px; padding: 12px 30px; border-radius: 999px;
+    background: var(--plum); color: var(--on-plum); border: 1.5px solid var(--plum);
   }
   button.send:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
   button.send:disabled { opacity: 0.5; cursor: wait; }
   .status { font-size: 16px; min-height: 24px; }
   .status.ok { color: var(--ok); }
   .status.err { color: var(--err); }
-  .status a { color: var(--plum); }
 
   /* character budget: the form server only accepts about 4,000 characters in all */
-  .budget { margin: 30px 0 0; font-size: 15px; font-style: italic; color: var(--ink-soft); }
-  .budget.near { color: var(--moss); }
+  .budget { margin: 14px 0 0; font-size: 15px; font-style: italic; color: var(--ink-soft); }
+  .budget.near { color: var(--plum); }
   .budget.over { color: var(--err); font-style: normal; }
-  .budget + .send-row { margin-top: 14px; }
 
   /* shown when the answers can't be sent: everything in one box, ready to copy */
   .rescue {
@@ -112,40 +94,76 @@
     padding: 20px 22px 22px;
   }
   .rescue-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin: 0; }
-  .rescue .note { font-size: 16px; margin: 4px 0 12px; }
-  .rescue .note a { color: var(--plum); }
+  .rescue .note-line { font-size: 16px; margin: 4px 0 12px; }
   .rescue textarea { min-height: 220px; font-size: 15px; line-height: 1.5; }
   .rescue-row { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
   button.copy {
     cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16px;
-    padding: 10px 22px; border-radius: 10px;
+    padding: 10px 24px; border-radius: 999px; min-height: 50px;
     background: transparent; color: var(--plum); border: 1px solid var(--plum);
   }
   button.copy:hover { background: var(--paper-2); }
   .copy-status { font-size: 15px; color: var(--ok); }
 
-  .done { display: none; text-align: center; padding: 70px 10px; }
+  .done { display: none; text-align: center; padding: 70px 10px 30px; }
   .done.show { display: block; }
-  .done h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; margin: 0 0 10px; }
+  .done h2 { font-size: 30px; margin: 0 0 12px; }
   .done h2:focus { outline: none; }
   .done p { color: var(--ink-soft); max-width: 30em; margin: 0 auto; }
-
-  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
+  .done p + p { margin-top: 14px; }
+  @media (max-width: 420px) {
+    fieldset { padding: 20px 16px 22px; }
+    button.send { width: 100%; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="brand" href="index.html">Web <span>Faery</span></a>
+<header class="page-hero short">
+  <picture><source type="image/webp" srcset="images/hero.webp"><img class="photo" src="images/hero.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 50% 45%"></picture>
+  <div class="bar">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
+  </div>
+  <div class="words">
+    <span class="eyebrow">Getting started</span>
+    <h1>Tell me <em>about you.</em></h1>
+    <p class="lede">Pour some tea. This takes about ten minutes, there are no wrong answers, and
+       sending it doesn’t commit you to anything. I write your site’s words from a <span class="nowrap">45-minute</span> chat
+       (most people hate writing about themselves), so this just gives me a head start.</p>
+  </div>
+</header>
+<script>
+  (function () {
+    var h = document.querySelector('.page-hero');
+    if (!h || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ph = h.querySelector('.photo');
+    h.classList.add('wait');
+    // play the intro only once the photo has fully arrived; if it's still on its way after
+    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
+    var settled = false;
+    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
+    var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
+    var ready = function () { if (ph.decode) ph.decode().then(go, go); else go(); };
+    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
+      });
+    }, { passive: true });
+  })();
+</script>
 
+<main class="gutter"><div class="wrap">
+  <noscript><div class="card"><p>These questions need JavaScript to send. No problem: just email your answers, or a
+    few lines about your work, to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p></div></noscript>
   <div id="form-side">
-    <div class="head">
-      <h1>Tell me <em>about you.</em></h1>
-      <p class="lede">Pour some tea. This takes about ten minutes, there are no wrong answers,
-         and nothing here is set in stone. Your answers are the seeds the whole site grows from.</p>
-      <p class="lede" id="plan-note" hidden></p>
-    </div>
+    <p class="plan-note" id="plan-note" hidden></p>
 
-    <form id="intake" novalidate>
+    <!-- hidden until the script below is running, so nobody fills it in on a page that can’t send it -->
+    <form id="intake" novalidate hidden>
       <fieldset>
         <legend>You</legend>
         <div class="q">
@@ -154,13 +172,13 @@
         </div>
         <div class="q">
           <label class="main" for="f-biz">Your business name</label>
-          <p class="hint">If it's just your name, that counts. If you're still deciding, tell me the candidates.</p>
-          <input type="text" id="f-biz">
+          <p class="hint" id="h-biz">If it’s just your name, that counts. If you’re still deciding, tell me the candidates.</p>
+          <input type="text" id="f-biz" aria-describedby="h-biz">
         </div>
         <div class="q">
           <label class="main" for="f-what">What do you do, in your own words? <span class="req" aria-hidden="true">(needed)</span></label>
-          <p class="hint">Say it like you'd say it to a friend, not like a brochure.</p>
-          <textarea id="f-what" required aria-required="true"></textarea>
+          <p class="hint" id="h-what">Say it like you’d say it to a friend, not like a brochure.</p>
+          <textarea id="f-what" required aria-required="true" aria-describedby="h-what"></textarea>
         </div>
         <div class="q">
           <label class="main" for="f-who">Who comes to you, and who do you wish found you more often?</label>
@@ -169,47 +187,95 @@
       </fieldset>
 
       <fieldset>
-        <legend>What the site should do</legend>
+        <legend>Your build</legend>
         <div class="q">
-          <div class="opts">
-            <label class="opt"><input type="checkbox" name="does" value="Tell my story + easy contact"> <span>Tell my story, and make it easy to reach me<small>The heart of every site</small></span></label>
-            <label class="opt"><input type="checkbox" name="does" value="Online booking" id="wants-booking"> <span>Let people book sessions online<small>They pick a time, you both get confirmations &amp; reminders</small></span></label>
-            <label class="opt"><input type="checkbox" name="does" value="Take payments"> <span>Take payments<small>Money goes straight to you, never through me</small></span></label>
-            <label class="opt"><input type="checkbox" name="does" value="Photo gallery"> <span>Show off my work in a gallery</span></label>
-            <label class="opt"><input type="checkbox" name="does" value="Newsletter signup"> <span>Collect emails for a newsletter</span></label>
-            <label class="opt"><input type="checkbox" name="does" value="Not sure yet"> <span>Not sure yet, let's talk it through</span></label>
+          <p class="main" id="l-build">Which build are you leaning toward?</p>
+          <p class="hint" id="h-build">Each one is paid once. Nothing is locked: we’ll confirm the fit together, and if you
+             outgrow it later, what you paid counts toward a bigger build. Not sure? Try the
+             <a href="quiz.html">two-minute quiz</a>.</p>
+          <div class="opts" role="radiogroup" aria-labelledby="l-build" aria-describedby="h-build">
+            <label class="opt"><input type="radio" name="build" value="Maiden"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="8.2" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wax)"/></svg><b>Maiden</b>: one beautiful page, $600
+              <small>Who you are, what you offer, prices, how to reach you, photos. Ready in about 2 weeks.</small></span></label>
+            <label class="opt"><input type="radio" name="build" value="Mother"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" fill="currentColor"/></svg><b>Mother</b>: a full site, $1,200
+              <small>About, services, FAQ, contact form, newsletter signup, downloadable forms, Google Business Profile, and a Book now button linked to the booking app you already use (or a free one in your name). About 3 weeks.</small></span></label>
+            <label class="opt"><input type="radio" name="build" value="Crone"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="15.8" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wan)"/></svg><b>Crone</b>: a full site that books, sells, or both, $1,800
+              <small>Everything in Mother, plus online booking, selling, or both, set up in your own accounts (a small shop up to about 20 items; full online stores are quoted separately), and a <span class="nowrap">hand-off</span> lesson. About 4 weeks.</small></span></label>
+            <label class="opt"><input type="radio" name="build" value="Not sure yet"> <span>Not sure yet, help me choose</span></label>
+          </div>
+          <p class="hint" style="margin-top: 10px;">Founding clients get half off the build, and care locked at
+             $49 a month (or $490 a year): 5 spots, through Dec 31, 2026 (<a href="index.html#founding">how many are left</a>).
+             Ready-in times count from the day all your content is in.</p>
+        </div>
+
+        <div class="q">
+          <p class="main" id="l-does">What should the site do?</p>
+          <p class="hint" id="h-does">Pick any that fit. Costs for the extras are right there, so nothing surprises you later (estimates as of September 2026).</p>
+          <div class="opts" role="group" aria-labelledby="l-does" aria-describedby="h-does">
+            <label class="opt"><input type="checkbox" name="does" value="Tell my story + easy contact"> <span>Tell my story, and make it easy to reach me<small>The heart of every build</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Several pages (services, about, FAQ)"> <span>Several pages: services, about, FAQ</span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Contact form"> <span>A contact form</span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Newsletter signup"> <span>Collect emails for a newsletter<small>Free up to 100 subscribers, then about $9 a month in your own account, or covered by care (up to 1,000 subscribers)</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Downloadable forms"> <span>Forms clients can download<small>Intake forms, waivers, that kind of thing</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Online booking" id="wants-booking"> <span>Let people book online<small>Clients pick a time and you both get reminders. Your own booking account; Cal.com is free for one person. Already use a booking app? Mother’s Book now button links to it</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Sell online (gift certificates, deposits, small shop)"> <span>Sell online: gift certificates, deposits, or a small shop<small>A small shop is up to about 20 items; full online stores are quoted separately. The money goes straight to you, never through me. The payment company keeps about 3% + 30¢ per payment (it varies a little by payment company)</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Not sure yet"> <span>Not sure yet, let’s talk it through</span></label>
           </div>
         </div>
 
         <div id="booking-extra">
           <div class="q">
             <label class="main" for="f-sessions">Your sessions: what kinds, how long, what price?</label>
-            <p class="hint">e.g. "60-min massage $90 &middot; first visit 90 min $120"</p>
-            <textarea id="f-sessions"></textarea>
+            <p class="hint" id="h-sessions">e.g. “60-min massage $90 &middot; first visit 90 min $120”</p>
+            <textarea id="f-sessions" aria-describedby="h-sessions"></textarea>
           </div>
           <div class="q">
             <label class="main" for="f-hours">When do you usually work?</label>
-            <p class="hint">Days and rough hours. You'll be able to change these yourself anytime.</p>
-            <input type="text" id="f-hours" placeholder="e.g. Tue–Fri, 10 to 5">
+            <p class="hint" id="h-hours">Days and rough hours. You’ll be able to change these yourself anytime.</p>
+            <input type="text" id="f-hours" placeholder="e.g. Tue to Fri, 10 to 5" aria-describedby="h-hours">
           </div>
           <div class="q">
             <label class="main" for="f-cancel">How close to a session can someone cancel or reschedule?</label>
             <select id="f-cancel">
-              <option value="">Choose one…</option>
+              <option value="">Choose one&hellip;</option>
               <option>24 hours ahead</option>
               <option>48 hours ahead</option>
-              <option>I'm flexible, life happens</option>
+              <option>I’m flexible, life happens</option>
               <option>Not sure, help me decide</option>
             </select>
           </div>
           <div class="q">
             <label class="main" for="f-remind">How should reminders reach your clients?</label>
             <select id="f-remind">
-              <option value="">Choose one…</option>
+              <option value="">Choose one&hellip;</option>
               <option>Email is plenty</option>
               <option>Text messages</option>
               <option>Both, ideally</option>
             </select>
+          </div>
+        </div>
+
+        <div class="q">
+          <p class="main" id="l-google">Does your business show up on Google Maps yet?</p>
+          <div class="opts" role="radiogroup" aria-labelledby="l-google">
+            <label class="opt"><input type="radio" name="google" value="Yes, and it looks right"> <span>Yes, and it looks right</span></label>
+            <label class="opt"><input type="radio" name="google" value="It's there but needs love"> <span>It’s there, but it needs some love</span></label>
+            <label class="opt"><input type="radio" name="google" value="No, or not sure"> <span>No, or I’m not sure</span></label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>After launch</legend>
+        <div class="q">
+          <p class="main" id="l-care">Care, or pay as you go?</p>
+          <p class="hint" id="h-care">No need to decide today. It just needs settling by launch, because it decides
+             where your web address lives. Fixes for anything I got wrong are always free either way.</p>
+          <div class="opts" role="radiogroup" aria-labelledby="l-care" aria-describedby="h-care">
+            <label class="opt"><input type="radio" name="care" value="Care"> <span><b>Care</b>, $69 a month (or $690 a year)
+              <small>I make your changes whenever you ask, and reply within 2 business days. Your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Anything big, like a new page, I’ll quote first. Billing starts after your 30 days of settling in, not at launch. Cancel anytime.</small></span></label>
+            <label class="opt"><input type="radio" name="care" value="Without care, $100 an hour"> <span><b>Without care</b>, <span class="nowrap">$100 an hour</span>
+              <small>Send me one email with everything you’d like changed, and I’ll reply with a price before I&nbsp;start. Most small changes come to about <span class="nowrap">$25 to $50</span>. At launch your web address moves into your own account, about $12 a year after the first.</small></span></label>
+            <label class="opt"><input type="radio" name="care" value="Not sure yet"> <span>Not sure yet</span></label>
           </div>
         </div>
       </fieldset>
@@ -229,13 +295,13 @@
           </div>
         </div>
         <div class="q">
-          <label class="main" for="f-colors">Colors you love? Colors you can't stand?</label>
-          <input type="text" id="f-colors" placeholder="e.g. love sage green, please no neon orange">
+          <label class="main" for="f-colors">Colors you love? Colors you can’t stand?</label>
+          <input type="text" id="f-colors" placeholder="e.g. sage green, no neon">
         </div>
         <div class="q">
           <label class="main" for="f-words">Words or phrases you love, and words that make you cringe?</label>
-          <p class="hint">This shapes the site's voice more than anything else.</p>
-          <textarea id="f-words"></textarea>
+          <p class="hint" id="h-words">This shapes the site’s voice more than anything else.</p>
+          <textarea id="f-words" aria-describedby="h-words"></textarea>
         </div>
       </fieldset>
 
@@ -245,18 +311,25 @@
           <p class="main" id="l-photos">Photos of you and your work?</p>
           <div class="opts" role="radiogroup" aria-labelledby="l-photos">
             <label class="opt"><input type="radio" name="photos" value="I have good ones"> <span>I have good ones ready to send</span></label>
-            <label class="opt"><input type="radio" name="photos" value="I have some, not sure they're right"> <span>I have some, not sure they're right</span></label>
-            <label class="opt"><input type="radio" name="photos" value="Barely any"> <span>Barely any, let&rsquo;s figure it out together</span></label>
+            <label class="opt"><input type="radio" name="photos" value="I have some, not sure they're right"> <span>I have some, not sure they’re right</span></label>
+            <label class="opt"><input type="radio" name="photos" value="Barely any"> <span>Barely any, let&rsquo;s figure it out together<small>Free stock photos you can keep are always an option</small></span></label>
           </div>
         </div>
         <div class="q">
           <label class="main" for="f-domain">Your web address</label>
-          <p class="hint">Like <em>yourname.com</em>. If you have one, tell me what it is. If not, write "help me choose." That conversation is a fun one.</p>
-          <input type="text" id="f-domain">
+          <p class="hint" id="h-domain">Like <em>yourname.com</em>. If you have one, tell me what it is. If not, write
+             “help me choose.” That conversation is a fun one, and the first year comes with every build.</p>
+          <input type="text" id="f-domain" aria-describedby="h-domain">
+        </div>
+        <div class="q">
+          <label class="main" for="f-when">Is there a date you’d love to be live by?</label>
+          <p class="hint" id="h-when">I take only a few new builds a month, so it helps to know early.</p>
+          <input type="text" id="f-when" aria-describedby="h-when" placeholder="e.g. by the holidays">
         </div>
         <div class="q">
           <label class="main" for="f-loves">Any websites you love? Anything else I should know?</label>
-          <textarea id="f-loves"></textarea>
+          <p class="hint" id="h-loves">A budget worry, a wish, a question. All welcome.</p>
+          <textarea id="f-loves" aria-describedby="h-loves"></textarea>
         </div>
       </fieldset>
 
@@ -272,6 +345,9 @@
         </div>
       </fieldset>
 
+      <p class="next-note">What happens next: I read every word and reply within a couple of days to set up
+         our chat. Nothing starts, and nothing is owed, until you’ve approved a one-page agreement by email.
+         <a href="welcome.html">Here’s the whole path.</a></p>
       <p class="budget" id="budget"></p>
       <div class="send-row">
         <button class="send" type="submit">Send it to Taya</button>
@@ -281,7 +357,7 @@
 
     <div class="rescue" id="rescue" hidden>
       <p class="rescue-title" id="rescue-title">All your answers, ready to copy</p>
-      <p class="note">Paste them into an email to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I&rsquo;ll take it from there.</p>
+      <p class="note-line">Paste them into an email to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I&rsquo;ll take it from there.</p>
       <textarea id="rescue-text" readonly aria-labelledby="rescue-title"></textarea>
       <div class="rescue-row">
         <button class="copy" type="button" id="rescue-copy">Copy my answers</button>
@@ -291,29 +367,55 @@
   </div>
 
   <div class="done" id="done">
-    <h2 tabindex="-1">It's in my hands now. 🌱</h2>
-    <p>Thank you. This is exactly what I need to start. I'll read every word and be in
-       touch within a couple of days to set up our first real conversation.</p>
+    <h2 tabindex="-1">It’s in my hands now. 🌱</h2>
+    <p>Thank you. I’ll read every word and be in touch within a couple of days to set up our chat.</p>
+    <p><a href="welcome.html">Curious what happens after that? Here’s the whole path.</a></p>
   </div>
+</div></main>
 
-  <footer>Web Faery &middot; your answers go straight to Taya's inbox and nowhere else</footer>
-</div>
+<footer class="site-foot">
+  <div class="foot-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="quiz.html">Which build?</a></li>
+      <li><a href="intake.html" aria-current="page">Getting started</a></li>
+      <li><a href="domain.html">Web address guide</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Your answers go only to Taya (through a small email relay), and they’re never shared or sold.</p>
+  </div>
+</footer>
 
 <script>
+  document.getElementById('intake').hidden = false;
   var bookingBox = document.getElementById('wants-booking');
   var extra = document.getElementById('booking-extra');
   bookingBox.addEventListener('change', function () {
     extra.classList.toggle('show', bookingBox.checked);
   });
 
+  // A link like intake.html?plan=Mother&care=payg (from the quiz) picks the
+  // build (and care leaning) ahead of time. Only the three build names are accepted.
+  var BUILD_NAMES = ['Maiden', 'Mother', 'Crone'];
+  var CARE_NAMES = { care: 'Care', payg: 'Without care, $100 an hour' };
   var pickedPlan = '';
+  var pickedCare = '';
+  function choose(name, value) {
+    var box = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+    if (box) box.checked = true;
+  }
   try {
-    pickedPlan = new URLSearchParams(location.search).get('plan') || '';
+    var qs = new URLSearchParams(location.search);
+    var rawPlan = (qs.get('plan') || '').trim().toLowerCase();
+    BUILD_NAMES.forEach(function (n) { if (n.toLowerCase() === rawPlan) pickedPlan = n; });
+    pickedCare = CARE_NAMES[(qs.get('care') || '').trim().toLowerCase()] || '';
     if (pickedPlan) {
+      choose('build', pickedPlan);
       var pn = document.getElementById('plan-note');
-      pn.textContent = 'Starting with the ' + pickedPlan + ' plan. Lovely. Nothing is locked; we\u2019ll confirm the fit together.';
+      pn.textContent = 'Starting with ' + pickedPlan + '. Lovely. Nothing is locked; we’ll confirm the fit together.';
       pn.hidden = false;
     }
+    if (pickedCare) choose('care', pickedCare);
   } catch (e) {}
 
   function val(id) { return (document.getElementById(id).value || '').trim(); }
@@ -322,8 +424,14 @@
   // in #status is attached as its description while it's flagged.
   function markInvalid(id, bad) {
     var el = document.getElementById(id);
+    var hintId = el.getAttribute('data-hint') || '';
+    if (!el.hasAttribute('data-hint')) {
+      hintId = el.getAttribute('aria-describedby') || '';
+      el.setAttribute('data-hint', hintId);
+    }
     el.setAttribute('aria-invalid', bad ? 'true' : 'false');
-    if (bad) el.setAttribute('aria-describedby', 'status'); else el.removeAttribute('aria-describedby');
+    var described = (bad ? 'status ' : '') + hintId;
+    if (described.trim()) el.setAttribute('aria-describedby', described.trim()); else el.removeAttribute('aria-describedby');
   }
   ['f-name', 'f-what', 'f-email'].forEach(function (id) {
     document.getElementById(id).addEventListener('input', function () {
@@ -354,8 +462,10 @@
       '',
       'Who comes to them:', (val('f-who') || '(blank)'),
       '',
+      'Build leaning: ' + (checked('build') || '(blank)') + (pickedPlan ? ' (came from a ' + pickedPlan + ' link)' : ''),
       'Site should do: ' + (checked('does') || '(blank)'),
-      'Plan picked on the site: ' + (pickedPlan || 'none, came straight to the form'),
+      'On Google Maps: ' + (checked('google') || '(blank)'),
+      'After launch: ' + (checked('care') || '(blank)'),
     ];
     if (bookingBox.checked) {
       lines = lines.concat([
@@ -375,6 +485,7 @@
       '',
       'Photos: ' + (checked('photos') || '(blank)'),
       'Domain: ' + (val('f-domain') || '(blank)'),
+      'Hoping to launch by: ' + (val('f-when') || '(blank)'),
       '',
       'Sites they love / anything else:', (val('f-loves') || '(blank)'),
     ]);
@@ -394,7 +505,7 @@
       budget.textContent = chars(left) + ' of room left, shared across all your answers.';
       budget.className = 'budget' + (left < 400 ? ' near' : '');
     } else {
-      budget.textContent = 'That\u2019s ' + chars(-left) + ' more than the form can carry. Trim an answer or two, or press Send to get everything ready to copy into an email.';
+      budget.textContent = 'That’s ' + chars(-left) + ' more than the form can carry. Trim an answer or two, or press Send to get everything ready to copy into an email.';
       budget.className = 'budget over';
     }
     if (!rescue.hidden) rescueText.value = buildMessage();
@@ -416,7 +527,7 @@
       rescueText.select();
       var ok = false;
       try { ok = document.execCommand('copy'); } catch (e) {}
-      copyStatus.textContent = ok ? 'Copied!' : 'Couldn\u2019t copy it automatically. The text is selected, so copy it the usual way.';
+      copyStatus.textContent = ok ? 'Copied!' : 'Couldn’t copy it automatically. The text is selected, so copy it the usual way.';
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(rescueText.value).then(copied, byHand);
@@ -441,7 +552,7 @@
     }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('f-email'))) {
       markInvalid('f-email', true);
-      status.textContent = 'That email doesn\u2019t look quite right. Mind checking it?';
+      status.textContent = 'That email doesn’t look quite right. Mind checking it?';
       status.className = 'status err';
       document.getElementById('f-email').focus();
       return;
@@ -449,7 +560,7 @@
 
     var message = buildMessage();
     if (message.length > LIMIT) {
-      status.textContent = 'It\u2019s a little too long to send through the form, so everything you wrote is in the box below, ready to copy.';
+      status.textContent = 'It’s a little too long to send through the form, so everything you wrote is in the box below, ready to copy.';
       status.className = 'status err';
       showRescue();
       return;
@@ -476,7 +587,7 @@
       document.getElementById('form-side').style.display = 'none';
       var done = document.getElementById('done');
       done.classList.add('show');
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: done.getBoundingClientRect().top + window.scrollY - 40 });
       done.querySelector('h2').focus({ preventScroll: true });
     }).catch(function () {
       btn.disabled = false;

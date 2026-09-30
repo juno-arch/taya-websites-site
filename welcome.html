@@ -3,172 +3,298 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Welcome aboard &middot; Web Faery</title>
+<title>What happens next &middot; Web Faery</title>
 <meta name="robots" content="noindex">
+<meta name="description" content="The whole path from hello to a live site: each step, what I’ll need from you, and what you pay and when.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webfaery.love/welcome.html">
+<meta property="og:site_name" content="Web Faery">
+<meta property="og:title" content="What happens next: from hello to a live site">
+<meta property="og:description" content="Each step, the few things I’ll need from you, and what you pay and when. No surprises.">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What happens next: from hello to a live site">
+<meta name="twitter:description" content="Each step, the few things I’ll need from you, and what you pay and when. No surprises.">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
+<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="pages.css">
 <style>
-  :root {
-    color-scheme: light;
-    --paper: #f3eee4; --paper-2: #eae3d4; --card: #f8f4ea;
-    --ink: #2e2433; --ink-soft: #6a5e72; --hairline: #ddd2c2;
-    --plum: #6d2b56; --plum-deep: #521f41; --moss: #7e6428;
-    --on-plum: #f8ecf3; --focus: #6d2b56;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-      --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-      --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-      --on-plum: #2a1224; --focus: #d08cc0;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --paper: #171221; --paper-2: #110d19; --card: #211a2e;
-    --ink: #e8e1d6; --ink-soft: #a99db4; --hairline: #3a3048;
-    --plum: #d08cc0; --plum-deep: #e0a8d0; --moss: #c9a35c;
-    --on-plum: #2a1224; --focus: #d08cc0;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65;
-  }
-  .wrap { max-width: 680px; margin: 0 auto; padding: 26px 22px 90px; }
-  .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
-  .brand span { color: var(--plum); }
-
-  .head { padding-block: 40px 8px; }
-  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 6vw, 44px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
-  h1 em { font-style: normal; color: var(--plum); }
-  .lede { color: var(--ink-soft); margin: 16px 0 0; max-width: 34em; }
-
-  section.card {
-    background: var(--card); border: 1px solid var(--hairline); border-radius: 14px;
-    padding: 26px 26px 28px; margin-top: 24px;
-  }
-  .kicker {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); display: block; margin-bottom: 8px;
-  }
-  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 22px; margin: 0 0 12px; }
+  .intro-line { margin: 34px 0 0; font-size: 19px; }
 
   /* timeline */
-  .tl { display: grid; gap: 0; margin-top: 4px; }
-  .tl-step { display: grid; grid-template-columns: 30px 1fr; gap: 14px; }
+  .tl { display: grid; margin: 6px 0 0; padding: 0; list-style: none; counter-reset: step; }
+  .tl-step { display: grid; grid-template-columns: 34px 1fr; gap: 14px; counter-increment: step; }
   .tl-dot { display: flex; flex-direction: column; align-items: center; }
   .tl-dot i {
-    width: 12px; height: 12px; border-radius: 50%; background: var(--plum); flex-shrink: 0; margin-top: 7px;
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+    display: grid; place-items: center; font-style: normal;
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 15px;
+    background: var(--plum); color: var(--on-plum);
   }
-  .tl-dot::after { content: ""; flex: 1; width: 2px; background: var(--hairline); margin-top: 4px; }
+  .tl-dot i::before { content: counter(step); }
+  .tl-dot::after { content: ""; flex: 1; width: 2px; background: var(--moss-line); margin-top: 6px; }
   .tl-step:last-child .tl-dot::after { display: none; }
-  .tl-step .body { padding-bottom: 22px; }
-  .tl-step b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; }
-  .tl-step p { margin: 4px 0 0; font-size: 16.5px; color: var(--ink-soft); }
-
-  ul.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  ul.list li { padding-left: 26px; position: relative; font-size: 16.5px; }
-  ul.list li::before { content: "\2713"; position: absolute; left: 0; color: var(--plum); font-weight: 700; }
-  ul.list li small { display: block; color: var(--ink-soft); font-size: 14.5px; }
-  ul.list.never li::before { content: "\2717"; color: var(--ink-soft); }
-
-  .yours { border: 2px solid var(--plum); }
-  .promise {
-    margin-top: 24px; font-family: 'Newsreader', Georgia, serif; font-style: italic;
-    font-size: 19px; color: var(--plum); border-left: 3px solid var(--plum); padding-left: 18px; max-width: 30em;
+  .tl-step .body { padding-bottom: 24px; }
+  .tl-step:last-child .body { padding-bottom: 0; }
+  .tl-step b { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3; text-wrap: balance; }
+  .tl-step .when {
+    display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--moss); margin-top: 2px;
   }
-  footer { margin-top: 50px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-align: center; }
-  footer a { color: var(--plum); }
+  .tl-step p { margin: 6px 0 0; font-size: 16.5px; color: var(--ink-soft); }
+
+  .ready { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .ready div {
+    background: var(--paper); border: 1px solid var(--hairline); border-radius: 12px;
+    padding: 14px 12px; text-align: center;
+  }
+  .ready b { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; }
+  .ready b .moon { margin-right: 6px; }
+  .ready span { font-size: 15.5px; color: var(--ink-soft); }
+  .ready + .note { margin-top: 10px; }
+
+  ul.checks.money-list { margin-top: 16px; }
+
+  /* the two links under the money card: one per line, each a comfortable tap */
+  .more-links { list-style: none; margin: 10px 0 0; padding: 0; }
+  .more-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 16.5px; }
+
+  /* the sun in this photo sits where the small capitals go on narrow phones: slide it aside there */
+  .page-hero .photo { object-position: 70% 40%; }
+  @media (max-width: 400px) { .page-hero .photo { object-position: 22% 40%; } }
+
+  .promise {
+    margin: 24px 0 0; font-style: italic; font-size: 19px; color: var(--plum);
+    border-left: 3px solid var(--plum); padding-left: 18px; max-width: 30em;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+  @media (max-width: 560px) {
+    .ready { grid-template-columns: 1fr; }
+    .ready div { display: flex; justify-content: space-between; align-items: baseline; text-align: left; gap: 10px; }
+    .ready b { display: inline; }
+  }
+  @media (max-width: 420px) {
+    .card { padding: 22px 20px 24px; }
+    .cta-row .btn { flex: 1 1 100%; }
+  }
+  @media (max-width: 380px) {
+    .card { padding: 20px 16px 22px; }
+    .tl-step { grid-template-columns: 26px 1fr; gap: 10px; }
+    .tl-dot i { width: 26px; height: 26px; font-size: 14px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="brand" href="index.html">Web <span>Faery</span></a>
-
-  <div class="head">
-    <h1>Welcome <em>aboard.</em></h1>
-    <p class="lede">Here's the whole journey from here to your site being live: what I'm doing,
-       the few things I'll need from you, and what lands in your hands at the end.
-       No surprises, no homework you didn't sign up for.</p>
+<header class="page-hero">
+  <picture><source type="image/webp" srcset="images/forest-800.webp 800w, images/forest-1200.webp 1200w, images/forest.webp 1600w" sizes="100vw"><img class="photo" src="images/forest.jpg" srcset="images/forest-1200.jpg 1200w, images/forest.jpg 1600w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></picture>
+  <div class="bar">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
+  <div class="words">
+    <span class="eyebrow">What happens next</span>
+    <h1>From hello to <em>a live site.</em></h1>
+    <p class="lede">Here’s the whole path: what I do, the few things I’ll need from you, what it
+       costs and when. No surprises, and no homework you didn’t sign up for.</p>
+  </div>
+</header>
+<script>
+  (function () {
+    var h = document.querySelector('.page-hero');
+    if (!h || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ph = h.querySelector('.photo');
+    h.classList.add('wait');
+    // play the intro only once the photo has fully arrived; if it's still on its way after
+    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
+    var settled = false;
+    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
+    var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
+    var ready = function () { if (ph.decode) ph.decode().then(go, go); else go(); };
+    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
+      });
+    }, { passive: true });
+  })();
+</script>
 
-  <section class="card">
+<main class="gutter"><div class="wrap">
+
+  <section class="card reveal" aria-labelledby="t-path">
     <span class="kicker">The path</span>
-    <h2>What happens now</h2>
-    <div class="tl">
-      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
-        <b>I build your draft</b>
-        <p>Within about a week you get a link to a real, working version of your site,
-           not a sketch. It'll already sound like you, because it's grown from our conversation.</p>
-      </div></div>
-      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
-        <b>You react, I shape</b>
-        <p>You tell me what's off, by email or with comments right on the page. We go back and forth until it feels like home.</p>
-      </div></div>
-      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
-        <b>The dress rehearsal</b>
-        <p>If your site takes bookings or payments, you and I test everything with pretend
-           clients first. You'll book a fake appointment from your own phone and watch it
-           land in your booking book. Nothing goes public until you've driven it yourself.</p>
-      </div></div>
-      <div class="tl-step"><div class="tl-dot"><i></i></div><div class="body">
-        <b>We go live</b>
-        <p>Your site opens at your own web address. I watch it closely the first couple of
-           weeks, then we settle into whichever care plan you chose.</p>
-      </div></div>
+    <h2 id="t-path">The whole path, step by step</h2>
+    <ol class="tl" role="list">
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>A yes, in writing</b><span class="when">Before anything starts</span>
+        <p>I send a one-page agreement in plain words: what we’re building, the price, and these
+           steps. You approve it by email. Half the build reserves your spot (card or bank transfer).</p>
+      </div></li>
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>Your content, and a <span class="nowrap">45-minute</span> chat</b><span class="when">The clock starts here</span>
+        <p>We talk, and I write your words from it. You send photos, or we pick free stock photos
+           you can keep. The build clock starts the day all your content is in. If it isn’t in 30 days
+           after you say yes, I’ll nudge you gently; at 60 days the project closes so my calendar stays
+           fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back
+           up within a year, it counts toward finishing. Life happens; just tell me.</p>
+      </div></li>
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>A draft in about a week</b><span class="when">About a week after content</span>
+        <p>You get a private link to a real, working version of your site, not a sketch. It’ll
+           already sound like you, because it grew from our chat.</p>
+      </div></li>
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>Two rounds of changes</b><span class="when">By email</span>
+        <p>Each round is one email with everything you’d like changed, all in one place. Two rounds
+           is usually plenty; more rounds are priced like any change (<span class="nowrap">$100 an hour</span>), and I’ll tell you the price first. If your site books or sells, we also
+           test it all with pretend clients first: you book a fake appointment from your own phone and <span class="nowrap">watch it land</span>.</p>
+      </div></li>
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>Launch</b><span class="when">The second half is due</span>
+        <p>Your site goes live at your own web address, and you get your one-page “Your site” sheet.
+           The second half of the build is due at launch.</p>
+      </div></li>
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>30 days of settling in</b><span class="when">Tweaks on me</span>
+        <p>Tweaks for the first 30 days are included. After that it’s care or pay as you go,
+           whichever you chose (more on that below). Care billing starts after your 30 days of
+           settling in, not at launch.</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="card reveal" aria-labelledby="t-ready">
+    <span class="kicker">Ready in</span>
+    <h2 id="t-ready">How long it takes</h2>
+    <p class="soft">Counted from the day all your content is in, not from the day we first talk.</p>
+    <div class="ready">
+      <div><b><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="8.2" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wax)"/></svg>Maiden</b> <span>about 2 weeks</span></div>
+      <div><b><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" fill="currentColor"/></svg>Mother</b> <span>about 3 weeks</span></div>
+      <div><b><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="15.8" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wan)"/></svg>Crone</b> <span>about 4 weeks</span></div>
     </div>
   </section>
 
-  <section class="card">
+  <section class="card reveal" aria-labelledby="t-part">
     <span class="kicker">Your part</span>
-    <h2>The few things I'll need from you</h2>
-    <ul class="list">
-      <li>Your words, when you have them
-        <small>Changes, corrections, the story in your voice. Write them out in an email whenever they come to you.</small></li>
+    <h2 id="t-part">The few things I’ll need from you</h2>
+    <ul class="checks">
+      <li>Your answers and our chat
+        <small>The <a href="intake.html">getting-started questions</a>, then about 45 minutes of talking. I do the writing.</small></li>
       <li>Photos of you and your work
-        <small>Yours or a friend's. Good window light and a steady hand go further than you'd think, and I'll help you choose.</small></li>
-      <li>Your web address: gift-wrapped
-        <small>I register it, point it at your site, and cover the first year as part of the build. Claim it into your own name whenever you like (<a href="domain.html">here's the little ritual</a>, about ten minutes), or let me keep tending it, renewal included in your plan. Either way it's yours, in writing, forever.</small></li>
-      <li>If you take payments: your own payment account
-        <small>Ten minutes, together. Your clients' money must flow straight to you. It never touches me.</small></li>
+        <small>Yours or a friend’s. Good window light goes further than you’d think. Or free stock photos you can keep.</small></li>
+      <li>Changes by email
+        <small>One email per round, with everything in it. It keeps nothing from slipping through the cracks.</small></li>
       <li>If you take bookings: your session types, prices, hours, and how close to a session someone may cancel
-        <small>Four small decisions. I set up everything else.</small></li>
+        <small>Four small decisions. I set up everything else in your own booking account.</small></li>
+      <li>If you take payments: your own payment account
+        <small>We sign you up together in about ten minutes (the payment company may take a day or two to verify it). Your clients’ money goes straight to you, never through me.</small></li>
     </ul>
   </section>
 
-  <section class="card yours">
+  <section class="card reveal" aria-labelledby="t-money">
+    <span class="kicker">Money, plainly</span>
+    <h2 id="t-money">What you pay, and when</h2>
+    <p>The build is paid once: half to start (it holds your spot), half at launch. Card or bank transfer.</p>
+    <p>After launch, care is $69 a month (or $690 a year) and I make your changes whenever you ask,
+       or skip it and pay as you go: <span class="nowrap">$100 an hour</span>, and I’ll give you the price before I&nbsp;start. Your only other cost is your web address, about $12 a year.
+       Just pick one by launch, because it decides where your web address lives.</p>
+    <ul class="checks money-list">
+      <li>With care
+        <small>I reply within 2 business days. Your web address, email from your own address and the newsletter
+          tool (up to 1,000 subscribers) are covered. Billing starts after your 30 days of settling in, not at launch.
+          Cancel anytime; your site stays yours.</small></li>
+      <li>Without care
+        <small>$100 an hour: send me one email with everything you’d like changed, and I’ll reply with a price before
+          I&nbsp;start. Most small changes come to about <span class="nowrap">$25 to $50</span>. Your web address moves into your own account at launch.</small></li>
+      <li>Either way
+        <small>Anything big, like a new page, I’ll quote first and start once you say yes. Fixes for anything
+          I got wrong are always free.</small></li>
+    </ul>
+    <p class="soft">Founding clients get half off the build, and care locked at $49 a month (or $490 a year).
+       Hosting is free, forever. If that ever changed, I’d move your site for free.</p>
+    <ul class="more-links">
+      <li><a href="index.html#costs">Optional extras</a></li>
+      <li><a href="domain.html">How your web address works</a></li>
+    </ul>
+    <p class="note">My prices are fixed; other companies’ prices are estimates as of September 2026.</p>
+  </section>
+
+  <section class="card yours reveal" aria-labelledby="t-hands">
     <span class="kicker">The handover</span>
-    <h2>What lands in your hands</h2>
-    <ul class="list">
-      <li>Your live site, at your address</li>
-      <li>A login to your own booking book (if you have booking)
-        <small>Change your hours, block off a vacation, see your week, all from your phone, no website edits ever.</small></li>
-      <li>Your site's ingredients, on one page
-        <small>Your exact colors, fonts, and wordmark, so flyers, cards, and posts can always match your site.</small></li>
+    <h2 id="t-hands">What lands in your hands</h2>
+    <ul class="checks">
+      <li>Your live site, at your own web address
+        <small>Without care, the address moves into your own Porkbun account at launch. With care, I hold it for you, with you listed as the legal owner.</small></li>
+      <li>Your one-page “Your site” sheet
+        <small>What lives where, which logins are yours, your exact colors and fonts (so flyers and cards can match), and how to reach me.</small></li>
+      <li>A login to your own booking account, if you have booking
+        <small>Change your hours, block off a vacation, see your week, all from your phone.</small></li>
       <li>Every account that should be yours, in your name
-        <small>Domain and payments, with the passwords in your hands.</small></li>
-      <li>The standing promise: if we ever part ways, everything comes with you
-        <small>Every file, handed over whole. That's the deal, in writing, forever.</small></li>
+        <small>Payments and booking always live in your own accounts, with the passwords in your hands.</small></li>
+      <li>The site itself
+        <small>It’s yours. That’s the deal, in writing.</small></li>
     </ul>
   </section>
 
-  <section class="card">
+  <section class="card reveal" aria-labelledby="t-never">
     <span class="kicker">And breathe</span>
-    <h2>What you never have to do</h2>
-    <ul class="list never">
-      <li>Learn code, hosting, or any tech vocabulary</li>
-      <li>Create accounts on platforms you don't care about
-        <small>Only two accounts are truly yours to hold: your web address and (if you take money) your payment account. Everything else lives under my roof, included in your plan.</small></li>
-      <li>Keep the machinery running. That's my whole job</li>
-      <li>Wonder what's happening. You can always just ask me, in person-words</li>
+    <h2 id="t-never">What you never have to do</h2>
+    <ul class="checks never">
+      <li>Learn code, hosting, or any <span class="nowrap">tech vocabulary</span></li>
+      <li>Write about yourself from a blank page</li>
+      <li>Keep the machinery running</li>
+      <li>Wonder what’s happening. You can always just ask me, in plain words</li>
     </ul>
-    <p class="promise">"You don't need to decide anything technical. Tell me how you work,
-       and it'll be built around that."</p>
+    <p class="promise">You don’t need to decide anything technical. Tell me how you work,
+       and it’ll be built around that.</p>
   </section>
 
-  <footer>Web Faery &middot; <a href="index.html">webfaery.love</a></footer>
-</div>
+  <div class="cta-row">
+    <a class="btn" href="intake.html"><span>Answer the <span class="nowrap">getting-started</span> questions</span></a>
+    <a class="btn secondary" href="mailto:taya@webfaery.love">Email me</a>
+  </div>
+</div></main>
+
+<footer class="site-foot">
+  <div class="foot-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="quiz.html">Which build?</a></li>
+      <li><a href="intake.html">Getting started</a></li>
+      <li><a href="domain.html">Web address guide</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
+  </div>
+</footer>
+
+<script>
+  // gentle fade-up for cards below the fold; the page is fully readable without it
+  (function () {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var show = function (entries, obs) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
+      });
+    };
+    var io = new IntersectionObserver(show, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    // tall cards start as soon as their top edge is in view, so they never leave an empty gap
+    var ioTall = new IntersectionObserver(show, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.92) { el.classList.add('pre'); (r.height > window.innerHeight * 0.8 ? ioTall : io).observe(el); }
+    });
+  })();
+</script>
 </body>
 </html>
