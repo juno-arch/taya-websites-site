@@ -100,7 +100,7 @@ const FORBIDDEN = [/\$444/, /\$666/, /\$888/, /\$22\b/, /\$44\b/, /\$66\b/, /\$1
   /extra time/i, /\$(?!100 an hour)\d[\d,.]* an hour/, /per hour/i, /by the minute/i, /a round\b/i, /seasonal check/i,
   /(?<!\$25 to )\$50 (?:a change|each|a round)/, /\ba change\b[^.]{0,30}\bone email\b/i, /counts? as one change/i, /\$\d+\.\d/,
   /equinox/i, /solstice/i, /four times a year/i, /subscription/i, /\btrad(?:e|es|ed|ing)\b/i,
-  /founding spots last/i, /Care, \$49/, /\bon call\b/i, /—/, /–/, /&mdash;/, /&ndash;/, /2\.9%/, /\$-/, /NaN|undefined/];
+  /founding spots last/i, /Care, \$35/, /\bon call\b/i, /—/, /–/, /&mdash;/, /&ndash;/, /2\.9%/, /\$-/, /NaN|undefined/];
 const visible = html
   .replace(/<script[\s\S]*?<\/script>/g, (m) => (m.includes('quiz-logic') ? m.replace(/\/\/.*$/gm, '') : ''))
   .replace(/<style[\s\S]*?<\/style>/g, '')
@@ -108,7 +108,7 @@ const visible = html
 const failures = [];
 for (const re of FORBIDDEN) if (re.test(visible)) failures.push(`quiz.html contains ${re}`);
 // founding clients' care price, both ways, and never the founding count (it lives only on the main page)
-if (!/\$49 a month \(or \$490 a year\)/.test(visible)) failures.push('quiz.html: the founding note lacks "$49 a month (or $490 a year)"');
+if (!/\$35 a month \(or \$350 a year\)/.test(visible)) failures.push('quiz.html: the founding note lacks "$35 a month (or $350 a year)"');
 if (/\b\d+ (?:founding spots? )?left\b/.test(visible)) failures.push('quiz.html: shows a founding count; keep it only on the main page');
 
 // ---- every combination of answers ----
@@ -165,7 +165,7 @@ combos.forEach((picks, n) => {
   if (!/Care is \$69 a month, or \$690 a year if you pay yearly/.test(because)) failures.push(`${tag}: the reason lacks the care price`);
   if (care === 'care') {
     if (!costs.includes('$69 a month, or $690 a year (two months free)')) failures.push(`${tag}: cost list lacks the care price`);
-    if (!costs.includes('Founding clients: $49 a month, or $490 a year')) failures.push(`${tag}: cost list lacks the founding care price`);
+    if (!costs.includes('Founding clients: $35 a month, or $350 a year')) failures.push(`${tag}: cost list lacks the founding care price`);
     if (!/I make your changes whenever you ask/.test(costs + points)) failures.push(`${tag}: care doesn't say changes come whenever you ask`);
     if (!/reply within 2 business days/.test(points)) failures.push(`${tag}: care points lack the reply time`);
     if (!/Anything big, like a new page, I’ll quote first/.test(points)) failures.push(`${tag}: care points don't say big jobs are quoted first`);

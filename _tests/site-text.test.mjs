@@ -9,13 +9,13 @@
 //   without care (changed Sep 29 evening, per Pollen): $100 an hour, and the price comes before I start: one email
 //     with everything in it, a price back, nothing starts until they say yes (never a running clock); most small
 //     changes come to about $25 to $50; anything big is quoted the same way;
-//   founding clients: half off the build, care locked at $49 a month or $490 a year, 5 spots through Dec 31, 2026.
+//   founding clients: half off the build, half off care, $35 a month or $350 a year, 5 spots through Dec 31, 2026.
 //
 // Fails (exit 1) if any page:
 //   - shows an old price or rule ($25 quick changes, 15 minutes, update sessions, an hour a month, rolling over,
 //     extra time, $100 a round, the flat $50 a change, "a change is one email"), an hourly rate other than
 //     $100 an hour, a running clock, "subscription", trades, the old update schedule, or a dash
-//   - shows care at anything but $69 a month / $690 a year ($49 / $490 only for founding clients)
+//   - shows care at anything but $69 a month / $690 a year ($35 / $350 only for founding clients)
 //   - talks about care without the $100 an hour and the price coming before I start, the reply time, or
 //     "quoted first" for big jobs (the main page also needs "price before I start", one email with everything
 //     in it, and the usual $25 to $50)
@@ -42,8 +42,8 @@ const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain
 const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html'];
 const CARE_MONTH = 69;
 const CARE_YEAR_PREPAID = 690;
-const FOUNDING_CARE = 49;
-const FOUNDING_CARE_YEAR = 490;
+const FOUNDING_CARE = 35;
+const FOUNDING_CARE_YEAR = 350;
 
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
 const failures = [];
@@ -90,12 +90,12 @@ for (const page of PAGES) {
     if (m) fail(`${page}: contains ${what}: "${text.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
   }
 
-  // $49 and $490 are only ever the founding clients' care price
-  for (const m of plain[page].matchAll(/\$49(?:0)?\b/g)) {
+  // $35 and $350 are only ever the founding clients' care price
+  for (const m of plain[page].matchAll(/\$35(?:0)?\b/g)) {
     const around = plain[page].slice(Math.max(0, m.index - 200), m.index + 40);
     if (!/founding/i.test(around)) fail(`${page}: ${m[0]} shown without "founding" nearby: "${around.slice(-120)}"`);
   }
-  // any care price next to the word care is $69 / $690 (or the founding $49 / $490)
+  // any care price next to the word care is $69 / $690 (or the founding $35 / $350)
   for (const m of plain[page].matchAll(/(?<!without |no |skip )\bcare(?: optional)?,? (?:is |at |stays |locked at )?\$(\d+)/gi)) {
     if (![CARE_MONTH, CARE_YEAR_PREPAID, FOUNDING_CARE, FOUNDING_CARE_YEAR].includes(+m[1])) fail(`${page}: care shown at $${m[1]}: "${m[0]}"`);
   }
@@ -114,9 +114,9 @@ for (const page of CARE_PAGES) {
   if (!/whenever you ask/.test(t)) fail(`${page}: doesn't say care means changes whenever you ask`);
   if (!/big[^.]{0,60}quote/i.test(t)) fail(`${page}: doesn't say anything big is quoted first`);
 }
-// founding clients: half off the build, care locked at $49 a month or $490 a year
+// founding clients: half off the build, half off care, $35 a month or $350 a year
 for (const page of ['index.html', 'quiz.html', 'intake.html', 'welcome.html']) {
-  if (!/\$49 a month/.test(plain[page]) || !/\$490 a year/.test(plain[page])) fail(`${page}: doesn't give the founding care price both ways ($49 a month, $490 a year)`);
+  if (!/\$35 a month/.test(plain[page]) || !/\$350 a year/.test(plain[page])) fail(`${page}: doesn't give the founding care price both ways ($35 a month, $350 a year)`);
 }
 if (!/half off the build/i.test(plain['index.html'])) fail('index.html: doesn’t say founding clients get half off the build');
 // the main page says the new no-care model the way Pollen put it: one email, a price before I start, $100 an hour,
