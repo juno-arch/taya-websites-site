@@ -196,3 +196,33 @@
   .fy-spark { display: none; }
 }
 @media print { .fy { display: none !important; } }
+
+/* ---------- the curl on her head: it moves with her mood ----------
+   It pivots from its root (bottom left of the curl). Gentle sway by default; each mood has its own little
+   move. With reduced motion it just holds a pose for the mood (perky, drooped, tilted), no movement */
+.fy-ahoge { transform-box: fill-box; transform-origin: 22% 100%; transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+@media (prefers-reduced-motion: no-preference) {
+  .fy .fy-ahoge { animation: fy-ah-sway 3.4s ease-in-out infinite; }
+  .fy[data-ex="happy"] .fy-ahoge, .fy[data-ex="giggle"] .fy-ahoge, .fy[data-ex="proud"] .fy-ahoge { animation: fy-ah-bounce .9s ease-in-out infinite; }
+  .fy[data-ex="surprised"] .fy-ahoge { animation: fy-ah-sproing .8s cubic-bezier(.3, 1.6, .5, 1) both; }
+  .fy[data-ex="sleepy"] .fy-ahoge { animation: fy-ah-droop 1.6s ease-out both; }
+  .fy[data-ex="blushing"] .fy-ahoge { animation: fy-ah-wiggle .7s ease-in-out infinite; }
+  .fy[data-ex="pouty"] .fy-ahoge { animation: fy-ah-twitch 1.4s steps(2) infinite; }
+  .fy[data-ex="thinking"] .fy-ahoge { animation: fy-ah-tilt 2.4s ease-in-out infinite; }
+  .fy[data-ex="flustered"] .fy-ahoge { animation: fy-ah-shake .28s linear infinite; }
+  .fy[data-ex="flying"] .fy-ahoge { animation: fy-ah-stream .6s ease-in-out infinite; }
+}
+@keyframes fy-ah-sway { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes fy-ah-bounce { 0%, 100% { transform: rotate(-4deg) scaleY(1); } 30% { transform: rotate(10deg) scaleY(1.12); } 60% { transform: rotate(-9deg) scaleY(.94); } }
+@keyframes fy-ah-sproing { 0% { transform: rotate(0) scaleY(.8); } 40% { transform: rotate(-6deg) scaleY(1.32); } 70% { transform: rotate(5deg) scaleY(1.18); } 100% { transform: rotate(0) scaleY(1.24); } }
+@keyframes fy-ah-droop { to { transform: rotate(58deg) scaleY(.92); } }
+@keyframes fy-ah-wiggle { 0%, 100% { transform: rotate(-10deg); } 25% { transform: rotate(12deg) scale(1.05); } 50% { transform: rotate(-12deg); } 75% { transform: rotate(10deg) scale(1.05); } }
+@keyframes fy-ah-twitch { 0%, 100% { transform: rotate(18deg) scaleY(.86); } 50% { transform: rotate(24deg) scaleY(.82); } }
+@keyframes fy-ah-tilt { 0%, 100% { transform: rotate(16deg); } 50% { transform: rotate(26deg); } }
+@keyframes fy-ah-shake { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+@keyframes fy-ah-stream { 0%, 100% { transform: rotate(-28deg); } 50% { transform: rotate(-20deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .fy[data-ex="happy"] .fy-ahoge, .fy[data-ex="proud"] .fy-ahoge, .fy[data-ex="surprised"] .fy-ahoge { transform: scaleY(1.18); }
+  .fy[data-ex="sleepy"] .fy-ahoge { transform: rotate(58deg) scaleY(.92); }
+  .fy[data-ex="thinking"] .fy-ahoge, .fy[data-ex="pouty"] .fy-ahoge { transform: rotate(20deg); }
+}

@@ -15,12 +15,13 @@
 
    REPLACING THE STAND-IN DRAWING WITH POLLEN'S (what to draw and export)
      Style: cute chibi anime, big head (about 1 : 1.3 head to body), huge sparkly eyes with two white
-     highlights each, the tiny ":3" cat mouth in every pose, rosy cheeks, pointy ears. Pink hair in a short,
+     highlights each, the tiny ":3" cat mouth in every pose, warm peach cheeks, pointy ears. Chanterelle-gold hair in a short,
      tousled pixie cut (a little volume, one curl and a few tufts on top, soft wispy bangs that leave her
      brows showing, short pointed wisps by the ears and at the nape, nothing past the jaw, no ponytail) with
      a golden mushroom clip. A moss green dress made of leaves: a zig-zag hem of pointed leaf tips all the
-     way around, every other leaf a shade deeper with a light vein, a leaf collar and little leaf points at
-     the sleeves. Little boots, see-through mint wings with gold edges. She sits on a tall golden toadstool:
+     way around, every other leaf a shade deeper with a light vein, a tier of bigger petal leaves from the waist, two
+     leaves crossing on the bodice, a leaf collar and two little leaves capping each shoulder (no puffed
+     sleeves). Bare feet (faeries don't wear shoes). See-through honey wings with pointed tips and gold edges. She sits on a tall golden toadstool:
      a round, spotted cap on a slim cream stem that ends in a soft rounded bottom (no grass, no ground).
      Draw everything on ONE canvas size, at least 1000 x 1300 px (10 : 13, same as the stand-in's
      100 x 130), and export each layer as its own transparent PNG. Because every file is the same canvas,
@@ -299,6 +300,7 @@
   function face(name, arm, move) {
     var f = (FACES[name] || FACES.neutral).split(' '), eyes = f[0];
     st.ex = name;
+    root.setAttribute('data-ex', name);   // the curl on her head reads this (faery.css)
     st.eyes = LOOK[eyes] ? 'open' : eyes;
     show('eyes', st.eyes); gaze(LOOK[eyes]); show('brows', f[1]); mouth(f[2]);
     if (st.pose !== 'fly') arms(arm || f[3]);
@@ -710,7 +712,8 @@
     var face = P('M28.6 43 C28.6 29.4 38 21.4 50 21.4 C62 21.4 71.4 29.4 71.4 43 C71.4 51.6 68.6 57.6 63.4 60.9 C59.4 63.4 54.8 64.3 50 64.3 C45.2 64.3 40.6 63.4 36.6 60.9 C31.4 57.6 28.6 51.6 28.6 43 Z', SK, 1.3);
     // the front: tufts on top, little flicks over the ears, pointed sideburns down to the cheeks, and a wispy
     // fringe that leaves her brows showing (open V over each brow, a few soft wisps between her eyes)
-    var ahoge = P('M47.6 11.4 C46.8 8.2 48.6 5.4 52 5 C54.6 4.8 56.2 6.4 55.6 8.4 C54.8 7 53.2 6.8 51.8 7.4 C50.2 8.2 49.6 9.8 50 11.6 Z', HA, 1.1);
+    // the curl on top lives in its own group so it can sway, bounce, droop and sproing with her mood (faery.css)
+    var ahoge = '<g class="fy-ahoge"><g transform="translate(48.8 11.6) scale(1.35) translate(-48.8 -11.6)">' + P('M47.6 11.4 C46.8 8.2 48.6 5.4 52 5 C54.6 4.8 56.2 6.4 55.6 8.4 C54.8 7 53.2 6.8 51.8 7.4 C50.2 8.2 49.6 9.8 50 11.6 Z', HA, 1.1) + '</g></g>';
     var bangs = ahoge + P('M30.6 53.8 C28.6 51 27 47.4 26.4 43.4 C25.2 41.8 23.8 40.4 22.2 39.4 C23.8 38.8 24.8 38.2 25.4 37.4 C24.8 28.8 28 21.8 33.6 17.4 ' +
         'C32.6 15.6 31.2 14.2 29.4 13.4 C33.6 11.4 37.6 11.2 41 12.2 C44.4 10.4 49.4 9.8 53.6 10.4 C57.6 10.8 61 11.8 63.6 13.4 ' +
         'C64.4 12.4 65.6 11.8 67 11.6 C66.4 13 66.4 14.4 66.8 15.8 C72.4 19.6 75.2 27 74.6 37.4 C75.2 38.2 76.2 38.8 77.8 39.4 C76.2 40.4 74.8 41.8 73.6 43.4 ' +
@@ -726,8 +729,9 @@
       P('M68.8 24.3 L69.2 26.8 L71.3 26.8 L71.7 24.3', '#f3e6cf', 0.75) + '</g>';
 
     /* ---- body ---- */
-    function boot(x, y, a) { return '<g transform="rotate(' + a + ' ' + x + ' ' + y + ')">' + P('M' + (x - 3) + ' ' + (y - 3.6) + ' L' + (x + 2.6) + ' ' + (y - 3.6) + ' L' + (x + 2.8) + ' ' + (y - 0.6) + ' C' + (x + 4.6) + ' ' + (y - 0.4) + ' ' + (x + 5.2) + ' ' + (y + 1.2) + ' ' + (x + 4.8) + ' ' + (y + 2.2) + ' C' + (x + 4.4) + ' ' + (y + 3.4) + ' ' + (x - 2.4) + ' ' + (y + 3.6) + ' ' + (x - 3.4) + ' ' + (y + 2.4) + ' C' + (x - 4) + ' ' + (y + 1.2) + ' ' + (x - 3.4) + ' ' + (y - 1.4) + ' ' + (x - 3) + ' ' + (y - 3.6) + ' Z', BO, 1) + P('M' + (x - 3.4) + ' ' + (y - 4.4) + ' L' + (x + 3) + ' ' + (y - 4.4) + ' L' + (x + 2.8) + ' ' + (y - 2.4) + ' L' + (x - 3.2) + ' ' + (y - 2.4) + ' Z', CR, 0.8) + S('M' + (x + 1.6) + ' ' + (y + 0.4) + ' C' + (x + 2.6) + ' ' + (y + 0.2) + ' ' + (x + 3.4) + ' ' + (y + 0.6) + ' ' + (x + 3.8) + ' ' + (y + 1.2), '#b0648f', 0.7) + '</g>'; }
-    var LF = '#4b9140';   // every other leaf of her dress, a shade deeper, so the hem reads as leaves and not a sawtooth
+    // bare feet (Pollen, Oct 1: "faeries don't wear shoes"): a little foot with a hint of toes, same place and turn the boots had
+    function boot(x, y, a) { return '<g transform="rotate(' + a + ' ' + x + ' ' + y + ')">' + P('M' + (x - 2.4) + ' ' + (y - 3.8) + ' L' + (x + 2.2) + ' ' + (y - 3.8) + ' C' + (x + 2.4) + ' ' + (y - 1.6) + ' ' + (x + 4.4) + ' ' + (y - 0.6) + ' ' + (x + 4.8) + ' ' + (y + 1) + ' C' + (x + 5.2) + ' ' + (y + 2.6) + ' ' + (x + 3.6) + ' ' + (y + 3.4) + ' ' + (x + 0.8) + ' ' + (y + 3.4) + ' C' + (x - 1.6) + ' ' + (y + 3.4) + ' ' + (x - 3) + ' ' + (y + 2.4) + ' ' + (x - 3) + ' ' + (y + 0.8) + ' C' + (x - 3) + ' ' + (y - 0.8) + ' ' + (x - 2.6) + ' ' + (y - 2.2) + ' ' + (x - 2.4) + ' ' + (y - 3.8) + ' Z', SK, 1) + S('M' + (x + 2.6) + ' ' + (y + 1.6) + ' L' + (x + 2.8) + ' ' + (y + 2.6) + ' M' + (x + 1.2) + ' ' + (y + 1.9) + ' L' + (x + 1.3) + ' ' + (y + 2.8), SKS, 0.6) + '</g>'; }
+    var LF = '#4a6a33';   // every other leaf of her dress, a shade deeper, so the hem reads as leaves and not a sawtooth
     function pt(p) { return num(p[0]) + ' ' + num(p[1]); }
     function bz(c, t) { var u = 1 - t; return [0, 1].map(function (k) { return u * u * u * c[0][k] + 3 * u * u * t * c[1][k] + 3 * u * t * t * c[2][k] + t * t * t * c[3][k]; }); }
     // one side of a leaf, from p to q, bowed outward a little so each point reads as a leaf
@@ -769,15 +773,23 @@
       limb('M52.4 89 C51.6 93.8 49 97.8 45.4 100.4', 4.6) + '<g transform="translate(86 0) scale(-1 1)">' + boot(43.6, 103.2, -52) + '</g>';
     // a leaf collar: one leaf each side of her neck, where the cream collar was
     function collar(v) { return leaf(49.6, 65.6, -68, 6.4, 4.6, DRL, v); }
-    var torso = P('M40.4 66 C39.8 69.6 39.4 72.2 38.6 75.6 L61.4 75.6 C60.6 72.2 60.2 69.6 59.6 66 C56 64.6 44 64.6 40.4 66 Z', DR, 1.15) +
-      P('M38.6 74 L61.4 74 L61.8 76.8 L38.2 76.8 Z', DRD, 0.9) + P('M47.6 73.8 C46 72.4 44.4 73.6 45 75.2 C45.6 76.6 47.4 76 48.6 75.4 Z M52.4 73.8 C54 72.4 55.6 73.6 55 75.2 C54.4 76.6 52.6 76 51.4 75.4 Z', '#f2b64f', 0.7) + E(50, 75, 1.3, 1.2, '#f2b64f', 0.7) +
-      collar(DRD) + '<g transform="translate(100 0) scale(-1 1)">' + collar(DRD) + '</g>';
+    // a tank top (Pollen, Oct 1): bare shoulders and upper chest, a gently scooped neckline, two thin leaf straps
+    var torso = P('M40.4 66 C39.8 69.6 39.4 72.2 38.6 75.6 L61.4 75.6 C60.6 72.2 60.2 69.6 59.6 66 C56 64.6 44 64.6 40.4 66 Z', SK, 1.15) +
+      P('M39.7 70.2 C43.2 71.6 47 72.2 50 72 C53 72.2 56.8 71.6 60.3 70.2 C60.6 72 61 73.8 61.4 75.6 L38.6 75.6 C39 73.8 39.4 72 39.7 70.2 Z', DR, 1.1) +
+      S('M42.6 70.9 C42.7 69 42.9 67.4 43.2 65.6 M57.4 70.9 C57.3 69 57.1 67.4 56.8 65.6', O, 2.5) + S('M42.6 70.9 C42.7 69 42.9 67.4 43.2 65.6 M57.4 70.9 C57.3 69 57.1 67.4 56.8 65.6', DR, 1.3) +
+      P('M38.6 74 L61.4 74 L61.8 76.8 L38.2 76.8 Z', DRD, 0.9) + P('M47.6 73.8 C46 72.4 44.4 73.6 45 75.2 C45.6 76.6 47.4 76 48.6 75.4 Z M52.4 73.8 C54 72.4 55.6 73.6 55 75.2 C54.4 76.6 52.6 76 51.4 75.4 Z', '#f2b64f', 0.7) + E(50, 75, 1.3, 1.2, '#f2b64f', 0.7);
     var neck = P('M46.8 61.6 L46.6 66.2 L53.4 66.2 L53.2 61.6 Z', SKS, 0.9);
-    var SLV = 'M35 68.4 C34.8 65.2 37.4 63.8 39.8 64.2 C42.4 64.6 43.4 66.8 42.8 69.2 C42.2 71.4 39.8 72.2 37.8 71.6 C36.2 71.1 35.1 70 35 68.4 Z';
-    var SLH = 'M37 66.6 C37.8 65.4 39.4 65.1 40.6 65.6';
-    // little leaf points at the cuff, tucked under the puff
-    var cuff = leaf(36.4, 69.6, -58, 4, 3, LF) + leaf(38.8, 70.6, -22, 4.2, 3.2, DR) + leaf(41.4, 70.2, 12, 3.4, 2.8, LF);
-    var sleeves = cuff + '<g transform="translate(100 0) scale(-1 1)">' + cuff + '</g>' + P(SLV, DR, 1.05) + P(mir(SLV), DR, 1.05) + S(SLH, DRL, 1.2) + S(mir(SLH), DRL, 1.2);
+    // shoulders: no puffed sleeves (too princessy), just two little leaves capping each shoulder, like a leaf-petal dress
+    var cap = leaf(41.2, 66.2, -64, 6.2, 4.2, DR, DRL) + leaf(40.4, 67.6, -28, 5.2, 3.4, LF, DRL);
+    var sleeves = '';   // tank top: no sleeves or shoulder caps
+    // the bodice: two leaves crossing over her chest
+    var bodice = leaf(44.6, 74.2, 132, 4.6, 3.4, DRL, DRD) + '<g transform="translate(100 0) scale(-1 1)">' + leaf(44.6, 74.2, 132, 4.6, 3.4, DRL, DRD) + '</g>';
+    // the skirt's top tier: big petal leaves fanning down from the waist over the zig-zag hem
+    function tier(turn) {
+      var L = [[42.2, 76.6, 26], [46, 77, 10], [50, 77.2, -2], [54, 77, -12], [57.8, 76.6, -26]], s = '';
+      L.forEach(function (l, i) { s += leaf(l[0], l[1], l[2] + turn, 13 - Math.abs(i - 2) * 1.1, 7, i % 2 ? LF : DR, DRL); });
+      return s;
+    }
 
     /* ---- arms: B = behind the head, F = in front of the face ---- */
     var REST = 'M38.8 68.4 C36.2 72.6 37.6 78 44 80.4';
@@ -800,16 +812,16 @@
       '<clipPath id="fy-eclip"><path d="' + SCL + '"/></clipPath><clipPath id="fy-sk"><path d="' + SITSK + '"/></clipPath><clipPath id="fy-fk"><path d="' + FLYSK + '"/></clipPath>';
     var head = '<g class="fy-head">' + hairBack + ears + neck + face + blush + eyes + brows + mouths + bangs + puff + clip + '</g>';
     var body = svg(
-      V('pose', 'sit', legsSit + sitSkirt) + V('pose', 'fly', legsFly + flySkirt) + torso + armsB + head + armsF + sleeves, defs);
+      V('pose', 'sit', legsSit + sitSkirt + tier(0)) + V('pose', 'fly', legsFly + flySkirt + tier(-28)) + torso + bodice + armsB + head + armsF + sleeves, defs);
 
     /* ---- wings: translucent mint with candle-gold edges ---- */
-    var WU = 'M47 66.4 C40.6 57.4 28.4 42.6 15.4 36.4 C8.8 33.2 4.4 37 5.6 43.2 C7.6 53.2 21.8 62.6 46.6 68.2 Z',
-      WL = 'M46.8 69 C38.6 70.8 25.8 75.8 18.6 83.4 C14.6 87.8 16.8 93.4 22.6 91.6 C31.4 88.8 40.8 80.4 47.6 71.2 Z',
-      WV = 'M46.4 67 C36.4 59.4 23.4 49.4 10.4 41 M30.4 54.6 C24 54.4 17.6 51.8 12.8 48 M46.8 70.4 C38.4 75.2 28.6 81.6 21.2 88 M32.8 78.6 C29.4 77.8 25.4 78.8 22.6 80.6';
+    var WU = 'M47 66.4 C41 55.6 27 41.4 5.2 33.6 C9.6 45.4 23.2 59.6 46.6 68.2 Z',
+      WL = 'M46.8 69 C38 71.6 26.4 78.8 15.4 93.2 C30 88.6 40.6 80.6 47.6 71.2 Z',
+      WV = 'M46.4 67 C36 58.6 23 46.6 9.6 36.6 M30.4 55.6 C25.4 54.2 20.4 50.6 15.6 45.4 M46.8 70.4 C37.6 76 27.6 83.6 18.8 90.6 M34 78.2 C31 80.2 28 82.8 25.4 86';
     function wing(side) {
       var m = side === 'R' ? mir : function (d) { return d; }, cx = side === 'R' ? 54 : 46;
       return svg(P(m(WU), 'url(#fy-wg' + side + ')') + P(m(WL), 'url(#fy-wg' + side + ')') + S(m(WU) + ' ' + m(WL), '#e3c27e', 1.15) + S(m(WV), '#f0dca0', 0.55, ' opacity=".85"') +
-        '<g fill="#fff" opacity=".85"><circle cx="' + num(side === 'R' ? 86 : 14) + '" cy="41.6" r=".8"/><circle cx="' + num(side === 'R' ? 79 : 21) + '" cy="49" r=".55"/><circle cx="' + num(side === 'R' ? 76 : 24) + '" cy="86" r=".6"/></g>',
+        '<g fill="#fff" opacity=".85"><circle cx="' + num(side === 'R' ? 86.4 : 13.6) + '" cy="39.6" r=".8"/><circle cx="' + num(side === 'R' ? 78 : 22) + '" cy="47.6" r=".55"/><circle cx="' + num(side === 'R' ? 76.6 : 23.4) + '" cy="86.4" r=".6"/></g>',
         '<radialGradient id="fy-wg' + side + '" gradientUnits="userSpaceOnUse" cx="' + cx + '" cy="68" r="44"><stop offset="0" stop-color="#e2c27f" stop-opacity=".92"/><stop offset=".5" stop-color="#efdfb9" stop-opacity=".7"/><stop offset="1" stop-color="#faf3e3" stop-opacity=".5"/></radialGradient>');
     }
 
