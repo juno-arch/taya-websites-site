@@ -28,6 +28,7 @@
     --accent: #83541a; --accent-deep: #6f4512;   
     --fill: #9b4a26; --on-fill: #fff8ee; --fill-hover: #86401f;   
     --rust: #9b4a26;
+    --slat: rgba(196, 140, 50, 0.07);
     --head-em: #9b4a26;   
     --blush: #ecd3c8;
     --hair: #d9cfbc;
@@ -224,7 +225,7 @@
 
   
   .you-note { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px 16px; align-items: start; margin-top: 28px; border: 1.5px dashed var(--accent); border-radius: 14px; padding: 18px 20px 18px 18px; color: var(--ink);
-    background: repeating-linear-gradient(-45deg, rgba(196, 140, 50, 0.07) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+    background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .you-note svg { color: var(--accent); margin-top: 3px; }
   .you-note p { font-size: 15.5px; }
   .you-note .label { margin-bottom: 6px; }
@@ -311,7 +312,7 @@
   .linkcard b { display: block; font-size: 15px; font-weight: 600; line-height: 1.35; }
   .linkcard small { display: block; font-size: 12.5px; color: var(--ink-soft); }
   .found-sec { padding-top: 48px; }
-  .found-wrap { border: 1.5px dashed var(--accent); border-radius: 14px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, rgba(196, 140, 50, 0.06) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .found-wrap { border: 1.5px dashed var(--accent); border-radius: 14px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14.5px; color: var(--ink-soft); font-style: italic; }
   .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--accent); color: var(--accent-deep); }
   .gbp { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
@@ -564,6 +565,11 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) section.dk-lite { background: var(--ground-2); } }
   :root[data-theme="dark"] section.dk-lite { background: var(--ground-2); }
   
+  .views-card, .status-panel, .vpanel, .pv-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border-style: dashed; border-width: 1.5px; }
+  .status-panel { border-bottom: 1.5px dashed var(--accent); }
+  .pv-note { border: 1.5px dashed var(--accent); border-radius: 10px; padding: 10px 14px; margin-top: 14px; }
+  
   .item .photo, .item h3 { cursor: pointer; }
   .item h3:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .pv-open { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; border-radius: inherit; }
@@ -607,8 +613,8 @@
   @media (prefers-reduced-motion: reduce) { .pv[open] { animation: none; } .pv-track { scroll-behavior: auto; } }
 
   
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #171615; --ground-2: #222120; --head-bg: #1b1a19; --band-bg: #121211; --hair: #353331; --blush: #222120; --tag-bg: #2e2321; --tag-line: #4a3a36; --ink-soft: #c2bcb2; } :root:not([data-theme="light"]) .band { --ground: #12201a; --ground-2: #1a2b23; --hair: #2b3f34; --tag-bg: #2a2422; --tag-line: #4a3a36; --on-fill: #12201a; --band-bg: #12201a; } :root:not([data-theme="light"]) footer { --ground: #121211; --ground-2: #1e1d1c; --hair: #353331; --tag-bg: #2e2321; --tag-line: #4a3a36; --on-fill: #121211; --band-bg: #121211; } :root:not([data-theme="light"]) .status-strip, :root:not([data-theme="light"]) .status-try { background: #1b1a19; border-color: #1b1a19; } }
-  :root[data-theme="dark"] { --ground: #171615; --ground-2: #222120; --head-bg: #1b1a19; --band-bg: #121211; --hair: #353331; --blush: #222120; --tag-bg: #2e2321; --tag-line: #4a3a36; --ink-soft: #c2bcb2; } :root[data-theme="dark"] .band { --ground: #12201a; --ground-2: #1a2b23; --hair: #2b3f34; --tag-bg: #2a2422; --tag-line: #4a3a36; --on-fill: #12201a; --band-bg: #12201a; } :root[data-theme="dark"] footer { --ground: #121211; --ground-2: #1e1d1c; --hair: #353331; --tag-bg: #2e2321; --tag-line: #4a3a36; --on-fill: #121211; --band-bg: #121211; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #171615; --ground-2: #222120; --head-bg: #1b1a19; --band-bg: #121211; --hair: #353331; --blush: #222120; --tag-bg: #2e2321; --tag-line: #4a3a36; --ink-soft: #c2bcb2; --slat: rgba(226, 182, 166, 0.06); } :root:not([data-theme="light"]) .band { --ground: #12201a; --ground-2: #1a2b23; --hair: #2b3f34; --tag-bg: #2a2422; --tag-line: #4a3a36; --on-fill: #12201a; --band-bg: #12201a; } :root:not([data-theme="light"]) footer { --ground: #121211; --ground-2: #1e1d1c; --hair: #353331; --tag-bg: #2e2321; --tag-line: #4a3a36; --on-fill: #121211; --band-bg: #121211; } :root:not([data-theme="light"]) .status-strip, :root:not([data-theme="light"]) .status-try { background: #1b1a19; border-color: #1b1a19; } }
+  :root[data-theme="dark"] { --ground: #171615; --ground-2: #222120; --head-bg: #1b1a19; --band-bg: #121211; --hair: #353331; --blush: #222120; --tag-bg: #2e2321; --tag-line: #4a3a36; --ink-soft: #c2bcb2; --slat: rgba(226, 182, 166, 0.06); } :root[data-theme="dark"] .band { --ground: #12201a; --ground-2: #1a2b23; --hair: #2b3f34; --tag-bg: #2a2422; --tag-line: #4a3a36; --on-fill: #12201a; --band-bg: #12201a; } :root[data-theme="dark"] footer { --ground: #121211; --ground-2: #1e1d1c; --hair: #353331; --tag-bg: #2e2321; --tag-line: #4a3a36; --on-fill: #121211; --band-bg: #121211; }
 </style>
 </head>
 <body>
@@ -752,7 +758,7 @@
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="jumpsuit"><span class="add-t">Add to bag</span><span class="vh">: Black tie waist jumpsuit</span></button></span></div></div>
       </article>
       <article class="item reveal" data-kind="handmade" data-model="aa" data-id="spoon">
-        <figure class="photo"><img src="images/spoon-clean.jpg" alt="A tiny carved wooden spoon held between fingers, on a soft cream background" width="588" height="876" loading="lazy" style="object-position:50% 45%"><span class="hangtag">tiny!</span></figure>
+        <figure class="photo"><img src="images/spoon-clean.jpg" alt="A tiny carved wooden spoon held between fingers, on a soft cream background" width="880" height="880" loading="lazy"><span class="hangtag">tiny!</span></figure>
         <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Tiny wooden spoon</h3><p class="item-note">Small batch, carved by hand.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="spoon"><span class="add-t">Add to bag</span><span class="vh">: Tiny wooden spoon</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="a tiny spoon">Ask about these<span class="vh">: Tiny wooden spoon</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Tiny wooden spoon (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
@@ -898,7 +904,7 @@
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="autumn"><span class="add-t">Add to bag</span><span class="vh">: Autumn fringe earrings</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the autumn fringe earrings">Ask about these<span class="vh">: Autumn fringe earrings</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Autumn fringe earrings (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
       <article class="item reveal" data-kind="handmade" data-model="aa" data-id="spoon">
-        <figure class="photo"><img src="images/spoon-clean.jpg" alt="A tiny carved wooden spoon held between fingers, on a soft cream background" width="588" height="876" loading="lazy" style="object-position:50% 45%"><span class="hangtag">tiny!</span></figure>
+        <figure class="photo"><img src="images/spoon-clean.jpg" alt="A tiny carved wooden spoon held between fingers, on a soft cream background" width="880" height="880" loading="lazy"><span class="hangtag">tiny!</span></figure>
         <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Tiny wooden spoon</h3><p class="item-note">Small batch, carved by hand.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="spoon"><span class="add-t">Add to bag</span><span class="vh">: Tiny wooden spoon</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="a tiny spoon">Ask about these<span class="vh">: Tiny wooden spoon</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Tiny wooden spoon (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
