@@ -19,9 +19,9 @@
      tousled pixie cut (a little volume, one curl and a few tufts on top, soft wispy bangs that leave her
      brows showing, short pointed wisps by the ears and at the nape, nothing past the jaw, no ponytail) with
      a golden mushroom clip. A moss green dress made of leaves: a zig-zag hem of pointed leaf tips all the
-     way around, every other leaf a shade deeper with a light vein, a tier of bigger petal leaves from the waist, two
-     leaves crossing on the bodice, a leaf collar and two little leaves capping each shoulder (no puffed
-     sleeves). Bare feet (faeries don't wear shoes). See-through honey wings with pointed tips and gold edges. She sits on a tall golden toadstool:
+     way around, every other leaf a shade deeper with a light vein, a tier of bigger petal leaves from the waist, a
+     sweetheart bodice of two leaf cups crossing in a V, bare shoulders with a small leaf capping each (no
+     puffed sleeves). Bare feet (faeries don't wear shoes). See-through honey wings with pointed tips and gold edges. She sits on a tall golden toadstool:
      a round, spotted cap on a slim cream stem that ends in a soft rounded bottom (no grass, no ground).
      Draw everything on ONE canvas size, at least 1000 x 1300 px (10 : 13, same as the stand-in's
      100 x 130), and export each layer as its own transparent PNG. Because every file is the same canvas,
@@ -773,17 +773,19 @@
       limb('M52.4 89 C51.6 93.8 49 97.8 45.4 100.4', 4.6) + '<g transform="translate(86 0) scale(-1 1)">' + boot(43.6, 103.2, -52) + '</g>';
     // a leaf collar: one leaf each side of her neck, where the cream collar was
     function collar(v) { return leaf(49.6, 65.6, -68, 6.4, 4.6, DRL, v); }
-    // a tank top (Pollen, Oct 1): bare shoulders and upper chest, a gently scooped neckline, two thin leaf straps
+    // the top, from Pollen's reference (Oct 1): a sweetheart bodice of two leaf cups that meet in a little dip at
+    // the middle and cross in a V, bare shoulders above it with a small leaf capping each one, and the leaf waistband
     var torso = P('M40.4 66 C39.8 69.6 39.4 72.2 38.6 75.6 L61.4 75.6 C60.6 72.2 60.2 69.6 59.6 66 C56 64.6 44 64.6 40.4 66 Z', SK, 1.15) +
-      P('M39.7 70.2 C43.2 71.6 47 72.2 50 72 C53 72.2 56.8 71.6 60.3 70.2 C60.6 72 61 73.8 61.4 75.6 L38.6 75.6 C39 73.8 39.4 72 39.7 70.2 Z', DR, 1.1) +
-      S('M42.6 70.9 C42.7 69 42.9 67.4 43.2 65.6 M57.4 70.9 C57.3 69 57.1 67.4 56.8 65.6', O, 2.5) + S('M42.6 70.9 C42.7 69 42.9 67.4 43.2 65.6 M57.4 70.9 C57.3 69 57.1 67.4 56.8 65.6', DR, 1.3) +
+      P('M39.8 69.6 C42 68.6 44.8 68.4 47 69.4 C48.2 70 49.4 70.8 50 71.6 C50.6 70.8 51.8 70 53 69.4 C55.2 68.4 58 68.6 60.2 69.6 C60.6 71.6 61 73.6 61.4 75.6 L38.6 75.6 C39 73.6 39.4 71.6 39.8 69.6 Z', DR, 1.1) +
+      S('M40.8 74.6 C42.4 72.4 44.8 70.6 47.8 70.4 M59.2 74.6 C57.6 72.4 55.2 70.6 52.2 70.4', DRL, 0.6, ' opacity=".9"') +
       P('M38.6 74 L61.4 74 L61.8 76.8 L38.2 76.8 Z', DRD, 0.9) + P('M47.6 73.8 C46 72.4 44.4 73.6 45 75.2 C45.6 76.6 47.4 76 48.6 75.4 Z M52.4 73.8 C54 72.4 55.6 73.6 55 75.2 C54.4 76.6 52.6 76 51.4 75.4 Z', '#f2b64f', 0.7) + E(50, 75, 1.3, 1.2, '#f2b64f', 0.7);
     var neck = P('M46.8 61.6 L46.6 66.2 L53.4 66.2 L53.2 61.6 Z', SKS, 0.9);
     // shoulders: no puffed sleeves (too princessy), just two little leaves capping each shoulder, like a leaf-petal dress
     var cap = leaf(41.2, 66.2, -64, 6.2, 4.2, DR, DRL) + leaf(40.4, 67.6, -28, 5.2, 3.4, LF, DRL);
-    var sleeves = '';   // tank top: no sleeves or shoulder caps
+    var shoulder = leaf(41.8, 66.4, -84, 6.4, 4.2, DR, DRL) + leaf(41.2, 67.4, -54, 5, 3.4, LF, DRL);
+    var sleeves = shoulder + '<g transform="translate(100 0) scale(-1 1)">' + shoulder + '</g>';   // no puffs: a small leaf cap on each shoulder
     // the bodice: two leaves crossing over her chest
-    var bodice = leaf(44.6, 74.2, 132, 4.6, 3.4, DRL, DRD) + '<g transform="translate(100 0) scale(-1 1)">' + leaf(44.6, 74.2, 132, 4.6, 3.4, DRL, DRD) + '</g>';
+    var bodice = leaf(46.4, 75.4, 150, 5.6, 3.4, DRL, DRD) + '<g transform="translate(100 0) scale(-1 1)">' + leaf(46.4, 75.4, 150, 5.6, 3.4, DRL, DRD) + '</g>';   // the two leaves crossing in a V where the cups meet
     // the skirt's top tier: big petal leaves fanning down from the waist over the zig-zag hem
     function tier(turn) {
       var L = [[42.2, 76.6, 26], [46, 77, 10], [50, 77.2, -2], [54, 77, -12], [57.8, 76.6, -26]], s = '';
