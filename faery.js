@@ -75,7 +75,7 @@
   var GREET = [
     'Oh! A visitor! Hi! I’m the help desk. Ask me anything, I might even know it ✨',
     'Hello hello! You found me. I’m on break, but a small one. What do you need?',
-    'Hi! I’m in charge of questions around here. Allegedly.',
+    'Hi! I’m Bramble, and I’m in charge of questions around here. Allegedly.',
     'Oh hi! Sorry, I was napping on this mushroom. How can I help? 😂'
   ];
   var CHIPS = [['How much?', 'how much is a website'], ['How long?', 'how long does it take'], ['Who are you?', 'who are you'],
@@ -101,12 +101,12 @@
         '(proud) Maiden is about 2 weeks, Mother about 3, Crone about 4, counted from when your content is in. [The steps →](how)',
         'You see a first draft in about a week, then two rounds of changes, then it goes live. I’d need a nap in between. [How it works →](how)',
         '(sleepy) About 2, 3 or 4 weeks, depending on the size. Taya is quick. I am... resting. [How it works →](how)'] },
-    who: { ex: 'giggle', keys: 'who are you|who are u|what r u|wat r u|what are u|your name|ur name|what are you|whats your name|who r u|who is this|who you|what do you do|where do you live',
-      say: ['(sleepy) Customer service! I’m on my ninth break today.',
-        '(proud) I’m Bramble. Or Fern. It changes with the moon. Today I’m Clover ✨',
-        'My name is Moonbeam Puddlesworth the Third. The first two were also me.',
-        'Names are for people with name tags. I lost mine in the moss. Call me Dewdrop for now 😂',
-        '(happy) I’m the faery who lives on this mushroom! Taya makes the websites. I make... vibes. [Meet Taya →](about)'] },
+    who: { ex: 'giggle', keys: 'bramble|who are you|who are u|what r u|wat r u|what are u|your name|ur name|what are you|whats your name|who r u|who is this|who you|what do you do|where do you live',
+      say: ['(sleepy) I’m Bramble, customer service! I’m on my ninth break today.',
+        '(proud) I’m Bramble! Like the blackberry kind: sweet, a little prickly, and I grow on you ✨',
+        'Bramble. Bramble Puddlesworth the Third, technically. The first two were also me.',
+        'I’m Bramble! I lost my name tag in the moss, so you’ll just have to trust me 😂',
+        '(happy) I’m Bramble, the faery who lives on this mushroom! Taya makes the websites. I make... vibes. [Meet Taya →](about)'] },
     taya: { ex: 'proud', keys: 'taya|who made|who built|who runs|owner|designer|developer|about|humboldt|where are you|location|local|arcata|eureka|california|team|agency|who is behind|just you|outside|anywhere|remote|far away|out of state|scam|legit|trust*',
       say: ['Taya! She tends gardens and builds websites here in Humboldt County, California. She’s the real deal. I’m the mascot. [Meet her →](about)',
         '(happy) Taya’s the one who actually knows things, and she writes back to every email herself. [Say hi →](email)',
@@ -161,7 +161,7 @@
         '(blushing) Oh, please sign it. Taya reads every note. I just look at the stamps. [The guestbook →](guestbook)',
         '(giggle) Remember guestbooks? I do. I’m very old. [Go sign it →](guestbook)'] },
     real: { ex: 'proud', keys: 'real|bot|robot|ai|chatgpt|gpt|human|alive|fake|computer|program|fairy|faery|chatbot|machine',
-      say: ['A bot?! I’m a faery. Obviously. Look at my wings ✨',
+      say: ['A bot?! I’m Bramble, a faery. Obviously. Look at my wings ✨',
         '(giggle) Am I real? I’m as real as a mushroom at midnight.',
         'Not a robot! Robots don’t take ninth breaks.'] },
     joke: { ex: 'giggle', keys: 'joke|jokes|funny|make me laugh|something funny|pun|puns',
@@ -264,15 +264,15 @@
     root.className = 'fy';
     root.innerHTML = '<div class="fy-dock">' +
       '<div class="fy-panel" role="dialog" aria-labelledby="fy-title" tabindex="-1" hidden>' +
-        '<div class="fy-top"><p class="fy-title" id="fy-title">Ask the faery <small>Customer service · on break</small></p>' +
-        '<button type="button" class="fy-shoo" aria-label="Shoo, hide the faery for this visit" title="Hide her for this visit">Shoo</button>' +
+        '<div class="fy-top"><p class="fy-title" id="fy-title">Ask Bramble <small>Customer service · on break</small></p>' +
+        '<button type="button" class="fy-shoo" aria-label="Shoo, hide Bramble for this visit" title="Hide her for this visit">Shoo</button>' +
         '<button type="button" class="fy-x" aria-label="Close"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button></div>' +
         '<div class="fy-log"></div><div class="fy-chips"></div>' +
         '<form class="fy-form"><label class="fy-sr" for="fy-q">Ask me anything</label>' +
         '<input id="fy-q" type="text" placeholder="Ask me anything" autocomplete="off" enterkeyhint="send" maxlength="400">' +
         '<button type="submit" aria-label="Send"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5"/></svg></button></form>' +
         '<p class="fy-sr" aria-live="polite"></p></div>' +
-      '<button type="button" class="fy-btn" aria-label="Ask the faery a question" aria-haspopup="dialog" aria-expanded="false">' +
+      '<button type="button" class="fy-btn" aria-label="Ask Bramble the faery a question" aria-haspopup="dialog" aria-expanded="false">' +
         layer('fy-mush', png && A.mushroom ? img(A.mushroom) : art.mushroom) +
         '<span class="fy-rig"><span class="fy-sway"><span class="fy-act">' +
           layer('fy-wl', png && A.wingLeft ? img(A.wingLeft) : art.wingL) + layer('fy-wr', png && A.wingRight ? img(A.wingRight) : art.wingR) +
