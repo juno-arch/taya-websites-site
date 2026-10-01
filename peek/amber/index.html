@@ -164,6 +164,9 @@
   .photo.arch { border-radius: 999px 999px 6px 6px / 46% 46% 6px 6px; }
   .photo.tall { aspect-ratio: 4 / 5; width: 100%; }
   .photo.square { aspect-ratio: 1; width: 100%; }
+  
+  .photo.reel { aspect-ratio: 3 / 4; }
+  .photo video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 
   section { padding-block: 84px; }
   section.alt { background: var(--ground-2); }
@@ -951,7 +954,7 @@
       <p>I want to honor my body the same way that I honor the seasons, including what I choose to cover it with. Not just for fashion&rsquo;s sake, but collecting things that truly awaken something in me. That&rsquo;s what I knot into every piece, and what I look for in every pile.</p>
       <p class="story-sig">Amber</p>
     </div>
-    <figure class="photo tall edge reveal"><img src="images/about-amber.jpg" alt="Amber in black and white, sitting on a wooden step stool in front of a draped backdrop" width="756" height="1008" loading="lazy"></figure>
+    <figure class="photo tall edge reveal reel"><video src="images/about-amber-reel.mp4" poster="images/about-amber-reel-poster.jpg" width="540" height="720" muted loop playsinline autoplay preload="metadata" aria-label="Amber's camera counts down three, two, one, then her black and white photo on a wooden step stool, with the words: My name is Amber. I'm 27 years young. And I dig through piles of pre-loved clothes, so you don't have to."></video></figure>
   </div>
 </section>
 
@@ -1596,6 +1599,14 @@
     addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
     if (vp && window.MutationObserver) new MutationObserver(soon).observe(vp, { attributes: true, subtree: true, childList: true });
     place();
+  })();
+</script>
+<script>
+  (function () {
+    var v = document.querySelector('.photo.reel video');
+    if (!v) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; return; }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }); }).observe(v);
   })();
 </script>
 </body>
