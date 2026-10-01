@@ -1839,5 +1839,34 @@
     paint();
   })();
 </script>
+
+<style id="wf-theme-dock">
+  
+  #theme-tab.theme-tab { position: fixed; left: 12px; right: auto; top: auto; bottom: calc(50px + env(safe-area-inset-bottom, 0px));
+    z-index: 22; margin: 0; border-radius: 999px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); transform: none; }
+  #theme-tab.theme-tab button:first-of-type { border-radius: 999px 0 0 999px; }
+  #theme-tab.theme-tab button:last-of-type { border-radius: 0 999px 999px 0; }
+  #theme-panel { display: none !important; }
+  @media print { #theme-tab.theme-tab { display: none; } }
+</style>
+<script>
+  (function () {   
+    var t = document.getElementById('theme-tab'); if (!t) return;
+    var c = getComputedStyle(t); t.style.borderTop = c.borderLeftWidth + ' solid ' + c.borderLeftColor;
+    t.title = 'Try light or dark. Tap your choice again to follow the phone.';
+    var vp = document.getElementById('vp') || document.getElementById('vp-pill'), q = false;
+    function place() {
+      q = false; t.style.bottom = '';
+      if (!vp || vp.hidden) return;
+      var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect();
+      if (!b.width || !b.height) return;
+      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8) + 'px';
+    }
+    function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
+    addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
+    if (vp && window.MutationObserver) new MutationObserver(soon).observe(vp, { attributes: true, subtree: true, childList: true });
+    place();
+  })();
+</script>
 </body>
 </html>
