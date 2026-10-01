@@ -735,7 +735,9 @@
   body { background: transparent; }
   body::before, body::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
   
-  body::before { background: linear-gradient(var(--satin-veil), var(--satin-veil)), url(images/silk-bg.jpg) center / cover no-repeat; }
+  body::before { background: url(images/satin-light.jpg) center / cover no-repeat; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body::before { background-image: url(images/satin-dark.jpg); } }
+  :root[data-theme="dark"] body::before { background-image: url(images/satin-dark.jpg); }
   body::after { left: -60%; right: -60%; background: linear-gradient(112deg, transparent 38%, var(--satin-sheen) 47%, transparent 56%);
     animation: satin-drift 32s ease-in-out infinite alternate; will-change: transform; }
   @keyframes satin-drift { from { transform: translateX(-22%); } to { transform: translateX(22%); } }
@@ -749,6 +751,17 @@
     background: radial-gradient(120% 80% at 20% 0%, rgba(94, 207, 166, 0.12), transparent 60%),
       repeating-linear-gradient(116deg, transparent 0 80px, rgba(94, 207, 166, 0.07) 130px, transparent 190px, rgba(0, 0, 0, 0.22) 250px, transparent 310px); }
   @media print { body::before, body::after, .band::before { display: none; } }
+
+  
+  :root { --card-bg: rgba(250, 252, 250, 0.93); --card-shadow: 0 12px 34px rgba(8, 40, 28, 0.10); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --card-bg: rgba(13, 24, 20, 0.9); --card-shadow: 0 12px 34px rgba(0, 0, 0, 0.35); } }
+  :root[data-theme="dark"] { --card-bg: rgba(13, 24, 20, 0.9); --card-shadow: 0 12px 34px rgba(0, 0, 0, 0.35); }
+  .satin-card, .sched-head, #about .measure, .gift-intro, .faq-head, .faq-list, #first .intake {
+    background: var(--card-bg); border: 1px solid var(--hair); border-radius: 22px; padding: clamp(18px, 4vw, 30px); box-shadow: var(--card-shadow); }
+  .satin-card { margin-bottom: 24px; }
+  .band .satin-card, .classes-sec .satin-card { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
+  .satin-card > :last-child, .sched-head > :last-child { margin-bottom: 0; }
+  #words .wrap > .label { display: inline-flex; background: var(--card-bg); border: 1px solid var(--hair); border-radius: 999px; padding: 8px 14px; box-shadow: var(--card-shadow); }
 </style>
 </head>
 <body>
@@ -845,9 +858,11 @@
       <span class="sample-tag">Sample photo</span>
     </figure>
     <div>
+      <div class="satin-card">
       <p class="label">Classes</p>
       <h2 class="reveal">Up off the ground, <em>at your own pace</em></h2>
       <p class="measure" style="margin-top:18px;color:var(--ink-soft)">Aerial classes taught in small groups, so nobody gets lost in the back. You don&rsquo;t need to be strong or bendy to start. Everyone starts low, and climbs when they&rsquo;re ready.</p>
+      </div>
       <div class="split">
         <div class="reveal who kids">
           <span class="age">Kids</span>
@@ -879,9 +894,11 @@
   <div class="wrap">
     <div class="sched-head">
       <div>
+        <div class="satin-card">
         <p class="label with-pill"><span>This week</span> <span class="tag" data-go="maiden">Every build</span></p>
         <h2 class="reveal">The <em>class schedule</em>, always current</h2>
         <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Classes run in sessions. Drop in where there&rsquo;s room, or sign up for the whole session. The week below is a sample: your real classes and times go here.</p>
+        </div>
       </div>
       <p class="sched-week reveal">Week of <b id="week-of">this week</b></p>
     </div>
@@ -942,9 +959,11 @@
 <section id="signup" class="gutter">
   <div class="wrap">
     <div data-show="crone all" data-fold data-thing="class sign-up that runs itself">
+    <div class="satin-card">
     <p class="label with-pill"><span>Sign up</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Save your spot <em>in a class</em></h2>
     <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Pick a class, pick a day, and you&rsquo;re in. No texting back and forth, and it works at 11 pm when people finally sit down to plan their week. Give it a try:</p>
+    </div>
 
     <div class="bk">
       <div class="bk-main">
@@ -997,9 +1016,11 @@
 
     
     <div class="bk-alt" data-show="mother" data-fold data-thing="Sign up button" tabindex="-1" hidden>
+      <div class="satin-card">
       <p class="label with-pill"><span>Sign up</span> <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       <h2>Save your spot <em>in a class</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">See this week&rsquo;s classes above, then save your spot online, any time of day.</p>
+      </div>
       <div class="cta-row"><button type="button" class="btn" id="bn-go">Sign up<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></button></div>
       <p class="hint" id="bn-hint" role="status"></p>
       <p class="demo-note">With Mother, this button opens the sign-up app you already use (or a simple text link, if you&rsquo;d rather keep enrolling by text).</p>
@@ -1007,9 +1028,11 @@
 
     
     <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
+      <div class="satin-card">
       <p class="label with-pill"><span>To enroll</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2>Call, text <em>or email</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Text or call Tawnie at <a class="tel" href="tel:+17076017968">(707) 601-7968</a>, or email <a class="mail" href="mailto:Tawnisavage@yahoo.com">Tawnisavage@yahoo.com</a>. She&rsquo;ll find you a spot in the right class.</p>
+      </div>
       <span class="reach"><a href="tel:+17076017968" aria-label="Call Tawnie at (707) 601-7968"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17076017968" aria-label="Text Tawnie at (707) 601-7968"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span>
       <p class="demo-note">With Maiden, people reach you by call, text or email, like they do now.</p>
     </div>
@@ -1018,9 +1041,11 @@
 
 <section id="private" class="band gutter">
   <div class="wrap">
+    <div class="satin-card">
     <p class="label">One on one</p>
     <h2 class="reveal">Private lessons, personal training, <em>and a show</em></h2>
     <p class="measure" style="margin-top:18px">Some things are better with just the two of you in the room. Every session is customized to your ability, whether that&rsquo;s your first time off the ground or a skill you&rsquo;ve been chasing for a year.</p>
+    </div>
     <div class="offers">
       <div class="reveal"><b>Private aerial lessons</b><p>On the silks, one on one or with a friend. Work on exactly the thing you want, at exactly your pace.</p><p style="margin-top:8px"><span class="ph">your rate</span></p></div>
       <div class="reveal"><b>Personal training</b><p>Strength, mobility and conditioning on the ground, with a coach certified in personal training, yoga, Pilates and barre.</p><p style="margin-top:8px"><span class="ph">your rate</span></p></div>
@@ -1044,8 +1069,10 @@
       <span class="sample-tag">Sample photo</span>
     </figure>
     <div class="measure">
+      <div class="satin-card">
       <p class="label">Your coach</p>
       <h2 class="reveal">Tawnie <em>Savage</em></h2>
+      </div>
       <p style="margin-top:20px">Tawnie is an aerial coach and personal trainer in Arcata, with about a decade in the movement and wellness world. She&rsquo;s certified in personal training, yoga, aerial, Pilates and barre, and she brings all of it into the room: the strength, the stretch, the spotting, and the patience.</p>
       <p>Her classes are small on purpose. She customizes every session to the person in front of her, so a nervous first-timer and a seasoned flyer can both leave feeling like the class was made for them.</p>
       <div class="reveal creds" aria-label="Certifications">
@@ -1082,8 +1109,10 @@
 <section id="packs" class="gutter" data-show="crone all" data-fold data-thing="class packs and gift certificates">
   <div class="wrap gift">
     <div class="gift-intro">
+      <div class="satin-card">
       <p class="label with-pill"><span>Packs and gifts</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Class packs, <em>and the gift of flight</em></h2>
+      </div>
       <p style="margin-top:14px;color:var(--ink-soft)">Buy a pack of classes, pay for a session ahead, or give someone a first class they&rsquo;ll never forget, right here on the site. Try it:</p>
     </div>
     <div class="pay-card" id="gf-card">
@@ -1145,9 +1174,11 @@
 <section id="first" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap faq">
     <div class="faq-head">
+      <div class="satin-card">
       <p class="label with-pill"><span>First class</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">What to know <em>before you fly</em></h2>
       <p class="measure" style="margin-top:16px;color:var(--ink-soft)">The things first-timers (and their parents) tend to wonder about.</p>
+      </div>
     </div>
     <div class="faq-list" data-thing="FAQ">
       <details>
@@ -1200,9 +1231,11 @@
 
 <section id="find" class="gutter">
   <div class="wrap">
+    <div class="satin-card">
     <p class="label">Find us</p>
     <h2 class="reveal">Come <em>fly</em> with us in Arcata</h2>
     <p class="measure" style="margin-top:16px;color:var(--ink-soft)"><span data-show="mother crone all">Sign up online, or text</span><span data-show="maiden" hidden>Text</span> or call Tawnie at <a class="tel" href="tel:+17076017968">(707) 601-7968</a>. New sessions are announced here and on Instagram.</p>
+    </div>
     <div class="cta-row" data-show="mother crone all" data-fold>
       <a class="btn" href="#signup">Sign up for a class</a>
     </div>
@@ -1223,9 +1256,11 @@
 <section id="contact" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap touch">
     <div data-thing="contact form">
+      <div class="satin-card">
       <p class="label with-pill"><span>Write to Tawnie</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Send a <em>note</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Not sure which class fits, or wondering about a private lesson or a performance? Write any time, or text <a class="tel" href="tel:+17076017968">(707) 601-7968</a>.</p>
+      </div>
       <div class="bk-card cf-card">
         <form id="cf" method="dialog" novalidate aria-label="Contact form, preview">
           <div class="fld-row">
@@ -1265,9 +1300,11 @@
 
 <section id="insta" class="gutter" data-show="crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
+    <div class="satin-card">
     <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">The latest from <em>@emeraldaerials</em></h2>
     <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Your newest posts show up here on their own, so the site always looks as alive as your feed.</p>
+    </div>
     <div class="ig-grid" aria-label="Sample Instagram grid">
       <figure class="reveal"><img src="images/hoop.jpg" alt="" loading="lazy"><span class="sample-tag">Sample</span></figure>
       <figure class="reveal"><img src="images/silk.jpg" alt="" loading="lazy"><span class="sample-tag">Sample</span></figure>
@@ -1283,9 +1320,11 @@
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
     <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <div class="satin-card">
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
     <p class="measure" style="margin-top:14px;color:var(--ink-soft)">None of this appears on your site. It&rsquo;s how people find it: when a parent searches for kids aerial classes, or a friend texts your link, this is what they see.</p>
+    </div>
     <div class="found">
       <figure class="reveal found-card">
         <figcaption>In a search</figcaption>
@@ -1317,8 +1356,10 @@
 
 <dialog class="wl" id="waitlist" aria-labelledby="wl-h">
   <div id="wl-ask">
+    <div class="satin-card">
     <p class="label with-pill"><span>Waitlist</span> <span class="bk-demo">preview</span></p>
     <h2 id="wl-h" tabindex="-1">Join <em>the waitlist</em></h2>
+    </div>
     <p class="wl-lede">This session is full for now. Leave your name and email, and Tawnie will write to you the moment a spot opens up.</p>
     <form id="wl-form" method="dialog" novalidate aria-label="Waitlist, preview">
       <label class="fld">Your name<input id="wl-name" autocomplete="off" value="Maya R."></label>
@@ -1328,8 +1369,10 @@
     </form>
   </div>
   <div class="wl-done fade-in" id="wl-done" hidden>
+    <div class="satin-card">
     <p class="label with-pill"><span>Waitlist</span> <span class="bk-demo">preview</span></p>
     <h2 id="wl-done-h" tabindex="-1">You&rsquo;re on the list!</h2>
+    </div>
     <p>Tawnie will email you at <span id="wl-to" style="overflow-wrap:anywhere">your inbox</span> as soon as a spot opens up.</p>
     <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
     <button type="button" class="bk-go ghost" id="wl-close">Close</button>
