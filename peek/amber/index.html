@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Amber Baker | Nueberd, made by hand, and My Thrifting Era</title>
-<meta name="description" content="Moments of calm from Amber Baker: mindfully handmade macrame jewelry, whimsical macrame lights and tiny wooden spoons (Nueberd), and My Thrifting Era, a one woman owned thrift shop of pre-loved clothes.">
+<title>Amber Baker | Shop handmade Nueberd jewelry and My Thrifting Era finds</title>
+<meta name="description" content="Shop Amber Baker's mindfully handmade macrame earrings, brass choker, macrame lights and tiny wooden spoons (Nueberd), plus pre-loved clothes from My Thrifting Era, a one woman owned thrift shop.">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Amber Baker | Nueberd and My Thrifting Era">
-<meta property="og:description" content="Mindfully handmade jewelry and cozy home, and a one woman owned thrift shop.">
+<meta property="og:title" content="Amber Baker | Shop Nueberd and My Thrifting Era">
+<meta property="og:description" content="Mindfully handmade jewelry, wooden accessories and cozy home, plus a one woman owned thrift shop. Every piece one of a kind.">
 <meta property="og:image" content="images/hero.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23f4efe3'/%3E%3Cpath d='M9 26V14a7 7 0 0 1 14 0v12Z' fill='none' stroke='%239b4a26' stroke-width='2.4'/%3E%3Cpath d='M16 8v18M9 18h14' stroke='%239b4a26' stroke-width='1.6'/%3E%3C/svg%3E">
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
@@ -33,6 +33,7 @@
     --tag-bg: #f3e3c0; --tag-ink: #6f4512; --tag-line: #e2cb98;
     --band-bg: #1f251d;
     --sun: rgba(255, 246, 222, 0.9);
+    --head-bg: #efe9db;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
@@ -40,7 +41,7 @@
       --ground: #191b16; --ground-2: #22251e; --ink: #eee6d6; --ink-soft: #bdb5a3;
       --accent: #e3b860; --accent-deep: #ecc77a; --fill: #e8946c; --on-fill: #1a1410; --fill-hover: #f0a681; --rust: #e8946c;
       --blush: #3a2a26; --hair: #393b31; --tag-bg: #2e2714; --tag-ink: #ecc77a; --tag-line: #4d4120; --band-bg: #121510;
-      --sun: rgba(255, 196, 120, 0.22);
+      --sun: rgba(255, 196, 120, 0.22); --head-bg: #1c1a15;
       color-scheme: dark;
     }
   }
@@ -48,7 +49,7 @@
     --ground: #191b16; --ground-2: #22251e; --ink: #eee6d6; --ink-soft: #bdb5a3;
     --accent: #e3b860; --accent-deep: #ecc77a; --fill: #e8946c; --on-fill: #1a1410; --fill-hover: #f0a681; --rust: #e8946c;
     --blush: #3a2a26; --hair: #393b31; --tag-bg: #2e2714; --tag-ink: #ecc77a; --tag-line: #4d4120; --band-bg: #121510;
-    --sun: rgba(255, 196, 120, 0.22);
+    --sun: rgba(255, 196, 120, 0.22); --head-bg: #1c1a15;
     color-scheme: dark;
   }
   
@@ -107,15 +108,7 @@
   .btn.quiet:hover { background: var(--ground-2); }
 
   
-  header.top { display: flex; justify-content: space-between; align-items: center; gap: 10px 18px; flex-wrap: wrap; padding-block: 22px 0; }
-  .mark { font-family: 'Young Serif', Georgia, serif; font-size: 24px; line-height: 1.1; color: var(--ink); text-decoration: none; display: inline-flex; align-items: baseline; gap: 10px; }
-  .mark small { font-family: 'Caveat', cursive; font-weight: 600; font-size: 20px; color: var(--rust); }
-  nav { display: flex; gap: 0 6px; flex-wrap: wrap; font-size: 15px; margin: -10px -6px; }
-  nav a { color: var(--ink); text-decoration: none; padding: 10px 7px; line-height: 24px; font-weight: 500; }
-  nav a:hover { color: var(--rust); text-decoration: underline; }
-
-  
-  .hero-band { position: relative; overflow: hidden; min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); display: flex; flex-direction: column; background: #efe9db; color: #262a20;
+  .hero-band { position: relative; overflow: hidden; min-height: calc(90vh - 130px); min-height: calc(90svh - 130px); display: flex; flex-direction: column; background: #efe9db; color: #262a20;
     --ink: #262a20; --ink-soft: #4f4c40; --accent: #83541a; --rust: #9b4a26; --fill: #9b4a26; --on-fill: #fff8ee; --fill-hover: #86401f; }
   .hero-band > .gutter { position: relative; z-index: 3; }
   .hero-photo { position: absolute; z-index: 0; inset: 0 0 0 auto; width: min(60%, 900px); background: url('images/hero.jpg') 50% 58% / cover no-repeat; }
@@ -123,9 +116,9 @@
     background: linear-gradient(90deg, #efe9db 0, #efe9db max(40%, calc(100% - 900px)), rgba(239, 233, 219, 0.82) calc(max(40%, calc(100% - 900px)) + 6%), rgba(239, 233, 219, 0.25) calc(max(40%, calc(100% - 900px)) + 22%), rgba(239, 233, 219, 0) 72%),
       linear-gradient(rgba(239, 233, 219, 0.7) 0, rgba(239, 233, 219, 0) 150px); }
   .hero-main { position: relative; z-index: 3; flex: 1; display: flex; align-items: center; padding-block: 48px 90px; }
-  .hero-copy { max-width: 520px; text-shadow: 0 0 18px rgba(239, 233, 219, 0.9), 0 0 2px rgba(239, 233, 219, 0.8); }
+  .hero-copy { max-width: 600px; text-shadow: 0 0 18px rgba(239, 233, 219, 0.9), 0 0 2px rgba(239, 233, 219, 0.8); }
   .hero-band .label { color: #6f4512; margin-bottom: 22px; }
-  .hero-band h1 { font-size: clamp(50px, 8.4vw, 96px); line-height: 1; letter-spacing: -0.02em; color: #262a20; }
+  .hero-band h1 { font-size: clamp(40px, 6vw, 76px); line-height: 1; letter-spacing: -0.02em; color: #262a20; }
   .hero-band h1 .em { display: block; font-style: normal; color: #9b4a26; }
   .hero-band .lede { margin-top: 24px; font-size: clamp(17px, 2.1vw, 19px); color: #3b3b31; max-width: 42ch; }
   .hero-band .lede .hand { font-size: 1.3em; line-height: 1; color: #9b4a26; }
@@ -199,43 +192,24 @@
   .quote-by { margin-top: 12px; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--accent); }
 
   
-  .doors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; margin-top: 40px; }
-  .door { position: relative; display: grid; grid-template-rows: auto 1fr; text-decoration: none; color: var(--ink); background: var(--ground-2); border: 1px solid var(--hair); border-radius: 999px 999px 10px 10px / 300px 300px 10px 10px; overflow: hidden; padding: 14px 14px 0; transition: border-color 0.3s ease, translate 0.4s cubic-bezier(.2,.7,.3,1); }
-  .door:hover { border-color: var(--accent); translate: 0 -4px; }
-  .door .photo { aspect-ratio: 4 / 4.2; border-radius: 999px 999px 6px 6px / 290px 290px 6px 6px; }
-  .door-body { padding: 20px 10px 22px; display: grid; gap: 6px; align-content: start; }
-  .door-kind { font-family: 'Caveat', cursive; font-weight: 600; font-size: 24px; line-height: 1; color: var(--rust); }
-  .door h3 { font-size: clamp(25px, 3vw, 32px); }
-  .door p { color: var(--ink-soft); font-size: 15.5px; }
-  .door-go { margin-top: 6px; font-weight: 700; color: var(--accent-deep); }
-  @media (prefers-reduced-motion: reduce) { .door, .door:hover { transition: none; translate: none; } }
-
-  
-  .kinds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 36px; }
-  .kind { background: var(--ground); border: 1px solid var(--hair); border-radius: 10px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
-  .alt .kind { background: var(--ground); }
-  .kind .photo { aspect-ratio: 4 / 5; border-radius: 0; }
-  .kind-body { padding: 18px 18px 20px; display: grid; gap: 6px; align-content: start; }
-  .kind-body p { font-size: 15.5px; color: var(--ink-soft); }
-  .her-words { font-style: italic; color: var(--ink) !important; border-left: 2px solid var(--rust); padding-left: 12px; }
-
-  
-  .shop-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 36px; }
-  .item { display: grid; grid-template-rows: auto 1fr; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 10px; overflow: hidden; }
-  .item .photo { aspect-ratio: 1; border-radius: 0; }
-  .hangtag { position: absolute; z-index: 2; top: 12px; left: 12px; font-family: 'Caveat', cursive; font-weight: 600; font-size: 19px; line-height: 1; color: #262a20; background: #f8f1e1; padding: 5px 12px 6px 18px; border-radius: 3px 8px 8px 3px; box-shadow: 0 2px 6px rgba(40, 30, 10, 0.18); rotate: -3deg; }
+  .shop-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 34px 22px; margin-top: 26px; }
+  .item { display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+  .item.is-out { display: none !important; }
+  .item .photo { aspect-ratio: 1; border-radius: 6px; }
+  .hangtag { position: absolute; z-index: 2; top: 10px; left: 10px; font-family: 'Caveat', cursive; font-weight: 600; font-size: 18px; line-height: 1; color: #262a20; background: #f8f1e1; padding: 4px 11px 5px 17px; border-radius: 3px 8px 8px 3px; box-shadow: 0 2px 6px rgba(40, 30, 10, 0.18); rotate: -3deg; }
   .hangtag::before { content: ""; position: absolute; left: 6px; top: 50%; width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%; background: #d8ccb2; }
-  .item-body { padding: 16px 16px 18px; display: grid; gap: 6px; align-content: start; }
-  .item-body h3 { font-size: 19px; }
-  .item-body p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; }
-  .price { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .item-go { margin-top: auto; padding-top: 6px; }
+  .item-body { padding: 12px 2px 0; display: flex; flex-direction: column; gap: 3px; }
+  .item-kind { font-size: 11.5px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--accent); }
+  .item-body h3 { font-family: 'Hanken Grotesk', Arial, sans-serif; font-weight: 600; font-size: 16.5px; line-height: 1.35; letter-spacing: 0; }
+  .item-note { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+  .price { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; font-size: 15.5px; }
+  .item-go { margin-top: auto; padding-top: 10px; }
   .bk-go { margin-top: 14px; font: inherit; font-size: 15px; font-weight: 700; line-height: 1.3; padding: 12px 20px; border-radius: 999px; border: 1px solid var(--fill); background: var(--fill); color: var(--on-fill); cursor: pointer; }
   .bk-go:hover { background: var(--fill-hover); border-color: var(--fill-hover); }
   .bk-go.ghost { background: transparent; color: var(--accent-deep); border-color: var(--accent); }
-  .bk-go.ghost:hover { background: var(--ground); }
-  .item-go .bk-go, .item-go a.bk-go { margin-top: 0; width: 100%; box-sizing: border-box; text-align: center; display: inline-block; text-decoration: none; }
-  .bk-go[aria-pressed="true"] { background: var(--ground); color: var(--accent-deep); border-color: var(--accent); }
+  .bk-go.ghost:hover { background: var(--ground-2); }
+  .item-go .bk-go, .item-go a.bk-go { margin-top: 0; width: 100%; min-height: 44px; box-sizing: border-box; text-align: center; display: inline-block; text-decoration: none; font-size: 14.5px; padding: 11px 12px; }
+  .bk-go.add.in { background: transparent; color: var(--accent-deep); border-color: var(--accent); }
   .hint { font-size: 14.5px; color: var(--accent-deep); font-weight: 600; margin: 12px 0 0; }
   .hint:empty { margin: 0; }
   .demo-note { font-size: 13.5px; color: var(--ink-soft); margin-top: 10px; }
@@ -245,13 +219,9 @@
   @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
 
   
-  .bag { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
-  .bag-card, .sheet, .bk-card { background: var(--ground); border: 1px solid var(--hair); border-radius: 10px; padding: 22px; }
-  .alt .bag-card, .alt .sheet, .alt .bk-card { background: var(--ground); }
-  .bag-card h3, .sheet-h { font-size: 20px; }
-  .bag-lines { list-style: none; margin-top: 12px; }
-  .bag-lines li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--hair); font-size: 15.5px; }
-  .bag-lines li:last-child { border-bottom: 0; }
+  .sheet, .bk-card { background: var(--ground); border: 1px solid var(--hair); border-radius: 10px; padding: 22px; }
+  .alt .sheet, .alt .bk-card { background: var(--ground); }
+  .sheet-h { font-size: 20px; }
   .bag-empty { color: var(--ink-soft); font-style: italic; font-size: 15.5px; margin-top: 10px; }
   .sheet-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Hanken Grotesk', Arial, sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
   .sheet-h svg { color: var(--accent); }
@@ -377,7 +347,6 @@
   .status-strip b { text-transform: uppercase; letter-spacing: 0.16em; font-size: 11.5px; font-weight: 700; }
   .status-strip em { font-style: normal; font-weight: 500; font-size: 14.5px; text-wrap: balance; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .status-strip a:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; border-radius: 3px; }
-  .status + .hero-band header.top { padding-top: 42px; }
   .status-tab { position: absolute; top: 100%; left: calc(20px + max(0px, (100% - 1140px) / 2)); display: flex; align-items: flex-start; gap: 6px; }
   .status-try { display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; cursor: pointer; font-family: 'Hanken Grotesk', Arial, sans-serif; font-size: 10.5px; line-height: 1;
     letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #f4efe3; background: #262a20; border: 1px solid #262a20; border-top: 0; border-radius: 0 0 8px 8px; padding: 7px 12px 8px; }
@@ -459,7 +428,7 @@
     background: #1f251d; color: #efe8da; border: 1px solid #e3b860; font-size: 15px; padding: 10px 16px; border-radius: 12px; text-align: center; pointer-events: none; animation: egg-toast 6.5s ease 1s both; }
   @keyframes egg-toast { from { opacity: 0; translate: -50% 8px; } 12% { opacity: 1; translate: -50% 0; } 85% { opacity: 1; } to { opacity: 0; } }
 
-  @media (max-width: 1000px) { .drops { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feed { grid-template-columns: repeat(3, minmax(0, 1fr)); } .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 1000px) { .drops { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feed { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 900px) {
     .hero-photo { width: 100%; bottom: auto; height: min(118vw, 640px); background-position: 50% 52%; -webkit-mask-image: linear-gradient(#000 62%, transparent 99%); mask-image: linear-gradient(#000 62%, transparent 99%); }
     .hero-veil { background: linear-gradient(rgba(239, 233, 219, 0.82) 0, rgba(239, 233, 219, 0.3) 150px, rgba(239, 233, 219, 0) 260px) !important; }
@@ -469,29 +438,20 @@
   }
   @media (max-width: 900px) and (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero-veil { background: linear-gradient(rgba(28, 26, 21, 0.85) 0, rgba(28, 26, 21, 0.3) 150px, rgba(28, 26, 21, 0) 260px) !important; } }
   @media (max-width: 760px) {
-    .two, .faq, .touch, .found, .bag, .news, .kinds, .doors { grid-template-columns: minmax(0, 1fr); }
+    .two, .faq, .touch, .found, .news, .notes, .thrift-head { grid-template-columns: minmax(0, 1fr); }
     .two { gap: 36px; }
     .faq-list { margin-top: 26px; }
     section { padding-block: 62px; }
     .photo.edge { margin-inline: -20px; border-radius: 0; max-width: none; width: auto; }
     .photo.tall { aspect-ratio: 4 / 4.4; }
-    .kinds { gap: 18px; }
-    .kind { grid-template-columns: 40% minmax(0, 1fr); grid-template-rows: none; }
-    .kind .photo { aspect-ratio: auto; min-height: 100%; }
     .news { padding: 26px 20px; }
   }
-  @media (max-width: 560px) { .shop-grid { grid-template-columns: minmax(0, 1fr); } .item { grid-template-columns: 42% minmax(0, 1fr); grid-template-rows: none; } .item .photo { aspect-ratio: auto; min-height: 100%; } .item-body h3 { font-size: 18px; } .hangtag { font-size: 16px; top: 8px; left: 8px; } }
   @media (max-width: 480px) {
-    nav { width: 100%; margin-inline: -7px; }
-    nav a { padding-inline: 5px; font-size: 14.5px; }
-    nav { margin-inline: -5px; gap: 0 2px; }
-    .nav-my { display: none; }
     .fld-row { grid-template-columns: minmax(0, 1fr); }
     .hero-band .cta-row .btn { flex: 1 1 100%; justify-content: center; }
     .drops { gap: 10px; } .drop-body { padding: 10px 10px 12px; } .drop-body b { font-size: 14px; }
-    .kind { grid-template-columns: minmax(0, 1fr); } .kind .photo { aspect-ratio: 4 / 3; }
   }
-  @media (max-width: 359px) { .mark { font-size: 21px; } .feed-tabs button { padding-inline: 10px; font-size: 13.5px; } .drops { grid-template-columns: minmax(0, 1fr); } .item { grid-template-columns: minmax(0, 1fr); } .item .photo { aspect-ratio: 1; } }
+  @media (max-width: 359px) { .mark { font-size: 21px; } .feed-tabs button { padding-inline: 10px; font-size: 13.5px; } .drops { grid-template-columns: minmax(0, 1fr); } }
   @media (orientation: landscape) and (max-height: 500px) { .hero-main { padding-block: 32px 48px; align-items: center; } }
 
   .reveal.pre { opacity: 0; transform: translateY(26px); }
@@ -499,21 +459,124 @@
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
   
-  .shop-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-  .shop-filter button { font: inherit; font-size: 14.5px; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--hair, rgba(0,0,0,.2)); background: transparent; color: inherit; cursor: pointer; }
-  .shop-filter button[aria-pressed="true"] { background: currentColor; }
-  .shop-filter button[aria-pressed="true"] { background: var(--ink, #1f251d); color: var(--ground, #fbf6ec); border-color: var(--ink, #1f251d); }
-  .shop-filter button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  .item[hidden] { display: none !important; }
-  .door-card { display: flex; flex-direction: column; justify-content: center; gap: 10px; height: 100%; min-height: 220px; padding: 26px; border-radius: 20px;
-    border: 1.5px dashed var(--hair, rgba(0,0,0,.25)); color: inherit; text-decoration: none; }
-  .door-card b { font-size: 22px; } .door-card .go { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+  html { scroll-padding-top: var(--head-h, 100px); }
+  .tab-room { height: 30px; background: var(--head-bg); }
+  .shop-head { position: sticky; top: 0; z-index: 15; background: var(--head-bg); border-bottom: 1px solid transparent; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+  .shop-head.stuck { border-bottom-color: var(--hair); box-shadow: 0 12px 24px -22px rgba(30, 25, 10, 0.55); }
+  .head-in { display: flex; align-items: center; flex-wrap: wrap; gap: 0 22px; min-height: 66px; }
+  .mark { font-family: 'Young Serif', Georgia, serif; font-size: 25px; line-height: 1.1; color: var(--ink); text-decoration: none; padding: 8px 0; }
+  .shop-nav { display: flex; gap: 0 4px; margin-left: auto; font-size: 15.5px; }
+  .shop-nav a { color: var(--ink); text-decoration: none; padding: 10px 10px; line-height: 24px; font-weight: 600; text-underline-offset: 8px; text-decoration-thickness: 2px; }
+  .shop-nav a:hover { color: var(--rust); }
+  .shop-nav a[aria-current="page"] { text-decoration-line: underline; text-decoration-color: var(--rust); }
+  .bag-btn { display: inline-flex; align-items: center; gap: 7px; font: inherit; font-size: 15.5px; font-weight: 600; color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 10px 8px; margin-right: -8px; min-height: 44px; cursor: pointer; }
+  .bag-btn:hover { color: var(--rust); }
+  .bag-btn svg { flex: none; }
+  .bag-count { min-width: 22px; height: 22px; box-sizing: border-box; padding: 0 6px; border-radius: 999px; background: var(--fill); color: var(--on-fill); font-size: 12.5px; font-weight: 700; line-height: 22px; text-align: center; font-variant-numeric: tabular-nums; }
+  .bag-count.bump { animation: bump 0.5s ease; }
+  @keyframes bump { 40% { scale: 1.35; } }
+  @media (prefers-reduced-motion: reduce) { .bag-count.bump { animation: none; } .shop-head { transition: none; } }
+  @media (max-width: 700px) {
+    .head-in { min-height: 0; padding-top: 2px; }
+    .mark { font-size: 23px; }
+    .bag-btn { margin-left: auto; }
+    .shop-nav { order: 3; width: 100%; margin: -4px -9px 0; font-size: 15px; }
+    .shop-nav a { padding: 4px 9px 10px; }
+  }
+  @media (max-width: 359px) { .shop-nav a { padding-inline: 6px; font-size: 14.5px; } .shop-nav { margin-inline: -6px; } }
+
+  
+  section.shop-sec { padding-block: 44px 76px; }
+  .page-head { padding-block: 44px 6px; }
+  .page-head h1, .sec-h1 { font-size: clamp(36px, 5.6vw, 60px); line-height: 1.08; letter-spacing: -0.015em; }
+  .sec-h1 { font-size: clamp(30px, 4.6vw, 48px); line-height: 1.18; }
+  .page-head h1 em, .sec-h1 em { font-style: normal; color: var(--rust); }
+  .page-head .lede { margin-top: 16px; color: var(--ink-soft); max-width: 60ch; font-size: 17.5px; }
+  .thrift-head { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 48px; align-items: center; }
+  .thrift-head .photo { aspect-ratio: 1; }
+  .sec-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; }
+  .sec-head h2 { font-size: clamp(30px, 3.8vw, 42px); }
+  .see-all { font-weight: 700; color: var(--accent-deep); padding-block: 8px; }
+  .sec-sub { margin-top: 10px; }
+  .shop-grid.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .item-body p + p { margin-top: 0; }
+  .item-kind { font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink-soft); line-height: 1.4; margin-bottom: 2px; }
+  .item-kind b { font-size: 11px; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 700; color: var(--accent); }
+  .item[data-model="nd"] .item-kind b, .item[data-model="thrift"] .item-kind b { color: var(--rust); }
+  .swatches { border: 0; margin: 6px 0 2px; padding: 0; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px; }
+  .swatches legend { float: left; margin-right: 6px; padding: 0; font-size: 13px; color: var(--ink-soft); }
+  .swatches label { position: relative; display: inline-grid; place-items: center; width: 32px; height: 32px; cursor: pointer; }
+  .swatches input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .sw { width: 20px; height: 20px; border-radius: 50%; background: var(--sw); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18); outline: 1.5px solid transparent; outline-offset: 2px; }
+  .swatches input:checked + .sw { outline-color: var(--ink); }
+  .swatches input:focus-visible + .sw { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .cats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 64px; }
+  .cat { display: grid; gap: 4px; text-decoration: none; color: var(--ink); }
+  .cat .photo { aspect-ratio: 5 / 3.4; border-radius: 999px 999px 8px 8px / 170px 170px 8px 8px; margin-bottom: 10px; }
+  .cat-k { font-family: 'Caveat', cursive; font-weight: 600; font-size: 22px; line-height: 1; color: var(--rust); }
+  .cat b { font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.2; }
+  .cat:hover b { color: var(--rust); }
+  .cat-p { font-size: 15px; color: var(--ink-soft); }
+  .trust { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 24px; margin-top: 56px; padding-top: 26px; border-top: 1px solid var(--hair); font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
+  .trust li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1px 12px; align-content: start; }
+  .trust svg { grid-row: span 2; color: var(--accent); margin-top: 1px; }
+  .trust b { color: var(--ink); font-weight: 700; }
+  .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; align-items: start; }
+  .closet a { display: flex; height: 100%; min-height: 200px; box-sizing: border-box; border-style: dashed; border-color: var(--accent); background: transparent; }
+  .closet-in { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 22px; }
+  .closet b { font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 24px; line-height: 1.2; }
+  .closet .go { font-weight: 700; color: var(--accent-deep); text-decoration: underline; text-underline-offset: 4px; }
+  .closet span { font-size: 15px; }
+  @media (min-width: 1001px) { .drop.closet { grid-column: span 2; } }
+  @media (max-width: 1000px) { .drop.closet { grid-column: 1 / -1; } .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 760px) { .notes, .thrift-head { grid-template-columns: minmax(0, 1fr); } .shop-grid.g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .thrift-head { gap: 28px; } .thrift-head .photo { aspect-ratio: 4 / 3; } }
+  @media (max-width: 700px) {
+    .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 12px; }
+    .item-note { display: none; }
+    .item-body h3 { font-size: 15px; }
+    .item-kind { font-size: 12.5px; }
+    .item-kind b { font-size: 10.5px; letter-spacing: 0.1em; }
+    .hangtag { font-size: 15.5px; top: 7px; left: 7px; }
+    .item-go .bk-go, .item-go a.bk-go { font-size: 14px; padding: 10px 8px; }
+    .cats { gap: 12px; margin-top: 48px; } .cat-p { display: none; } .cat .photo { aspect-ratio: 4 / 4.4; border-radius: 999px 999px 6px 6px / 100px 100px 6px 6px; }
+    section.shop-sec { padding-block: 32px 60px; }
+    .page-head { padding-block: 30px 4px; }
+  }
+  @media (max-width: 480px) { .trust { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
+
+  
+  html.bag-open { overflow: hidden; }
+  .scrim { position: fixed; inset: 0; z-index: 39; background: rgba(20, 18, 12, 0.5); animation: hero-fade 0.3s ease both; }
+  .drawer { position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(420px, 100vw); box-sizing: border-box; display: flex; flex-direction: column; background: var(--ground); color: var(--ink); border-left: 1px solid var(--hair); box-shadow: -24px 0 60px -30px rgba(0, 0, 0, 0.5); animation: drawer-in 0.38s cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes drawer-in { from { translate: 100% 0; } to { translate: 0 0; } }
+  @media (prefers-reduced-motion: reduce) { .drawer, .scrim { animation: none; } }
+  .drawer-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 14px 14px 20px; border-bottom: 1px solid var(--hair); }
+  .drawer-h { font-size: 26px; }
+  .drawer-h .bk-demo { font-family: 'Hanken Grotesk', Arial, sans-serif; }
+  .drawer-x { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: var(--ink); cursor: pointer; }
+  .drawer-x:hover { background: var(--ground-2); }
+  .drawer-body { flex: 1; overflow: auto; overscroll-behavior: contain; padding: 6px 20px 28px; }
+  .bag-lines { list-style: none; }
+  .bag-line { display: grid; grid-template-columns: 68px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--hair); }
+  .bag-line img { display: block; width: 68px; height: 68px; object-fit: cover; border-radius: 6px; background: var(--ground-2); }
+  .bag-line b { display: block; font-weight: 600; font-size: 15.5px; line-height: 1.35; }
+  .bag-line small { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .bag-line .ph { font-size: 14.5px; }
+  .bag-rm { font: inherit; font-size: 14px; color: var(--ink-soft); background: none; border: 0; padding: 10px 4px; margin-right: -4px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .bag-rm:hover { color: var(--rust); }
+  .bag-empty { color: var(--ink-soft); font-size: 15.5px; padding: 18px 0 4px; }
+  #bag-sum { margin: 6px 0 0; }
+  .bk-go.wide { display: block; width: 100%; text-align: center; }
+  .bk-go.wide + .bk-go.wide { margin-top: 10px; }
+  .drawer .sheet { margin-top: 16px; }
+  .drawer .bk-done { margin-top: 22px; }
+  .drawer .bk-done h3 { font-size: 26px; }
 </style>
 </head>
 <body>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="open"><a href="#shop" id="status-link"><b id="status-label">New in the shop: autumn earrings</b> <em><span id="status-cta">Take a look</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="open"><a href="#new" id="status-link"><b id="status-label">New in the shop: the tiered brass choker</b> <em><span id="status-cta">Shop new arrivals</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
@@ -535,35 +598,38 @@
   </div>
   <p class="vh" role="status" id="theme-live"></p>
   <p class="vh" role="status" id="status-live"></p>
+  <p class="vh" role="status" id="bag-live"></p>
 </div>
 
+<div class="tab-room" aria-hidden="true"></div>
+<header class="shop-head gutter" id="shop-head">
+  <div class="wrap head-in">
+    <a class="mark" href="#shop">Amber Baker</a>
+    <nav class="shop-nav" aria-label="Shop">
+      <a href="#shop" data-nav="shop">Shop</a>
+      <a href="#handmade" data-nav="handmade">Handmade</a>
+      <a href="#thrifted" data-nav="thrifted">Thrifted</a>
+      <a href="#about" data-nav="about" data-show="mother crone all">About</a>
+    </nav>
+    <button type="button" class="bag-btn" id="bag-btn" aria-haspopup="dialog" aria-controls="bag" data-show="crone all" data-thing="your own bag and checkout"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="bag-word">Bag</span><span class="bag-count" id="bag-count" aria-hidden="true">0</span><span class="vh" id="bag-sr">, empty</span></button>
+  </div>
+</header>
+
+<main id="main">
+<div class="page" id="page-shop" data-page="shop">
 <div class="hero-band">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="sun" aria-hidden="true"></div>
-  <div class="gutter">
-    <div class="wrap">
-      <header class="top">
-        <a class="mark" href="#top" id="top">Amber Baker</a>
-        <nav aria-label="Sections">
-          <a href="#made">Nueberd</a>
-          <a href="#shop">Shop</a>
-          <a href="#thrift"><span class="nav-my">My </span>Thrifting Era</a>
-          <a href="#story" data-show="mother crone all">About</a>
-          <a href="#contact" data-show="mother crone all">Contact</a>
-        </nav>
-      </header>
-    </div>
-  </div>
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
-        <p class="label"><span>Handmade and thrifted</span></p>
-        <h1><span>Moments</span><span class="em">of calm</span></h1>
-        <p class="lede">Mindfully handmade jewelry, wooden things and cozy home, <span class="hand">and</span> a one woman owned thrift shop of pre-loved clothes. Two little shops, one home.</p>
+        <p class="label"><span>Nueberd + My Thrifting Era</span></p>
+        <h1 tabindex="-1"><span>Made by hand,</span><span class="em">found for you</span></h1>
+        <p class="lede">Mindfully handmade wooden accessories, jewelry and cozy home, <span class="hand">plus</span> pre-loved clothes from a one woman owned thrift shop.</p>
         <div class="cta-row">
-          <a class="btn" href="#made">Made by hand</a>
-          <a class="btn quiet" href="#thrift">My Thrifting Era</a>
+          <a class="btn" href="#new">Shop new arrivals</a>
+          <a class="btn quiet" href="#thrifted">Shop thrifted finds</a>
         </div>
       </div>
     </div>
@@ -583,6 +649,7 @@
   })();
 </script>
 
+<div class="views-slot">
 
 <div class="views gutter" id="views" hidden>
   <div class="wrap views-card">
@@ -600,203 +667,88 @@
   </div>
   <p class="vh" role="status" id="views-live"></p>
 </div>
-
-<section id="doors" class="gutter" style="padding-top:56px">
-  <div class="wrap">
-    <p class="label"><span>Come on in</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">Two rooms, <em>one home</em></h2>
-    <p class="measure soft" style="margin-top:14px">One room is for the things I make with my hands. The other is for the clothes I dig out of piles of pre-loved treasures, so you don&rsquo;t have to.</p>
-    <div class="doors">
-      <a class="door reveal" href="#made">
-        <figure class="photo"><img src="images/earrings-autumn.jpg" alt="Rust and deep golden yellow macrame earrings on oxidized copper hoops, in window light" width="900" height="900" loading="lazy"></figure>
-        <span class="door-body"><span class="door-kind">made by hand</span><h3>Nueberd</h3><p>Hand-knotted macrame jewelry, whimsical macrame lights and tiny wooden spoons.</p><span class="door-go">Step inside <span aria-hidden="true">&rarr;</span></span></span>
-      </a>
-      <a class="door reveal" href="#thrift">
-        <figure class="photo"><img src="images/teapot.jpg" alt="Hands in a cozy charcoal knit pouring from a woven ceramic teapot" width="900" height="1125" loading="lazy" style="object-position:50% 70%"></figure>
-        <span class="door-body"><span class="door-kind">found for you</span><h3>My Thrifting Era</h3><p>A one woman owned thrift shop: cozy knits, vintage nightgowns, linen and the odd beaded gown.</p><span class="door-go">Step inside <span aria-hidden="true">&rarr;</span></span></span>
-      </a>
-    </div>
-    <div class="you-note">
-      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10a8 8 0 0 1 16 0v11Z"/><path d="M12 2v19M4 13h16"/></svg>
-      <div>
-        <p class="label"><span>A note for you</span></p>
-        <p>Both of your shops live under your own name here, with a door each, so people who come for the earrings find the knits too (and the other way round). Every photo and nearly every line on this page is yours, from your Instagram and your Depop.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="made" class="alt gutter">
-  <div class="wrap">
-    <div class="two">
-      <div>
-        <p class="label"><span>Nueberd</span> <span class="tag" data-go="maiden">Every build</span></p>
-        <h2 class="reveal">Mindfully <em>handmade</em></h2>
-        <p style="margin-top:18px">Each piece is hand-knotted using high-quality, eco-friendly cotton cord. Some in a linen-cotton blend that makes them that much more cozy, some on an oxidized copper hoop, and one tiered necklace wrapped on a gold brass choker.</p>
-        <p class="soft">Boho vibes with a modern cottage witch aesthetic.</p>
-      </div>
-      <figure class="photo tall edge reveal"><img src="images/choker.jpg" alt="A cream macrame necklace, tiered and hand-knotted, on a gold brass choker" width="900" height="1125" loading="lazy"></figure>
-    </div>
-    <div class="kinds">
-      <article class="kind reveal">
-        <figure class="photo"><img src="images/earrings-pink.jpg" alt="Muted light pink macrame leaf earrings in window light" width="900" height="1092" loading="lazy"></figure>
-        <div class="kind-body"><h3>Jewelry</h3><p class="her-words">&ldquo;I simply adore this muted light pink color.&rdquo;</p><p>Little leaf and twisted macrame earrings, plus the brass choker.</p></div>
-      </article>
-      <article class="kind reveal">
-        <figure class="photo"><img src="images/light-sun.jpg" alt="A tall whimsical macrame hanging light against a sunny yellow wall" width="512" height="640" loading="lazy"></figure>
-        <div class="kind-body"><h3>Whimsical lights</h3><p class="her-words">&ldquo;Allow the soft, dreamy glow to transport you to a world of fairy tales and reverie.&rdquo;</p><p>Macrame hanging lights, for a calming, captivating corner.</p></div>
-      </article>
-      <article class="kind reveal">
-        <figure class="photo"><img src="images/spoon.jpg" alt="A tiny carved wooden spoon held up among houseplants" width="360" height="638" loading="lazy" style="object-position:50% 45%"></figure>
-        <div class="kind-body"><h3>Tiny spoons</h3><p class="her-words">&ldquo;I&rsquo;m working on making more like these before I start playing with different styles.&rdquo;</p><p>Small wooden spoons, carved by hand.</p></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="shop" class="gutter">
-  <div class="wrap">
-    <p class="label"><span>The little shop</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-    <h2 class="reveal">Take one <em>home</em></h2>
-    <p class="measure soft" style="margin-top:14px" data-show="crone all">Handmade pieces and thrifted finds, one bag. Pick what you love and check out right here. Up to about twenty pieces at a time, and each one is one of a kind.</p>
-    <div class="shop-filter" role="group" aria-label="Show" data-show="crone all"><button type="button" data-kind="all" aria-pressed="true">Everything</button><button type="button" data-kind="handmade" aria-pressed="false">Handmade</button><button type="button" data-kind="thrift" aria-pressed="false">Thrifted</button></div>
-    <p class="measure soft" style="margin-top:14px" data-show="mother" hidden>Every piece has its own Ask button, so a question about a color or a size comes straight to your inbox.</p>
-    <p class="measure soft" style="margin-top:14px" data-show="maiden" hidden>Every piece, with a button that opens your Instagram DMs, just like you sell them now.</p>
-    <div class="shop-grid" id="shop-grid">
-      <article class="item reveal" data-kind="handmade" data-id="cream">
-        <figure class="photo"><img src="images/earrings-cream.jpg" alt="Creamy white macrame leaf earrings with window light shadows" width="900" height="1073" loading="lazy"><span class="hangtag">one of a kind</span></figure>
-        <div class="item-body"><h3>Creamy white leaf earrings</h3><p>Linen-cotton blend, little leaf pattern.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Creamy white leaf earrings" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the creamy white leaf earrings">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
-      </article>
-      <article class="item reveal" data-kind="handmade" data-id="pink">
-        <figure class="photo"><img src="images/earrings-pink.jpg" alt="Muted light pink macrame leaf earrings" width="900" height="1092" loading="lazy"></figure>
-        <div class="item-body"><h3>Muted pink leaf earrings</h3><p>Also in the twisted macrame pattern.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Muted pink leaf earrings" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the muted pink leaf earrings">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
-      </article>
-      <article class="item reveal" data-kind="handmade" data-id="autumn">
-        <figure class="photo"><img src="images/earrings-autumn.jpg" alt="Rust and deep golden yellow macrame earrings on oxidized copper hoops" width="900" height="900" loading="lazy"><span class="hangtag">for autumn lovers</span></figure>
-        <div class="item-body"><h3>Autumn earrings</h3><p>Rust and deep golden yellow on an oxidized copper hoop.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Autumn earrings" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the autumn earrings">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
-      </article>
-      <article class="item reveal" data-kind="handmade" data-id="choker">
-        <figure class="photo"><img src="images/choker.jpg" alt="Tiered cream macrame necklace on a gold brass choker" width="900" height="1125" loading="lazy"></figure>
-        <div class="item-body"><h3>Tiered brass choker</h3><p>Tiered macrame wrapped upon a gold brass choker.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Tiered brass choker" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the tiered brass choker">Ask about this</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
-      </article>
-      <article class="item reveal" data-kind="handmade" data-id="light">
-        <figure class="photo"><img src="images/light-garden.jpg" alt="A long cream macrame hanging light in front of green trees" width="640" height="1136" loading="lazy" style="object-position:50% 30%"></figure>
-        <div class="item-body"><h3>Whimsical macrame light</h3><p>A soft, dreamy glow for your corner.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Whimsical macrame light" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the macrame light">Ask about this</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
-      </article>
-      <article class="item reveal" data-kind="handmade" data-id="spoon">
-        <figure class="photo"><img src="images/spoon.jpg" alt="A tiny carved wooden spoon" width="360" height="638" loading="lazy" style="object-position:50% 45%"><span class="hangtag">tiny!</span></figure>
-        <div class="item-body"><h3>Tiny wooden spoon</h3><p>Small batch, carved by hand.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Tiny wooden spoon" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="a tiny spoon">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
-      </article>
-          <article class="item reveal" data-kind="thrift" data-id="find-cardigan">
-        <figure class="photo"><img src="images/drop-llbean-cardigan.jpg" alt="Blue cable knit L.L.Bean cardigan" width="640" height="640" loading="lazy"><span class="hangtag">site-only find</span></figure>
-        <div class="item-body"><h3>L.L.Bean blue cable knit cardigan</h3><p>Size M, 100% cotton. A sample of a site-only find: listed here and nowhere else, so it can never sell twice.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="L.L.Bean blue cable knit cardigan" aria-pressed="false">Add to bag</button></span></div></div>
-      </article>
-      <article class="item reveal" data-kind="thrift" data-id="find-jacket">
-        <figure class="photo"><img src="images/drop-levis-jacket.jpg" alt="Vintage Levi's jacket" width="640" height="640" loading="lazy"><span class="hangtag">site-only find</span></figure>
-        <div class="item-body"><h3>Vintage Levi&rsquo;s jacket</h3><p>A sample of a site-only find, announced on Instagram as a little drop.</p><p class="price"><span class="ph">your price</span></p>
-          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Vintage Levi's jacket" aria-pressed="false">Add to bag</button></span></div></div>
-      </article>
-      <article class="item item-door reveal" data-kind="thrift">
-        <a class="door-card" href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener"><b>The whole closet</b><span>Every other thrifted find lives on Depop, where it&rsquo;s easy to shop and ship.</span><span class="go">Shop it on Depop &rarr;</span><span class="vh"> (opens Depop in a new tab)</span></a>
-      </article>
 </div>
-    <p class="hint" id="ask-hint" role="status" data-show="mother" hidden></p>
 
-    <div class="bag" data-show="crone all" data-fold data-thing="your own shop and checkout">
-      <div class="bag-card" id="bag-card">
-        <h3>Your bag <span class="bk-demo">preview</span></h3>
-        <p class="bag-empty" id="bag-empty">Nothing in it yet. Tap Add to bag on a piece.</p>
-        <ul class="bag-lines" id="bag-lines"></ul>
-        <p class="hint" id="bag-hint" role="status"></p>
-        <button type="button" class="bk-go" id="bag-go">Check out</button>
-        <div class="sheet fade-in" id="co-sheet" hidden style="margin-top:18px">
-          <h3 class="sheet-h" id="co-h" tabindex="-1"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
-          <div class="sheet-lines" id="co-lines"></div>
-          <div class="sheet-slot"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg><span>Card, Apple Pay or Google Pay goes here, through your own Stripe.</span></div>
-          <div class="sheet-actions"><button type="button" class="bk-go" id="co-complete">Complete (preview)</button><button type="button" class="bk-go ghost" id="co-back">Back</button></div>
-        </div>
-        <div class="bk-done fade-in" id="co-done" hidden style="margin-top:18px">
-          <h3 id="co-done-h" tabindex="-1">Thank you!</h3>
-          <p id="co-done-text"></p>
-          <p class="demo-note">Preview only: nothing was charged, and nothing was sent.</p>
-          <button type="button" class="bk-go ghost" id="co-again">Try it again</button>
-        </div>
-      </div>
-      <div>
-        <div class="you-note" style="margin-top:0">
-          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5c0-1.9-2.2-3-5-3s-5 1.1-5 3.2c0 4.6 10 2.4 10 7.4 0 2.1-2.2 3.4-5 3.4s-5-1.2-5-3.2"/></svg>
-          <div>
-            <p class="label"><span>Paid straight to you</span></p>
-            <p>Your shop runs on your own Stripe account, so money lands in your bank, with no monthly shop fee like Shopify. Stripe just takes a small fee on each sale.</p>
-            <p>Sold out? Email me and the piece comes down, or gets a little &ldquo;sold&rdquo; tag. The prices here are blanks for you to fill in.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="thrift" class="band gutter">
+<section id="new" class="gutter shop-sec">
   <div class="wrap">
-    <div class="two">
-      <figure class="photo tall edge reveal"><img src="images/lace-dress.jpg" alt="A long sheer embroidered lace dress, worn by Amber beside a woven chair and houseplants" width="900" height="1125" loading="lazy" style="object-position:50% 30%"></figure>
-      <div>
-        <p class="label"><span>My Thrifting Era</span> <span class="tag" data-go="maiden">Every build</span></p>
-        <h2 class="reveal">I dig through the piles, <em>so you don&rsquo;t have to</em></h2>
-        <p style="margin-top:18px">A one woman owned thrift shop. Cozy knits, cottagecore nightgowns, linen, and honestly the most random assortment of clothes. Each one gets an honest look first: if there&rsquo;s a hole or a mismatched button, it&rsquo;s in the listing.</p>
-        <blockquote style="margin-top:26px"><p class="quote">&ldquo;I want you to feel cozy when you come here. Like you just stopped by after a brisk morning walk.&rdquo;</p></blockquote>
-        <p class="quote-by">Amber</p>
-        <div class="reach">
-          <a href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop my Depop <span class="note">164 sold</span><span class="vh"> (opens in a new tab)</span></a>
-          <a href="https://www.ebay.com/usr/mythriftingera" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop my eBay <span class="note">100% positive</span><span class="vh"> (opens in a new tab)</span></a>
-        </div>
-      </div>
+    <div class="sec-head">
+      <div><p class="label"><span>New in</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <h2 class="reveal">New <em>arrivals</em></h2></div>
+      <a class="see-all" href="#handmade">See all handmade <span aria-hidden="true">&rarr;</span></a>
     </div>
+    <p class="measure soft sec-sub" data-show="crone all">Handmade pieces and thrifted finds, all in one bag. Bestsellers are always available and made to order; new drops and thrifted finds are one of a kind.</p>
+    <p class="measure soft sec-sub" data-show="mother" hidden>Every piece has its own Ask button, so a question about a color or a size comes straight to your inbox.</p>
+    <p class="measure soft sec-sub" data-show="maiden" hidden>Every piece, with a button that opens your Instagram DMs, just like you sell them now.</p>
+    <div class="shop-grid">
+      <article class="item reveal" data-kind="handmade" data-model="nd" data-id="choker">
+        <figure class="photo"><img src="images/choker.jpg" alt="Tiered cream macrame necklace on a gold brass choker" width="900" height="1125" loading="lazy"><span class="hangtag">new drop</span></figure>
+        <div class="item-body"><p class="item-kind"><b>New drop</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Tiered brass choker</h3><p class="item-note">Tiered macrame wrapped on a gold brass choker.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="choker"><span class="add-t">Add to bag</span><span class="vh">: Tiered brass choker</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the tiered brass choker">Ask about this<span class="vh">: Tiered brass choker</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Tiered brass choker (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="thrift" data-model="thrift" data-id="dress" data-show="crone all">
+        <figure class="photo"><img src="images/feed-t3.jpg" alt="A rust button-down shirt dress with a tie belt" width="480" height="480" loading="lazy"><span class="hangtag">just in</span></figure>
+        <div class="item-body"><p class="item-kind"><b>Site-only find</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Petal + Pup rust shirt dress</h3><p class="item-note">Button-down, with a tie belt.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="dress"><span class="add-t">Add to bag</span><span class="vh">: Petal + Pup rust shirt dress</span></button></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="aa" data-id="leaf">
+        <figure class="photo"><img src="images/earrings-cream.jpg" alt="Creamy white macrame leaf earrings with window light shadows" width="900" height="1073" loading="lazy"></figure>
+        <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Leaf earrings</h3><p class="item-note">Hand-knotted cotton cord, little leaf pattern.</p><fieldset class="swatches"><legend>Color: <span class="sw-name">Cream</span></legend><label><input type="radio" name="c-leaf-3" value="cream" data-label="Cream" data-img="images/earrings-cream.jpg" data-w="900" data-h="1073" data-alt="Creamy white macrame leaf earrings with window light shadows" checked><span class="sw" style="--sw:#efe6d2" aria-hidden="true"></span><span class="vh">Cream</span></label><label><input type="radio" name="c-leaf-3" value="pink" data-label="Pink" data-img="images/earrings-pink.jpg" data-w="900" data-h="1092" data-alt="Muted light pink macrame leaf earrings"><span class="sw" style="--sw:#e2b6a6" aria-hidden="true"></span><span class="vh">Pink</span></label><label><input type="radio" name="c-leaf-3" value="rust" data-label="Rust" data-img="images/earrings-autumn.jpg" data-w="900" data-h="900" data-alt="Rust and deep golden yellow macrame earrings on oxidized copper hoops"><span class="sw" style="--sw:#9b4a26" aria-hidden="true"></span><span class="vh">Rust</span></label></fieldset><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="leaf"><span class="add-t">Add to bag</span><span class="vh">: Leaf earrings</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the leaf earrings">Ask about these<span class="vh">: Leaf earrings</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Leaf earrings (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="nd" data-id="light-sun">
+        <figure class="photo"><img src="images/light-sun.jpg" alt="A tall whimsical macrame hanging light against a sunny yellow wall" width="512" height="640" loading="lazy" style="object-position:50% 35%"><span class="hangtag">new drop</span></figure>
+        <div class="item-body"><p class="item-kind"><b>New drop</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Whimsical macrame light</h3><p class="item-note">Hand-knotted, tall and whimsical.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="light-sun"><span class="add-t">Add to bag</span><span class="vh">: Whimsical macrame light</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the whimsical macrame light">Ask about this<span class="vh">: Whimsical macrame light</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Whimsical macrame light (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="thrift" data-model="thrift" data-id="cardigan" data-show="crone all">
+        <figure class="photo"><img src="images/drop-llbean-cardigan.jpg" alt="Blue cable knit L.L.Bean cardigan" width="640" height="640" loading="lazy"></figure>
+        <div class="item-body"><p class="item-kind"><b>Site-only find</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>L.L.Bean blue cable knit cardigan</h3><p class="item-note">Size M, 100% cotton.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="cardigan"><span class="add-t">Add to bag</span><span class="vh">: L.L.Bean blue cable knit cardigan</span></button></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="aa" data-id="light">
+        <figure class="photo"><img src="images/light-garden.jpg" alt="A long cream macrame hanging light in front of green trees" width="640" height="1136" loading="lazy" style="object-position:50% 30%"></figure>
+        <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Macrame hanging light</h3><p class="item-note">A soft, dreamy glow for a cozy corner.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="light"><span class="add-t">Add to bag</span><span class="vh">: Macrame hanging light</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the macrame hanging light">Ask about this<span class="vh">: Macrame hanging light</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Macrame hanging light (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="thrift" data-model="thrift" data-id="jacket" data-show="crone all">
+        <figure class="photo"><img src="images/drop-levis-jacket.jpg" alt="Vintage blue Levi&rsquo;s denim jacket" width="640" height="640" loading="lazy"></figure>
+        <div class="item-body"><p class="item-kind"><b>Site-only find</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Vintage Levi&rsquo;s denim jacket</h3><p class="item-note">Size XL, the good worn-in blue.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="jacket"><span class="add-t">Add to bag</span><span class="vh">: Vintage Levi&rsquo;s denim jacket</span></button></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="aa" data-id="spoon">
+        <figure class="photo"><img src="images/spoon.jpg" alt="A tiny carved wooden spoon held up among houseplants" width="360" height="638" loading="lazy" style="object-position:50% 45%"><span class="hangtag">tiny!</span></figure>
+        <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Tiny wooden spoon</h3><p class="item-note">Small batch, carved by hand.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="spoon"><span class="add-t">Add to bag</span><span class="vh">: Tiny wooden spoon</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="a tiny spoon">Ask about these<span class="vh">: Tiny wooden spoon</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Tiny wooden spoon (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+    </div>
+    <p class="hint ask-hint" role="status" data-show="mother" hidden></p>
 
-    <div data-show="crone all" data-fold data-thing="latest drops from Depop and eBay" style="margin-top:56px">
-      <p class="label"><span>Latest drops</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <h3 class="reveal" style="font-size:clamp(24px,3vw,32px)">Fresh from the racks</h3>
-      <ul class="drops">
-        <li class="drop reveal"><a href="https://www.depop.com/products/myvhriftingera-vintage-yellowcream-sheer-nightgown-dress-a81f/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-nightgown.jpg" alt="Vintage yellow and cream sheer nightgown with a lace collar" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage sheer nightgown, lace collar</b><span>Size S</span><span class="price">$17.50 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythrirtingera-llbean-blue-cable-knit-cardigan-f865/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-llbean-cardigan.jpg" alt="Blue cable knit L.L.Bean cardigan" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>L.L.Bean blue cable knit cardigan</b><span>Size M, 100% cotton</span><span class="price">$21.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythr5ftingera-vintage-cristin-stevens-floral-blazer-086b/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-floral-blazer.jpg" alt="Vintage floral blazer with pink, blue and yellow flowers" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage Cristin Stevens floral blazer</b><span>Grandmacore</span><span class="price">$32.20 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythrivtingera-the-sang-yellow-and-blue-c31f/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-tulip-blouse.jpg" alt="Yellow and blue tulip print blouse with balloon sleeves" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Tulip print blouse, balloon sleeves</b><span>Size M</span><span class="price">$26.95 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythriftingera-chaus-pink-knit-sweater-with-f062/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-pink-knit.jpg" alt="Pastel pink V-neck knit sweater" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Chaus pink knit sweater</b><span>Size M, ramie and cotton</span><span class="price">$21.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythriftingera-lizwear-multicoloured-vintage-sweater-with-68f4/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-lizwear-sweater.jpg" alt="Vintage Lizwear sweater in cream, blue and tan" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Lizwear vintage sweater</b><span>Size L</span><span class="price">$21.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythri4tingera-jmd-new-york-vintage-floor-4390/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-beaded-gown.jpg" alt="Black floor length beaded silk dress" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage beaded silk gown</b><span>Size 6, 100% silk</span><span class="price">$63.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-        <li class="drop reveal"><a href="https://www.depop.com/products/mythriftingera-levi-strauss-co-vintage/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-levis-jacket.jpg" alt="Vintage blue Levi's denim jacket" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage Levi&rsquo;s denim jacket</b><span>Size XL</span><span class="price">$79.45 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
-      </ul>
-      <div class="drops-foot">
-        <p class="demo-note" style="margin-top:0">Prices as listed on your Depop today, which include Depop&rsquo;s marketplace fee. Each card opens the listing on Depop.</p>
-      </div>
+    <div class="cats">
+      <a class="cat reveal" href="#handmade"><figure class="photo"><img src="images/earrings-pink.jpg" alt="" width="900" height="1092" loading="lazy" style="object-position:50% 40%"></figure><span class="cat-k">Nueberd</span><b>Shop handmade <span aria-hidden="true">&rarr;</span></b><span class="cat-p">Earrings, a brass choker, macrame lights and tiny spoons</span></a>
+      <a class="cat reveal" href="#thrifted"><figure class="photo"><img src="images/teapot.jpg" alt="" width="900" height="1125" loading="lazy" style="object-position:50% 70%"></figure><span class="cat-k">My Thrifting Era</span><b>Shop thrifted <span aria-hidden="true">&rarr;</span></b><span class="cat-p">Cozy knits, vintage nightgowns, linen and the odd beaded gown</span></a>
+    </div>
+    <ul class="trust">
+      <li><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6h11v10h-11Z"/><path d="M13.5 9.5h4l3 3.5v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><b>Shipping</b><span><span class="ph">your shipping rates</span></span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg><b>Returns</b><span><span class="ph">your returns policy</span></span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg><b>Made by Amber</b><span>by hand, in <span class="ph">your town</span></span></li>
+      <li data-show="crone all"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Safe checkout</b><span>Card, Apple Pay or Google Pay, through Stripe</span></li>
+    </ul>
+    <div class="notes">
       <div class="you-note">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10a8 8 0 0 1 16 0v11Z"/><path d="M12 2v19M4 13h16"/></svg>
         <div>
-          <p class="label"><span>Your closet stays where it is</span></p>
-          <p>Depop and eBay keep the whole inventory, the shipping labels and the reviews. Your site shows the newest drops and sends people over to buy. When you list something special, email me the link and it shows up here.</p>
+          <p class="label"><span>A note for you</span> <span class="tag" data-go="maiden">Every build</span></p>
+          <p>One shop with a page for each side: Handmade for what you make, Thrifted for what you find. People who come for the earrings find the knits too. Every photo and nearly every line here is yours, from your Instagram and your Depop.</p>
+        </div>
+      </div>
+      <div class="you-note" data-show="crone all">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5c0-1.9-2.2-3-5-3s-5 1.1-5 3.2c0 4.6 10 2.4 10 7.4 0 2.1-2.2 3.4-5 3.4s-5-1.2-5-3.2"/></svg>
+        <div>
+          <p class="label"><span>Paid straight to you</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+          <p>Your bag and checkout run on your own Stripe account, so money lands in your bank, with no monthly shop fee like Shopify. Stripe just takes a small fee on each sale. Sold out? Email me and the piece comes down. The prices are blanks for you to fill in.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="story" class="gutter" data-show="mother crone all" data-fold>
-  <div class="wrap two">
-    <div>
-      <p class="label"><span>About Amber</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 class="reveal">Thrifting since before I could <em>even walk</em></h2>
-      <p style="margin-top:18px">I grew up with four older sisters, which means hand-me-downs were my first wardrobe and secondhand has always felt like home.</p>
-      <p>I want to honor my body the same way that I honor the seasons, including what I choose to cover it with. Not just for fashion&rsquo;s sake, but collecting things that truly awaken something in me. That&rsquo;s what I knot into every piece, and what I look for in every pile.</p>
-      <p class="story-sig">Amber</p>
-    </div>
-    <figure class="photo tall edge reveal"><img src="images/tea-mug.jpg" alt="Hands in a charcoal cardigan holding a flowered tea mug, over a white cotton nightgown" width="900" height="1125" loading="lazy" style="object-position:50% 70%"></figure>
   </div>
 </section>
 
@@ -854,21 +806,197 @@
   </div>
 </section>
 
+<section id="found" class="gutter found-sec">
+  <div class="wrap found-wrap">
+    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="label"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
+    <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
+    <p class="measure soft" style="margin-top:14px">None of this appears on your site. It&rsquo;s how people find it. Right now your Linktree is empty and your old Shopify link says &ldquo;Store unavailable&rdquo;, so a search has nowhere to land.</p>
+    <div class="found">
+      <figure class="reveal found-card">
+        <figcaption>In a search</figcaption>
+        <div class="serp">
+          <div class="serp-q"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>handmade macrame earrings</div>
+          <div class="serp-site"><span class="serp-fav" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 32 32"><path d="M9 26V14a7 7 0 0 1 14 0v12Z" fill="none" stroke="#9b4a26" stroke-width="2.6"/><path d="M16 8v18M9 18h14" stroke="#9b4a26" stroke-width="1.8"/></svg></span><span><b>Amber Baker</b><small>nueberd.com</small></span></div>
+          <p class="serp-title">Amber Baker | Shop handmade Nueberd jewelry and My Thrifting Era finds</p>
+          <p class="serp-desc">Hand-knotted macrame earrings, a brass choker, whimsical macrame lights and tiny wooden spoons by Amber Baker. Plus My Thrifting Era, a one woman owned thrift shop.</p>
+        </div>
+      </figure>
+      <figure class="reveal found-card">
+        <figcaption>In a text from a friend</figcaption>
+        <div class="sms">
+          <p class="sms-bubble">the earrings I was telling you about!!</p>
+          <span class="linkcard"><img src="images/hero.jpg" alt="" loading="lazy"><span><b>Amber Baker | Shop Nueberd and My Thrifting Era</b><small>nueberd.com</small></span></span>
+        </div>
+      </figure>
+    </div>
+    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Instagram bios, your Linktree and your Depop profile can all point here, so every door leads home.</span></p>
+  </div>
+</section>
+
+</div>
+
+<div class="page" id="page-handmade" data-page="handmade">
+<div class="views-slot"></div>
+<section class="gutter page-head">
+  <div class="wrap">
+    <p class="label"><span>Nueberd</span> <span class="tag" data-go="maiden">Every build</span></p>
+    <h1 tabindex="-1">Made <em>by hand</em></h1>
+    <p class="lede">Mindfully handmade wooden accessories, jewelry and cozy home. Each piece is hand-knotted from high-quality, eco-friendly cotton cord, some in a linen-cotton blend that makes them that much more cozy. Boho vibes with a modern cottage witch aesthetic.</p>
+  </div>
+</section>
+<section class="gutter shop-sec" id="handmade-shop">
+  <div class="wrap">
+    <p class="measure soft sec-sub" data-show="crone all">Pick what you love and check out right here. Bestsellers are always available, made fresh for you; new drops are one of a kind, so when they&rsquo;re gone, they&rsquo;re gone.</p>
+    <p class="measure soft sec-sub" data-show="mother" hidden>Every piece has its own Ask button, so a question about a color or a size comes straight to your inbox.</p>
+    <p class="measure soft sec-sub" data-show="maiden" hidden>Every piece, with a button that opens your Instagram DMs, just like you sell them now.</p>
+    <div class="shop-grid g3">
+      <article class="item reveal" data-kind="handmade" data-model="aa" data-id="leaf">
+        <figure class="photo"><img src="images/earrings-cream.jpg" alt="Creamy white macrame leaf earrings with window light shadows" width="900" height="1073" loading="lazy"></figure>
+        <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Leaf earrings</h3><p class="item-note">Hand-knotted cotton cord, little leaf pattern.</p><fieldset class="swatches"><legend>Color: <span class="sw-name">Cream</span></legend><label><input type="radio" name="c-leaf-9" value="cream" data-label="Cream" data-img="images/earrings-cream.jpg" data-w="900" data-h="1073" data-alt="Creamy white macrame leaf earrings with window light shadows" checked><span class="sw" style="--sw:#efe6d2" aria-hidden="true"></span><span class="vh">Cream</span></label><label><input type="radio" name="c-leaf-9" value="pink" data-label="Pink" data-img="images/earrings-pink.jpg" data-w="900" data-h="1092" data-alt="Muted light pink macrame leaf earrings"><span class="sw" style="--sw:#e2b6a6" aria-hidden="true"></span><span class="vh">Pink</span></label><label><input type="radio" name="c-leaf-9" value="rust" data-label="Rust" data-img="images/earrings-autumn.jpg" data-w="900" data-h="900" data-alt="Rust and deep golden yellow macrame earrings on oxidized copper hoops"><span class="sw" style="--sw:#9b4a26" aria-hidden="true"></span><span class="vh">Rust</span></label></fieldset><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="leaf"><span class="add-t">Add to bag</span><span class="vh">: Leaf earrings</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the leaf earrings">Ask about these<span class="vh">: Leaf earrings</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Leaf earrings (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="aa" data-id="spoon">
+        <figure class="photo"><img src="images/spoon.jpg" alt="A tiny carved wooden spoon held up among houseplants" width="360" height="638" loading="lazy" style="object-position:50% 45%"><span class="hangtag">tiny!</span></figure>
+        <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Tiny wooden spoon</h3><p class="item-note">Small batch, carved by hand.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="spoon"><span class="add-t">Add to bag</span><span class="vh">: Tiny wooden spoon</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="a tiny spoon">Ask about these<span class="vh">: Tiny wooden spoon</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Tiny wooden spoon (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="aa" data-id="light">
+        <figure class="photo"><img src="images/light-garden.jpg" alt="A long cream macrame hanging light in front of green trees" width="640" height="1136" loading="lazy" style="object-position:50% 30%"></figure>
+        <div class="item-body"><p class="item-kind"><b>Always available</b> <span aria-hidden="true">&middot;</span> made to order, ships in about a week</p><h3>Macrame hanging light</h3><p class="item-note">A soft, dreamy glow for a cozy corner.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="light"><span class="add-t">Add to bag</span><span class="vh">: Macrame hanging light</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the macrame hanging light">Ask about this<span class="vh">: Macrame hanging light</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Macrame hanging light (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="nd" data-id="choker">
+        <figure class="photo"><img src="images/choker.jpg" alt="Tiered cream macrame necklace on a gold brass choker" width="900" height="1125" loading="lazy"><span class="hangtag">new drop</span></figure>
+        <div class="item-body"><p class="item-kind"><b>New drop</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Tiered brass choker</h3><p class="item-note">Tiered macrame wrapped on a gold brass choker.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="choker"><span class="add-t">Add to bag</span><span class="vh">: Tiered brass choker</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the tiered brass choker">Ask about this<span class="vh">: Tiered brass choker</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Tiered brass choker (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="handmade" data-model="nd" data-id="light-sun">
+        <figure class="photo"><img src="images/light-sun.jpg" alt="A tall whimsical macrame hanging light against a sunny yellow wall" width="512" height="640" loading="lazy" style="object-position:50% 35%"><span class="hangtag">new drop</span></figure>
+        <div class="item-body"><p class="item-kind"><b>New drop</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Whimsical macrame light</h3><p class="item-note">Hand-knotted, tall and whimsical.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="light-sun"><span class="add-t">Add to bag</span><span class="vh">: Whimsical macrame light</span></button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the whimsical macrame light">Ask about this<span class="vh">: Whimsical macrame light</span></button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM to buy<span class="vh"> Whimsical macrame light (opens Instagram in a new tab)</span></a></span></div></div>
+      </article>
+    </div>
+    <p class="hint ask-hint" role="status" data-show="mother" hidden></p>
+    <div class="you-note">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
+      <div>
+        <p class="label"><span>How it runs</span> <span class="tag" data-go="maiden">Every build</span></p>
+        <p>Your bestsellers stay up for good and you make them to order; new pieces go up as drops every couple of weeks. Email me the photos and prices and the drop goes live on the day you pick. And your shop never looks empty, even right after a drop sells out.</p>
+      </div>
+    </div>
+    <ul class="trust">
+      <li><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6h11v10h-11Z"/><path d="M13.5 9.5h4l3 3.5v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><b>Shipping</b><span><span class="ph">your shipping rates</span></span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg><b>Returns</b><span><span class="ph">your returns policy</span></span></li>
+      <li><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg><b>Made by Amber</b><span>by hand, in <span class="ph">your town</span></span></li>
+      <li data-show="crone all"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Safe checkout</b><span>Card, Apple Pay or Google Pay, through Stripe</span></li>
+    </ul>
+  </div>
+</section>
+</div>
+
+<div class="page" id="page-thrifted" data-page="thrifted">
+<div class="views-slot"></div>
+<section class="gutter page-head">
+  <div class="wrap thrift-head">
+    <div>
+      <p class="label"><span>My Thrifting Era</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <h1 tabindex="-1">I dig through the piles, <em>so you don&rsquo;t have to</em></h1>
+      <p class="lede">A one woman owned thrift shop. Cozy knits, cottagecore nightgowns, linen, and honestly the most random assortment of clothes. Each one gets an honest look first: if there&rsquo;s a hole or a mismatched button, it&rsquo;s in the listing.</p>
+      <div class="reach">
+        <a href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop my Depop <span class="note">164 sold</span><span class="vh"> (opens in a new tab)</span></a>
+        <a href="https://www.ebay.com/usr/mythriftingera" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop my eBay <span class="note">100% positive</span><span class="vh"> (opens in a new tab)</span></a>
+      </div>
+    </div>
+    <figure class="photo reveal"><img src="images/lace-dress.jpg" alt="A long sheer embroidered lace dress, worn by Amber beside a woven chair and houseplants" width="900" height="1125" loading="lazy" style="object-position:50% 30%"></figure>
+  </div>
+</section>
+<section class="gutter shop-sec" id="site-only" data-show="crone all" data-fold data-thing="site-only thrift finds in your bag">
+  <div class="wrap">
+    <div class="sec-head"><div><p class="label"><span>Site-only finds</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h2 class="reveal">Only <em>here</em></h2></div></div>
+    <p class="measure soft sec-sub">Listed on this site and nowhere else, so nothing can sell twice. They go in the same bag as the earrings.</p>
+    <div class="shop-grid">
+      <article class="item reveal" data-kind="thrift" data-model="thrift" data-id="dress" data-show="crone all">
+        <figure class="photo"><img src="images/feed-t3.jpg" alt="A rust button-down shirt dress with a tie belt" width="480" height="480" loading="lazy"><span class="hangtag">just in</span></figure>
+        <div class="item-body"><p class="item-kind"><b>Site-only find</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Petal + Pup rust shirt dress</h3><p class="item-note">Button-down, with a tie belt.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="dress"><span class="add-t">Add to bag</span><span class="vh">: Petal + Pup rust shirt dress</span></button></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="thrift" data-model="thrift" data-id="cardigan" data-show="crone all">
+        <figure class="photo"><img src="images/drop-llbean-cardigan.jpg" alt="Blue cable knit L.L.Bean cardigan" width="640" height="640" loading="lazy"></figure>
+        <div class="item-body"><p class="item-kind"><b>Site-only find</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>L.L.Bean blue cable knit cardigan</h3><p class="item-note">Size M, 100% cotton.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="cardigan"><span class="add-t">Add to bag</span><span class="vh">: L.L.Bean blue cable knit cardigan</span></button></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="thrift" data-model="thrift" data-id="jacket" data-show="crone all">
+        <figure class="photo"><img src="images/drop-levis-jacket.jpg" alt="Vintage blue Levi&rsquo;s denim jacket" width="640" height="640" loading="lazy"></figure>
+        <div class="item-body"><p class="item-kind"><b>Site-only find</b> <span aria-hidden="true">&middot;</span> one of a kind</p><h3>Vintage Levi&rsquo;s denim jacket</h3><p class="item-note">Size XL, the good worn-in blue.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-id="jacket"><span class="add-t">Add to bag</span><span class="vh">: Vintage Levi&rsquo;s denim jacket</span></button></span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+<section id="depop" class="band gutter" data-show="crone all" data-fold data-thing="your Depop listings on your site">
+  <div class="wrap">
+    <div class="sec-head"><div><p class="label"><span>More finds on Depop</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h2 class="reveal">Fresh from <em>the racks</em></h2></div>
+      <a class="see-all" href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener">See all on Depop <span aria-hidden="true">&rarr;</span><span class="vh"> (opens in a new tab)</span></a></div>
+    <ul class="drops">
+        <li class="drop reveal"><a href="https://www.depop.com/products/myvhriftingera-vintage-yellowcream-sheer-nightgown-dress-a81f/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-nightgown.jpg" alt="Vintage yellow and cream sheer nightgown with a lace collar" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage sheer nightgown, lace collar</b><span>Size S</span><span class="price">$17.50 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+        <li class="drop reveal"><a href="https://www.depop.com/products/mythr5ftingera-vintage-cristin-stevens-floral-blazer-086b/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-floral-blazer.jpg" alt="Vintage floral blazer with pink, blue and yellow flowers" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage Cristin Stevens floral blazer</b><span>Grandmacore</span><span class="price">$32.20 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+        <li class="drop reveal"><a href="https://www.depop.com/products/mythrivtingera-the-sang-yellow-and-blue-c31f/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-tulip-blouse.jpg" alt="Yellow and blue tulip print blouse with balloon sleeves" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Tulip print blouse, balloon sleeves</b><span>Size M</span><span class="price">$26.95 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+        <li class="drop reveal"><a href="https://www.depop.com/products/mythriftingera-chaus-pink-knit-sweater-with-f062/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-pink-knit.jpg" alt="Pastel pink V-neck knit sweater" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Chaus pink knit sweater</b><span>Size M, ramie and cotton</span><span class="price">$21.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+        <li class="drop reveal"><a href="https://www.depop.com/products/mythriftingera-lizwear-multicoloured-vintage-sweater-with-68f4/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-lizwear-sweater.jpg" alt="Vintage Lizwear sweater in cream, blue and tan" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Lizwear vintage sweater</b><span>Size L</span><span class="price">$21.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+        <li class="drop reveal"><a href="https://www.depop.com/products/mythri4tingera-jmd-new-york-vintage-floor-4390/" target="_blank" rel="noopener"><figure class="photo"><img src="images/drop-beaded-gown.jpg" alt="Black floor length beaded silk dress" width="640" height="640" loading="lazy"></figure><span class="drop-body"><b>Vintage beaded silk gown</b><span>Size 6, 100% silk</span><span class="price">$63.70 on Depop</span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+        <li class="drop closet"><a href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener"><span class="closet-in"><span class="cat-k">164 sold, 22 listed</span><b>The whole closet</b><span>Every other thrifted find lives on Depop, where it&rsquo;s easy to shop and ship.</span><span class="go">Shop it on Depop <span aria-hidden="true">&rarr;</span></span></span><span class="vh"> (opens Depop in a new tab)</span></a></li>
+    </ul>
+    <p class="demo-note">Prices as listed on your Depop today, which include Depop&rsquo;s marketplace fee. Each card opens the listing on Depop.</p>
+    <div class="you-note">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      <div>
+        <p class="label"><span>Your closet stays where it is</span></p>
+        <p>Depop and eBay keep the whole inventory, the shipping labels and the reviews. Your site shows your newest listings and sends people over to buy. When you list something special, email me the link and it shows up here, or keep it site-only and sell it right from your bag.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="page" id="page-about" data-page="about">
+<div class="views-slot"></div>
+<section id="story" class="gutter" data-show="mother crone all" data-fold>
+  <div class="wrap two">
+    <div>
+      <p class="label"><span>About Amber</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <h1 class="sec-h1 reveal" tabindex="-1">Thrifting since before I could <em>even walk</em></h1>
+      <p style="margin-top:18px">I grew up with four older sisters, which means hand-me-downs were my first wardrobe and secondhand has always felt like home.</p>
+      <p>I want to honor my body the same way that I honor the seasons, including what I choose to cover it with. Not just for fashion&rsquo;s sake, but collecting things that truly awaken something in me. That&rsquo;s what I knot into every piece, and what I look for in every pile.</p>
+      <p class="story-sig">Amber</p>
+    </div>
+    <figure class="photo tall edge reveal"><img src="images/tea-mug.jpg" alt="Hands in a charcoal cardigan holding a flowered tea mug, over a white cotton nightgown" width="900" height="1125" loading="lazy" style="object-position:50% 70%"></figure>
+  </div>
+</section>
+
 <section id="faq" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap faq">
     <div>
       <p class="label"><span>Good to know</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 class="reveal">Little <em>questions</em></h2>
+      <h2 class="reveal">Shipping, returns and <em>little questions</em></h2>
       <p class="measure soft" style="margin-top:14px">The dotted lines are spots for your own answers.</p>
     </div>
     <div class="faq-list" data-thing="FAQ">
+      <p class="faq-group">Shipping and returns</p>
+      <details><summary>How much is shipping?</summary><div class="ans"><p><span class="ph">your shipping rates and how fast you send</span></p></div></details>
+      <details><summary>Can I return a piece?</summary><div class="ans"><p><span class="ph">your returns policy</span></p></div></details>
+      <details><summary>Where do you ship from?</summary><div class="ans"><p>Everything is made by hand in <span class="ph">your town</span>, and packed up by me.</p></div></details>
       <p class="faq-group">Nueberd</p>
+      <details><summary>How long does a made to order piece take?</summary><div class="ans"><p>Bestsellers are made fresh for you and ship in about a week. <span class="ph">your exact timing</span></p></div></details>
+      <details><summary>When is the next drop?</summary><div class="ans"><p>New pieces go up as drops every couple of weeks. Sign up for drop alerts and you&rsquo;ll hear first.</p></div></details>
       <details><summary>What are the earrings made of?</summary><div class="ans"><p>High-quality, eco-friendly cotton cord, hand-knotted. Some are a linen-cotton blend, some hang on an oxidized copper hoop, and the choker is gold brass.</p></div></details>
       <details><summary>Can I ask for a different color?</summary><div class="ans"><p><span class="ph">your answer on custom colors</span></p></div></details>
       <details><summary>How do I get a tiny spoon?</summary><div class="ans"><p>I&rsquo;m making more like these before I play with different styles. <span class="ph">how to order one</span></p></div></details>
       <p class="faq-group">My Thrifting Era</p>
       <details><summary>What condition are the clothes in?</summary><div class="ans"><p>Pre-loved, and honest about it. If there&rsquo;s a hole, a loose seam or a mismatched button, it&rsquo;s in the listing, so look closely at the pictures.</p></div></details>
-      <details><summary>Do you ship?</summary><div class="ans"><p><span class="ph">your shipping and returns</span></p></div></details>
+      <details><summary>Are the site-only finds on Depop too?</summary><div class="ans"><p>No, those are only here, so they can&rsquo;t sell twice. Everything else is on my Depop.</p></div></details>
     </div>
   </div>
 </section>
@@ -908,39 +1036,14 @@
   </div>
 </section>
 
-<section id="found" class="gutter found-sec">
-  <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
-    <p class="label"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
-    <p class="measure soft" style="margin-top:14px">None of this appears on your site. It&rsquo;s how people find it. Right now your Linktree is empty and your old Shopify link says &ldquo;Store unavailable&rdquo;, so a search has nowhere to land.</p>
-    <div class="found">
-      <figure class="reveal found-card">
-        <figcaption>In a search</figcaption>
-        <div class="serp">
-          <div class="serp-q"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>handmade macrame earrings</div>
-          <div class="serp-site"><span class="serp-fav" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 32 32"><path d="M9 26V14a7 7 0 0 1 14 0v12Z" fill="none" stroke="#9b4a26" stroke-width="2.6"/><path d="M16 8v18M9 18h14" stroke="#9b4a26" stroke-width="1.8"/></svg></span><span><b>Amber Baker</b><small>nueberd.com</small></span></div>
-          <p class="serp-title">Nueberd | Mindfully handmade macrame jewelry, lights and cozy home</p>
-          <p class="serp-desc">Hand-knotted macrame earrings, a brass choker, whimsical macrame lights and tiny wooden spoons by Amber Baker. Plus My Thrifting Era, a one woman owned thrift shop.</p>
-        </div>
-      </figure>
-      <figure class="reveal found-card">
-        <figcaption>In a text from a friend</figcaption>
-        <div class="sms">
-          <p class="sms-bubble">the earrings I was telling you about!!</p>
-          <span class="linkcard"><img src="images/hero.jpg" alt="" loading="lazy"><span><b>Amber Baker | Nueberd and My Thrifting Era</b><small>nueberd.com</small></span></span>
-        </div>
-      </figure>
-    </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Instagram bios, your Linktree and your Depop profile can all point here, so every door leads home.</span></p>
-  </div>
-</section>
+</div>
+</main>
 
 <footer class="gutter">
   <div class="wrap">
-    <p class="foot-id"><span class="foot-mark" id="foot-mark">Amber Baker</span> <span>Nueberd, made by hand <span aria-hidden="true">&middot;</span> My Thrifting Era, found for you</span></p>
-    <p class="foot-reach"><a href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">@nueberd<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/mythriftingera/" target="_blank" rel="noopener">@mythriftingera<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener">Depop<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page, both rooms), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site with your story, Ask buttons, drop emails and a contact form), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (your own little shop and checkout, latest drops and both Instagram feeds). The banner up top and the Google pieces come with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="foot-id"><span class="foot-mark" id="foot-mark">Amber Baker</span> <span>Nueberd, made by hand in <span class="ph">your town</span> <span aria-hidden="true">&middot;</span> My Thrifting Era, found for you</span></p>
+    <p class="foot-reach"><a href="#shop">Shop</a> <span aria-hidden="true">&middot;</span> <a href="#handmade">Handmade</a> <span aria-hidden="true">&middot;</span> <a href="#thrifted">Thrifted</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">@nueberd<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/mythriftingera/" target="_blank" rel="noopener">@mythriftingera<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener">Depop<span class="vh"> (opens in a new tab)</span></a></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (your shop pages, with a DM to buy button on every piece), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (adds your About page and story, Ask buttons, drop emails, FAQ and a contact form), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (your own bag and checkout, site-only finds, your Depop listings on the site and both Instagram feeds). The banner up top and the Google pieces come with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -963,13 +1066,49 @@
   </div>
 </div>
 
+<div class="scrim" id="bag-scrim" hidden></div>
+<div class="drawer" id="bag" role="dialog" aria-modal="true" aria-labelledby="bag-h" hidden>
+  <div class="drawer-head">
+    <h2 class="drawer-h" id="bag-h" tabindex="-1">Your bag <span class="bk-demo">preview</span></h2>
+    <button type="button" class="drawer-x" id="bag-x" aria-label="Close your bag"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="drawer-body">
+    <div id="bag-view">
+      <p class="bag-empty" id="bag-empty">Your bag is empty for now. Tap Add to bag on any piece.</p>
+      <ul class="bag-lines" id="bag-lines"></ul>
+      <div class="sheet-lines" id="bag-sum">
+        <div><span>Subtotal</span><span><span class="ph">your prices, added up</span></span></div>
+        <div><span>Shipping</span><span><span class="ph">your shipping</span>, at checkout</span></div>
+      </div>
+      <p class="hint" id="bag-hint" role="status"></p>
+      <button type="button" class="bk-go wide" id="bag-go">Check out</button>
+      <button type="button" class="bk-go ghost wide" id="bag-keep">Keep shopping</button>
+      <p class="demo-note">Checkout runs through your own Stripe. In this preview nothing is charged and nothing is sent.</p>
+    </div>
+    <div class="sheet fade-in" id="co-sheet" hidden>
+      <h3 class="sheet-h" id="co-h" tabindex="-1"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
+      <div class="sheet-lines" id="co-lines"></div>
+      <div class="sheet-slot"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg><span>Card, Apple Pay or Google Pay goes here, through your own Stripe.</span></div>
+      <div class="sheet-actions"><button type="button" class="bk-go" id="co-complete">Pay (preview)</button><button type="button" class="bk-go ghost" id="co-back">Back to bag</button></div>
+      <p class="demo-note">Preview only: nothing is charged and nothing is sent.</p>
+    </div>
+    <div class="bk-done fade-in" id="co-done" hidden>
+      <h3 id="co-done-h" tabindex="-1">Thank you!</h3>
+      <p id="co-done-text"></p>
+      <p class="demo-note">Preview only: nothing was charged, and nothing was sent.</p>
+      <button type="button" class="bk-go ghost" id="co-again">Keep shopping</button>
+    </div>
+  </div>
+</div>
+
+
 <script>
   
   (function () {
     function $(id) { return document.getElementById(id); }
     var STATES = {
-      open: { label: 'New in the shop: autumn earrings', cta: 'Take a look', href: '#shop' },
-      drop: { label: 'New drop Friday', cta: 'Cozy knits and nightgowns. Get a heads up', href: '#news' },
+      open: { label: 'New in the shop: the tiered brass choker', cta: 'Shop new arrivals', href: '#new' },
+      drop: { label: 'New drop Friday', cta: 'New one of a kind pieces. Get a heads up', href: '#news' },
       market: { label: 'Pop-up this Saturday: come say hi', cta: 'Your market and time here', href: '#news' },
       away: { label: 'Custom colors open this month', cta: 'Ask for earrings in your colors', href: '#contact' }
     };
@@ -979,7 +1118,7 @@
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function stateFor(k) {
       var s = STATES[k];
-      if (k === 'drop' && viewNow() === 'maiden') return { label: s.label, cta: 'Follow along on Instagram', href: '#thrift' };
+      if (viewNow() === 'maiden') { if (k === 'drop') return { label: s.label, cta: 'Follow along on Instagram', href: '#handmade' }; if (k === 'market') return { label: s.label, cta: s.cta, href: '#shop' }; if (k === 'away') return { label: s.label, cta: 'DM me for earrings in your colors', href: '#handmade' }; }
       return s;
     }
     function setState(k, announce) {
@@ -1056,51 +1195,112 @@
 
     
     (function () {
-      var hint = $('ask-hint'); if (!hint) return;
       all(document, '.ask').forEach(function (b) {
-        b.addEventListener('click', function () { hint.textContent = 'Preview: on your real site this opens an email to you about ' + b.dataset.name + ', with the piece already named.'; });
+        b.addEventListener('click', function () { var sec = b.closest('section'), hint = sec && sec.querySelector('.ask-hint'); if (hint) hint.textContent = 'Preview: on your real site this opens an email to you about ' + b.dataset.name + ', with the piece already named.'; });
       });
     })();
 
     
+    all(document, '.swatches input').forEach(function (r) {
+      r.addEventListener('change', function () {
+        var it = r.closest('.item'), img = it.querySelector('.photo img');
+        img.src = r.dataset.img; img.alt = r.dataset.alt; img.width = +r.dataset.w; img.height = +r.dataset.h;
+        it.querySelector('.sw-name').textContent = r.dataset.label;
+        document.dispatchEvent(new CustomEvent('amber:bag'));
+      });
+    });
+
+    
     (function () {
-      var lines = $('bag-lines'), empty = $('bag-empty'), go = $('bag-go'), hint = $('bag-hint'), sheet = $('co-sheet'), done = $('co-done');
-      if (!lines) return;
-      var bag = [];
+      var drawer = $('bag'), scrim = $('bag-scrim'), btn = $('bag-btn');
+      if (!drawer || !scrim || !btn) return;
+      var lines = $('bag-lines'), empty = $('bag-empty'), sum = $('bag-sum'), go = $('bag-go'), keep = $('bag-keep'), hint = $('bag-hint');
+      var view = $('bag-view'), sheet = $('co-sheet'), done = $('co-done'), count = $('bag-count'), sr = $('bag-sr');
+      var root = document.documentElement, bag = [], opener = null;
       var ph = '<span class="ph">your price</span>';
+      var adds = all(document, '.add');
+      function picked(b) { var it = b.closest('.item'), r = it.querySelector('.swatches input:checked'); return { it: it, r: r, key: b.dataset.id + (r ? ':' + r.value : '') }; }
+      function find(key) { for (var i = 0; i < bag.length; i++) if (bag[i].key === key) return i; return -1; }
+      function mode(m) { view.hidden = m !== 'bag'; sheet.hidden = m !== 'checkout'; done.hidden = m !== 'done'; }
       function paint() {
         lines.innerHTML = '';
-        bag.forEach(function (n) { var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = n; li.appendChild(a); var p = document.createElement('span'); p.innerHTML = ph; li.appendChild(p); lines.appendChild(li); });
-        empty.hidden = bag.length > 0;
-        all(document, '.add').forEach(function (b) {
-          var inBag = bag.indexOf(b.dataset.name) > -1;
-          b.setAttribute('aria-pressed', inBag ? 'true' : 'false');
-          b.textContent = inBag ? 'In your bag' : 'Add to bag';
+        bag.forEach(function (x) {
+          var li = document.createElement('li'); li.className = 'bag-line';
+          var im = document.createElement('img'); im.src = x.img; im.alt = ''; im.width = 68; im.height = 68;
+          var t = document.createElement('div'), b = document.createElement('b'), k = document.createElement('small'), p = document.createElement('span');
+          b.textContent = x.name; k.textContent = x.kind; p.innerHTML = ph; t.appendChild(b); t.appendChild(k); t.appendChild(p);
+          var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'bag-rm'; rm.textContent = 'Remove';
+          rm.setAttribute('aria-label', 'Remove ' + x.name);
+          rm.addEventListener('click', function () { remove(x.key); });
+          li.appendChild(im); li.appendChild(t); li.appendChild(rm); lines.appendChild(li);
+        });
+        var n = bag.length;
+        empty.hidden = n > 0; sum.hidden = n === 0; go.hidden = n === 0;
+        count.textContent = n; sr.textContent = n ? ', ' + n + (n === 1 ? ' piece' : ' pieces') : ', empty';
+        adds.forEach(function (b) {
+          var inb = find(picked(b).key) > -1;
+          b.classList.toggle('in', inb); b.querySelector('.add-t').textContent = inb ? 'In your bag' : 'Add to bag';
         });
       }
-      all(document, '.add').forEach(function (b) {
+      function bump() { count.classList.remove('bump'); void count.offsetWidth; count.classList.add('bump'); }
+      function focusables() { return all(drawer, 'button, a[href], input').filter(function (e) { return e.getClientRects().length && !e.disabled; }); }
+      function open(from) {
+        opener = from || document.activeElement;
+        scrim.hidden = false; drawer.hidden = false; root.classList.add('bag-open');
+        quietFocus($('bag-h'));
+      }
+      function close(back) {
+        if (drawer.hidden) return;
+        drawer.hidden = true; scrim.hidden = true; root.classList.remove('bag-open');
+        if (back !== false && opener && opener.getClientRects().length) quietFocus(opener); else if (back !== false) quietFocus(btn);
+      }
+      function remove(key) {
+        var i = find(key); if (i < 0) return;
+        bag.splice(i, 1); hint.textContent = ''; paint();
+        var rms = all(lines, '.bag-rm'); quietFocus(rms[Math.min(i, rms.length - 1)] || keep);
+        $('bag-live').textContent = 'Removed. ' + (bag.length ? bag.length + ' left in your bag.' : 'Your bag is empty.');
+      }
+      adds.forEach(function (b) {
         b.addEventListener('click', function () {
-          var i = bag.indexOf(b.dataset.name);
-          if (i > -1) bag.splice(i, 1); else bag.push(b.dataset.name);
-          hint.textContent = ''; sheet.hidden = true; done.hidden = true; go.hidden = false; paint();
+          var x = picked(b);
+          if (find(x.key) < 0) {
+            var img = x.it.querySelector('.photo img'), m = x.it.dataset.model;
+            bag.push({ key: x.key, name: x.it.querySelector('h3').textContent + (x.r ? ', ' + x.r.dataset.label.toLowerCase() : ''), img: img.getAttribute('src'),
+              kind: m === 'thrift' ? 'Thrifted, site-only find' : m === 'aa' ? 'Made to order, ships in about a week' : 'New drop, one of a kind' });
+            bump();
+          }
+          mode('bag'); hint.textContent = ''; paint(); open(b);
         });
+      });
+      btn.addEventListener('click', function () { if (!done.hidden) mode('bag'); paint(); open(btn); });
+      $('bag-x').addEventListener('click', function () { close(); });
+      keep.addEventListener('click', function () { close(); });
+      scrim.addEventListener('click', function () { close(); });
+      drawer.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); close(); return; }
+        if (e.key !== 'Tab') return;
+        var f = focusables(); if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && (document.activeElement === first || !drawer.contains(document.activeElement) || document.activeElement === $('bag-h'))) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       });
       go.addEventListener('click', function () {
         if (!bag.length) { hint.textContent = 'Add a piece to your bag first.'; return; }
-        hint.textContent = '';
         var h = '';
-        bag.forEach(function (n) { h += '<div><span></span><span>' + ph + '</span></div>'; });
+        bag.forEach(function () { h += '<div><span></span><span>' + ph + '</span></div>'; });
         $('co-lines').innerHTML = h + '<div><span>Shipping</span><span><span class="ph">your shipping</span></span></div><div class="total"><span>Total</span><span>' + ph + 's, added up</span></div>';
-        all($('co-lines'), 'div > span:first-child').forEach(function (s, i) { if (bag[i]) s.textContent = bag[i]; });
-        go.hidden = true; sheet.hidden = false; quietFocus($('co-h'));
+        all($('co-lines'), 'div > span:first-child').forEach(function (sp, i) { if (bag[i]) sp.textContent = bag[i].name; });
+        mode('checkout'); quietFocus($('co-h'));
       });
-      $('co-back').addEventListener('click', function () { sheet.hidden = true; go.hidden = false; quietFocus(go); });
+      $('co-back').addEventListener('click', function () { mode('bag'); quietFocus(go); });
       $('co-complete').addEventListener('click', function () {
-        $('co-done-text').textContent = 'Your order is in: ' + bag.join(', ') + '. A receipt is on its way, and Amber gets a note to pack it up.';
-        sheet.hidden = true; done.hidden = false; quietFocus($('co-done-h'));
+        $('co-done-text').textContent = 'Your order is in: ' + bag.map(function (x) { return x.name; }).join(', ') + '. A receipt is on its way, and Amber gets a note to pack it up.';
+        mode('done'); quietFocus($('co-done-h'));
       });
-      $('co-again').addEventListener('click', function () { bag = []; paint(); done.hidden = true; go.hidden = false; quietFocus(go); });
-      paint();
+      $('co-again').addEventListener('click', function () { bag = []; paint(); mode('bag'); close(); });
+      document.addEventListener('amber:bag', paint);
+      document.addEventListener('amber:view', function (e) { var v = e.detail && e.detail.view; if (v === 'maiden' || v === 'mother') close(false); });
+      mode('bag'); paint();
     })();
 
     
@@ -1186,9 +1386,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one calm page with both rooms: your pieces with a DM me to buy button, My Thrifting Era with your Depop and eBay, the banner and the Google pieces.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site: your story, an Ask button on every piece, drop alerts by email, your FAQ and a contact form.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus your own little shop with checkout through your own Stripe, the latest drops from Depop and eBay, and both Instagram feeds. That is every piece on this page.' },
+      maiden: { name: 'Maiden', price: '$300', what: 'your shop pages, Shop, Handmade and Thrifted, with a DM to buy button on every piece, your Depop and eBay, the banner and the Google pieces.', next: 'mother' },
+      mother: { name: 'Mother', price: '$600', what: 'everything in Maiden, plus your About page with your story, an Ask button on every piece, drop alerts by email, your FAQ and a contact form.', next: 'crone' },
+      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus your own bag and checkout through your own Stripe, site-only thrift finds, your Depop listings right on your site, and both Instagram feeds. That is every piece of this site.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1243,7 +1443,7 @@
     function fold(el, on, animate) {
       var run = el._fold;
       if (!run && el.hidden === !on) return 0;
-      if (!animate || !el.hasAttribute('data-fold') || typeof el.animate !== 'function') { stopFold(el); el.hidden = !on; return 0; }
+      if (!animate || !el.hasAttribute('data-fold') || typeof el.animate !== 'function' || el.closest('.page[hidden]')) { stopFold(el); el.hidden = !on; return 0; }
       var from = run ? box(el) : on ? FLAT : box(el);
       stopFold(el); el.hidden = false;
       var to = on ? box(el) : FLAT;
@@ -1256,7 +1456,7 @@
       a.onfinish = function () { if (el._fold !== a) return; el._fold = null; if (!on) el.hidden = true; a.cancel(); el.style.overflow = ''; };
       return dur;
     }
-    var CAND = 'section, [data-show], h1, h2, h3, p, li, figure, .btn, .bk-card, .item, .kind, .door, .reach, .faq-list details, .vseg';
+    var CAND = 'section, [data-show], h1, h2, h3, p, li, figure, .btn, .bk-card, .item, .reach, .faq-list details, .vseg';
     function anchorFor(v, src) {
       if (src && !vp.contains(src) && src.getClientRects().length && goesIn(src, v)) return { el: src, top: src.getBoundingClientRect().top };
       var list = document.querySelectorAll(CAND), foldTop = null;
@@ -1338,6 +1538,59 @@
   })();
 </script>
 
+<script>
+  
+  (function () {
+    var root = document.documentElement;
+    var pages = [].slice.call(document.querySelectorAll('.page')), byName = {};
+    pages.forEach(function (p) { byName[p.getAttribute('data-page')] = p; });
+    var navs = [].slice.call(document.querySelectorAll('[data-nav]'));
+    var bar = document.getElementById('views'), head = document.getElementById('shop-head');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var current = null;
+    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    function allowed(n) { return byName[n] && !(n === 'about' && (root.getAttribute('data-view') || 'all') === 'maiden'); }
+    function resolve(hash) {
+      var id = (hash || '').replace(/^#/, ''); try { id = decodeURIComponent(id); } catch (e) {}
+      if (!id) return { page: 'shop' };
+      if (byName[id]) return { page: id };
+      var el = document.getElementById(id), pg = el && el.closest('.page');
+      if (pg) return { page: pg.getAttribute('data-page'), el: el };
+      return { page: current || 'shop', el: el || null };
+    }
+    function show(name, el, user) {
+      if (!allowed(name)) { name = 'shop'; el = null; }
+      var changed = name !== current;
+      pages.forEach(function (p) { p.hidden = p.getAttribute('data-page') !== name; });
+      current = name; root.setAttribute('data-page', name);
+      navs.forEach(function (a) { if (a.getAttribute('data-nav') === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+      var slot = byName[name].querySelector('.views-slot'); if (bar && slot && bar.parentNode !== slot) slot.appendChild(bar);
+      if (el && el.getClientRects().length) { el.scrollIntoView(); }
+      else if (changed || user) { window.scrollTo(0, 0); }
+      if (changed && user && !el) quietFocus(byName[name].querySelector('h1'));
+      window.dispatchEvent(new Event('scroll'));
+    }
+    window.addEventListener('hashchange', function () { var r = resolve(location.hash); show(r.page, r.el, true); });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+      var id = a.getAttribute('href').slice(1);
+      if (byName[id] && id === current && ('#' + id === location.hash || (!location.hash && id === 'shop'))) {
+        e.preventDefault(); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      }
+    });
+    document.addEventListener('amber:view', function () { if (!allowed(current)) { try { history.replaceState(null, '', '#shop'); } catch (e) {} show('shop', null, false); } });
+    
+    function measure() { root.style.setProperty('--head-h', (head.offsetHeight + 14) + 'px'); }
+    var tk = false;
+    function stuck() { tk = false; head.classList.toggle('stuck', head.getBoundingClientRect().top <= 0.5 && window.pageYOffset > 2); }
+    window.addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(stuck); } }, { passive: true });
+    window.addEventListener('resize', measure);
+    if (window.ResizeObserver) new ResizeObserver(measure).observe(head);
+    measure(); stuck();
+    var r = resolve(location.hash); show(r.page, r.el, false);
+  })();
+</script>
+
 <style id="wf-theme-dock">
   
   #theme-tab.theme-tab { position: fixed; left: 12px; right: auto; top: auto; bottom: calc(50px + env(safe-area-inset-bottom, 0px));
@@ -1368,15 +1621,3 @@
 </script>
 </body>
 </html>
-
-<script>
-  (function () {   
-    var bar = document.querySelector('.shop-filter'); if (!bar) return;
-    var btns = [].slice.call(bar.querySelectorAll('button')), items = [].slice.call(document.querySelectorAll('#shop-grid .item'));
-    btns.forEach(function (b) { b.addEventListener('click', function () {
-      var k = b.getAttribute('data-kind');
-      btns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      items.forEach(function (it) { it.hidden = k !== 'all' && it.getAttribute('data-kind') !== k; });
-    }); });
-  })();
-</script>
