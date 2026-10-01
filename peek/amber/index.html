@@ -554,6 +554,48 @@
   .drawer .sheet { margin-top: 16px; }
   .drawer .bk-done { margin-top: 22px; }
   .drawer .bk-done h3 { font-size: 26px; }
+  
+  .item .photo, .item h3 { cursor: pointer; }
+  .item h3:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .pv-open { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; border-radius: inherit; }
+  .pv-open:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .pv { width: min(1040px, 100vw - 32px); max-width: none; max-height: calc(100dvh - 48px); padding: 0; border: 0; border-radius: 14px; background: var(--ground); color: var(--ink); box-shadow: 0 24px 70px rgba(20, 14, 8, 0.4); overflow: hidden; }
+  .pv[open] { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); animation: pv-in 0.35s cubic-bezier(.2,.8,.3,1) both; }
+  .pv::backdrop { background: rgba(20, 14, 8, 0.55); }
+  @keyframes pv-in { from { opacity: 0; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+  .pv-gal { position: relative; background: var(--ground-2); min-height: 0; display: flex; flex-direction: column; }
+  .pv-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; flex: 1; min-height: 0; aspect-ratio: 4 / 5; max-height: calc(100dvh - 140px); }
+  .pv-track::-webkit-scrollbar { display: none; }
+  .pv-track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: center; display: block; }
+  .pv-thumbs { display: flex; gap: 8px; padding: 10px 12px; overflow-x: auto; }
+  .pv-thumbs button { flex: 0 0 auto; width: 58px; height: 58px; padding: 0; border: 2px solid transparent; border-radius: 6px; overflow: hidden; background: none; cursor: pointer; opacity: 0.7; }
+  .pv-thumbs button[aria-current="true"] { border-color: var(--ink); opacity: 1; }
+  .pv-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pv-arrow { position: absolute; top: 42%; z-index: 2; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(248, 241, 225, 0.88); color: #262a20; font-size: 20px; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(20, 14, 8, 0.2); }
+  .pv-arrow.prev { left: 10px; } .pv-arrow.next { right: 10px; }
+  .pv-info { padding: 34px 30px 26px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .pv-info h2 { font-size: clamp(26px, 3vw, 34px); line-height: 1.1; }
+  .pv-info .price { font-size: 18px; }
+  .pv-info .item-kind { margin: 0; }
+  .pv-facts { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--hair); }
+  .pv-facts li { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--hair); font-size: 15px; }
+  .pv-facts b { font-weight: 600; color: var(--ink-soft); }
+  .pv-colors { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; color: var(--ink-soft); }
+  .pv-colors button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: var(--sw); outline: 2px solid transparent; outline-offset: 3px; cursor: pointer; }
+  .pv-colors button[aria-pressed="true"] { outline-color: var(--ink); }
+  .pv-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .pv-go .bk-go { flex: 1 1 auto; }
+  .pv-note { margin-top: auto; padding-top: 10px; font-size: 13.5px; font-style: italic; color: var(--ink-soft); }
+  .pv-x { position: absolute; top: 12px; right: 12px; z-index: 4; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(248, 241, 225, 0.92); color: #262a20; font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(20, 14, 8, 0.2); }
+  @media (max-width: 760px) {
+    .pv { width: 100vw; max-height: 100dvh; height: 100dvh; border-radius: 0; margin: 0; }
+    .pv[open] { display: block; overflow-y: auto; animation-name: pv-up; }
+    @keyframes pv-up { from { translate: 0 40px; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+    .pv-track { flex: none; aspect-ratio: auto; height: min(125vw, 68vh); max-height: none; }
+    .pv-arrow { display: none; }
+    .pv-info { padding: 22px 16px 32px; overflow: visible; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pv[open] { animation: none; } .pv-track { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
@@ -1620,6 +1662,125 @@
       t.classList.remove('again'); void t.offsetWidth; t.classList.add('again');
       setTimeout(function () { t.classList.remove('again'); }, 3000);
     }, 7000);
+  })();
+</script>
+<dialog class="pv" id="pv" aria-labelledby="pv-h">
+  <button type="button" class="pv-x" id="pv-x" aria-label="Close">&times;</button>
+  <div class="pv-gal">
+    <div class="pv-track" id="pv-track" tabindex="0" aria-label="Photos"></div>
+    <button type="button" class="pv-arrow prev" id="pv-prev" aria-label="Previous photo">&lsaquo;</button>
+    <button type="button" class="pv-arrow next" id="pv-next" aria-label="Next photo">&rsaquo;</button>
+    <div class="pv-thumbs" id="pv-thumbs"></div>
+  </div>
+  <div class="pv-info">
+    <p class="item-kind" id="pv-kind"></p>
+    <h2 id="pv-h"></h2>
+    <p class="price"><span class="ph">your price</span></p>
+    <p id="pv-note"></p>
+    <div class="pv-colors" id="pv-colors" hidden></div>
+    <div class="pv-go" id="pv-go"></div>
+    <ul class="pv-facts" id="pv-facts"></ul>
+    <p class="pv-note">On your real site every piece gets as many photos as you like (front, back, the tag, close ups), and the dotted lines are your own words.</p>
+  </div>
+</dialog>
+<script>
+  
+  (function () {
+    var dlg = document.getElementById('pv');
+    if (!dlg || !dlg.showModal) return;
+    function $(id) { return document.getElementById(id); }
+    var P = function (t) { return '<span class="ph">' + t + '</span>'; };
+    var X = {
+      choker: { more: [['images/feed-n3.jpg', 'The tiered choker laid flat on white']],
+        facts: [['Made by', 'Amber, by hand'], ['Materials', 'Cotton cord on a gold brass choker'], ['Size', P('your measurements')], ['Only one', 'When it is gone, it is gone']] },
+      leaf: { more: [['images/feed-n1.jpg', 'Rust leaf earrings in window light'], ['images/feed-n5.jpg', 'Pink leaf earrings in window light']],
+        facts: [['Made by', 'Amber, by hand, to order'], ['Materials', 'Cotton cord, little leaf pattern; ear wires ' + P('your metal')], ['Length', P('your measurements')], ['Ships', 'In about a week']] },
+      'light-sun': { more: [['images/feed-n2.jpg', 'The macrame light hanging against a yellow wall']],
+        facts: [['Made by', 'Amber, by hand'], ['Size', P('your measurements')], ['Light', P('bulb and cord details')], ['Only one', 'When it is gone, it is gone']] },
+      light: { more: [['images/light-night.jpg', 'The macrame light glowing at night'], ['images/feed-n6.jpg', 'The macrame light outside among trees']],
+        facts: [['Made by', 'Amber, by hand, to order'], ['Size', P('your measurements')], ['Light', P('bulb and cord details')], ['Ships', 'In about a week']] },
+      spoon: { more: [['images/feed-n4.jpg', 'A tiny carved wooden spoon held among begonia leaves']],
+        facts: [['Made by', 'Amber, carved by hand'], ['Wood', P('your wood')], ['Size', P('your measurements')], ['Care', P('your care note')]] },
+      dress: { facts: [['Brand', 'Petal + Pup'], ['Size', P('size')], ['Condition', P('your condition note')], ['Measurements', P('pit to pit, length')], ['Only one', 'Site-only find']] },
+      cardigan: { facts: [['Brand', 'L.L.Bean'], ['Size', 'M'], ['Material', '100% cotton'], ['Condition', P('your condition note')], ['Measurements', P('pit to pit, length')]] },
+      jacket: { facts: [['Brand', 'Levi&rsquo;s, vintage'], ['Size', 'XL'], ['Condition', 'The good worn-in blue; ' + P('any flaws')], ['Measurements', P('pit to pit, length')]] }
+    };
+    var track = $('pv-track'), thumbs = $('pv-thumbs'), cur = null;
+    function shown(el) { return !el.closest('[hidden]'); }
+    function pics(it) {
+      var list = [], seen = {};
+      function add(src, alt) { if (!seen[src]) { seen[src] = 1; list.push([src, alt]); } }
+      var img = it.querySelector('.photo img'); add(img.getAttribute('src'), img.alt);
+      [].forEach.call(it.querySelectorAll('.swatches input'), function (r) { add(r.dataset.img, r.dataset.alt); });
+      ((X[it.dataset.id] || {}).more || []).forEach(function (m) { add(m[0], m[1]); });
+      return list;
+    }
+    function go(i) {
+      var ims = track.querySelectorAll('img'); i = Math.max(0, Math.min(ims.length - 1, i));
+      track.scrollTo({ left: i * track.clientWidth, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      mark(i);
+    }
+    function at() { return Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); }
+    function mark(i) {
+      [].forEach.call(thumbs.children, function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+      var n = track.children.length; $('pv-prev').hidden = n < 2 || i === 0; $('pv-next').hidden = n < 2 || i === n - 1;
+    }
+    var t; track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(function () { mark(at()); }, 80); });
+    $('pv-prev').addEventListener('click', function () { go(at() - 1); });
+    $('pv-next').addEventListener('click', function () { go(at() + 1); });
+    track.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(at() + 1); if (e.key === 'ArrowLeft') go(at() - 1); });
+    function gallery(list) {
+      track.innerHTML = ''; thumbs.innerHTML = '';
+      list.forEach(function (p, i) {
+        var im = new Image(); im.src = p[0]; im.alt = p[1]; track.appendChild(im);
+        var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Photo ' + (i + 1) + ' of ' + list.length);
+        var ti = new Image(); ti.src = p[0]; ti.alt = ''; b.appendChild(ti); b.addEventListener('click', function () { go(i); }); thumbs.appendChild(b);
+      });
+      thumbs.hidden = list.length < 2; track.scrollLeft = 0; mark(0);
+    }
+    function actions(it) {
+      var box = $('pv-go'); box.innerHTML = '';
+      [].forEach.call(it.querySelectorAll('.item-go button, .item-go a'), function (src) {
+        if (!shown(src)) return;
+        var b = document.createElement('button'); b.type = 'button'; b.className = src.className; b.innerHTML = src.innerHTML;
+        b.addEventListener('click', function () {
+          src.click();
+          setTimeout(function () { b.className = src.className; b.innerHTML = src.innerHTML; if (document.documentElement.classList.contains('bag-open')) dlg.close(); }, 30);
+        });
+        box.appendChild(b);
+      });
+    }
+    function colors(it) {
+      var box = $('pv-colors'), rs = it.querySelectorAll('.swatches input'); box.innerHTML = ''; box.hidden = !rs.length;
+      if (!rs.length) return;
+      var lab = document.createElement('span'); box.appendChild(lab);
+      function paint() { var c = it.querySelector('.swatches input:checked'); lab.textContent = 'Color: ' + c.dataset.label; [].forEach.call(box.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.dataset.v === c.value ? 'true' : 'false'); }); }
+      [].forEach.call(rs, function (r, i) {
+        var b = document.createElement('button'); b.type = 'button'; b.dataset.v = r.value; b.setAttribute('aria-label', r.dataset.label);
+        b.style.setProperty('--sw', r.nextElementSibling.style.getPropertyValue('--sw'));
+        b.addEventListener('click', function () { r.click(); paint(); actions(it); var k = [].map.call(track.querySelectorAll('img'), function (m) { return m.getAttribute('src'); }).indexOf(r.dataset.img); if (k > -1) go(k); });
+        box.appendChild(b);
+      });
+      paint();
+    }
+    function open(it) {
+      cur = it;
+      $('pv-kind').innerHTML = it.querySelector('.item-kind').innerHTML;
+      $('pv-h').textContent = it.querySelector('h3').textContent;
+      $('pv-note').textContent = it.querySelector('.item-note').textContent;
+      $('pv-facts').innerHTML = ((X[it.dataset.id] || {}).facts || []).map(function (f) { return '<li><b>' + f[0] + '</b><span>' + f[1] + '</span></li>'; }).join('');
+      gallery(pics(it)); colors(it); actions(it);
+      dlg.showModal(); $('pv-x').focus();
+    }
+    $('pv-x').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    [].forEach.call(document.querySelectorAll('.item'), function (it) {
+      var name = it.querySelector('h3'), fig = it.querySelector('.photo');
+      if (!name || !fig) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'pv-open'; b.setAttribute('aria-label', 'See more of ' + name.textContent);
+      b.addEventListener('click', function () { open(it); }); fig.appendChild(b);
+      name.addEventListener('click', function () { open(it); });
+    });
   })();
 </script>
 </body>
