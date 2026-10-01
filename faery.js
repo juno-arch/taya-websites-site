@@ -116,6 +116,7 @@
       say: ['Yes!! Well, Taya can. I’d just add glitter. Start with a few easy questions: [Getting started →](start) Or just say hi: [taya@webfaery.love](email)',
         '(proud) Ooh, a new site! First step: a few easy questions, or just email Taya about your work. [Get started →](start)',
         'Taya only takes a few new builds a month, so hop in! [Answer the getting-started questions →](start)',
+        '(proud) Ooh, here’s a secret that isn’t a secret: answer a few questions and Taya makes you a FREE mockup of your site within a week ✨ [Get your mockup →](start)',
         '(giggle) I’d build it out of twigs. Taya builds it out of actual code, which Google likes better. [Start here →](start)'] },
     work: { ex: 'proud', keys: 'examples|example|portfolio|your work|past work|other sites|sites you made|see work|samples|clients',
       say: ['Taya made jomastudios.com for her friend Juliet, and gardenfaery.love for her own garden business. Both are live right now! [Recent work →](work)',

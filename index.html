@@ -11,14 +11,14 @@
 <link rel="preload" as="image" href="images/hero.webp" type="image/webp" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="fonts/gloock-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/spectral-400-italic-latin.woff2" crossorigin>
-<link rel="stylesheet" href="fonts/fonts.css?v=20261001d">
-<link rel="stylesheet" href="soil.css?v=20261001d">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261001e">
+<link rel="stylesheet" href="soil.css?v=20261001e">
 <!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
 <script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
-<script src="mycelium.js?v=20261001d" defer></script>
+<script src="mycelium.js?v=20261001e" defer></script>
 <!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
-<link rel="stylesheet" href="faery.css?v=20261001d">
-<script src="faery.js?v=20261001d" defer></script>
+<link rel="stylesheet" href="faery.css?v=20261001e">
+<script src="faery.js?v=20261001e" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://webfaery.love/">
 <meta property="og:site_name" content="Web Faery">
@@ -1035,6 +1035,18 @@
     .tier-sky::after { display: none; }
     :root, .on-dark { --card: #fff; --ink: #262420; --ink-soft: #545049; --candle: #7a4a12; --link: #7a4a12; --acc: #7a4a12; --acc-fill: #7a4a12; --on-acc: #fff; }
   }
+
+  /* the slim banner across the top (the same one every build gets), here with the free-mockup offer */
+  .wf-banner { margin: 0; position: relative; z-index: 5; text-align: center; background: #f2c77c; }
+  .wf-banner a { display: block; padding: 9px 16px; color: #1a1712; text-decoration: none; font-family: 'Spectral', Georgia, serif;
+    font-weight: 600; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .wf-banner a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .wf-banner a:focus-visible { outline: 2px solid #1a1712; outline-offset: -4px; }
+  .wf-banner { height: 38px; overflow: hidden; }
+  .wf-banner a { height: 38px; box-sizing: border-box; padding-block: 0; line-height: 38px; white-space: nowrap; }
+  .wb-short { display: none; }
+  @media (max-width: 560px) { .wb-long { display: none; } .wb-short { display: inline; } .wf-banner a { letter-spacing: 0.08em; font-size: 12.5px; } }
+  .wf-banner + .site-head { inset: 38px 0 auto 0; }
 </style>
 </head>
 <body>
@@ -1043,6 +1055,7 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- the brand name lives in a few places only (title, meta, JSON-LD, this header, the footer), so a rename stays easy -->
+<p class="wf-banner"><a href="intake.html"><span class="wb-long">Free mockup of your website, within a week</span><span class="wb-short">Free website mockup in a week</span> <span aria-hidden="true">&rarr;</span></a></p>
 <header class="site-head">
   <div class="gutter"><div class="wrap bar">
     <a class="brand" href="#top" aria-label="Web Faery, back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="currentColor" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
@@ -1068,7 +1081,7 @@
     <div class="hero-cta">
       <div class="hero-btns">
         <a class="btn" href="#prices">See prices</a>
-        <a class="btn ghost" href="mailto:taya@webfaery.love">Email me</a>
+        <a class="btn ghost" href="intake.html">Get a free mockup</a>
       </div>
       <a class="quiet" href="#work">Recent work</a>
     </div>
