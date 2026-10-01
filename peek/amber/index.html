@@ -116,6 +116,17 @@
     background: linear-gradient(90deg, #533a24 0, #533a24 max(40%, calc(100% - 900px)), rgba(83, 58, 36, 0.8) calc(max(40%, calc(100% - 900px)) + 6%), rgba(83, 58, 36, 0.25) calc(max(40%, calc(100% - 900px)) + 22%), rgba(83, 58, 36, 0) 72%),
       linear-gradient(rgba(83, 58, 36, 0.55) 0, rgba(83, 58, 36, 0) 150px); }
   
+  .sun { position: absolute; z-index: 2; pointer-events: none; left: 2%; top: -8%; width: min(70vw, 820px); aspect-ratio: 1.05; rotate: -34deg;
+    background: radial-gradient(closest-side, rgba(255, 222, 160, 0.95), rgba(255, 214, 150, 0.5) 70%, rgba(255, 214, 150, 0) 100%);
+    -webkit-mask-image: linear-gradient(90deg, #000 0 46%, transparent 46% 54%, #000 54%), linear-gradient(#000 0 45%, transparent 45% 55%, #000 55%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, #000 0 46%, transparent 46% 54%, #000 54%), linear-gradient(#000 0 45%, transparent 45% 55%, #000 55%); mask-composite: intersect;
+    filter: blur(10px); opacity: 0.6; mix-blend-mode: soft-light; }
+  .hero-band.go .sun { animation: sun-drift 44s ease-in-out 3s infinite alternate, sun-cloud 19s ease-in-out 6s infinite; }
+  @keyframes sun-drift { from { translate: -4% -3%; } to { translate: 26% 10%; } }
+  @keyframes sun-cloud { 0%, 100% { opacity: 0.6; } 45% { opacity: 0.6; } 60% { opacity: 0.25; } 75% { opacity: 0.6; } }
+  @media (prefers-reduced-motion: reduce) { .sun { animation: none !important; } }
+  @media (max-width: 900px) { .sun { width: 120vw; left: -20vw; top: -10%; } }
+  
   .hero-band::before, .hero-band::after { content: ""; position: absolute; left: 0; right: 0; z-index: 2; pointer-events: none; }
   .hero-band::before { top: 0; height: 110px; background: linear-gradient(var(--head-bg), color-mix(in srgb, var(--head-bg) 72%, transparent) 22%, color-mix(in srgb, var(--head-bg) 30%, transparent) 55%, transparent); }
   .hero-band::after { bottom: 0; height: 200px; background: linear-gradient(transparent, color-mix(in srgb, var(--ground) 30%, transparent) 40%, color-mix(in srgb, var(--ground) 75%, transparent) 72%, var(--ground)); }
@@ -645,6 +656,7 @@
 <div class="hero-band">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
+  <div class="sun" aria-hidden="true"></div>
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
