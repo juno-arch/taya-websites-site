@@ -23,8 +23,17 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="soil.css">
+<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
+<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
+<script src="mycelium.js" defer></script>
 <link rel="stylesheet" href="pages.css">
+<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
+<link rel="stylesheet" href="faery.css">
+<script src="faery.js" defer></script>
 <style>
   .intro-line { margin: 34px 0 0; font-size: 19px; }
 
@@ -35,18 +44,18 @@
   .tl-dot i {
     width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
     display: grid; place-items: center; font-style: normal;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 15px;
-    background: var(--plum); color: var(--on-plum);
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 15px;
+    background: var(--btn); color: var(--on-btn);
   }
   .tl-dot i::before { content: counter(step); }
-  .tl-dot::after { content: ""; flex: 1; width: 2px; background: var(--moss-line); margin-top: 6px; }
+  .tl-dot::after { content: ""; flex: 1; width: 2px; background: var(--acc-line); margin-top: 6px; }
   .tl-step:last-child .tl-dot::after { display: none; }
   .tl-step .body { padding-bottom: 24px; }
   .tl-step:last-child .body { padding-bottom: 0; }
-  .tl-step b { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3; text-wrap: balance; }
+  .tl-step b { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; line-height: 1.3; text-wrap: balance; }
   .tl-step .when {
-    display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--moss); margin-top: 2px;
+    display: block; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--acc); margin-top: 2px;
   }
   .tl-step p { margin: 6px 0 0; font-size: 16.5px; color: var(--ink-soft); }
 
@@ -55,7 +64,7 @@
     background: var(--paper); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 14px 12px; text-align: center;
   }
-  .ready b { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; }
+  .ready b { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; }
   .ready b .moon { margin-right: 6px; }
   .ready span { font-size: 15.5px; color: var(--ink-soft); }
   .ready + .note { margin-top: 10px; }
@@ -71,8 +80,8 @@
   @media (max-width: 400px) { .page-hero .photo { object-position: 22% 40%; } }
 
   .promise {
-    margin: 24px 0 0; font-style: italic; font-size: 19px; color: var(--plum);
-    border-left: 3px solid var(--plum); padding-left: 18px; max-width: 30em;
+    margin: 24px 0 0; font-style: italic; font-size: 19px; color: var(--link);
+    border-left: 3px solid var(--acc); padding-left: 18px; max-width: 30em;
   }
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
   @media (max-width: 560px) {
@@ -92,10 +101,12 @@
 </style>
 </head>
 <body>
+<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<div class="soil" aria-hidden="true"></div>
 <header class="page-hero">
   <picture><source type="image/webp" srcset="images/forest-800.webp 800w, images/forest-1200.webp 1200w, images/forest.webp 1600w" sizes="100vw"><img class="photo" src="images/forest.jpg" srcset="images/forest-1200.jpg 1200w, images/forest.jpg 1600w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></picture>
   <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
     <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
   <div class="words">
@@ -161,14 +172,19 @@
       </div></li>
       <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
         <b>Launch</b><span class="when">The second half is due</span>
-        <p>Your site goes live at your own web address, and you get your one-page “Your site” sheet.
+        <p>Your site goes live at your own web address, and you get your one-page “Your site” sheet and your brand sheet.
            The second half of the build is due at launch.</p>
       </div></li>
       <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
         <b>30 days of settling in</b><span class="when">Tweaks on me</span>
-        <p>Tweaks for the first 30 days are included. After that it’s care or pay as you go,
-           whichever you chose (more on that below). Care billing starts after your 30 days of
-           settling in, not at launch.</p>
+        <p>Tweaks for the first 30 days are on me, and I’ll check in to see how it’s all feeling.
+           Care billing starts after your 30 days of settling in, not at launch.</p>
+      </div></li>
+      <li class="tl-step"><div class="tl-dot"><i aria-hidden="true"></i></div><div class="body">
+        <b>And after that</b><span class="when">From then on</span>
+        <p>With care, nothing changes for you: you keep emailing me, and I keep taking care of it.
+           Without care, it’s one email and a price first, whenever you need me (more on both below).
+           Either way, I’m still the one who writes back.</p>
       </div></li>
     </ol>
   </section>
@@ -205,13 +221,14 @@
     <span class="kicker">Money, plainly</span>
     <h2 id="t-money">What you pay, and when</h2>
     <p>The build is paid once: half to start (it holds your spot), half at launch. Card or bank transfer.</p>
-    <p>After launch, care is $69 a month (or $690 a year) and I make your changes whenever you ask,
-       or skip it and pay as you go: <span class="nowrap">$100 an hour</span>, and I’ll give you the price before I&nbsp;start. Your only other cost is your web address, about $12 a year.
+    <p>After launch, care is the easy way: $69 a month (or $690 a year), and I make your changes whenever you ask,
+       with your web address covered. Or pay as you go: <span class="nowrap">$100 an hour</span>, and I’ll give you the price before I&nbsp;start, plus about $12 a year for your web address.
        Just pick one by launch, because it decides where your web address lives.</p>
     <ul class="checks money-list">
       <li>With care
         <small>I reply within 2 business days. Your web address, email from your own address and the newsletter
-          tool (up to 1,000 subscribers) are covered. Billing starts after your 30 days of settling in, not at launch.
+          tool (up to 1,000 subscribers) are covered. Your Google profile kept fresh: hours and holidays, new photos,
+          a monthly post, and a review card for your counter. Billing starts after your 30 days of settling in, not at launch.
           Cancel anytime; your site stays yours.</small></li>
       <li>Without care
         <small>$100 an hour: send me one email with everything you’d like changed, and I’ll reply with a price before
@@ -236,7 +253,11 @@
       <li>Your live site, at your own web address
         <small>Without care, the address moves into your own Porkbun account at launch. With care, I hold it for you, with you listed as the legal owner.</small></li>
       <li>Your one-page “Your site” sheet
-        <small>What lives where, which logins are yours, your exact colors and fonts (so flyers and cards can match), and how to reach me.</small></li>
+        <small>What lives where, which logins are yours, and how to reach me.</small></li>
+      <li>Your one-page brand sheet
+        <small>Your colors and fonts (and your logo, if you have one), ready for any designer or print shop, so flyers and cards can match.</small></li>
+      <li>Your Google profile, set up
+        <small>Your Google Business Profile, the listing on the map, with your hours, photos and a link to your site.</small></li>
       <li>A login to your own booking account, if you have booking
         <small>Change your hours, block off a vacation, see your week, all from your phone.</small></li>
       <li>Every account that should be yours, in your name
@@ -253,6 +274,7 @@
       <li>Learn code, hosting, or any <span class="nowrap">tech vocabulary</span></li>
       <li>Write about yourself from a blank page</li>
       <li>Keep the machinery running</li>
+      <li>Update your site yourself. Just email me (with care, that’s all there is to it)</li>
       <li>Wonder what’s happening. You can always just ask me, in plain words</li>
     </ul>
     <p class="promise">You don’t need to decide anything technical. Tell me how you work,
@@ -267,7 +289,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
     <ul>
       <li><a href="quiz.html">Which build?</a></li>
       <li><a href="intake.html">Getting started</a></li>

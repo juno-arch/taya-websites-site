@@ -1,0 +1,196 @@
+/* The Web Faery (see faery.js). Everything is scoped to .fy, so nothing here touches the rest of the page.
+   Only transform and opacity move, so phones hand the motion to the graphics chip.
+   Her bubble and its chrome wear the site's Mycelium palette (charcoal, bone, chanterelle gold); her own drawing
+   (faery.js) keeps its colors. Bubble text contrast: her words #ece5da on #1c1b18 13.8 : 1, links #f2c77c 10.9 : 1,
+   chips #f6dcaa 12.9 : 1, your words #f4ecdf on #2e2c27 11.9 : 1, placeholder #b0aa9e on #0e0e0c 8.4 : 1,
+   send arrow #1c1209 on #e6a852 8.8 : 1. */
+.fy {
+  --fy-w: 64px; --fy-kb: 0px;
+  position: fixed; z-index: 45;
+  right: max(10px, env(safe-area-inset-right));
+  bottom: calc(max(10px, env(safe-area-inset-bottom)) + var(--fy-kb));
+  color: #e8e1d6; font-family: 'Spectral', Georgia, 'Times New Roman', serif;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: none;   /* only her button and the bubble take taps, never the empty box around them */
+}
+.fy-btn, .fy-panel { pointer-events: auto; }
+@media (min-width: 700px) { .fy { --fy-w: 80px; right: max(18px, env(safe-area-inset-right)); bottom: calc(max(16px, env(safe-area-inset-bottom)) + var(--fy-kb)); } }
+.fy *, .fy *::before, .fy *::after { box-sizing: border-box; }
+.fy-dock {
+  position: relative;
+  transform: translateY(calc(-1 * var(--fy-lift, 0px)));
+  transition: transform .5s cubic-bezier(.3, 1.3, .5, 1), opacity .3s ease, visibility 0s;
+}
+.fy-away .fy-dock { opacity: 0; visibility: hidden; transition: transform .5s, opacity .3s ease, visibility 0s .3s; }
+
+/* ---------- her perch (the button) ---------- */
+.fy-btn {
+  display: block; position: relative; width: var(--fy-w); height: calc(var(--fy-w) * 1.3);
+  margin: 0; padding: 0; border: 0; border-radius: 45% 45% 30% 30%; background: none; cursor: pointer;
+  touch-action: manipulation; color: inherit; font: inherit;
+}
+.fy-btn::before {
+  content: ''; position: absolute; left: -12%; right: -12%; top: 20%; bottom: -1%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(242, 199, 124, .22), rgba(230, 168, 82, .08) 60%, transparent);
+}
+.fy-btn:focus { outline: none; }
+.fy-btn:focus-visible { outline: 2px solid #f0b867; outline-offset: 4px; }
+.fy-l, .fy-rig, .fy-sway, .fy-act { position: absolute; inset: 0; display: block; }
+.fy-l svg, .fy-l img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; pointer-events: none; }
+.fy-rig { filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .45)); }
+.fy-mush { filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .45)); }
+
+/* idle life: a gentle sway, breathing wings, swinging feet */
+.fy-sway { transform-origin: 50% 72%; animation: fy-sway 6.4s ease-in-out infinite; }
+@keyframes fy-sway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+.fy-wl { transform-origin: 46% 52.2%; animation: fy-wl 2.8s ease-in-out infinite; }
+.fy-wr { transform-origin: 54% 52.2%; animation: fy-wr 2.8s ease-in-out infinite; }
+@keyframes fy-wl { 50% { transform: rotate(var(--fy-wa, 5deg)) scaleX(var(--fy-ws, .9)); } }
+@keyframes fy-wr { 50% { transform: rotate(calc(-1 * var(--fy-wa, 5deg))) scaleX(var(--fy-ws, .9)); } }
+.fy-btn:hover .fy-wl, .fy-btn:hover .fy-wr, .fy-open .fy-wl, .fy-open .fy-wr { animation-duration: .9s; }
+.fy[data-pose=fly] .fy-wl, .fy[data-pose=fly] .fy-wr { --fy-wa: 18deg; --fy-ws: .5; animation-duration: .2s; }
+.fy[data-pose=fly] .fy-sway { animation: none; }
+.fy-act.fy-m-wiggle .fy-wl, .fy-act.fy-m-wiggle .fy-wr { --fy-wa: 12deg; --fy-ws: .65; animation-duration: .24s; }
+.fy-legL, .fy-legR { transform-box: fill-box; transform-origin: 50% 0; animation: fy-leg 2.4s ease-in-out infinite; }
+.fy-legR { animation-delay: -1.2s; }
+@keyframes fy-leg { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(9deg); } }
+.fy-kick .fy-legR { animation: fy-kick .7s ease-out; }
+@keyframes fy-kick { 35% { transform: rotate(-38deg); } }
+.fy-head { transform-box: fill-box; transform-origin: 50% 92%; transition: transform .6s ease; }
+.fy-tl .fy-head { transform: rotate(-7deg); }
+.fy-tr .fy-head { transform: rotate(7deg); }
+.fy-wavef { transform-box: fill-box; transform-origin: 15% 100%; animation: fy-wave .34s ease-in-out infinite alternate; }
+@keyframes fy-wave { from { transform: rotate(-18deg); } to { transform: rotate(16deg); } }
+
+/* a body move for each expression */
+.fy-act { transform-origin: 50% 73.8%; }
+.fy-m-bounce { animation: fy-bounce .7s ease-out 2; }
+@keyframes fy-bounce { 30% { transform: translateY(-6.5%) scale(.98, 1.03); } 60% { transform: scale(1.03, .97); } }
+.fy-m-hop { animation: fy-hop .6s cubic-bezier(.3, .7, .4, 1); }
+@keyframes fy-hop { 0% { transform: scale(1.06, .93); } 35% { transform: translateY(-15.7%) scale(.96, 1.05); } 72% { transform: scale(1.06, .94); } }
+.fy-m-shake { animation: fy-shake .15s linear 8; }
+@keyframes fy-shake { 25% { transform: translateX(-2.5%) rotate(-1.5deg); } 75% { transform: translateX(2.5%) rotate(1.5deg); } }
+.fy-m-chin { animation: fy-chin .5s ease-out forwards; }
+@keyframes fy-chin { to { transform: translateY(-3.7%) rotate(-3deg); } }
+.fy-m-think { animation: fy-think 1.5s ease-in-out infinite alternate; }
+@keyframes fy-think { from { transform: rotate(-2deg); } to { transform: translateY(-1.4%) rotate(3deg); } }
+.fy-m-shrug { animation: fy-shrug .45s ease-in-out 2; }
+@keyframes fy-shrug { 40% { transform: translateY(-5.5%) scale(1.04, .96); } }
+.fy-m-droop { animation: fy-droop 2.4s ease-in-out infinite alternate; }
+@keyframes fy-droop { to { transform: translateY(1.8%) rotate(-6deg); } }
+.fy-m-wiggle { animation: fy-wiggle .5s ease-in-out 4; }
+@keyframes fy-wiggle { 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+.fy-m-huff { animation: fy-huff .7s ease-out forwards; }
+@keyframes fy-huff { 30% { transform: translateY(-5.5%); } 100% { transform: rotate(4deg) scale(.97, 1); } }
+
+/* the little effects around her head */
+.fy-fx g { transform-box: fill-box; transform-origin: center; }
+.fy-z1, .fy-z2, .fy-z3 { animation: fy-z 2.4s ease-in-out infinite; }
+.fy-z2 { animation-delay: .4s; } .fy-z3 { animation-delay: .8s; }
+@keyframes fy-z { 0% { opacity: 0; transform: translate(-2px, 3px) scale(.6); } 30%, 70% { opacity: 1; } 100% { opacity: 0; transform: translate(2px, -3px); } }
+.fy-d1, .fy-d2, .fy-d3 { animation: fy-dot 1s ease-in-out infinite; }
+.fy-d2 { animation-delay: .16s; } .fy-d3 { animation-delay: .32s; }
+@keyframes fy-dot { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+.fy-tw1, .fy-tw2, .fy-tw3 { animation: fy-tw 1.3s ease-in-out infinite; }
+.fy-tw2 { animation-delay: -.4s; } .fy-tw3 { animation-delay: -.8s; }
+@keyframes fy-tw { 0%, 100% { transform: scale(.55) rotate(0); opacity: .6; } 50% { transform: scale(1.1) rotate(25deg); opacity: 1; } }
+.fy-float { animation: fy-float 1.8s ease-out infinite; }
+.fy-late { animation-delay: .7s; }
+@keyframes fy-float { 0% { opacity: 0; transform: translateY(3px) scale(.7); } 25% { opacity: 1; } 100% { opacity: 0; transform: translateY(-6px); } }
+.fy-pop { animation: fy-pop .4s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes fy-pop { from { transform: scale(0); } }
+.fy-sweat { animation: fy-sweat .7s ease-out; }
+@keyframes fy-sweat { from { opacity: 0; transform: translateY(-3px); } }
+.fy-jit { animation: fy-jit .22s steps(2) infinite; }
+@keyframes fy-jit { 50% { transform: translate(.6px, -.5px); } }
+
+/* sparkle trail while she flies */
+.fy-spark {
+  position: fixed; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(circle, #fff6d8 0 30%, rgba(242, 199, 124, .7) 55%, transparent 72%);
+  animation: fy-spark 1s ease-out forwards;
+}
+.fy-spark:nth-child(3n) { background: radial-gradient(circle, #fff 0 30%, rgba(236, 227, 211, .7) 55%, transparent 72%); }
+@keyframes fy-spark { to { opacity: 0; transform: translateY(14px) scale(.3); } }
+
+/* shoo: she waves and flies up and away */
+.fy-bye .fy-rig { animation: fy-bye 1.3s ease-in .25s forwards; }
+.fy-bye .fy-mush { opacity: 0; transition: opacity .6s ease .7s; }
+@keyframes fy-bye { 25% { transform: translate(-6px, -18px) rotate(-6deg); } 100% { transform: translate(-40px, -110vh) rotate(-12deg); } }
+
+/* ---------- the speech bubble ---------- */
+.fy-panel {
+  position: absolute; right: 0; bottom: calc(100% + 12px);
+  width: min(372px, calc(100vw - 20px));
+  max-height: min(540px, calc(var(--fy-vh, 100vh) - var(--fy-w) * 1.3 - 44px));
+  display: flex; flex-direction: column;
+  background: #1c1b18; border: 1.5px solid rgba(240, 184, 103, .45); border-radius: 22px 22px 6px 22px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .55), 0 0 44px rgba(230, 168, 82, .14);
+  transform-origin: 88% 100%; opacity: 0; transform: translateY(8px) scale(.94);
+  transition: opacity .18s ease, transform .24s cubic-bezier(.3, 1.3, .5, 1);
+}
+.fy-panel[hidden] { display: none; }
+.fy-shown .fy-panel { opacity: 1; transform: none; }
+.fy-panel:focus { outline: none; }
+.fy-panel::after {
+  content: ''; position: absolute; right: calc(var(--fy-w) * .36); bottom: -8.5px; width: 15px; height: 15px;
+  background: #1c1b18; border: solid rgba(240, 184, 103, .45); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
+}
+.fy-top { display: flex; align-items: center; gap: 2px; padding: 8px 6px 2px 18px; }
+.fy-title { margin: 0 auto 0 0; font: 400 17px/1.2 'Gloock', Georgia, serif; letter-spacing: .01em; color: #f4ecdf; }
+.fy-title small {
+  display: block; margin-top: 2px; font: 500 11.5px/1.3 'Spectral', Georgia, serif;
+  letter-spacing: .12em; text-transform: uppercase; color: #f0b867;
+}
+.fy-shoo, .fy-x {
+  flex: none; min-width: 44px; height: 44px; margin: 0; border: 0; border-radius: 999px; background: none; cursor: pointer;
+  color: #cfc9bd; font: 500 12px/1 'Spectral', Georgia, serif; letter-spacing: .1em; text-transform: uppercase;
+}
+.fy-shoo { padding: 0 10px; }
+.fy-x svg { width: 18px; height: 18px; fill: none; stroke: #e8e1d6; stroke-width: 2; stroke-linecap: round; vertical-align: middle; }
+.fy-shoo:hover, .fy-x:hover { background: rgba(236, 227, 211, .08); color: #f4ecdf; }
+.fy-log {
+  flex: 1 1 auto; min-height: 64px; overflow-y: auto; overscroll-behavior: contain; padding: 2px 18px 6px;
+  font-size: 17px; line-height: 1.5; cursor: default;
+  -webkit-mask-image: linear-gradient(transparent, #000 12px); mask-image: linear-gradient(transparent, #000 12px);
+}
+.fy-msg { margin: 8px 0; overflow-wrap: anywhere; }
+.fy-her { color: #ece5da; }
+.fy-her a { color: #f2c77c; text-decoration: underline; text-decoration-color: rgba(240, 184, 103, .6); text-underline-offset: 3px; text-decoration-thickness: 1.5px; white-space: nowrap; }
+.fy-her a:hover { text-decoration-color: currentColor; }
+.fy-you {
+  width: fit-content; max-width: 86%; margin-left: auto; padding: 6px 13px; border-radius: 16px 16px 4px 16px;
+  background: #2e2c27; color: #f4ecdf; font: 400 16px/1.4 'Spectral', Georgia, serif;
+}
+.fy-dots { display: inline-flex; gap: 5px; padding: 8px 0; }
+.fy-dots i { width: 7px; height: 7px; border-radius: 50%; background: #f0b867; animation: fy-dot 1s ease-in-out infinite; }
+.fy-dots i:nth-child(2) { animation-delay: .16s; } .fy-dots i:nth-child(3) { animation-delay: .32s; }
+.fy-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 12px; }
+.fy-chip {
+  margin: 0; min-height: 36px; padding: 6px 11px; border-radius: 999px; cursor: pointer;
+  font: 400 14.5px/1.2 'Gloock', Georgia, serif; letter-spacing: .01em; color: #f6dcaa;
+  background: rgba(240, 184, 103, .07); border: 1.5px solid rgba(240, 184, 103, .45);
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.fy-chip:hover { background: rgba(240, 184, 103, .16); border-color: #f0b867; }
+.fy-form { display: flex; gap: 8px; margin: 0; padding: 6px 12px 12px; }
+.fy-form input {
+  flex: 1 1 auto; min-width: 0; min-height: 44px; margin: 0; padding: 9px 16px; border-radius: 999px;
+  font: 16px/1.3 'Spectral', Georgia, serif; color: #f4ecdf; background: #0e0e0c; border: 1.5px solid #6f6a5f;
+}
+.fy-form input::placeholder { color: #b0aa9e; opacity: 1; }
+.fy-form input:focus { outline: none; border-color: #f0b867; }
+.fy-form button {
+  flex: none; width: 44px; height: 44px; margin: 0; padding: 0; border: 0; border-radius: 50%; cursor: pointer; background: #e6a852;
+}
+.fy-form button svg { width: 20px; height: 20px; fill: none; stroke: #1c1209; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+.fy-form button:hover { background: #f0b867; }
+.fy-panel :focus-visible { outline: 2px solid #f0b867; outline-offset: 2px; }
+.fy-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* reduced motion: no sway, hops, flights or flapping. She still changes faces, one still pose each */
+@media (prefers-reduced-motion: reduce) {
+  .fy *, .fy *::before, .fy *::after { animation: none !important; transition-property: opacity, visibility !important; }
+  .fy-spark { display: none; }
+}
+@media print { .fy { display: none !important; } }

@@ -4,24 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Web Faery · Hand-built websites for small local businesses</title>
-<meta name="description" content="Hand-built websites for small local businesses in Humboldt County and beyond. Paid once and yours to keep, with care only if you want it and every cost said plainly.">
+<meta name="description" content="Hand-built websites for small local businesses in Humboldt County and beyond. Paid once, yours to keep, and looked after if you like. Every cost said plainly.">
 <link rel="canonical" href="https://webfaery.love/">
-<meta name="theme-color" content="#221a2b">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
 <link rel="preload" as="image" href="images/hero.webp" type="image/webp" fetchpriority="high">
-<link rel="preload" as="font" type="font/woff2" href="fonts/bricolage-grotesque-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/gloock-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/spectral-400-italic-latin.woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="soil.css">
+<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
+<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
+<script src="mycelium.js" defer></script>
+<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
+<link rel="stylesheet" href="faery.css">
+<script src="faery.js" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://webfaery.love/">
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Hand-built websites for small local businesses">
-<meta property="og:description" content="Buy your site once and own it. Add care only if you want someone looking after it. Every cost said plainly.">
+<meta property="og:description" content="Buy your site once and own it. Add care, and keeping it current is just an email to me. Every cost said plainly.">
 <meta property="og:image" content="https://webfaery.love/images/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hand-built websites for small local businesses">
-<meta name="twitter:description" content="Buy your site once and own it. Add care only if you want someone looking after it. Every cost said plainly.">
+<meta name="twitter:description" content="Buy your site once and own it. Add care, and keeping it current is just an email to me. Every cost said plainly.">
 <meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
 <meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -35,7 +44,7 @@
   "url": "https://webfaery.love/",
   "email": "taya@webfaery.love",
   "image": "https://webfaery.love/images/share.jpg",
-  "description": "Hand-built websites for small local businesses, with a soft spot for healers and bodyworkers. Buy the site once and own it; care is optional.",
+  "description": "Hand-built websites for small local businesses. Buy the site once and own it; care is optional.",
   "founder": { "@type": "Person", "name": "Taya" },
   "address": { "@type": "PostalAddress", "addressRegion": "CA", "addressCountry": "US" },
   "areaServed": { "@type": "AdministrativeArea", "name": "Humboldt County, California" },
@@ -43,8 +52,8 @@
   "makesOffer": [
     { "@type": "Offer", "name": "Maiden: a one-page website", "price": "600", "priceCurrency": "USD" },
     { "@type": "Offer", "name": "Mother: a full website", "price": "1200", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Crone: a full website with booking, selling, or both", "price": "1800", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Care plan (optional)", "price": "69", "priceCurrency": "USD",
+    { "@type": "Offer", "name": "Crone: a full website with booking, selling, or both, and your latest Instagram posts", "price": "1800", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Care plan (optional)", "description": "Email me when something changes, and I make your changes whenever you ask, replying within 2 business days. Your web address, email and newsletter are covered. Anything big is quoted first. Billing starts after the 30 days of settling in.", "price": "69", "priceCurrency": "USD",
       "priceSpecification": { "@type": "UnitPriceSpecification", "price": "69", "priceCurrency": "USD", "unitText": "MONTH" } },
     { "@type": "Offer", "name": "Care plan (optional), paid yearly", "price": "690", "priceCurrency": "USD",
       "priceSpecification": { "@type": "UnitPriceSpecification", "price": "690", "priceCurrency": "USD", "unitText": "YEAR" } },
@@ -59,147 +68,77 @@
 </script>
 <style>
   /* ============ tokens ============
-     parchment paper, plum and aubergine ink, candlelight gold, and living moss (sampled from the
-     photos' moss: a leafy green, never olive). Light is the default; dark follows the visitor's
-     system setting (or data-theme="dark"). */
+     one look for everyone, whatever their light or dark setting: under the soil where the mycelium
+     lives (Pollen's pick, Sep 30: the Mycelium palette). Charcoal soil with its bone-colored network (in
+     soil.css), warm charcoal cards, bone ink, and chanterelle gold for whatever should catch the eye: pale
+     gold for links and the italic words, a deeper gold for labels, numbers and lines, and the richest gold
+     as a fill with dark ink on it. No purple anywhere. */
   :root {
-    --paper: #f3eee4;
-    --card: #f8f4ea;
-    --ink: #2e2433;
-    --ink-soft: #574e62;
-    --hairline: #ddd2c2;
-    --plum: #6d2b56;
-    --plum-deep: #521f41;
-    --plum-wash: #f0e0ea;
-    --mark: #ecd3e2;
-    --moonlight: #efe6d6;
-    --moonglow: rgba(239, 230, 214, 0.45);
-    --moss: #2e5c29;          /* small labels, numbers and underlines on the light part of the page */
-    --moss-fill: #387332;     /* filled moss (step numbers, the spots-left pill) with light text on it */
-    --moss-bright: #a2d496;   /* moss on the dark part of the page */
-    --moss-glow: 79, 155, 62; /* moss light, for edges and glows on the dark part */
-    /* the soft moss glows on the light part. A see-through leafy green fading straight into lavender passes
-       through grey (they sit across the color wheel from each other), so each glow fades the cool way round:
-       moss at its heart, then mint, then periwinkle, then nothing. It stays colored all the way out. */
-    --glow: rgba(178, 226, 150, 0.62) 0%, rgba(160, 222, 180, 0.42) 24%, rgba(170, 205, 230, 0.22) 46%, rgba(200, 190, 240, 0) 70%;
-    --moss-line: rgba(56, 115, 50, 0.55);
-    --on-moss: #f6f7ef;
-    --on-plum: #f8ecf3;
-    --band: #221a2b;
-    --candle: #e3c27e;
-    --on-candle: #221a2b;
-    --focus: #2e5c29;
-    --shadow: 34, 26, 43;
-    --photo-dim: 1;
+    --card: #1c1b18;
+    --ink: #ece6da;
+    --ink-soft: #b9b3a7;
+    --candle: #f2c77c;        /* pale chanterelle gold: the moon, the brand's "Faery", the hero's second line */
+    --on-candle: #1c1209;
+    --link: var(--candle);    /* links and the italic words in the headings */
+    --link-wash: rgba(242, 199, 124, 0.12);
+    --on-link: #1c1209;
+    --mark: rgba(230, 168, 82, 0.3);
+    --moonlight: #ece3d3;
+    --moonglow: rgba(236, 227, 211, 0.35);
+    --focus: var(--acc);
+    /* chanterelle: the accent on the cards, labels, numbers and lines */
+    --acc: #f0b867;
+    --acc-fill: #e6a852;      /* filled gold (buttons, step numbers, the spots-left pill) with dark ink on it, 8.8 to 1 */
+    --on-acc: #1c1209;
+    --acc-glow: 230, 168, 82;
+    --acc-line: rgba(240, 184, 103, 0.55);
+    --btn: var(--acc-fill);
+    --on-btn: var(--on-acc);
+    --btn-hover: var(--acc);
+    /* the moon cards: each moon rises from a fine thread of mycelium, in an arched window of night sky.
+       The two dials for a seasonal swap: --sky is the night in the window (its middle, then out to its edges),
+       and --honey is the warm light where each moon meets its thread, which also colors the cards' fine gold
+       lines and Mother's glow (a frosty 214, 222, 232 for winter, say, or a deeper harvest 236, 176, 98 for fall) */
+    --sky: #252320 0%, #1f1d1a 55%, #1a1917 100%;
+    --honey: 242, 199, 124;
+    --veil: 15, 15, 13;       /* the hero's veil and the header: the soil's own dark (the photo itself is unchanged) */
+    --shadow: 0, 0, 0;
+    --photo-dim: 0.88;
     --gut: clamp(20px, 4vw, 40px);
     --wrap: 1120px;
     --sec-pad: clamp(76px, 10vw, 128px);
-
-    /* ONE page gradient, below the hero: deep aubergine, then lighter and lighter purple, ending in a
-       soft light lavender. It's painted in four pieces pinned to the content, each picking up exactly
-       where the one above leaves off, so it reads as one continuous wash and the dark-to-light turn
-       always happens behind the moon cards and the price panel (never behind bare text), at every
-       screen size and however many questions are open. The dark part climbs gently too (light text
-       still passes 5:1 at its lightest, #56446e), so it's lighter and lighter all the way down.
-       Colors were stepped in OKLCH, so no banding and no grey middle. */
-    --grad-work:  linear-gradient(180deg, #1d1526 0%, #281e34 25%, #342743 50%, #403152 75%, #4c3b62 100%);
-    --grad-head:  linear-gradient(180deg, #4c3b62 0, #56446e 320px);
-    --grad-turn:  linear-gradient(180deg, #56446e 0%, #5b4974 10%, #655280 20%, #725f8f 30%, #826fa0 40%, #9381b2 50%, #a494c3 60%, #b4a6d1 70%, #c2b6db 80%, #cdc2e4 90%, #d2c8e8 100%);
-    --grad-light: linear-gradient(180deg, #d2c8e8 0%, #dad1ec 25%, #e2dbf1 50%, #e9e4f5 75%, #f1eefa 100%);
-    --g0: #1d1526;   /* first color under the hero */
-    --g4: #f1eefa;   /* last color, at the footer */
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper: #171221;
-      --card: #211a2e;
-      --ink: #e8e1d6;
-      --ink-soft: #bbb0c6;
-      --hairline: #3a3048;
-      --plum: #d08cc0;
-      --plum-deep: #e0a8d0;
-      --plum-wash: rgba(208, 140, 192, 0.12);
-      --mark: rgba(208, 140, 192, 0.24);
-      --moonlight: #ece3d3;
-      --moonglow: rgba(236, 227, 211, 0.35);
-      --moss: #a2d496;
-      --moss-line: rgba(162, 212, 150, 0.55);
-      --glow: rgba(78, 160, 64, 0.24) 0%, rgba(52, 134, 104, 0.16) 24%, rgba(52, 92, 140, 0.08) 46%, rgba(60, 50, 110, 0) 70%;
-      --band: #0f0b16;
-      --on-plum: #2a1224;
-      --focus: #a2d496;
-      --shadow: 0, 0, 0;
-      --photo-dim: 0.88;
-      /* dark and calm: deepest plum at the top, easing to a slightly lighter aubergine at the bottom */
-      --grad-work:  linear-gradient(180deg, #140d1b 0%, #1c1426 100%);
-      --grad-head:  linear-gradient(180deg, #1c1426 0, #20172a 320px);
-      --grad-turn:  linear-gradient(180deg, #20172a 0%, #231a2e 50%, #261c32 100%);
-      --grad-light: linear-gradient(180deg, #261c32 0%, #2c2239 50%, #332841 100%);
-      --g0: #140d1b;
-      --g4: #332841;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #171221;
-    --card: #211a2e;
-    --ink: #e8e1d6;
-    --ink-soft: #bbb0c6;
-    --hairline: #3a3048;
-    --plum: #d08cc0;
-    --plum-deep: #e0a8d0;
-    --plum-wash: rgba(208, 140, 192, 0.12);
-    --mark: rgba(208, 140, 192, 0.24);
-    --moonlight: #ece3d3;
-    --moonglow: rgba(236, 227, 211, 0.35);
-    --moss: #a2d496;
-    --moss-line: rgba(162, 212, 150, 0.55);
-    --glow: rgba(78, 160, 64, 0.24) 0%, rgba(52, 134, 104, 0.16) 24%, rgba(52, 92, 140, 0.08) 46%, rgba(60, 50, 110, 0) 70%;
-    --band: #0f0b16;
-    --on-plum: #2a1224;
-    --focus: #a2d496;
-    --shadow: 0, 0, 0;
-    --photo-dim: 0.88;
-    --grad-work:  linear-gradient(180deg, #140d1b 0%, #1c1426 100%);
-    --grad-head:  linear-gradient(180deg, #1c1426 0, #20172a 320px);
-    --grad-turn:  linear-gradient(180deg, #20172a 0%, #231a2e 50%, #261c32 100%);
-    --grad-light: linear-gradient(180deg, #261c32 0%, #2c2239 50%, #332841 100%);
-    --g0: #140d1b;
-    --g4: #332841;
     color-scheme: dark;
   }
 
-  /* the dark part of the page (recent work and the prices heading) always carries light text */
+  /* recent work and the prices heading: the brightest ink of all */
   .on-dark {
     color: var(--ink);
-    --ink: #f4ecdf;
-    --ink-soft: #d6cadf;
-    --moss: #a2d496;
-    --moss-line: rgba(162, 212, 150, 0.6);
-    --focus: #a2d496;
+    --ink: #f3eee3;
+    --ink-soft: #d2ccbf;
+    --acc-line: rgba(240, 184, 103, 0.6);
   }
 
   /* ============ base ============ */
   *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: var(--g4); }
+  /* the soil and the mycelium behind everything live in soil.css (shared with the other pages) */
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: #0e0e0c; /* the soil, in case soil.css is slow */
+    font-synthesis-weight: none; /* Gloock has one weight only: never let the browser smear a fake bold */ }
   /* smooth only for taps on in-page links: the script adds .smooth after load, so arriving
      from another page at index.html#costs lands straight there instead of racing down the page */
   html.smooth { scroll-behavior: smooth; }
   body {
     margin: 0;
-    background: var(--g4);
     color: var(--ink);
-    font-family: 'Newsreader', Georgia, 'Times New Roman', serif;
+    font-family: 'Spectral', Georgia, 'Times New Roman', serif;
     font-size: 18.5px;
     line-height: 1.65;
     font-optical-sizing: auto;
   }
   img { max-width: 100%; }
   figure { margin: 0; }
-  h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif; line-height: 1.1; text-wrap: balance; margin: 0; }
+  h1, h2, h3 { font-family: 'Gloock', Georgia, serif; font-weight: 400; line-height: 1.1; text-wrap: balance; margin: 0; }
   p, li { text-wrap: pretty; }
-  a { color: var(--plum); text-underline-offset: 4px; text-decoration-thickness: 1.5px; text-decoration-color: var(--moss-line); }
+  a { color: var(--link); text-underline-offset: 4px; text-decoration-thickness: 1.5px; text-decoration-color: var(--acc-line); }
   a:hover { text-decoration-color: currentColor; }
   .on-dark a { color: var(--ink); }
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
@@ -209,7 +148,7 @@
   .skip {
     position: absolute; left: 12px; top: -80px; z-index: 50;
     background: var(--candle); color: var(--on-candle); padding: 10px 16px; border-radius: 10px;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; text-decoration: none;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; text-decoration: none;
   }
   .skip:focus { top: 12px; }
 
@@ -217,18 +156,18 @@
   .wrap { max-width: var(--wrap); margin-inline: auto; }
 
   .eyebrow {
-    font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12.5px; font-weight: 500;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--moss); margin: 0;
+    font-family: 'Spectral', Georgia, serif; font-size: 12.5px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc); margin: 0;
     line-height: 1.5;
   }
   section { padding-block: var(--sec-pad); }
   .sec-head { max-width: 760px; }
   .sec-head.center { margin-inline: auto; text-align: center; }
   .sec-head .eyebrow { margin-bottom: 16px; }
-  h2 { font-size: clamp(31px, 4.6vw, 52px); font-weight: 600; letter-spacing: -0.018em; line-height: 1.07; }
+  h2 { font-size: clamp(31px, 4.6vw, 52px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.08; }
   h2 em {
-    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
-    letter-spacing: -0.005em; color: var(--plum);
+    font-family: 'Spectral', Georgia, serif; font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; color: var(--link);
   }
   .on-dark h2 em { color: var(--candle); }
   .lede { font-size: clamp(18.5px, 1.6vw, 20.5px); color: var(--ink-soft); max-width: 36em; margin: 18px 0 0; }
@@ -237,12 +176,16 @@
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     min-height: 50px; padding: 12px 30px; border-radius: 999px;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px; line-height: 1.2;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.2; letter-spacing: 0.01em; word-spacing: 0.03em;
     text-decoration: none; text-align: center; cursor: pointer; text-wrap: balance;
-    background: var(--plum); color: var(--on-plum); border: 1.5px solid var(--plum);
+    background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn);
     transition: background-color .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease;
   }
-  .btn:hover { background: var(--moss-fill); border-color: var(--moss-fill); color: var(--on-moss); }
+  /* hover: a brighter gold, glowing a little */
+  .btn:hover { background: var(--btn-hover); border-color: var(--btn-hover); color: var(--on-btn); box-shadow: 0 0 0 5px rgba(var(--acc-glow), 0.16), 0 0 30px rgba(var(--acc-glow), 0.35); }
+  /* the quiet second button (Email me): just an outline, so the filled one stays the first choice */
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--acc-line); }
+  .btn.ghost:hover { background: rgba(var(--acc-glow), 0.14); border-color: var(--acc); color: var(--ink); box-shadow: none; }
 
   /* ============ scroll reveal (only below-the-fold elements get .pre, and only with JS) ============ */
   .reveal.pre { opacity: 0; transform: translateY(30px); }
@@ -254,12 +197,12 @@
   /* ============ site header (sits over the hero, visible from the start) ============ */
   .site-head {
     position: absolute; inset: 0 0 auto 0; z-index: 10;
-    background: linear-gradient(rgba(20, 14, 26, 0.55), rgba(20, 14, 26, 0));
+    background: linear-gradient(rgba(var(--veil), 0.55), rgba(var(--veil), 0));
     padding-bottom: 28px;
   }
   .site-head .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; padding-top: 18px; }
   .brand {
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.01em;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 21px; letter-spacing: 0;
     color: #f4ecdf; text-decoration: none; white-space: nowrap;
     display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
   }
@@ -268,14 +211,14 @@
   .site-head nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px 16px; flex-wrap: wrap; justify-content: flex-end; }
   .site-head nav a {
     display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; letter-spacing: 0.14em;
+    font-family: 'Spectral', Georgia, serif; font-size: 12.5px; font-weight: 500; letter-spacing: 0.14em;
     text-transform: uppercase; text-decoration: none; color: #f4ecdf; opacity: 0.86; padding-inline: 4px;
   }
-  .site-head nav a:hover { opacity: 1; text-decoration: underline; text-decoration-color: var(--moss-bright); text-underline-offset: 6px; }
+  .site-head nav a:hover { opacity: 1; text-decoration: underline; text-decoration-color: var(--acc); text-underline-offset: 6px; }
   .site-head :focus-visible { outline-color: #f4ecdf; }
 
   /* ============ hero ============
-     The photo arrives first and settles from a slow zoom, then the aubergine veil deepens,
+     The photo arrives first and settles from a slow zoom, then the soil-dark veil deepens,
      then the words glide up one at a time. The script right after the hero holds everything
      back (.wait) and plays the intro (.go) only once the photo has fully arrived; if it's slow,
      everything shows at rest instead. Without JavaScript or with reduced motion, all at rest. */
@@ -284,19 +227,20 @@
     min-height: 100vh; min-height: 100svh;
     padding-block: 0;
     display: flex; flex-direction: column;
-    background: #1c1524; color: #f4ecdf;
+    color: #f4ecdf;
   }
   .hero-img { position: absolute; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; object-position: 44% 50%; }
   .hero-band::before {
     content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
     background:
-      radial-gradient(ellipse 64% 50% at 50% 55%, rgba(22, 15, 29, 0.58), rgba(22, 15, 29, 0) 74%),
-      linear-gradient(180deg, rgba(22, 15, 29, 0.62) 0, rgba(22, 15, 29, 0.22) 26%, rgba(22, 15, 29, 0.30) 58%, rgba(22, 15, 29, 0.80) 100%);
+      radial-gradient(ellipse 64% 50% at 50% 55%, rgba(var(--veil), 0.58), rgba(var(--veil), 0) 74%),
+      linear-gradient(180deg, rgba(var(--veil), 0.62) 0, rgba(var(--veil), 0.22) 26%, rgba(var(--veil), 0.30) 58%, rgba(var(--veil), 0.80) 100%);
   }
-  /* the photo's foot melts into the first color of the page gradient, so there's no seam */
+  /* the photo's foot melts into solid soil (behind the words, so none of them fade), and the section below
+     lets the mycelium rise out of that soil gradually (.work::before), so the photo never ends on a line */
   .hero-band::after {
     content: ""; position: absolute; inset: auto 0 0 0; height: 16%; z-index: -1; pointer-events: none;
-    background: linear-gradient(180deg, transparent, var(--g0));
+    background: linear-gradient(0deg, var(--soil-fade));
   }
   .hero-center {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -304,32 +248,84 @@
   }
   .hero-center .eyebrow { color: #f4ecdf; letter-spacing: 0.26em; margin-bottom: 26px; }
   /* a soft dark glow keeps the words readable where they cross the brightest mushroom caps */
-  .hero-center .hero-lede, .hero-cta .quiet { text-shadow: 0 1px 2px rgba(22, 15, 29, 0.7), 0 0 18px rgba(22, 15, 29, 0.65); }
-  .hero-center .eyebrow { text-shadow: 0 1px 2px rgba(22, 15, 29, 0.85), 0 0 8px rgba(22, 15, 29, 0.8), 0 0 20px rgba(22, 15, 29, 0.6); }
+  .hero-center .hero-lede, .hero-cta .quiet { text-shadow: 0 1px 2px rgba(var(--veil), 0.7), 0 0 18px rgba(var(--veil), 0.65); }
+  .hero-center .eyebrow { text-shadow: 0 1px 2px rgba(var(--veil), 0.85), 0 0 8px rgba(var(--veil), 0.8), 0 0 20px rgba(var(--veil), 0.6); }
   .hero-center h1 {
-    font-size: clamp(42px, 6.6vw, 96px); font-weight: 600; letter-spacing: -0.028em; line-height: 1.0;
-    margin-inline: auto; color: #f7efe3; text-shadow: 0 2px 30px rgba(22, 15, 29, 0.35);
+    font-size: clamp(42px, 6.6vw, 96px); font-weight: 400; letter-spacing: -0.012em; line-height: 1.0;
+    margin-inline: auto; color: #f7efe3; text-shadow: 0 2px 30px rgba(var(--veil), 0.35);
   }
   .hero-center h1 .h1a, .hero-center h1 .h1b { display: block; }
   .hero-center h1 .h1b {
-    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
-    letter-spacing: -0.02em; color: var(--candle); margin-top: 0.08em; line-height: 1.04;
-    text-shadow: 0 2px 4px rgba(22, 15, 29, 0.55), 0 0 28px rgba(22, 15, 29, 0.6);
+    font-family: 'Spectral', Georgia, serif; font-style: italic; font-weight: 400;
+    letter-spacing: -0.015em; color: var(--candle); margin-top: 0.08em; line-height: 1.04;
+    text-shadow: 0 2px 4px rgba(var(--veil), 0.55), 0 0 28px rgba(var(--veil), 0.6);
+    /* on narrow phones the line shrinks just enough that its longest phrase, "for small local businesses.",
+       fits on one line (in Spectral's italic it's about 9.92em wide), so it never wraps, whichever word is showing */
+    font-size: min(1em, calc((100vw - 2 * var(--gut)) / 10.25));
   }
+
+  /* ---- the word that changes: "for healers." "for bakers." ... and every round ends back on
+     "for small local businesses." The script after the hero builds the moving letters; the real sentence
+     stays in the heading, visually hidden, for screen readers and search engines, and the moving letters
+     are drawn from data-c (so they're never part of the heading's text) in aria-hidden words. Without the
+     script, with reduced motion, and in print, the line simply reads "for small local businesses." ---- */
+  .rot-on .rot {
+    position: relative; display: inline-grid; grid-template-columns: minmax(0, 1fr); justify-items: center;
+    vertical-align: baseline; box-sizing: content-box;
+    /* room around the letters so the italic overhang and the soft glow are never cut off,
+       given back by the negative margins so the line itself never moves */
+    padding: .42em .5em; margin: -.42em -.5em;
+    /* the letters rise into view from below the line and out of view above it, through soft edges;
+       the top edge fades in the gap between the two lines (fully gone by .19em, just under line one's
+       baseline; fully shown from .41em, just over this line's tallest letters), so a word leaving never
+       drifts over "Hand-built websites" */
+    -webkit-mask-image: linear-gradient(transparent .19em, #000 .41em, #000 calc(100% - .27em), transparent);
+    mask-image: linear-gradient(transparent .19em, #000 .41em, #000 calc(100% - .27em), transparent);
+    /* the slot eases to each word's width, so "for" and the full stop glide and the line re-centers */
+    transition: width .7s cubic-bezier(.22, 1, .36, 1);
+    transition: width .7s linear(0, 0.0554, 0.1808, 0.3318, 0.4817, 0.6158, 0.7277, 0.8164, 0.8833, 0.9316, 0.9649, 0.9867, 0.9999, 1.0071, 1.0104, 1.0111, 1.0104, 1.0089, 1.0072, 1.0056, 1.0041, 1.0029, 1.002, 1.0012, 1.0007, 1.0004, 1.0001, 1, 0.9999, 0.9999, 1);
+  }
+  .rot-on .rot-say {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  /* each word keeps its letters together on one line (the line itself always fits; see the font-size above) */
+  .rot-w { grid-area: 1 / 1; display: inline-block; white-space: nowrap; }
+  .rot-w > span { display: inline-block; }
+  .rot-w > span::before, .rot-dot::before { content: attr(data-c); }
+  /* each letter springs up into place, one after another (the script sets each one's --d) */
+  .rot-w.in > span {
+    animation: rot-in .62s cubic-bezier(.3, 1.3, .5, 1) var(--d, 0ms) both;
+    animation-timing-function: linear(0, 0.0591, 0.197, 0.3672, 0.5384, 0.6914, 0.8169, 0.9122, 0.979, 1.0214, 1.0445, 1.0535, 1.0531, 1.0471, 1.0384, 1.0289, 1.0201, 1.0126, 1.0068, 1.0025, 0.9997, 0.998, 0.9972, 0.9971, 0.9973, 0.9977, 0.9982, 0.9987, 0.9992, 0.9995, 0.9998, 1, 1.0001, 1.0001, 1.0002, 1.0002, 1);
+  }
+  .rot-w.out > span {
+    animation: rot-out .38s cubic-bezier(.4, 0, .2, 1) var(--d, 0ms) both;
+    animation-timing-function: linear(0, 0.0912, 0.2731, 0.4632, 0.6265, 0.7529, 0.844, 0.9062, 0.9466, 0.9717, 0.9865, 0.9947, 0.9989, 1.0008, 1.0015, 1.0015, 1.0013, 1.001, 1.0007, 1.0005, 1);
+  }
+  @keyframes rot-in { from { opacity: 0; transform: translateY(1.05em); } to { opacity: 1; transform: none; } }
+  @keyframes rot-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-1.05em); } }
   .hero-center .hero-lede {
     max-width: 30em; margin: 28px auto 0; font-size: clamp(18.5px, 1.7vw, 21.5px); line-height: 1.55;
     color: #f4ecdf; text-wrap: balance;
   }
-  .hero-cta { display: flex; gap: 12px 28px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 38px; }
-  .hero-cta .btn { background: var(--candle); border-color: var(--candle); color: var(--on-candle); padding-inline: 36px; }
-  /* hover: the gold gives way to living moss */
-  .hero-cta .btn:hover { background: var(--moss-bright); border-color: var(--moss-bright); color: var(--on-candle); box-shadow: 0 0 0 6px rgba(162, 212, 150, 0.18), 0 0 34px rgba(var(--moss-glow), 0.45); }
+  /* the two buttons side by side, and Recent work on its own line under them */
+  .hero-cta { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 38px; }
+  .hero-btns { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 16px; }
+  .hero-cta .btn { padding-inline: 36px; }
+  /* hover: the gold brightens and glows over the photo */
+  .hero-cta .btn:hover { box-shadow: 0 0 0 6px rgba(var(--acc-glow), 0.18), 0 0 34px rgba(var(--acc-glow), 0.45); }
+  /* Email me, quieter than See prices: a soft dark glass with a cream outline, so it reads over the photo */
+  .hero-cta .btn.ghost {
+    background: rgba(var(--veil), 0.42); border-color: rgba(244, 236, 223, 0.72); color: #f4ecdf; padding-inline: 28px;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .hero-cta .btn.ghost:hover { background: rgba(var(--veil), 0.6); border-color: var(--acc); color: #fff; box-shadow: 0 0 0 6px rgba(var(--acc-glow), 0.14); }
   .hero-cta .quiet {
     display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px;
-    color: #f4ecdf; text-decoration-color: rgba(162, 212, 150, 0.75);
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: 0.01em;
+    color: #f4ecdf; text-decoration-color: rgba(var(--acc-glow), 0.75);
   }
-  .hero-cta .quiet:hover { text-decoration-color: var(--moss-bright); }
+  .hero-cta .quiet:hover { text-decoration-color: var(--acc); }
   .hero-cta :focus-visible { outline-color: #f4ecdf; }
 
   .hero-band.wait .hero-img, .hero-band.wait::before,
@@ -350,18 +346,18 @@
   @keyframes hero-rise { from { opacity: 0; transform: translateY(64px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
 
-  /* ============ the page gradient, piece by piece ============ */
-  .work { background: var(--grad-work); position: relative; isolation: isolate; overflow: hidden; }
-  .prices { background: var(--grad-head); position: relative; isolation: isolate; overflow: hidden; padding-bottom: 0; }
-  .turn { position: relative; margin-top: clamp(44px, 6vw, 68px); padding-bottom: var(--sec-pad); }
-  .turn::before {
-    content: ""; position: absolute; z-index: -2; top: 0; bottom: 0; left: -50vw; right: -50vw; pointer-events: none;
-    background: var(--grad-turn);
+  /* ============ sections: no backgrounds of their own, so every edge disappears into the soil ============ */
+  .work { position: relative; isolation: isolate; overflow: hidden; }
+  /* just under the photo the soil is still solid, and the mycelium comes up out of it slowly */
+  .work::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: clamp(140px, 24vh, 280px); z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, var(--soil-fade));
   }
-  .flow-light { background: var(--grad-light); }
+  .prices { position: relative; isolation: isolate; overflow: hidden; padding-bottom: 0; }
+  .turn { position: relative; margin-top: clamp(44px, 6vw, 68px); padding-bottom: var(--sec-pad); }
 
   /* ============ framed photos: settle from a soft zoom, then drift a few px against the scroll ============ */
-  .photo-block { position: relative; overflow: hidden; margin: 0; border-radius: 26px; background: #2d2338; }
+  .photo-block { position: relative; overflow: hidden; margin: 0; border-radius: 26px; background: #252421; }
   .photo-block img {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
     scale: 1.08; translate: 0 var(--drift, 0px);
@@ -369,9 +365,9 @@
     filter: brightness(var(--photo-dim));
   }
   .photo-block.reveal.pre img { scale: 1.16; }
-  /* a candlelit wash so the stock photos sit inside the plum and parchment palette */
+  /* a candlelit wash so the stock photos sit inside the charcoal, bone and gold palette */
   .photo-block::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(226, 190, 140, 0.24); mix-blend-mode: soft-light; }
-  .photo-block::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 0 80px rgba(34, 26, 43, 0.22); }
+  .photo-block::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 0 80px rgba(3, 3, 3, 0.22); }
 
   /* text + edge-to-edge photo, matching heights */
   .split-sec { overflow-x: clip; --bleed: max(var(--gut), calc((100vw - var(--wrap)) / 2)); }
@@ -382,107 +378,228 @@
   .piece { display: grid; gap: 34px; align-items: center; }
   .shots { position: relative; display: block; padding-bottom: 14%; text-decoration: none; }
   .browser {
-    width: 88%; border-radius: 12px; overflow: hidden; background: #2a2036;
+    width: 88%; border-radius: 12px; overflow: hidden; background: #211f1c;
     border: 1px solid rgba(244, 236, 223, 0.14);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 34px 64px -28px rgba(8, 4, 12, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 34px 64px -28px rgba(3, 3, 3, 0.8);
   }
-  .browser .chrome { display: flex; align-items: center; gap: 12px; height: 30px; padding-inline: 12px; background: #2a2036; border-bottom: 1px solid rgba(244, 236, 223, 0.08); }
+  .browser .chrome { display: flex; align-items: center; gap: 12px; height: 30px; padding-inline: 12px; background: #211f1c; border-bottom: 1px solid rgba(244, 236, 223, 0.08); }
   .browser .dots { display: flex; gap: 6px; }
   .browser .dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(244, 236, 223, 0.22); display: block; }
   .browser .url {
     flex: 1; max-width: 60%; margin-inline: auto; transform: translateX(-24px);
     height: 18px; border-radius: 999px; background: rgba(244, 236, 223, 0.08);
-    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; line-height: 18px; color: #d6cadf;
+    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 10.5px; line-height: 18px; color: #d2ccbf;
     text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
   }
-  .browser .screen { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #2d2338; }
+  .browser .screen { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #252421; }
   .browser .screen img, .phone .screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
   .browser .screen img { transition: scale 1.6s cubic-bezier(.2,.7,.3,1); }
   .piece.reveal.pre .browser .screen img { scale: 1.05; }
   .phone {
     position: absolute; right: 0; bottom: 0; width: 27%;
-    padding: 5px; border-radius: 26px; background: #16111c;
-    box-shadow: 0 0 0 1px rgba(244, 236, 223, 0.14), 0 26px 46px -18px rgba(8, 4, 12, 0.85);
+    padding: 5px; border-radius: 26px; background: #121210;
+    box-shadow: 0 0 0 1px rgba(244, 236, 223, 0.14), 0 26px 46px -18px rgba(3, 3, 3, 0.85);
     translate: 0 var(--drift, 0px);
   }
-  .phone .screen { aspect-ratio: 480 / 1039; border-radius: 21px; overflow: hidden; background: #2d2338; }
+  .phone .screen { aspect-ratio: 480 / 1039; border-radius: 21px; overflow: hidden; background: #252421; }
   .piece.flip .browser { margin-left: auto; }
   .piece.flip .phone { right: auto; left: 0; }
 
   .piece-text .eyebrow { margin-bottom: 12px; }
-  .piece-text .eyebrow, .about-card .eyebrow { color: var(--moss); }
-  .piece-text h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 600; letter-spacing: -0.015em; }
+  .piece-text .eyebrow, .about-card .eyebrow { color: var(--acc); }
+  .piece-text h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 400; letter-spacing: -0.005em; }
   .piece-text p { margin: 12px 0 0; color: var(--ink-soft); max-width: 30em; }
   .visit {
     display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 12px;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: 0.01em;
   }
-  .visit svg { width: 14px; height: 14px; color: var(--moss); }
+  .visit svg { width: 14px; height: 14px; color: var(--acc); }
 
   /* ============ prices ============ */
   .tiers { display: grid; gap: 28px; align-items: stretch; }
+  /* each moon card is an arched window: a true half circle on top (its radius is exactly half the card's width,
+     so it never squashes) on straight sides, drawn by ::before, with a fine gold keyline following the whole
+     outline just inside it (::after). The card is a size container so the arch can measure itself (cqw = 1% of
+     its width). In the window, a calm night: pale moonlight around the moon, and a little honey light low down
+     where it rises from its thread, the sky settling softly into the card below (no seam anywhere) */
   .tier {
-    position: relative; display: flex; flex-direction: column;
-    background: var(--card); color: var(--ink);
-    border-radius: 200px 200px 22px 22px / 130px 130px 22px 22px;
-    overflow: hidden; border: 1px solid rgba(var(--moss-glow), 0.22);
+    --foot: 18px;             /* the bottom corners */
+    --key: 7px;               /* how far inside the edge the keyline runs */
+    --moon: clamp(40px, 15.5cqw, 54px);
+    --moon-y: 25cqw;          /* the moon's centre, down from the top of the arch */
+    --rise: calc(var(--moon-y) + var(--moon) * 0.8);   /* the thread it rises from, and the honey light on it */
+    --halo: 0.08;             /* how bright the moonlight and the honey light are (Mother's a little brighter) */
+    --glow: 0.13;
+    position: relative; display: flex; flex-direction: column; isolation: isolate;
+    container-type: inline-size;
+    color: var(--ink);
+  }
+  .tier::before, .tier::after { content: ""; position: absolute; z-index: -1; pointer-events: none; }
+  .tier::before {
+    inset: 0;
+    border-radius: 999px 999px var(--foot) var(--foot);
+    border-radius: 50cqw 50cqw var(--foot) var(--foot);
+    border: 1px solid rgba(var(--honey), 0.22);
+    background:
+      radial-gradient(38cqw 8cqw at 50% var(--rise), rgba(var(--honey), var(--glow)), rgba(var(--honey), 0)),
+      radial-gradient(circle at 50% var(--moon-y), rgba(236, 227, 211, var(--halo)), rgba(236, 227, 211, calc(var(--halo) * 0.35)) 14cqw, rgba(236, 227, 211, 0) 30cqw),
+      linear-gradient(180deg, rgba(28, 27, 24, 0) calc(var(--rise) - 3cqw), var(--card) calc(var(--rise) + 13cqw)),
+      radial-gradient(ellipse 80cqw 70cqw at 50% var(--moon-y), var(--sky)),
+      var(--card);
     box-shadow: 0 2px 4px rgba(var(--shadow), 0.08), 0 30px 60px -30px rgba(var(--shadow), 0.55);
   }
-  /* a night sky with a mossy rise at its foot, so each moon hangs over moss like the photos */
-  .tier-sky {
-    height: 124px; display: grid; place-items: center;
-    background:
-      radial-gradient(ellipse 72% 54% at 50% 124%, #4b8342 0%, #3d7036 48%, #325f2d 70%, rgba(50, 95, 45, 0.45) 78%, rgba(50, 95, 45, 0) 88%),
-      radial-gradient(ellipse 80% 90% at 50% 75%, #3b2d49 0%, #271d33 60%, #1d1626 100%);
+  .tier::after {
+    inset: var(--key);
+    border: 1px solid rgba(var(--honey), 0.28);
+    border-radius: calc(50cqw - var(--key)) calc(50cqw - var(--key)) calc(var(--foot) - var(--key)) calc(var(--foot) - var(--key));
   }
-  .tier-sky svg { width: 54px; height: 54px; margin-top: -10px; overflow: visible; filter: drop-shadow(0 0 10px var(--moonglow)) drop-shadow(0 0 22px rgba(239, 230, 214, 0.18)); }
-  .tier-body { flex: 1; display: flex; flex-direction: column; padding: 24px 26px 26px; text-align: center; }
-  .tier h3 { font-size: 30px; font-weight: 600; letter-spacing: -0.015em; }
+  /* the sky inside the arch, clipped to the keyline so it reads as a window. It overlaps the top of the card's
+     words a little (they paint over it) */
+  .tier-sky {
+    position: relative; height: 180px; height: 52cqw; margin-bottom: -8cqw;
+    clip-path: inset(var(--key) var(--key) 0 round calc(50cqw - var(--key)) calc(50cqw - var(--key)) 0 0);
+  }
+  .tier-sky .moon {
+    position: absolute; left: 50%; top: var(--moon-y); width: var(--moon); height: var(--moon);
+    margin: calc(var(--moon) / -2) 0 0 calc(var(--moon) / -2 + var(--nudge, 0px)); overflow: visible;
+    filter: drop-shadow(0 0 10px var(--moonglow)) drop-shadow(0 0 22px rgba(239, 230, 214, 0.18));
+  }
+  /* a crescent's light sits to one side of its circle, so nudge it back to sit right over its honey light */
+  .tier.maiden { --nudge: calc(var(--moon) * -0.13); }
+  .tier.crone { --nudge: calc(var(--moon) * 0.13); }
+  /* each moon rises from a fine thread of mycelium: a few strands that part and fuse again, meeting in one
+     small honey light under the moon, and fading out to nothing well before the window's edges */
+  .tier-sky .thread {
+    position: absolute; left: 50%; top: calc(var(--rise) - 24px); width: min(320px, 100% - 30px); height: 40px; translate: -50% 0; overflow: visible;
+    -webkit-mask-image: linear-gradient(90deg, transparent 3%, #000 30%, #000 70%, transparent 97%);
+            mask-image: linear-gradient(90deg, transparent 3%, #000 30%, #000 70%, transparent 97%);
+  }
+  .thread path { fill: none; stroke-linecap: round; }
+  .thread .h { stroke-width: 1.1; }
+  .thread .b { stroke-width: 0.75; opacity: 0.75; }
+  .thread .hl { stop-color: rgb(var(--honey)); }
+  .tier-sky::after {
+    content: ""; position: absolute; left: 50%; top: var(--rise); width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%;
+    background: #f8e2b4; background: color-mix(in srgb, rgb(var(--honey)), #fff 45%);
+    box-shadow: 0 0 5px 1px rgba(var(--honey), 0.6), 0 0 16px 5px rgba(var(--honey), 0.16);
+  }
+  /* once, as the card comes up the screen: the little light wakes, the strands grow out of it (every strand is
+     shorter than 180, so a 180 dash shows it all), and the moon rises a few pixels. Never with reduced motion,
+     and never in print: there it's all simply there */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    .tier.reveal.pre .thread path { stroke-dasharray: 180 400; stroke-dashoffset: 180; }
+    .tier.reveal.pre .moon { opacity: 0; translate: 0 10px; }
+    .tier.reveal.pre .tier-sky::after { opacity: 0; }
+    .tier.reveal.in .tier-sky::after { transition: opacity 1.2s ease .3s; }
+    .tier.reveal.in .thread path { stroke-dasharray: 180 400; transition: stroke-dashoffset 2.8s cubic-bezier(.35,.55,.3,1) .7s; }
+    .tier.reveal.in .thread .b { transition-duration: 2.2s; transition-delay: 1.3s; }
+    .tier.reveal.in .moon { transition: opacity 2.2s ease 1.5s, translate 3s cubic-bezier(.2,.7,.3,1) 1.5s; }
+  }
+  .tier-body { flex: 1; display: flex; flex-direction: column; padding: 14px 26px 30px; text-align: center; }
+  .tier h3 { font-size: 32px; font-weight: 400; letter-spacing: -0.005em; }
   .tier .does { margin: 10px 0 0; font-size: 17.5px; line-height: 1.55; color: var(--ink-soft); }
   .tier .money { margin-top: auto; padding-top: 22px; }
-  .tier .price { margin: 0; font-family: 'Bricolage Grotesque', sans-serif; line-height: 1; }
-  .tier .price strong { font-size: 46px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-  .tier .price span { display: block; margin-top: 8px; font-size: 15.5px; font-weight: 400; color: var(--ink-soft); }
+  .tier .price { margin: 0; font-family: 'Gloock', Georgia, serif; line-height: 1; }
+  .tier .price strong { font-size: 46px; font-weight: 400; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .tier .price span { display: block; margin-top: 8px; font-family: 'Spectral', Georgia, serif; font-style: italic; font-size: 17px; font-weight: 400; color: var(--ink-soft); }
   .tier .founding {
     display: inline-flex; align-items: baseline; gap: 8px; margin: 14px 0 0; padding: 6px 14px; border-radius: 999px;
-    background: var(--plum-wash); color: var(--plum);
-    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.04em;
+    background: rgba(var(--acc-glow), 0.13); color: var(--candle);
+    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
   }
-  .tier .founding b { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; }
-  /* Mother, the middle moon, glows a little greener */
-  .tier.mother {
-    border-color: rgba(var(--moss-glow), 0.7);
-    box-shadow: 0 0 0 1px rgba(var(--moss-glow), 0.45), 0 0 46px -6px rgba(var(--moss-glow), 0.5), 0 30px 60px -30px rgba(var(--shadow), 0.55);
+  .tier .founding b { font-family: 'Gloock', Georgia, serif; font-size: 17px; font-weight: 400; letter-spacing: 0.01em; text-transform: none; }
+  /* Mother, the middle moon, glows a little brighter: honey rather than amber, so it's warm, not pumpkin */
+  .tier.mother { --halo: 0.1; --glow: 0.18; }
+  .tier.mother::before {
+    border-color: rgba(var(--honey), 0.62);
+    box-shadow: 0 0 0 1px rgba(var(--honey), 0.26), 0 0 44px -8px rgba(var(--honey), 0.38), 0 30px 60px -30px rgba(var(--shadow), 0.55);
   }
+  .tier.mother::after { border-color: rgba(var(--honey), 0.46); }
 
   /* the fine print, in one calm panel: the founding line, what every build includes, and the one cost sentence */
   .panel {
     margin: clamp(36px, 5vw, 56px) auto 0; max-width: 860px;
     background: var(--card); color: var(--ink); border-radius: 24px;
-    border: 1px solid rgba(var(--moss-glow), 0.22);
+    border: 1px solid rgba(var(--acc-glow), 0.22);
     box-shadow: 0 2px 4px rgba(var(--shadow), 0.06), 0 30px 60px -34px rgba(var(--shadow), 0.5);
     padding: clamp(24px, 4vw, 40px) clamp(22px, 4.4vw, 48px);
   }
   .panel p { margin: 0; }
-  .panel > * + * { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(var(--moss-glow), 0.28); }
+  .panel > * + * { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(var(--acc-glow), 0.28); }
   /* arriving at index.html#founding (from the quiz and the questions page) lands with the panel's top edge in view */
   #founding { scroll-margin-top: calc(clamp(24px, 4vw, 40px) + 24px); }
   /* #care is the old site's link to the plans; it now lands on the moon cards */
   #care { scroll-margin-top: 24px; }
   .founding-line p { display: flex; gap: 14px; align-items: flex-start; font-size: 18px; line-height: 1.55; }
-  .founding-line svg { flex: none; width: 26px; height: 26px; margin-top: 1px; color: var(--moss-fill); }
+  .founding-line svg { flex: none; width: 26px; height: 26px; margin-top: 1px; color: var(--acc-fill); }
   .founding-line b {
     display: inline-block; margin-left: 2px; padding: 0 10px; border-radius: 999px; white-space: nowrap;
-    background: var(--moss-fill); color: var(--on-moss);
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.6;
+    background: var(--acc-fill); color: var(--on-acc);
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 15.5px; line-height: 1.6;
   }
   .panel .every { font-size: 17.5px; color: var(--ink-soft); }
-  .panel .lead { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; color: var(--ink); }
+  .panel .lead { font-family: 'Gloock', Georgia, serif; font-weight: 400; color: var(--ink); }
   .panel .after { font-size: clamp(19px, 2vw, 21.5px); line-height: 1.5; }
   /* (the vertical padding makes each a comfortable tap without changing the line height) */
-  .panel .after a, .panel .quiz a { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px; white-space: nowrap; padding-block: 13px; }
-  .panel .after a::after, .panel .quiz a::after { content: " \2192"; content: " \2192" / ""; font-family: 'Newsreader', Georgia, serif; }
+  .panel .after a, .panel .quiz a { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: 0.01em; white-space: nowrap; padding-block: 13px; }
+  .panel .after a::after, .panel .quiz a::after { content: " \2192"; content: " \2192" / ""; font-family: 'Spectral', Georgia, serif; }
   .panel .quiz { font-size: 17px; color: var(--ink-soft); }
+
+  /* ============ clearings: the soil goes quiet around the words ============
+     Behind each heading and each short run of words on the soil, the soil thins the threads out: a patch
+     of the soil's own dark, mostly opaque, whose edges feather away (across and down, multiplied, so it never
+     reads as a box). The network stays whole in the open ground between them. Each patch sits under
+     everything else in its section (z-index -1 in the section's own stacking context), so it only ever
+     covers the soil, never a photo or a card. --gx / --gy: how far past its words it reaches */
+  #about, #faq { position: relative; isolation: isolate; }
+  #about, #faq, .guestbook { overflow-x: clip; }
+  .work .sec-head, .piece-text, .prices .sec-head, .how-text .sec-head, .about-card, #faq .sec-head, .contact-text,
+  .guestbook .sec-head { --gx: 20px; --gy: 48px; }
+  /* (the questions' heading is already positioned: it's sticky on wide screens) */
+  .work .sec-head, .piece-text, .prices .sec-head, .how-text .sec-head, .about-card, .contact-text,
+  .guestbook .sec-head { position: relative; }
+  .work .sec-head::before, .piece-text::before, .prices .sec-head::before, .how-text .sec-head::before, .about-card::before,
+  #faq .sec-head::before, .contact-text::before, .guestbook .sec-head::before {
+    content: ""; position: absolute; z-index: -1; pointer-events: none;
+    inset: calc(-1 * var(--gy)) calc(-1 * var(--gx));
+    background: rgba(14, 14, 12, 0.8);
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.5) calc(var(--gx) * 0.5), #000 var(--gx), #000 calc(100% - var(--gx)), rgba(0, 0, 0, 0.5) calc(100% - var(--gx) * 0.5), transparent),
+      linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.5) calc(var(--gy) * 0.5), #000 var(--gy), #000 calc(100% - var(--gy)), rgba(0, 0, 0, 0.5) calc(100% - var(--gy) * 0.5), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.5) calc(var(--gx) * 0.5), #000 var(--gx), #000 calc(100% - var(--gx)), rgba(0, 0, 0, 0.5) calc(100% - var(--gx) * 0.5), transparent),
+      linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.5) calc(var(--gy) * 0.5), #000 var(--gy), #000 calc(100% - var(--gy)), rgba(0, 0, 0, 0.5) calc(100% - var(--gy) * 0.5), transparent);
+    mask-composite: intersect;
+  }
+  @media (min-width: 900px) {
+    .work .sec-head, .piece-text, .prices .sec-head, .how-text .sec-head, .about-card, #faq .sec-head, .contact-text,
+    .guestbook .sec-head { --gx: 72px; --gy: 72px; }
+  }
+
+  /* ============ nooks: cards only where the words are many ============
+     (Pollen, Sep 30: "it kind of is feeling really busy".) The four steps, the questions and the ways to
+     reach me each sit in a warm charcoal nook, like the price panel, so longer reading never runs across
+     the threads; the headings and the short lines stay right on the quiet soil, with the mycelium around them */
+  .nook {
+    background: var(--card); color: var(--ink); border-radius: 24px;
+    border: 1px solid rgba(var(--acc-glow), 0.18);
+    box-shadow: 0 2px 4px rgba(var(--shadow), 0.06), 0 30px 60px -34px rgba(var(--shadow), 0.5);
+    padding: clamp(24px, 3.4vw, 34px) clamp(20px, 3.4vw, 34px);
+  }
+  .how .nook { margin-top: 32px; }
+  .how .nook .steps { margin-top: 0; }
+  .how .nook .ready-line { margin-top: 28px; max-width: none; }
+  /* phones: the numbers sit a little closer, so the steps keep a comfortable line length inside the nook */
+  @media (max-width: 560px) { .how .nook .steps li { padding-left: 54px; } }
+  /* the smallest phones: the nooks reach a little into the margins, so the buttons and links inside keep to one line */
+  @media (max-width: 380px) { .nook { margin-inline: -8px; padding-inline: 14px; } }
+  .faq.nook { padding-block: 4px; }
+  .faq.nook details:first-child { border-top: 0; }
+  .faq.nook details:last-child { border-bottom: 0; }
+  .contact .nook { margin-top: 26px; }
+  .contact .nook .lede { margin-top: 0; }
+  .contact .nook .contact-actions { margin-top: 24px; }
 
   /* ============ how it works ============ */
   .how { position: relative; isolation: isolate; }
@@ -491,18 +608,18 @@
   .steps li::before {
     content: counter(step); position: absolute; left: 0; top: -3px;
     width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px;
-    background: var(--moss-fill); color: var(--on-moss);
-    box-shadow: 0 0 0 5px rgba(var(--moss-glow), 0.16);
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px;
+    background: var(--acc-fill); color: var(--on-acc);
+    box-shadow: 0 0 0 5px rgba(var(--acc-glow), 0.16);
   }
-  /* the thread between steps, like a strand of moss */
-  .steps li::after { content: ""; position: absolute; left: 20px; top: 44px; bottom: 4px; width: 2px; border-radius: 2px; background: rgba(var(--moss-glow), 0.4); transform: translateX(-50%); }
+  /* the thread between steps, like a strand of mycelium */
+  .steps li::after { content: ""; position: absolute; left: 20px; top: 44px; bottom: 4px; width: 2px; border-radius: 2px; background: rgba(var(--acc-glow), 0.4); transform: translateX(-50%); }
   .steps li:last-child { padding-bottom: 0; }
   .steps li:last-child::after { display: none; }
-  .steps h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+  .steps h3 { font-size: 22px; font-weight: 400; letter-spacing: 0; line-height: 1.25; }
   .steps p { margin: 4px 0 0; font-size: 17.5px; color: var(--ink-soft); }
   .ready-line {
-    margin: 34px 0 0; padding-top: 22px; border-top: 1px solid rgba(var(--moss-glow), 0.35);
+    margin: 34px 0 0; padding-top: 22px; border-top: 1px solid rgba(var(--acc-glow), 0.35);
     font-size: 17.5px; color: var(--ink-soft); max-width: 34em;
   }
   .ready-line b { color: var(--ink); font-weight: 500; }
@@ -511,7 +628,7 @@
   .about-card { display: grid; gap: 26px; align-items: start; max-width: 860px; margin-inline: auto; }
   .portrait {
     width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
-    border: 3px solid var(--moss-fill); box-shadow: 0 0 0 6px rgba(var(--moss-glow), 0.16), 0 12px 30px -12px rgba(var(--shadow), 0.5);
+    border: 3px solid var(--acc-fill); box-shadow: 0 0 0 6px rgba(var(--acc-glow), 0.16), 0 12px 30px -12px rgba(var(--shadow), 0.5);
   }
   .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .about-card h2 { font-size: clamp(30px, 4vw, 44px); }
@@ -522,50 +639,253 @@
   /* ============ questions ============ */
   .faq-grid { display: grid; gap: 34px; }
   .faq { max-width: 780px; }
-  .faq details { border-bottom: 1px solid rgba(var(--moss-glow), 0.35); }
-  .faq details:first-child { border-top: 1px solid rgba(var(--moss-glow), 0.35); }
+  .faq details { border-bottom: 1px solid rgba(var(--acc-glow), 0.35); }
+  .faq details:first-child { border-top: 1px solid rgba(var(--acc-glow), 0.35); }
   /* arriving at index.html#costs lands with the question in view, not tucked under the top edge */
   .faq details { scroll-margin-top: 24px; }
   .faq summary {
     cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 18px;
     padding: 18px 0; min-height: 64px; text-wrap: balance;
-    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 19px; line-height: 1.35;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 19.5px; line-height: 1.35; letter-spacing: 0.01em; word-spacing: 0.04em;
   }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary:hover { color: var(--plum); }
+  .faq summary:hover { color: var(--link); }
   /* the plus / minus is decoration: the '/ ""' keeps screen readers quiet (first line is the fallback) */
   .faq summary::after {
     content: "+"; content: "+" / ""; flex: none; width: 30px; height: 30px; border-radius: 50%;
-    display: grid; place-items: center; border: 1.5px solid var(--moss-line);
-    color: var(--moss); font-weight: 500; font-size: 20px; line-height: 1;
+    display: grid; place-items: center; border: 1.5px solid var(--acc-line);
+    color: var(--acc); font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 22px; line-height: 1;
     transition: background-color .2s ease;
   }
-  .faq details[open] summary::after { content: "\2212"; content: "\2212" / ""; background: rgba(var(--moss-glow), 0.16); }
+  .faq details[open] summary::after { content: "\2212"; content: "\2212" / ""; background: rgba(var(--acc-glow), 0.16); }
   .faq details p { margin: 0 0 22px; color: var(--ink-soft); max-width: 62ch; }
   .faq details p + p { margin-top: -8px; }
 
+  /* ============ guestbook ============
+     The old personal-site guestbook, done softly: little notes resting on the soil, each with the stamp
+     its writer picked, and a small form on a card. The stamps are line drawings kept as <symbol>s at the
+     top of the section, so they can be swapped for Taya's own drawings in one place. The notes' words sit
+     in dark ink on cream paper (the numbers are with the notes below); the heading, the lede and the quiet
+     line under the notes sit on the soil, checked at the brightest thread or light behind them (the quiet
+     line is the closest, 4.67 to 1 with a light's heart right behind it; the notes' shadows only darken it). */
+  .guestbook { position: relative; isolation: isolate; }
+  .guestbook [hidden] { display: none !important; }
+  .gb-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .gb-grid { display: grid; gap: clamp(48px, 6vw, 64px); margin-top: clamp(44px, 6vw, 68px); align-items: start; }
+
+  /* a stamp: a little square of colored paper with a perforated edge (a mask cuts the notches, 3px round,
+     every 9px, so each size is a multiple of 9) and a fine frame inside it, like a postage stamp */
+  .gb-stamp {
+    --r: 3px; --stamp: var(--candle);
+    display: grid; place-items: center; flex: none;
+    width: 45px; height: 54px; background: var(--stamp); color: #23211c;
+    box-shadow: inset 0 0 0 5px var(--stamp), inset 0 0 0 6px rgba(35, 33, 28, 0.38);
+    -webkit-mask:
+      radial-gradient(var(--r), #0000 97%, #000) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) / calc(3 * var(--r)) calc(3 * var(--r)),
+      linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
+    mask:
+      radial-gradient(var(--r), #0000 97%, #000) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) / calc(3 * var(--r)) calc(3 * var(--r)),
+      linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
+  }
+  .gb-stamp svg { width: 60%; height: 60%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .gb-stamp.is-moon { --stamp: var(--moonlight); }
+  .gb-stamp.is-fern { --stamp: #b6cba5; }
+
+  /* the notes: little sheets of cream stationery resting on the soil, each tipped a little.
+     The paper is its own layer (::before): a warm cream with a faint grain of paper fibers (an SVG noise
+     tile), and softly uneven, deckled edges: a mask of four layers, one per side, intersected. Each is solid
+     paper with a thin strip of noise at its edge, tiled at its real size so every note's edge looks alike
+     (each tile starts 3px outside the box, so a tile's own edge never shows). Its shadow is another layer
+     under it (::after), so the mask never clips it. Dark ink on the paper, checked against the darkest
+     speck of grain near the edges: the note #2b2118 (9.4 to 1), the town and date #5b4a39 (5.0 to 1), the
+     rust "sample" stamp #80351a (5.1 to 1). */
+  .gb-notes { list-style: none; margin: 0; padding: 0; display: grid; gap: 30px; }
+  .gb-note figure {
+    --ink: #2b2118; --ink-soft: #5b4a39;
+    position: relative; isolation: isolate; margin: 0; display: flow-root;
+    color: var(--ink);
+    padding: 22px 24px 18px;
+  }
+  .gb-note figure::before, .gb-note figure::after { content: ""; position: absolute; pointer-events: none; }
+  .gb-note figure::before {
+    inset: 0; z-index: -1;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E %3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' seed='7' stitchTiles='stitch'/%3E %3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .27 0 0 0 0 .16 1.5 0 0 0 -.6'/%3E %3C/filter%3E %3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.028' numOctaves='3' seed='3' stitchTiles='stitch'/%3E %3CfeColorMatrix values='0 0 0 0 .52 0 0 0 0 .4 0 0 0 0 .24 1.4 0 0 0 -.62'/%3E %3C/filter%3E %3Crect width='220' height='220' filter='url(%23m)' opacity='.32'/%3E %3Crect width='220' height='220' filter='url(%23g)' opacity='.4'/%3E %3C/svg%3E") 0 0 / 220px 220px,
+      radial-gradient(120% 90% at 16% 6%, rgba(255, 251, 240, 0.6), rgba(255, 251, 240, 0) 58%),
+      linear-gradient(172deg, #efe5cf, #e7dbc2);
+    box-shadow: inset 0 0 22px rgba(140, 104, 58, 0.16);
+    -webkit-mask:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1203'%3E %3ClinearGradient id='v' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.3 .9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='0' y='3' width='200' height='8' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='0' y='11' width='200' height='1192'/%3E %3C/svg%3E") 0 -3px / 200px 1203px repeat-x,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1203'%3E %3ClinearGradient id='v' x1='0' y1='1' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.3 .9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='0' y='1192' width='200' height='8' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='0' y='0' width='200' height='1192'/%3E %3C/svg%3E") 0 calc(100% + 3px) / 200px 1203px repeat-x,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1203' height='200'%3E %3ClinearGradient id='v' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.9 .3' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='3' y='0' width='8' height='200' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='11' y='0' width='1192' height='200'/%3E %3C/svg%3E") -3px 0 / 1203px 200px repeat-y,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1203' height='200'%3E %3ClinearGradient id='v' x1='1' y1='0' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.9 .3' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='1192' y='0' width='8' height='200' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='0' y='0' width='1192' height='200'/%3E %3C/svg%3E") calc(100% + 3px) 0 / 1203px 200px repeat-y;
+    -webkit-mask-composite: source-in, source-in, source-in, source-over;
+    mask:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1203'%3E %3ClinearGradient id='v' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.3 .9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='0' y='3' width='200' height='8' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='0' y='11' width='200' height='1192'/%3E %3C/svg%3E") 0 -3px / 200px 1203px repeat-x,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='1203'%3E %3ClinearGradient id='v' x1='0' y1='1' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.3 .9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='0' y='1192' width='200' height='8' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='0' y='0' width='200' height='1192'/%3E %3C/svg%3E") 0 calc(100% + 3px) / 200px 1203px repeat-x,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1203' height='200'%3E %3ClinearGradient id='v' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.9 .3' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='3' y='0' width='8' height='200' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='11' y='0' width='1192' height='200'/%3E %3C/svg%3E") -3px 0 / 1203px 200px repeat-y,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1203' height='200'%3E %3ClinearGradient id='v' x1='1' y1='0' x2='0' y2='0'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23fff'/%3E%3C/linearGradient%3E %3Cfilter id='e' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E %3CfeTurbulence type='fractalNoise' baseFrequency='.9 .3' numOctaves='3' seed='4' stitchTiles='stitch'/%3E %3CfeComposite in='SourceGraphic' operator='arithmetic' k2='1' k3='.75' k4='-.38'/%3E %3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 0 0 -2.2'/%3E %3C/filter%3E %3Crect x='1192' y='0' width='8' height='200' fill='url(%23v)' filter='url(%23e)'/%3E %3Crect x='0' y='0' width='1192' height='200'/%3E %3C/svg%3E") calc(100% + 3px) 0 / 1203px 200px repeat-y;
+    mask-composite: intersect, intersect, intersect, add;
+    /* its own layer, so the mask is applied before the tilt (tilting first leaves a faint hairline at the box edge) */
+    will-change: transform;
+  }
+  /* the shadow, as if the sheet were resting on the soil. Its box sits well inside the paper (whose deckled
+     edge is about 4px in), so only the soft blur below ever shows, never a hard edge */
+  .gb-note figure::after {
+    inset: 12px 10px 6px; z-index: -2; border-radius: 6px;
+    box-shadow: 0 8px 12px -2px rgba(3, 3, 3, 0.5), 0 20px 30px -8px rgba(3, 3, 3, 0.55), 0 34px 50px -24px rgba(3, 3, 3, 0.5);
+  }
+  /* the stamp, stuck on the corner: only a thin shadow, it's glued down */
+  .gb-note .gb-stamp { float: right; margin: -38px -8px 8px 14px; rotate: 5deg; filter: drop-shadow(0 1px 1px rgba(40, 26, 14, 0.4)) drop-shadow(0 4px 6px rgba(20, 12, 8, 0.22)); }
+  .gb-note:nth-child(3n+2) .gb-stamp { rotate: -6deg; }
+  .gb-note:nth-child(3n) .gb-stamp { rotate: 3deg; }
+  /* "sample" (and "waiting to be read"), like a little rust-red rubber stamp inked onto the paper */
+  .gb-tag {
+    display: inline-block; margin: 0 0 12px; padding: 0 8px; border-radius: 4px;
+    background: transparent; color: #80351a; border: 1.5px solid rgba(128, 53, 26, 0.8);
+    font-family: 'Spectral', Georgia, serif; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.8;
+    rotate: -2deg;
+  }
+  .gb-note blockquote { margin: 0; }
+  .gb-note blockquote p { margin: 0; font-style: italic; font-size: 19px; line-height: 1.5; color: var(--ink); overflow-wrap: anywhere; }
+  .gb-note figcaption {
+    clear: both; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 14px; padding-top: 11px;
+    border-top: 1px solid rgba(43, 33, 24, 0.22);
+  }
+  .gb-by { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px; line-height: 1.4; letter-spacing: 0.01em; overflow-wrap: anywhere; }
+  .gb-by span { font-family: 'Spectral', Georgia, serif; font-weight: 400; letter-spacing: 0; color: var(--ink-soft); }
+  .gb-note time { margin-left: auto; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+  .gb-quiet { margin: 26px 0 0; font-size: 16.5px; font-style: italic; color: var(--ink-soft); }
+  .gb-empty { margin: 0; font-size: 17.5px; color: var(--ink-soft); }
+
+  /* the form, on its own card, under a tiny old-web badge */
+  .gb-sign {
+    background: var(--card); color: var(--ink); border-radius: 24px;
+    border: 1px solid rgba(var(--acc-glow), 0.22);
+    box-shadow: 0 2px 4px rgba(var(--shadow), 0.06), 0 30px 60px -34px rgba(var(--shadow), 0.5);
+    padding: clamp(26px, 4vw, 38px) clamp(20px, 4vw, 38px) clamp(26px, 4vw, 36px);
+  }
+  .gb-badge {
+    display: inline-flex; align-items: center; gap: 9px; margin: 0 0 22px; padding: 7px 13px 7px 12px; border-radius: 3px;
+    font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.3;
+    color: var(--candle); border: 1px solid rgba(242, 199, 124, 0.62);
+    background: linear-gradient(180deg, rgba(242, 199, 124, 0.13), rgba(242, 199, 124, 0.02));
+    box-shadow: inset 0 0 0 2px var(--card), inset 0 0 0 3px rgba(242, 199, 124, 0.26);
+  }
+  .gb-badge svg { width: 10px; height: 10px; flex: none; fill: currentColor; }
+  .gb-nojs { margin: 0; font-size: 17.5px; color: var(--ink-soft); }
+  .gb-row { display: grid; gap: 18px 14px; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
+  .gb-field { margin-top: 18px; }
+  .gb-row .gb-field { margin-top: 0; }
+  /* the name's note sits in the second row: under both fields side by side, or right under First name
+     when the fields stack on the narrowest phones */
+  .gb-row .gb-err { grid-column: 1 / -1; grid-row: 2; margin-top: -10px; }
+  .gb-field label, .gb-stamps legend {
+    display: block; margin: 0 0 7px; padding: 0;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.3; letter-spacing: 0.01em; color: var(--ink);
+  }
+  .gb-opt { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-style: italic; color: var(--ink-soft); line-height: 1; }
+  .gb-field input, .gb-field textarea {
+    display: block; width: 100%; margin: 0; min-height: 48px; padding: 11px 14px;
+    background: #121210; color: var(--ink); border: 1px solid #7f7a6e; border-radius: 10px;
+    font-family: 'Spectral', Georgia, serif; font-size: 18px; line-height: 1.45;
+  }
+  .gb-field textarea { min-height: 116px; max-height: 320px; resize: vertical; field-sizing: content; }
+  .gb-field input:focus-visible, .gb-field textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-color: var(--acc); }
+  .gb-field [aria-invalid="true"] { border-color: #e2947f; }
+  .gb-count { margin: 6px 0 0; text-align: right; font-family: 'Spectral', Georgia, serif; font-weight: 400; font-style: italic; font-size: 15px; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+  .gb-count.near { color: var(--link); }
+  .gb-err { margin: 6px 0 0; font-size: 16px; color: #e2947f; }
+
+  /* the stamp picker: three radio buttons that look like stamps. The picked one lifts, tips and glows,
+     and its name is underlined and brighter; the others rest a little smaller (never dimmed: dimmed gold
+     turns olive) */
+  .gb-stamps { border: 0; margin: 22px 0 0; padding: 0; min-width: 0; }
+  .gb-stamp-row { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 4px; }
+  .gb-pick { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 78px; padding: 12px 6px 4px; border-radius: 12px; cursor: pointer; }
+  .gb-pick input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .gb-pick .gb-lift { display: block; transform: scale(0.88); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1), filter .35s ease; }
+  .gb-pick .gb-stamp { width: 54px; height: 63px; }
+  .gb-pick-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 15.5px; letter-spacing: 0.01em; line-height: 1.3; color: var(--ink-soft); text-underline-offset: 5px; }
+  .gb-pick:hover .gb-lift { transform: scale(0.94); }
+  .gb-pick input:checked + .gb-lift { transform: translateY(-4px) rotate(-5deg) scale(1.02); filter: drop-shadow(0 8px 12px rgba(var(--acc-glow), 0.55)); }
+  .gb-pick input:checked ~ .gb-pick-name { color: var(--ink); text-decoration: underline 2px var(--acc); }
+  .gb-pick:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .gb-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .gb-send { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 26px; }
+  .gb-send .btn { font-family: 'Gloock', Georgia, serif; }
+  .gb-send p { margin: 0; flex: 1 1 14em; font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); }
+  .gb-status { margin: 14px 0 0; font-size: 16px; color: #e2947f; }
+  .gb-status:empty { display: none; }
+
+  /* after signing: a thank-you, the note as it will look, and a way to write another */
+  .gb-thanks { text-align: center; }
+  .gb-sign.thanked .gb-badge { display: flex; width: fit-content; margin-inline: auto; }
+  .gb-thanks h3 { font-size: clamp(26px, 3vw, 32px); font-weight: 400; letter-spacing: -0.005em; }
+  .gb-thanks h3:focus { outline: none; }
+  .gb-thanks > p { margin: 10px auto 0; max-width: 26em; color: var(--ink-soft); }
+  .gb-thanks .gb-notes { margin: 44px auto 0; max-width: 420px; text-align: left; }
+  /* the note just written sits on the form's card, so its shadow is a touch lighter */
+  .gb-thanks .gb-note figure::after { box-shadow: 0 8px 12px -2px rgba(3, 3, 3, 0.42), 0 18px 28px -8px rgba(3, 3, 3, 0.45), 0 30px 44px -24px rgba(3, 3, 3, 0.4); }
+  .gb-again {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 28px; padding: 10px 26px;
+    border-radius: 999px; border: 1.5px solid var(--link); background: transparent; color: var(--link); cursor: pointer;
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: 0.01em;
+    transition: background-color .25s ease, color .25s ease;
+  }
+  .gb-again:hover { background: var(--link); color: var(--on-link); }
+  .gb-thanks.settle .gb-note { animation: gb-settle 1.1s cubic-bezier(.2, .7, .3, 1) both; }
+  @keyframes gb-settle { from { opacity: 0; transform: translateY(-18px) rotate(-2deg); } to { opacity: 1; transform: none; } }
+
+  /* the notes scatter a little, like cards set down by hand */
+  .gb-notes > .gb-note:nth-child(3n+1) figure { rotate: -0.7deg; }
+  .gb-notes > .gb-note:nth-child(3n+2) figure { rotate: 0.6deg; }
+  .gb-notes > .gb-note:nth-child(3n) figure { rotate: -0.3deg; }
+  .gb-thanks .gb-notes > .gb-note figure { rotate: -0.8deg; }
+  @media (min-width: 640px) {
+    .gb-notes > .gb-note:nth-child(3n+1) figure { rotate: -1deg; }
+    .gb-notes > .gb-note:nth-child(3n+2) figure { rotate: 0.8deg; }
+    .gb-notes > .gb-note:nth-child(3n) figure { rotate: -0.4deg; }
+    .gb-note .gb-stamp { width: 54px; height: 63px; margin: -44px -10px 8px 16px; }
+  }
+  @media (min-width: 640px) and (max-width: 899px) {
+    .gb-grid > * { width: 100%; max-width: 600px; margin-inline: auto; }
+    .gb-board .gb-note:nth-child(3n+2) { margin-left: 8%; }
+    .gb-board .gb-note:nth-child(3n) { margin-left: 3%; margin-right: 5%; }
+  }
+  @media (min-width: 900px) {
+    .gb-grid { grid-template-columns: 1fr 1.06fr; gap: clamp(48px, 6vw, 80px); }
+    .gb-board .gb-note:nth-child(3n+2) { margin-left: 9%; margin-right: -2%; }
+    .gb-board .gb-note:nth-child(3n) { margin-left: 3%; margin-right: 6%; }
+  }
+  @media (max-width: 420px) {
+    /* the email button, full width on phones, like the hero's buttons */
+    .contact-btns { flex-direction: column; }
+    .contact-btns .btn { width: 100%; }
+    .gb-send .btn { width: 100%; }
+    .gb-stamp-row { justify-content: space-between; gap: 8px 4px; }
+    .gb-pick { min-width: 0; flex: 1; }
+  }
+
   /* ============ contact ============ */
   .contact { position: relative; isolation: isolate; }
-  /* a mossy haze low in the page, as if the photo's moss were glowing onto the lavender */
-  .contact::before {
-    content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 80% 34% at 50% 40%, var(--glow));
-  }
   .contact-text { align-self: center; }
   .contact-text .lede { max-width: 30em; }
   .contact-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 32px; }
   .contact .btn { font-size: 17.5px; padding-inline: 30px; }
+  .contact-btns { display: flex; flex-wrap: wrap; gap: 12px 14px; }
   .contact-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 26px; }
   .contact-links a { display: inline-flex; min-height: 44px; align-items: center; }
 
   footer.site-foot { padding-block: 10px 40px; font-size: 15.5px; color: var(--ink-soft); }
-  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 30px; padding-top: 26px; border-top: 1px solid rgba(var(--moss-glow), 0.3); }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 30px; padding-top: 26px; border-top: 1px solid rgba(var(--acc-glow), 0.3); }
   .site-foot .brand { font-size: 18px; color: var(--ink); }
-  .site-foot .brand svg { color: var(--plum); }
-  .site-foot .brand .wm span { color: var(--plum); }
+  .site-foot .brand svg { color: var(--candle); }
+  .site-foot .brand .wm span { color: var(--candle); }
   .site-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 22px; }
   .site-foot a:not(.brand) { display: inline-flex; min-height: 44px; align-items: center; }
-  .site-foot .fine { width: 100%; margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
+  .site-foot .fine { width: 100%; margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 400; font-style: italic; font-size: 15px; color: var(--ink-soft); }
 
   /* ============ wider screens ============ */
   @media (min-width: 640px) {
@@ -589,12 +909,6 @@
     .split .photo-block { min-height: 460px; }
     .how .photo-block { margin-left: calc(-1 * var(--bleed)); border-radius: 0 28px 28px 0; }
     .contact .photo-block { margin-right: calc(-1 * var(--bleed)); border-radius: 28px 0 0 28px; order: 2; min-height: 440px; }
-    /* soft moss light spilling off the photos onto the lavender */
-    .how::before {
-      content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 34% 46% at 47% 50%, var(--glow));
-    }
-    .contact::before { background: radial-gradient(ellipse 42% 44% at 54% 54%, var(--glow)); }
   }
   @media (min-width: 1100px) {
     .how .split { grid-template-columns: 0.95fr 1.05fr; }
@@ -612,7 +926,7 @@
   /* iPad portrait and phones held sideways: the three moons side by side */
   @media (min-width: 760px) and (max-width: 899px) {
     .tiers { max-width: none; gap: 14px; }
-    .tier-body { padding: 22px 14px 22px; }
+    .tier-body { padding: 12px 14px 24px; }
     .tier h3 { font-size: 26px; }
     .tier .does { font-size: 16.5px; }
     .tier .price strong { font-size: 38px; }
@@ -629,10 +943,11 @@
     /* on phones the words cover more of the photo, so the veil is a touch deeper where they sit */
     .hero-band::before {
       background:
-        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(22, 15, 29, 0.5), rgba(22, 15, 29, 0) 74%),
-        linear-gradient(180deg, rgba(22, 15, 29, 0.62) 0, rgba(22, 15, 29, 0.46) 14%, rgba(22, 15, 29, 0.42) 30%, rgba(22, 15, 29, 0.36) 58%, rgba(22, 15, 29, 0.80) 100%);
+        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(var(--veil), 0.5), rgba(var(--veil), 0) 74%),
+        linear-gradient(180deg, rgba(var(--veil), 0.62) 0, rgba(var(--veil), 0.46) 14%, rgba(var(--veil), 0.42) 30%, rgba(var(--veil), 0.36) 58%, rgba(var(--veil), 0.80) 100%);
     }
-    .hero-cta { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; margin-inline: auto; gap: 8px; }
+    .hero-cta { align-items: stretch; width: 100%; max-width: 340px; margin-inline: auto; gap: 8px; }
+    .hero-btns { flex-direction: column; align-items: stretch; gap: 10px; }
     .hero-cta .quiet { justify-content: center; }
     .hero-center { padding-block: 112px 72px; }
     .hero-center .eyebrow { letter-spacing: 0.2em; font-size: 11.5px; }
@@ -654,11 +969,20 @@
     .steps li { padding-left: 54px; }
     .tier-body { padding-inline: 20px; }
     .founding-line svg { display: none; }
+    /* so "Email taya@webfaery.love" stays on one line */
+    .contact .btn { font-size: 16.5px; padding-inline: 14px; }
   }
   @media (max-width: 345px) {
     .brand { font-size: 16.5px; gap: 6px; }
     .brand svg { width: 15px; height: 15px; }
     .site-head nav a { font-size: 11px; letter-spacing: 0.08em; padding-inline: 3px; }
+  }
+  /* short phones (like a 320 x 568 iPhone SE): a little less air, so both buttons and Recent work fit on the first screen */
+  @media (max-width: 560px) and (max-height: 640px) {
+    .hero-center { padding-block: 92px 30px; }
+    .hero-center .eyebrow { margin-bottom: 18px; }
+    .hero-center .hero-lede { margin-top: 18px; }
+    .hero-cta { margin-top: 24px; }
   }
   /* phones held sideways, and short laptop windows */
   @media (max-height: 520px) and (orientation: landscape) {
@@ -690,11 +1014,27 @@
     .hero-band.wait .hero-img, .hero-band.wait::before, .hero-band.wait .hero-center .eyebrow, .hero-band.wait .h1a,
     .hero-band.wait .h1b, .hero-band.wait .hero-lede, .hero-band.wait .hero-cta { opacity: 1 !important; }
     .hero-band *, .hero-band::before { animation: none !important; }
+    /* the changing word prints as the real line: "for small local businesses." */
+    .rot-on .rot { display: inline; width: auto !important; padding: 0; margin: 0; -webkit-mask-image: none; mask-image: none; }
+    .rot-on .rot-w, .rot-on .rot-dot { display: none; }
+    .rot-on .rot-say { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; clip-path: none; }
     .faq-grid .sec-head { position: static !important; }
+    .work::before { display: none; }
+    /* no clearings on paper (the paper is white) */
+    .work .sec-head::before, .piece-text::before, .prices .sec-head::before, .how-text .sec-head::before, .about-card::before,
+    #faq .sec-head::before, .contact-text::before, .guestbook .sec-head::before { display: none; }
+    .gb-sign { display: none; }
+    /* paper is white, so the ink turns dark (soil.css leaves the soil and its mycelium off the page) */
+    /* the moon cards print as plain white arches with their gold lines (no night sky to soak up the ink) */
+    .tier::before { background: var(--card); box-shadow: none; }
+    .tier-sky::after { display: none; }
+    :root, .on-dark { --card: #fff; --ink: #262420; --ink-soft: #545049; --candle: #7a4a12; --link: #7a4a12; --acc: #7a4a12; --acc-fill: #7a4a12; --on-acc: #fff; }
   }
 </style>
 </head>
 <body>
+<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<div class="soil" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- the brand name lives in a few places only (title, meta, JSON-LD, this header, the footer), so a rename stays easy -->
@@ -718,10 +1058,13 @@
   <picture><source type="image/webp" srcset="images/hero.webp"><img class="hero-img" src="images/hero.jpg" width="2000" height="1333" alt="" fetchpriority="high" decoding="async"></picture>
   <div class="hero-center gutter">
     <p class="eyebrow">Humboldt County, California</p>
-    <h1 id="hero-title"><span class="h1a">Hand-built websites</span> <span class="h1b">for small local businesses.</span></h1>
-    <p class="hero-lede">With a soft spot for healers and bodyworkers. Paid once, and yours to keep.</p>
+    <h1 id="hero-title"><span class="h1a">Hand-built websites</span> <span class="h1b">for <span class="rot" data-words="healers, bakers, dreamers, witches, faeries, orcs, small local businesses"><span class="rot-say">small local businesses</span></span>.</span></h1>
+    <p class="hero-lede">Paid once, and yours to keep. Every cost shown upfront.</p>
     <div class="hero-cta">
-      <a class="btn" href="#prices">See prices</a>
+      <div class="hero-btns">
+        <a class="btn" href="#prices">See prices</a>
+        <a class="btn ghost" href="mailto:taya@webfaery.love">Email me</a>
+      </div>
       <a class="quiet" href="#work">Recent work</a>
     </div>
   </div>
@@ -751,9 +1094,130 @@
     img.addEventListener('error', rest);
     setTimeout(rest, 4000);
   })();
+
+  /* the word that changes: "for healers." "for bakers." "for dreamers." ... and back to "for small local businesses.",
+     which stays a little longer, round and round. The old word's letters slip up and away one by one while
+     the new word's letters spring up into place, and the line re-centers smoothly as the width changes.
+     It starts once the hero's intro has finished, rests while the tab is hidden or the headline is scrolled
+     away, and never runs with reduced motion (the line then just reads "for small local businesses."). */
+  (function () {
+    var hero = document.querySelector('.hero-band');
+    var rot = hero && hero.querySelector('.rot');
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!rot || !calm || calm.matches || !document.fonts) return;
+    var line = rot.parentNode, say = rot.querySelector('.rot-say');
+    var home = say.textContent.replace(/\s+/g, ' ').trim();
+    var words = (rot.getAttribute('data-words') || '').split(',').map(function (w) { return w.trim(); }).filter(Boolean);
+    if (words[words.length - 1] !== home) words.push(home);
+    if (words.length < 2) return;
+    /* how long each word stays (from one change to the next); the letters' own motion lives in the CSS
+       (.rot-w.in: .62s, .rot-w.out: .38s), and each letter's start is staggered here */
+    var SHOW = 1750, SHOW_HOME = 3400, OUT_TIME = 380;
+
+    var build = function (text) {
+      var w = document.createElement('span');
+      w.className = 'rot-w'; w.setAttribute('aria-hidden', 'true'); w.letters = [];
+      for (var i = 0; i < text.length; i++) {
+        var c = document.createElement('span'), ch = text.charAt(i);
+        c.setAttribute('data-c', ch === ' ' ? '\u00a0' : ch); /* a no-break space, so it keeps its width */
+        w.appendChild(c);
+        if (ch !== ' ') w.letters.push(c);
+      }
+      return w;
+    };
+    /* stagger a word's letters left to right; long words get a slightly quicker step so they don't drag.
+       Returns when the last letter starts. */
+    var stagger = function (w, lead, step, most) {
+      var n = w.letters.length;
+      step = Math.max(step * 0.7, Math.min(step, most / Math.max(1, n - 1)));
+      w.letters.forEach(function (c, i) { c.style.setProperty('--d', Math.round(lead + i * step) + 'ms'); });
+      return lead + (n - 1) * step;
+    };
+    var ems = function (el) { return el.getBoundingClientRect().width / parseFloat(getComputedStyle(rot).fontSize); };
+
+    var cur = build(home), at = words.length - 1, timer = 0, state = 'idle', inView = true;
+    rot.appendChild(cur);
+    /* the full stop moves into the hidden sentence (so it reads "...small local businesses." exactly),
+       and the one on screen is drawn by CSS */
+    var stop = rot.nextSibling, dot = document.createElement('span');
+    dot.className = 'rot-dot'; dot.setAttribute('aria-hidden', 'true'); dot.setAttribute('data-c', '.');
+    if (stop && stop.nodeType === 3 && stop.nodeValue === '.') { line.replaceChild(dot, stop); say.textContent = home + '.'; } else stop = null;
+    line.classList.add('rot-on');
+
+    var swap = function () {
+      at = (at + 1) % words.length;
+      var old = cur, next = build(words[at]);
+      var was = ems(old);
+      var left = stagger(old, 0, 16, 280);
+      old.className = 'rot-w out';
+      rot.appendChild(next);
+      var now = ems(next);
+      /* growing: the line opens first and the new letters follow (a touch later the more it has to open);
+         shrinking: the old letters clear out, then the line closes up around the new word */
+      stagger(next, now > was ? 90 + Math.min(90, (now - was) * 20) : Math.max(110, left - 60), 22, 330);
+      next.className = 'rot-w in';
+      rot.style.transitionDelay = now > was ? '0ms' : Math.round(left + 60) + 'ms';
+      rot.style.width = now + 'em';
+      cur = next;
+      setTimeout(function () { if (old.parentNode === rot) rot.removeChild(old); }, left + OUT_TIME + 80);
+    };
+    var tick = function () {
+      timer = 0;
+      if (state !== 'on' || document.hidden || !inView) return;
+      swap();
+      timer = setTimeout(tick, words[at] === home ? SHOW_HOME : SHOW);
+    };
+    var pause = function () { clearTimeout(timer); timer = 0; };
+    var resume = function () { if (state === 'on' && !timer && !document.hidden && inView) timer = setTimeout(tick, SHOW); };
+    var start = function (wait) {
+      if (state !== 'idle') return;
+      state = 'on';
+      document.fonts.ready.then(function () {
+        if (state !== 'on') return;
+        rot.style.width = ems(cur) + 'em';
+        pause(); timer = setTimeout(tick, wait);
+      });
+    };
+
+    /* begin after the intro: once the second line has finished rising (or right away if the photo was
+       slow and everything simply appeared) */
+    var watch = function () {
+      var c = hero.classList;
+      if (c.contains('go')) {
+        var risen = function (e) { if (e.target === line) { line.removeEventListener('animationend', risen); start(1200); } };
+        line.addEventListener('animationend', risen);
+        setTimeout(function () { start(0); }, 9000);
+        return true;
+      }
+      if (!c.contains('wait')) { start(1800); return true; }
+      return false;
+    };
+    if (!watch() && window.MutationObserver) {
+      var mo = new MutationObserver(function () { if (watch()) mo.disconnect(); });
+      mo.observe(hero, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); else resume(); });
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (es) {
+        inView = es[es.length - 1].isIntersecting;
+        if (inView) resume(); else pause();
+      }).observe(line);
+    }
+    /* someone switches on reduced motion mid-visit: stop, and leave the real line */
+    var still = function () {
+      if (!calm.matches) return;
+      state = 'off'; pause();
+      [].slice.call(rot.querySelectorAll('.rot-w')).forEach(function (w) { rot.removeChild(w); });
+      rot.style.width = ''; rot.style.transitionDelay = '';
+      if (stop) { line.replaceChild(stop, dot); say.textContent = home; }
+      line.classList.remove('rot-on');
+    };
+    if (calm.addEventListener) calm.addEventListener('change', still); else if (calm.addListener) calm.addListener(still);
+  })();
 </script>
 
-<!-- ============ recent work (dark part of the page: light text) ============ -->
+<!-- ============ recent work ============ -->
 <section id="work" class="work on-dark" aria-labelledby="work-title">
   <div class="gutter"><div class="wrap">
     <div class="sec-head reveal">
@@ -784,7 +1248,7 @@
         <a class="shots" href="https://gardenfaery.love" tabindex="-1" aria-hidden="true">
           <figure class="browser">
             <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="url">gardenfaery.love</span></div>
-            <div class="screen"><img src="images/work-gardenfaery-desktop.jpg" srcset="images/work-gardenfaery-desktop-640.jpg 640w, images/work-gardenfaery-desktop.jpg 1280w" sizes="(min-width: 1200px) 560px, (min-width: 900px) 46vw, 88vw" width="1280" height="800" loading="lazy" decoding="async" alt="Garden Faery’s home page on a laptop: a garden photo, the headline Your garden, tended with magic, and a Book with me button"></div>
+            <div class="screen"><img src="images/work-gardenfaery-desktop.jpg" srcset="images/work-gardenfaery-desktop-640.jpg 640w, images/work-gardenfaery-desktop.jpg 1280w" sizes="(min-width: 1200px) 560px, (min-width: 900px) 46vw, 88vw" width="1280" height="800" loading="lazy" decoding="async" alt="Garden Faery’s home page on a laptop: a garden photo and the headline Your garden, tended with magic"></div>
           </figure>
           <figure class="phone">
             <div class="screen"><img src="images/work-gardenfaery-phone.jpg" srcset="images/work-gardenfaery-phone-240.jpg 240w, images/work-gardenfaery-phone.jpg 480w" sizes="(min-width: 900px) 170px, 30vw" width="480" height="1039" loading="lazy" decoding="async" alt="The same page on a phone, with this week’s planting tip across the top"></div>
@@ -793,7 +1257,7 @@
         <div class="piece-text">
           <p class="eyebrow">Garden care</p>
           <h3>Garden Faery, my own business</h3>
-          <p>Where I try everything first: online booking, a newsletter, and a planting tip that changes with the seasons.</p>
+          <p>Where I try everything first: a newsletter, and a planting tip that changes with the seasons.</p>
           <a class="visit" href="https://gardenfaery.love">Visit gardenfaery.love <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </article>
@@ -807,15 +1271,15 @@
     <div class="sec-head center on-dark reveal">
       <p class="eyebrow">Prices</p>
       <h2 id="prices-title">Paid once, <em>yours to keep.</em></h2>
-      <p class="lede">Three sizes, named for the triple moon.</p>
+      <p class="lede">From one lovely page to the whole spellbook.</p>
     </div>
 
-    <!-- .turn: the page gradient turns from dark to light behind these cards and the panel -->
     <div class="turn" id="care">
       <div class="tiers stagger">
         <article class="tier maiden reveal" aria-labelledby="t-maiden">
           <div class="tier-sky" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="7.6" cy="12" r="9" fill="black"/></mask></defs><circle cx="12" cy="12" r="9" fill="var(--moonlight)" mask="url(#moon-wax)"/></svg>
+            <svg class="moon" viewBox="0 0 24 24"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="7.6" cy="12" r="9" fill="black"/></mask></defs><circle cx="12" cy="12" r="9" fill="var(--moonlight)" mask="url(#moon-wax)"/></svg>
+            <svg class="thread" viewBox="0 0 320 40" preserveAspectRatio="none"><defs><linearGradient id="thr-maiden" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="320" y2="0"><stop offset="0" stop-color="#ece6da" stop-opacity=".5"/><stop offset=".36" stop-color="#ece6da" stop-opacity=".66"/><stop offset=".5" class="hl" stop-color="#f2c77c"/><stop offset=".64" stop-color="#ece6da" stop-opacity=".66"/><stop offset="1" stop-color="#ece6da" stop-opacity=".5"/></linearGradient></defs><g stroke="url(#thr-maiden)"><path class="h" d="M160 24C158.3 24 153.2 24 149.7 24C146.3 24 142.9 23.9 139.5 23.8C136 23.8 132.6 23.6 129.2 23.5C125.8 23.3 122.4 23.1 118.9 22.9C115.5 22.7 112.1 22.4 108.7 22.3C105.2 22.1 101.8 21.9 98.4 21.8C95 21.7 91.6 21.6 88.1 21.6C84.7 21.6 81.3 21.6 77.9 21.7C74.4 21.8 71 21.9 67.6 22C64.2 22.1 60.8 22.3 57.3 22.4C53.9 22.5 50.5 22.7 47.1 22.8C43.6 22.9 40.2 23.1 36.8 23.2C33.4 23.2 30 23.3 26.5 23.4C23.1 23.4 19.7 23.5 16.3 23.5C12.8 23.5 7.7 23.5 6 23.5"/><path class="h" d="M160 24C161.7 24 166.8 24 170.3 24C173.7 24.1 177.1 24.1 180.5 24.2C184 24.3 187.4 24.4 190.8 24.5C194.2 24.6 197.6 24.7 201.1 24.7C204.5 24.8 207.9 24.8 211.3 24.8C214.8 24.8 218.2 24.7 221.6 24.6C225 24.5 228.4 24.4 231.9 24.3C235.3 24.2 238.7 24 242.1 23.9C245.6 23.8 249 23.7 252.4 23.6C255.8 23.5 259.2 23.5 262.7 23.4C266.1 23.4 269.5 23.4 272.9 23.4C276.4 23.4 279.8 23.4 283.2 23.4C286.6 23.4 290 23.4 293.5 23.5C296.9 23.5 300.3 23.5 303.7 23.5C307.2 23.5 312.3 23.4 314 23.4"/><path class="b" d="M124 23.2C122.4 23.2 117.8 23 114.7 23.1C111.6 23.2 108.4 23.6 105.3 24C102.2 24.3 99.1 24.8 96 25C92.9 25.3 89.8 25.4 86.7 25.4C83.6 25.4 80.4 25.1 77.3 24.9C74.2 24.7 71.1 24.3 68 24.1C64.9 23.9 61.8 23.6 58.7 23.5C55.6 23.3 52.4 23.1 49.3 23.1C46.2 23 41.6 23.1 40 23.1"/><path class="b" d="M200 24.7C201.5 24.7 206.1 24.7 209.2 24.4C212.3 24.2 215.3 23.7 218.4 23.2C221.5 22.8 224.5 22.1 227.6 21.7C230.7 21.2 233.7 20.8 236.8 20.6C239.9 20.4 242.9 20.3 246 20.4C249.1 20.4 252.1 20.7 255.2 20.9C258.3 21.1 261.3 21.4 264.4 21.7C267.5 22 270.5 22.2 273.6 22.5C276.7 22.7 279.7 23 282.8 23.1C285.9 23.3 290.5 23.4 292 23.5"/></g></svg>
           </div>
           <div class="tier-body">
             <h3 id="t-maiden">Maiden</h3>
@@ -829,7 +1293,8 @@
 
         <article class="tier mother reveal" aria-labelledby="t-mother">
           <div class="tier-sky" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="var(--moonlight)"/></svg>
+            <svg class="moon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="var(--moonlight)"/></svg>
+            <svg class="thread" viewBox="0 0 320 40" preserveAspectRatio="none"><defs><linearGradient id="thr-mother" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="320" y2="0"><stop offset="0" stop-color="#ece6da" stop-opacity=".5"/><stop offset=".36" stop-color="#ece6da" stop-opacity=".66"/><stop offset=".5" class="hl" stop-color="#f2c77c"/><stop offset=".64" stop-color="#ece6da" stop-opacity=".66"/><stop offset="1" stop-color="#ece6da" stop-opacity=".5"/></linearGradient></defs><g stroke="url(#thr-mother)"><path class="h" d="M160 24C158.3 24 153.2 24 149.7 24C146.3 24 142.9 24 139.5 24C136 24.1 132.6 24.1 129.2 24.2C125.8 24.2 122.4 24.3 118.9 24.3C115.5 24.4 112.1 24.5 108.7 24.5C105.2 24.5 101.8 24.5 98.4 24.5C95 24.5 91.6 24.4 88.1 24.3C84.7 24.2 81.3 24.1 77.9 23.9C74.4 23.8 71 23.5 67.6 23.3C64.2 23.1 60.8 22.8 57.3 22.6C53.9 22.4 50.5 22.1 47.1 21.9C43.6 21.7 40.2 21.4 36.8 21.2C33.4 21.1 30 20.9 26.5 20.8C23.1 20.7 19.7 20.6 16.3 20.6C12.8 20.5 7.7 20.6 6 20.6"/><path class="h" d="M160 24C161.7 24 166.8 24 170.3 24C173.7 23.9 177.1 23.9 180.5 23.8C184 23.7 187.4 23.6 190.8 23.5C194.2 23.4 197.6 23.3 201.1 23.2C204.5 23.1 207.9 23 211.3 22.9C214.8 22.8 218.2 22.7 221.6 22.7C225 22.6 228.4 22.6 231.9 22.5C235.3 22.4 238.7 22.4 242.1 22.3C245.6 22.2 249 22.1 252.4 22C255.8 21.9 259.2 21.8 262.7 21.6C266.1 21.5 269.5 21.3 272.9 21.2C276.4 21.1 279.8 20.9 283.2 20.8C286.6 20.7 290 20.6 293.5 20.6C296.9 20.6 300.3 20.5 303.7 20.6C307.2 20.6 312.3 20.7 314 20.7"/><path class="b" d="M126 24.2C124.5 24.3 119.9 24.5 116.9 24.9C113.9 25.3 110.8 25.9 107.8 26.4C104.7 27 101.7 27.7 98.7 28C95.6 28.3 92.6 28.5 89.6 28.4C86.5 28.3 83.5 27.8 80.4 27.4C77.4 27 74.4 26.3 71.3 25.8C68.3 25.2 65.3 24.7 62.2 24.1C59.2 23.6 56.1 23.1 53.1 22.7C50.1 22.3 45.5 21.8 44 21.7"/><path class="b" d="M104 24.5C102.5 24.4 98.1 24.3 95.1 24C92.1 23.6 89.2 23 86.2 22.4C83.3 21.9 80.3 21.1 77.3 20.6C74.4 20.1 71.4 19.8 68.4 19.6C65.5 19.4 62.5 19.5 59.6 19.6C56.6 19.6 53.6 19.9 50.7 20C47.7 20.2 44.7 20.3 41.8 20.4C38.8 20.5 35.9 20.6 32.9 20.7C29.9 20.7 25.5 20.7 24 20.7"/><path class="b" d="M198 23.3C199.4 23.2 203.7 22.9 206.6 22.6C209.5 22.2 212.3 21.7 215.2 21.2C218.1 20.7 220.9 20 223.8 19.6C226.7 19.1 229.5 18.7 232.4 18.6C235.3 18.4 238.1 18.4 241 18.5C243.9 18.6 246.7 18.9 249.6 19.2C252.5 19.4 255.3 19.7 258.2 19.9C261.1 20.1 263.9 20.3 266.8 20.5C269.7 20.6 272.5 20.7 275.4 20.8C278.3 20.9 282.6 20.8 284 20.8"/><path class="b" d="M222 22.7C223.6 22.7 228.2 22.7 231.3 23C234.4 23.2 237.6 23.7 240.7 24.1C243.8 24.5 246.9 25 250 25.2C253.1 25.4 256.2 25.5 259.3 25.3C262.4 25.2 265.6 24.8 268.7 24.4C271.8 24 274.9 23.5 278 23C281.1 22.6 284.2 22.1 287.3 21.8C290.4 21.4 293.6 21.1 296.7 20.9C299.8 20.7 304.4 20.6 306 20.6"/></g></svg>
           </div>
           <div class="tier-body">
             <h3 id="t-mother">Mother</h3>
@@ -843,11 +1308,12 @@
 
         <article class="tier crone reveal" aria-labelledby="t-crone">
           <div class="tier-sky" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="16.4" cy="12" r="9" fill="black"/></mask></defs><circle cx="12" cy="12" r="9" fill="var(--moonlight)" mask="url(#moon-wan)"/></svg>
+            <svg class="moon" viewBox="0 0 24 24"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="16.4" cy="12" r="9" fill="black"/></mask></defs><circle cx="12" cy="12" r="9" fill="var(--moonlight)" mask="url(#moon-wan)"/></svg>
+            <svg class="thread" viewBox="0 0 320 40" preserveAspectRatio="none"><defs><linearGradient id="thr-crone" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="320" y2="0"><stop offset="0" stop-color="#ece6da" stop-opacity=".5"/><stop offset=".36" stop-color="#ece6da" stop-opacity=".66"/><stop offset=".5" class="hl" stop-color="#f2c77c"/><stop offset=".64" stop-color="#ece6da" stop-opacity=".66"/><stop offset="1" stop-color="#ece6da" stop-opacity=".5"/></linearGradient></defs><g stroke="url(#thr-crone)"><path class="h" d="M160 24C158.3 24 153.2 24 149.7 24C146.3 24.1 142.9 24.1 139.5 24.2C136 24.3 132.6 24.4 129.2 24.5C125.8 24.6 122.4 24.8 118.9 24.9C115.5 25 112.1 25.1 108.7 25.2C105.2 25.3 101.8 25.4 98.4 25.4C95 25.5 91.6 25.6 88.1 25.6C84.7 25.7 81.3 25.8 77.9 25.8C74.4 25.9 71 26 67.6 26.1C64.2 26.3 60.8 26.4 57.3 26.5C53.9 26.7 50.5 26.8 47.1 27C43.6 27.1 40.2 27.2 36.8 27.3C33.4 27.4 30 27.5 26.5 27.6C23.1 27.6 19.7 27.7 16.3 27.6C12.8 27.6 7.7 27.5 6 27.4"/><path class="h" d="M160 24C161.7 24 166.8 24 170.3 24C173.7 24 177.1 24 180.5 24C184 23.9 187.4 23.9 190.8 23.8C194.2 23.8 197.6 23.7 201.1 23.7C204.5 23.6 207.9 23.5 211.3 23.5C214.8 23.5 218.2 23.5 221.6 23.5C225 23.6 228.4 23.6 231.9 23.7C235.3 23.8 238.7 24 242.1 24.2C245.6 24.4 249 24.6 252.4 24.8C255.8 25 259.2 25.3 262.7 25.6C266.1 25.8 269.5 26.1 272.9 26.3C276.4 26.5 279.8 26.8 283.2 26.9C286.6 27.1 290 27.3 293.5 27.4C296.9 27.5 300.3 27.6 303.7 27.6C307.2 27.7 312.3 27.6 314 27.6"/><path class="b" d="M126 24.6C124.5 24.8 119.9 25 116.9 25.5C113.9 25.9 110.8 26.6 107.8 27.2C104.7 27.7 101.7 28.5 98.7 28.9C95.6 29.3 92.6 29.6 89.6 29.6C86.5 29.6 83.5 29.4 80.4 29.2C77.4 28.9 74.4 28.5 71.3 28.3C68.3 28 65.3 27.7 62.2 27.5C59.2 27.3 56.1 27.2 53.1 27.1C50.1 27 45.5 27.1 44 27.1"/><path class="b" d="M104 25.3C102.5 25.3 98.1 25.3 95.1 25C92.1 24.8 89.2 24.2 86.2 23.8C83.3 23.4 80.3 22.8 77.3 22.6C74.4 22.3 71.4 22.2 68.4 22.3C65.5 22.4 62.5 22.9 59.6 23.3C56.6 23.6 53.6 24.2 50.7 24.7C47.7 25.2 44.7 25.6 41.8 26C38.8 26.4 35.9 26.8 32.9 27.1C29.9 27.4 25.5 27.5 24 27.6"/><path class="b" d="M88 25.6C86.4 25.8 81.6 26 78.3 26.4C75.1 26.8 71.9 27.4 68.7 28.1C65.4 28.7 62.2 29.5 59 30.2C55.8 30.9 52.6 31.8 49.3 32.4C46.1 33.1 42.9 33.7 39.7 34.2C36.4 34.6 31.6 34.9 30 35"/><path class="b" d="M198 23.7C199.4 23.6 203.7 23.5 206.6 23.2C209.5 22.9 212.3 22.3 215.2 21.9C218.1 21.4 220.9 20.8 223.8 20.5C226.7 20.1 229.5 19.8 232.4 19.8C235.3 19.8 238.1 20 241 20.3C243.9 20.6 246.7 21.2 249.6 21.7C252.5 22.2 255.3 22.8 258.2 23.3C261.1 23.9 263.9 24.4 266.8 24.9C269.7 25.3 272.5 25.8 275.4 26.2C278.3 26.5 282.6 26.8 284 27"/><path class="b" d="M222 23.5C223.6 23.6 228.2 23.8 231.3 24.2C234.4 24.6 237.6 25.3 240.7 25.9C243.8 26.4 246.9 27.2 250 27.8C253.1 28.3 256.2 28.7 259.3 28.9C262.4 29.1 265.6 29.1 268.7 29C271.8 29 274.9 28.8 278 28.6C281.1 28.5 284.2 28.3 287.3 28.2C290.4 28.1 293.6 27.9 296.7 27.8C299.8 27.7 304.4 27.7 306 27.6"/><path class="b" d="M236 23.9C237.5 23.9 242.1 24 245.1 24C248.2 23.9 251.2 23.7 254.3 23.6C257.3 23.4 260.4 23.1 263.4 22.9C266.5 22.6 269.5 22.3 272.6 22C275.6 21.8 278.7 21.5 281.7 21.2C284.8 21 287.8 20.8 290.9 20.7C293.9 20.6 298.5 20.6 300 20.6"/></g></svg>
           </div>
           <div class="tier-body">
             <h3 id="t-crone">Crone</h3>
-            <p class="does">Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items).</p>
+            <p class="does">Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items), and your latest Instagram posts on your site.</p>
             <div class="money">
               <p class="price"><strong>$1,800</strong> <span>paid once</span></p>
               <p class="founding">Founding price <b>$900</b></p>
@@ -861,45 +1327,44 @@
         <div class="founding-line" id="founding">
           <p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8.5M12 12.5C12 8 9 5.2 4.2 5.2c0 4.6 3 7.3 7.8 7.3Zm0 0c0-3.6 2.5-6 6.6-6 0 3.7-2.6 6-6.6 6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><span class="lead">Founding clients:</span> half off the build, and half off care for as long as you keep it: $35 a month (or $350 a year). 5&nbsp;spots through Dec&nbsp;31,&nbsp;2026: <b>4 left</b></span></p>
         </div>
-        <p class="every"><span class="lead">Every build:</span> your words written for you from a <span class="nowrap">45-minute</span> chat, a <span class="nowrap">phone-first</span> design, <span class="nowrap">Google-ready,</span> your web address’s first year, and 30 days of tweaks after launch.</p>
-        <p class="after"><span class="lead">After launch:</span> care is $69 a month and I make your changes whenever you ask, or skip it and pay as you go: <span class="nowrap">$100 an hour</span>, and I’ll give you the price before I&nbsp;start. Your only other cost is your web address, about $12 a year. <a href="#costs">Optional extras</a></p>
+        <p class="every"><span class="lead">Every build:</span> your words written for you from a <span class="nowrap">45-minute</span> chat, a <span class="nowrap">phone-first,</span> <span class="nowrap">Google-ready</span> design, your Google profile set up, a slim banner across the top for news like “Now booking” or “Away until Nov&nbsp;3” (switching it is always free), a <span class="nowrap">one-page</span> brand sheet with your colors and fonts (and your logo, if you have one) for any designer or print shop, your web address’s first year, and 30 days of <span class="nowrap">settling-in</span> tweaks after launch.</p>
+        <p class="after"><span class="lead">After launch:</span> with care, you never have to think about your website again. New hours, a holiday closure, a fresh photo? Email me and it’s done. Care is $69 a month, starting after your 30 days of settling in, and your web address is included. Rather pay only when something changes? That works too: <span class="nowrap">$100 an hour</span>, and I’ll give you the price before I&nbsp;start. Your only other cost that way is your web address, about $12 a year. <a href="#costs">Optional extras</a></p>
         <p class="quiz">Not sure which? <a href="quiz.html">Take the quiz</a></p>
       </div>
     </div>
   </div></div>
 </section>
 
-<!-- everything below sits on the light part of the gradient: dark text -->
-<div class="flow-light">
-
 <!-- ============ how it works ============ -->
 <section id="how" class="how split-sec" aria-labelledby="how-title">
   <div class="gutter"><div class="wrap split">
-    <figure class="photo-block reveal"><picture><source type="image/webp" srcset="images/forest-800.webp 800w, images/forest-1200.webp 1200w, images/forest.webp 1600w" sizes="(min-width: 900px) 50vw, 100vw"><img src="images/forest.jpg" srcset="images/forest-1200.jpg 1200w, images/forest.jpg 1600w" sizes="(min-width: 900px) 50vw, 100vw" width="1600" height="1066" loading="lazy" decoding="async" alt=""></picture></figure>
+    <figure class="photo-block reveal"><picture><source type="image/webp" srcset="images/redwoods-800.webp 800w, images/redwoods-1200.webp 1200w, images/redwoods.webp 1600w" sizes="(min-width: 900px) 50vw, 100vw"><img src="images/redwoods.jpg" srcset="images/redwoods-1200.jpg 1200w, images/redwoods.jpg 1600w" sizes="(min-width: 900px) 50vw, 100vw" width="1600" height="1067" loading="lazy" decoding="async" alt=""></picture></figure>
     <div class="how-text">
       <div class="sec-head reveal">
         <p class="eyebrow">How it works</p>
         <h2 id="how-title">Four steps, <em>start to finish.</em></h2>
       </div>
-      <ol class="steps stagger" role="list">
-        <li class="reveal">
-          <h3>We chat</h3>
-          <p>45 minutes about your work. I write your words from it, so you don’t have to.</p>
-        </li>
-        <li class="reveal">
-          <h3>I draft</h3>
-          <p>A first draft in about a week, on a private link you can open on your phone.</p>
-        </li>
-        <li class="reveal">
-          <h3>You tweak</h3>
-          <p>Two rounds of changes. Put everything for each round in one email.</p>
-        </li>
-        <li class="reveal">
-          <h3>It goes live</h3>
-          <p>At your own web address, plus 30 days of <span class="nowrap">settling-in</span> tweaks on me.</p>
-        </li>
-      </ol>
-      <p class="ready-line reveal">Ready in about <b>2, 3 or 4 weeks</b> (Maiden, Mother, Crone) from when your content is in.</p>
+      <div class="nook">
+        <ol class="steps stagger" role="list">
+          <li class="reveal">
+            <h3>We chat</h3>
+            <p>45 minutes about your work. I write your words from it, so you don’t have to.</p>
+          </li>
+          <li class="reveal">
+            <h3>I draft</h3>
+            <p>A first draft in about a week, on a private link you can open on your phone.</p>
+          </li>
+          <li class="reveal">
+            <h3>You tweak</h3>
+            <p>Two rounds of changes. Put everything for each round in one email.</p>
+          </li>
+          <li class="reveal">
+            <h3>It goes live</h3>
+            <p>At your own web address, plus 30 days of <span class="nowrap">settling-in</span> tweaks on me. With care, it carries right on: just keep emailing me.</p>
+          </li>
+        </ol>
+        <p class="ready-line reveal">Ready in about <b>2, 3 or 4 weeks</b> (Maiden, Mother, Crone) from when your content is in.</p>
+      </div>
     </div>
   </div></div>
 </section>
@@ -913,7 +1378,7 @@
         <p class="eyebrow">Who you’d be working with</p>
         <h2 id="about-title">Hi, I’m Taya.</h2>
         <p>I tend gardens here in Humboldt County, and I build websites for the small businesses around me. I made my own garden business’s site first, then one for my friend Juliet, and loved it so much it turned into this.</p>
-        <p>I’m happy to build for any small local business, here or anywhere. It’s just me, so I only take a few new builds a month, and when you write, I’m the one who writes back. (I’m also the one reading your About page out loud to make sure it sounds like you 😂)</p>
+        <p>I’m happy to build for any small local business, here or anywhere. It’s just me, so I only take a few new builds a month, and when you write, I’m the one who writes back. That doesn’t stop at launch. (I’m also the one reading your About page out loud to make sure it sounds like you 😂)</p>
       </div>
     </div>
   </div></div>
@@ -927,21 +1392,23 @@
       <h2 id="faq-title">Every detail, <em>said plainly.</em></h2>
       <p class="lede">Something missing? <a href="mailto:taya@webfaery.love">Email me</a> and I’ll answer it straight.</p>
     </div>
-    <div class="faq">
+    <div class="faq nook">
       <details id="costs">
         <summary>Any other costs?</summary>
-        <p>Just one you can count on: your web address, about $12 a year. Your first year is included in your build, and with care it’s covered.</p>
+        <p>Just one you can count on: your web address, about $12 a year. Your first year is included in your build, and with care it’s covered, so there’s nothing to renew.</p>
         <p>Everything else is optional, only if you want it. Sending email from your own address is about $3 a month. A newsletter is free up to 100 subscribers, then about $9 a month (care covers both, the newsletter up to 1,000 subscribers). Online booking lives in your own Cal.com account, free for one person, and it can take payments through your own Stripe. Taking card payments costs about 3% + 30¢ per payment (it varies a little by payment company).</p>
         <p>Hosting is free, forever (and if that ever changed, I’d move your site for free). These are estimates as of September 2026.</p>
       </details>
       <details>
         <summary>What does care include?</summary>
-        <p>I make your changes whenever you ask, by email, and reply within 2 business days. Your web address, sending email from your own address and your newsletter (up to 1,000 subscribers) are all covered. Anything big, like a new page, I’ll quote first.</p>
-        <p>It’s $69 a month, or $690 a year (two months free), and billing starts after your 30 days of settling in, not at launch. Cancel anytime, and your site stays yours. Fixes for anything I got wrong are always free, with or without care.</p>
+        <p>Think of me as your web person. When something changes, like new hours, a price, a photo or a holiday closure, just email me and I’ll take care of it, usually within 2 business days. I make your changes whenever you ask, with no hours to count and no price to wait on for the little things. Anything big, like a new page, I’ll quote first.</p>
+        <p>Your web address, sending email from your own address and your newsletter (up to 1,000 subscribers) are all covered, all on one bill. I keep your Google profile fresh too: hours and holidays, new photos, a monthly post, and a review card for your counter.</p>
+        <p>It’s $69 a month, or $690 a year (two months free). Billing starts after your 30 days of settling in, not at launch, so your free tweaks lead straight into care, with no gap. Cancel anytime, and your site stays yours. Fixes for anything I got wrong are always free, with or without care.</p>
+        <p>Is it worth it? Most small changes come to about <span class="nowrap">$25 to $50</span> without care, so care costs about the same as two a month, and it covers your web address, email and newsletter too. If it’s just a few changes a year, paying as you go costs less, and that’s fine too. The <a href="quiz.html"><span class="nowrap">two-minute</span> quiz</a> does the math with your own answers.</p>
       </details>
       <details>
         <summary>How do changes work without care?</summary>
-        <p>Send me one email with everything you’d like changed. I’ll reply with a price before I&nbsp;start (<span class="nowrap">$100 an hour</span>; most small changes, like new hours, a price or a photo, come to about <span class="nowrap">$25 to $50</span>). Nothing starts until you say yes. Fixes for anything I got wrong are always free.</p>
+        <p>Send me one email with everything you’d like changed. I’ll reply with a price before I&nbsp;start (<span class="nowrap">$100 an hour</span>; most small changes, like new hours, a price or a photo, come to about <span class="nowrap">$25 to $50</span>). Nothing starts until you say yes. Fixes for anything I got wrong are always free. If you find yourself writing more than once or twice a month, or you’d simply rather not think about it, care is there anytime.</p>
       </details>
       <details>
         <summary>How does paying work?</summary>
@@ -961,12 +1428,13 @@
       </details>
       <details>
         <summary>Will people find me on Google? (SEO)</summary>
-        <p>Your site is built to be found: fast, <span class="nowrap">phone-first,</span> with clear titles and descriptions for Google, your business details written so Google can read them, and a photo preview when someone texts your link. Mother and Crone also set up your Google Business Profile, the listing on the map.</p>
+        <p>Your site is built to be found: fast, <span class="nowrap">phone-first,</span> with clear titles and descriptions for Google, your business details written so Google can read them, and a photo preview when someone texts your link. Every build also sets up your Google Business Profile, the listing on the map, and with care I keep it fresh for you: the right hours on holidays, new photos and a monthly post.</p>
         <p>What I won’t do is promise you’ll outrank a national chain. Nobody honestly can.</p>
       </details>
       <details>
         <summary>Do I have to write everything?</summary>
         <p>Nope. We talk for 45 minutes about your work, and I write your words from that. You read them, tell me anything that doesn’t sound like you, and I fix it.</p>
+        <p>And if you make your own art, like flash, lettering, patterns or drawings, send it over and I’ll build it into your site: headers, dividers, buttons, backgrounds, even the little animation. It should look like you made it, not like a template.</p>
       </details>
     </div>
   </div></div>
@@ -979,9 +1447,13 @@
     <div class="contact-text reveal">
       <p class="eyebrow">Say hello</p>
       <h2 id="contact-title">Tell me about <em>your work.</em></h2>
-      <p class="lede">A few lines about what you do and what you’d like a website to do for you is plenty. I’ll write back personally.</p>
-      <div class="contact-actions">
-        <a class="btn" href="mailto:taya@webfaery.love">Email taya@webfaery.love</a>
+      <div class="nook">
+        <p class="lede">A few lines about what you do and what you’d like a website to do for you is plenty. I’ll write back personally.</p>
+        <div class="contact-actions">
+          <div class="contact-btns">
+            <a class="btn" href="mailto:taya@webfaery.love">Email taya@webfaery.love</a>
+          </div>
+      </div>
         <ul class="contact-links">
           <li><a href="intake.html"><span>Answer the <span class="nowrap">getting-started</span> questions</span></a></li>
           <li><a href="quiz.html">Take the two-minute quiz</a></li>
@@ -991,7 +1463,111 @@
   </div></div>
 </section>
 
-</div>
+<!-- ============ guestbook ============
+     The three notes are samples for the preview, each tagged "sample". Nothing is sent anywhere yet: the
+     guestbook script at the bottom of the page has LIVE = false (and says how to switch it on). When it's
+     live, the script swaps the samples for the notes Taya has approved; delete the three samples then too,
+     so visitors without JavaScript don't see them. -->
+<section id="guestbook" class="guestbook" aria-labelledby="gb-title">
+  <!-- the three stamps, drawn once and used everywhere below. To use Taya's own drawings, replace what's
+       inside each <symbol> (keep the ids), or put an <image href="stamps/fern.png" width="24" height="24"/> in it -->
+  <svg class="gb-sprite" aria-hidden="true" focusable="false">
+    <symbol id="gb-mushroom" viewBox="0 0 24 24"><path d="M3.5 12.2C3.5 7.6 7.3 4 12 4s8.5 3.6 8.5 8.2c0 .6-.4 1-1 1h-15c-.6 0-1-.4-1-1Z"/><path d="M9.4 13.2c-.1 2.3-.4 4.4-.8 5.9-.2.9.4 1.9 1.4 1.9h4c1 0 1.6-1 1.4-1.9-.4-1.5-.7-3.6-.8-5.9"/><circle cx="8.5" cy="9.3" r="1.1"/><circle cx="12.7" cy="6.9" r="1"/><circle cx="15.9" cy="10" r=".9"/></symbol>
+    <symbol id="gb-moon" viewBox="0 0 24 24"><path d="M19.6 14.4A8.2 8.2 0 1 1 9.6 4.4a6.4 6.4 0 0 0 10 10Z"/><path d="M17.2 3.2v3.2M15.6 4.8h3.2"/><circle cx="20.3" cy="9" r=".4"/></symbol>
+    <symbol id="gb-fern" viewBox="0 0 24 24"><path d="M11 21.5c.6-3.6.7-7.4.4-10.4-.3-3.2 1.3-6.4 4.6-6.9 2.2-.3 3.7 1 3.8 2.8.1 1.6-1.1 2.8-2.5 2.8-1.3 0-2.2-1-2.1-2.1.1-.9.8-1.5 1.6-1.4"/><path d="M11.3 18c-1.8-.1-3.6-1-4.7-2.6M11.4 14.4c-1.6-.1-3-.9-3.8-2.2M11.4 11c-1.2-.2-2.2-.8-2.8-1.8M11.3 18c1.5-.4 2.8-1.3 3.6-2.6M11.4 14.4c1.3-.4 2.4-1.1 3.1-2.2"/></symbol>
+  </svg>
+  <div class="gutter"><div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">Guestbook</p>
+      <h2 id="gb-title">Leave a note <em>in the soil.</em></h2>
+      <p class="lede">Remember guestbooks? I missed them. Say hello, tell me where you’re reading from, or leave a kind word for whoever wanders by next.</p>
+    </div>
+
+    <div class="gb-grid">
+      <div class="gb-board">
+        <h3 class="sr-only" id="gb-notes-title">Notes left so far</h3>
+        <ul class="gb-notes stagger" id="gb-notes" role="list" aria-labelledby="gb-notes-title">
+          <li class="gb-note reveal">
+            <figure>
+              <span class="gb-stamp is-mushroom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#gb-mushroom"/></svg></span>
+              <p class="gb-tag">Sample<span class="sr-only"> note</span></p>
+              <blockquote><p>Hello from down the road! The mycelium on this page made me smile. Just stopping by to say hi.</p></blockquote>
+              <figcaption><span class="gb-by">A neighbor<span>, Arcata</span></span> <time datetime="2026-09-24">Sep 24</time></figcaption>
+            </figure>
+          </li>
+          <li class="gb-note reveal">
+            <figure>
+              <span class="gb-stamp is-moon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#gb-moon"/></svg></span>
+              <p class="gb-tag">Sample<span class="sr-only"> note</span></p>
+              <blockquote><p>Signing a guestbook like it’s 2003 again. Thank you for bringing these back.</p></blockquote>
+              <figcaption><span class="gb-by">A friend<span>, Eureka</span></span> <time datetime="2026-09-21">Sep 21</time></figcaption>
+            </figure>
+          </li>
+          <li class="gb-note reveal">
+            <figure>
+              <span class="gb-stamp is-fern" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#gb-fern"/></svg></span>
+              <p class="gb-tag">Sample<span class="sr-only"> note</span></p>
+              <blockquote><p>It rained all morning and the ferns look so happy. Leaving a little green hello for the next visitor.</p></blockquote>
+              <figcaption><span class="gb-by">A visitor<span>, McKinleyville</span></span> <time datetime="2026-09-18">Sep 18</time></figcaption>
+            </figure>
+          </li>
+        </ul>
+        <p class="gb-quiet reveal">Notes show up here once I’ve read them.</p>
+      </div>
+
+      <div class="gb-sign reveal">
+        <h3 class="gb-badge" id="gb-sign-title"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0c.4 2.6 1.6 4 5 5-3.4 1-4.6 2.4-5 5-.4-2.6-1.6-4-5-5 3.4-1 4.6-2.4 5-5Z"/></svg><span>Sign my guestbook</span><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0c.4 2.6 1.6 4 5 5-3.4 1-4.6 2.4-5 5-.4-2.6-1.6-4-5-5 3.4-1 4.6-2.4 5-5Z"/></svg></h3>
+        <!-- without JavaScript the form stays hidden and this shows instead (the script swaps them) -->
+        <p class="gb-nojs" id="gb-nojs">Turn on JavaScript to sign the guestbook, or email me a hello at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>. I love those too.</p>
+        <form class="gb-form" id="gb-form" novalidate hidden aria-labelledby="gb-sign-title">
+          <div class="gb-row">
+            <div class="gb-field">
+              <label for="gb-name">First name</label>
+              <input id="gb-name" name="name" type="text" autocomplete="given-name" maxlength="40" required aria-required="true">
+            </div>
+            <p class="gb-err" id="gb-name-err" hidden>Add your first name, so I know who stopped by.</p>
+            <div class="gb-field">
+              <label for="gb-town">Town <span class="gb-opt">(optional)</span></label>
+              <input id="gb-town" name="town" type="text" autocomplete="address-level2" maxlength="40">
+            </div>
+          </div>
+          <div class="gb-field">
+            <label for="gb-note">Your note</label>
+            <textarea id="gb-note" name="note" rows="4" maxlength="280" required aria-required="true" aria-describedby="gb-count"></textarea>
+            <p class="gb-err" id="gb-note-err" hidden>Write a little note first.</p>
+            <p class="gb-count" id="gb-count">280 characters left</p>
+            <p class="sr-only" id="gb-count-live" aria-live="polite"></p>
+          </div>
+          <fieldset class="gb-stamps">
+            <legend>Pick a stamp</legend>
+            <div class="gb-stamp-row">
+              <label class="gb-pick"><input type="radio" name="stamp" value="mushroom" checked><span class="gb-lift" aria-hidden="true"><span class="gb-stamp is-mushroom"><svg viewBox="0 0 24 24"><use href="#gb-mushroom"/></svg></span></span><span class="gb-pick-name">Mushroom</span></label>
+              <label class="gb-pick"><input type="radio" name="stamp" value="moon"><span class="gb-lift" aria-hidden="true"><span class="gb-stamp is-moon"><svg viewBox="0 0 24 24"><use href="#gb-moon"/></svg></span></span><span class="gb-pick-name">Moon</span></label>
+              <label class="gb-pick"><input type="radio" name="stamp" value="fern"><span class="gb-lift" aria-hidden="true"><span class="gb-stamp is-fern"><svg viewBox="0 0 24 24"><use href="#gb-fern"/></svg></span></span><span class="gb-pick-name">Fern</span></label>
+            </div>
+          </fieldset>
+          <!-- a honeypot: people never see this field, but form-filling bots do, and a filled one is quietly dropped -->
+          <div class="gb-hp" aria-hidden="true">
+            <label for="gb-website">Leave this empty</label>
+            <input id="gb-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="gb-send">
+            <button class="btn" type="submit" id="gb-go"><span>Sign the guestbook</span></button>
+            <p>Only your first name and town are shown with your note.</p>
+          </div>
+          <p class="gb-status" id="gb-status" role="alert"></p>
+        </form>
+        <div class="gb-thanks" id="gb-thanks" hidden>
+          <h3 id="gb-thanks-title" tabindex="-1">Thank you!</h3>
+          <p>Your note is tucked into the soil. It’ll appear once I’ve read it.</p>
+          <ul class="gb-notes" id="gb-yours" role="list" aria-label="Your note, as it will look"></ul>
+          <button class="gb-again" type="button" id="gb-again">Write another note</button>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
 </main>
 
 <footer class="site-foot">
@@ -1076,6 +1652,175 @@
         (r.height > window.innerHeight * 0.8 ? ioTall : io).observe(el);
       });
     }
+  })();
+</script>
+<script>
+  /* ============ guestbook ============
+     PREVIEW (LIVE = false): nothing is sent or stored anywhere. Signing checks the note, then shows the
+     thank-you with the note as it would look, only in this visitor's own browser tab.
+
+     To switch the real guestbook on, set LIVE = true (the one change needed here). Then:
+       - signing sends { name, town, note, stamp, approved: false } to the "guestbook" collection on the
+         PocketBase server (SERVER below)
+       - the list shows only approved notes, newest first, in place of the three samples
+     The server does the real guarding, with the collection's API rules: anyone may create a note but only
+     with approved = false (create rule: @request.body.approved = false), and only approved notes can be
+     listed or viewed (list and view rule: approved = true). Taya approves a note by ticking approved in the
+     PocketBase dashboard. Fields: name (text, max 40), town (text, max 40), note (text, max 280),
+     stamp (select: mushroom, moon, fern), approved (bool). No trackers, no cookies. */
+  (function () {
+    var LIVE = false;
+    var SERVER = 'https://bookings.gardenfaery.love';
+    var COLLECTION = 'guestbook';
+    var MAX = 280;
+    var STAMPS = ['mushroom', 'moon', 'fern'];
+
+    var $ = function (id) { return document.getElementById(id); };
+    var form = $('gb-form'), notes = $('gb-notes'), thanks = $('gb-thanks');
+    if (!form || !notes || !thanks) return;
+    var card = form.closest('.gb-sign');
+    var name = $('gb-name'), town = $('gb-town'), note = $('gb-note'), trap = $('gb-website');
+    var count = $('gb-count'), countLive = $('gb-count-live'), status = $('gb-status'), go = $('gb-go');
+    var api = SERVER + '/api/collections/' + COLLECTION + '/records';
+
+    /* with JavaScript on, the form takes the place of the "turn on JavaScript" line */
+    form.hidden = false;
+    $('gb-nojs').hidden = true;
+
+    /* ---- one note card, the same shape as the samples in the page (words set as text, never as HTML) ---- */
+    var make = function (tag, cls, text) {
+      var el = document.createElement(tag);
+      if (cls) el.className = cls;
+      if (text != null) el.textContent = text;
+      return el;
+    };
+    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var noteCard = function (n, tagText) {
+      var stamp = STAMPS.indexOf(n.stamp) > -1 ? n.stamp : STAMPS[0];
+      var li = make('li', 'gb-note'), fig = make('figure');
+      var s = make('span', 'gb-stamp is-' + stamp);
+      s.setAttribute('aria-hidden', 'true');
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      use.setAttribute('href', '#gb-' + stamp);
+      svg.appendChild(use); s.appendChild(svg); fig.appendChild(s);
+      if (tagText) fig.appendChild(make('p', 'gb-tag', tagText));
+      var q = make('blockquote');
+      q.appendChild(make('p', null, n.note));
+      fig.appendChild(q);
+      var cap = make('figcaption'), by = make('span', 'gb-by', n.name);
+      if (n.town) by.appendChild(make('span', null, ', ' + n.town));
+      cap.appendChild(by);
+      cap.appendChild(document.createTextNode(' '));
+      var d = new Date(String(n.created || '').replace(' ', 'T'));
+      if (isNaN(d)) d = new Date();
+      var t = make('time', null, MONTHS[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== new Date().getFullYear() ? ', ' + d.getFullYear() : ''));
+      var two = function (x) { return (x < 10 ? '0' : '') + x; };
+      t.setAttribute('datetime', d.getFullYear() + '-' + two(d.getMonth() + 1) + '-' + two(d.getDate()));
+      cap.appendChild(t);
+      fig.appendChild(cap);
+      li.appendChild(fig);
+      return li;
+    };
+
+    /* ---- live only: the approved notes take the place of the samples ---- */
+    if (LIVE && window.fetch) {
+      notes.textContent = '';
+      notes.setAttribute('aria-busy', 'true');
+      var none = function (words) {
+        var li = make('li');
+        li.appendChild(make('p', 'gb-empty', words));
+        notes.appendChild(li);
+      };
+      fetch(api + '?perPage=12&sort=-created&fields=name,town,note,stamp,created&filter=' + encodeURIComponent('approved=true'))
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (data) {
+          var items = (data && data.items) || [];
+          items.forEach(function (n) { notes.appendChild(noteCard(n)); });
+          if (!items.length) none('No notes yet. Yours could be the first!');
+        }, function () { none('The notes are resting just now. Try again in a little while.'); })
+        .then(function () { notes.removeAttribute('aria-busy'); });
+    }
+
+    /* ---- the character count, read out only now and then (at 40, 20 and 0 left), not on every key ---- */
+    var said = null;
+    var tally = function () {
+      var left = MAX - note.value.length;
+      count.textContent = left === 1 ? '1 character left' : left + ' characters left';
+      count.classList.toggle('near', left <= 40);
+      var step = left <= 0 ? 0 : left <= 20 ? 20 : left <= 40 ? 40 : null;
+      if (step !== said) { said = step; countLive.textContent = step === null ? '' : count.textContent; }
+    };
+    note.addEventListener('input', tally);
+    tally();
+
+    /* ---- gentle checks: a first name and a note ---- */
+    var mark = function (field, bad) {
+      var err = $(field.id + '-err');
+      if (!err) return;
+      err.hidden = !bad;
+      if (bad) field.setAttribute('aria-invalid', 'true'); else field.removeAttribute('aria-invalid');
+      var ids = (field.getAttribute('aria-describedby') || '').split(' ').filter(function (x) { return x && x !== err.id; });
+      if (bad) ids.unshift(err.id);
+      if (ids.length) field.setAttribute('aria-describedby', ids.join(' ')); else field.removeAttribute('aria-describedby');
+    };
+    [name, note].forEach(function (f) {
+      f.addEventListener('input', function () { if (f.getAttribute('aria-invalid') && f.value.trim()) mark(f, false); });
+    });
+
+    var busy = false;
+    var label = go.querySelector('span');
+    var done = function (n) {
+      var yours = $('gb-yours');
+      yours.textContent = '';
+      yours.appendChild(noteCard(n, 'Waiting to be read'));
+      form.hidden = true;
+      thanks.hidden = false;
+      card.classList.add('thanked');
+      thanks.classList.remove('settle');
+      void thanks.offsetWidth;
+      thanks.classList.add('settle');
+      $('gb-thanks-title').focus();
+    };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (busy) return;
+      status.textContent = '';
+      var n = {
+        name: name.value.trim().slice(0, 40),
+        town: town.value.trim().slice(0, 40),
+        note: note.value.trim().slice(0, MAX),
+        stamp: (form.querySelector('input[name="stamp"]:checked') || {}).value || STAMPS[0],
+        approved: false
+      };
+      mark(name, !n.name);
+      mark(note, !n.note);
+      if (!n.name || !n.note) { (n.name ? note : name).focus(); return; }
+      /* a filled honeypot is a bot: it gets the thank-you, and nothing is sent */
+      if (trap.value) { done(n); return; }
+
+      busy = true;
+      label.textContent = 'Tucking it in…';
+      var send = LIVE
+        ? fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(n) })
+            .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        : new Promise(function (resolve) { setTimeout(resolve, 700); });
+      send.then(function () { done(n); }, function () {
+        status.textContent = 'Hmm, your note didn’t go through. Try again in a minute, or email it to me at taya@webfaery.love.';
+      }).then(function () { busy = false; label.textContent = 'Sign the guestbook'; });
+    });
+
+    /* write another: the name and town stay, the note starts fresh */
+    $('gb-again').addEventListener('click', function () {
+      note.value = '';
+      tally();
+      thanks.hidden = true;
+      form.hidden = false;
+      card.classList.remove('thanked');
+      note.focus();
+    });
   })();
 </script>
 </body>

@@ -23,11 +23,20 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="soil.css">
+<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
+<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
+<script src="mycelium.js" defer></script>
 <link rel="stylesheet" href="pages.css">
+<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
+<link rel="stylesheet" href="faery.css">
+<script src="faery.js" defer></script>
 <style>
   .plan-note {
-    margin: 30px 0 0; padding: 14px 18px; border-left: 3px solid var(--plum);
+    margin: 30px 0 0; padding: 14px 18px; border-left: 3px solid var(--acc);
     background: var(--card); border-radius: 0 10px 10px 0; font-size: 17px;
   }
   fieldset {
@@ -35,18 +44,18 @@
     padding: 24px 24px 26px; margin: 26px 0 0; min-width: 0;
   }
   legend {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss); padding-inline: 8px;
+    font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); padding-inline: 8px;
   }
   .q { margin-top: 20px; }
   .q:first-of-type { margin-top: 6px; }
-  .main { display: block; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
+  .main { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
   .hint { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 10px; font-style: italic; line-height: 1.5; }
-  .req { font-family: 'Newsreader', Georgia, serif; font-weight: 400; font-size: 15px; font-style: italic; color: var(--ink-soft); }
+  .req { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 15px; font-style: italic; color: var(--ink-soft); }
   input[type="text"], input[type="email"], input[type="tel"], textarea, select {
     width: 100%; background: var(--paper); color: var(--ink);
     border: 1px solid var(--field-edge); border-radius: 8px;
-    font-family: 'Newsreader', Georgia, serif; font-size: 17px; padding: 11px 13px; min-height: 46px;
+    font-family: 'Spectral', Georgia, serif; font-size: 17px; padding: 11px 13px; min-height: 46px;
   }
   textarea { min-height: 92px; resize: vertical; }
   input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--err); }
@@ -60,11 +69,11 @@
     padding: 11px 13px; font-size: 16.5px; line-height: 1.45;
     text-wrap: pretty; /* no one-word last lines, in the answers or their small print */
   }
-  .opt:has(:checked) { border-color: var(--plum); background: var(--paper-2); }
-  .opt input { margin-top: 5px; accent-color: var(--plum); flex-shrink: 0; }
+  .opt:has(:checked) { border-color: var(--acc); background: var(--paper-2); }
+  .opt input { margin-top: 5px; accent-color: var(--btn); flex-shrink: 0; }
   .opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
   .opt small { display: block; color: var(--ink-soft); font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
-  .opt b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; }
+  .opt b { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
   .opt .moon { font-size: 17px; margin-right: 6px; }
 
   #booking-extra { display: none; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--hairline); }
@@ -73,11 +82,11 @@
   .next-note { margin: 30px 0 0; font-size: 16.5px; color: var(--ink-soft); }
   .send-row { margin-top: 18px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
   button.send {
-    cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px;
+    cursor: pointer; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px;
     min-height: 50px; padding: 12px 30px; border-radius: 999px;
-    background: var(--plum); color: var(--on-plum); border: 1.5px solid var(--plum);
+    background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn);
   }
-  button.send:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
+  button.send:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
   button.send:disabled { opacity: 0.5; cursor: wait; }
   .status { font-size: 16px; min-height: 24px; }
   .status.ok { color: var(--ok); }
@@ -85,22 +94,22 @@
 
   /* character budget: the form server only accepts about 4,000 characters in all */
   .budget { margin: 14px 0 0; font-size: 15px; font-style: italic; color: var(--ink-soft); }
-  .budget.near { color: var(--plum); }
+  .budget.near { color: var(--link); }
   .budget.over { color: var(--err); font-style: normal; }
 
   /* shown when the answers can't be sent: everything in one box, ready to copy */
   .rescue {
-    margin-top: 22px; background: var(--card); border: 2px solid var(--plum); border-radius: 14px;
+    margin-top: 22px; background: var(--card); border: 2px solid var(--acc); border-radius: 14px;
     padding: 20px 22px 22px;
   }
-  .rescue-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 17px; margin: 0; }
+  .rescue-title { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; margin: 0; }
   .rescue .note-line { font-size: 16px; margin: 4px 0 12px; }
   .rescue textarea { min-height: 220px; font-size: 15px; line-height: 1.5; }
   .rescue-row { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
   button.copy {
-    cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16px;
+    cursor: pointer; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px;
     padding: 10px 24px; border-radius: 999px; min-height: 50px;
-    background: transparent; color: var(--plum); border: 1px solid var(--plum);
+    background: transparent; color: var(--link); border: 1px solid var(--acc);
   }
   button.copy:hover { background: var(--paper-2); }
   .copy-status { font-size: 15px; color: var(--ok); }
@@ -118,10 +127,12 @@
 </style>
 </head>
 <body>
+<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<div class="soil" aria-hidden="true"></div>
 <header class="page-hero short">
   <picture><source type="image/webp" srcset="images/hero.webp"><img class="photo" src="images/hero.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 50% 45%"></picture>
   <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
     <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
   <div class="words">
@@ -190,16 +201,17 @@
         <legend>Your build</legend>
         <div class="q">
           <p class="main" id="l-build">Which build are you leaning toward?</p>
-          <p class="hint" id="h-build">Each one is paid once. Nothing is locked: we’ll confirm the fit together, and if you
+          <p class="hint" id="h-build">Each one is paid once, and every build comes with your Google profile set up, a slim banner across the top for news like “Now booking”, and a
+             <span class="nowrap">one-page</span> brand sheet with your colors and fonts (and your logo, if you have one), ready for any designer or print shop. Nothing is locked: we’ll confirm the fit together, and if you
              outgrow it later, what you paid counts toward a bigger build. Not sure? Try the
              <a href="quiz.html">two-minute quiz</a>.</p>
           <div class="opts" role="radiogroup" aria-labelledby="l-build" aria-describedby="h-build">
             <label class="opt"><input type="radio" name="build" value="Maiden"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="8.2" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wax)"/></svg><b>Maiden</b>: one beautiful page, $600
               <small>Who you are, what you offer, prices, how to reach you, photos. Ready in about 2 weeks.</small></span></label>
             <label class="opt"><input type="radio" name="build" value="Mother"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" fill="currentColor"/></svg><b>Mother</b>: a full site, $1,200
-              <small>About, services, FAQ, contact form, newsletter signup, downloadable forms, Google Business Profile, and a Book now button linked to the booking app you already use (or a free one in your name). About 3 weeks.</small></span></label>
+              <small>About, services, FAQ, contact form, newsletter signup, downloadable forms, and a Book now button linked to the booking app you already use (or a free one in your name). About 3 weeks.</small></span></label>
             <label class="opt"><input type="radio" name="build" value="Crone"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="15.8" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wan)"/></svg><b>Crone</b>: a full site that books, sells, or both, $1,800
-              <small>Everything in Mother, plus online booking, selling, or both, set up in your own accounts (a small shop up to about 20 items; full online stores are quoted separately), and a <span class="nowrap">hand-off</span> lesson. About 4 weeks.</small></span></label>
+              <small>Everything in Mother, plus online booking, selling, or both, set up in your own accounts (a small shop up to about 20 items; full online stores are quoted separately), your latest Instagram posts on your site, and a <span class="nowrap">hand-off</span> lesson. About 4 weeks.</small></span></label>
             <label class="opt"><input type="radio" name="build" value="Not sure yet"> <span>Not sure yet, help me choose</span></label>
           </div>
           <p class="hint" style="margin-top: 10px;">Founding clients get half off the build, and half off care for as long as
@@ -272,9 +284,9 @@
              where your web address lives. Fixes for anything I got wrong are always free either way.</p>
           <div class="opts" role="radiogroup" aria-labelledby="l-care" aria-describedby="h-care">
             <label class="opt"><input type="radio" name="care" value="Care"> <span><b>Care</b>, $69 a month (or $690 a year)
-              <small>I make your changes whenever you ask, and reply within 2 business days. Your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Anything big, like a new page, I’ll quote first. Billing starts after your 30 days of settling in, not at launch. Cancel anytime.</small></span></label>
+              <small>Just email me when something changes. I make your changes whenever you ask, and reply within 2 business days. Your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Your Google profile kept fresh: hours and holidays, new photos, a monthly post, and a review card for your counter. Anything big, like a new page, I’ll quote first. Billing starts after your 30 days of settling in, not at launch. Cancel anytime.</small></span></label>
             <label class="opt"><input type="radio" name="care" value="Without care, $100 an hour"> <span><b>Without care</b>, <span class="nowrap">$100 an hour</span>
-              <small>Send me one email with everything you’d like changed, and I’ll reply with a price before I&nbsp;start. Most small changes come to about <span class="nowrap">$25 to $50</span>. At launch your web address moves into your own account, about $12 a year after the first.</small></span></label>
+              <small>Send me one email with everything you’d like changed, and I’ll reply with a price before I&nbsp;start. Most small changes come to about <span class="nowrap">$25 to $50</span>. At launch your web address moves into your own account, about $12 a year after the first. You can add care anytime.</small></span></label>
             <label class="opt"><input type="radio" name="care" value="Not sure yet"> <span>Not sure yet</span></label>
           </div>
         </div>
@@ -375,7 +387,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
     <ul>
       <li><a href="quiz.html">Which build?</a></li>
       <li><a href="intake.html" aria-current="page">Getting started</a></li>

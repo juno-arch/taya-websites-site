@@ -15,7 +15,8 @@
 //   - shows an old price or rule ($25 quick changes, 15 minutes, update sessions, an hour a month, rolling over,
 //     extra time, $100 a round, the flat $50 a change, "a change is one email"), an hourly rate other than
 //     $100 an hour, a running clock, "subscription", trades, the old update schedule, or a dash
-//   - shows care at anything but $69 a month / $690 a year ($35 / $350 only for founding clients)
+//   - shows care at anything but $69 a month / $690 a year ($35 / $350 only for founding clients), or the old
+//     founding care price ($49 / $490)
 //   - talks about care without the $100 an hour and the price coming before I start, the reply time, or
 //     "quoted first" for big jobs (the main page also needs "price before I start", one email with everything
 //     in it, and the usual $25 to $50)
@@ -38,8 +39,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html'];
-const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html'];
+const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html'];
+const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html'];
 const CARE_MONTH = 69;
 const CARE_YEAR_PREPAID = 690;
 const FOUNDING_CARE = 35;
@@ -75,6 +76,7 @@ const FORBIDDEN = [
   [/\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately)'],
   [/founding spots last/i, 'open-ended founding wording (show the count and the deadline)'],
   [/\bon call\b/i, '"on call" (care is a reply within 2 business days, so say "someone looking after it")'],
+  [/\$49(?:0)?\b/, 'the old founding care price ($49 / $490; founding care is half off now, $35 / $350)'],
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
 ];
 
@@ -85,7 +87,10 @@ for (const page of PAGES) {
   const text = visibleText(html);
   texts[page] = text;
   plain[page] = plainOf(text);
-  for (const [re, what] of FORBIDDEN) {
+  for (const [re0, what] of FORBIDDEN) {
+    // start.html (the getting-started page) gives each step's time, and the accounts step is "about 15 minutes":
+    // a time estimate, not the old 15-minute quick change, so only the words "quick change" and "update session" count there
+    const re = page === 'start.html' && what === 'the old quick change / update session' ? /quick change|update session/i : re0;
     const m = text.match(re);
     if (m) fail(`${page}: contains ${what}: "${text.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
   }
@@ -115,7 +120,7 @@ for (const page of CARE_PAGES) {
   if (!/big[^.]{0,60}quote/i.test(t)) fail(`${page}: doesn't say anything big is quoted first`);
 }
 // founding clients: half off the build, half off care, $35 a month or $350 a year
-for (const page of ['index.html', 'quiz.html', 'intake.html', 'welcome.html']) {
+for (const page of ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html']) {
   if (!/\$35 a month/.test(plain[page]) || !/\$350 a year/.test(plain[page])) fail(`${page}: doesn't give the founding care price both ways ($35 a month, $350 a year)`);
 }
 if (!/half off the build/i.test(plain['index.html'])) fail('index.html: doesn’t say founding clients get half off the build');

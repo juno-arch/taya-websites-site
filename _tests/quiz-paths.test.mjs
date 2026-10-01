@@ -109,6 +109,8 @@ const failures = [];
 for (const re of FORBIDDEN) if (re.test(visible)) failures.push(`quiz.html contains ${re}`);
 // founding clients' care price, both ways, and never the founding count (it lives only on the main page)
 if (!/\$35 a month \(or \$350 a year\)/.test(visible)) failures.push('quiz.html: the founding note lacks "$35 a month (or $350 a year)"');
+// the old founding care price is gone from the page (result estimates can land on $490 by chance, so only the page itself is checked)
+if (/\$49(?:0)?\b/.test(visible)) failures.push('quiz.html: shows $49 or $490, the old founding care price (founding care is $35 / $350 now)');
 if (/\b\d+ (?:founding spots? )?left\b/.test(visible)) failures.push('quiz.html: shows a founding count; keep it only on the main page');
 
 // ---- every combination of answers ----

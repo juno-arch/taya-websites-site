@@ -1,0 +1,144 @@
+/* The soil and the mycelium living in it: shared by every page, so the whole site feels like one place.
+
+   The site has one look, whatever the visitor's light or dark setting: "under the soil where the
+   mycelium lives". A charcoal soil (warm, never purple), and behind everything a still network of fine
+   bone-colored hyphae (Pollen's pick, Sep 30, 2026: the Mycelium palette, the network on its own).
+
+   The network is grown by a small script (_mycelium/grow.py, a hyphal growth model: tips wander, branch,
+   avoid each other, fuse where they meet) and drawn as one SVG, mycelium.svg, shared by every page and
+   cached after the first. mycelium.js lays it into the soil (.soil > .myc), and:
+   - the first time the soil shows in a visit (on the main page, when Recent work comes up the screen; on
+     the other pages, under their photo), the threads grow in from a few colonies over about eight seconds,
+     then rest. Later pages in the same visit show it already grown (a reload grows it again)
+   - after that a few tiny chanterelle lights travel slowly along real threads now and then, fading in and
+     out, for about ten minutes, then they rest too
+   - without JavaScript, with reduced motion, or if the file can't be fetched: the full network, still, as
+     the soil's background (the same file), and no lights
+
+   How it stays calm, cool on phones, and readable:
+   - the network is still; only the grow-in (once) and the lights move. Threads that start in the same
+     instant and look alike share one path, and a dash pattern restarts at every subpath, so one
+     stroke-dashoffset animation grows all of them from their own starting points. A phone draws and
+     animates only the threads in its view (class "d" is for screens wider than 440)
+   - the lights are small dots moved by transform and faded by opacity, so the graphics chip does that work
+   - every thread is an opaque color inside one group that's see-through as a whole, so where threads
+     cross they never add up: nothing in the soil gets brighter than the brightest thread (#413f3a), the
+     colonies' faint glows, or a light's heart (rgb(90, 63, 23)). Every word on the soil is checked against
+     that: the dimmest, --ink-soft #b9b3a7, is 4.67 to 1 over a light's heart. If a color here changes,
+     check the words again.
+   - the photo at the top of every page melts into solid soil, and the threads come up out of it gradually
+     below the photo (each page's own fade, over --soil-fade)
+   - regenerate: python3 _mycelium/grow.py && python3 _mycelium/build.py (seeded, so the same network) */
+:root {
+  --soil: #0e0e0c;
+  /* the soil fading out, smooth at both ends so it never starts or stops on a line. The photo at the top
+     of every page melts into it, and the mycelium rises out of it gradually below the photo */
+  --soil-fade: #0e0e0c 0%, rgba(14, 14, 12, 0.97) 10%, rgba(14, 14, 12, 0.9) 20%, rgba(14, 14, 12, 0.78) 30%,
+    rgba(14, 14, 12, 0.65) 40%, rgba(14, 14, 12, 0.5) 50%, rgba(14, 14, 12, 0.35) 60%, rgba(14, 14, 12, 0.22) 70%,
+    rgba(14, 14, 12, 0.1) 80%, rgba(14, 14, 12, 0.03) 90%, rgba(14, 14, 12, 0) 100%;
+}
+html { background: var(--soil); color-scheme: dark; }
+body { background: transparent; }
+
+/* as tall as the screen with the browser's bars tucked away (lvh), so nothing jumps when a phone's
+   address bar slides in or out while scrolling */
+.soil {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; z-index: -1; pointer-events: none;
+  overflow: hidden; contain: strict;
+  background: var(--soil);
+}
+/* the network, still, when mycelium.js isn't laying it in (no JavaScript, reduced motion): the same file, the
+   same size and place as the canvas below */
+html:not(.myc-js) .soil { background: var(--soil) url(mycelium.svg) 50% 50% / 1920px 1200px no-repeat; }
+
+/* the canvas: 1920 x 1200, centred in the soil (a phone sees its middle) */
+.myc {
+  position: absolute; left: 50%; top: 50%; width: 1920px; height: 1200px; margin: -600px 0 0 -960px;
+  pointer-events: none;
+}
+.myc svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* the hush (Pollen, Sep 30: "it kind of is feeling really busy"): a light breath of soil laid over the whole
+   network, a touch deeper in the middle of the screen, where the words are read, and lighter toward the
+   edges (the threads keep about 70% of their old strength in the middle, 85% at the corners). The pages go
+   the rest of the way themselves: the main page clears the soil around its words and sets its longest
+   reading on cards. It lies over the still network too (no JavaScript, reduced motion). The traveling
+   lights ride above it at their own glow (.myc-lt below). It only ever darkens, so every word on the soil
+   reads at least as well as before */
+.soil::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 72% 62% at 50% 50%, rgba(14, 14, 12, 0.32), rgba(14, 14, 12, 0.14));
+}
+/* on a later page of the visit the network arrives already grown, so it fades in instead of popping */
+.myc.fade { opacity: 0; }
+.myc.fade.on { opacity: 1; transition: opacity 1.4s ease; }
+
+/* the grow-in (the script adds .myc-go when the soil first shows) */
+.myc-js .myc path { stroke-dasharray: calc(var(--l) * 1px) calc(var(--l) * 1px + 4px); stroke-dashoffset: calc(var(--l) * 1px + 1px); }
+.myc-js .myc-k { opacity: 0; }
+.myc-go .myc path { animation: myc-grow calc(var(--t) * 1s) linear calc(var(--d) * 1s) both; }
+.myc-go .myc-k { animation: myc-knot 2.6s ease-out calc(var(--d) * 1s) both; }
+/* grown: the dashes come off, so the resting network is plain paths */
+.myc-js.myc-rest .myc path { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; }
+.myc-js.myc-rest .myc-k { animation: none; opacity: 1; }
+@keyframes myc-grow { from { stroke-dashoffset: calc(var(--l) * 1px + 1px); } to { stroke-dashoffset: 0; } }
+@keyframes myc-knot { from { opacity: 0; } to { opacity: 1; } }
+
+/* the traveling lights: a warm chanterelle heart with a soft halo. Dim on purpose: the heart is as bright as
+   the words allow (luminance .058; the dimmest words need at most .062), and the halo only mixes that gold
+   with what's beneath, and luminance along such a mix never rises above its two ends */
+.myc-lt {
+  position: absolute; z-index: 1; left: 0; top: 0; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%;
+  opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(90, 63, 23) 0, rgb(90, 63, 23) 16%, rgba(90, 63, 23, 0.5) 36%,
+    rgba(90, 63, 23, 0.16) 62%, rgba(90, 63, 23, 0) 100%);
+}
+/* calmer: a third of the lights rest (one of a phone's four, two of the wider screens' five), so there is
+   seldom more than one on a phone at a time */
+.myc-l1, .myc-l5, .myc-l7 { display: none; }
+
+/* phones (up to 440 wide): only the threads in a phone's view are drawn and animated. Anything wider
+   (small tablets, foldables, 441 to 600) gets the whole network, or its sides would look bare */
+@media (max-width: 440px) { .myc .d { display: none; } }
+/* very big screens: the canvas grows so it always covers */
+@media (min-width: 1921px), (min-height: 1201px) {
+  .myc { transform: scale(1.34); }
+  html:not(.myc-js) .soil { background-size: 2573px 1608px; }
+}
+@media (min-width: 2570px), (min-height: 1600px) {
+  .myc { transform: scale(1.8); }
+  html:not(.myc-js) .soil { background-size: 3456px 2160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .myc-js .myc path { animation: none !important; stroke-dasharray: none; stroke-dashoffset: 0; }
+  .myc-js .myc-k { animation: none !important; opacity: 1; }
+  .myc-lt { display: none; }
+  .myc.fade { opacity: 1; }
+}
+@media print {
+  .soil { display: none; }
+  /* white paper for the dark print ink (important, so it wins over each page's own soil fallback on html) */
+  html { background: #fff !important; }
+}
+
+/* ==== generated by _mycelium/build.py: the traveling lights (edit the script, not these lines) ==== */
+@keyframes myc-l0{0.00%{transform:translate(1128.4px,414.9px);opacity:0.00}1.72%{transform:translate(1108.0px,416.1px);opacity:0.50}3.39%{transform:translate(1087.8px,413.3px);opacity:1.00}5.10%{transform:translate(1067.3px,409.0px);opacity:1.00}6.68%{transform:translate(1048.3px,405.4px);opacity:1.00}8.18%{transform:translate(1032.7px,415.3px);opacity:1.00}9.91%{transform:translate(1013.5px,423.4px);opacity:1.00}11.42%{transform:translate(995.4px,419.9px);opacity:1.00}13.13%{transform:translate(974.5px,417.7px);opacity:1.00}14.72%{transform:translate(955.0px,417.8px);opacity:1.00}16.31%{transform:translate(935.6px,418.7px);opacity:0.78}17.90%{transform:translate(916.2px,420.5px);opacity:0.24}19.25%{transform:translate(899.8px,422.9px);opacity:0.00}19.26%,100%{transform:translate(899.8px,422.9px);opacity:0}}
+.myc-go .myc-l0{animation:myc-l0 47.2s linear 8.9s 12 both}
+@keyframes myc-l1{0.00%{transform:translate(789.8px,874.6px);opacity:0.00}2.16%{transform:translate(808.1px,867.1px);opacity:0.35}4.52%{transform:translate(829.2px,864.9px);opacity:0.93}6.68%{transform:translate(849.0px,866.3px);opacity:1.00}8.68%{transform:translate(867.1px,868.6px);opacity:1.00}10.96%{transform:translate(888.0px,870.0px);opacity:1.00}13.16%{transform:translate(908.0px,869.1px);opacity:1.00}15.22%{transform:translate(926.8px,870.9px);opacity:1.00}17.49%{transform:translate(947.5px,872.0px);opacity:1.00}19.76%{transform:translate(965.7px,864.1px);opacity:1.00}21.93%{transform:translate(981.4px,852.0px);opacity:1.00}24.28%{transform:translate(999.6px,840.3px);opacity:0.95}26.61%{transform:translate(1017.2px,828.4px);opacity:0.53}28.82%{transform:translate(1033.3px,816.1px);opacity:0.09}30.04%{transform:translate(1040.7px,807.8px);opacity:0.00}30.05%,100%{transform:translate(1040.7px,807.8px);opacity:0}}
+.myc-go .myc-l1{animation:myc-l1 35.2s linear 14.8s 17 both}
+@keyframes myc-l2{0.00%{transform:translate(1001.2px,664.3px);opacity:0.00}1.86%{transform:translate(988.3px,647.8px);opacity:0.38}3.51%{transform:translate(976.2px,633.6px);opacity:0.89}5.32%{transform:translate(961.6px,619.4px);opacity:1.00}7.18%{transform:translate(945.3px,606.1px);opacity:1.00}8.91%{transform:translate(929.3px,595.0px);opacity:1.00}10.69%{transform:translate(911.7px,585.2px);opacity:1.00}12.57%{transform:translate(892.5px,576.4px);opacity:1.00}14.31%{transform:translate(882.4px,559.6px);opacity:1.00}16.17%{transform:translate(877.4px,539.7px);opacity:1.00}17.82%{transform:translate(876.0px,521.1px);opacity:1.00}19.74%{transform:translate(871.9px,500.0px);opacity:0.98}21.49%{transform:translate(868.2px,480.5px);opacity:0.63}23.34%{transform:translate(866.9px,459.9px);opacity:0.15}24.67%{transform:translate(869.2px,445.1px);opacity:0.00}24.68%,100%{transform:translate(869.2px,445.1px);opacity:0}}
+.myc-go .myc-l2{animation:myc-l2 43.4s linear 17.9s 13 both}
+@keyframes myc-l3{0.00%{transform:translate(806.5px,575.8px);opacity:0.00}1.80%{transform:translate(795.4px,592.9px);opacity:0.25}3.58%{transform:translate(795.8px,613.3px);opacity:0.72}5.45%{transform:translate(792.1px,634.4px);opacity:1.00}7.15%{transform:translate(793.6px,653.8px);opacity:1.00}8.73%{transform:translate(794.1px,672.0px);opacity:1.00}10.61%{transform:translate(800.1px,692.7px);opacity:1.00}12.48%{transform:translate(809.8px,711.6px);opacity:1.00}14.30%{transform:translate(827.8px,722.4px);opacity:1.00}15.99%{transform:translate(845.0px,731.5px);opacity:1.00}17.79%{transform:translate(863.7px,740.4px);opacity:1.00}19.50%{transform:translate(881.9px,748.1px);opacity:1.00}21.33%{transform:translate(900.5px,757.6px);opacity:1.00}23.02%{transform:translate(916.8px,768.4px);opacity:1.00}24.66%{transform:translate(933.0px,778.2px);opacity:0.95}26.53%{transform:translate(952.8px,784.9px);opacity:0.62}28.09%{transform:translate(970.8px,785.1px);opacity:0.28}29.79%{transform:translate(990.4px,785.6px);opacity:0.03}30.43%{transform:translate(997.8px,785.9px);opacity:0.00}30.44%,100%{transform:translate(997.8px,785.9px);opacity:0}}
+.myc-go .myc-l3{animation:myc-l3 44.3s linear 21.8s 13 both}
+@keyframes myc-l4{0.00%{transform:translate(453.7px,416.4px);opacity:0.00}1.56%{transform:translate(464.5px,397.8px);opacity:0.39}3.11%{transform:translate(482.4px,386.1px);opacity:0.94}4.66%{transform:translate(502.1px,378.1px);opacity:1.00}6.21%{transform:translate(522.5px,371.5px);opacity:1.00}7.55%{transform:translate(541.2px,371.0px);opacity:1.00}8.94%{transform:translate(559.2px,376.7px);opacity:1.00}10.35%{transform:translate(576.4px,385.9px);opacity:1.00}11.86%{transform:translate(594.9px,395.9px);opacity:1.00}13.27%{transform:translate(612.5px,404.3px);opacity:1.00}14.63%{transform:translate(629.8px,411.9px);opacity:1.00}16.18%{transform:translate(651.0px,415.9px);opacity:0.98}17.61%{transform:translate(670.7px,417.5px);opacity:0.65}19.10%{transform:translate(691.3px,418.9px);opacity:0.18}20.29%{transform:translate(707.8px,419.8px);opacity:0.00}20.30%,100%{transform:translate(707.8px,419.8px);opacity:0}}
+.myc-go .myc-l4{animation:myc-l4 53.4s linear 23.7s 11 both}
+@keyframes myc-l5{0.00%{transform:translate(1135.6px,633.2px);opacity:0.00}1.92%{transform:translate(1135.5px,613.7px);opacity:0.32}3.71%{transform:translate(1135.8px,595.4px);opacity:0.82}5.83%{transform:translate(1138.8px,574.1px);opacity:1.00}7.95%{transform:translate(1147.2px,555.4px);opacity:1.00}10.07%{transform:translate(1164.7px,542.9px);opacity:1.00}12.19%{transform:translate(1176.1px,524.7px);opacity:1.00}14.31%{transform:translate(1184.2px,504.7px);opacity:1.00}16.25%{transform:translate(1185.8px,485.1px);opacity:1.00}18.19%{transform:translate(1187.3px,465.4px);opacity:1.00}20.16%{transform:translate(1186.6px,445.4px);opacity:1.00}22.26%{transform:translate(1187.3px,424.1px);opacity:0.99}24.29%{transform:translate(1199.6px,408.7px);opacity:0.69}26.26%{transform:translate(1209.7px,391.9px);opacity:0.23}28.20%{transform:translate(1220.6px,375.5px);opacity:0.00}28.21%,100%{transform:translate(1220.6px,375.5px);opacity:0}}
+.myc-go .myc-l5{animation:myc-l5 39.1s linear 27.5s 15 both}
+@keyframes myc-l6{0.00%{transform:translate(547.0px,908.7px);opacity:0.00}1.59%{transform:translate(536.6px,890.4px);opacity:0.28}3.14%{transform:translate(528.0px,871.9px);opacity:0.77}4.64%{transform:translate(521.1px,853.4px);opacity:1.00}6.14%{transform:translate(514.4px,834.8px);opacity:1.00}7.51%{transform:translate(509.5px,817.5px);opacity:1.00}9.01%{transform:translate(505.6px,798.1px);opacity:1.00}10.51%{transform:translate(502.6px,778.5px);opacity:1.00}12.01%{transform:translate(501.0px,758.8px);opacity:1.00}13.51%{transform:translate(500.5px,739.0px);opacity:1.00}15.01%{transform:translate(499.8px,719.2px);opacity:1.00}16.51%{transform:translate(498.8px,699.4px);opacity:1.00}18.08%{transform:translate(497.0px,678.8px);opacity:1.00}19.65%{transform:translate(494.7px,658.2px);opacity:1.00}21.11%{transform:translate(497.3px,639.8px);opacity:0.87}22.61%{transform:translate(509.6px,624.3px);opacity:0.51}24.11%{transform:translate(522.1px,608.9px);opacity:0.14}25.43%{transform:translate(530.9px,594.0px);opacity:0.00}25.44%,100%{transform:translate(530.9px,594.0px);opacity:0}}
+.myc-go .myc-l6{animation:myc-l6 50.7s linear 32.0s 11 both}
+@keyframes myc-l7{0.00%{transform:translate(1028.1px,797.6px);opacity:0.00}1.50%{transform:translate(1009.2px,788.6px);opacity:0.34}3.00%{transform:translate(988.8px,785.5px);opacity:0.88}4.39%{transform:translate(969.3px,785.1px);opacity:1.00}5.68%{transform:translate(951.3px,784.9px);opacity:1.00}7.05%{transform:translate(933.5px,778.5px);opacity:1.00}8.47%{transform:translate(916.6px,768.2px);opacity:1.00}9.95%{transform:translate(899.3px,756.8px);opacity:1.00}11.34%{transform:translate(881.9px,748.1px);opacity:1.00}12.83%{transform:translate(861.9px,746.1px);opacity:1.00}14.23%{transform:translate(842.7px,749.4px);opacity:1.00}15.62%{transform:translate(823.2px,751.0px);opacity:1.00}16.95%{transform:translate(804.7px,751.9px);opacity:0.98}18.49%{transform:translate(783.2px,750.1px);opacity:0.62}20.04%{transform:translate(764.2px,740.0px);opacity:0.15}21.19%{transform:translate(749.5px,734.5px);opacity:0.00}21.20%,100%{transform:translate(749.5px,734.5px);opacity:0}}
+.myc-go .myc-l7{animation:myc-l7 53.8s linear 36.1s 11 both}
+@keyframes myc-l8{0.00%{transform:translate(680.3px,664.4px);opacity:0.00}1.58%{transform:translate(667.3px,680.8px);opacity:0.30}3.12%{transform:translate(660.5px,699.8px);opacity:0.81}4.62%{transform:translate(655.1px,718.9px);opacity:1.00}6.12%{transform:translate(651.2px,738.3px);opacity:1.00}7.62%{transform:translate(648.6px,757.9px);opacity:1.00}9.12%{transform:translate(647.5px,777.7px);opacity:1.00}10.61%{transform:translate(646.2px,797.3px);opacity:1.00}12.09%{transform:translate(650.3px,816.4px);opacity:1.00}13.58%{transform:translate(646.5px,835.7px);opacity:1.00}15.08%{transform:translate(642.0px,855.0px);opacity:1.00}16.72%{transform:translate(641.0px,876.5px);opacity:1.00}18.31%{transform:translate(640.4px,897.1px);opacity:1.00}19.92%{transform:translate(628.1px,913.9px);opacity:0.89}21.48%{transform:translate(608.1px,918.7px);opacity:0.51}22.96%{transform:translate(589.7px,925.3px);opacity:0.13}24.16%{transform:translate(574.2px,925.6px);opacity:0.00}24.17%,100%{transform:translate(574.2px,925.6px);opacity:0}}
+.myc-go .myc-l8{animation:myc-l8 50.8s linear 39.7s 11 both}
+/* ==== end of the generated lights ==== */

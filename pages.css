@@ -2,65 +2,36 @@
    Same palette tokens and self-hosted fonts as the main page; each page adds its own bits inline.
    The brand name lives only in each page's title, header and footer, so a rename stays easy. */
 :root {
-  color-scheme: light;
-  --paper: #f3eee4; --paper-2: #eae3d4; --card: #f8f4ea;
-  --ink: #2e2433; --ink-soft: #62566a; --hairline: #ddd2c2;
-  --plum: #6d2b56; --plum-deep: #521f41; --plum-wash: #f0e0ea; --mark: #ecd3e2;
-  --moonlight: #efe6d6; --moonglow: rgba(239, 230, 214, 0.45);
-  /* living moss, from the photos: a fresh leafy green (never olive), the same as the main page */
-  --moss: #2e5c29; --moss-line: rgba(56, 115, 50, 0.55); --on-plum: #f8ecf3;
-  --band: #221a2b; --band-text: #ece4da; --band-soft: #b3a7bb;
-  --focus: #2e5c29; --err: #a03d2e; --ok: #4c6b3c; --field-edge: #8c8072;
-  /* the page under the photo: the main page's lavender, easing lighter and lighter to its last stop,
-     with a little moss glow layered on top. A see-through leafy green fading straight into lavender
-     passes through grey, so each glow fades the cool way round (moss, then mint, then periwinkle),
-     the same as the main page, and stays colored all the way out. */
-  --bg-1: #dad1ec; --bg-2: #e2dbf1; --bg-3: #e9e4f5; --bg-4: #f1eefa;
-  --glow: rgba(178, 226, 150, 0.62) 0%, rgba(160, 222, 180, 0.42) 24%, rgba(170, 205, 230, 0.22) 46%, rgba(200, 190, 240, 0) 70%;
-  --glow-low: rgba(178, 226, 150, 0.44) 0%, rgba(160, 222, 180, 0.3) 24%, rgba(170, 205, 230, 0.16) 46%, rgba(200, 190, 240, 0) 70%;
-  /* words over photos: the same in light and dark */
-  --on-photo: #f6efe5; --on-photo-soft: rgba(246, 239, 229, 0.92); --candle: #e3c27e;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --paper: #171221; --paper-2: #120e1a; --card: #211a2e;
-    --ink: #e8e1d6; --ink-soft: #b0a4bb; --hairline: #3a3048;
-    --plum: #d08cc0; --plum-deep: #e0a8d0; --plum-wash: rgba(208, 140, 192, 0.12); --mark: rgba(208, 140, 192, 0.24);
-    --moonlight: #ece3d3; --moonglow: rgba(236, 227, 211, 0.35);
-    --moss: #a2d496; --moss-line: rgba(162, 212, 150, 0.55); --on-plum: #2a1224;
-    --band: #0f0b16; --band-text: #e8e1d6; --band-soft: #a89cb4;
-    --focus: #a2d496; --err: #d98a75; --ok: #9dbb85; --field-edge: #7a6d8c;
-    --bg-1: #140d1b; --bg-2: #1a1323; --bg-3: #20172a; --bg-4: #261c32;
-    --glow: rgba(78, 160, 64, 0.2) 0%, rgba(52, 134, 104, 0.13) 24%, rgba(52, 92, 140, 0.07) 46%, rgba(60, 50, 110, 0) 70%;
-    --glow-low: rgba(78, 160, 64, 0.15) 0%, rgba(52, 134, 104, 0.1) 24%, rgba(52, 92, 140, 0.05) 46%, rgba(60, 50, 110, 0) 70%;
-  }
-}
-:root[data-theme="dark"] {
+  /* one look for everyone, whatever their light or dark setting: the main page's charcoal soil (in soil.css,
+     with its mycelium), warm charcoal cards, bone ink and chanterelle gold (Pollen's Mycelium palette, Sep 30).
+     No purple anywhere. */
   color-scheme: dark;
-  --paper: #171221; --paper-2: #120e1a; --card: #211a2e;
-  --ink: #e8e1d6; --ink-soft: #b0a4bb; --hairline: #3a3048;
-  --plum: #d08cc0; --plum-deep: #e0a8d0; --plum-wash: rgba(208, 140, 192, 0.12); --mark: rgba(208, 140, 192, 0.24);
+  --paper: #151513; --paper-2: #10100e; --card: #1c1b18;   /* fields and answers; chosen or hovered; cards */
+  --ink: #ece6da; --ink-soft: #b9b3a7; --hairline: #34322d;
+  /* chanterelle gold: pale for links and the italic words, deeper for labels and lines, the richest as a fill */
+  --candle: #f2c77c; --link: var(--candle); --on-link: #1c1209;
+  --acc: #f0b867; --acc-line: rgba(240, 184, 103, 0.55);
+  --btn: #e6a852; --on-btn: #1c1209; --btn-hover: #f0b867;
   --moonlight: #ece3d3; --moonglow: rgba(236, 227, 211, 0.35);
-  --moss: #a2d496; --moss-line: rgba(162, 212, 150, 0.55); --on-plum: #2a1224;
-  --band: #0f0b16; --band-text: #e8e1d6; --band-soft: #a89cb4;
-  --focus: #a2d496; --err: #d98a75; --ok: #9dbb85; --field-edge: #7a6d8c;
-  --bg-1: #140d1b; --bg-2: #1a1323; --bg-3: #20172a; --bg-4: #261c32;
-  --glow: rgba(78, 160, 64, 0.2) 0%, rgba(52, 134, 104, 0.13) 24%, rgba(52, 92, 140, 0.07) 46%, rgba(60, 50, 110, 0) 70%;
-  --glow-low: rgba(78, 160, 64, 0.15) 0%, rgba(52, 134, 104, 0.1) 24%, rgba(52, 92, 140, 0.05) 46%, rgba(60, 50, 110, 0) 70%;
+  --band: #161513; --band-text: #ece6da; --band-soft: #bcb6aa;
+  --focus: #f0b867; --err: #e2947f; --ok: #9dbb85; --field-edge: #7f7a6e;
+  /* words over photos */
+  --on-photo: #f6efe5; --on-photo-soft: rgba(246, 239, 229, 0.92);
+  /* the veil over the photos: the soil's own dark */
+  --veil: 15, 15, 13;
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--bg-4); }
-/* the last of the lavender, with a mossy haze low down that runs on under the footer */
+/* the soil and the mycelium behind everything live in soil.css (shared with the main page) */
+html { -webkit-text-size-adjust: 100%; background: #0e0e0c; /* the soil, in case soil.css is slow */
+  font-synthesis-weight: none; /* Gloock has one weight only: never let the browser smear a fake bold */ }
 body {
   margin: 0; color: var(--ink);
-  background: radial-gradient(1100px 620px at 100% 100%, var(--glow-low)), var(--bg-4);
-  font-family: 'Newsreader', Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.62;
+  font-family: 'Spectral', Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.62;
 }
 p, li { text-wrap: pretty; }
-h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif; line-height: 1.12; text-wrap: balance; margin: 0; }
-a { color: var(--plum); text-underline-offset: 3px; text-decoration-color: var(--moss-line); }
+h1, h2, h3 { font-family: 'Gloock', Georgia, serif; font-weight: 400; line-height: 1.12; text-wrap: balance; margin: 0; }
+a { color: var(--link); text-underline-offset: 3px; text-decoration-color: var(--acc-line); }
 a:hover { text-decoration-color: currentColor; }
 a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
 .gutter { padding-inline: 22px; }
@@ -69,8 +40,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .eyebrow, .kicker {
-  font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--moss);
+  font-family: 'Spectral', Georgia, serif; font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc);
 }
 .kicker { display: block; margin-bottom: 8px; text-wrap: balance; }
 
@@ -82,35 +53,42 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   position: relative; overflow: hidden; isolation: isolate;
   display: flex; flex-direction: column;
   min-height: clamp(420px, 64svh, 620px);
-  background: #1d1626; color: var(--on-photo);
+  color: var(--on-photo);
 }
 .page-hero.short { min-height: clamp(380px, 54svh, 540px); }
 .page-hero .photo {
   position: absolute; left: 0; top: -4%; width: 100%; height: 108%;
-  object-fit: cover; z-index: -2; display: block;
+  object-fit: cover; z-index: -3; display: block;
+}
+/* the photo's foot melts into solid soil (behind the words, so none of them fade), and main::before lets the
+   mycelium rise out of that soil gradually below it, so the photo never ends on a line */
+.page-hero::before {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 16%; z-index: -1; pointer-events: none;
+  background: linear-gradient(0deg, var(--soil-fade));
 }
 .page-hero::after {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
   background:
-    radial-gradient(ellipse 72% 58% at 50% 72%, rgba(20, 14, 28, 0.55), rgba(20, 14, 28, 0) 76%),
-    linear-gradient(180deg, rgba(20, 14, 28, 0.74) 0%, rgba(20, 14, 28, 0.34) 30%, rgba(20, 14, 28, 0.52) 58%, rgba(20, 14, 28, 0.86) 100%);
+    radial-gradient(ellipse 72% 58% at 50% 72%, rgba(var(--veil), 0.55), rgba(var(--veil), 0) 76%),
+    linear-gradient(180deg, rgba(var(--veil), 0.74) 0%, rgba(var(--veil), 0.34) 30%, rgba(var(--veil), 0.52) 58%, rgba(var(--veil), 0.86) 100%);
 }
 .page-hero .bar {
   display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap;
   width: 100%; max-width: 1180px; margin: 0 auto; padding: 22px 22px 0;
 }
 .page-hero .brand {
-  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.01em;
+  font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 21px; letter-spacing: 0;
   color: var(--on-photo); text-decoration: none; padding-block: 8px; white-space: nowrap;
   display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
 }
 .page-hero .brand svg { width: 20px; height: 20px; flex: none; }
 .page-hero .brand .wm span { color: var(--candle); }
-/* a soft dark glow keeps the name readable where the photo is brightest (the forest's sun, on phones) */
-.page-hero .brand { text-shadow: 0 1px 2px rgba(20, 14, 28, 0.7), 0 0 12px rgba(20, 14, 28, 0.5); }
+/* a soft dark glow keeps the name and the little menu words readable where the photo is brightest (the
+   forest's sun, on phones; the gaps between the trees on a big screen) */
+.page-hero .brand, .page-hero nav a { text-shadow: 0 1px 2px rgba(var(--veil), 0.7), 0 0 12px rgba(var(--veil), 0.5); }
 .page-hero nav { display: flex; gap: 4px 16px; flex-wrap: wrap; margin-left: auto; justify-content: flex-end; }
 .page-hero nav a {
-  font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.14em;
+  font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; letter-spacing: 0.14em;
   text-transform: uppercase; text-decoration: none; color: var(--on-photo); opacity: 0.9;
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 44px; min-width: 44px; padding: 0 4px; text-align: center;
@@ -121,20 +99,20 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   margin: auto auto 0; width: 100%; max-width: 760px; text-align: center;
   padding: 56px 22px 52px;
   /* a soft dark glow keeps the small gold words readable over bright mushroom caps and sun */
-  text-shadow: 0 1px 2px rgba(20, 14, 28, 0.75), 0 0 16px rgba(20, 14, 28, 0.7);
+  text-shadow: 0 1px 2px rgba(var(--veil), 0.75), 0 0 16px rgba(var(--veil), 0.7);
 }
 /* cream like the main page's hero eyebrow: small gold capitals get lost on bright caps and sun */
 .page-hero .eyebrow {
   color: var(--on-photo); display: block; margin-bottom: 16px; letter-spacing: 0.22em;
-  text-shadow: 0 1px 2px rgba(20, 14, 28, 0.85), 0 0 8px rgba(20, 14, 28, 0.8), 0 0 20px rgba(20, 14, 28, 0.6);
+  text-shadow: 0 1px 2px rgba(var(--veil), 0.85), 0 0 8px rgba(var(--veil), 0.8), 0 0 20px rgba(var(--veil), 0.6);
 }
 .page-hero h1 {
-  font-weight: 700; font-size: clamp(36px, 7.4vw, 60px); letter-spacing: -0.015em;
+  font-weight: 400; font-size: clamp(36px, 7.4vw, 60px); letter-spacing: -0.01em;
   color: var(--on-photo); max-width: 16ch; margin-inline: auto;
 }
 .page-hero h1 em {
-  font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400;
-  letter-spacing: -0.02em; color: var(--candle);
+  font-family: 'Spectral', Georgia, serif; font-style: italic; font-weight: 400;
+  letter-spacing: -0.01em; color: var(--candle);
 }
 .page-hero .lede {
   font-size: clamp(18px, 2.4vw, 20.5px); color: var(--on-photo-soft);
@@ -172,29 +150,31 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
 /* ---------- content ---------- */
-/* One continuous wash from just under the photo to the footer, scrolling with the page: lavender getting
-   lighter and lighter, a moss glow under the photo, and (from the body, showing through as the wash clears)
-   a mossy haze low down, so nothing ends in a seam. Every word sits on it in dark ink (5:1 or better), or on a card. */
+/* no background of its own: every word sits straight on the soil and its mycelium (checked at the brightest
+   thread or light), or on a card */
 main {
-  display: flow-root; /* so the first card's top margin stays inside the wash instead of showing a light band */
+  display: flow-root;
   padding-bottom: 40px;
-  background:
-    radial-gradient(900px 560px at 0% 0%, var(--glow)),
-    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 30%, var(--bg-3) 62%, transparent 100%);
+  position: relative; isolation: isolate;
+}
+/* just under the photo the soil is still solid, and the mycelium comes up out of it slowly */
+main::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: clamp(140px, 24vh, 280px); z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, var(--soil-fade));
 }
 .card {
   background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
   padding: 26px 26px 28px; margin-top: 24px;
 }
-.card.yours { border: 2px solid var(--plum); }
-.card h2 { font-size: 23px; font-weight: 600; margin: 0 0 12px; }
+.card.yours { border: 2px solid var(--acc); }
+.card h2 { font-size: 24px; font-weight: 400; margin: 0 0 12px; }
 .card p { margin: 10px 0 0; }
 .card p.soft, .soft { color: var(--ink-soft); font-size: 16.5px; }
 .note { font-size: 15px; color: var(--ink-soft); font-style: italic; margin-top: 14px; }
 
 ul.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 ul.checks li { padding-left: 26px; position: relative; font-size: 17px; }
-ul.checks li::before { content: "\2713"; position: absolute; left: 0; color: var(--moss); font-weight: 700; }
+ul.checks li::before { content: "\2713"; position: absolute; left: 0; color: var(--acc); font-weight: 700; }
 ul.checks li small { display: block; color: var(--ink-soft); font-size: 15px; line-height: 1.5; margin-top: 2px; }
 ul.checks.never li::before { content: "\2717"; color: var(--ink-soft); }
 
@@ -202,24 +182,25 @@ ul.checks.never li::before { content: "\2717"; color: var(--ink-soft); }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; min-height: 50px;
   text-decoration: none; text-align: center; cursor: pointer; text-wrap: balance;
-  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16.5px; line-height: 1.2;
+  font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.2; letter-spacing: 0.01em; word-spacing: 0.03em;
   padding: 12px 28px; border-radius: 999px;
-  background: var(--plum); color: var(--on-plum); border: 1.5px solid var(--plum);
-  transition: background 0.15s ease, border-color 0.15s ease;
+  background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn);
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.btn:hover { background: var(--plum-deep); border-color: var(--plum-deep); }
-.btn.secondary { background: transparent; color: var(--plum); }
-.btn.secondary:hover { background: var(--plum-wash); }
+.btn:hover { background: var(--btn-hover); border-color: var(--btn-hover); box-shadow: 0 0 0 5px rgba(230, 168, 82, 0.16), 0 0 30px rgba(230, 168, 82, 0.35); }
+.btn.secondary { background: transparent; color: var(--link); }
+/* a solid card behind the words on hover, so the gold stays readable over any thread behind it */
+.btn.secondary:hover { background: var(--card); box-shadow: none; }
 
 /* two-column money table, collapses to stacked rows on phones */
 .money { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 16px; line-height: 1.5; }
 .money th, .money td { text-align: left; vertical-align: top; padding: 11px 10px 11px 0; border-bottom: 1px solid var(--hairline); }
 .money thead th {
-  font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 500; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--moss);
+  font-family: 'Spectral', Georgia, serif; font-size: 11.5px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--acc);
 }
-.money tbody th { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 16px; width: 32%; }
-.money tbody th small { display: block; font-family: 'Newsreader', Georgia, serif; font-weight: 400; font-size: 14.5px; color: var(--ink-soft); }
+.money tbody th { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: 0.01em; width: 32%; }
+.money tbody th small { display: block; font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 14.5px; color: var(--ink-soft); }
 .money td { color: var(--ink); }
 .money tr:last-child th, .money tr:last-child td { border-bottom: none; }
 @media (max-width: 560px) {
@@ -231,32 +212,32 @@ ul.checks.never li::before { content: "\2717"; color: var(--ink-soft); }
   .money tbody th { width: auto; margin-bottom: 6px; }
   .money td { display: grid; grid-template-columns: 5.8em 1fr; gap: 10px; padding: 3px 0; }
   .money td::before {
-    content: attr(data-col); content: attr(data-col) / ""; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--moss); padding-top: 3px;
+    content: attr(data-col); content: attr(data-col) / ""; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--acc); padding-top: 3px;
   }
 }
 
-/* the triple moon, drawn in the accent color */
-.moon { width: 1em; height: 1em; vertical-align: -0.12em; color: var(--plum); flex-shrink: 0; }
+/* the triple moon, drawn in pale gold */
+.moon { width: 1em; height: 1em; vertical-align: -0.12em; color: var(--candle); flex-shrink: 0; }
 
-/* the same quiet footer as the main page: no band, just the last of the lavender and a moss hairline */
+/* the same quiet footer as the main page: no band, just the soil and a gold hairline */
 footer.site-foot { margin-top: 56px; color: var(--ink-soft); padding: 0 22px 40px; font-size: 15.5px; }
 .site-foot .foot-in {
   max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 30px;
-  padding-top: 26px; border-top: 1px solid rgba(79, 155, 62, 0.3);
+  padding-top: 26px; border-top: 1px solid rgba(230, 168, 82, 0.3);
 }
 .site-foot .brand {
-  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.01em;
+  font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 19px; letter-spacing: 0;
   color: var(--ink); text-decoration: none; white-space: nowrap;
   display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
 }
 .site-foot .brand svg { width: 18px; height: 18px; flex: none; }
-.site-foot .brand svg > circle { fill: var(--plum); }
-.site-foot .brand .wm span { color: var(--plum); }
+.site-foot .brand svg > circle { fill: var(--candle); }
+.site-foot .brand .wm span { color: var(--candle); }
 .site-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 22px; }
 .site-foot a:not(.brand) { display: inline-flex; min-height: 44px; align-items: center; }
 .site-foot a[aria-current] { text-decoration: none; color: var(--ink-soft); }
-.site-foot .fine { width: 100%; margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
+.site-foot .fine { width: 100%; margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 400; font-style: italic; font-size: 15px; color: var(--ink-soft); }
 
 /* narrow phones: a little more room for the words, and brand + nav stay on one row */
 @media (max-width: 380px) {
@@ -281,4 +262,7 @@ footer.site-foot { margin-top: 56px; color: var(--ink-soft); padding: 0 22px 40p
   .page-hero.wait .photo, .page-hero.wait::after, .page-hero.wait .eyebrow,
   .page-hero.wait h1, .page-hero.wait .lede { opacity: 1 !important; }
   .page-hero *, .page-hero::after { animation: none !important; }
+  main::before { display: none; }
+  /* paper is white, so the ink turns dark (soil.css leaves the soil and its mycelium off the page) */
+  :root { --paper: #fff; --paper-2: #f6f2ea; --card: #fff; --ink: #262420; --ink-soft: #5a554c; --hairline: #ddd6c8; --candle: #7a4a12; --link: #7a4a12; --acc: #7a4a12; --btn: #7a4a12; --on-btn: #fff; --band: #fff; --band-text: #262420; --band-soft: #5a554c; }
 }

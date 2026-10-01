@@ -23,33 +23,42 @@
 <meta name="twitter:description" content="Six quick taps: find the build that fits what your site needs to do, and whether care is worth it for you, with every cost shown.">
 <meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
 <meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
 <link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="soil.css">
+<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
+<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
+<script src="mycelium.js" defer></script>
 <link rel="stylesheet" href="pages.css">
+<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
+<link rel="stylesheet" href="faery.css">
+<script src="faery.js" defer></script>
 <style>
   .progress {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--moss); margin: 34px 0 10px;
+    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--acc); margin: 34px 0 10px;
   }
   .qcard {
     background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
     padding: 26px 24px 26px;
   }
-  .qcard h2 { font-size: 23px; font-weight: 600; margin: 0 0 4px; }
+  .qcard h2 { font-size: 24px; font-weight: 400; margin: 0 0 4px; }
   .qcard .why { font-size: 15.5px; color: var(--ink-soft); font-style: italic; margin: 0 0 18px; }
   .answers { display: grid; gap: 10px; }
   .answers button {
-    text-align: left; cursor: pointer; font-family: 'Newsreader', Georgia, serif; font-size: 17.5px;
+    text-align: left; cursor: pointer; font-family: 'Spectral', Georgia, serif; font-size: 17.5px;
     color: var(--ink); background: var(--paper); border: 1px solid var(--hairline);
     border-radius: 10px; padding: 13px 16px; line-height: 1.45; width: 100%;
   }
-  .answers button:hover { border-color: var(--plum); background: var(--paper-2); }
+  .answers button:hover { border-color: var(--acc); background: var(--paper-2); }
   .answers small { display: block; color: var(--ink-soft); font-size: 14.5px; margin-top: 2px; }
   .back {
     margin-top: 14px; background: none; border: none; cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.1em;
+    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--ink-soft); padding: 12px 0; min-height: 44px;
   }
-  .back:hover { color: var(--plum); }
+  .back:hover { color: var(--link); }
 
   .result { display: none; }
   .result.show { display: block; }
@@ -57,8 +66,8 @@
   /* the build: a dark band with its moon, like the build cards on the main page */
   .verdict {
     margin-top: 40px; position: relative; text-align: center;
-    /* a soft moss halo behind the moon, like the moss under the mushrooms in the photos */
-    background: radial-gradient(circle at 50% 66px, rgba(120, 180, 96, 0.3), rgba(120, 180, 96, 0) 150px), var(--band);
+    /* a soft chanterelle glow behind the moon, like the moon cards' amber hill */
+    background: radial-gradient(circle at 50% 66px, rgba(230, 168, 82, 0.2), rgba(230, 168, 82, 0) 150px), var(--band);
     color: var(--band-text); border: 1px solid var(--hairline);
     border-radius: 150px 150px 18px 18px / 96px 96px 18px 18px;
     padding: 118px 26px 30px;
@@ -73,28 +82,28 @@
   .verdict .orb.mother { background: var(--moonlight); }
   .verdict .orb.crone { box-shadow: inset 13px 0 0 0 var(--moonlight); }
   .verdict .eyebrow { color: var(--band-soft); display: block; }
-  .verdict h2 { font-size: 40px; font-weight: 700; margin-top: 8px; color: var(--band-text); }
+  .verdict h2 { font-size: 40px; font-weight: 400; margin-top: 8px; color: var(--band-text); }
   .verdict h2:focus { outline: none; }
   .verdict .what { font-style: italic; color: var(--band-soft); margin: 4px 0 0; font-size: 17px; }
-  .verdict .price { font-family: 'Bricolage Grotesque', sans-serif; margin: 18px 0 0; }
-  .verdict .price strong { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .verdict .price { font-family: 'Gloock', Georgia, serif; margin: 18px 0 0; }
+  .verdict .price strong { font-size: 32px; font-weight: 400; font-variant-numeric: tabular-nums; }
   .verdict .price span { font-size: 15.5px; color: var(--band-soft); }
-  .verdict .founding { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--band-soft); margin: 6px 0 0; }
+  .verdict .founding { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; color: var(--band-soft); margin: 6px 0 0; }
   .verdict .ready { font-size: 16px; color: var(--band-soft); margin: 10px auto 0; max-width: 30em; }
   .verdict .because { margin: 18px auto 0; max-width: 36rem; text-align: left; }
-  .verdict ul { text-align: left; margin: 18px auto 0; padding: 18px 0 0; border-top: 1px solid rgba(179, 167, 187, 0.35); list-style: none; display: grid; gap: 9px; max-width: 36rem; }
+  .verdict ul { text-align: left; margin: 18px auto 0; padding: 18px 0 0; border-top: 1px solid rgba(185, 179, 167, 0.35); list-style: none; display: grid; gap: 9px; max-width: 36rem; }
   .verdict li { padding-left: 24px; position: relative; font-size: 16.5px; }
   .verdict li::before { content: "\2713"; position: absolute; left: 0; color: var(--band-text); font-weight: 700; }
   .verdict .also { font-size: 15.5px; color: var(--band-soft); margin: 16px auto 0; max-width: 36rem; text-align: left; }
 
-  .after h3, .plainly h3 { font-size: 26px; font-weight: 700; margin-top: 6px; color: var(--plum); }
+  .after h3, .plainly h3 { font-size: 26px; font-weight: 400; margin-top: 6px; color: var(--link); }
   .after .because { margin-top: 12px; }
   .after ul.checks { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--hairline); }
   .after .also { font-size: 15.5px; color: var(--ink-soft); margin-top: 14px; }
   .plainly ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 0; }
   .plainly li { padding: 10px 0; border-bottom: 1px solid var(--hairline); font-size: 16.5px; }
   .plainly li:last-child { border-bottom: none; }
-  .plainly li b { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; }
+  .plainly li b { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
   .plainly .dated { font-size: 14.5px; color: var(--ink-soft); font-style: italic; margin-top: 8px; }
 
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
@@ -109,10 +118,12 @@
 </style>
 </head>
 <body>
+<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<div class="soil" aria-hidden="true"></div>
 <header class="page-hero short">
   <picture><source type="image/webp" srcset="images/mushrooms.webp"><img class="photo" src="images/mushrooms.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 32% 62%"></picture>
   <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
     <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
   <div class="words">
@@ -201,7 +212,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#e3c27e" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
     <ul>
       <li><a href="quiz.html" aria-current="page">Which build?</a></li>
       <li><a href="intake.html">Getting started</a></li>
@@ -299,8 +310,7 @@
       points: [
         'About, services, FAQ and a contact form',
         'A newsletter signup and downloadable forms, if you need them',
-        'A Book now button linked to the booking app you use (or a free one in your name)',
-        'Your Google Business Profile set up: the listing that shows on Google Maps'
+        'A Book now button linked to the booking app you use (or a free one in your name)'
       ],
       also: 'If you ever want booking or selling, what you paid counts toward Crone.'
     },
@@ -310,11 +320,19 @@
       points: [
         'Everything in Mother',
         'Online booking, selling, or both (gift certificates, deposits, a small shop of up to about 20 items), set up in your own accounts, with a hand-off lesson',
-        'The money goes straight to you, never through me'
+        'The money goes straight to you, never through me',
+        'Your latest Instagram posts on your site, updating on their own (needs a free Business or Creator account)'
       ],
       also: 'We test it all with pretend clients before anything goes public.'
     }
   };
+
+  // what every build comes with, shown under each build's own points
+  var EVERY_BUILD = [
+    'Your Google Business Profile set up: the listing that shows on Google Maps',
+    'A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer or print shop',
+    'A slim banner across the top of your site for news like “Now booking” or “Away until Nov 3”, switched for free whenever you like'
+  ];
 
   // Without care: $100 an hour, and I give the price before I start (one email with everything in it). Most small
   // changes come to about $25 to $50, so the comparison counts each change at the middle, $37.50, plus the web
@@ -377,9 +395,9 @@
     if (which === 'care') {
       var because;
       if (mid >= CARE_YEAR) {
-        because = pace + ' ' + CARE_PRICE_WORDS + ', so care costs less, and I make your changes whenever you ask.';
+        because = pace + ' ' + CARE_PRICE_WORDS + ', so care costs less, and it’s easier too: you email me, and it’s done.';
       } else if (mid >= CARE_PREPAID) {
-        because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, care comes out about the same or a little less; paid monthly, a little more. Either way it’s one bill, and I make your changes whenever you ask.';
+        because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, care comes out about the same or a little less; paid monthly, a little more. Either way it’s one bill, and every small change is just an email, with no price to wait on.';
       } else {
         because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, that’s about ' + roughly(CARE_PREPAID - mid) + ' a year more than going without. ' +
           (p[5] === 1
@@ -390,9 +408,10 @@
         name: 'Care, ' + money(CARE_MONTH) + ' a month',
         because: because,
         points: [
-          'I make your changes whenever you ask, and reply within 2 business days',
+          'Just email me: I make your changes whenever you ask, and reply within 2 business days',
           'Anything big, like a new page, I’ll quote first',
           'Your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered',
+          'Your Google profile kept fresh: hours and holidays, new photos, a monthly post, and a review card for your counter',
           'Billing starts after your 30 days of settling in, not at launch',
           'Cancel anytime. Your site stays yours and stays up'
         ],
@@ -404,12 +423,12 @@
       why = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '.' + (p[5] === 0
         // they want costs low: say plainly which way it leans
         ? ' Since you’d like to keep costs low, start without care: you only pay when something changes. If you find yourself writing to me more than once or twice a month, care starts to win, and you can add it anytime.'
-        : ' Going without care keeps it simple: you only pay when something changes. If you find yourself writing to me more than once or twice a month, care is there anytime.');
+        : ' Either way works. Without care, you only pay when something changes. If you find yourself writing to me more than once or twice a month, or you’d rather hand it all to me, you can add care anytime.');
     } else {
       why = pace + ' ' + CARE_PRICE_WORDS + ', so going without care makes more sense for you.';
       // they asked for one bill and someone looking after it, but the math says otherwise: name the difference
-      if (p[5] === 1) why += ' You said you’d like one bill and someone looking after it. Care is there anytime; at this pace it would cost about ' +
-        roughly(CARE_PREPAID - mid) + ' a year more, even paid yearly.';
+      if (p[5] === 1) why += ' You said you’d like one bill and someone looking after it. At this pace, care would cost about ' +
+        roughly(CARE_PREPAID - mid) + ' a year more, even paid yearly. If that peace of mind is worth it to you, choose care anyway. There’s no wrong answer.';
     }
     return {
       name: 'Without care, $100 an hour',
@@ -420,7 +439,7 @@
         'Your web address moves into your own account at launch. The first year is included; after that it’s about $12 a year on your card',
         'Fixes for anything I got wrong: always free'
       ],
-      also: 'If things start changing more often, care is there anytime: ' + money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year.'
+      also: 'If things start changing more often, care is there anytime: ' + money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year. Then every small change is just an email, with no price to wait on.'
     };
   }
 
@@ -430,7 +449,7 @@
       ['The build', money(b.price) + ' once (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or bank transfer.']
     ];
     if (care === 'care') {
-      lines.push(['Care', money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year (two months free). I make your changes whenever you ask, and your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Billing starts after your 30 days of settling in, not at launch. Founding clients: $35 a month, or $350 a year (half off, for as long as you keep it).']);
+      lines.push(['Care', money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year (two months free). I make your changes whenever you ask and keep your Google profile fresh, and your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Billing starts after your 30 days of settling in, not at launch. Founding clients: $35 a month, or $350 a year (half off, for as long as you keep it).']);
     } else {
       var changes = [PER_YEAR[p[3]][0] * CHANGE, PER_YEAR[p[3]][1] * CHANGE];
       lines.push(['Changes', 'About $25 to $50 a change, quoted first ($100 an hour). At the pace you described, that’s ' + rangeWords(changes) + '. Anything big is quoted the same way.']);
@@ -509,7 +528,7 @@
     el('r-build-founding').textContent = 'Founding clients ' + money(b.founding) + ' (5 founding spots, through Dec 31, 2026)';
     el('r-build-ready').textContent = 'Ready in ' + b.ready + ', counted from the day all your content is in.';
     el('r-build-because').textContent = b.because;
-    fillList('r-build-points', b.points);
+    fillList('r-build-points', b.points.concat(EVERY_BUILD));
     var also = b.also;
     if (picks[2] === 1 && build !== 'Crone') also = 'When you’re ready for booking, what you paid counts toward Crone.';
     if (picks[2] === 2) also = 'Your Book now button links straight to the booking app you already use. If you’d ever like booking fully set up for you, what you paid counts toward Crone.';

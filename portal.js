@@ -1,0 +1,1670 @@
+/* =====================================================================================================
+   Your project (portal.html): everything that happens on a client's own page. No libraries, no outside
+   scripts, no trackers. Only this site's own files run here (the page's security line says so).
+
+   ---- CONFIG: the only things to change ----
+     DEMO        true while it's a preview: the sample client (portal-demo.js), nothing sent anywhere.
+                 false once the server side is switched on (the last step of the deploy notes, which live
+                 in garden-faery-hub/pocketbase/webfaery-portal-docs/ on Pollen's Mac, not in this public repo).
+     SERVER      the PocketBase the portal talks to (Garden Faery's server, its own /api/webfaery/ routes)
+     SMS_SIGNIN  true shows "Text me a code instead" (only once texts are switched on on the server)
+     START_PAGE  the getting-started page the list links into
+
+   ---- WHAT IT KEEPS ----
+   In this browser's storage: {token}, the random key that says "signed in". The server keeps just a
+   scrambled copy of it, and forgets it after 8 quiet hours (or a week at most), when Taya switches the
+   portal off for someone, or at "Sign out". Never the project itself. Three small conveniences too:
+     - "I tapped Pay" / "I tapped Pick a time" notes, so a button someone already used says "Paid? Thank you!"
+       instead of glowing again (a day per key, under a short tag of their email; gone once Taya marks it,
+       after 3 weeks, or at "Sign out")
+     - while a code is on its way, the email it went to, for 10 minutes and this tab only, so a reload
+       goes back to the code step instead of asking again (which would send another email)
+     - words typed into an answer or a change request and not sent yet, this tab only, so a sign-in
+       after a quiet while doesn't lose them (cleared once sent, and at "Sign out")
+   Without storage (a private window) it still works: they just sign in each visit.
+
+   ---- HOW IT TALKS TO THE SERVER ----
+   All in the api block below (the demo has the same eight calls with the same shapes):
+     requestCode, verifyCode, me, logout, file, upload, todo, change
+   Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
+   The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
+
+   ---- WORDS ----
+   Warm but plain, few words, curly quotes, no dashes, never "subscription", nothing about trades.
+   _tests/portal-text.test.mjs checks every string in this file.
+   ===================================================================================================== */
+(() => {
+  'use strict';
+
+  /* ================= CONFIG ================= */
+  const DEMO = true;                                  // PREVIEW: sample data, nothing is sent
+  const SERVER = 'https://bookings.gardenfaery.love'; // PocketBase (the page's security line allows only this)
+  const SMS_SIGNIN = false;                           // true once WF_SMS_ENABLED=1 on the server
+  const START_PAGE = 'start.html';
+  const TAYA = 'taya@webfaery.love';
+
+  const BASE = SERVER + '/api/webfaery/portal';
+  const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
+  const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const RESEND_WAIT = 60;              // seconds before "Send a new code" wakes up (the server sends one a minute at most)
+  const PENDING_MS = 10 * 60 * 1000;   // a code works for 10 minutes: a reload within that goes back to the code step
+  const TAP_DAYS = 21;                 // an "I tapped Pay" note fades after 3 weeks
+  const REFRESH_AFTER = 5 * 60 * 1000; // coming back to the tab after 5 minutes fetches the project again
+  const MB = 1024 * 1024;
+  const UPLOAD_MAX = 15 * MB, UPLOAD_PER_SEND = 10, UPLOAD_SEND_BYTES = 25 * MB, UPLOAD_PER_ITEM = 40; // the server takes about 32 MB a send
+  const CHANGE_MAX = 10 * MB, CHANGE_FILES = 3, WHAT_MAX = 2000, ANSWER_MAX = 1000;
+  const SAFE_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
+
+  const BUILDS = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone' };
+  const BUILD_MOON = { maiden: 'i-wax', mother: 'i-full', crone: 'i-wan' };
+  const STAGES = [
+    ['getting_started', 'Getting started'], ['call', 'Our call'], ['draft', 'Draft'],
+    ['changes', 'Changes'], ['launch', 'Launch'], ['settling_in', 'Settling in']
+  ];
+  const STAGE_SAY = {
+    getting_started: 'Your answers, photos and a few little setup bits.',
+    call: '45 minutes, on video or the phone. I do the writing after.',
+    draft: 'I’m building your draft. You’ll get a private link to peek.',
+    changes: 'Two rounds, each one email with everything in it.',
+    launch: 'Your site goes live at your own web address.',
+    settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
+  };
+  // start.html's steps (#s-<step>); a few older names point to the step that holds them now.
+  // Only the whole page (a new client) and signing link there now: on a new device start.html opens at its
+  // quick check, so every other step's few lines live right in the list item (HOWTO below).
+  const START_STEPS = {
+    build: 's-build', sign: 's-sign', call: 's-call', work: 's-work', look: 's-look', accounts: 's-accounts',
+    you: 's-sign', agree: 's-sign', deposit: 's-sign', photos: 's-look'
+  };
+  const HOWTO = {
+    accounts: {
+      steps: [
+        'Sign in to a Google account you’ll keep for your business, then go to business.google.com and find your business. Claim it, or add it.',
+        'When Google asks you to verify, you can stop there. We can do it together on our call.',
+        'Once you’re verified, open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love and choose Manager. You stay the owner.'
+      ],
+      after: 'Google moves its buttons around now and then. If it looks different, stop there and we’ll do it together.'
+    },
+    work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
+    look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },
+    build: { steps: ['Maiden, Mother or Crone. Not sure yet? We’ll pick together on our call.'] },
+    call: { steps: ['I’ll email you a link to pick a time.'] }
+  };
+  const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Let’s talk' };
+  // what each upload spot takes (the server checks again, and so does the field itself)
+  const UPLOAD_TYPES = {
+    photos: { ext: ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif', 'pdf'], accept: 'image/*,.heic,.heif,application/pdf', say: 'photos' },
+    logo: { ext: ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif', 'pdf', 'svg', 'eps', 'ai', 'ps'], accept: 'image/*,.svg,.eps,.ai,.pdf,application/pdf', say: 'files' },
+    files: { ext: ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif', 'pdf', 'svg', 'eps', 'ai', 'ps', 'zip'], accept: 'image/*,.svg,.eps,.ai,.pdf,.zip,application/pdf,application/zip', say: 'files' }
+  };
+  const CHANGE_EXT = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'pdf'];
+
+  const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  /* ================= 0. inside someone else's page? =================
+     GitHub Pages can't send the header that forbids framing, so a real portal simply won't show
+     inside another site's frame (the preview has no real data, so it may). */
+  let framed = false;
+  try { framed = window.top !== window.self; } catch (e) { framed = true; }
+  if (framed && !DEMO) document.documentElement.classList.add('framed');
+
+  /* ================= 1. the photo's slow intro (the same as every page) =================
+     This part runs right away, before the first paint; the rest waits for the page. */
+  (function heroIntro() {
+    const h = document.querySelector('.page-hero');
+    if (!h || reduceMotion) return;
+    const ph = h.querySelector('.photo');
+    if (!ph) return;
+    h.classList.add('wait');
+    // play the intro only once the photo has fully arrived; if it's still on its way after 4 seconds
+    // (a slow connection), show everything at rest so a half-loaded photo never animates
+    let settled = false;
+    const rest = () => { if (settled) return; settled = true; h.classList.remove('wait'); };
+    const go = () => { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
+    const ready = () => { if (ph.decode) ph.decode().then(go, go); else go(); };
+    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
+    let queued = false;
+    window.addEventListener('scroll', () => {
+      if (queued) return; queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
+      });
+    }, { passive: true });
+  })();
+
+  /* ================= little helpers ================= */
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  const make = (tag, cls, text) => {
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text != null) el.textContent = text;
+    return el;
+  };
+  const icon = (id, cls) => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    if (cls) svg.setAttribute('class', cls);
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#' + id);
+    svg.append(use);
+    return svg;
+  };
+  const str = (v, max) => (typeof v === 'string' ? v : (typeof v === 'number' ? String(v) : '')).slice(0, max || 4000);
+  const arr = (v) => (Array.isArray(v) ? v : []);
+  const money = (n) => '$' + Math.round(+n || 0).toLocaleString('en-US');
+  const digits = (s) => String(s || '').replace(/\D/g, '');
+  const plural = (n, one, many) => n + ' ' + (n === 1 ? one : many);
+  // only https links from the server ever become links on the page
+  const safeUrl = (u) => {
+    const s = str(u, 2000).trim();
+    if (!/^https:\/\/[^\s"'<>\\]+$/i.test(s)) return '';
+    try { return new URL(s).protocol === 'https:' ? s : ''; } catch (e) { return ''; }
+  };
+  const hostOf = (u) => { try { return new URL(u).host.replace(/^www\./, ''); } catch (e) { return ''; } };
+  const extOf = (name) => { const m = /\.([A-Za-z0-9]{1,8})$/.exec(String(name || '')); return m ? m[1].toLowerCase() : ''; };
+  // what someone types: newlines kept, other control characters dropped, long gaps shortened
+  const cleanText = (s, max) => String(s || '').replace(/\r\n?/g, '\n')
+    .replace(/[\u0000-\u0008\u000B-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2066-\u2069]/g, '')
+    .replace(/\n{4,}/g, '\n\n\n').trim().slice(0, max);
+  const cleanLine = (s, max) => String(s || '').replace(/[\u0000-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2066-\u2069]/g, ' ')
+    .replace(/\s+/g, ' ').trim().slice(0, max);
+  const maskPhone = (d) => (d.length >= 4 ? '(•••) •••-' + d.slice(-4) : 'your phone');
+  const newNonce = () => {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    const b = new Uint8Array(16);
+    crypto.getRandomValues(b);
+    return Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+  };
+
+  /* ---- dates: every date is a plain calendar day ("2026-10-13"), read from its parts, so a time zone
+     can never move it back a day ---- */
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const pad = (n) => String(n).padStart(2, '0');
+  const dayParts = (s) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(str(s));
+    return m ? { y: +m[1], m: +m[2], d: +m[3], key: m[1] + m[2] + m[3] } : null;
+  };
+  const now = new Date();
+  const todayKey = '' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate());
+  const todayISO = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+  const shortDate = (s) => {
+    const p = dayParts(s);
+    if (!p || p.m < 1 || p.m > 12) return '';
+    return MON[p.m - 1] + ' ' + p.d + (p.y !== now.getFullYear() ? ', ' + p.y : '');
+  };
+  const longDay = (s) => {
+    const p = dayParts(s);
+    if (!p) return '';
+    return DAYS[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()] + ', ' + shortDate(s);
+  };
+  const isPast = (s) => { const p = dayParts(s); return !!p && p.key <= todayKey; };
+  // the 2nd business day from today (the care promise), only if the server didn't say
+  const replyByLocal = () => {
+    const t = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 12));
+    let left = 2;
+    while (left > 0) { t.setUTCDate(t.getUTCDate() + 1); const w = t.getUTCDay(); if (w !== 0 && w !== 6) left--; }
+    return t.toISOString().slice(0, 10);
+  };
+
+  /* ================= keeping the sign-in key ================= */
+  // (the preview keeps its pretend key for this tab only, so it never lingers)
+  let token = '';
+  const box = () => (DEMO ? window.sessionStorage : window.localStorage);
+  const store = {
+    get() {
+      try {
+        const o = JSON.parse(box().getItem(STORE_KEY) || 'null');
+        return o && typeof o.token === 'string' && TOKEN_RE.test(o.token) ? o.token : '';
+      } catch (e) { return ''; }
+    },
+    set(t) { try { box().setItem(STORE_KEY, JSON.stringify({ token: t })); } catch (e) { /* no storage: signed in for this visit only */ } },
+    clear() { try { box().removeItem(STORE_KEY); } catch (e) { /* nothing kept anyway */ } }
+  };
+  const readJSON = (bx, key) => { try { const o = JSON.parse(bx.getItem(key) || 'null'); return o && typeof o === 'object' ? o : null; } catch (e) { return null; } };
+  const writeJSON = (bx, key, o) => { try { if (o) bx.setItem(key, JSON.stringify(o)); else bx.removeItem(key); } catch (e) { /* fine: a convenience only */ } };
+  const tab = () => window.sessionStorage;
+
+  // while a code is on its way: where it went (this tab, 10 minutes), so a reload goes back to the code step
+  const PENDING_KEY = STORE_KEY + '-pending';
+  const pending = {
+    get() {
+      const o = readJSON(tab(), PENDING_KEY);
+      if (!o || !(Date.now() - (+o.at || 0) < PENDING_MS)) return null;
+      if (typeof o.email === 'string' && EMAIL_RE.test(o.email)) return { who: { email: o.email.slice(0, 200) }, at: +o.at };
+      if (typeof o.phone === 'string' && /^\d{10}$/.test(o.phone)) return { who: { phone: o.phone }, at: +o.at };
+      return null;
+    },
+    set(w) { writeJSON(tab(), PENDING_KEY, Object.assign({ at: Date.now() }, w)); },
+    clear() { writeJSON(tab(), PENDING_KEY, null); }
+  };
+
+  // "I tapped Pay" and "I tapped Pick a time": so a button someone already used doesn't glow at them again
+  // while Taya waits to see the money land. Kept per client (a short tag of their email, not the email).
+  const TAPS_KEY = STORE_KEY + '-taps';
+  const tagOf = (s) => { let h = 2166136261; for (const ch of String(s || '')) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; } return 't' + h.toString(36); };
+  const taps = {
+    mine() {
+      const all = readJSON(box(), TAPS_KEY) || {};
+      const o = me ? all[tagOf(me.client.email)] : null;
+      const out = {};
+      if (o && typeof o === 'object') {
+        for (const k of ['deposit', 'balance', 'care', 'call']) {
+          if (typeof o[k] === 'number' && Date.now() - o[k] < TAP_DAYS * 86400000) out[k] = o[k];
+        }
+      }
+      return out;
+    },
+    save(o) {
+      if (!me) return;
+      const all = readJSON(box(), TAPS_KEY) || {};
+      const tag = tagOf(me.client.email);
+      if (Object.keys(o).length) all[tag] = o; else delete all[tag];
+      writeJSON(box(), TAPS_KEY, Object.keys(all).length ? all : null);
+    },
+    set(k) { const o = this.mine(); o[k] = Date.now(); this.save(o); },
+    drop(k) { const o = this.mine(); if (k in o) { delete o[k]; this.save(o); } },
+    clearAll() { writeJSON(box(), TAPS_KEY, null); }
+  };
+
+  // words typed but not sent yet (this tab only): a sign-in after a quiet while doesn't lose them
+  const DRAFTS_KEY = STORE_KEY + '-drafts';
+  const drafts = {
+    get(id) { const o = readJSON(tab(), DRAFTS_KEY) || {}; return typeof o[id] === 'string' ? o[id].slice(0, 4000) : ''; },
+    set(id, text) {
+      const o = readJSON(tab(), DRAFTS_KEY) || {};
+      if (text && text.trim()) o[id] = String(text).slice(0, 4000); else delete o[id];
+      writeJSON(tab(), DRAFTS_KEY, Object.keys(o).length ? o : null);
+    },
+    any() { return Object.keys(readJSON(tab(), DRAFTS_KEY) || {}).length > 0; },
+    clearAll() { writeJSON(tab(), DRAFTS_KEY, null); }
+  };
+
+  /* ================= the server (the only place that talks to it) ================= */
+  const KNOWN = ['input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big'];
+  const fail = (code, status, retry) => { const e = new Error(code); e.code = code; e.status = status || 0; if (retry) e.retry = retry; return e; };
+  const errorFrom = (status, data) => {
+    let code = data && typeof data.error === 'string' && KNOWN.includes(data.error) ? data.error : '';
+    if (!code) {
+      code = status === 400 ? 'input' : status === 401 ? 'signed_out' : status === 403 ? 'origin' : status === 404 ? 'not_found'
+        : status === 413 ? 'too_big' : status === 429 ? 'slow_down' : status === 503 ? 'not_ready' : 'server';
+    }
+    const r = data && Number.isFinite(+data.retry_minutes) ? Math.max(1, Math.min(10080, Math.round(+data.retry_minutes))) : 0;
+    const e = fail(code, status, r);
+    // for files the server also says which rule they bumped into: size, type, count or too_many
+    if (data && typeof data.reason === 'string') e.reason = data.reason.slice(0, 20);
+    return e;
+  };
+  const post = async (path, body, key) => {
+    const headers = { 'Content-Type': 'application/json' };
+    if (key) headers['X-WF-Session'] = key;
+    try {
+      return await fetch(BASE + path, {
+        method: 'POST', headers, body: JSON.stringify(body || {}),
+        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer'
+      });
+    } catch (e) { throw fail('network'); }
+  };
+  const postJSON = async (path, body, key) => {
+    const res = await post(path, body, key);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw errorFrom(res.status, data);
+    return data;
+  };
+  // pictures and files go as a form, with a progress report while they travel
+  const sendForm = (path, fields, files, key, onProgress) => new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fields.forEach(([k, v]) => fd.append(k, v));
+    files.forEach((f) => fd.append('files', f, f.name));
+    const x = new XMLHttpRequest();
+    x.open('POST', BASE + path);
+    x.setRequestHeader('X-WF-Session', key);
+    x.timeout = 5 * 60 * 1000;
+    if (onProgress && x.upload) x.upload.onprogress = (e) => { if (e.lengthComputable) onProgress(e.loaded / e.total); };
+    x.onload = () => {
+      let data = {};
+      try { data = JSON.parse(x.responseText || '{}'); } catch (e) { /* not JSON */ }
+      if (x.status >= 200 && x.status < 300) resolve(data); else reject(errorFrom(x.status, data));
+    };
+    x.onerror = x.ontimeout = x.onabort = () => reject(fail('network'));
+    x.send(fd);
+  });
+
+  const realApi = {
+    requestCode: (who) => postJSON('/request-code', who),
+    verifyCode: (who, code) => postJSON('/verify-code', Object.assign({}, who, { code })),
+    me: () => postJSON('/me', {}, token),
+    logout: (key) => postJSON('/logout', {}, key),
+    todo: (id, action, text) => postJSON('/todo', text == null ? { todo: id, action } : { todo: id, action, text }, token),
+    async file(thing, name) {
+      const res = await post('/file', name ? { thing, name } : { thing }, token);
+      if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+      const blob = await res.blob();
+      return { blob, type: (res.headers.get('Content-Type') || '').split(';')[0].trim().toLowerCase() };
+    },
+    upload: (id, files, onProgress) => sendForm('/upload', [['todo', id]], files, token, onProgress),
+    change: (req, onProgress) => (req.files.length
+      ? sendForm('/change', [['what', req.what], ['where_on_site', req.where], ['nonce', req.nonce]], req.files, token, onProgress)
+      : postJSON('/change', { what: req.what, where_on_site: req.where, nonce: req.nonce }, token))
+  };
+  let api = realApi;
+
+  // what people read when something goes sideways
+  const words = (err, where) => {
+    const c = err && err.code;
+    if (c === 'code') return 'That code didn’t work. Check the numbers, and use the code in the newest email.';
+    if (c === 'slow_down' && (err.retry || 0) >= 2880) return 'Sign-in is paused for this email, to keep it safe. Email me at ' + TAYA + ' and I’ll open it back up.';
+    if (c === 'slow_down') {
+      const m = err.retry || 15;
+      const when = m >= 90 ? plural(Math.round(m / 60), 'hour', 'hours') : m >= 60 ? 'an hour' : plural(m, 'minute', 'minutes');
+      return 'Let’s take a little breather. Try again in ' + when + '.';
+    }
+    if (c === 'not_found') return 'That’s not here anymore. Try refreshing the page.';
+    if (c === 'no_care') return 'Asks open once your care begins. Until then, just email me.';
+    if (c === 'too_big') return 'That’s a bit big to send in one go. Try fewer at a time.';
+    if (c === 'input' && err.reason === 'size') return 'One of those is too big to send. Photos up to 15 MB work, and pictures for a change up to 10 MB.';
+    if (c === 'input' && err.reason === 'full') return 'Your project’s file space is full. Email me and I’ll make room.';
+    if (c === 'input' && err.reason === 'type') return 'One of those is a kind of file I can’t take here. Photos and PDFs work best.';
+    if (c === 'input' && (err.reason === 'too_many' || err.reason === 'count')) return 'That’s more than this spot can hold. Email me the rest, or share an album link.';
+    if (c === 'input') return where === 'email' ? 'That email doesn’t look quite right. Check for a little typo?' : 'Something in there didn’t fit. Could you check it and try again?';
+    return 'I can’t reach the portal right now. Try again soon, or email me at ' + TAYA + '.';
+  };
+
+  /* ================= what's on screen ================= */
+  let me = null;           // the project, as the server last sent it (cleaned)
+  let lastLoad = 0;
+  let who = null;          // {email} or {phone} while signing in (memory only)
+  let usePhone = false;
+  let verifying = false;
+  let busy = 0;            // uploads or sends under way: never refresh the page under them
+  let firstShow = true;    // the project rises in gently the first time only
+  let paidReturn = '';     // back from Stripe: '1', or which payment ('deposit', 'balance', 'care')
+  let nonce = newNonce();
+  let pics = [];           // pictures chosen for a change request
+  const openAnswers = new Set(); // "Change my answer" boxes someone opened
+
+  const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project'];
+  const show = (id) => {
+    VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
+    $('#foot-out').hidden = id !== 'v-project';
+    $('#b-signout-top').hidden = id !== 'v-project';
+    if (id !== 'v-project') $('#nav-start').hidden = false;
+  };
+  const announce = (text) => {
+    const l = $('#live');
+    l.textContent = '';
+    requestAnimationFrame(() => { l.textContent = text; });
+  };
+  let toastTimer = 0;
+  const toast = (text, ms) => {
+    const t = $('#toast');
+    t.textContent = text;
+    t.hidden = true;
+    void t.offsetWidth; // start its little rise again
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, ms || 5600);
+    announce(text);
+  };
+  const focusEl = (el, stay) => { if (!el) return; if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1'); el.focus(stay ? { preventScroll: true } : undefined); };
+  const setBusy = (btn, on, label) => {
+    const span = btn.querySelector('span') || btn;
+    if (on) { btn.dataset.label = span.textContent; span.textContent = label; btn.disabled = true; btn.setAttribute('aria-busy', 'true'); }
+    else { if (btn.dataset.label) span.textContent = btn.dataset.label; btn.disabled = false; btn.removeAttribute('aria-busy'); }
+  };
+  const showErr = (id, text) => {
+    const p = $('#' + id + '-err');
+    p.textContent = text;
+    p.hidden = !text;
+    const input = { email: '#in-email', code: '#in-code', what: '#in-what' }[id];
+    if (input) { if (text) $(input).setAttribute('aria-invalid', 'true'); else $(input).removeAttribute('aria-invalid'); }
+  };
+
+  /* ================= the words in the photo ================= */
+  const hero = (eyebrow, before, em, lede, moon, nowLine) => {
+    $('#hero-eyebrow').textContent = eyebrow;
+    const h = $('#hero-title');
+    h.textContent = before;
+    if (em) h.append(make('em', null, em));
+    const l = $('#hero-lede');
+    l.textContent = '';
+    // their build's moon (waxing Maiden, full Mother, waning Crone) sits just before its name
+    const parts = lede.split('\u0001');
+    l.append(parts[0]);
+    if (parts.length > 1) { if (moon) l.append(icon(moon, 'moon')); l.append(parts[1]); }
+    // and where we are, in one line, so the first screen answers "where are we?"
+    if (nowLine) l.append(make('span', 'now-line', nowLine));
+  };
+  const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email. No passwords to remember.');
+
+  /* ================= signing in ================= */
+  function toEmailStep(notice, moveFocus) {
+    me = null;
+    heroSignedOut();
+    const n = $('#email-notice');
+    n.textContent = notice || '';
+    n.hidden = !notice;
+    showErr('email', '');
+    stopResend();
+    show('v-email');
+    if (moveFocus) focusEl($('#h-email'));
+  }
+
+  function setPhoneMode(on) {
+    usePhone = on;
+    const input = $('#in-email');
+    input.value = '';
+    input.type = on ? 'tel' : 'email';
+    input.autocomplete = on ? 'tel' : 'email';
+    input.inputMode = on ? 'tel' : 'email';
+    $('#l-email').textContent = on ? 'Your phone number' : 'Your email';
+    $('#email-hint').textContent = on ? 'Use the number you gave me when we started.' : 'Use the email you gave me when we started.';
+    $('#b-phone').textContent = on ? 'Use my email instead' : 'Text me a code instead';
+    showErr('email', '');
+    input.focus();
+  }
+
+  async function onEmail(e) {
+    e.preventDefault();
+    const raw = $('#in-email').value.trim();
+    let body;
+    if (usePhone) {
+      let d = digits(raw);
+      if (d.length === 11 && d[0] === '1') d = d.slice(1);
+      if (d.length !== 10) { showErr('email', 'That number looks a little short. Try all 10 digits.'); $('#in-email').focus(); return; }
+      body = { phone: d };
+    } else {
+      const em = raw.toLowerCase();
+      if (em.length < 3 || em.length > 200 || !EMAIL_RE.test(em)) { showErr('email', 'That email doesn’t look quite right. Check for a little typo?'); $('#in-email').focus(); return; }
+      body = { email: em };
+    }
+    showErr('email', '');
+    const btn = $('#b-send');
+    setBusy(btn, true, 'Sending…');
+    try {
+      await api.requestCode(body);
+      who = body;
+      pending.set(body);
+      toCodeStep();
+    } catch (err) {
+      showErr('email', words(err, 'email'));
+    } finally { setBusy(btn, false); }
+  }
+
+  function toCodeStep(sentAt) {
+    const byPhone = !!who.phone;
+    $('#h-code').textContent = byPhone ? 'Check your phone' : 'Check your email';
+    const lead = $('#code-lead');
+    lead.textContent = byPhone ? 'If it’s the number I have for your project, a ' : 'If it’s the email I have for your project, a ';
+    lead.append(make('span', 'nowrap', '6-digit'), ' code is on its way to ', make('b', null, byPhone ? maskPhone(who.phone) : who.email));
+    lead.append(byPhone ? '. It works for 10 minutes.' : ', from “Taya · Web Faery”. It works for 10 minutes. Peek in spam if it’s shy.');
+    $('#in-code').value = '';
+    showErr('code', '');
+    startResend(sentAt);
+    show('v-code');
+    announce(byPhone ? 'Code sent. Check your phone.' : 'Code sent. Check your email.');
+    $('#in-code').focus();
+  }
+
+  let resendAt = 0, resendTick = 0;
+  function tickResend() {
+    const left = Math.ceil((resendAt - Date.now()) / 1000);
+    const b = $('#b-resend');
+    if (left > 0) {
+      b.disabled = true;
+      $('#resend-note').textContent = 'You can ask for a new one in ' + plural(left, 'second', 'seconds') + '.';
+    } else { b.disabled = false; $('#resend-note').textContent = ''; stopResend(); }
+  }
+  function startResend(from) { resendAt = (from || Date.now()) + RESEND_WAIT * 1000; clearInterval(resendTick); resendTick = setInterval(tickResend, 1000); tickResend(); }
+  function stopResend() { clearInterval(resendTick); resendTick = 0; }
+
+  async function onResend() {
+    if (!who) { toEmailStep('', true); return; }
+    const b = $('#b-resend');
+    b.disabled = true;
+    showErr('code', '');
+    try {
+      await api.requestCode(who);
+      pending.set(who);
+      $('#in-code').value = '';
+      startResend();
+      toast('A fresh code is on its way. Use whichever email arrives, the newest is best.', 9000);
+      $('#in-code').focus();
+    } catch (err) { showErr('code', words(err)); b.disabled = false; }
+  }
+
+  function onCodeInput() {
+    const input = $('#in-code');
+    const d = digits(input.value).slice(0, 6);
+    if (input.value !== d) input.value = d;
+    if (d.length === 6 && !verifying) onCode();
+  }
+
+  async function onCode(e) {
+    if (e) e.preventDefault();
+    if (verifying) return;
+    const code = digits($('#in-code').value).slice(0, 6);
+    if (code.length !== 6) { showErr('code', 'The code is 6 numbers. Check the message and try again.'); $('#in-code').focus(); return; }
+    if (!who) { toEmailStep('', true); return; }
+    verifying = true;
+    showErr('code', '');
+    const btn = $('#b-verify');
+    setBusy(btn, true, 'Signing in…');
+    try {
+      const r = await api.verifyCode(who, code);
+      if (!r || !TOKEN_RE.test(str(r.token, 100))) throw fail('server', 500);
+      token = r.token;
+      store.set(token);
+      stopResend();
+      pending.clear();
+      who = null;
+      announce('You’re in.');
+      await loadProject(true);
+    } catch (err) {
+      showErr('code', words(err.code === 'signed_out' ? fail('code', 401) : err));
+      const input = $('#in-code');
+      input.focus();
+      input.select();
+    } finally { verifying = false; setBusy(btn, false); }
+  }
+
+  function quietSignOut(moveFocus) {
+    token = '';
+    store.clear();
+    toEmailStep('You were signed out after a quiet while. Here’s a fresh start.' +
+      (drafts.any() ? ' Your words are kept: sign in again to send them.' : ''), moveFocus !== false);
+  }
+
+  async function signOut() {
+    const key = token;
+    token = '';
+    store.clear();
+    taps.clearAll();   // a shared computer: nothing of theirs stays behind
+    drafts.clearAll();
+    pending.clear();
+    if (key) api.logout(key).catch(() => { /* the key is gone from here either way; the server forgets it soon */ });
+    toEmailStep('You’re signed out. See you soon!', false);
+    focusEl($('#h-email'), true);
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    announce('You’re signed out.');
+  }
+
+  /* ================= the project ================= */
+  async function loadProject(fromSignIn) {
+    show('v-loading');
+    try {
+      const data = await api.me();
+      me = clean(data);
+      lastLoad = Date.now();
+      render();
+      show('v-project');
+      if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
+      if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(fromSignIn !== null); return; }
+      show('v-offline');
+      if (fromSignIn !== null) focusEl($('#h-offline'));
+    }
+  }
+
+  // coming back to the tab after a while: fetch it again, quietly, unless they're in the middle of something
+  async function quietRefresh() {
+    if (!token || !me || busy || isTyping()) return;
+    try {
+      const data = await api.me();
+      if (busy || isTyping()) return;
+      me = clean(data);
+      lastLoad = Date.now();
+      render();
+    } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
+  }
+  const isTyping = () => pics.length > 0 || $$('#v-project textarea, #v-project input[type="text"]').some((t) => t.value.trim());
+
+  // Back from Stripe (its "after payment" link can be portal.html?paid=deposit, or ?paid=1): note it, so the
+  // pay button turns into a thank-you instead of asking again while Taya waits to see it land.
+  function backFromPaying(k) {
+    let key = ['deposit', 'balance', 'care'].includes(k) ? k : '';
+    if (!key) {
+      const t = taps.mine();
+      const tapped = ['deposit', 'balance', 'care'].filter((x) => t[x]).sort((a, b) => t[b] - t[a]);
+      const due = me.pay.find((p) => p.state === 'due');
+      key = tapped[0] || (due ? due.key : '');
+    }
+    const row = me.pay.find((p) => p.key === key);
+    if (row && row.state !== 'paid' && row.state !== 'active') { taps.set(key); renderList(); renderPay(); }
+    toast('Thank you! It shows here once I see it land, usually within a day. No need to pay again.', 9000);
+  }
+
+  /* ---- clean what the server sends: only the fields this page knows, only https links ---- */
+  function clean(d) {
+    d = d && typeof d === 'object' ? d : {};
+    const c = d.client || {};
+    const list = d.list || {};
+    const tl = d.timeline || {};
+    const th = d.things || {};
+    const care = d.care || {};
+    const item = (x) => {
+      if (!x || typeof x !== 'object') return null;
+      const title = str(x.title, 120);
+      if (!title) return null;
+      return {
+        id: str(x.id, 40), title, detail: str(x.detail, 300), kind: str(x.kind, 12) || 'note',
+        start_step: str(x.start_step, 20), url: safeUrl(x.url), accept: str(x.accept, 10),
+        status: x.status === 'sent' ? 'sent' : 'open', answer: str(x.answer, 1000),
+        files_count: Math.max(0, Math.min(999, Math.round(+x.files_count || 0))), sent_on: str(x.sent_on, 30),
+        derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12)
+      };
+    };
+    const agreement = th.agreement && typeof th.agreement === 'object' ? {
+      file: !!th.agreement.file, signed_name: str(th.agreement.signed_name, 120),
+      signed_on: str(th.agreement.signed_on, 30), version: str(th.agreement.version, 40)
+    } : null;
+    return {
+      client: {
+        first_name: str(c.first_name, 60), business: str(c.business, 160), build: str(c.build, 12),
+        build_label: str(c.build_label, 20), founding: !!c.founding, care: str(c.care, 12), care_active: !!c.care_active,
+        site_url: safeUrl(c.site_url), email: str(c.email, 200)
+      },
+      note: d.note && str(d.note.text).trim() ? { text: str(d.note.text, 600).trim(), date: str(d.note.date, 30) } : null,
+      list: {
+        open: arr(list.open).map(item).filter(Boolean).slice(0, 60),
+        done: arr(list.done).map((x) => ({ id: str(x && x.id, 40), title: str(x && x.title, 120) })).filter((x) => x.title).slice(0, 60)
+      },
+      timeline: {
+        current: str(tl.current, 20) || 'getting_started',
+        stages: arr(tl.stages).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), date: str(s && s.date, 30), state: str(s && s.state, 8) })),
+        care_since: str(tl.care_since, 30)
+      },
+      things: {
+        draft: th.draft && safeUrl(th.draft.url) ? { url: safeUrl(th.draft.url), note: str(th.draft.note, 200) } : null,
+        agreement: agreement && (agreement.file || agreement.signed_name) ? agreement : null,
+        brand_sheet: !!th.brand_sheet, handoff_sheet: !!th.handoff_sheet,
+        receipts: arr(th.receipts).map((r) => ({ name: str(r && r.name, 200), label: str(r && r.label, 120) || 'Receipt' })).filter((r) => r.name).slice(0, 20)
+      },
+      pay: arr(d.pay).filter((p) => p && ['deposit', 'balance', 'care'].includes(p.key)).map((p) => ({
+        key: p.key, amount: Math.max(0, Math.round(+p.amount || 0)), period: p.period === 'year' ? 'year' : 'month',
+        state: ['paid', 'due', 'later', 'active'].includes(p.state) ? p.state : 'later', paid_on: str(p.paid_on, 30), starts_on: str(p.starts_on, 30),
+        url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
+      })),
+      care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
+      care: {
+        can_ask: !!care.can_ask,
+        requests: arr(care.requests).map((r) => ({
+          id: str(r && r.id, 40), what: str(r && r.what, 200), where_on_site: str(r && r.where_on_site, 200),
+          status: ASK_STATUS[r && r.status] ? r.status : 'new', taya_reply: str(r && r.taya_reply, 1000), created: str(r && r.created, 30)
+        })).filter((r) => r.what).slice(0, 10)
+      }
+    };
+  }
+
+  const stageIndex = (key) => {
+    const i = STAGES.findIndex((s) => s[0] === key);
+    return i >= 0 ? i : (key === 'care' || key === 'resting' ? STAGES.length : 0);
+  };
+  const stageDate = (key) => { const s = me.timeline.stages.find((x) => x.key === key); return s ? s.date : ''; };
+  const startHref = (step) => {
+    const c = me.client;
+    const q = new URLSearchParams();
+    if (BUILDS[c.build]) q.set('build', c.build);
+    if (c.founding) q.set('founding', '1');
+    if (['monthly', 'yearly', 'none'].includes(c.care)) q.set('care', c.care);
+    const qs = q.toString();
+    return START_PAGE + (qs ? '?' + qs : '') + (START_STEPS[step] ? '#' + START_STEPS[step] : '');
+  };
+  // the getting-started page, in its own tab (the portal stays put), and it says so
+  const startLink = (step, label, cls) => {
+    const a = make('a', cls || 'btn small');
+    a.href = startHref(step);
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.append(make('span', null, label), icon('i-out'));
+    a.setAttribute('aria-label', label + ' (opens your getting-started page in a new tab)');
+    return a;
+  };
+  // a link out of the portal (a draft, Stripe, their site): a new tab that can't reach back here.
+  // tapKey: remember the tap ("Paid? Thank you!") so the same button doesn't glow at them again
+  const outLink = (href, label, cls, what, tapKey) => {
+    const a = make('a', cls || 'open-btn');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.append(make('span', null, label), icon('i-out'));
+    if (what) a.dataset.what = what;
+    if (tapKey) a.addEventListener('click', () => { taps.set(tapKey); setTimeout(() => { if (me) { renderList(); renderPay(); } }, 400); });
+    return a;
+  };
+  // the open "Fill in your getting-started page" item, if there is one
+  const startItem = () => me.list.open.find((x) => x.kind === 'start' && (x.start_step === 'top' || !x.start_step));
+  const PAY_THANKS = 'Paid? Thank you! It shows here once I see it land, usually within a day. No need to pay again.';
+
+  // "Now: your draft, about Oct 13": the first screen answers "where are we?"
+  function nowLine() {
+    const cur = me.timeline.current;
+    const d = stageDate(cur);
+    const soon = d && !isPast(d) ? shortDate(d) : '';
+    if (cur === 'care') return 'Live, and in my care';
+    if (cur === 'resting') return 'Live, and all yours';
+    if (cur === 'getting_started') return 'Now: getting started';
+    if (cur === 'call') return 'Now: our call' + (d ? (isPast(d) ? '' : ', ' + shortDate(d)) : '');
+    if (cur === 'draft') return 'Now: your draft' + (soon ? ', about ' + soon : '');
+    if (cur === 'changes') return 'Now: your changes' + (soon ? ', about ' + soon : '');
+    if (cur === 'launch') return 'Now: launch' + (soon ? ', about ' + soon : '');
+    if (cur === 'settling_in') return 'Now: settling in' + (d ? ', until ' + shortDate(d) : '');
+    return '';
+  }
+
+  function render() {
+    const c = me.client;
+    const build = BUILDS[c.build] || c.build_label;
+    hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
+      (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_MOON[c.build], nowLine());
+    $('#me-email').textContent = c.email || 'you';
+    // forget "I tapped Pay" once Taya has marked it (and "I booked" once the call has a date)
+    me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
+    if (stageDate('call') || stageIndex(me.timeline.current) >= 2) taps.drop('call');
+    // the header's "Getting started" only while that page is still theirs to fill in
+    $('#nav-start').hidden = !startItem();
+    renderNote();
+    renderList();
+    renderTimeline();
+    renderThings();
+    renderPay();
+    renderChange();
+    placeChange();
+    if (firstShow) {
+      firstShow = false;
+      if (!reduceMotion) {
+        $$('#v-project > .p-card:not([hidden])').forEach((el, i) => {
+          el.style.setProperty('--i', String(i));
+          el.classList.add('rise');
+          el.addEventListener('animationend', () => el.classList.remove('rise'), { once: true });
+        });
+      }
+    }
+  }
+
+  // Care clients mostly come back to ask for a change: once they're in care (or have nothing left on
+  // their list), "Ask for a change" moves up, right under the note and the list.
+  function placeChange() {
+    const proj = $('#v-project');
+    const sec = $('#sec-change');
+    const cur = me.timeline.current;
+    const up = me.care.can_ask && (cur === 'care' || !me.list.open.length);
+    const before = up ? (me.list.open.length ? $('#sec-where') : $('#sec-list')) : null;
+    if (before) { if (sec.nextElementSibling !== before) proj.insertBefore(sec, before); }
+    else if (proj.lastElementChild !== sec) proj.append(sec);
+  }
+
+  /* ---- a note from Taya ---- */
+  function renderNote() {
+    const sec = $('#sec-note');
+    if (!me.note) { sec.hidden = true; return; }
+    $('#note-text').textContent = me.note.text;
+    $('#note-date').textContent = shortDate(me.note.date);
+    sec.hidden = false;
+  }
+
+  /* ---- your list ---- */
+  function renderList() {
+    const open = me.list.open;
+    const done = me.list.done;
+    const cur = me.timeline.current;
+    $('#h-list').textContent = !open.length ? 'All caught up' : open.length === 1 ? 'Just one thing' : 'Just these few things';
+    $('#todos').replaceChildren(...open.map(todoRow));
+    $('#todos').hidden = !open.length;
+    $('#list-empty').hidden = open.length > 0;
+    $('#list-empty-text').textContent = cur === 'care' || cur === 'resting'
+      ? 'Nothing on your list. Your site is in good hands.'
+      : 'Nothing on your list right now. Rest easy, I’ve got the next bit.';
+    const fold = $('#done-fold');
+    fold.hidden = !done.length;
+    $('#done-sum').textContent = 'Done (' + done.length + ')';
+    $('#done-list').replaceChildren(...done.map((d) => {
+      const li = make('li');
+      const m = make('span', 'm');
+      m.append(icon('i-check'));
+      li.append(m, make('span', null, d.title));
+      return li;
+    }));
+  }
+
+  function todoRow(item) {
+    const t = taps.mine();
+    const tapped = (item.kind === 'pay' && t[item.pay_key]) || (item.id === 'd:call' && t.call);
+    const li = make('li', 'todo' + (item.status === 'sent' || tapped ? ' sent' : '') + (item.kind === 'pay' ? ' pay' : ''));
+    li.dataset.id = item.id;
+    const mk = make('span', 'mk');
+    mk.setAttribute('aria-hidden', 'true');
+    const body = make('div');
+    body.append(make('h3', null, item.title));
+    if (item.detail) body.append(make('p', 'detail', item.detail));
+    const sentLine = (text) => {
+      const p = make('p', 'thanks-line');
+      p.append(icon('i-check'), make('span', null, text));
+      return p;
+    };
+    const act = make('div', 'act');
+    const kind = item.kind;
+
+    if (kind === 'start' && (item.start_step === 'top' || !item.start_step)) {
+      // a new client: the whole getting-started page, with what's on it in order
+      if (item.status === 'sent') {
+        body.append(sentLine('Sent, thank you! I’ll check it soon.'));
+        act.append(startLink('top', 'Open it again', 'open-btn'));
+      } else {
+        const steps = [];
+        if (!me.things.agreement) steps.push('Sign our agreement');
+        const dep = me.pay.find((p) => p.key === 'deposit');
+        if (dep && dep.state !== 'paid' && !t.deposit) steps.push('Pay your deposit');
+        if (!stageDate('call') && !t.call) steps.push('Book our call');
+        if (steps.length > 1) {
+          const ol = make('ol', 'substeps');
+          steps.forEach((x) => ol.append(make('li', null, x)));
+          body.append(make('p', 'detail', 'On that one page, in order:'), ol);
+        }
+        act.append(startLink('top', 'Open your getting-started page'));
+        if (!item.derived) act.append(doneButton(item));
+      }
+    } else if (kind === 'start' && item.start_step === 'sign') {
+      // signing lives on the getting-started page, so this one still goes there
+      if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
+      else body.append(make('p', 'hint', 'It opens your getting-started page in a new tab.'));
+      act.append(startLink('sign', item.status === 'sent' ? 'Open it again' : 'Sign it', item.status === 'sent' ? 'open-btn' : 'btn small'));
+      if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
+    } else if (kind === 'start') {
+      // any other step: its few lines right here, no trip back to the getting-started page
+      if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
+      const how = HOWTO[item.start_step];
+      if (how) {
+        const d = make('details', 'howto');
+        if (item.status !== 'sent') d.open = how.steps.length === 1;
+        d.append(make('summary', null, how.steps.length > 1 ? 'How to do it' : 'What I need'));
+        const ol = make(how.steps.length > 1 ? 'ol' : 'ul');
+        how.steps.forEach((x) => ol.append(make('li', null, x)));
+        d.append(ol);
+        if (how.after) d.append(make('p', 'hint', how.after));
+        body.append(d);
+      }
+      if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
+    } else if (kind === 'link' && item.url) {
+      if (item.id === 'd:call' && t.call) {
+        body.append(sentLine('Booked? Thank you! It shows here once I see it.'));
+        act.append(outLink(item.url, 'Open the booking page again', 'later', 'your booking page for our call', 'call'));
+      } else {
+        if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
+        const what = item.id === 'd:call' ? 'your booking page for our call' : item.id === 'd:draft' ? 'your private draft' : 'that page';
+        act.append(outLink(item.url, item.id === 'd:call' ? 'Pick a time' : 'Open', item.status === 'sent' ? 'open-btn' : 'btn small', what, item.id === 'd:call' ? 'call' : ''));
+        if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
+      }
+      if (item.id === 'd:draft') {
+        // a round of changes: one email with everything in it
+        const m = make('a', 'later', 'Send me your changes');
+        m.href = 'mailto:' + TAYA + '?subject=' + encodeURIComponent('Changes for my draft');
+        act.append(m);
+        body.append(make('p', 'hint', 'One email per round, with everything in it. Two rounds are included.'));
+      }
+    } else if (kind === 'upload') {
+      uploadBlock(item, body, act, sentLine);
+    } else if (kind === 'answer') {
+      answerBlock(item, body, act);
+    } else if (kind === 'pay') {
+      if (tapped) body.append(sentLine(PAY_THANKS));
+      const b = make('button', tapped ? 'later' : 'btn small secondary', 'See payments');
+      b.type = 'button';
+      b.addEventListener('click', () => {
+        const sec = $('#sec-pay');
+        sec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        const target = item.pay_key && $('#pay-' + item.pay_key + ' .btn, #pay-' + item.pay_key + ' a');
+        setTimeout(() => focusEl(target || sec), reduceMotion ? 0 : 450);
+      });
+      act.append(b);
+    }
+    if (act.childNodes.length) body.append(act);
+    li.append(mk, body);
+    return li;
+  }
+
+  // "I’ve done it": for a step on the getting-started page or a link, so Taya knows to look
+  function doneButton(item) {
+    const b = make('button', 'later', 'I’ve done it');
+    b.type = 'button';
+    b.addEventListener('click', async () => {
+      b.disabled = true;
+      busy++;
+      try {
+        const r = await api.todo(item.id, 'sent');
+        item.status = r && r.status === 'done' ? 'done' : 'sent';
+        item.sent_on = todayISO;
+        if (item.status === 'done') { me.list.open = me.list.open.filter((x) => x !== item); me.list.done.push({ id: item.id, title: item.title }); renderList(); }
+        else { replaceRow(item); if (item === startItem()) renderThings(); }
+        announce('Thank you! I’ll check it soon.');
+      } catch (err) {
+        b.disabled = false;
+        if (err.code === 'signed_out') { quietSignOut(true); return; }
+        toast(words(err));
+      } finally { busy = Math.max(0, busy - 1); }
+    });
+    return b;
+  }
+
+  const replaceRow = (item) => {
+    const old = $('#todos > li[data-id="' + CSS.escape(item.id) + '"]');
+    if (old) old.replaceWith(todoRow(item));
+  };
+
+  /* ---- an answer, typed right here ---- */
+  function answerBlock(item, body, act) {
+    const kept = drafts.get('ans:' + item.id);
+    if (kept && item.status === 'sent' && kept !== item.answer) openAnswers.add(item.id);
+    const editing = openAnswers.has(item.id);
+    if (item.status === 'sent' && item.answer && !editing) {
+      const said = make('p', 'said');
+      said.append(make('span', 'sr-only', 'You said: '), item.answer);
+      body.append(said);
+      const p = make('p', 'thanks-line');
+      p.append(icon('i-check'), make('span', null, 'Sent, thank you! I’ll check it soon.'));
+      body.append(p);
+      const b = make('button', 'later', 'Change my answer');
+      b.type = 'button';
+      b.addEventListener('click', () => { openAnswers.add(item.id); replaceRow(item); const t = $('#todos > li[data-id="' + CSS.escape(item.id) + '"] textarea'); if (t) t.focus(); });
+      act.append(b);
+      return;
+    }
+    const box = make('div', 'answer-box');
+    const id = 'ans-' + item.id.replace(/[^A-Za-z0-9]/g, '');
+    const label = make('label', 'sr-only', 'Your answer to: ' + item.title);
+    label.htmlFor = id;
+    const ta = make('textarea', 'short');
+    ta.id = id;
+    ta.maxLength = ANSWER_MAX;
+    ta.rows = 3;
+    ta.placeholder = 'Type it here';
+    ta.value = kept || (editing ? item.answer : '');
+    ta.addEventListener('input', () => drafts.set('ans:' + item.id, ta.value));
+    const err = make('p', 'err');
+    err.hidden = true;
+    err.id = id + '-err';
+    ta.setAttribute('aria-describedby', err.id);
+    const row = make('div', 'row');
+    const send = make('button', 'btn small', null);
+    send.type = 'button';
+    send.append(make('span', null, 'Send'));
+    row.append(send);
+    if (editing) {
+      const cancel = make('button', 'later', 'Never mind');
+      cancel.type = 'button';
+      cancel.addEventListener('click', () => { openAnswers.delete(item.id); drafts.set('ans:' + item.id, ''); replaceRow(item); });
+      row.append(cancel);
+    }
+    send.addEventListener('click', async () => {
+      const text = cleanText(ta.value, ANSWER_MAX + 1);
+      if (!text) { err.textContent = 'Just a word or two is plenty.'; err.hidden = false; ta.focus(); return; }
+      if (text.length > ANSWER_MAX) { err.textContent = 'That’s a lot! Could you keep it under 1,000 characters? Email me the rest.'; err.hidden = false; return; }
+      err.hidden = true;
+      setBusy(send, true, 'Sending…');
+      busy++;
+      try {
+        const r = await api.todo(item.id, 'answer', text);
+        item.status = 'sent';
+        item.answer = text;
+        item.sent_on = todayISO;
+        drafts.set('ans:' + item.id, '');
+        openAnswers.delete(item.id);
+        busy--;
+        replaceRow(item);
+        announce('Sent, thank you!');
+      } catch (e2) {
+        busy--;
+        setBusy(send, false);
+        if (e2.code === 'signed_out') { quietSignOut(true); return; }
+        err.textContent = words(e2);
+        err.hidden = false;
+      }
+    });
+    box.append(label, ta, err, row);
+    body.append(box);
+  }
+
+  /* ---- photos and files, sent right here ---- */
+  function uploadBlock(item, body, act, sentLine) {
+    const kind = UPLOAD_TYPES[item.accept] || UPLOAD_TYPES.photos;
+    const noun = kind.say; // photos or files
+    if (item.files_count > 0) body.append(sentLine(plural(item.files_count, noun === 'photos' ? 'photo' : 'file', noun) + ' sent. Thank you!'));
+    const room = UPLOAD_PER_ITEM - item.files_count;
+    if (room <= 0) { body.append(make('p', 'detail', 'That’s all this spot can hold. Email me any more, or share an album link.')); return; }
+    const id = 'up-' + item.id.replace(/[^A-Za-z0-9]/g, '');
+    const input = make('input', 'up-input');
+    input.type = 'file';
+    input.id = id;
+    input.multiple = true;
+    input.accept = kind.accept;
+    const pick = make('label', 'pick pick-btn');
+    pick.htmlFor = id;
+    pick.append(icon('i-up'), make('span', null, item.files_count ? 'Add more' : noun === 'photos' ? 'Add photos' : 'Add files'));
+    const progress = make('p', 'progress');
+    progress.setAttribute('role', 'status');
+    input.addEventListener('change', () => sendFiles(item, input, pick, progress, kind));
+    act.append(input, pick);
+    body.append(progress);
+  }
+
+  async function sendFiles(item, input, pick, progress, kind) {
+    const chosen = Array.from(input.files || []);
+    input.value = '';
+    if (!chosen.length || pick.getAttribute('aria-disabled') === 'true') return;
+    const skipped = [];
+    let files = chosen.filter((f) => { const ok = kind.ext.includes(extOf(f.name)); if (!ok) skipped.push(f.name); return ok; });
+    const room = UPLOAD_PER_ITEM - item.files_count;
+    if (files.length > room) { skipped.push(plural(files.length - room, 'extra file', 'extra files')); files = files.slice(0, room); }
+    if (!files.length) { progress.className = 'progress err'; progress.textContent = 'Those didn’t fit here. Photos, PDFs or logo files work best.'; return; }
+    busy++;
+    pick.setAttribute('aria-disabled', 'true');
+    input.disabled = true;
+    progress.className = 'progress';
+    progress.textContent = 'Getting them ready…';
+    let sent = 0;
+    try {
+      const ready = [];
+      for (const f of files) {
+        const s = item.accept === 'photos' || !item.accept ? await shrink(f) : f;
+        if (s.size > UPLOAD_MAX) skipped.push(f.name + ' (over 15 MB)'); else ready.push(s);
+      }
+      if (!ready.length) throw Object.assign(fail('input', 400), { reason: 'size' });
+      const total = ready.length;
+      let count = item.files_count;
+      // sends of up to 10 files and about 25 MB each
+      const batches = [];
+      for (const f of ready) {
+        const last = batches[batches.length - 1];
+        if (last && last.length < UPLOAD_PER_SEND && last.bytes + f.size <= UPLOAD_SEND_BYTES) { last.push(f); last.bytes += f.size; }
+        else { const b = [f]; b.bytes = f.size; batches.push(b); }
+      }
+      for (const batch of batches) {
+        const r = await api.upload(item.id, batch.slice(), (p) => {
+          const pct = Math.round(((sent + p * batch.length) / total) * 100);
+          progress.textContent = 'Sending… ' + Math.min(99, pct) + '%';
+        });
+        sent += batch.length;
+        count = r && Number.isFinite(+r.files_count) ? +r.files_count : count + batch.length;
+        item.files_count = count;
+        item.status = 'sent';
+      }
+      item.files_count = count;
+      item.status = 'sent';
+      item.sent_on = todayISO;
+      busy--;
+      replaceRow(item);
+      const msg = plural(total, kind.say === 'photos' ? 'photo' : 'file', kind.say) + ' sent. Thank you!' +
+        (skipped.length ? ' (I left out ' + skipped.slice(0, 3).join(', ') + (skipped.length > 3 ? ' and more' : '') + '.)' : '');
+      toast(msg);
+    } catch (err) {
+      busy--;
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      if (sent > 0) { replaceRow(item); toast('Some arrived, but not all. ' + words(err), 9000); return; }
+      pick.removeAttribute('aria-disabled');
+      input.disabled = false;
+      progress.className = 'progress err';
+      progress.textContent = words(err);
+    }
+  }
+
+  // Big phone photos are shrunk in the browser first (longest side 2400 px, JPEG), like the getting-started
+  // page does, so they send quickly and stay under the server's limit. Anything else goes as is.
+  async function shrink(f) {
+    if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size < 1.5 * MB || !window.createImageBitmap) return f;
+    try {
+      const bmp = await createImageBitmap(f);
+      const k = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      const blob = await new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.86));
+      if (!blob || blob.size >= f.size) return f;
+      return new File([blob], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg', lastModified: f.lastModified });
+    } catch (e) { return f; }
+  }
+
+  /* ---- where we are ---- */
+  function renderTimeline() {
+    const cur = me.timeline.current;
+    const ci = stageIndex(cur);
+    const live = cur === 'care' || cur === 'resting';
+    const list = STAGES.map(([key, label], i) => {
+      const s = me.timeline.stages.find((x) => x.key === key) || {};
+      return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
+    });
+    $('#tl').replaceChildren(...list.map((s) => {
+      const li = make('li', s.state);
+      if (s.state === 'now') li.setAttribute('aria-current', 'step');
+      const dot = make('span', 'dot');
+      dot.setAttribute('aria-hidden', 'true');
+      if (s.state === 'done') dot.append(icon('i-check'));
+      const body = make('div');
+      const name = make('span', 'name');
+      name.append(make('span', null, s.label));
+      if (s.state === 'now') name.append(make('span', 'now-pill', 'Now'));
+      else if (s.state === 'done') name.append(make('span', 'sr-only', '(done)'));
+      body.append(name);
+      const d = shortDate(s.date);
+      // the draft link is already here: its date is when it's finished, not when it arrives
+      const draftHere = s.key === 'draft' && s.state === 'now' && !!me.things.draft;
+      let when = '';
+      if (d) {
+        if (s.state === 'done') when = d;
+        else if (s.key === 'settling_in') when = (s.state === 'now' ? 'Until ' : 'Until about ') + d;
+        else if (s.key === 'call') when = isPast(s.date) ? d : 'Booked for ' + d;
+        else if (draftHere) when = isPast(s.date) ? '' : 'Finished about ' + d;
+        else if (s.state === 'now') when = isPast(s.date) ? 'Since ' + d : 'About ' + d;
+        else when = 'About ' + d;
+      }
+      body.append(make('span', 'when', when));
+      const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : STAGE_SAY[s.key];
+      if (s.state === 'now' && say) body.append(make('p', 'say', say));
+      li.append(dot, body);
+      return li;
+    }));
+    // once the site is live, the six finished steps fold away into one line
+    $('#h-where').textContent = cur === 'care' ? 'Live, and in good hands' : cur === 'resting' ? 'All done, and all yours' : 'Your site, step by step';
+    $('#tl').hidden = live;
+    const more = $('#b-tl-more');
+    more.hidden = !live;
+    more.textContent = 'See every step';
+    more.setAttribute('aria-expanded', 'false');
+    const after = $('#tl-after');
+    after.replaceChildren();
+    if (cur === 'care') {
+      const since = shortDate(me.timeline.care_since || (me.pay.find((p) => p.key === 'care') || {}).paid_on || stageDate('settling_in'));
+      after.append(icon('i-full'), make('span', null, 'Live and in my care' + (since ? ' since ' + since : '') + '.'));
+      after.hidden = false;
+    } else if (cur === 'resting') {
+      const span = make('span', null, 'Your site is all yours. If you ever need me, just email ');
+      const a = make('a', null, TAYA);
+      a.href = 'mailto:' + TAYA;
+      span.append(a, '.');
+      after.append(icon('i-full'), span);
+      after.hidden = false;
+    } else after.hidden = true;
+  }
+
+  /* ---- your things ---- */
+  function renderThings() {
+    const c = me.client;
+    const th = me.things;
+    const ci = stageIndex(me.timeline.current);
+    const rows = [];
+    const row = (ico, name, sub, actions, waiting) => {
+      const li = make('li', 'thing' + (waiting ? ' waiting' : ''));
+      const i = make('span', 'ico');
+      i.append(icon(ico));
+      li.append(i, make('span', 't-name', name));
+      if (sub) li.append(make('span', 't-sub', sub));
+      if (actions && actions.length) { const a = make('span', 't-act'); a.append(...actions); li.append(a); }
+      rows.push(li);
+      return li;
+    };
+
+    // their live site once it's out, otherwise the draft
+    if (c.site_url && ci >= 4) row('i-globe', 'Your site', hostOf(c.site_url), [outLink(c.site_url, 'Visit', null, 'your live site')]);
+    else if (th.draft) row('i-eye', 'Your draft', th.draft.note || 'A private link, just for you.', [outLink(th.draft.url, 'Open', null, 'your private draft')]);
+    else {
+      const d = shortDate(stageDate('draft'));
+      row('i-eye', 'Your draft', d && ci <= 2 ? 'Comes about ' + d + '. I’ll email you the link.' : 'Your private link comes with your draft.', null, true);
+    }
+
+    // the agreement
+    if (th.agreement) {
+      const a = th.agreement;
+      const signed = a.signed_name ? 'Signed' + (a.signed_on ? ' ' + shortDate(a.signed_on) : '') + ' as ' + a.signed_name : 'Signed, thank you';
+      if (a.file) row('i-sign', 'Our agreement', signed, [fileButton('agreement', null, 'Open', 'agreement')]);
+      else row('i-sign', 'Our agreement', signed + '. Want a copy? Just ask.', null);
+    } else {
+      const st = startItem();
+      if (st && st.status === 'sent') {
+        row('i-sign', 'Our agreement', 'Signed on your getting-started page? I’ll add it here once I’ve had a look.', null, true);
+      } else {
+        row('i-sign', 'Our agreement', 'Not signed yet. It’s one short page, on your getting-started page.', [startLink('sign', 'Sign it', 'later')], true);
+      }
+    }
+
+    row('i-palette', 'Your brand sheet', th.brand_sheet ? 'Your colors, fonts and logo files' : 'Comes at launch',
+      th.brand_sheet ? [fileButton('brand_sheet', null, 'Open', 'brand sheet')] : null, !th.brand_sheet);
+    row('i-key', 'The “Your site” sheet', th.handoff_sheet ? 'What lives where, and which logins are yours' : 'Comes at launch',
+      th.handoff_sheet ? [fileButton('handoff_sheet', null, 'Open', 'site sheet')] : null, !th.handoff_sheet);
+
+    // receipts
+    if (th.receipts.length) {
+      const li = row('i-receipt', th.receipts.length === 1 ? 'Your receipt' : 'Your receipts', 'Stripe also emails a receipt each time.');
+      const ul = make('ul', 'receipts');
+      th.receipts.forEach((r) => {
+        const item = make('li');
+        item.append(make('span', null, r.label), fileButton('receipt', r.name, 'Open', r.label, 'later'));
+        ul.append(item);
+      });
+      li.append(ul);
+    } else row('i-receipt', 'Your receipts', 'None yet. Stripe also emails a receipt each time.', null, true);
+
+    $('#things').replaceChildren(...rows);
+  }
+
+  function fileButton(thing, name, label, what, cls) {
+    const b = make('button', cls || 'open-btn', null);
+    b.type = 'button';
+    b.append(make('span', null, label));
+    if (!cls) b.append(icon('i-doc'));
+    b.setAttribute('aria-label', label + ' your ' + what.replace(/^your /i, ''));
+    b.addEventListener('click', () => openFile(b, thing, name, what));
+    return b;
+  }
+
+  // Files come through the server only for the signed-in client, then open here as a private blob.
+  // A tab is opened during the tap (so phones allow it) and filled once the file arrives.
+  async function openFile(btn, thing, name, what) {
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    let win = null;
+    try { win = window.open('', '_blank'); } catch (e) { win = null; }
+    if (win) { try { win.opener = null; win.document.title = 'Opening…'; win.document.body.textContent = 'Opening your file…'; } catch (e) { /* fine */ } }
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const r = await api.file(thing, name || undefined);
+      const type = SAFE_TYPES.includes(r.type) ? r.type : 'application/octet-stream';
+      const url = URL.createObjectURL(new Blob([r.blob], { type }));
+      if (win && !win.closed && type !== 'application/octet-stream') win.location.href = url;
+      else {
+        if (win) win.close();
+        const a = make('a');
+        a.href = url;
+        a.download = (what || 'file').replace(/[^\w ]+/g, '').trim().replace(/\s+/g, '-').toLowerCase() + ({ 'application/pdf': '.pdf', 'image/png': '.png', 'image/jpeg': '.jpg', 'image/webp': '.webp' }[type] || '');
+        document.body.append(a);
+        a.click();
+        a.remove();
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    } catch (err) {
+      if (win) win.close();
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(err.code === 'not_found' ? 'That file isn’t here anymore. Email me and I’ll send it again.' : words(err));
+    } finally { btn.removeAttribute('aria-busy'); }
+  }
+
+  /* ---- payments ---- */
+  function renderPay() {
+    const c = me.client;
+    const sec = $('#sec-pay');
+    const pays = me.pay;
+    if (!pays.length) { sec.hidden = true; return; }
+    sec.hidden = false;
+    const t = taps.mine();
+    const settle = shortDate(stageDate('settling_in'));
+    $('#pays').replaceChildren(...pays.map((p) => {
+      const tapped = p.state === 'due' && !!t[p.key];
+      const div = make('div', 'payrow st-' + (tapped ? 'tapped' : p.state));
+      div.id = 'pay-' + p.key;
+      let name, sub, amt, payLabel, thanks = PAY_THANKS;
+      const starts = p.starts_on && !isPast(p.starts_on) ? shortDate(p.starts_on) : '';
+      if (p.key === 'deposit') { name = 'Deposit'; sub = 'Half the build. It holds your spot.'; amt = money(p.amount); payLabel = 'Pay the deposit'; }
+      else if (p.key === 'balance') { name = 'Second half'; sub = 'The other half of the build, due at launch.'; amt = money(p.amount); payLabel = 'Pay the second half'; }
+      else {
+        name = 'Care';
+        amt = money(p.amount) + (p.period === 'year' ? ' a year' : ' a month');
+        sub = (c.founding ? 'Your founding price: half off for as long as you keep care. ' : '') + 'Changes whenever you ask.' +
+          (p.state === 'due' && starts ? ' Care begins ' + starts + ', right where settling in leaves off.' : '');
+        payLabel = 'Start my care';
+        thanks = 'Set up? Thank you! It shows here once it’s running. No need to do it again.';
+      }
+      if (c.founding && p.key !== 'care') sub += ' Founding price.';
+      div.append(make('span', 'p-name', name), make('span', 'p-amt', p.amount ? amt : ''), make('span', 'p-sub', sub));
+      const st = make('div', 'p-state');
+      if (p.state === 'paid') {
+        const s = make('span', 'p-paid');
+        s.append(icon('i-check'), make('span', null, 'Paid' + (p.paid_on ? ' ' + shortDate(p.paid_on) : '')));
+        st.append(s);
+      } else if (p.state === 'active') {
+        const s = make('span', 'p-paid');
+        s.append(icon('i-check'), make('span', null, 'Active' + (p.paid_on ? ' since ' + shortDate(p.paid_on) : '')));
+        st.append(s);
+        if (me.care_manage_url) st.append(outLink(me.care_manage_url, 'Update your card or care', 'later', 'your Stripe care page'));
+      } else if (p.state === 'due' && p.url && tapped) {
+        // they already tapped it: a thank-you, and only a small way to pay again
+        const s = make('p', 'p-thanks');
+        s.append(icon('i-check'), make('span', null, thanks));
+        st.append(s, outLink(p.url, p.key === 'care' ? 'Open it again' : 'Pay again', 'later', 'Stripe so you can pay', p.key));
+      } else if (p.state === 'due' && p.url) {
+        st.append(outLink(p.url, payLabel, 'btn', 'Stripe so you can pay', p.key));
+      } else if (p.state === 'due') {
+        st.append(make('span', 'p-later', 'I’ll send the link soon'));
+      } else {
+        let later = 'I’ll send the link soon';
+        if (p.key === 'deposit' && !me.things.agreement) later = 'After you sign our agreement';
+        if (p.key === 'balance') later = 'Due at launch';
+        if (p.key === 'care') later = 'Starts after settling in' + (starts || settle ? ', about ' + (starts || settle) : '');
+        st.append(make('span', 'p-later', later));
+      }
+      div.append(st);
+      return div;
+    }));
+  }
+
+  /* ---- ask for a change ---- */
+  function renderChange() {
+    const c = me.client;
+    const sec = $('#sec-change');
+    const ci = stageIndex(me.timeline.current);
+    const hasCare = c.care === 'monthly' || c.care === 'yearly';
+    if (me.care.can_ask) {
+      sec.hidden = false;
+      $('#change-care').hidden = false;
+      $('#change-email').hidden = true;
+      // words kept from before a quiet sign-out
+      if (!$('#in-what').value && drafts.get('change')) { $('#in-what').value = drafts.get('change'); whatCount(); }
+      if (!$('#in-where').value && drafts.get('change-where')) $('#in-where').value = drafts.get('change-where');
+      renderAsks();
+      return;
+    }
+    $('#change-care').hidden = true;
+    if (ci >= 5 && !hasCare) {
+      sec.hidden = false;
+      $('#change-email').hidden = false;
+      const settle = shortDate(stageDate('settling_in'));
+      $('#change-email-text').textContent = me.timeline.current === 'settling_in'
+        ? 'Settling-in tweaks are on me' + (settle ? ' until ' + settle : '') + '. Send me one email with everything you’d like changed.'
+        : 'Want a change? Send me one email with everything in it. It’s $100 an hour, and you’ll get the price before I start. Anything I got wrong is always fixed free. If you’d rather not wait on a price for the little things, care is there anytime. Just ask.';
+      return;
+    }
+    sec.hidden = true;
+  }
+
+  function renderAsks() {
+    const reqs = me.care.requests;
+    $('#asks-wrap').hidden = !reqs.length;
+    $('#asks').replaceChildren(...reqs.map((r) => {
+      const li = make('li');
+      li.append(make('p', 'a-what', r.what));
+      const meta = make('div', 'a-meta');
+      meta.append(make('span', 'pill ' + r.status, ASK_STATUS[r.status]));
+      if (r.created) meta.append(make('span', 'a-date', shortDate(r.created)));
+      if (r.where_on_site) meta.append(make('span', 'a-where', r.where_on_site));
+      li.append(meta);
+      if (r.taya_reply) {
+        const rep = make('div', 'a-reply');
+        const img = make('img');
+        img.src = 'taya.jpg';
+        img.alt = '';
+        img.width = 28;
+        img.height = 28;
+        const p = make('p');
+        p.append(make('span', 'sr-only', 'Taya replied: '), r.taya_reply);
+        rep.append(img, p);
+        li.append(rep);
+      }
+      return li;
+    }));
+  }
+
+  function whatCount() {
+    const n = $('#in-what').value.length;
+    const c = $('#what-count');
+    c.textContent = n > WHAT_MAX - 400 ? (WHAT_MAX - n) + ' characters left' : '';
+    c.classList.toggle('near', n > WHAT_MAX - 150);
+  }
+
+  function renderPics() {
+    $('#pic-list').replaceChildren(...pics.map((f, i) => {
+      const li = make('li');
+      const b = make('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Take out ' + f.name);
+      b.append(icon('i-x'));
+      b.addEventListener('click', () => { pics.splice(i, 1); renderPics(); $('#in-pics').focus(); });
+      li.append(make('span', null, f.name), b);
+      return li;
+    }));
+    const pick = $('#f-change .pick span');
+    pick.textContent = pics.length ? (pics.length >= CHANGE_FILES ? 'That’s 3, the most' : 'Add another') : 'Choose pictures';
+    $('#in-pics').disabled = pics.length >= CHANGE_FILES;
+  }
+
+  function onPics() {
+    const input = $('#in-pics');
+    const chosen = Array.from(input.files || []);
+    input.value = '';
+    const left = [];
+    for (const f of chosen) {
+      if (!CHANGE_EXT.includes(extOf(f.name))) { left.push(f.name); continue; }
+      if (pics.length >= CHANGE_FILES) { left.push(f.name); continue; }
+      pics.push(f);
+    }
+    renderPics();
+    showErr('change', left.length ? 'I left out ' + left.slice(0, 3).join(', ') + '. Up to 3 photos or PDFs.' : '');
+  }
+
+  async function onChange(e) {
+    e.preventDefault();
+    const what = cleanText($('#in-what').value, WHAT_MAX + 1);
+    const where = cleanLine($('#in-where').value, 200);
+    showErr('change', '');
+    if (what.length < 3) { showErr('what', 'Tell me a little more. Even one sentence helps.'); $('#in-what').focus(); return; }
+    if (what.length > WHAT_MAX) { showErr('what', 'That’s a lot for one message! Could you trim it a little, or email me the rest?'); $('#in-what').focus(); return; }
+    showErr('what', '');
+    const btn = $('#b-change');
+    setBusy(btn, true, 'Sending…');
+    busy++;
+    try {
+      const files = [];
+      for (const f of pics) {
+        const s = await shrink(f);
+        if (s.size > CHANGE_MAX) throw Object.assign(fail('too_big', 413), { file: f.name });
+        files.push(s);
+      }
+      const r = await api.change({ what, where, nonce, files }, (p) => { btn.querySelector('span').textContent = 'Sending… ' + Math.min(99, Math.round(p * 100)) + '%'; });
+      const replyBy = dayParts(r && r.reply_by) ? r.reply_by : replyByLocal();
+      if (!me.care.requests.some((x) => x.id && x.id === (r && r.id))) {
+        me.care.requests.unshift({ id: str(r && r.id, 40), what: what.slice(0, 140), where_on_site: where, status: 'new', taya_reply: '', created: todayISO });
+        me.care.requests = me.care.requests.slice(0, 10);
+      }
+      $('#f-change').reset();
+      drafts.set('change', '');
+      drafts.set('change-where', '');
+      pics = [];
+      renderPics();
+      whatCount();
+      nonce = newNonce();
+      busy--;
+      setBusy(btn, false);
+      $('#f-change').hidden = true;
+      $('#got-text').textContent = 'That’s all you need to do. I’ll reply by ' + longDay(replyBy) + '. If it’s a big one, you’ll get a price first, and nothing starts until you say yes.';
+      $('#got-it').hidden = false;
+      renderAsks();
+      focusEl($('#got-it'));
+      announce('Got it, thank you! I’ll reply by ' + longDay(replyBy) + '.');
+    } catch (err) {
+      busy--;
+      setBusy(btn, false);
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      if (err.code === 'no_care') { me.care.can_ask = false; renderChange(); toast(words(err)); return; }
+      showErr('change', err.code === 'too_big' && err.file ? err.file + ' is a bit big. Pictures up to 10 MB work.' : err.code === 'slow_down' ? 'That’s a lot of asks for one day! Email me if it’s urgent.' : words(err));
+    }
+  }
+
+  function askAnother() {
+    $('#got-it').hidden = true;
+    $('#f-change').hidden = false;
+    nonce = newNonce();
+    $('#in-what').focus();
+  }
+
+  /* ================= the preview: the sample client ================= */
+  function loadDemo() {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'portal-demo.js';
+      s.onload = () => (window.WFPortalDemo ? resolve(window.WFPortalDemo) : reject(new Error('no demo')));
+      s.onerror = reject;
+      document.head.append(s);
+    });
+  }
+
+  function wireDemo(D) {
+    api = D.api;
+    $('#demo-bar').hidden = false;
+    $$('.demo-hint').forEach((el) => { el.hidden = false; });
+    const mark = () => $$('#demo-menu [data-demo]').forEach((b) => b.setAttribute('aria-current', String(b.dataset.demo === D.scenario())));
+    mark();
+    $$('[data-fill]').forEach((b) => b.addEventListener('click', () => {
+      if (b.dataset.fill === 'email') {
+        if (usePhone) setPhoneMode(false);
+        $('#in-email').value = D.email;
+        showErr('email', '');
+        $('#b-send').focus();
+      } else {
+        $('#in-code').value = D.code;
+        showErr('code', '');
+        $('#b-verify').focus();
+      }
+    }));
+    const signInQuietly = () => { if (!token) { token = D.signIn(); store.set(token); } };
+    $$('#demo-menu [data-demo]').forEach((b) => b.addEventListener('click', async () => {
+      const k = b.dataset.demo;
+      $('#demo-menu').open = false;
+      const bar = $('#demo-bar');
+      if (['new', 'mid', 'launched', 'care'].includes(k)) {
+        D.setScenario(k);
+        mark();
+        signInQuietly();
+        firstShow = true;
+        openAnswers.clear();
+        pics = [];
+        askReset();
+        await loadProject(false);
+        bar.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        toast('Showing: ' + b.textContent.toLowerCase() + '.', 3200);
+      } else if (k === 'wrong-code') {
+        if (token) { const key = token; token = ''; store.clear(); api.logout(key).catch(() => {}); }
+        who = { email: D.email };
+        toCodeStep();
+        $('#in-code').value = '123456';
+        await onCode();
+        bar.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      } else if (k === 'quiet') {
+        signInQuietly();
+        D.failNext('signed_out');
+        await loadProject(false);
+        bar.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      } else if (k === 'offline') {
+        signInQuietly();
+        D.failNext('network');
+        await loadProject(true);
+        bar.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      }
+    }));
+    // links that would leave for a real page (a draft, Stripe, a booking page) just say where they'd go
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest && e.target.closest('a[data-what]');
+      if (!a) return;
+      e.preventDefault();
+      toast('Preview: in the real portal, this opens ' + a.dataset.what + '.', 4200);
+    });
+  }
+  function askReset() {
+    const f = $('#f-change');
+    if (!f) return;
+    f.reset();
+    drafts.set('change', '');
+    drafts.set('change-where', '');
+    f.hidden = false;
+    $('#got-it').hidden = true;
+    showErr('what', '');
+    showErr('change', '');
+    whatCount();
+    renderPics();
+    nonce = newNonce();
+  }
+
+  /* ================= start ================= */
+  function wire() {
+    $('#f-email').addEventListener('submit', onEmail);
+    $('#f-code').addEventListener('submit', onCode);
+    $('#in-code').addEventListener('input', onCodeInput);
+    $('#b-resend').addEventListener('click', onResend);
+    $('#b-restart').addEventListener('click', () => { stopResend(); pending.clear(); who = null; toEmailStep('', false); $('#in-email').focus(); });
+    $('#b-retry').addEventListener('click', () => loadProject(true));
+    $('#b-signout').addEventListener('click', signOut);
+    $('#b-signout-top').addEventListener('click', signOut);
+    $('#b-tl-more').addEventListener('click', () => {
+      const tl = $('#tl');
+      tl.hidden = !tl.hidden;
+      $('#b-tl-more').textContent = tl.hidden ? 'See every step' : 'Hide the steps';
+      $('#b-tl-more').setAttribute('aria-expanded', String(!tl.hidden));
+    });
+    $('#in-what').addEventListener('input', () => drafts.set('change', $('#in-what').value));
+    $('#in-where').addEventListener('input', () => drafts.set('change-where', $('#in-where').value));
+    $('#f-change').addEventListener('submit', onChange);
+    $('#in-what').addEventListener('input', whatCount);
+    $('#in-pics').addEventListener('change', onPics);
+    $('#b-another').addEventListener('click', askAnother);
+    $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
+    if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && me && Date.now() - lastLoad > REFRESH_AFTER) quietRefresh();
+    });
+  }
+
+  async function start() {
+    // back from paying (Taya can set Stripe's "after payment" link to portal.html?paid=1): say thank you,
+    // and tidy the address bar so nothing lingers in it
+    try {
+      if (location.search) {
+        const v = new URLSearchParams(location.search).get('paid') || '';
+        paidReturn = ['1', 'deposit', 'balance', 'care'].includes(v) ? v : '';
+        history.replaceState(null, '', location.pathname + location.hash);
+      }
+    } catch (e) { /* fine */ }
+    token = store.get();
+    if (token) {
+      hero('Your project', 'Welcome ', 'back.', '');
+      await loadProject(null);
+    } else {
+      // a reload (or a phone that set the tab aside) while a code is on its way: back to the code step,
+      // without asking again (a new ask would send another email)
+      const p = pending.get();
+      if (p) { heroSignedOut(); who = p.who; toCodeStep(p.at); }
+      else toEmailStep('', false);
+      if (paidReturn) toast('Thank you! Sign in to see your project. It can take a day for a payment to show.', 8000);
+    }
+  }
+
+  function boot() {
+    if (framed && !DEMO) {
+      const main = $('#main');
+      const p = make('p', 'p-card');
+      p.append('Your project opens in its own tab: ');
+      const a = make('a', null, 'webfaery.love/portal.html');
+      a.href = 'https://webfaery.love/portal.html';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      p.append(a);
+      p.style.marginTop = '40px';
+      const box = make('div', 'gutter');
+      const wrap = make('div', 'wrap');
+      wrap.append(p);
+      box.append(wrap);
+      document.body.insertBefore(box, main);
+      return;
+    }
+    wire();
+    if (DEMO) {
+      loadDemo().then((D) => { wireDemo(D); start(); }, () => {
+        const nowhere = () => Promise.reject(fail('network'));
+        api = { requestCode: nowhere, verifyCode: nowhere, me: nowhere, logout: nowhere, todo: nowhere, file: nowhere, upload: nowhere, change: nowhere };
+        start();
+      });
+    }
+    else start();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
