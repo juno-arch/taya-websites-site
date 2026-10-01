@@ -497,6 +497,17 @@
   .reveal.pre { opacity: 0; transform: translateY(26px); }
   .reveal.in { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1); }
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
+
+  
+  .shop-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .shop-filter button { font: inherit; font-size: 14.5px; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--hair, rgba(0,0,0,.2)); background: transparent; color: inherit; cursor: pointer; }
+  .shop-filter button[aria-pressed="true"] { background: currentColor; }
+  .shop-filter button[aria-pressed="true"] { background: var(--ink, #1f251d); color: var(--ground, #fbf6ec); border-color: var(--ink, #1f251d); }
+  .shop-filter button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .item[hidden] { display: none !important; }
+  .door-card { display: flex; flex-direction: column; justify-content: center; gap: 10px; height: 100%; min-height: 220px; padding: 26px; border-radius: 20px;
+    border: 1.5px dashed var(--hair, rgba(0,0,0,.25)); color: inherit; text-decoration: none; }
+  .door-card b { font-size: 22px; } .door-card .go { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 </style>
 </head>
 <body>
@@ -647,41 +658,55 @@
   <div class="wrap">
     <p class="label"><span>The little shop</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Take one <em>home</em></h2>
-    <p class="measure soft" style="margin-top:14px" data-show="crone all">Pick a piece, add it to your bag and check out right here. Up to about twenty pieces at a time, and each one is one of a kind.</p>
+    <p class="measure soft" style="margin-top:14px" data-show="crone all">Handmade pieces and thrifted finds, one bag. Pick what you love and check out right here. Up to about twenty pieces at a time, and each one is one of a kind.</p>
+    <div class="shop-filter" role="group" aria-label="Show" data-show="crone all"><button type="button" data-kind="all" aria-pressed="true">Everything</button><button type="button" data-kind="handmade" aria-pressed="false">Handmade</button><button type="button" data-kind="thrift" aria-pressed="false">Thrifted</button></div>
     <p class="measure soft" style="margin-top:14px" data-show="mother" hidden>Every piece has its own Ask button, so a question about a color or a size comes straight to your inbox.</p>
     <p class="measure soft" style="margin-top:14px" data-show="maiden" hidden>Every piece, with a button that opens your Instagram DMs, just like you sell them now.</p>
     <div class="shop-grid" id="shop-grid">
-      <article class="item reveal" data-id="cream">
+      <article class="item reveal" data-kind="handmade" data-id="cream">
         <figure class="photo"><img src="images/earrings-cream.jpg" alt="Creamy white macrame leaf earrings with window light shadows" width="900" height="1073" loading="lazy"><span class="hangtag">one of a kind</span></figure>
         <div class="item-body"><h3>Creamy white leaf earrings</h3><p>Linen-cotton blend, little leaf pattern.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Creamy white leaf earrings" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the creamy white leaf earrings">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
-      <article class="item reveal" data-id="pink">
+      <article class="item reveal" data-kind="handmade" data-id="pink">
         <figure class="photo"><img src="images/earrings-pink.jpg" alt="Muted light pink macrame leaf earrings" width="900" height="1092" loading="lazy"></figure>
         <div class="item-body"><h3>Muted pink leaf earrings</h3><p>Also in the twisted macrame pattern.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Muted pink leaf earrings" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the muted pink leaf earrings">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
-      <article class="item reveal" data-id="autumn">
+      <article class="item reveal" data-kind="handmade" data-id="autumn">
         <figure class="photo"><img src="images/earrings-autumn.jpg" alt="Rust and deep golden yellow macrame earrings on oxidized copper hoops" width="900" height="900" loading="lazy"><span class="hangtag">for autumn lovers</span></figure>
         <div class="item-body"><h3>Autumn earrings</h3><p>Rust and deep golden yellow on an oxidized copper hoop.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Autumn earrings" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the autumn earrings">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
-      <article class="item reveal" data-id="choker">
+      <article class="item reveal" data-kind="handmade" data-id="choker">
         <figure class="photo"><img src="images/choker.jpg" alt="Tiered cream macrame necklace on a gold brass choker" width="900" height="1125" loading="lazy"></figure>
         <div class="item-body"><h3>Tiered brass choker</h3><p>Tiered macrame wrapped upon a gold brass choker.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Tiered brass choker" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the tiered brass choker">Ask about this</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
-      <article class="item reveal" data-id="light">
+      <article class="item reveal" data-kind="handmade" data-id="light">
         <figure class="photo"><img src="images/light-garden.jpg" alt="A long cream macrame hanging light in front of green trees" width="640" height="1136" loading="lazy" style="object-position:50% 30%"></figure>
         <div class="item-body"><h3>Whimsical macrame light</h3><p>A soft, dreamy glow for your corner.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Whimsical macrame light" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="the macrame light">Ask about this</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
-      <article class="item reveal" data-id="spoon">
+      <article class="item reveal" data-kind="handmade" data-id="spoon">
         <figure class="photo"><img src="images/spoon.jpg" alt="A tiny carved wooden spoon" width="360" height="638" loading="lazy" style="object-position:50% 45%"><span class="hangtag">tiny!</span></figure>
         <div class="item-body"><h3>Tiny wooden spoon</h3><p>Small batch, carved by hand.</p><p class="price"><span class="ph">your price</span></p>
           <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Tiny wooden spoon" aria-pressed="false">Add to bag</button></span><span data-show="mother" hidden><button type="button" class="bk-go ghost ask" data-name="a tiny spoon">Ask about these</button></span><span data-show="maiden" hidden><a class="bk-go ghost" href="https://www.instagram.com/nueberd/" target="_blank" rel="noopener">DM me to buy<span class="vh"> (opens Instagram in a new tab)</span></a></span></div></div>
       </article>
-    </div>
+          <article class="item reveal" data-kind="thrift" data-id="find-cardigan">
+        <figure class="photo"><img src="images/drop-llbean-cardigan.jpg" alt="Blue cable knit L.L.Bean cardigan" width="640" height="640" loading="lazy"><span class="hangtag">site-only find</span></figure>
+        <div class="item-body"><h3>L.L.Bean blue cable knit cardigan</h3><p>Size M, 100% cotton. A sample of a site-only find: listed here and nowhere else, so it can never sell twice.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="L.L.Bean blue cable knit cardigan" aria-pressed="false">Add to bag</button></span></div></div>
+      </article>
+      <article class="item reveal" data-kind="thrift" data-id="find-jacket">
+        <figure class="photo"><img src="images/drop-levis-jacket.jpg" alt="Vintage Levi's jacket" width="640" height="640" loading="lazy"><span class="hangtag">site-only find</span></figure>
+        <div class="item-body"><h3>Vintage Levi&rsquo;s jacket</h3><p>A sample of a site-only find, announced on Instagram as a little drop.</p><p class="price"><span class="ph">your price</span></p>
+          <div class="item-go"><span data-show="crone all"><button type="button" class="bk-go add" data-name="Vintage Levi's jacket" aria-pressed="false">Add to bag</button></span></div></div>
+      </article>
+      <article class="item item-door reveal" data-kind="thrift">
+        <a class="door-card" href="https://www.depop.com/mythriftingera/" target="_blank" rel="noopener"><b>The whole closet</b><span>Every other thrifted find lives on Depop, where it&rsquo;s easy to shop and ship.</span><span class="go">Shop it on Depop &rarr;</span><span class="vh"> (opens Depop in a new tab)</span></a>
+      </article>
+</div>
     <p class="hint" id="ask-hint" role="status" data-show="mother" hidden></p>
 
     <div class="bag" data-show="crone all" data-fold data-thing="your own shop and checkout">
@@ -1343,3 +1368,15 @@
 </script>
 </body>
 </html>
+
+<script>
+  (function () {   
+    var bar = document.querySelector('.shop-filter'); if (!bar) return;
+    var btns = [].slice.call(bar.querySelectorAll('button')), items = [].slice.call(document.querySelectorAll('#shop-grid .item'));
+    btns.forEach(function (b) { b.addEventListener('click', function () {
+      var k = b.getAttribute('data-kind');
+      btns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      items.forEach(function (it) { it.hidden = k !== 'all' && it.getAttribute('data-kind') !== k; });
+    }); });
+  })();
+</script>
