@@ -78,7 +78,7 @@
     'Oh hi! Sorry, I was napping on this mushroom. How can I help? 😂'
   ];
   var CHIPS = [['How much?', 'how much is a website'], ['How long?', 'how long does it take'], ['Who are you?', 'who are you'],
-    ['Can you make my site?', 'can you make my site'], ['Anything else?', 'anything else']];
+    ['Can you make my site?', 'can you make my site'], ['My own art?', 'can i bring my own artwork'], ['Anything else?', 'anything else']];
   var LINES = {
     rude: { ex: 'pouty', keys: 'stupid|dumb|idiot|suck|sucks|useless|hate you|shut up|ugly|worst|annoying|wtf|stfu|crap|garbage|trash|lame|go away|fuck|fucking|shit|moron',
       say: ['Hmph. Rude. I forgive you though, I’m a very forgiving faery. Taya is even nicer: [taya@webfaery.love](email)',
@@ -188,6 +188,10 @@
       say: ['Nope, you don’t have to write it! You chat with Taya for 45 minutes about your work, and she writes your words from that. [How it works →](how)',
         '(happy) Taya writes it for you! You talk about your work for 45 minutes. I would talk about moss. [How it works →](how)',
         '(giggle) She writes, you read it and say what doesn’t sound like you, she fixes it. I just supervise. [The steps →](how)'] },
+    ownart: { ex: 'proud', keys: 'own artwork|own art|my art|my artwork|bring my|artwork|art|artist|artists|drawing*|illustrat*|flash|lettering|sketch*|painting*|logo|logos|graphic*|tattoo*|my designs|own designs',
+      say: ['Yes!! Send Taya your flash, lettering, drawings, patterns, whatever you make, and she builds it right into your site: headers, dividers, buttons, backgrounds, even the little animation. [Email her your art →](email)',
+        '(giggle) Your art, on your site? That’s the whole point! It should look like YOU made it, not a template. I asked if she’d put my doodles on hers. She said “maybe.” 😂 [Send yours →](email)',
+        '(proud) Bring it all! Tattoo flash, hand lettering, a logo you drew on a napkin. Taya turns it into the bones of your site. [Start here →](start)'] },
     ok: { ex: 'giggle', keys: 'ok|okay|k|yes|yeah|yep|yup|no|nope|nah|lol|haha|hehe|lmao|hmm|hm|sure',
       say: ['Hehe ✨ Ask me anything else! Prices, timing, naps...', '(happy) Okay! I’ll be right here, on my mushroom.',
         '(sleepy) Mm-hm. Sorry, I dozed off. Where were we? [The questions page →](faq)'] },
@@ -635,8 +639,8 @@
      so they line up on their own. pick = { eyes: 'open', ... } keeps only those variants (for the exported
      files); without it, every variant is included and the script shows one of each at a time. */
   function standInArt(pick) {
-    var O = '#1b1016', SK = '#ffeadc', SKS = '#f7c9b7', HA = '#d890c6', HAD = '#a95e98', HAL = '#f8d3ec',
-      DR = '#5da64d', DRD = '#3d7d34', DRL = '#8dcf76', CR = '#ece3d3', BO = '#7c3d64', MO = '#8c3448';
+    var O = '#1b1016', SK = '#ffeadc', SKS = '#f7c9b7', HA = '#d9a85a', HAD = '#9c6a2c', HAL = '#f3d79c',
+      DR = '#5e7d40', DRD = '#3f5a2a', DRL = '#88a660', CR = '#ece3d3', BO = '#4d3524', MO = '#83403a';
     function num(v) { return Math.round(v * 100) / 100; }
     function P(d, fill, w, x) { return '<path d="' + d + '" fill="' + (fill || 'none') + '"' + (w ? ' stroke="' + O + '" stroke-width="' + w + '"' : '') + (x || '') + '/>'; }
     function S(d, c, w, x) { return '<path d="' + d + '" fill="none" stroke="' + c + '" stroke-width="' + w + '"' + (x || '') + '/>'; }
@@ -653,7 +657,7 @@
     var SCL = 'M-5 45.6 C-5 42.4 -2.8 41 0 41 C2.8 41 5 42.4 5 45.6 L5 50.2 C5 53 2.8 54.4 0 54.4 C-2.8 54.4 -5 53 -5 50.2 Z';
     function lash(s) { return S('M-5.5 46.2 C-5.3 42.4 -2.8 40.5 0 40.5 C2.9 40.5 5.3 42.2 5.6 45.8', O, 2.2) + S('M' + (s * 5.1) + ' 44 L' + (s * 7) + ' 42.4', O, 1.4) + S('M-2.4 54.9 Q0 55.6 2.4 54.9', O, 0.7); }
     function iris(big) {
-      return '<g class="fy-look">' + E(0, 48.4, 4.2, 5.5, 'url(#fy-iris)') + E(0, 49, 2.1, 3, '#0f1c16') + E(0, 52.3, 2.7, 1.3, '#b8f7a6', 0, ' opacity=".8"') +
+      return '<g class="fy-look">' + E(0, 48.4, 4.2, 5.5, 'url(#fy-iris)') + E(0, 49, 2.1, 3, '#0f1c16') + E(0, 52.3, 2.7, 1.3, '#efe0a8', 0, ' opacity=".8"') +
         (big === 'star' ? star(-1.5, 46, 2.5, '#fff') : '<circle cx="-1.7" cy="45.9" r="1.75" fill="#fff"/>') + '<circle cx="1.9" cy="51.2" r=".85" fill="#fff"/></g>';
     }
     function open(s, big) { return '<g clip-path="url(#fy-eclip)">' + P(SCL, '#fffaf6') + iris(big) + '</g>' + lash(s); }
@@ -673,7 +677,7 @@
       V('eyes', 'flat', both(function (s) { return open(s) + lid(44.6, s); }, function (s) { return open(s) + lid(44.6, s); })) +
       V('eyes', 'squeeze', at(40, S('M-3.4 43.6 L3.6 47.8 L-3.4 52', O, 2.1)) + at(60, S('M3.4 43.6 L-3.6 47.8 L3.4 52', O, 2.1)));
 
-    var BR = '#5c2451';
+    var BR = '#5e3d1f';
     function brow(d) { return S(d, BR, 1.15) + S(mir(d), BR, 1.15); }
     var brows =
       V('brows', 'normal', brow('M35.6 38.5 C37.6 37.1 40.6 36.9 43.2 37.9')) +
@@ -686,10 +690,10 @@
       V('mouth', 'o', E(50, 57.9, 1.4, 1.7, MO, 0.9)) +
       V('mouth', 'open', P('M46.8 56.5 C48.6 57.3 51.4 57.3 53.2 56.5 C53 59.5 51.6 61.1 50 61.1 C48.4 61.1 47 59.5 46.8 56.5 Z', MO, 0.95) + P('M48.1 59.8 C49 58.9 51 58.9 51.9 59.8 C51.2 60.7 48.8 60.7 48.1 59.8 Z', '#ff9aad')) +
       V('mouth', 'pout', S('M51.2 56.2 C49.4 56 49.2 57.5 50.6 57.7 C49.2 57.9 49.4 59.5 51.2 59.3', O, 1.05)) +
-      V('mouth', 'yawn', E(50, 58.3, 2.2, 2.9, MO, 0.95) + E(50, 60, 1.3, 0.8, '#ff9aad')) +
+      V('mouth', 'yawn', E(50, 58.3, 2.2, 2.9, MO, 0.95) + E(50, 60, 1.3, 0.8, '#e5967f')) +
       V('mouth', 'wavy', S('M46.4 58 C47 57 47.6 57 48.2 58 C48.8 59 49.4 59 50 58 C50.6 57 51.2 57 51.8 58 C52.4 59 53 59 53.6 58', O, 0.95));
 
-    var PK = '#ff8db0';
+    var PK = '#e79a7c';
     function hatch(x, y) { return S('M' + (x - 1.8) + ' ' + (y + 1) + ' L' + (x - 1) + ' ' + (y - 1) + ' M' + x + ' ' + (y + 1) + ' L' + (x + 0.8) + ' ' + (y - 1) + ' M' + (x + 1.8) + ' ' + (y + 1) + ' L' + (x + 2.6) + ' ' + (y - 1), '#e0668c', 0.55); }
     var blush =
       V('blush', 'n', E(35, 54.8, 3.8, 2.1, PK, 0, ' opacity=".55"') + E(65, 54.8, 3.8, 2.1, PK, 0, ' opacity=".55"') + hatch(34.4, 54.8) + hatch(64.6, 54.8)) +
@@ -702,7 +706,7 @@
     var hairBack = P('M50 13.4 C37.8 13.4 27.6 21.2 25.8 33.4 C24.8 40.2 25 46.2 25.8 50.4 C25.4 52.6 24.4 54.6 22.8 56 C24.8 56.2 26.4 55.8 27.8 55 C28 56.8 27.8 58.4 27.2 59.8 C29.6 58.8 31.6 57.2 33 55.2 ' +
       'C40 57.6 60 57.6 67 55.2 C68.4 57.2 70.4 58.8 72.8 59.8 C72.2 58.4 72 56.8 72.2 55 C73.6 55.8 75.2 56.2 77.2 56 C75.6 54.6 74.6 52.6 74.2 50.4 C75 46.2 75.2 40.2 74.2 33.4 C72.4 21.2 62.2 13.4 50 13.4 Z', HAD, 1.3);
     var EAR = 'M31.2 44.4 C27 43.4 22 40.4 17.2 36.4 C18.2 42.6 22 48.8 30.4 51.8 Z', EARIN = 'M28.4 46.6 C25 45.2 22.4 43.2 20.6 41';
-    var ears = P(EAR, SK, 1.15) + P(mir(EAR), SK, 1.15) + S(EARIN, '#f4a3b3', 1.2) + S(mir(EARIN), '#f4a3b3', 1.2);
+    var ears = P(EAR, SK, 1.15) + P(mir(EAR), SK, 1.15) + S(EARIN, '#e6ad94', 1.2) + S(mir(EARIN), '#e6ad94', 1.2);
     var face = P('M28.6 43 C28.6 29.4 38 21.4 50 21.4 C62 21.4 71.4 29.4 71.4 43 C71.4 51.6 68.6 57.6 63.4 60.9 C59.4 63.4 54.8 64.3 50 64.3 C45.2 64.3 40.6 63.4 36.6 60.9 C31.4 57.6 28.6 51.6 28.6 43 Z', SK, 1.3);
     // the front: tufts on top, little flicks over the ears, pointed sideburns down to the cheeks, and a wispy
     // fringe that leaves her brows showing (open V over each brow, a few soft wisps between her eyes)
@@ -792,7 +796,7 @@
     ];
     var armsB = A.map(function (a) { return a[0]; }).join(''), armsF = A.map(function (a) { return a[1]; }).join('');
 
-    var defs = '<linearGradient id="fy-iris" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16261f"/><stop offset=".5" stop-color="#2e7d4f"/><stop offset="1" stop-color="#8fe28a"/></linearGradient>' +
+    var defs = '<linearGradient id="fy-iris" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16261f"/><stop offset=".5" stop-color="#4f7a3a"/><stop offset="1" stop-color="#b8cf78"/></linearGradient>' +
       '<clipPath id="fy-eclip"><path d="' + SCL + '"/></clipPath><clipPath id="fy-sk"><path d="' + SITSK + '"/></clipPath><clipPath id="fy-fk"><path d="' + FLYSK + '"/></clipPath>';
     var head = '<g class="fy-head">' + hairBack + ears + neck + face + blush + eyes + brows + mouths + bangs + puff + clip + '</g>';
     var body = svg(
@@ -806,7 +810,7 @@
       var m = side === 'R' ? mir : function (d) { return d; }, cx = side === 'R' ? 54 : 46;
       return svg(P(m(WU), 'url(#fy-wg' + side + ')') + P(m(WL), 'url(#fy-wg' + side + ')') + S(m(WU) + ' ' + m(WL), '#e3c27e', 1.15) + S(m(WV), '#f0dca0', 0.55, ' opacity=".85"') +
         '<g fill="#fff" opacity=".85"><circle cx="' + num(side === 'R' ? 86 : 14) + '" cy="41.6" r=".8"/><circle cx="' + num(side === 'R' ? 79 : 21) + '" cy="49" r=".55"/><circle cx="' + num(side === 'R' ? 76 : 24) + '" cy="86" r=".6"/></g>',
-        '<radialGradient id="fy-wg' + side + '" gradientUnits="userSpaceOnUse" cx="' + cx + '" cy="68" r="44"><stop offset="0" stop-color="#8eeec2" stop-opacity=".92"/><stop offset=".5" stop-color="#b9f6d9" stop-opacity=".7"/><stop offset="1" stop-color="#e4fff2" stop-opacity=".5"/></radialGradient>');
+        '<radialGradient id="fy-wg' + side + '" gradientUnits="userSpaceOnUse" cx="' + cx + '" cy="68" r="44"><stop offset="0" stop-color="#e2c27f" stop-opacity=".92"/><stop offset=".5" stop-color="#efdfb9" stop-opacity=".7"/><stop offset="1" stop-color="#faf3e3" stop-opacity=".5"/></radialGradient>');
     }
 
     /* ---- the golden toadstool she sits on: a round cap on a tall, slim stem with a soft rounded bottom, no ground ---- */
