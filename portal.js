@@ -37,7 +37,7 @@
   'use strict';
 
   /* ================= CONFIG ================= */
-  const DEMO = true;                                  // PREVIEW: sample data, nothing is sent
+  const DEMO = false;                                 // LIVE since Oct 1 2026 (server side switched on)
   const SERVER = 'https://bookings.gardenfaery.love'; // PocketBase (the page's security line allows only this)
   const SMS_SIGNIN = false;                           // true once WF_SMS_ENABLED=1 on the server
   const START_PAGE = 'start.html';
