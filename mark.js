@@ -5,7 +5,11 @@
    or a private magic link from Taya's email (?mark=1&k=...): the key is kept for this one page (so a reload or
    a later visit still works), taken out of the address bar, and opens notes on this mockup only.
    Loaded only when the address has ?mark=1, by a one-line loader the peek pages carry. No outside scripts,
-   no tracking, and it never changes the mockup itself. */
+   no tracking, and it never changes the mockup itself.
+   The build picker (Oct 2 2026): the first time they open it, a welcome card asks "Which one feels like you?"
+   (Maiden, Mother, Crone, or everything). Picking switches the mockup's own "See it as" view and saves the
+   pick to their portal (/pick), so the view comes back on their next visit. "Change my pick" in the notes
+   panel opens the card again. */
 (function () {
   'use strict';
   if (window.__wfMark) return; window.__wfMark = true;
@@ -73,6 +77,29 @@
   .wfm-panel .st { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; background: rgba(240, 184, 103, 0.16); color: #f2c77c; }
   .wfm-panel .reply { margin-top: 6px; padding-left: 10px; border-left: 2px solid rgba(240, 184, 103, 0.5); color: #e6dccb; }
   .wfm-panel .none { color: #c9bfac; font-size: 14.5px; }
+  .wfm-panel .mypick { margin: -4px 0 12px; font-size: 14px; color: #c9bfac; }
+  .wfm-link { appearance: none; background: none; border: 0; padding: 0; color: #f2c77c; font: inherit; text-decoration: underline; cursor: pointer; }
+  .wfm-scrim { position: fixed; inset: 0; z-index: 2147483002; background: rgba(12, 11, 10, 0.72); display: grid; place-items: center;
+    padding: 16px; overflow-y: auto; }
+  .wfm-card { width: min(860px, 100%); margin: auto; padding: 24px 22px 20px; border-radius: 20px; background: #1b1a17; color: #efe6d4;
+    border: 1px solid rgba(240, 184, 103, 0.5); box-shadow: 0 24px 70px -12px rgba(0, 0, 0, 0.75); }
+  .wfm-card h2 { margin: 0 0 6px; font: 400 28px/1.15 'Gloock', Georgia, serif; color: #efe6d4; }
+  .wfm-card .lead { margin: 0 0 18px; font-size: 16px; line-height: 1.5; color: #d9cfbd; }
+  .wfm-builds { display: grid; gap: 12px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .wfm-builds { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .wfm-build { appearance: none; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 14px;
+    background: #23221e; color: #efe6d4; border: 1px solid rgba(239, 230, 212, 0.18); font: inherit; }
+  .wfm-build:hover, .wfm-build:focus-visible { border-color: #f0b867; outline: none; box-shadow: 0 0 0 2px rgba(240, 184, 103, 0.35); }
+  .wfm-build.on { border-color: #f0b867; }
+  .wfm-build .nm { font: 400 22px/1.1 'Gloock', Georgia, serif; }
+  .wfm-build .price { font-size: 15px; color: #f2c77c; font-weight: 600; }
+  .wfm-build .price s { color: #a99f8d; font-weight: 400; margin-left: 4px; }
+  .wfm-build .price .once { color: #c9bfac; font-weight: 400; }
+  .wfm-build .what { font-size: 14.5px; line-height: 1.45; color: #d9cfbd; }
+  .wfm-card .care { margin: 16px 0 0; font-size: 14px; color: #c9bfac; }
+  .wfm-card .care a { color: #f2c77c; }
+  .wfm-card .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 14px; }
+  .wfm-card .soft { margin: 0; font-size: 14px; color: #c9bfac; font-style: italic; }
   @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -120,12 +147,12 @@
   let hovered = null;
   const clearHover = () => { if (hovered) hovered.classList.remove('wfm-hover'); hovered = null; };
   document.addEventListener('mouseover', (e) => {
-    if (!marking || popOpen) return;
+    if (!marking || popOpen || card) return;
     const n = pickOf(e.target); if (n === hovered) return;
     clearHover(); if (n) { hovered = n; n.classList.add('wfm-hover'); }
   }, true);
   document.addEventListener('click', (e) => {
-    if (!marking || ours(e.target)) return;
+    if (!marking || driving || card || ours(e.target)) return;
     const n = pickOf(e.target); if (!n) return;
     e.preventDefault(); e.stopPropagation();
     openPop(n);
@@ -190,6 +217,72 @@
     });
   }
 
+  /* ---------------- the build picker ---------------- */
+  // Words from webfaery.love's own build cards; prices are paid once (founding: half, with the full price struck through).
+  const BUILDS = [
+    { key: 'maiden', name: 'Maiden', full: 600, founding: 300, what: 'One beautiful page with everything people need to find you and reach you.' },
+    { key: 'mother', name: 'Mother', full: 1200, founding: 600, what: 'A full site with a contact form, newsletter signup and a Book now button to the booking app you already use.' },
+    { key: 'crone', name: 'Crone', full: 1800, founding: 900, what: 'Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items), and your latest Instagram posts on your site.' },
+  ];
+  const NAMES = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone', all: 'Everything' };
+  const usd = (n) => '$' + n.toLocaleString('en-US');
+  let myPick = '', founding = false, pickReady = false, driving = false, card = null;
+
+  // the mockup's own "See it as" buttons do the switching (they keep the page steady while it folds)
+  function showView(v) {
+    const btn = document.querySelector('#views .vseg [data-view="' + v + '"]') || document.querySelector('.vseg [data-view="' + v + '"]');
+    if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
+    driving = true;
+    try { btn.click(); } finally { driving = false; }
+    setTimeout(renderPins, 450);
+  }
+
+  function closeCard() { if (card) { card.remove(); card = null; } }
+  function openCard() {
+    closeCard(); closePop(); clearHover();
+    card = el('div', 'wfm wfm-scrim');
+    const box = el('div', 'wfm-card'); box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', 'wfm-card-h');
+    const h = el('h2', '', 'Which one feels like you?'); h.id = 'wfm-card-h';
+    box.append(h, el('p', 'lead', 'Your mockup shows every piece I could build for you. Pick a build and the page shows just what it includes.'));
+    const grid = el('div', 'wfm-builds');
+    BUILDS.forEach((bd) => {
+      const btn = el('button', 'wfm-build' + (myPick === bd.key ? ' on' : '')); btn.type = 'button';
+      const price = el('span', 'price');
+      if (founding) {
+        price.append(document.createTextNode(usd(bd.founding)));
+        const s = el('s', '', usd(bd.full)); s.setAttribute('aria-label', 'regular price ' + usd(bd.full));
+        price.append(s, el('span', 'once', ' paid once, founding price'));
+      } else {
+        price.append(document.createTextNode(usd(bd.full)), el('span', 'once', ' paid once'));
+      }
+      btn.append(el('span', 'nm', bd.name), price, el('span', 'what', bd.what));
+      btn.setAttribute('aria-pressed', myPick === bd.key ? 'true' : 'false');
+      btn.addEventListener('click', () => choose(bd.key));
+      grid.append(btn);
+    });
+    box.append(grid);
+    const care = el('p', 'care', 'Care is optional, and every cost is written out at ');
+    const a = el('a', '', 'webfaery.love'); a.href = 'https://webfaery.love/'; a.target = '_blank'; a.rel = 'noopener';
+    care.append(a, document.createTextNode('.'));
+    box.append(care);
+    const foot = el('div', 'foot');
+    const all = el('button', 'wfm-btn ghost', 'Show me everything'); all.type = 'button';
+    all.addEventListener('click', () => choose('all'));
+    foot.append(el('p', 'soft', 'You can switch anytime. Nothing is final until we talk.'), all);
+    box.append(foot);
+    card.append(box);
+    card.addEventListener('click', (e) => { if (e.target === card) closeCard(); });
+    document.body.appendChild(card);
+    const first = grid.querySelector('.wfm-build'); if (first) first.focus({ preventScroll: true });
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card) closeCard(); });
+
+  function choose(v) {
+    myPick = v; closeCard(); showView(v); renderPanel();
+    say.lastChild.textContent = v === 'all' ? 'here’s everything. Tap anything you’d like changed.' : 'showing ' + NAMES[v] + '. Tap anything you’d like changed.';
+    call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
+  }
+
   /* ---------------- talking to the portal ---------------- */
   // a portal sign-in first (exactly as before); else the magic link's key, in the body as k
   async function call(path, body) {
@@ -245,6 +338,12 @@
   function renderPanel(focusIndex) {
     panel.textContent = '';
     panel.append(el('h2', '', 'Your notes'));
+    if (pickReady) {
+      const mp = el('p', 'mypick', myPick ? (myPick === 'all' ? 'You’re seeing everything. ' : 'Your pick: ' + NAMES[myPick] + '. ') : 'No build picked yet. ');
+      const ch = el('button', 'wfm-link', myPick ? 'Change my pick' : 'Pick one'); ch.type = 'button';
+      ch.addEventListener('click', () => { panel.hidden = true; openCard(); });
+      mp.append(ch); panel.append(mp);
+    }
     if (!notes.length) { panel.append(el('p', 'none', 'Nothing yet. Tap anything on your mockup to leave a note.')); }
     else {
       const ol = el('ol');
@@ -269,6 +368,11 @@
 
   call('/marks', { page: PAGE }).then((d) => {
     notes = (d.marks || []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, status: x.status, reply: x.reply }));
+    if (typeof d.pick === 'string') { // the server knows about picks
+      pickReady = true; founding = d.founding === true; myPick = d.pick;
+      if (myPick && myPick !== 'all') showView(myPick);
+      if (!myPick) openCard();
+    }
     renderPins(); renderPanel();
   }).catch((x) => {
     if (x.code === 'bad_link') { expired(); return; }
