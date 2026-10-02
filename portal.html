@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- No outside scripts, no inline scripts: only this site's own files may run here, and the page may only
      talk to itself and the portal server. (GitHub Pages can't send security headers, so they live here.) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://bookings.gardenfaery.love; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://bookings.gardenfaery.love; font-src 'self'; connect-src 'self' https://bookings.gardenfaery.love; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Your project &middot; Web Faery</title>
 <meta name="robots" content="noindex, nofollow">
@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261001f">
+<link rel="stylesheet" href="portal.css?v=20261002b">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -96,7 +96,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261002a"></script>
+<script src="portal.js?v=20261002b"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -211,6 +211,14 @@
         <summary id="done-sum">Done</summary>
         <ul class="done-list" id="done-list"></ul>
       </details>
+    </section>
+
+    <!-- change it yourself: only the kinds Taya has switched on for them (portal.js fills it) -->
+    <section class="p-card" id="sec-quick" aria-labelledby="h-quick" hidden>
+      <span class="kicker">Change it yourself</span>
+      <h2 id="h-quick">Your site’s little details</h2>
+      <p class="promise" id="quick-lede">Change these yourself, anytime. They show on your site right away.</p>
+      <div class="qc-wrap" id="quick-list"></div>
     </section>
 
     <section class="p-card" id="sec-where" aria-labelledby="h-where">
