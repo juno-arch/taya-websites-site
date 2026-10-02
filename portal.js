@@ -757,6 +757,28 @@
     return '';
   }
 
+  // came from their magic mockup (mark.js sends them here to sign in): a way straight back once they're in
+  const BACK = (() => {
+    const ok = (v) => typeof v === 'string' && /^\/peek\/[a-z0-9-]{1,40}\/\?mark=1(#[A-Za-z0-9_-]{0,40})?$/.test(v);
+    try {
+      const v = new URLSearchParams(location.search).get('back') || '';
+      if (ok(v)) { sessionStorage.setItem('wf-back', v); return v; }
+      const kept = sessionStorage.getItem('wf-back') || '';
+      return ok(kept) ? kept : '';
+    } catch (e) { return ''; }
+  })();
+  function renderBack() {
+    if (!BACK) return;
+    let box = document.getElementById('back-mock');
+    if (!box) {
+      box = document.createElement('section'); box.className = 'p-card back-mock'; box.id = 'back-mock';
+      const p = document.createElement('p'); p.textContent = 'You’re signed in. Head back to your mockup and tap anything you’d like changed.';
+      const a = document.createElement('a'); a.className = 'btn'; a.href = BACK; a.textContent = 'Back to my mockup';
+      a.addEventListener('click', () => { try { sessionStorage.removeItem('wf-back'); } catch (e) { /* fine */ } });
+      box.append(p, a);
+      const proj = document.getElementById('v-project'); proj.insertBefore(box, proj.firstElementChild);
+    }
+  }
   function render() {
     const c = me.client;
     const build = BUILDS[c.build] || c.build_label;
@@ -768,6 +790,7 @@
     if (stageDate('call') || stageIndex(me.timeline.current) >= 2) taps.drop('call');
     // the header's "Getting started" only while that page is still theirs to fill in
     $('#nav-start').hidden = !startItem();
+    renderBack();
     renderNote();
     renderList();
     renderTimeline();

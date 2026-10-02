@@ -1,0 +1,244 @@
+/* The magic mockup (Oct 1 2026). On a client's private mockup (webfaery.love/peek/KEY/?mark=1) they tap
+   anything they'd change and type a note. It saves to their portal as a change request, so Taya sees it in
+   her dashboard (and gets an email), sets a status and replies, and the client sees all of it right here,
+   pinned where they tapped. Uses the portal's own sign-in (the same key portal.js keeps on this website).
+   Loaded only when the address has ?mark=1, by a one-line loader the peek pages carry. No outside scripts,
+   no tracking, and it never changes the mockup itself. */
+(function () {
+  'use strict';
+  if (window.__wfMark) return; window.__wfMark = true;
+
+  const BASE = 'https://bookings.gardenfaery.love/api/webfaery/portal';
+  const STORE_KEY = 'wf-portal-v1';
+  const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
+  const m = location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?/);
+  if (!m) return;
+  const PAGE = '/peek/' + m[1] + '/';
+  const STATUS = { new: 'Sent', seen: 'Seen', quoted: 'Priced', doing: 'On it', done: 'Done', declined: 'Not this time' };
+
+  const token = (() => {
+    try { const o = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); return o && TOKEN_RE.test(o.token || '') ? o.token : ''; }
+    catch (e) { return ''; }
+  })();
+
+  /* ---------------- the look ---------------- */
+  const css = `
+  .wfm, .wfm * { box-sizing: border-box; font-family: 'Spectral', Georgia, serif; }
+  .wfm-bar { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 2147483000;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; width: max-content; max-width: calc(100vw - 20px);
+    padding: 10px 14px; border-radius: 16px; background: #1b1a17; color: #efe6d4; border: 1.5px dashed rgba(240, 184, 103, 0.7);
+    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.6); font-size: 15px; line-height: 1.35; }
+  .wfm-bar b { color: #f2c77c; font-weight: 600; }
+  .wfm-btn { appearance: none; border: 0; border-radius: 999px; padding: 8px 14px; font: 600 14px 'Spectral', Georgia, serif; cursor: pointer;
+    background: #f0b867; color: #1c1209; text-decoration: none; display: inline-block; }
+  .wfm-btn.ghost { background: transparent; color: #efe6d4; border: 1px solid rgba(239, 230, 212, 0.4); }
+  .wfm-hover { outline: 2px dashed #f0b867 !important; outline-offset: 3px !important; cursor: crosshair !important; }
+  .wfm-pick { outline: 3px solid #f0b867 !important; outline-offset: 3px !important; }
+  .wfm-pop { position: absolute; z-index: 2147483001; width: min(340px, calc(100vw - 20px)); padding: 14px; border-radius: 14px;
+    background: #1b1a17; color: #efe6d4; border: 1px solid rgba(240, 184, 103, 0.55); box-shadow: 0 18px 50px -10px rgba(0, 0, 0, 0.7); }
+  .wfm-pop p { margin: 0 0 8px; font-size: 13.5px; color: #c9bfac; }
+  .wfm-pop textarea { width: 100%; min-height: 92px; resize: vertical; padding: 10px; border-radius: 10px; border: 1px solid rgba(239, 230, 212, 0.25);
+    background: #121210; color: #efe6d4; font-size: 16px; line-height: 1.45; }
+  .wfm-pop .row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+  .wfm-pop .err { color: #f3a98c; font-size: 13.5px; margin: 8px 0 0; }
+  .wfm-pin { position: absolute; z-index: 2147482999; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%;
+    display: grid; place-items: center; background: #f0b867; color: #1c1209; font: 700 13px 'Spectral', Georgia, serif;
+    box-shadow: 0 0 0 3px rgba(27, 26, 23, 0.85), 0 4px 12px rgba(0, 0, 0, 0.5); border: 0; cursor: pointer; }
+  .wfm-pin.done { background: #9fc59a; }
+  .wfm-panel { position: fixed; right: 12px; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); z-index: 2147483000; width: min(360px, calc(100vw - 24px));
+    max-height: min(60vh, 520px); overflow: auto; padding: 14px; border-radius: 16px; background: #1b1a17; color: #efe6d4;
+    border: 1.5px dashed rgba(240, 184, 103, 0.7); box-shadow: 0 18px 50px -10px rgba(0, 0, 0, 0.7); }
+  .wfm-panel h2 { margin: 0 0 10px; font: 400 20px 'Gloock', Georgia, serif; color: #efe6d4; }
+  .wfm-panel ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .wfm-panel li { padding: 10px 12px; border-radius: 12px; background: #23221e; font-size: 14.5px; line-height: 1.45; }
+  .wfm-panel .where { font-size: 12.5px; color: #c9bfac; }
+  .wfm-panel .st { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; background: rgba(240, 184, 103, 0.16); color: #f2c77c; }
+  .wfm-panel .reply { margin-top: 6px; padding-left: 10px; border-left: 2px solid rgba(240, 184, 103, 0.5); color: #e6dccb; }
+  .wfm-panel .none { color: #c9bfac; font-size: 14.5px; }
+  @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
+  const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+
+  const el = (tag, cls, text) => { const x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; };
+  const ours = (n) => !!(n && n.closest && n.closest('.wfm, .wfm-bar, .wfm-pop, .wfm-panel, .wfm-pin, [class^="wf-"], [class*=" wf-"]'));
+
+  /* ---------------- the bar ---------------- */
+  const bar = el('div', 'wfm wfm-bar'); bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Magic mockup');
+  document.body.appendChild(bar);
+  const exitUrl = location.pathname + location.hash;
+
+  if (!token) {
+    bar.append(el('span', '', 'Sign in to your portal to leave notes right on your mockup.'));
+    const a = el('a', 'wfm-btn', 'Sign in');
+    a.href = '/portal.html?back=' + encodeURIComponent(location.pathname + '?mark=1' + location.hash);
+    const x = el('a', 'wfm-btn ghost', 'Just look'); x.href = exitUrl;
+    bar.append(a, x);
+    return;
+  }
+
+  let marking = true, notes = [];
+  const say = el('span'); const b = el('b', '', 'Magic mockup: '); say.append(b, document.createTextNode('tap anything you’d like changed.'));
+  const listBtn = el('button', 'wfm-btn ghost', 'Your notes'); listBtn.type = 'button';
+  const pauseBtn = el('button', 'wfm-btn ghost', 'Pause'); pauseBtn.type = 'button';
+  const done = el('a', 'wfm-btn', 'Done'); done.href = exitUrl;
+  bar.append(say, listBtn, pauseBtn, done);
+  pauseBtn.addEventListener('click', () => {
+    marking = !marking; pauseBtn.textContent = marking ? 'Pause' : 'Keep marking';
+    say.lastChild.textContent = marking ? 'tap anything you’d like changed.' : 'paused, so the page works as usual.';
+    clearHover();
+  });
+
+  /* ---------------- choosing a spot ---------------- */
+  const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article';
+  const pickOf = (t) => { const n = t.closest && t.closest(PICKABLE); return n && !ours(n) ? n : null; };
+  let hovered = null;
+  const clearHover = () => { if (hovered) hovered.classList.remove('wfm-hover'); hovered = null; };
+  document.addEventListener('mouseover', (e) => {
+    if (!marking || popOpen) return;
+    const n = pickOf(e.target); if (n === hovered) return;
+    clearHover(); if (n) { hovered = n; n.classList.add('wfm-hover'); }
+  }, true);
+  document.addEventListener('click', (e) => {
+    if (!marking || ours(e.target)) return;
+    const n = pickOf(e.target); if (!n) return;
+    e.preventDefault(); e.stopPropagation();
+    openPop(n);
+  }, true);
+
+  // a few words a person would use to say where this is: the page's section, and the thing itself
+  const label = (n) => {
+    const txt = (n.getAttribute('alt') || n.getAttribute('aria-label') || n.textContent || '').replace(/\s+/g, ' ').trim();
+    const img = n.matches('img, figure, .photo') ? (n.querySelector && n.querySelector('img') || n) : null;
+    const alt = img && img.getAttribute && img.getAttribute('alt');
+    const thing = alt ? 'photo: ' + alt : txt;
+    return thing.length > 70 ? thing.slice(0, 67).replace(/\s+\S*$/, '') + '…' : thing;
+  };
+  const section = (n) => {
+    const s = n.closest('section, header, footer, [data-page]');
+    if (!s) return '';
+    const h = s.querySelector('h1, h2'); const t = h ? h.textContent.replace(/\s+/g, ' ').trim() : (s.id || '');
+    return t.length > 40 ? t.slice(0, 38) + '…' : t;
+  };
+  const spotOf = (n) => { const sec = section(n), l = label(n); return (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
+
+  /* ---------------- the note ---------------- */
+  let pop = null, popOpen = false, picked = null;
+  const closePop = () => { if (pop) pop.remove(); pop = null; popOpen = false; if (picked) picked.classList.remove('wfm-pick'); picked = null; };
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePop(); });
+  function openPop(n) {
+    closePop(); clearHover();
+    picked = n; n.classList.add('wfm-pick'); popOpen = true;
+    const spot = spotOf(n);
+    pop = el('div', 'wfm wfm-pop'); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Your note');
+    const where = el('p', '', spot);
+    const ta = el('textarea'); ta.placeholder = 'What would you change here?'; ta.maxLength = 1000; ta.setAttribute('aria-label', 'Your note');
+    const err = el('p', 'err'); err.hidden = true;
+    const row = el('div', 'row');
+    const cancel = el('button', 'wfm-btn ghost', 'Cancel'); cancel.type = 'button';
+    const send = el('button', 'wfm-btn', 'Send to Taya'); send.type = 'button';
+    row.append(cancel, send); pop.append(where, ta, err, row);
+    document.body.appendChild(pop);
+    const r = n.getBoundingClientRect();
+    const top = window.scrollY + Math.min(r.bottom + 10, window.innerHeight - 260);
+    const left = window.scrollX + Math.max(10, Math.min(r.left, window.innerWidth - pop.offsetWidth - 10));
+    pop.style.top = Math.max(window.scrollY + 10, top) + 'px'; pop.style.left = left + 'px';
+    ta.focus({ preventScroll: true });
+    cancel.addEventListener('click', closePop);
+    const nonce = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)).replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
+    send.addEventListener('click', async () => {
+      const what = ta.value.trim();
+      if (what.length < 3) { err.hidden = false; err.textContent = 'Just a few words is plenty.'; ta.focus(); return; }
+      send.disabled = true; send.textContent = 'Sending…'; err.hidden = true;
+      try {
+        const res = await call('/mark', { what, page: PAGE, spot, nonce });
+        notes.push({ id: res.id, what, spot, status: 'new', reply: '', el: n });
+        closePop(); renderPins(); renderPanel();
+        say.lastChild.textContent = 'sent! Tap anything else, or see your notes.';
+      } catch (x) {
+        send.disabled = false; send.textContent = 'Send to Taya'; err.hidden = false;
+        err.textContent = x.code === 'signed_out' ? 'Your sign-in ran out. Sign in at your portal again, then come back.'
+          : x.code === 'slow_down' ? 'That’s a lot of notes for one day! Send the rest tomorrow, or email me.'
+          : 'That didn’t go through. Check your connection and try again.';
+      }
+    });
+  }
+
+  /* ---------------- talking to the portal ---------------- */
+  async function call(path, body) {
+    let res;
+    try {
+      res = await fetch(BASE + path, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-WF-Session': token },
+        body: JSON.stringify(body), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+    } catch (e) { const x = new Error('network'); x.code = 'network'; throw x; }
+    let data = null; try { data = await res.json(); } catch (e) { data = null; }
+    if (!res.ok || !data || !data.ok) { const x = new Error('fail'); x.code = (data && data.error) || 'server'; throw x; }
+    return data;
+  }
+
+  /* ---------------- pins and the list ---------------- */
+  // find the spot again by its words, so pins come back on a later visit
+  const findSpot = (spot) => {
+    const q = (spot.match(/“(.+?)…?”/) || [])[1];
+    if (!q) return null;
+    const words = q.replace(/^photo: /, '');
+    const all = document.querySelectorAll(PICKABLE);
+    for (const n of all) {
+      if (ours(n)) continue;
+      const t = (n.getAttribute('alt') || n.textContent || '').replace(/\s+/g, ' ').trim();
+      const img = n.querySelector && n.querySelector('img');
+      if ((t && t.indexOf(words) === 0) || (img && (img.getAttribute('alt') || '').indexOf(words) === 0)) return n;
+    }
+    return null;
+  };
+  let pinLayer = [];
+  function renderPins() {
+    pinLayer.forEach((p) => p.remove()); pinLayer = [];
+    notes.forEach((note, i) => {
+      const n = note.el || (note.el = findSpot(note.spot));
+      if (!n || !n.getClientRects().length) return;
+      const r = n.getBoundingClientRect();
+      const pin = el('button', 'wfm-pin' + (note.status === 'done' ? ' done' : ''), String(i + 1));
+      pin.type = 'button'; pin.setAttribute('aria-label', 'Note ' + (i + 1) + ': ' + note.what);
+      pin.style.top = (window.scrollY + r.top + 4) + 'px'; pin.style.left = (window.scrollX + r.right - 4) + 'px';
+      pin.addEventListener('click', () => { panel.hidden = false; renderPanel(i); });
+      document.body.appendChild(pin); pinLayer.push(pin);
+    });
+  }
+  const panel = el('section', 'wfm wfm-panel'); panel.hidden = true; panel.setAttribute('aria-label', 'Your notes');
+  document.body.appendChild(panel);
+  function renderPanel(focusIndex) {
+    panel.textContent = '';
+    panel.append(el('h2', '', 'Your notes'));
+    if (!notes.length) { panel.append(el('p', 'none', 'Nothing yet. Tap anything on your mockup to leave a note.')); }
+    else {
+      const ol = el('ol');
+      notes.forEach((n, i) => {
+        const li = el('li');
+        li.append(el('div', 'where', (i + 1) + '. ' + n.spot), el('div', '', n.what), el('span', 'st', STATUS[n.status] || 'Sent'));
+        if (n.reply) li.append(el('div', 'reply', 'Taya: ' + n.reply));
+        ol.append(li);
+        if (i === focusIndex) setTimeout(() => li.scrollIntoView({ block: 'nearest' }), 30);
+      });
+      panel.append(ol);
+    }
+    listBtn.textContent = 'Your notes' + (notes.length ? ' (' + notes.length + ')' : '');
+  }
+  listBtn.addEventListener('click', () => { panel.hidden = !panel.hidden; if (!panel.hidden) renderPanel(); });
+
+  let t = 0;
+  const later = () => { clearTimeout(t); t = setTimeout(renderPins, 120); };
+  window.addEventListener('resize', later);
+  window.addEventListener('hashchange', () => setTimeout(renderPins, 350));
+  document.addEventListener('click', (e) => { if (!ours(e.target)) setTimeout(renderPins, 400); });
+
+  call('/marks', { page: PAGE }).then((d) => {
+    notes = (d.marks || []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, status: x.status, reply: x.reply }));
+    renderPins(); renderPanel();
+  }).catch((x) => {
+    if (x.code === 'signed_out') {
+      bar.textContent = '';
+      bar.append(el('span', '', 'Your sign-in ran out. Sign in at your portal again to leave notes.'));
+      const a = el('a', 'wfm-btn', 'Sign in'); a.href = '/portal.html?back=' + encodeURIComponent(location.pathname + '?mark=1' + location.hash);
+      bar.append(a); marking = false;
+    }
+  });
+})();
