@@ -1850,6 +1850,7 @@
     },
     // the 45-minute getting-started call (hidden Cal.com event: only people with this link can book it)
     callLink: 'https://cal.com/webfaery/getting-started',
+    foundingOpen: true,   // founding spots still open: everyone sees founding prices, like the home page (turn off when the 5 are taken)
     magicSite: true,    // the magic mockup is live (Oct 1 2026): their link is webfaery.love/peek/KEY/?mark=1
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
@@ -3140,7 +3141,9 @@
     if (BUILDS[b] && !f.build) pick('build', b);
     if (BUILDS[b]) linkBuild = b;
     // the founding switch is only for someone Taya gave a founding spot (her link says founding=1)
-    foundingLink = /^(1|yes|true)$/i.test(qs.get('founding') || '');
+    const linkFounding = /^(1|yes|true)$/i.test(qs.get('founding') || '');
+    foundingLink = linkFounding || (CONFIG.foundingOpen && !/^(0|no|false)$/i.test(qs.get('founding') || ''));
+    if (!linkFounding && foundingLink) $('#h-founding').textContent = 'While my 5 founding spots last, this is on for you: half off the build, and half off care for as long as you keep it, $35 a month (or $350 a year).';
     if (foundingLink && !saved) $('#f-founding').checked = true;
     foundingAsk = foundingLink && !$('#f-founding').checked;
     const care = (qs.get('care') || '').trim().toLowerCase();
