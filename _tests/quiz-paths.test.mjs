@@ -179,7 +179,7 @@ combos.forEach((picks, n) => {
     if (paygMid(picks) < CARE_PREPAID && !/a year more than going without/.test(because)) failures.push(`${tag}: care costs more here but the difference isn't named`);
   } else {
     if (!/^Send one email with everything you’d like changed, and I’ll reply with a price before I start \(\$100 an hour\)/.test(points)) failures.push(`${tag}: points don't say one email, a price before I start, $100 an hour`);
-    if (!/Most small changes, like new wording or a new offering, come to about \$25 to \$50/.test(points)) failures.push(`${tag}: points don't say most small changes come to about $25 to $50`);
+    if (!/Most small changes, like new hours, a price or a photo, come to about \$25 to \$50/.test(points)) failures.push(`${tag}: points don't say most small changes come to about $25 to $50`);
     if (!/Anything big is quoted the same way, and nothing starts until you say yes/.test(points)) failures.push(`${tag}: points don't say big jobs are quoted the same way`);
     // the range and the rate never split across lines ("$25 / to $50", "$100 / an hour")
     if (!/\$25\u00a0to\u00a0\$50/.test($('r-care-points').rawText) || !/\$100\u00a0an\u00a0hour/.test($('r-costs').rawText)) failures.push(`${tag}: "$25 to $50" or "$100 an hour" can split across lines`);
