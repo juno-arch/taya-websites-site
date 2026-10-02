@@ -66,7 +66,7 @@
   };
   function stages(dates, current) {
     var keys = ['getting_started', 'call', 'draft', 'changes', 'launch', 'settling_in'];
-    var labels = ['Getting started', 'Our call', 'Draft', 'Changes', 'Launch', 'Settling in'];
+    var labels = ['Getting started', 'Your story', 'Draft', 'Changes', 'Launch', 'Settling in'];
     var ci = keys.indexOf(current);
     if (ci < 0) ci = keys.length;
     return keys.map(function (k, i) { return { key: k, label: labels[i], date: dates[i] || '', state: i < ci ? 'done' : (i === ci ? 'now' : 'next') }; });

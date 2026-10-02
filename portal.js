@@ -64,7 +64,7 @@
   ];
   const STAGE_SAY = {
     getting_started: 'Your answers, photos and a few little setup bits.',
-    call: '45 minutes, on video or the phone. I do the writing after.',
+    call: 'A few easy questions by email (or a chat, if you’d rather talk). I do the writing after.',
     draft: 'I’m building your draft. You’ll get a private link to peek.',
     changes: 'Two rounds, each one email with everything in it.',
     launch: 'Your site goes live at your own web address.',
@@ -89,7 +89,7 @@
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
     look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },
     build: { steps: ['Maiden, Mother or Crone. Not sure yet? We’ll pick together over email.'] },
-    call: { steps: ['I’ll email you a link to pick a time.'] }
+    call: { steps: ['Nothing to book. I’ll email you a few easy questions. Rather talk? Just say so and I’ll send a link to pick a time.'] }
   };
   const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Let’s talk' };
   // what each upload spot takes (the server checks again, and so does the field itself)
@@ -926,7 +926,7 @@
       } else {
         if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
         const what = item.id === 'd:call' ? 'your chat booking page' : item.id === 'd:draft' ? 'your private draft' : 'that page';
-        act.append(outLink(item.url, item.id === 'd:call' ? 'Pick a time' : 'Open', item.status === 'sent' ? 'open-btn' : 'btn small', what, item.id === 'd:call' ? 'call' : ''));
+        act.append(outLink(item.url, item.id === 'd:call' ? 'Pick a time to chat' : 'Open', item.status === 'sent' ? 'open-btn' : 'btn small', what, item.id === 'd:call' ? 'call' : ''));
         if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
       }
       if (item.id === 'd:draft') {
