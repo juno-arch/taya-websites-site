@@ -522,8 +522,12 @@
   .c-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17.5px; }
   .c-price { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .c-note { grid-column: 1 / -1; font-size: 15px; color: var(--ink-soft); }
+  .care-period { margin-top: 14px; }
+  .care-period .care-how { margin: 0 0 8px; }
+  #care-none-note { margin-top: 12px; }
   @media (min-width: 720px) {
     .cares { grid-template-columns: repeat(3, 1fr); }
+    .cares.two { grid-template-columns: repeat(2, 1fr); }
     .care-opt { grid-template-columns: 1fr; text-align: center; padding: 18px 14px; }
     .c-price { text-align: center; font-size: 21px; }
   }
@@ -1067,14 +1071,21 @@
         </div>
 
         <fieldset class="group" id="g-care" data-if="care-choose">
-          <legend class="main">After launch: care, or pay as you go?</legend>
-          <p class="hint">No need to be sure today. It just needs settling by launch, because it decides where your web address lives.
-             The <a href="quiz.html"><span class="nowrap">two-minute</span> quiz</a> can help.</p>
-          <div class="cares">
-            <label class="care-opt"><input type="radio" name="care" value="monthly"><span class="c-name">Care, monthly</span><span class="c-price" data-care="monthly">$69 a month</span><span class="c-note">Cancel anytime</span></label>
-            <label class="care-opt"><input type="radio" name="care" value="yearly"><span class="c-name">Care, yearly</span><span class="c-price" data-care="yearly">$690 a year</span><span class="c-note">Two months free</span></label>
-            <label class="care-opt"><input type="radio" name="care" value="none"><span class="c-name">Pay as you go</span><span class="c-price">$100 an hour</span><span class="c-note">A price before I start</span></label>
+          <legend class="main">Would you like care after launch?</legend>
+          <p class="hint">Care means I look after your site for you, so you never have to think about it. No need to decide today;
+             it just needs settling by launch. The <a href="quiz.html"><span class="nowrap">two-minute</span> quiz</a> can help.</p>
+          <div class="cares two">
+            <label class="care-opt"><input type="radio" name="care_q" value="yes"><span class="c-name">Yes, please</span><span class="c-note">I look after it for you</span></label>
+            <label class="care-opt"><input type="radio" name="care" value="none"><span class="c-name">No thanks</span><span class="c-note">I’ll ask when I need something</span></label>
           </div>
+          <div class="care-period" id="care-period" hidden>
+            <p class="hint care-how">How would you like to pay for it?</p>
+            <div class="cares two">
+              <label class="care-opt"><input type="radio" name="care" value="monthly"><span class="c-name">Monthly</span><span class="c-price" data-care="monthly">$69 a month</span><span class="c-note">Cancel anytime</span></label>
+              <label class="care-opt"><input type="radio" name="care" value="yearly"><span class="c-name">Yearly</span><span class="c-price" data-care="yearly">$690 a year</span><span class="c-note">Two months free</span></label>
+            </div>
+          </div>
+          <p class="soft-note" id="care-none-note" hidden>Totally fine. Your site is still all yours, with no monthly bill. You can update the basics yourself anytime, free, and for anything bigger I’ll give you a price first.</p>
           <details class="more">
             <summary>What care includes, and how changes work without it</summary>
             <p><b>With care,</b> you never have to think about your website again. I make your changes whenever you ask, by email, and reply within 2 business days. Your web address,
@@ -2051,6 +2062,13 @@
     if (link) link.hidden = !!cloud.token;
   }
 
+  // care yes/no: keep the two answers from both being on (runs before the page's own input/change handling)
+  const careYesNo = (e) => {
+    if (e.target.name === 'care_q' && e.target.checked) { const no = $('input[name="care"][value="none"]'); if (no.checked) no.checked = false; }
+    if (e.target.name === 'care' && e.target.value === 'none' && e.target.checked) $('input[name="care_q"]').checked = false;
+  };
+  form.addEventListener('input', careYesNo, true);
+  form.addEventListener('change', careYesNo, true);
   function snapshot() {
     const fields = {};
     for (const el of form.elements) {
@@ -2186,6 +2204,12 @@
     $('[data-care="monthly"]').textContent = money(c.founding ? CARE.foundingMonthly : CARE.monthly) + ' a month';
     $('[data-care="yearly"]').textContent = money(c.founding ? CARE.foundingYearly : CARE.yearly) + ' a year';
     $$('.build').forEach((l) => l.classList.toggle('on', $('input', l).checked));
+    { // care: a yes or no first, then monthly or yearly (Pollen, Oct 2)
+      const q = $('input[name="care_q"]');
+      if (c.care === 'monthly' || c.care === 'yearly') q.checked = true;
+      $('#care-period').hidden = !q.checked;
+      $('#care-none-note').hidden = c.care !== 'none';
+    }
     $$('.care-opt, .opt').forEach((l) => { const i = $('input', l); if (i) l.classList.toggle('on', i.checked); });
     const care = hasCare(c), none = c.care === 'none';
     $('[data-x="email"]').textContent = care ? 'Covered by care.' : none ? 'About $3 a month, in your own account.' : 'About $3 a month in your own account, or covered by care.';
