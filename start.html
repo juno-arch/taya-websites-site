@@ -209,9 +209,8 @@
     background: linear-gradient(rgba(14, 14, 12, 0.55), rgba(14, 14, 12, 0.35) 40%, rgba(14, 14, 12, 0.6)),
                 image-set(url('images/moss-bg.webp') type('image/webp'), url('images/moss-bg.jpg') type('image/jpeg')) center / cover no-repeat; }
   @media print { .moss-bg { display: none; } }
-  /* the soil goes clear on this page so the moss shows through, with the mycelium still drawn over it */
-  .soil { background: transparent; }
-  html:not(.myc-js) .soil { background: url(mycelium.svg) 50% 50% / 1920px 1200px no-repeat; }
+  /* just the moss on this page: no soil and no mycelium over it (Pollen, Oct 2) */
+  .soil { display: none !important; }
   .made-from { margin: 10px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   /* "Change" sits inline at the end of the sentence, like a link */
   .made-from .later, .from-qc .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 2px 2px; margin: 0 0 0 2px; vertical-align: baseline; }
