@@ -10,30 +10,31 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@400;500;600&family=Caveat:wght@600&display=swap">
+<script src="https://webfaery.love/content.js" data-site="tera" defer></script>
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
   ol, ul { margin: 0; padding: 0; }
   [hidden] { display: none !important; }
   :root {
-    --ground: #eef0e6;      /* humboldt fog linen */
-    --ground-2: #e2e6d6;    /* sage wash */
-    --ink: #33291f;         /* redwood bark */
+    --ground: #eef0e6;      
+    --ground-2: #e2e6d6;    
+    --ink: #33291f;         
     --ink-soft: #5f5646;
     --moss: #56633a;
     --moss-deep: #414b2b;
-    --fern-band: #28312a;   /* shade under the canopy */
+    --fern-band: #28312a;   
     --on-band: #e9ecdf;
-    --yarrow: #c9a94f;      /* dried yarrow gold, used sparingly */
+    --yarrow: #c9a94f;      
     --hair: #cfd5c0;
     --ring: rgba(86, 99, 58, 0.22);
-    --tag-bg: #dde2cc;      /* build tags: quiet sage chip */
+    --tag-bg: #dde2cc;      
     --tag-ink: #414b2b;
     --tag-line: #c9d0b4;
-    --dusk: #c98a68;        /* ocean-sunset peach from her card, used quietly */
+    --dusk: #c98a68;        
     --dusk-glow: rgba(214, 150, 112, 0.14);
-    /* the breathing glow behind Sessions: on the light card it glows as warm light */
+    
     --breath-card: var(--ground-2);
     --breath-core: rgba(255, 250, 230, 0.92);
     --breath-gold: rgba(247, 233, 186, 0.62);
@@ -41,15 +42,18 @@
     --breath-line: rgba(255, 252, 238, 0.95);
     --breath-halo: rgba(214, 180, 92, 0.2);
     --breath-inner: rgba(226, 198, 112, 0.14);
+    --slat: rgba(86, 99, 58, 0.07);   
     color-scheme: light;
   }
+  
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #1c211d; --ground-2: #232a24; --ink: #e8eadf; --ink-soft: #b9bdac;
-      --moss: #a8b98a; --moss-deep: #c3d1a6; --fern-band: #141814; --on-band: #e3e7d8;
-      --yarrow: #d9bf6e; --hair: #343d34; --ring: rgba(168, 185, 138, 0.20);
-      --tag-bg: #2b3329; --tag-ink: #c9d6ad; --tag-line: #3b4538;
-      --dusk: #e0a987; --dusk-glow: rgba(224, 169, 135, 0.09);
+      --ground: #161716; --ground-2: #202220; --ink: #ebece6; --ink-soft: #babdb4;
+      --moss: #a9c08e; --moss-deep: #c6d9ae; --fern-band: #13201a; --on-band: #e4e9de;
+      --yarrow: #dcc274; --hair: #333633; --ring: rgba(169, 192, 142, 0.20);
+      --tag-bg: #1c2a22; --tag-ink: #c6d9ae; --tag-line: #2e4337;
+      --dusk: #e3ab89; --dusk-glow: rgba(227, 171, 137, 0.045);
+      --slat: rgba(169, 192, 142, 0.06);
       --breath-card: var(--fern-band);
       --breath-core: rgba(226, 198, 112, 0.24); --breath-gold: rgba(201, 169, 79, 0.13); --breath-sage: rgba(168, 185, 138, 0.06);
       --breath-line: rgba(214, 224, 186, 0.2); --breath-halo: rgba(201, 169, 79, 0.1); --breath-inner: rgba(214, 224, 186, 0.06);
@@ -57,11 +61,12 @@
     }
   }
   :root[data-theme="dark"] {
-    --ground: #1c211d; --ground-2: #232a24; --ink: #e8eadf; --ink-soft: #b9bdac;
-    --moss: #a8b98a; --moss-deep: #c3d1a6; --fern-band: #141814; --on-band: #e3e7d8;
-    --yarrow: #d9bf6e; --hair: #343d34; --ring: rgba(168, 185, 138, 0.20);
-    --tag-bg: #2b3329; --tag-ink: #c9d6ad; --tag-line: #3b4538;
-    --dusk: #e0a987; --dusk-glow: rgba(224, 169, 135, 0.09);
+    --ground: #161716; --ground-2: #202220; --ink: #ebece6; --ink-soft: #babdb4;
+    --moss: #a9c08e; --moss-deep: #c6d9ae; --fern-band: #13201a; --on-band: #e4e9de;
+    --yarrow: #dcc274; --hair: #333633; --ring: rgba(169, 192, 142, 0.20);
+    --tag-bg: #1c2a22; --tag-ink: #c6d9ae; --tag-line: #2e4337;
+    --dusk: #e3ab89; --dusk-glow: rgba(227, 171, 137, 0.045);
+    --slat: rgba(169, 192, 142, 0.06);
     --breath-card: var(--fern-band);
     --breath-core: rgba(226, 198, 112, 0.24); --breath-gold: rgba(201, 169, 79, 0.13); --breath-sage: rgba(168, 185, 138, 0.06);
     --breath-line: rgba(214, 224, 186, 0.2); --breath-halo: rgba(201, 169, 79, 0.1); --breath-inner: rgba(214, 224, 186, 0.06);
@@ -91,11 +96,11 @@
   p + p { margin-top: 16px; }
   .nw { white-space: nowrap; }
 
-  /* placeholders for details Tera fills in herself */
+  
   .ph { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 400; color: var(--moss-deep); font-size: 1.04em;
     text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--moss); }
 
-  /* build tags: which Web Faery build includes each piece */
+  
   .tag { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; flex: none;
     font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-style: normal;
     font-size: 10.5px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
@@ -103,13 +108,13 @@
     padding: 5px 10px 5px 9px; border-radius: 999px; white-space: nowrap; }
   .tag::before { content: "\2726"; content: "\2726" / ""; font-size: 8px; letter-spacing: 0; opacity: 0.75; }
 
-  /* mockup ribbon */
+  
   .ribbon { position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 20;
     background: var(--ground); color: var(--moss-deep); border: 1px solid var(--moss);
     font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
     padding: 6px 12px; border-radius: 999px; }
 
-  /* header */
+  
   header.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 22px 0; }
   .mark { font-family: 'Petrona', Georgia, serif; font-size: 22px; letter-spacing: 0.01em; }
   .mark span { font-style: italic; font-weight: 300; color: var(--moss); }
@@ -125,7 +130,7 @@
   .btn.quiet { background: transparent; color: var(--moss-deep); }
   .btn.quiet:hover { background: var(--ground-2); color: var(--moss-deep); }
 
-  /* ---------- hero: full-bleed photo, soft veil, slow intro ---------- */
+  
   .hero-band {
     position: relative; overflow: hidden;
     min-height: 94vh; min-height: 94svh;
@@ -148,7 +153,7 @@
 
   .hero-center { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding-block: 64px 96px; }
   .hero-copy { position: relative; max-width: 780px; }
-  /* a soft shade behind the words, so they stay readable where the lamp glows brightest */
+  
   .hero-copy::before { content: ""; position: absolute; z-index: -1; pointer-events: none;
     left: 50%; top: 20%; width: min(124%, 100vw); height: 100%; translate: -50% -50%;
     background: radial-gradient(closest-side, rgba(20, 25, 21, 0.56) 0%, rgba(20, 25, 21, 0.48) 48%, rgba(20, 25, 21, 0.2) 80%, rgba(20, 25, 21, 0) 100%); }
@@ -156,16 +161,14 @@
   .hero-band h1 { font-size: clamp(42px, 7.2vw, 76px); line-height: 1.04; letter-spacing: -0.01em; color: var(--on-band); max-width: 15ch; margin-inline: auto; text-shadow: 0 2px 30px rgba(10, 12, 10, 0.35); }
   .hero-band h1 em { color: var(--yarrow); }
   .hero-band .lede { margin: 22px auto 0; font-size: clamp(18px, 4.2vw, 20px); color: rgba(233, 236, 223, 0.9); max-width: 40ch; text-shadow: 0 1px 18px rgba(10, 12, 10, 0.4); }
-  /* her own words from her card, in a soft sunset peach */
+  
   .hero-band .tagline { display: block; margin-bottom: 8px; font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 400;
     font-size: clamp(22px, 5vw, 26px); line-height: 1.3; letter-spacing: 0.005em; color: #f1cdb2; text-wrap: balance; }
   .hero-band .cta-row { justify-content: center; margin-top: 34px; }
   .hero-band .btn.quiet { color: var(--on-band); border-color: rgba(233, 236, 223, 0.55); }
   .hero-band .btn.quiet:hover { background: rgba(233, 236, 223, 0.1); border-color: var(--on-band); }
 
-  /* the intro: the photo arrives and slowly settles, the veil deepens, then the words glide up one at a time.
-     The small script after the hero adds .wait/.go once the photo has loaded, so without JavaScript
-     or with reduced motion everything simply shows at rest. */
+  
   .hero-band.wait::before, .hero-band.wait::after, .hero-band.wait .hero-copy::before, .hero-band.wait .sample-tag,
   .hero-band.wait .label, .hero-band.wait h1, .hero-band.wait .lede, .hero-band.wait .cta-row { opacity: 0; }
   .hero-band.go::before { animation: hero-photo 3.4s cubic-bezier(.22,1,.36,1) both; }
@@ -180,12 +183,12 @@
   @keyframes hero-rise { from { opacity: 0; transform: translateY(64px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
 
-  /* ---------- photos ---------- */
+  
   .photo { position: relative; margin: 0; overflow: hidden; border-radius: 22px; max-width: 100%; background: var(--ground-2); isolation: isolate; }
   .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .photo::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
     box-shadow: inset 0 0 70px rgba(20, 25, 21, 0.16); }
-  /* scroll effect: photos settle in with a soft zoom, then drift gently as you scroll */
+  
   .photo img { scale: 1.08; translate: 0 var(--drift, 0px); transition: scale 1.8s cubic-bezier(.2,.7,.3,1); }
   .photo.reveal.pre:not(.in) img { scale: 1.15; }
   @media (prefers-reduced-motion: reduce) { .photo img, .photo.reveal.pre:not(.in) img { scale: 1; translate: none; transition: none; } }
@@ -195,17 +198,17 @@
   .photo.hands { aspect-ratio: 2 / 1; background: #d9c3a8; }
   .photo.hands img { object-position: 50% 57%; }
   .photo.path img { object-position: 50% 16%; }
-  /* "Sample photo" chip: the same quiet tag on every photo */
+  
   .sample-tag { position: absolute; right: 14px; bottom: 14px; z-index: 2; pointer-events: none;
     font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
     color: #eef0e6; background: rgba(28, 33, 29, 0.56); border: 1px solid rgba(238, 240, 230, 0.2);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     padding: 6px 10px 6px 11px; border-radius: 999px; white-space: nowrap; }
   .hero-band .sample-tag { right: max(16px, env(safe-area-inset-right, 0px)); bottom: 16px; }
-  /* portrait screens: slide the photo so the hands and the resting face stay in frame */
+  
   @media (max-aspect-ratio: 5 / 4) { .hero-band { --hero-pos: 64% 50%; } }
 
-  /* sections */
+  
   section { padding-block: 72px; border-top: 1px solid var(--hair); }
   .two { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; }
   .roots { background: var(--ground-2); border-top: none; }
@@ -217,7 +220,7 @@
   .fact { font-family: 'Petrona', Georgia, serif; font-size: clamp(56px, 9vw, 88px); line-height: 1; color: var(--moss); font-variant-numeric: tabular-nums; }
   .fact-note { color: var(--ink-soft); font-size: 15px; margin-top: 8px; max-width: 30ch; }
 
-  /* band */
+  
   .band { background: var(--fern-band); color: var(--on-band); border-top: none; }
   .band h2, .band .label { color: var(--on-band); }
   .band .label { opacity: 0.75; }
@@ -227,8 +230,7 @@
   .steps div { border-top: 1px solid rgba(233, 236, 223, 0.25); padding-top: 16px; }
   .steps b { display: block; font-family: 'Petrona', Georgia, serif; font-weight: 400; font-size: 21px; margin-bottom: 6px; }
 
-  /* sessions: a soft card with the breathing ring glowing quietly behind the rates.
-     The ring grows for four seconds (breathe in) and softens back for six (breathe out). */
+  
   .sessions-card { position: relative; isolation: isolate; overflow: hidden; box-sizing: border-box;
     background: var(--breath-card); border: 1px solid var(--hair); border-radius: 28px; padding: clamp(30px, 5vw, 56px);
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
@@ -248,7 +250,7 @@
     .breath-ring { animation: none; transform: scale(0.9); opacity: 0.85; }
   }
 
-  /* sessions */
+  
   .rates { width: 100%; border-collapse: collapse; margin-top: 26px; font-variant-numeric: tabular-nums; }
   .rates th, .rates td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--hair); text-wrap: balance; }
   .rates th { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
@@ -258,7 +260,7 @@
   .rates .focus-row small { font-weight: 400; }
   .rates .focus-row small b { font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; color: var(--moss); }
 
-  /* studio or mobile: come to me, or I'll come to you */
+  
   .come { background: radial-gradient(90% 80% at 100% 0%, var(--dusk-glow) 0%, rgba(0, 0, 0, 0) 70%), var(--ground); }
   .horizon { display: block; position: relative; width: 96px; height: 24px; margin: 0 0 16px; }
   .horizon::before { content: ""; position: absolute; left: 50%; bottom: 1px; width: 32px; height: 16px; translate: -50% 0;
@@ -274,10 +276,10 @@
   .come-facts { margin: auto 0 0; padding-top: 14px; border-top: 1px solid var(--hair); display: grid; gap: 6px; font-size: 15px; }
   .come-facts div { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 2px 16px; }
   .come-facts dt { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
-  .come-facts dd { margin: 0 0 0 auto; text-align: right; }  /* stays right-aligned even when it wraps under a long label */
+  .come-facts dd { margin: 0 0 0 auto; text-align: right; }  
   .come-foot { margin-top: 24px; color: var(--ink-soft); }
 
-  /* call, text, Instagram */
+  
   .reach { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
   .reach a { display: inline-flex; align-items: center; gap: 7px; min-height: 42px; box-sizing: border-box; padding: 0 16px; border: 1px solid var(--hair); border-radius: 999px;
     background: var(--ground); color: var(--moss-deep); text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1; }
@@ -285,10 +287,10 @@
   .reach svg { flex: none; color: var(--moss); }
   .where .num { font-size: 19px; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
   .tel { position: relative; color: var(--moss-deep); white-space: nowrap; }
-  .tel::after { content: ""; position: absolute; inset: -11px -4px; }  /* a finger-sized tap area without changing the line */
+  .tel::after { content: ""; position: absolute; inset: -11px -4px; }  
   .fine { font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
 
-  /* kind words: sample reviews */
+  
   .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .review { display: flex; flex-direction: column; gap: 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 22px clamp(18px, 2.2vw, 22px) 20px; }
   .review-sample { font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
@@ -297,11 +299,11 @@
   .reviews .reveal.in:nth-child(2) { transition-delay: 0.12s; }
   .reviews .reveal.in:nth-child(3) { transition-delay: 0.24s; }
 
-  /* book */
+  
   .book { text-align: left; }
   .book-head { display: grid; grid-template-columns: minmax(0, 620px) minmax(116px, 1fr); column-gap: 44px; align-items: start; }
   .book-head > * { grid-column: 1; }
-  /* optional portrait: shows where Tera's own photo could go, if she ever wants one */
+  
   .portrait-spot { grid-column: 2; grid-row: 1 / span 4; align-self: center; justify-self: end; margin-right: 8px;
     width: 116px; height: 116px; border-radius: 50%; box-sizing: border-box;
     border: 1.5px dashed var(--moss); box-shadow: 0 0 0 8px rgba(86, 99, 58, 0.08);
@@ -320,7 +322,7 @@
   .foot-reach a { display: inline-block; padding-block: 9px; }
   .legend .tag { margin-inline: 1px; }
 
-  /* shared bits for the preview demos */
+  
   .fld { font-size: 13px; color: var(--ink-soft); display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .fld input, .fld textarea, .nl-row input { font: inherit; font-size: 16px; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px;
     border: 1px solid var(--hair); border-radius: 14px; background: var(--ground); color: var(--ink); }
@@ -335,7 +337,7 @@
   @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
 
-  /* gift a session: gift certificate or pay ahead (demo) */
+  
   .gift { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-template-areas: "intro card" "notes card"; column-gap: 48px; align-items: start; }
   .gift-intro { grid-area: intro; } .gift-notes { grid-area: notes; display: grid; gap: 12px; margin-top: 26px; } .pay-card { grid-area: card; }
   .pay-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 14px; padding: 24px; }
@@ -356,7 +358,7 @@
   .money input { padding-left: 26px; }
   #gf-any-wrap { margin-top: 12px; max-width: 220px; }
   .pay-card .fld-row { margin-top: 16px; }
-  /* the checkout sheet */
+  
   .sheet { background: var(--ground); border: 1px solid var(--hair); border-radius: 18px; padding: 12px 20px 20px; box-shadow: 0 22px 40px -28px rgba(20, 25, 21, 0.6); }
   .sheet-grip { display: block; width: 40px; height: 4px; border-radius: 4px; background: var(--hair); margin: 0 auto 14px; }
   .sheet-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
@@ -373,7 +375,7 @@
   .sheet-actions { display: flex; flex-wrap: wrap; gap: 0 6px; align-items: center; }
   .sheet-actions .bk-go.ghost { border-color: transparent; padding-inline: 14px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 
-  /* first visit: FAQ + intake form */
+  
   .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-template-areas: "head list" "intake list"; column-gap: 48px; align-items: start; }
   .faq-head { grid-area: head; } .faq-list { grid-area: list; } .intake { grid-area: intake; margin-top: 34px; }
   .faq-list details { border-bottom: 1px solid var(--hair); }
@@ -404,7 +406,7 @@
   .ik-checks i { display: inline-block; width: 9px; height: 9px; border: 1px solid #8a8070; border-radius: 50%; margin: 0 4px 0 10px; vertical-align: -1px; }
   .ik-note { font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
 
-  /* stay in touch: contact form + newsletter */
+  
   .touch { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 48px; align-items: start; }
   .cf-card { margin-top: 26px; }
   .cf-card form { display: grid; gap: 10px; }
@@ -427,7 +429,7 @@
   .news .nl-done h4 { margin: 0 0 6px; font-family: 'Petrona', Georgia, serif; font-weight: 400; font-size: 24px; color: var(--on-band); }
   .news .demo-note { color: rgba(233, 236, 223, 0.72); }
 
-  /* easy to find: search result + text-message link preview */
+  
   .found { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 30px; }
   .found-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 18px 20px 22px; }
   .found-card figcaption { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin-bottom: 14px; }
@@ -449,7 +451,7 @@
   .linkcard small { display: block; font-size: 12.5px; color: var(--ink-soft); }
   .gbp { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
 
-  /* the quiet line under the booking demo, for the Mother build */
+  
   .tier-note { margin-top: 16px; padding-left: 2px; font-size: 14px; color: var(--ink-soft); }
 
   @media (max-width: 760px) {
@@ -459,7 +461,7 @@
     .breath { width: min(100%, 400px); }
     .steps, .where, .come-grid { grid-template-columns: minmax(0, 1fr); }
     section { padding-block: 56px; }
-    /* phones and small tablets: photos run edge to edge */
+    
     .photo { margin-inline: -20px; border-radius: 0; max-width: none; }
     .photo.wide, .photo.pano { width: auto; }
     .photo.hands { aspect-ratio: 4 / 3; }
@@ -497,7 +499,7 @@
   @media (max-width: 430px) {
     .hero-band .cta-row .btn { flex: 1 1 100%; text-align: center; }
   }
-  /* phones and small tablets: hero eyebrow on two tidy lines */
+  
   @media (max-width: 680px) {
     .hero-band .label .sep { display: none; }
     .hero-band .label .place { display: block; margin-top: 4px; }
@@ -508,19 +510,19 @@
     .hero-band .tagline { font-size: 20px; margin-bottom: 6px; }
     .seg button { font-size: 14px; padding-inline: 8px; }
   }
-  /* landscape phones: keep the hero and wide photos within a short screen */
+  
   @media (orientation: landscape) and (max-height: 500px) {
     .hero-center { padding-block: 32px 48px; }
     .hero-band h1 { font-size: clamp(38px, 5.6vw, 54px); max-width: none; }
     .photo.pano { max-height: 72vh; }
     section { padding-block: 56px; }
   }
-  /* short laptop windows: bring the hero buttons above the fold */
+  
   @media (min-width: 761px) and (max-height: 760px) {
     .hero-center { padding-block: 36px 60px; }
   }
 
-  /* gentle scroll reveal: only things below the fold animate, so the page is readable at rest */
+  
   .reveal.pre { opacity: 0; transform: translateY(26px); }
   .reveal.in { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1); }
   .steps .reveal.in:nth-child(2), .where .reveal.in:nth-child(2) { transition-delay: 0.12s; }
@@ -528,7 +530,7 @@
   .where .reveal.in:nth-child(4) { transition-delay: 0.36s; }
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
-  /* booking preview (demo) */
+  
   .bk [hidden] { display: none !important; }
   .bk { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 26px; margin-top: 30px; align-items: start; }
   .bk > * { min-width: 0; }
@@ -569,7 +571,7 @@
   .label.with-pill .bk-demo { margin-left: 0; }
   @media (max-width: 780px) { .bk { grid-template-columns: minmax(0, 1fr); } }
 
-  /* status banner: a slim strip above the header, open, full or away (every build) */
+  
   .status { position: relative; z-index: 5; }
   .status-strip { margin: 0; background: var(--moss); color: var(--ground); text-align: center; font-size: 13px; line-height: 1.4; }
   .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px;
@@ -581,8 +583,8 @@
   .status-strip a:hover em { text-decoration-color: currentColor; }
   .status-strip a:focus-visible { outline: 2px solid var(--ground); outline-offset: -4px; border-radius: 6px; }
   .status + .hero-band { min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); }
-  .status + .hero-band header.top { padding-top: 42px; }  /* room for the demo tab above her name */
-  /* the demo switch: a small tab hanging under the strip, lined up with her name */
+  .status + .hero-band header.top { padding-top: 42px; }  
+  
   .status-tab { position: absolute; top: 100%; left: calc(20px + max(0px, (100% - 1020px) / 2));
     display: flex; align-items: flex-start; gap: 6px; }
   .status-try { display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; cursor: pointer;
@@ -604,9 +606,7 @@
     .status-strip em { font-size: 14.5px; }
     .status-seg { flex-basis: 100%; }
   }
-  /* light or dark (Web Faery's demo layer): a small toggle beside the banner tab, to try both looks.
-     The real site follows each visitor's phone setting, so nothing is remembered: every visit starts on auto.
-     Without JavaScript the toggle stays hidden and the site simply follows the phone. */
+  
   .theme-tab { display: inline-flex; align-items: stretch; min-height: 26px; box-sizing: border-box;
     background: var(--ground); border: 1px solid var(--moss); border-top: 0; border-radius: 0 0 12px 12px; }
   .theme-tab button { display: inline-flex; align-items: center; gap: 5px; margin: 0; padding: 7px 10px 8px; cursor: pointer; -webkit-appearance: none; appearance: none;
@@ -624,12 +624,12 @@
     color: var(--moss-deep); background: var(--ground); border: 1px solid var(--moss); border-radius: 999px; }
   .theme-auto:hover { background: var(--ground-2); }
   .theme-auto:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
-  @media (max-width: 359px) { .theme-tab svg { display: none; } }   /* the smallest phones: words only, so both tabs fit on one line */
+  @media (max-width: 359px) { .theme-tab svg { display: none; } }   
   @media (prefers-reduced-motion: reduce) { .theme-tab button { transition: none; } }
 
   .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-  /* waitlist (demo), opened from the strip when her book is full */
+  
   .wl { width: min(420px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); box-sizing: border-box; overflow: auto;
     padding: 26px 24px 24px; border: 1px solid var(--hair); border-radius: 18px; background: var(--ground); color: var(--ink);
     box-shadow: 0 30px 60px -30px rgba(20, 25, 21, 0.7); }
@@ -647,11 +647,10 @@
   .wl-x:hover { background: var(--ground-2); color: var(--ink); }
   @media (max-width: 380px) { .wl { padding: 22px 18px 20px; } .wl h2 { font-size: 27px; } }
 
-  /* ---------- build views (Web Faery's demo layer): see the site as Maiden, Mother or Crone ----------
-     The views bar, the floating pill and the tag buttons only appear with JavaScript; without it everything simply shows. */
-  .tag-p { font-weight: 600; margin-left: -3px; }  /* evens out the space around the dot */
+  
+  .tag-p { font-weight: 600; margin-left: -3px; }  
   button.tag { position: relative; margin: 0; padding-block: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; transition: background-color 0.2s ease, border-color 0.2s ease; }
-  button.tag::after { content: ""; position: absolute; inset: -8px -2px; }  /* a finger-sized tap area */
+  button.tag::after { content: ""; position: absolute; inset: -8px -2px; }  
   .legend { line-height: 2.15; }
   .legend button.tag::after { inset: -3px -2px; }
   button.tag:hover { border-color: var(--moss); background: var(--tag-line); }
@@ -686,12 +685,12 @@
   @media (max-width: 560px) { .vseg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (prefers-reduced-motion: reduce) { .vseg button, button.tag { transition: none; } }
 
-  /* the floating pill: appears once the views bar has scrolled away, so a build is always one tap off */
+  
   .vp { position: fixed; z-index: 21; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     display: flex; flex-direction: column-reverse; align-items: flex-end; gap: 8px;
     transition: opacity 0.3s ease, translate 0.3s ease; }
   .vp.off { opacity: 0; translate: 0 8px; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, translate 0.3s ease, visibility 0s linear 0.3s; }
-  @media (max-width: 499px) { .vp { bottom: calc(54px + env(safe-area-inset-bottom, 0px)); } footer { padding-bottom: 116px; } }  /* phones: sits just above the mockup ribbon */
+  @media (max-width: 499px) { .vp { bottom: calc(54px + env(safe-area-inset-bottom, 0px)); } footer { padding-bottom: 116px; } }  
   .vpill { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; box-sizing: border-box; margin: 0; padding: 0 14px 0 15px; cursor: pointer;
     font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 11px; line-height: 1.2; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
     color: var(--ink-soft); background: var(--ground); border: 1px solid var(--moss); border-radius: 999px; box-shadow: 0 12px 26px -16px rgba(20, 25, 21, 0.6); }
@@ -706,24 +705,57 @@
   .vpanel .views-note { font-size: 14px; }
   @media (prefers-reduced-motion: reduce) { .vp, .vp.off { transition: none; translate: none; } .vpill svg { transition: none; } }
 
-  /* the booking spot in the Mother and Maiden views */
+  
   .bk-alt .cta-row { margin-top: 26px; }
   .bk-alt .btn svg { margin-left: 8px; vertical-align: -1px; }
   .bk-alt .reach { margin-top: 20px; }
   .bk-alt .demo-note { margin-top: 14px; }
   .tier-note button.tag { margin-left: 4px; }
-  /* "Easy to find": not part of her site, so it sits in a dashed backstage frame */
+  
   .found-sec { border-top: 0; padding-top: 40px; }
-  .found-wrap { border: 1.5px dashed var(--moss); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, rgba(86, 99, 58, 0.035) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .found-wrap { border: 1.5px dashed var(--moss); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
   .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--moss); color: var(--moss-deep); }
   @media (max-width: 560px) { .found-wrap { padding: 18px 14px 22px; } }
+
+  
+  .views-card, .vpanel, .status-panel, .wf-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border: 1.5px dashed var(--moss); }
+  .status-panel { border-bottom: 1.5px dashed var(--moss); }
+  .wf-note { position: relative; border: 1.5px dashed var(--moss); border-radius: 18px; padding: 16px 18px; }
+  .bk-side.wf-note { padding: 24px 18px 18px; }
+  .gift-notes.wf-note { padding: 24px 18px 18px; }
+  footer .legend.wf-note { margin-top: 22px; padding: 14px 18px 12px; }
+  
+  .status-panel > .wrap, .found-wrap { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .wf-note::after {
+    content: "note for you, from Taya"; position: absolute; top: -13px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', 'Petrona', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #4a3326; white-space: nowrap; font-style: normal;
+    letter-spacing: 0; text-transform: none; background: #f4d6c1; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(40, 28, 20, 0.22); }
+  .status-panel > .wrap::after { top: -6px; }
+  @media (max-width: 560px) { .status-panel > .wrap::after { top: auto; bottom: -26px; right: 4px; } }
+
+  
+  .hrs { list-style: none; display: grid; gap: 1px; font-size: 15px; line-height: 1.55; }
+  .hrs li { display: flex; justify-content: space-between; gap: 12px; }
+  .hrs li > span:first-child { color: var(--ink-soft); min-width: 3ch; }
+  .hrs li > span:last-child { text-align: right; }
+  .hrs .ph { font-size: 15px; }
+  .hrs-note { margin-top: 6px; font-size: 15px; color: var(--ink-soft); }
+  .where div.hrs-box { padding-right: 4px; }
+
+  
+  .wf-strip-in { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; }
+  .wf-strip-t { font-weight: 600; font-size: 14.5px; text-wrap: balance; }
+  .status-strip.wf-strip a { display: inline; padding: 0; color: inherit; }
+  @media (max-width: 560px) { .wf-strip-in { padding: 8px 12px; gap: 0 8px; } .wf-strip-t { font-size: 14px; } }
 </style>
 
 </head>
 <body>
 <div class="status" id="status">
   <p class="status-strip" data-state="open"><a href="#own-booking" id="status-link"><b id="status-label">Now welcoming new clients</b> <em><span id="status-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip wf-strip" data-state="open" data-wf="banner" hidden><span class="wf-strip-in"><span class="wf-strip-t" data-wf="banner-text"></span> <a data-wf="banner-link" href="#book"><em>Find out more<span aria-hidden="true">&nbsp;&rarr;</span></em></a></span></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
@@ -768,7 +800,7 @@
       <h1>As deep as you&rsquo;re <em>ready</em> to go.</h1>
       <p class="lede"><span class="tagline">Body, mind and soul integration.</span>Deep tissue massage, led by your breath and your pace, in her Arcata studio or in your own home.</p>
       <div class="cta-row">
-        <a class="btn" href="#own-booking">Book with Tera</a>
+        <a class="btn" href="#own-booking" data-wf="booking">Book with Tera</a>
         <a class="btn quiet" href="#table">What a session feels like</a>
       </div>
     </div>
@@ -790,7 +822,7 @@
   })();
 </script>
 
-<!-- Web Faery demo layer: see the site as each build. Hidden until the script below wakes it up. -->
+
 <div class="views gutter" id="views" hidden>
   <div class="wrap views-card">
     <div class="views-head">
@@ -854,18 +886,16 @@
       <p class="label">Sessions</p>
       <h2 class="reveal">A <em>deep tissue</em> focus</h2>
       <p style="margin-top:18px;color:var(--ink-soft)">Deep tissue is the heart of Tera&rsquo;s work: slow, steady pressure into the deeper layers of muscle, guided by your breath, and never deeper than you&rsquo;re ready to go.</p>
-      <p style="color:var(--ink-soft)">She also offers Swedish, Neuromuscular, Polarity and Hypnotherapy, each one shaped around your breath and your pace.</p>
+      <p style="color:var(--ink-soft)">She also offers Swedish, Neuromuscular, Polarity and Hypnotherapy. Any session can be one of these, or a blend, shaped around your breath and your pace.</p>
     </div>
     <div class="sessions-rates">
       <span class="breath" aria-hidden="true"><span class="breath-ring"></span></span>
       <table class="reveal rates">
         <thead><tr><th>Session</th><th>Rate</th></tr></thead>
         <tbody>
-          <tr class="focus-row"><td>Deep Tissue<small><b>Her focus</b> &middot; 60 or 90 minutes</small></td><td><span class="ph">your rate</span></td></tr>
-          <tr><td>Swedish<small>60 or 90 minutes</small></td><td><span class="ph">your rate</span></td></tr>
-          <tr><td>Neuromuscular<small>60 or 90 minutes</small></td><td><span class="ph">your rate</span></td></tr>
-          <tr><td>Polarity<small>60 or 90 minutes</small></td><td><span class="ph">your rate</span></td></tr>
-          <tr><td>Hypnotherapy<small>60 or 90 minutes</small></td><td><span class="ph">your rate</span></td></tr>
+          <tr><td>60 minutes<small>One area that needs care, like back, neck and shoulders</small></td><td><span class="ph" data-wf-price="massage-60">your rate</span></td></tr>
+          <tr class="focus-row"><td>90 minutes<small>Full body, with time to go deep</small></td><td><span class="ph" data-wf-price="massage-90">your rate</span></td></tr>
+          <tr><td>2 hours<small>Unhurried, head to toe, for the deepest rest</small></td><td><span class="ph" data-wf-price="massage-120">your rate</span></td></tr>
         </tbody>
       </table>
       <p class="reveal fine"><span class="ph">(your cancellation policy here)</span></p>
@@ -885,7 +915,7 @@
         <h3>The studio, <em>in Arcata</em></h3>
         <p>Come in, settle onto the table, and let the rest of the day wait outside for a while.</p>
         <dl class="come-facts">
-          <div><dt>Studio</dt><dd><span class="ph">your address</span></dd></div>
+          <div><dt>Studio</dt><dd><span class="ph" data-wf="address">your address</span></dd></div>
           <div><dt>Town</dt><dd>Arcata, California</dd></div>
         </dl>
       </div>
@@ -900,7 +930,7 @@
         </dl>
       </div>
     </div>
-    <p class="come-foot">Not sure if you&rsquo;re in her area? Call or text <a class="tel" href="tel:+17079320037">707-932-0037</a>.</p>
+    <p class="come-foot">Not sure if you&rsquo;re in her area? Call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p>
   </div>
 </section>
 
@@ -939,7 +969,7 @@
       <div class="bk-card" id="tb-card">
         <div class="bk-steps" aria-hidden="true"><span data-s="1" class="on">1 Session</span><span data-s="2">2 Day &amp; time</span><span data-s="3">3 Your details</span></div>
         <div id="tb-s1">
-          <div class="bk-grid"><button type="button" class="bk-opt" data-svc="Deep Tissue" data-price="your rate" data-len="90 min"><b>Deep Tissue</b><span>90 min &middot; <i>your rate</i></span></button><button type="button" class="bk-opt" data-svc="Swedish" data-price="your rate" data-len="60 min"><b>Swedish</b><span>60 min &middot; <i>your rate</i></span></button><button type="button" class="bk-opt" data-svc="Polarity" data-price="your rate" data-len="60 min"><b>Polarity</b><span>60 min &middot; <i>your rate</i></span></button></div>
+          <div class="bk-grid"><button type="button" class="bk-opt" data-svc="Deep Tissue" data-price="your rate" data-len="90 min"><b>Deep Tissue</b><span>90 min &middot; <i data-wf-price="massage-90">your rate</i></span></button><button type="button" class="bk-opt" data-svc="Swedish" data-price="your rate" data-len="60 min"><b>Swedish</b><span>60 min &middot; <i data-wf-price="massage-60">your rate</i></span></button><button type="button" class="bk-opt" data-svc="Polarity" data-price="your rate" data-len="60 min"><b>Polarity</b><span>60 min &middot; <i data-wf-price="massage-60">your rate</i></span></button></div>
           <p class="bk-q" id="tb-where-q" hidden>Where</p>
           <div class="bk-where" role="group" aria-labelledby="tb-where-q" hidden><button type="button" class="bk-opt" data-place="studio" aria-pressed="true"><b>Studio</b><span>in Arcata</span></button></div>
           <p class="bk-mob-note">Online booking is for the studio in Arcata. Home visits start with a call or text, so Tera can hear about your space first.</p>
@@ -966,32 +996,33 @@
       </div>
       <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your own booking app. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
-      <div class="bk-side">
+      <div class="bk-side wf-note">
         <div class="bk-note"><b>What you see</b>Every new booking lands in your inbox and phone calendar the moment it happens.</div>
         <div class="bk-inbox" id="tb-inbox"><div class="from">New booking</div><div id="tb-inboxtext">Waiting for a booking&hellip; try it on the left</div></div>
         <div class="bk-note"><b>Home visits by request</b>Online booking fills your studio times. Home visits start with a call or text, so you can hear about their space before you say yes.</div>
         <div class="bk-note"><b>Reminders go out on their own</b>Clients get a reminder the day before, so fewer <span class="nw">no-shows</span> and no texting from your phone.</div>
         <div class="bk-note"><b>Your hours, your rules</b>You set your open times and block off days from your phone. Nobody books outside them.</div>
-        <p style="font-size:12px;color:var(--ink-soft)">Booking preview: nothing here books a real session. On a real site this runs on a free booking tool in your own name, with your own hours and your own payments.</p>
+        <div class="bk-note"><b>Already have booking? Keep it.</b>Whatever you use now, your Book buttons can go straight to it. Starting fresh? Booking here runs on Cal.com, free and set up in your own name.</div>
+        <p style="font-size:12px;color:var(--ink-soft)">Booking preview: nothing here books a real session.</p>
       </div>
     </div>
     </div>
 
-    <!-- the Mother build: a Book now button to the booking app she already uses -->
+    
     <div class="bk-alt" data-show="mother" data-fold data-thing="Book now button" tabindex="-1" hidden>
       <p class="label with-pill"><span>Book online</span> <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       <h2>Find a time <em>that suits you</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">See Tera&rsquo;s open times and book your session online, any time of day.</p>
-      <div class="cta-row"><button type="button" class="btn" id="bn-go">Book now<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></button></div>
+      <div class="cta-row"><a class="btn" id="bn-go" href="#own-booking" data-wf="booking">Book now<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></a></div>
       <p class="hint" id="bn-hint" role="status"></p>
       <p class="demo-note">With Mother, this button opens the booking app you already use.</p>
     </div>
 
-    <!-- the Maiden build: no forms or booking, people reach her directly -->
+    
     <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
       <p class="label with-pill"><span>To book</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2>Call, text <em>or email</em></h2>
-      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Call or text Tera at <a class="tel" href="tel:+17079320037">707-932-0037</a>, or email <span class="ph">your email</span>. She&rsquo;ll find a time that works for you.</p>
+      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Call or text Tera at <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>, or email <a class="ph" data-wf="email">your email</a>. She&rsquo;ll find a time that works for you.</p>
       <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17079320037" aria-label="Text Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span>
       <p class="demo-note">With Maiden, people reach you by call, text or email.</p>
     </div>
@@ -1061,7 +1092,7 @@
         <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
       </div>
     </div>
-    <div class="gift-notes">
+    <div class="gift-notes wf-note">
       <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name.</div>
       <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward.</div>
     </div>
@@ -1090,7 +1121,7 @@
       </details>
       <details>
         <summary>Can Tera come to my home?</summary>
-        <div class="ans"><p>Yes, mobile massage is available in <span class="ph">your service area</span>, plus <span class="ph">any travel fee</span>. Home visits start with a call or text, so Tera can hear about your space first: <a class="tel" href="tel:+17079320037">707-932-0037</a>.</p></div>
+        <div class="ans"><p>Yes, mobile massage is available in <span class="ph">your service area</span>, plus <span class="ph">any travel fee</span>. Home visits start with a call or text, so Tera can hear about your space first: <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p></div>
       </details>
       <details>
         <summary>What can I expect afterward?</summary>
@@ -1129,9 +1160,9 @@
       <div class="portrait-spot" aria-hidden="true"><span>Optional portrait</span></div>
       <p class="label">Book</p>
       <h2 class="reveal">Come <em>rest</em> on Tera&rsquo;s table</h2>
-      <p class="measure" style="margin-top:16px;color:var(--ink-soft)"><span data-show="mother crone all">Book online any time, or call</span><span data-show="maiden" hidden>Call</span> or text Tera at <a class="tel" href="tel:+17079320037">707-932-0037</a> to find a time that works for you. In her studio, or at your home.</p>
+      <p class="measure" style="margin-top:16px;color:var(--ink-soft)"><span data-show="mother crone all">Book online any time, or call</span><span data-show="maiden" hidden>Call</span> or text Tera at <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a> to find a time that works for you. In her studio, or at your home.</p>
       <div class="cta-row" data-show="mother crone all" data-fold>
-        <a class="btn" href="#own-booking">Book online with Tera</a>
+        <a class="btn" href="#own-booking" data-wf="booking">Book online with Tera</a>
       </div>
     </div>
     <figure class="reveal photo pano path">
@@ -1139,11 +1170,11 @@
       <span class="sample-tag">Sample photo</span>
     </figure>
     <div class="where">
-      <div class="reveal"><b>Studio</b><span class="ph copy">your address</span><br>Arcata, California<br>or mobile, at your home</div>
-      <div class="reveal"><b>Call or text</b><span class="num copy">707-932-0037</span>
+      <div class="reveal"><b>Studio</b><span class="ph copy" data-wf="address">your address</span><br>Arcata, California<br>or mobile, at your home</div>
+      <div class="reveal"><b>Call or text</b><span class="num copy" data-wf="phone">707-932-0037</span>
         <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17079320037" aria-label="Text Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span></div>
-      <div class="reveal"><b>Instagram</b><span class="reach" style="margin-top:2px"><a href="https://instagram.com/terarose37" target="_blank" rel="noopener" aria-label="Tera on Instagram, @Terarose37 (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@Terarose37</a></span></div>
-      <div class="reveal"><b>Hours</b><span class="ph">your hours</span><br>by appointment</div>
+      <div class="reveal"><b>Instagram</b><span class="reach" style="margin-top:2px"><a href="https://www.instagram.com/terarose37/" data-wf-social="instagram" target="_blank" rel="noopener" aria-label="Tera on Instagram, @Terarose37 (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@Terarose37</a></span></div>
+      <div class="reveal hrs-box"><b>Hours</b><ul class="hrs" data-wf="hours"><li><span>Mon</span> <span class="ph" data-day="mon">your hours</span></li><li><span>Tue</span> <span class="ph" data-day="tue">your hours</span></li><li><span>Wed</span> <span class="ph" data-day="wed">your hours</span></li><li><span>Thu</span> <span class="ph" data-day="thu">your hours</span></li><li><span>Fri</span> <span class="ph" data-day="fri">your hours</span></li><li><span>Sat</span> <span class="ph" data-day="sat">your hours</span></li><li><span>Sun</span> <span class="ph" data-day="sun">your hours</span></li></ul><p class="hrs-note" data-wf="hours-note">By appointment</p></div>
     </div>
   </div>
 </section>
@@ -1153,7 +1184,7 @@
     <div data-thing="contact form">
       <p class="label with-pill"><span>Write to Tera</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Send a <em>note</em></h2>
-      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Not sure which session is right for you, or have a question first? Write any time, or call or text <a class="tel" href="tel:+17079320037">707-932-0037</a>.</p>
+      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Not sure which session is right for you, or have a question first? Write any time, or call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p>
       <div class="bk-card cf-card">
         <form id="cf" method="dialog" novalidate aria-label="Contact form, preview">
           <div class="fld-row">
@@ -1221,8 +1252,8 @@
 
 <footer class="gutter">
   <div class="wrap"><span class="nw">Massage by Tera &middot;</span> <span class="nw">Holistic Health Practitioner, CMT &middot;</span> <span class="nw">Arcata, California</span>
-    <p class="foot-reach">Call or text <a class="tel" href="tel:+17079320037">707-932-0037</a> <span aria-hidden="true">&middot;</span> <a href="https://instagram.com/terarose37" target="_blank" rel="noopener" aria-label="Instagram @Terarose37 (opens in a new tab)">@Terarose37</a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="foot-reach">Call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/terarose37/" data-wf-social="instagram" target="_blank" rel="noopener" aria-label="Instagram @Terarose37 (opens in a new tab)">@Terarose37</a></p>
+    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1268,7 +1299,7 @@
 </div>
 
 <script>
-  /* status banner demo: the three states Tera can switch between, plus the waitlist preview (nothing is sent) */
+  
   (function () {
     function $(id) { return document.getElementById(id); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
@@ -1280,7 +1311,7 @@
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
     var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
-    /* the build being previewed (see the views bar): Maiden has no waitlist form, and only Crone sells gift certificates */
+    
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function stateFor(k) {
       var s = STATES[k], v = viewNow();
@@ -1301,7 +1332,7 @@
     tryBtn.addEventListener('click', function () { openPanel(panel.hidden); });
     panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); tryBtn.focus(); openPanel(false); } });
 
-    /* the waitlist preview */
+    
     var dlg = $('waitlist'), form = $('wl-form'), ask = $('wl-ask'), done = $('wl-done'), hint = $('wl-hint');
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
     function resetWl() { form.reset(); hint.textContent = ''; ask.hidden = false; done.hidden = true; }
@@ -1323,7 +1354,7 @@
     function closeWl() { dlg.close(); }
     $('wl-x').addEventListener('click', closeWl);
     $('wl-close').addEventListener('click', closeWl);
-    dlg.addEventListener('click', function (e) {  /* a tap on the dimmed backdrop closes it */
+    dlg.addEventListener('click', function (e) {  
       if (e.target !== dlg) return;
       var r = dlg.getBoundingClientRect();
       if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeWl();
@@ -1333,8 +1364,7 @@
 </script>
 
 <script>
-  /* light or dark (Web Faery's demo layer): a preview of both looks. The real site follows each visitor's phone setting,
-     so nothing is remembered here: every visit starts on auto. Without JavaScript the toggle stays hidden. */
+  
   (function () {
     var root = document.documentElement;
     function $(id) { return document.getElementById(id); }
@@ -1353,7 +1383,7 @@
     btns.forEach(function (b) {
       b.addEventListener('click', function () {
         var t = b.getAttribute('data-theme'); last = b;
-        set(root.getAttribute('data-theme') === t ? null : t);   /* pressing the chosen look again goes back to auto */
+        set(root.getAttribute('data-theme') === t ? null : t);   
       });
     });
     auto.addEventListener('click', function () { set(null); quietFocus(last || btns[0]); });
@@ -1367,7 +1397,7 @@
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) return;
 
-    /* ---- photo drift: framed photos move a few pixels against the scroll ---- */
+    
     var frames = [].slice.call(document.querySelectorAll('.photo'));
     if (frames.length) {
       var ticking = false;
@@ -1389,7 +1419,7 @@
       drift();
     }
 
-    /* ---- scroll reveals ---- */
+    
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
@@ -1417,7 +1447,7 @@
         b.setAttribute('aria-pressed', 'true'); st.svc = b.dataset.svc; st.len = b.dataset.len; st.price = b.dataset.price; steps();
       });
     });
-    /* studio in Arcata, or mobile at the client's home */
+    
     var places = [].slice.call(card.querySelectorAll('.bk-opt[data-place]'));
     function setPlace(pl) {
       st.place = pl;
@@ -1476,7 +1506,7 @@
 </script>
 
 <script>
-  /* the other preview demos: nothing here books, sends or charges anything */
+  
   (function () {
     function $(id) { return document.getElementById(id); }
     function all(root, sel) { return [].slice.call(root.querySelectorAll(sel)); }
@@ -1484,7 +1514,7 @@
     function pressOnly(list, key, val) { list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset[key] === val ? 'true' : 'false'); }); }
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-    /* ---- gift a session: a gift certificate, or pay for a session ahead ---- */
+    
     (function () {
       var form = $('gf'); if (!form) return;
       var sheet = $('gf-sheet'), done = $('gf-done'), hint = $('gf-hint'), any = $('gf-any');
@@ -1533,7 +1563,7 @@
       reset();
     })();
 
-    /* ---- intake form: an inline preview instead of a download ---- */
+    
     (function () {
       var btn = $('ik-btn'), card = $('ik-card'); if (!btn || !card) return;
       function set(open) { card.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
@@ -1541,7 +1571,7 @@
       $('ik-close').addEventListener('click', function () { set(false); btn.focus(); });
     })();
 
-    /* ---- contact form ---- */
+    
     (function () {
       var form = $('cf'); if (!form) return;
       var hint = $('cf-hint'), done = $('cf-done');
@@ -1558,7 +1588,7 @@
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
     })();
 
-    /* ---- newsletter signup ---- */
+    
     (function () {
       var form = $('nl'); if (!form) return;
       var hint = $('nl-hint'), done = $('nl-done');
@@ -1575,9 +1605,7 @@
 </script>
 
 <script>
-  /* build views (Web Faery's demo layer): see Tera's site as Maiden, Mother or Crone.
-     Pieces a build doesn't include fold away (instantly with reduced motion), the tags become buttons,
-     and nothing is remembered: it always starts on Everything. */
+  
   (function () {
     var root = document.documentElement, body = document.body;
     function $(id) { return document.getElementById(id); }
@@ -1596,11 +1624,11 @@
     var shows = [].slice.call(document.querySelectorAll('[data-show]'));
     var things = [].slice.call(document.querySelectorAll('[data-thing]'));
     function has(el, v) { return (' ' + el.getAttribute('data-show') + ' ').indexOf(' ' + v + ' ') > -1; }
-    function goesIn(el, v) {   /* is this element part of build v? */
+    function goesIn(el, v) {   
       for (var n = el; n && n.nodeType === 1; n = n.parentElement) if (n.hasAttribute('data-show') && !has(n, v)) return false;
       return true;
     }
-    /* how many of the page's pieces come with build `to` that build `from` doesn't have */
+    
     function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
     function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
     function note(v) {
@@ -1611,7 +1639,7 @@
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
 
-    /* the tags become buttons: each one shows the build that brings it in */
+    
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {
       var go = t.getAttribute('data-go'); if (!V[go]) return;
       var b = document.createElement('button'); b.type = 'button'; b.className = t.className; b.setAttribute('data-go', go);
@@ -1647,7 +1675,7 @@
       live.textContent = 'Showing ' + n.lead + (V[view].price ? ', ' + V[view].price : '') + n.text;
     }
 
-    /* folding: height, padding, margins and borders ease to nothing, then the piece is hidden */
+    
     var PROPS = ['height', 'paddingTop', 'paddingBottom', 'marginTop', 'marginBottom', 'borderTopWidth', 'borderBottomWidth'];
     var FLAT = { height: '0px', paddingTop: '0px', paddingBottom: '0px', marginTop: '0px', marginBottom: '0px', borderTopWidth: '0px', borderBottomWidth: '0px', opacity: 0 };
     function box(el) { var cs = getComputedStyle(el), o = {}; PROPS.forEach(function (p) { o[p] = cs[p]; }); o.opacity = +cs.opacity; return o; }
@@ -1673,7 +1701,7 @@
       return dur;
     }
 
-    /* keep what you were looking at in place while things above it fold */
+    
     var CAND = 'section, [data-show], h1, h2, h3, p, li, figure, table, dl, .btn, .bk-card, .come-card, .reach, .where > div, .steps > div, .modalities, .fact, .faq-list details, .vseg';
     function anchorFor(v, src) {
       if (src && !vp.contains(src) && src.getClientRects().length && goesIn(src, v)) return { el: src, top: src.getBoundingClientRect().top };
@@ -1681,7 +1709,7 @@
       for (var i = 0; i < list.length; i++) {
         var el = list[i];
         if (vp.contains(el) || el.closest('dialog') || el.classList.contains('vh')) continue;
-        if (!el.getClientRects().length) {   /* hidden now: take it if it's what appears where something folded */
+        if (!el.getClientRects().length) {   
           if (foldTop !== null && el.hasAttribute('data-show') && goesIn(el, v)) return { el: el, top: Math.max(foldTop, 0) };
           continue;
         }
@@ -1689,14 +1717,14 @@
         if (!goesIn(el, v)) {
           if (foldTop === null) {
             foldTop = r.top;
-            /* something swapping into this same spot (the booking spot's three versions) comes first */
+            
             var f = el.closest('[data-show]'), fr = f.getBoundingClientRect();
             var alt = [].filter.call(f.parentElement.children, function (x) { return x !== f && x.hasAttribute('data-show') && x.hidden && has(x, v); })[0];
             if (alt) return { el: alt, top: Math.max(fr.top, 0) };
           }
           continue;
         }
-        if (foldTop === null && (el.tagName === 'SECTION' || el.hasAttribute('data-show'))) continue;   /* prefer something smaller */
+        if (foldTop === null && (el.tagName === 'SECTION' || el.hasAttribute('data-show'))) continue;   
         return { el: el, top: foldTop === null ? r.top : Math.max(foldTop, 0) };
       }
       return null;
@@ -1712,8 +1740,8 @@
         USER.forEach(function (t) { window.removeEventListener(t, j.stop, true); });
       };
       job = j;
-      root.style.overflowAnchor = 'none'; body.style.overflowAnchor = 'none';   /* we do the anchoring ourselves, in every browser */
-      USER.forEach(function (t) { window.addEventListener(t, j.stop, { capture: true, passive: true }); });   /* any scrolling of your own takes over */
+      root.style.overflowAnchor = 'none'; body.style.overflowAnchor = 'none';   
+      USER.forEach(function (t) { window.addEventListener(t, j.stop, { capture: true, passive: true }); });   
       function fix() { var d = a.el.getBoundingClientRect().top - a.top; if (Math.abs(d) >= 1) window.scrollTo(window.pageXOffset, window.pageYOffset + d); }
       fix();
       (function tick() { if (!j.live) return; fix(); if (performance.now() < j.end) requestAnimationFrame(tick); else j.stop(); })();
@@ -1728,7 +1756,7 @@
       var fe = document.activeElement, lost = fe && fe !== body && !vp.contains(fe) && !goesIn(fe, v);
       view = v; root.setAttribute('data-view', v);
       var outer = [], longest = 0;
-      shows.forEach(function (el) {   /* pieces inside something hidden, or about to be, simply switch */
+      shows.forEach(function (el) {   
         var on = has(el, v), p = el.parentElement ? el.parentElement.closest('[data-show]') : null;
         if (p && (p.hidden || !has(p, v))) { stopFold(el); el.hidden = !on; } else outer.push([el, on]);
       });
@@ -1736,20 +1764,20 @@
       paint();
       try { document.dispatchEvent(new CustomEvent('tera:view', { detail: { view: v } })); } catch (e) {}
       hold(a, longest);
-      if (lost) {   /* focus was on something that just folded: land on what took its place */
+      if (lost) {   
         var sec = fe.closest('section'), alt = sec && [].filter.call(sec.querySelectorAll('[data-show][tabindex]'), function (x) { return has(x, v); })[0];
         quietFocus(alt || bar.querySelector('.vseg [aria-pressed="true"]'));
       }
       say();
     }
 
-    /* the floating pill: shows once the views bar has scrolled away */
+    
     var past = false, open = false;
     function paintPill() { vp.classList.toggle('off', !(past || open || vp.contains(document.activeElement))); }
     new IntersectionObserver(function (es) {
       var e = es[es.length - 1]; past = !e.isIntersecting && e.boundingClientRect.top < 0; paintPill();
     }).observe(bar);
-    /* a jump that skips right over the bar (a menu link, the Home key) never crosses it, so check on scroll too */
+    
     var ticking = false;
     window.addEventListener('scroll', function () {
       if (ticking) return; ticking = true;
@@ -1769,19 +1797,22 @@
     function away(e) { if (open && !vp.contains(e.target)) setOpen(false); }
     window.addEventListener('wheel', away, { passive: true }); window.addEventListener('touchmove', away, { passive: true });
 
-    /* choices: the views bar, the pill's panel, the note's "See the next build" link, and every tag */
+    
     [bar, panel].forEach(function (c) {
       c.addEventListener('click', function (e) {
         var b = e.target.closest('[data-view]'); if (!b || !c.contains(b)) return;
         setView(b.getAttribute('data-view'), b);
-        if (c === panel) setOpen(false, true);   /* a pick closes the panel, so you can watch the page change */
+        if (c === panel) setOpen(false, true);   
       });
     });
     document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('button.tag[data-go]'); if (t) setView(t.getAttribute('data-go'), t); });
 
-    /* the Mother build's Book now button, as a preview */
+    
     var bn = $('bn-go'), bnHint = $('bn-hint');
-    if (bn && bnHint) bn.addEventListener('click', function () { bnHint.textContent = 'Preview: on your real site, this opens your booking app.'; });
+    if (bn && bnHint) bn.addEventListener('click', function (e) {
+      if ((bn.getAttribute('href') || '').charAt(0) !== '#') return;   
+      e.preventDefault(); bnHint.textContent = 'Preview: on your real site, this opens your booking app.';
+    });
 
     root.setAttribute('data-view', view);
     [].forEach.call(document.querySelectorAll('[data-js]'), function (el) { el.hidden = false; });
@@ -1792,8 +1823,7 @@
 
 
 <style id="wf-theme-dock">
-  /* Web Faery demo layer: the light / dark toggle floats just above the mockup ribbon, so it can be flipped
-     back and forth while scrolling. Tapping the chosen look again goes back to following the phone. */
+  
   #theme-tab.theme-tab { position: fixed; left: 12px; right: auto; top: auto; bottom: calc(50px + env(safe-area-inset-bottom, 0px));
     z-index: 22; margin: 0; border-radius: 999px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); transform: none; }
   #theme-tab.theme-tab button:first-of-type { border-radius: 999px 0 0 999px; }
@@ -1802,7 +1832,7 @@
   @media print { #theme-tab.theme-tab { display: none; } }
 </style>
 <script>
-  (function () {   /* the floating toggle: a full outline, and it steps up above the "See it as" pill whenever they'd overlap */
+  (function () {   
     var t = document.getElementById('theme-tab'); if (!t) return;
     var c = getComputedStyle(t); t.style.borderTop = c.borderLeftWidth + ' solid ' + c.borderLeftColor;
     t.title = 'Try light or dark. Tap your choice again to follow the phone.';
@@ -1820,5 +1850,46 @@
     place();
   })();
 </script>
+<script>
+  
+  (function () {
+    var all = function (s) { return [].slice.call(document.querySelectorAll(s)); };
+    var keep = all('[data-wf="phone"], [data-wf="email"], [data-wf="address"], [data-wf-social], [data-wf="hours-note"], [data-day], [data-wf-price]').map(function (el) {
+      return { el: el, html: el.innerHTML, href: el.getAttribute('href'), ph: el.classList.contains('ph') };
+    });
+    function put(k) {
+      k.el.innerHTML = k.html; k.el.removeAttribute('hidden'); k.el.style.display = '';
+      if (k.href) k.el.setAttribute('href', k.href); else k.el.removeAttribute('href');
+      k.el.classList.toggle('ph', k.ph);
+    }
+    var mine = document.querySelector('.wf-strip'), link = document.getElementById('status-link'), demo = link && link.closest('.status-strip');
+    document.addEventListener('wf:content', function () {
+      var days = all('[data-day]'), starter = days.length && days.every(function (d) { return d.textContent.trim() === 'Closed'; });
+      keep.forEach(function (k) {
+        var el = k.el, t = el.textContent.trim();
+        if (el.hasAttribute('data-wf-price')) { if (!t || t === 'your rate') put(k); else el.classList.remove('ph'); return; }
+        if (el.hasAttribute('data-day')) { if (starter) put(k); else el.classList.remove('ph'); return; }
+        if (el.getAttribute('data-wf') === 'hours-note') { if (starter && !/^Closed through/.test(t)) put(k); return; }
+        if (el.hasAttribute('hidden') || el.style.display === 'none' || !t) put(k); else el.classList.remove('ph');
+      });
+      
+      var ph = document.querySelector('[data-wf="phone"]'), num = ph ? ph.textContent.trim() : '', d = num.replace(/[^\d+]/g, '');
+      if (d.length >= 7) {
+        if (d.charAt(0) !== '+') d = (d.length === 10 ? '+1' : '+') + d;
+        all('.reach a[href^="tel:"], .reach a[href^="sms:"]').forEach(function (a) {
+          var sms = /^sms:/.test(a.getAttribute('href'));
+          a.setAttribute('href', (sms ? 'sms:' : 'tel:') + d);
+          a.setAttribute('aria-label', (sms ? 'Text' : 'Call') + ' Tera at ' + num);
+        });
+      }
+      if (mine && demo) demo.hidden = !mine.hasAttribute('hidden');
+    });
+    
+    all('#status-panel [data-state]').forEach(function (b) {
+      b.addEventListener('click', function () { if (mine && demo && !mine.hasAttribute('hidden')) { mine.hidden = true; demo.hidden = false; } });
+    });
+  })();
+</script>
+<script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=1";s.defer=true;document.head.appendChild(s);}</script>
 </body>
 </html>
