@@ -712,6 +712,11 @@
     if (BUILDS[c.build]) q.set('build', c.build);
     if (c.founding) q.set('founding', '1');
     if (['monthly', 'yearly', 'none'].includes(c.care)) q.set('care', c.care);
+    if (c.first_name) q.set('name', c.first_name);
+    // their draft is a Web Faery mockup (webfaery.love/peek/KEY/): the page checks it instead of asking them to retype it
+    const peek = [me.things && me.things.draft && me.things.draft.url, c.site_url]
+      .map((u) => String(u || '').match(/^https:\/\/(?:www\.)?webfaery\.love\/peek\/([a-z0-9-]{1,40})\/?/)).find(Boolean);
+    if (peek) q.set('mockup', peek[1]);
     const qs = q.toString();
     return START_PAGE + (qs ? '?' + qs : '') + (START_STEPS[step] ? '#' + START_STEPS[step] : '');
   };
