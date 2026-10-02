@@ -1,7 +1,9 @@
 /* The magic mockup (Oct 1 2026). On a client's private mockup (webfaery.love/peek/KEY/?mark=1) they tap
    anything they'd change and type a note. It saves to their portal as a change request, so Taya sees it in
    her dashboard (and gets an email), sets a status and replies, and the client sees all of it right here,
-   pinned where they tapped. Uses the portal's own sign-in (the same key portal.js keeps on this website).
+   pinned where they tapped. Uses the portal's own sign-in (the same key portal.js keeps on this website),
+   or a private magic link from Taya's email (?mark=1&k=...): the key is kept for this one page (so a reload or
+   a later visit still works), taken out of the address bar, and opens notes on this mockup only.
    Loaded only when the address has ?mark=1, by a one-line loader the peek pages carry. No outside scripts,
    no tracking, and it never changes the mockup itself. */
 (function () {
@@ -16,10 +18,26 @@
   const PAGE = '/peek/' + m[1] + '/';
   const STATUS = { new: 'Sent', seen: 'Seen', quoted: 'Priced', doing: 'On it', done: 'Done', declined: 'Not this time' };
 
-  const token = (() => {
+  let token = (() => {
     try { const o = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); return o && TOKEN_RE.test(o.token || '') ? o.token : ''; }
     catch (e) { return ''; }
   })();
+
+  // a private magic link: ?mark=1&k=KEY. Kept per page, then taken out of the address bar.
+  const MAGIC_RE = /^[A-Za-z0-9]{24,64}$/;
+  const MAGIC_STORE = 'wf-magic-v1:' + PAGE;
+  const store = (fn) => { try { fn(sessionStorage); } catch (e) {} try { fn(localStorage); } catch (e) {} };
+  let magic = '';
+  const qs = new URLSearchParams(location.search);
+  if (qs.has('k')) {
+    const k = qs.get('k') || '';
+    if (MAGIC_RE.test(k)) { magic = k; store((s) => s.setItem(MAGIC_STORE, k)); }
+    qs.delete('k');
+    const q = qs.toString();
+    try { history.replaceState(history.state, '', location.pathname + (q ? '?' + q : '') + location.hash); } catch (e) {}
+  }
+  if (!magic) store((s) => { const v = s.getItem(MAGIC_STORE) || ''; if (!magic && MAGIC_RE.test(v)) magic = v; });
+  const forgetMagic = () => { magic = ''; store((s) => s.removeItem(MAGIC_STORE)); };
 
   /* ---------------- the look ---------------- */
   const css = `
@@ -66,7 +84,16 @@
   document.body.appendChild(bar);
   const exitUrl = location.pathname + location.hash;
 
-  if (!token) {
+  // the link's key no longer works (Taya made a fresh one, or the mockup moved)
+  const expired = () => {
+    forgetMagic(); marking = false; clearHover(); closePop();
+    bar.textContent = '';
+    bar.append(el('span', '', 'This link has expired. Ask Taya for a fresh one.'));
+    const x = el('a', 'wfm-btn ghost', 'Just look'); x.href = exitUrl;
+    bar.append(x);
+  };
+
+  if (!token && !magic) {
     bar.append(el('span', '', 'Sign in to your portal to leave notes right on your mockup.'));
     const a = el('a', 'wfm-btn', 'Sign in');
     a.href = '/portal.html?back=' + encodeURIComponent(location.pathname + '?mark=1' + location.hash);
@@ -154,6 +181,7 @@
         closePop(); renderPins(); renderPanel();
         say.lastChild.textContent = 'sent! Tap anything else, or see your notes.';
       } catch (x) {
+        if (x.code === 'bad_link') { expired(); return; }
         send.disabled = false; send.textContent = 'Send to Taya'; err.hidden = false;
         err.textContent = x.code === 'signed_out' ? 'Your sign-in ran out. Sign in at your portal again, then come back.'
           : x.code === 'slow_down' ? 'That’s a lot of notes for one day! Send the rest tomorrow, or email me.'
@@ -163,14 +191,23 @@
   }
 
   /* ---------------- talking to the portal ---------------- */
+  // a portal sign-in first (exactly as before); else the magic link's key, in the body as k
   async function call(path, body) {
     let res;
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['X-WF-Session'] = token;
+    const send = token ? body : Object.assign({}, body, { k: magic });
     try {
-      res = await fetch(BASE + path, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-WF-Session': token },
-        body: JSON.stringify(body), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+      res = await fetch(BASE + path, { method: 'POST', headers,
+        body: JSON.stringify(send), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
     } catch (e) { const x = new Error('network'); x.code = 'network'; throw x; }
     let data = null; try { data = await res.json(); } catch (e) { data = null; }
-    if (!res.ok || !data || !data.ok) { const x = new Error('fail'); x.code = (data && data.error) || 'server'; throw x; }
+    if (!res.ok || !data || !data.ok) {
+      const code = (data && data.error) || 'server';
+      // their portal sign-in ran out, but they came by a magic link: carry on with the link
+      if (code === 'signed_out' && token && magic) { token = ''; return call(path, body); }
+      const x = new Error('fail'); x.code = code; throw x;
+    }
     return data;
   }
 
@@ -234,6 +271,7 @@
     notes = (d.marks || []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, status: x.status, reply: x.reply }));
     renderPins(); renderPanel();
   }).catch((x) => {
+    if (x.code === 'bad_link') { expired(); return; }
     if (x.code === 'signed_out') {
       bar.textContent = '';
       bar.append(el('span', '', 'Your sign-in ran out. Sign in at your portal again to leave notes.'));
