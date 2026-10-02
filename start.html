@@ -86,7 +86,7 @@
   a { text-decoration-color: var(--acc-line); }
   :focus-visible { outline-color: var(--focus); }
 
-  /* ============ the quick check: a little chat before the list ============ */
+  /* ============ the quick check: a few questions before the list ============ */
   .qc {
     margin: 40px auto 0; max-width: 660px; background: var(--card); border: 1px solid var(--edge); border-radius: 24px;
     padding: 24px 24px 18px; scroll-margin-top: 16px;
@@ -101,68 +101,48 @@
   .qc-head h2 { font-size: clamp(21px, 3.4vw, 25px); font-weight: 400; line-height: 1.2; }
   .qc-head h2:focus { outline: none; }
   .qc-sub { margin: 14px 0 0; font-size: 16.5px; color: var(--ink-soft); line-height: 1.5; }
-  .qc-thread { margin-top: 18px; display: grid; gap: 10px; }
-  .qc-row { display: grid; gap: 8px; }
-  .qc-bubble {
-    justify-self: start; max-width: min(34em, 92%); margin: 0; padding: 10px 16px 11px;
-    border-radius: 6px 18px 18px 18px; background: var(--field-2); border: 1px solid rgba(var(--acc-glow), 0.14);
-    font-size: 17px; line-height: 1.45; text-wrap: pretty;
-  }
-  .qc-bubble.reply { color: var(--ink-soft); font-size: 16px; background: #22211d; }
-  /* once answered, a question steps back a little, so the open one stands out */
-  .qc-row.done { gap: 6px; }
-  .qc-row.done .qc-bubble { font-size: 16px; padding: 7px 14px 8px; color: var(--ink-soft); }
-  .qc-row.done .qc-small { display: none; }
-  .qc-bubble .qc-small { display: block; color: var(--ink-soft); font-size: 15px; margin-top: 2px; }
-  /* their answer, on the right, the way a chat shows your own words; tapping it changes it */
-  .qc-pill {
-    justify-self: end; display: inline-flex; align-items: center; gap: 9px; max-width: 88%; min-height: 44px;
-    margin: 0; padding: 8px 14px 8px 16px; border-radius: 18px 18px 6px 18px; cursor: pointer; text-align: left;
-    background: var(--acc-fill); color: var(--on-acc); border: 1px solid transparent;
-    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px; line-height: 1.3;
-    transition: background 0.2s ease;
-  }
-  .qc-pill svg { flex: none; width: 15px; height: 15px; opacity: 0.75; }
-  .qc-pill:hover { background: var(--acc); }
-  .qc-pill:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 18px 18px 6px 18px; }
-  .qc-answers { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 2px; }
+  /* every question at once, like a short form: a number, the question, its answers, and a soft word back */
+  .qc-list { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: none; }
+  .qc-q { display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: 10px; padding: 16px 0 18px; border-top: 1px solid rgba(var(--acc-glow), 0.12); }
+  .qc-q:first-child { border-top: 0; padding-top: 6px; }
+  .qc-n { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 14px; line-height: 1.75; color: var(--acc); font-variant-numeric: lining-nums; }
+  .qc-body { min-width: 0; }
+  .qc-qt { margin: 0; font-size: 17.5px; line-height: 1.4; text-wrap: pretty; }
+  .qc-small { display: block; color: var(--ink-soft); font-size: 15px; margin-top: 1px; }
+  .qc-answers { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
   .qc-a {
-    flex: 1 1 auto; min-width: 6.5em; min-height: 54px; padding: 12px 20px; border-radius: 16px; cursor: pointer;
-    background: var(--field); color: var(--ink); border: 1.5px solid rgba(var(--acc-glow), 0.45);
-    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.3; text-wrap: balance;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    flex: 0 1 auto; min-width: 4.6em; min-height: 44px; padding: 9px 16px; border-radius: 14px; cursor: pointer; text-align: center;
+    background: var(--field); color: var(--ink); border: 1.5px solid rgba(var(--acc-glow), 0.38);
+    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px; line-height: 1.3; text-wrap: balance;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
   }
   .qc-a:hover { border-color: var(--acc); background: #1a1917; }
-  .qc-a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 16px; }
-  .qc-a[aria-pressed="true"] { background: var(--acc-fill); color: var(--on-acc); border-color: var(--acc); }
+  .qc-a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 14px; }
+  .qc-a[aria-checked="true"] { background: var(--acc-fill); color: var(--on-acc); border-color: var(--acc); }
   .qc-answers.apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .qc-answers.apps .qc-a { min-width: 0; padding: 10px 12px; }
-  @media (min-width: 640px) {
-    .qc-a { flex: 0 1 auto; }
-    .qc-answers.apps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
-  /* what Taya's link already said, as small chips they can tap to change */
-  .qc-noted { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-  .qc-chip {
-    display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 6px 13px; border-radius: 999px; cursor: pointer;
-    background: var(--field); color: var(--ink); border: 1px solid var(--hairline); font-family: inherit; font-size: 15.5px; line-height: 1.3;
-  }
-  .qc-chip svg { width: 13px; height: 13px; color: var(--acc); flex: none; }
-  .qc-chip:hover { border-color: var(--acc); }
-  .qc-end { display: grid; gap: 14px; justify-items: start; }
-  .qc-end .btn { margin-left: 2px; }
-  .qc-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 16px; margin-top: 16px; padding-top: 8px; border-top: 1px solid rgba(var(--acc-glow), 0.14); }
+  .qc-answers.apps .qc-a { min-width: 0; padding: 8px 10px; }
+  @media (min-width: 640px) { .qc-answers.apps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  /* "Which one?" tucks in under the booking question once they say Yes */
+  .qc-sub-q { margin-top: 14px; padding: 12px 0 0 14px; border-left: 2px solid rgba(var(--acc-glow), 0.3); }
+  .qc-sub-q .qc-qt { font-size: 16px; color: var(--ink-soft); }
+  .qc-reply { margin: 10px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); font-style: italic; text-wrap: pretty; }
+  .qc-end { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 8px; padding-top: 18px; border-top: 1px solid rgba(var(--acc-glow), 0.22); }
+  .qc-count { margin: 0; font-size: 16px; color: var(--ink-soft); }
+  .qc-count b { font-weight: 500; color: var(--ink); }
+  .qc-meter { display: block; width: 100%; height: 3px; border-radius: 3px; background: rgba(var(--acc-glow), 0.14); overflow: hidden; }
+  .qc-meter i { display: block; height: 100%; width: 0; background: var(--acc); border-radius: inherit; transition: width 0.4s ease; }
+  .qc-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 16px; margin-top: 14px; padding-top: 8px; }
   .qc-foot .later { font-size: 15px; font-weight: 500; color: var(--ink-soft); }
   .qc-foot .later:hover { color: var(--link); }
   .qc-saved { margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
-  .qc-new { animation: qc-in 0.5s cubic-bezier(.2, .7, .3, 1) both; }
-  .qc-new.later-in { animation-delay: 0.28s; }
-  @keyframes qc-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .qc-new { animation: qc-in 0.45s cubic-bezier(.2, .7, .3, 1) both; }
+  @keyframes qc-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @media (max-width: 600px) {
     .qc { padding: 20px 16px 14px; margin-top: 28px; }
     .qc-head { grid-template-columns: 48px 1fr; gap: 12px; }
     .qc-face { width: 48px; height: 48px; }
-    .qc-bubble { max-width: 96%; }
+    .qc-q { grid-template-columns: 20px minmax(0, 1fr); column-gap: 8px; }
+    .qc-end .btn { width: 100%; justify-content: center; }
   }
 
   /* ============ the top of their list: its size, what it's made from, three promises ============ */
@@ -252,7 +232,9 @@
     .p-row { flex-wrap: nowrap; align-items: flex-start; }
     #p-left { display: block; font-size: 14px; }
     #p-left::before { content: none; }
-    .p-saved { padding-top: 3px; white-space: nowrap; }
+    .p-saved { padding-top: 3px; white-space: nowrap; flex-wrap: wrap; justify-content: flex-end; row-gap: 2px; text-align: right; }
+    /* the sign-in link drops under "Saved" on a phone, so the bar never runs off the side */
+    .p-cloud { flex-basis: 100%; margin-left: 0; }
   }
   .p-moons { list-style: none; margin: 10px 0 0; padding: 0; display: flex; justify-content: space-between; position: relative; }
   /* the thread between the moons */
@@ -854,8 +836,8 @@
   /* ============ calm for those who ask for it ============ */
   @media (prefers-reduced-motion: reduce) {
     .step-body:not([hidden]) { animation: none; }
-    .qc-new, .qc-new.later-in { animation: none; }
-    .step, .num, .p-moons li, .b-check, .track::after, .chev, .qc-a, .qc-pill, .toggle-more::before { transition: none; }
+    .qc-new { animation: none; }
+    .step, .num, .p-moons li, .b-check, .track::after, .chev, .qc-a, .qc-meter i, .toggle-more::before { transition: none; }
   }
 
   /* ============ print: only the summary, on white paper ============ */
@@ -930,8 +912,9 @@
   <noscript><div class="card"><p>This page needs JavaScript to save your answers and send them. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out together over email.</p></div></noscript>
 
-  <!-- the quick check: a one-minute chat about what they already have, so the list only has what they need.
-       The script draws the questions (QC below); Taya's link can answer some or all of them ahead of time. -->
+  <!-- the quick check: a one-minute look at what they already have, so the list only has what they need.
+       Every question shows at once, like a short form. The script draws them (QC below); Taya's link can answer
+       some or all of them ahead of time, and those show as already picked. -->
   <section class="qc" id="qc" aria-labelledby="qc-title" hidden>
     <div class="qc-head">
       <img class="qc-face" src="taya.jpg" width="256" height="256" alt="" decoding="async">
@@ -940,8 +923,13 @@
         <h2 id="qc-title" tabindex="-1">Let’s see what you already have</h2>
       </div>
     </div>
-    <p class="qc-sub">So your list only has what you need. Just tap an answer; there are no wrong ones.</p>
-    <div class="qc-thread" id="qc-thread"></div>
+    <p class="qc-sub"><span id="qc-total">7 quick questions</span>, so your list only has what you need. Tap your answers; there are no wrong ones.</p>
+    <ol class="qc-list" id="qc-list"></ol>
+    <div class="qc-end">
+      <span class="qc-meter" aria-hidden="true"><i id="qc-meter"></i></span>
+      <p class="qc-count" id="qc-count">0 of 7 answered</p>
+      <button type="button" class="btn" id="qc-go"><span>Show my list</span></button>
+    </div>
     <p class="sr-only" id="qc-live" aria-live="polite"></p>
     <div class="qc-foot">
       <button type="button" class="later" id="qc-skip">Skip this and show me everything</button>
@@ -1870,8 +1858,10 @@
   const STORE_KEY = 'webfaery-start-v1';
 
   /* ================= the quick check: what they already have =================
-     One question at a time, like a little chat. "said" is how an answer reads in a sentence ("Made from
-     what you told me: a logo, Vagaro..."); "reply" is a short word back from Taya after some answers. */
+     Every question shows at once, like a short form (Pollen, Oct 2: one at a time felt endless). "said" is how
+     an answer reads in a sentence ("Made from what you told me: a logo, Vagaro..."); "reply" is a short word
+     back from Taya, shown softly under a question once it's answered. "Which one?" (sub) tucks in under
+     the booking question when they say Yes, and is optional. */
   const APPS = { vagaro: 'Vagaro', square: 'Square', acuity: 'Acuity', mindbody: 'Mindbody', calcom: 'Cal.com', other: 'another app' };
   const QC = [
     { id: 'logo', q: 'Do you have a logo?',
@@ -1894,7 +1884,7 @@
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
       said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
       reply: { has: 'Lovely. A Book now button to it comes with Mother and Crone.', want: 'Setting up booking for you is part of Crone.' } },
-    { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true,
+    { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true, sub: true,
       a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
       said: Object.assign({}, APPS, { other: 'your booking app' }) },
     { id: 'sell', q: 'Will you sell anything online?', small: 'Like gift certificates, deposits or a few products.',
@@ -1954,8 +1944,7 @@
   let have = {};          // their answers: logo, kit, photos, domain, booking, app, sell, news
   let haveBy = {};        // who answered each one: 'link' (Taya's link) or 'you' (a tap on the page)
   let qcSkipped = false;  // they chose "Skip this and show me everything"
-  let qcOpen = false;     // the chat is showing (otherwise it's folded into one line at the top of the list)
-  let qcEditing = '';     // a question they tapped to change
+  let qcOpen = false;     // the questions are showing (otherwise they're folded into one line at the top of the list)
 
   /* ================= little helpers ================= */
   const $ = (s, el = document) => el.querySelector(s);
@@ -2248,7 +2237,11 @@
   let priceOpen = null;   // the "Your price in full" fold, once they've tapped it (null: open only when extras need answers)
   const applies = (q) => !q.when || q.when(have);
   const qcQuestions = () => QC.filter(applies);
-  const qcComplete = () => qcQuestions().every((q) => have[q.id] != null);
+  // the main questions; "Which one?" is a nice extra, not needed to be done (they can type it in later)
+  const qcMain = () => QC.filter((q) => !q.sub);
+  const qcComplete = () => qcMain().every((q) => have[q.id] != null);
+  // enough to point to a build: booking, selling and a newsletter
+  const fitReady = () => ['booking', 'sell', 'news'].every((k) => have[k] != null);
   // their booking app by name, from the quick check or what they typed
   function appName() {
     if (have.booking === 'has' && have.app && have.app !== 'other') return APPS[have.app];
@@ -2929,13 +2922,11 @@
     location.href = location.pathname + location.search;
   });
 
-  /* ================= the quick check, drawn as a little chat =================
-     Taya's questions on the left, their answers on the right (tap one to change it). Questions the link
-     already answered aren't asked; they show as "I already noted:" chips instead. Once every question
-     has an answer (or they skip), their list shows, and the chat folds into one line at its top. */
-  const PENCIL = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 19.5l1-4.2L15.8 5a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.7 18.5l-4.2 1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
-  let qcSeen = new Set();   // what's already on screen, so only new messages drift in
-  const answerText = (q) => { const a = q.a.find((x) => x[0] === have[q.id]); return a ? a[1] : ''; };
+  /* ================= the quick check, as a short list of questions =================
+     Every question shows at once, each a little radio group (tap the picked answer again to clear it).
+     Questions Taya's link already answered show as picked, with a small note. "Show my list" works
+     anytime: an unanswered question just keeps its items on the list, the same as skipping. */
+  let qcShownReplies = new Set();   // what's already on screen, so only new words back drift in
   // how an answer reads in a sentence ("a logo", "Vagaro"); the booking app is folded into the booking answer
   function saidOf(q) {
     if (q.id === 'booking' && have.booking === 'has') return have.app && have.app !== 'other' ? APPS[have.app] : 'your booking app';
@@ -2943,14 +2934,46 @@
   }
   const phrases = (list) => list.filter((q) => q.id !== 'app' && have[q.id] != null).map(saidOf);
 
-  function bubbleFor(q) {
-    const b = make('p', 'qc-bubble', q.q);
-    if (q.small) b.append(make('span', 'qc-small', q.small));
-    return b;
+  function groupFor(q, seen, keys) {
+    const wrap = make('div', q.sub ? 'qc-sub-q' : 'qc-body');
+    const title = make('p', 'qc-qt', q.q);
+    title.id = 'qcq-' + q.id;
+    if (q.small) title.append(make('span', 'qc-small', q.small));
+    const box = make('div', 'qc-answers' + (q.apps ? ' apps' : ''));
+    box.setAttribute('role', 'radiogroup');
+    box.setAttribute('aria-labelledby', title.id);
+    const picked = have[q.id];
+    q.a.forEach(([v, label], i) => {
+      const btn = make('button', 'qc-a', label); btn.type = 'button';
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', picked === v ? 'true' : 'false');
+      btn.dataset.key = q.id + ':' + v;
+      // one tab stop per question: the picked answer, or the first
+      btn.tabIndex = (picked != null ? picked === v : i === 0) ? 0 : -1;
+      btn.addEventListener('click', () => answer(q.id, picked === v ? null : v, v));
+      btn.addEventListener('keydown', (e) => {
+        const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        const next = q.a[(i + step + q.a.length) % q.a.length][0];
+        answer(q.id, next);
+      });
+      box.append(btn);
+    });
+    wrap.append(title, box);
+    // a soft word back once it's answered (or a note that Taya's link already said it)
+    const said = picked != null && (haveBy[q.id] === 'link' ? !q.sub && 'I already noted this one. Tap another answer to change it.' : q.reply && q.reply[picked]);
+    if (said) {
+      const key = q.id + ':' + picked + ':' + haveBy[q.id];
+      const p = make('p', 'qc-reply' + (seen && !qcShownReplies.has(key) ? ' qc-new' : ''), said);
+      keys.add(key);
+      wrap.append(p);
+    }
+    return wrap;
   }
-  function renderQC(focus) {
+  function renderQC(focusKey) {
     const complete = qcComplete(), ready = complete || qcSkipped;
-    // the list shows once the check is done (or skipped); until then, just the chat
+    // the list shows once the check is done (or they've asked for it); until then, just the questions
     $('#qc').hidden = !qcOpen;
     $('.intro').hidden = !ready; $('#progress').hidden = !ready; form.hidden = !ready;
     const skip = $('.skip-link');
@@ -2958,127 +2981,81 @@
     skip.textContent = qcOpen ? 'Skip to the quick check' : 'Skip to your list';
 
     // the one line at the top of the list
+    const told = phrases(qcQuestions());
     const mine = qcQuestions().some((q) => haveBy[q.id] === 'you');
+    const fit = fitReady() && fitsBuild() ? ' That fits ' + BUILD_NAME[fitsBuild()] + '.' : '';
     $('#made-from').textContent = complete
-      ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(phrases(qcQuestions())) + '.' + (fitsBuild() ? ' That fits ' + BUILD_NAME[fitsBuild()] + '.' : '')
-      : 'You skipped the quick check, so everything’s here. Skip whatever doesn’t fit.';
-    $('#qc-change').textContent = complete ? 'Change' : 'Do the quick check';
-    $('#qc-change').setAttribute('aria-label', complete ? 'Change what you already have' : 'Do the quick check');
+      ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(told) + '.' + fit
+      : told.length
+        ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(told) + '.' + fit + ' The rest is all here; skip whatever doesn’t fit.'
+        : 'You skipped the quick check, so everything’s here. Skip whatever doesn’t fit.';
+    $('#qc-change').textContent = complete || told.length ? 'Change' : 'Do the quick check';
+    $('#qc-change').setAttribute('aria-label', complete || told.length ? 'Change what you already have' : 'Do the quick check');
+    $$('.build').forEach((l) => { l.classList.toggle('fits', fitReady() && l.dataset.build === fitsBuild()); });
+    showFit(fitReady());
+
+    // how far along, and the way out
+    const main = qcMain(), done = main.filter((q) => have[q.id] != null).length;
+    $('#qc-total').textContent = main.length + ' quick questions';
+    $('#qc-count').textContent = '';
+    if (complete) $('#qc-count').append(make('b', null, 'All ' + main.length + ' answered, thank you!'), ' Your list: ' + sizeText() + '.');
+    else $('#qc-count').append(make('b', null, done + ' of ' + main.length), ' answered');
+    $('#qc-meter').style.width = (100 * done / main.length).toFixed(1) + '%';
     $('#qc-skip').hidden = complete;
-    $$('.build').forEach((l) => { l.classList.toggle('fits', l.dataset.build === fitsBuild()); });
-    showFit(complete);
-    if (!qcOpen) { qcSeen = new Set(); return; }
+    if (!qcOpen) { qcShownReplies = new Set(); return; }
 
-    const thread = $('#qc-thread');
-    const animate = qcSeen.size > 0;
+    const list = $('#qc-list');
+    const seen = list.childElementCount > 0;   // only things that newly appear drift in
     const keys = new Set();
-    let beat = 0;              // new messages arrive one after another, a moment apart
-    const fresh = (key, el, next) => {
-      keys.add(key);
-      if (animate && !qcSeen.has(key)) { el.classList.add('qc-new'); el.style.animationDelay = (beat * 0.22).toFixed(2) + 's'; if (next) beat++; }
-      return el;
-    };
-    thread.textContent = '';
-    let target = null;
-
-    // what Taya's link already said, as chips to tap and change
-    const noted = qcQuestions().filter((q) => haveBy[q.id] === 'link' && q.id !== 'app' && have[q.id] != null && qcEditing !== q.id);
-    if (noted.length) {
-      const row = make('div', 'qc-row');
-      row.append(fresh('noted', make('p', 'qc-bubble', 'I already noted these, so we can skip them. Tap one to change it.'), true));
-      const chips = make('div', 'qc-noted');
-      for (const q of noted) {
-        const chip = make('button', 'qc-chip'); chip.type = 'button';
-        chip.append(make('span', null, cap(saidOf(q))));
-        chip.insertAdjacentHTML('beforeend', PENCIL);
-        chip.setAttribute('aria-label', 'Change: ' + saidOf(q));
-        chip.addEventListener('click', () => editQ(q.id));
-        chips.append(chip);
+    list.textContent = '';
+    main.forEach((q, i) => {
+      const li = make('li', 'qc-q');
+      const num = make('span', 'qc-n', String(i + 1));
+      num.setAttribute('aria-hidden', 'true');
+      const body = groupFor(q, seen, keys);
+      // "Which one?" right under the booking question, once they say Yes
+      if (q.id === 'booking' && applies(qcById.app)) {
+        const sub = groupFor(qcById.app, seen, keys);
+        if (seen && !qcShownReplies.has('sub:app')) sub.classList.add('qc-new');
+        keys.add('sub:app');
+        body.append(sub);
       }
-      row.append(fresh('chips', chips, true));
-      thread.append(row);
-    }
-
-    // the questions: answered ones stay as a little conversation, and one is open at a time
-    const asked = qcQuestions().filter((q) => haveBy[q.id] !== 'link' || qcEditing === q.id || (q.id === 'app' && qcEditing === 'app'));
-    const open = qcEditing ? qcById[qcEditing] : asked.find((q) => have[q.id] == null);
-    for (const q of asked) {
-      const answered = have[q.id] != null;
-      if (q !== open && !answered) continue;
-      const row = make('div', 'qc-row' + (q === open ? '' : ' done'));
-      const bubble = fresh('q:' + q.id, bubbleFor(q), q === open);
-      bubble.id = 'qcq-' + q.id;
-      row.append(bubble);
-      if (q === open) {
-        row.setAttribute('role', 'group');
-        row.setAttribute('aria-labelledby', bubble.id);
-        const box = make('div', 'qc-answers' + (q.apps ? ' apps' : ''));
-        for (const [v, label] of q.a) {
-          const btn = make('button', 'qc-a', label); btn.type = 'button';
-          if (qcEditing) btn.setAttribute('aria-pressed', have[q.id] === v ? 'true' : 'false');
-          btn.addEventListener('click', () => answer(q.id, v));
-          box.append(btn);
-        }
-        row.append(fresh('a:' + q.id, box, true));
-        target = target || (box.querySelector('[aria-pressed="true"]') || box.firstChild);
-      } else {
-        const pill = make('button', 'qc-pill'); pill.type = 'button';
-        pill.append(make('span', null, answerText(q)));
-        pill.insertAdjacentHTML('beforeend', PENCIL);
-        pill.setAttribute('aria-label', 'You said: ' + answerText(q) + '. Change it');
-        pill.addEventListener('click', () => editQ(q.id));
-        row.append(fresh('p:' + q.id + ':' + have[q.id], pill, true));
-      }
-      thread.append(row);
-      const reply = answered && q !== open && q.reply && q.reply[have[q.id]];
-      if (reply) thread.append(fresh('r:' + q.id + ':' + have[q.id], make('p', 'qc-bubble reply', reply), true));
-    }
-
-    // all done: their list is ready
-    if (complete && !qcEditing) {
-      const end = make('div', 'qc-end');
-      end.append(make('p', 'qc-bubble', 'Thank you, that’s everything I need! Your list: ' + sizeText() + '.'));
-      const go = make('button', 'btn'); go.type = 'button'; go.id = 'qc-go';
-      go.append(make('span', null, 'Show my list'));
-      go.addEventListener('click', showList);
-      end.append(go);
-      thread.append(fresh('end', end, true));
-      target = target || go;
-    }
-    qcSeen = keys;
-    if (focus && target) {
-      target.focus({ preventScroll: true });
-      const row = target.closest('.qc-row, .qc-end') || target;
-      requestAnimationFrame(() => row.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' }));
+      li.append(num, body);
+      list.append(li);
+    });
+    qcShownReplies = keys;
+    if (focusKey) {
+      const btn = list.querySelector('[data-key="' + focusKey + '"]');
+      if (btn) btn.focus({ preventScroll: true });
     }
   }
-  function answer(id, v) {
+  function answer(id, v, focusV) {
     const q = qcById[id];
-    have[id] = v; haveBy[id] = 'you';
-    if (id === 'booking') { delete have.app; delete haveBy.app; } // a new answer here asks which app again
-    qcEditing = '';
+    if (v == null) { delete have[id]; delete haveBy[id]; }
+    else { have[id] = v; haveBy[id] = 'you'; }
+    if (id === 'booking' && v !== 'has') { delete have.app; delete haveBy.app; } // the app only goes with a Yes
     if (qcComplete()) qcSkipped = false;
     applyHave(); renderAll();
-    renderQC(true);
-    const reply = q.reply && q.reply[v];
-    $('#qc-live').textContent = reply || '';
+    renderQC(id + ':' + (focusV || v));
+    const main = qcMain(), done = main.filter((x) => have[x.id] != null).length;
+    const reply = v != null && q.reply && q.reply[v];
+    $('#qc-live').textContent = (reply ? reply + ' ' : '') + done + ' of ' + main.length + ' answered.';
     saveNow();
   }
-  function editQ(id) {
-    qcEditing = id; qcOpen = true;
-    renderQC(true);
-  }
   function showList() {
-    qcOpen = false; qcEditing = '';
+    // unanswered questions just keep their items on the list, like skipping
+    if (!qcComplete()) qcSkipped = true;
+    qcOpen = false;
     renderQC();
     requestAnimationFrame(() => { scrollToEl($('.intro')); $('#intro-title').focus({ preventScroll: true }); });
     saveNow();
   }
   function openQC() {
-    qcOpen = true; qcEditing = '';
+    qcOpen = true;
     renderQC();
     requestAnimationFrame(() => { scrollToEl($('#qc')); $('#qc-title').focus({ preventScroll: true }); });
   }
+  $('#qc-go').addEventListener('click', showList);
   $('#qc-skip').addEventListener('click', () => { qcSkipped = true; showList(); });
   $('#qc-change').addEventListener('click', openQC);
   $$('[data-qc-change]').forEach((b) => b.addEventListener('click', openQC));
