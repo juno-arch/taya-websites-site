@@ -759,7 +759,7 @@
 
   // came from their magic mockup (mark.js sends them here to sign in): a way straight back once they're in
   const BACK = (() => {
-    const ok = (v) => typeof v === 'string' && /^\/peek\/[a-z0-9-]{1,40}\/\?mark=1(#[A-Za-z0-9_-]{0,40})?$/.test(v);
+    const ok = (v) => typeof v === 'string' && (/^\/peek\/[a-z0-9-]{1,40}\/\?mark=1(#[A-Za-z0-9_-]{0,40})?$/.test(v) || /^\/start\.html(\?[A-Za-z0-9=&_.%+-]{0,300})?$/.test(v));
     try {
       const v = new URLSearchParams(location.search).get('back') || '';
       if (ok(v)) { sessionStorage.setItem('wf-back', v); return v; }
@@ -772,8 +772,9 @@
     let box = document.getElementById('back-mock');
     if (!box) {
       box = document.createElement('section'); box.className = 'p-card back-mock'; box.id = 'back-mock';
-      const p = document.createElement('p'); p.textContent = 'You’re signed in. Head back to your mockup and tap anything you’d like changed.';
-      const a = document.createElement('a'); a.className = 'btn'; a.href = BACK; a.textContent = 'Back to my mockup';
+      const toStart = BACK.indexOf('/start.html') === 0;
+      const p = document.createElement('p'); p.textContent = toStart ? 'You’re signed in, so your getting-started page now saves to your portal and follows you to any device.' : 'You’re signed in. Head back to your mockup and tap anything you’d like changed.';
+      const a = document.createElement('a'); a.className = 'btn'; a.href = BACK; a.textContent = toStart ? 'Back to my getting-started page' : 'Back to my mockup';
       a.addEventListener('click', () => { try { sessionStorage.removeItem('wf-back'); } catch (e) { /* fine */ } });
       box.append(p, a);
       const proj = document.getElementById('v-project'); proj.insertBefore(box, proj.firstElementChild);

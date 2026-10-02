@@ -189,6 +189,7 @@
   #b-work.has-mock > :not(.mock-q):not(.step-foot) { display: none; }
   .mock-q textarea { width: 100%; box-sizing: border-box; }
   .google-no { margin: 12px 0 0; }
+  .p-cloud { margin-left: 8px; font-weight: 600; color: var(--acc); text-underline-offset: 3px; }
   .domain-check { margin: 10px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
   .domain-check .hint { margin: 0; }
   .google-no-note { display: none; }
@@ -970,7 +971,7 @@
   <div class="progress" id="progress" hidden>
     <div class="p-row">
       <p class="p-text"><b id="p-done">0 done</b> <span id="p-left"></span></p>
-      <p class="p-saved" id="p-saved"><svg aria-hidden="true"><use href="#i-check"/></svg><span id="p-saved-text">Saves as you go</span><span class="p-where" id="p-where" hidden> on this device</span></p>
+      <p class="p-saved" id="p-saved"><svg aria-hidden="true"><use href="#i-check"/></svg><span id="p-saved-text">Saves as you go</span><span class="p-where" id="p-where" hidden> on this device</span> <a class="p-cloud" id="p-cloud" hidden>Sign in to save it everywhere</a></p>
     </div>
     <div role="progressbar" id="p-bar" aria-label="Your progress" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0" aria-valuetext="0 done">
       <ol class="p-moons" id="p-moons" aria-hidden="true"></ol>
@@ -2007,6 +2008,59 @@
     },
     async clear() { try { const db = await this.open(); db.transaction('files', 'readwrite').objectStore('files').clear(); } catch (e) { /* nothing to clear */ } }
   };
+  // signed in to their portal (same website, same key portal.js keeps)? Then the page also saves to Taya's server as
+  // they go, words and photos, so it follows them to any device (Oct 1 2026). Without a sign-in it works as before.
+  const cloud = {
+    BASE: 'https://bookings.gardenfaery.love/api/webfaery/portal',
+    token: (() => { try { const o = JSON.parse(localStorage.getItem('wf-portal-v1') || 'null'); return o && /^[A-Za-z0-9]{40,64}$/.test(o.token || '') ? o.token : ''; } catch (e) { return ''; } })(),
+    on: false,           // the server answered: saving there is working
+    names: { photos: [], logo: [], kit: [] },   // what the server holds right now
+    async req(path, body, form) {
+      const headers = { 'X-WF-Session': this.token };
+      if (!form) headers['Content-Type'] = 'application/json';
+      const res = await fetch(this.BASE + path, { method: 'POST', headers, body: form || JSON.stringify(body || {}),
+        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+      if (res.status === 401) { this.token = ''; this.on = false; showCloud(); throw new Error('signed_out'); }
+      return res;
+    },
+    async json(path, body) { const r = await this.req(path, body); const d = await r.json().catch(() => null); if (!r.ok || !d || !d.ok) throw new Error((d && d.error) || 'server'); return d; },
+    saveTimer: 0,
+    saveSoon() { if (!this.token) return; clearTimeout(this.saveTimer); this.saveTimer = setTimeout(() => this.save(), 1500); },
+    async save() {
+      if (!this.token || wiping) return;
+      try { await this.json('/draft-save', { data: snapshot(), at: Date.now() }); this.on = true; showCloud(); } catch (e) { /* the device copy still has it */ }
+    },
+    async upload(kind, list) {
+      if (!this.token || !list.length) return;
+      const form = new FormData(); form.append('kind', kind);
+      const ready = [];
+      for (const f of list) { const g = kind === 'photos' ? await shrink(f) : f; form.append('files', g, g.name); ready.push(f); }
+      try {
+        const r = await this.req('/draft-upload', null, form); const d = await r.json().catch(() => null);
+        if (!r.ok || !d || !d.ok) return;
+        const fresh = d.files.filter((n) => !this.names[kind].includes(n));
+        ready.forEach((f, i) => { if (fresh[i]) f._srv = fresh[i]; });
+        this.names[kind] = d.files; this.on = true; showCloud();
+      } catch (e) { /* kept on the device; tried again next visit */ }
+    },
+    async remove(kind, f) {
+      if (!this.token || !f._srv) return;
+      try { const d = await this.json('/draft-remove', { kind, name: f._srv }); this.names[kind] = d.files; } catch (e) { /* fine */ }
+    },
+    async clear() { if (!this.token) return; try { await this.json('/draft-clear', {}); } catch (e) { /* fine */ } },
+    async fetchFile(kind, name) {
+      const r = await this.req('/draft-file', { kind, name });
+      if (!r.ok) return null;
+      const blob = await r.blob();
+      const pretty = name.replace(/_[a-z0-9]{10}(\.[a-z0-9]+)$/i, '$1');
+      const f = new File([blob], pretty, { type: blob.type || '' }); f._srv = name; return f;
+    }
+  };
+  function showCloud() {
+    const where = document.getElementById('p-where'), link = document.getElementById('p-cloud');
+    if (where) where.textContent = cloud.on ? ' to your portal, so it follows you to any device' : ' on this device';
+    if (link) link.hidden = !!cloud.token;
+  }
 
   function snapshot() {
     const fields = {};
@@ -2047,6 +2101,7 @@
     clearTimeout(saveTimer);
     if (wiping) return; // starting over: leaving the page must not save it all back
     canSave = store.set(snapshot());
+    cloud.saveSoon();
     savedEl.classList.toggle('off', !canSave);
     savedText.textContent = canSave ? 'Saved' : 'Not saving here (private window?)';
     $('#p-where').hidden = !canSave;
@@ -2594,6 +2649,7 @@
     const have = new Set(files[kind].map(fileKey));
     for (const f of list) if (!have.has(fileKey(f))) { files[kind].push(f); have.add(fileKey(f)); }
     renderFiles(kind); renderSendList(); saveSoon(); fileStore.put(kind, files[kind]);
+    cloud.upload(kind, files[kind].filter((f) => !f._srv));
   }
   const urls = new Map();
   function renderFiles(kind) {
@@ -2618,7 +2674,7 @@
       x.addEventListener('click', () => {
         const next = x.closest('li').nextElementSibling || x.closest('li').previousElementSibling;
         if (urls.has(f)) { URL.revokeObjectURL(urls.get(f)); urls.delete(f); }
-        files[kind].splice(i, 1); renderFiles(kind); saveSoon(); fileStore.put(kind, files[kind]);
+        files[kind].splice(i, 1); renderFiles(kind); saveSoon(); fileStore.put(kind, files[kind]); cloud.remove(kind, f);
         const again = next ? $$('[data-thumbs="' + kind + '"] button')[Math.min(i, files[kind].length - 1)] : null;
         (again || $('[data-drop="' + kind + '"] input[type="file"]')).focus();
       });
@@ -2869,7 +2925,7 @@
   $('#start-over').addEventListener('click', () => {
     if (!window.confirm('Clear all your answers on this device and start fresh?')) return;
     wiping = true;
-    store.clear(); fileStore.clear();
+    store.clear(); fileStore.clear(); cloud.clear();
     location.href = location.pathname + location.search;
   });
 
@@ -3150,6 +3206,31 @@
   renderSteps();
   renderQC();
   if (saved) { savedText.textContent = 'Saved'; $('#p-where').hidden = false; }
+  // the sign-in link brings them back here, with the same link options
+  $('#p-cloud').href = '/portal.html?back=' + encodeURIComponent('/start.html' + location.search);
+  showCloud();
+  if (cloud.token) {
+    (async () => {
+      let d = null;
+      try { d = await cloud.json('/draft-load', {}); } catch (e) { return; }
+      cloud.on = true; cloud.names = d.files || cloud.names; showCloud(); $('#p-where').hidden = false;
+      // their answers: whichever copy is newer wins (this device, or the server from another one)
+      if (d.data && d.data.v === 1 && (d.at || 0) > ((saved && saved.at) || 0)) {
+        restore(d.data); applyHave(); renderAll(); renderSteps(); renderQC(); store.set(d.data);
+        savedText.textContent = 'Picked up where you left off';
+      } else if (!d.data || (saved && saved.at > (d.at || 0))) cloud.save();
+      // their files: bring down what's on the server, send up what's only here
+      for (const k of ['photos', 'logo', 'kit']) {
+        const onServer = cloud.names[k] || [];
+        if (!files[k].length && onServer.length) {
+          const got = (await Promise.all(onServer.map((n) => cloud.fetchFile(k, n).catch(() => null)))).filter(Boolean);
+          if (got.length) { files[k] = got; renderFiles(k); renderSendList(); fileStore.put(k, files[k]); }
+        } else if (files[k].length && !onServer.length) {
+          cloud.upload(k, files[k]);
+        }
+      }
+    })();
+  }
 })();
 </script>
 </body>
