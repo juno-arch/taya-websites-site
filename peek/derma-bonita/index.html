@@ -10,7 +10,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400;1,500&family=Albert+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400;1,500&family=Albert+Sans:wght@400;500;600&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -39,22 +39,22 @@
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #201716; --ground-2: #2b1f1e; --ink: #f3e8e3; --ink-soft: #cbb6ae;
-      --rose: #d99a92; --rose-deep: #e7b3ab; --band: #150f0e; --on-band: #f1e4de;
-      --honey: #dcb887; --quartz: #4a3532; --hair: #3d2f2d;
-      --tag-bg: #3a2927; --tag-ink: #edc7c0; --tag-line: #55403d;
+      --ground: #19181b; --ground-2: #232125; --ink: #f3e8e3; --ink-soft: #cbb6ae;
+      --rose: #d99a92; --rose-deep: #e7b3ab; --band: #121114; --on-band: #f1e4de;
+      --honey: #dcb887; --quartz: #4a3532; --hair: #37343a;
+      --tag-bg: #382a2d; --tag-ink: #edc7c0; --tag-line: #523e42;
       --sweep: rgba(217, 154, 146, 0.16); --sweep-edge: rgba(217, 154, 146, 0); --hero-sweep: rgba(255, 236, 214, 0.1);
-      --menu-card: #2b1f1e;
+      --menu-card: #232125;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --ground: #201716; --ground-2: #2b1f1e; --ink: #f3e8e3; --ink-soft: #cbb6ae;
-    --rose: #d99a92; --rose-deep: #e7b3ab; --band: #150f0e; --on-band: #f1e4de;
-    --honey: #dcb887; --quartz: #4a3532; --hair: #3d2f2d;
-    --tag-bg: #3a2927; --tag-ink: #edc7c0; --tag-line: #55403d;
+    --ground: #19181b; --ground-2: #232125; --ink: #f3e8e3; --ink-soft: #cbb6ae;
+    --rose: #d99a92; --rose-deep: #e7b3ab; --band: #121114; --on-band: #f1e4de;
+    --honey: #dcb887; --quartz: #4a3532; --hair: #37343a;
+    --tag-bg: #382a2d; --tag-ink: #edc7c0; --tag-line: #523e42;
     --sweep: rgba(217, 154, 146, 0.16); --sweep-edge: rgba(217, 154, 146, 0); --hero-sweep: rgba(255, 236, 214, 0.1);
-    --menu-card: #2b1f1e;
+    --menu-card: #232125;
     color-scheme: dark;
   }
 
@@ -718,7 +718,7 @@
   .tier-note button.tag { margin-left: 4px; }
   
   .found-sec { border-top: 0; padding-top: 40px; }
-  .found-wrap { border: 1.5px dashed var(--rose-deep); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, rgba(142, 70, 64, 0.04) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .found-wrap { border: 1.5px dashed var(--rose-deep); border-radius: 22px; padding: 22px 22px 26px; }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
   .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--rose-deep); color: var(--rose-deep); }
   @media (max-width: 560px) { .found-wrap { padding: 18px 14px 22px; } }
@@ -744,6 +744,28 @@
     .petal-toast { animation: toast-rest 7s ease both; }
     @keyframes toast-rest { 0% { opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
   }
+</style>
+
+<style id="mockup-sign">
+  
+  :root { --slat: rgba(142, 70, 64, 0.07); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --slat: rgba(217, 154, 146, 0.06); } }
+  :root[data-theme="dark"] { --slat: rgba(217, 154, 146, 0.06); }
+  .views-card, .status-panel, .vpanel, .found-wrap, .to-you { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border-style: dashed; border-width: 1.5px; }
+  .status-panel { border-bottom: 1.5px dashed var(--rose-deep); }
+  .found-wrap { border: 1.5px dashed var(--rose-deep); }
+  .to-you { border: 1.5px dashed var(--rose-deep); border-radius: 18px; padding: 20px 18px 16px; }
+  p.to-you { padding: 14px 16px 12px; }
+  
+  .views-card, .status-panel, .found-wrap, .to-you { position: relative; }
+  .status-panel > .wrap { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .to-you::after {
+    content: "note for you, from Taya"; position: absolute; top: -12px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', cursive; font-weight: 600; font-size: 15px; font-style: normal; letter-spacing: 0; text-transform: none; line-height: 1; color: #4a2c28; white-space: nowrap;
+    background: #f4dcd5; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(20, 14, 10, 0.2); }
+  .status-panel > .wrap::after { top: -2px; }
+  @media (max-width: 560px) { .status-panel > .wrap::after { top: auto; bottom: -4px; right: 0; font-size: 14px; } }
 </style>
 </head>
 <body>
@@ -960,7 +982,7 @@
         <figcaption>Rowan, Arcata</figcaption>
       </figure>
     </div>
-    <p class="demo-note" style="margin-top:18px">The Yelp line is a real public review. The other two are samples: on your real site, your own Vagaro reviews go here, and I can pull in new ones whenever you send them.</p>
+    <p class="demo-note to-you" style="margin-top:18px">The Yelp line is a real public review. The other two are samples: on your real site, your own Vagaro reviews go here, and I can pull in new ones whenever you send them.</p>
   </div>
 </section>
 
@@ -999,7 +1021,7 @@
       </div>
       <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is your Book on Vagaro button, the page you already use. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
-      <div class="bk-side">
+      <div class="bk-side to-you">
         <div class="bk-note"><b>What you see</b>Every new booking lands in your inbox and phone calendar the moment it happens.</div>
         <div class="bk-inbox" id="tb-inbox"><div class="from">New booking</div><div id="tb-inboxtext">Waiting for a booking&hellip; try it on the left</div></div>
         <div class="bk-note"><b>The directions go with it</b>Every confirmation and reminder carries &ldquo;531 over the door, next to Glow Salon, text when you arrive.&rdquo; Fewer lost first-timers, fewer texts to answer.</div>
@@ -1041,7 +1063,7 @@
       <div class="reveal"><b>Cancelling</b>I ask for a full 24 hours&rsquo; notice for any appointment. Less than that, and a fee applies.</div>
       <div class="reveal"><b>Parking</b>A small free lot at the door. If it is full, street parking is close by.</div>
     </div>
-    <p class="demo-note" style="margin-top:18px">Hours are as listed on Yelp (Vagaro and Fresha each say something different): you tell me which is right. Everything on this page changes whenever you like: you email me, and it is done.</p>
+    <p class="demo-note to-you" style="margin-top:18px">Hours are as listed on Yelp (Vagaro and Fresha each say something different): you tell me which is right. Everything on this page changes whenever you like: you email me, and it is done.</p>
   </div>
 </section>
 
@@ -1107,7 +1129,7 @@
         <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
       </div>
     </div>
-    <div class="gift-notes">
+    <div class="gift-notes to-you">
       <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name.</div>
       <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward. Lovely for the holidays.</div>
       <div class="bk-note"><b>Deposits, if you want them</b>A small deposit at booking makes the 24-hour policy easier to keep.</div>

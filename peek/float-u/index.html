@@ -9,7 +9,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Instrument+Serif:ital@1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Bricolage+Grotesque:opsz,wght@12..96,300..600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Instrument+Serif:ital@1&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -45,6 +45,7 @@
     --double-bg: linear-gradient(100deg, rgba(195, 138, 85, 0.16), rgba(207, 227, 234, 0.4));
     --tl-bar: linear-gradient(90deg, #16224a 0%, #34409e 55%, #6f7cff 100%); --tl-mid: #34409e;
     --stripe: rgba(54, 65, 156, 0.045);
+    --slat: rgba(54, 65, 156, 0.07);   
     --f-head: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
     --f-body: 'Atkinson Hyperlegible', Verdana, 'Segoe UI', system-ui, sans-serif;
     --f-accent: 'Instrument Serif', Georgia, 'Times New Roman', serif;
@@ -54,18 +55,18 @@
     :root:not([data-theme="light"]) {
       --ground: #0b1226; --ground-2: #0f1830; --card: #121c3a; --ink: #e8eaf2; --ink-soft: #aab1c8; --hair: #25304f;
       --lake: #9aa5ff; --night: #070c1c; --deep: #121b3d; --wine: #d77a93; --wine-hover: #e592a8; --on-wine: #1a0a12;
-      --cedar-soft: #1c1712; --cedar-ink: #e0b48a; --tag-bg: #1a2446; --tag-ink: #c3caff; --tag-line: #2c3866;
+      --cedar-soft: #191a35; --cedar-ink: #e0b48a; --tag-bg: #1a2446; --tag-ink: #c3caff; --tag-line: #2c3866;
       --seg-on: #c3caff; --seg-on-ink: #0b1226; --double-bg: linear-gradient(100deg, rgba(195, 138, 85, 0.2), rgba(111, 124, 255, 0.14));
-      --tl-bar: linear-gradient(90deg, #4050b8 0%, #6f7cff 55%, #9aa5ff 100%); --tl-mid: #6f7cff; --stripe: rgba(154, 165, 255, 0.04);
+      --tl-bar: linear-gradient(90deg, #4050b8 0%, #6f7cff 55%, #9aa5ff 100%); --tl-mid: #6f7cff; --stripe: rgba(154, 165, 255, 0.04); --slat: rgba(154, 165, 255, 0.07);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
     --ground: #0b1226; --ground-2: #0f1830; --card: #121c3a; --ink: #e8eaf2; --ink-soft: #aab1c8; --hair: #25304f;
     --lake: #9aa5ff; --night: #070c1c; --deep: #121b3d; --wine: #d77a93; --wine-hover: #e592a8; --on-wine: #1a0a12;
-    --cedar-soft: #1c1712; --cedar-ink: #e0b48a; --tag-bg: #1a2446; --tag-ink: #c3caff; --tag-line: #2c3866;
+    --cedar-soft: #191a35; --cedar-ink: #e0b48a; --tag-bg: #1a2446; --tag-ink: #c3caff; --tag-line: #2c3866;
     --seg-on: #c3caff; --seg-on-ink: #0b1226; --double-bg: linear-gradient(100deg, rgba(195, 138, 85, 0.2), rgba(111, 124, 255, 0.14));
-    --tl-bar: linear-gradient(90deg, #4050b8 0%, #6f7cff 55%, #9aa5ff 100%); --tl-mid: #6f7cff; --stripe: rgba(154, 165, 255, 0.04);
+    --tl-bar: linear-gradient(90deg, #4050b8 0%, #6f7cff 55%, #9aa5ff 100%); --tl-mid: #6f7cff; --stripe: rgba(154, 165, 255, 0.04); --slat: rgba(154, 165, 255, 0.07);
     color-scheme: dark;
   }
 
@@ -920,13 +921,32 @@
   #visit { padding-bottom: 56px; }
   .found-sec { padding-top: 0; }
   .found-wrap { border: 1.5px dashed var(--lake); border-radius: 22px; padding: 26px 26px 28px;
-    background: repeating-linear-gradient(-45deg, var(--stripe) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+    background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 24px; font-size: 15px; color: var(--ink-soft); font-style: italic; }
   .not-site .pv { font-style: normal; color: var(--lake); border-style: solid; }
   .found-wrap .found { margin-top: 36px; }
   .gbp { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
   @media (max-width: 860px) { #visit { padding-bottom: 40px; } }
   @media (max-width: 560px) { .found-wrap { padding: 20px 14px 22px; } }
+  
+  .views-card, .vpanel, .status-panel, .wf-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border: 1.5px dashed var(--lake); }
+  .status-panel { border-bottom: 1.5px dashed var(--lake); }
+  .wf-note { position: relative; border: 1.5px dashed var(--lake); border-radius: 16px; padding: 14px 18px; }
+  p.wf-note { margin-top: 26px; }
+  .side-notes { display: grid; gap: 14px; }
+  .side-notes.wf-note { padding: 20px 16px 16px; }
+  .gift-notes.wf-note { padding: 20px 18px 16px; }
+  .night .wf-note { --slat: rgba(154, 165, 255, 0.08); border-color: rgba(154, 165, 255, 0.6); }
+  .vpanel { --slat: rgba(154, 165, 255, 0.08); }   
+  footer .legend.wf-note { margin-top: 22px; padding: 12px 18px; }
+  
+  .status-panel > .wrap, .found-wrap { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .wf-note::after {
+    content: "note for you, from Taya"; position: absolute; top: -13px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', 'Instrument Serif', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #5a1a30; white-space: nowrap; font-style: normal;
+    letter-spacing: 0; text-transform: none; background: #f6dbe3; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(7, 12, 28, 0.25); }
+  .status-panel > .wrap::after { top: -2px; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -1237,12 +1257,14 @@
           <p class="rc-when" id="rc-when">Open daily, 7 AM to 11 PM</p>
           <p class="rc-skip">Know what you want already?<br><a class="ext" href="https://www.vagaro.com/floatuhumboldt" target="_blank" rel="noopener">Go straight to Float U&rsquo;s Vagaro <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
         </div>
+        <div class="side-notes wf-note">
         <div class="side-note"><b>What you see</b>Every booking still lands in your Vagaro calendar and app the moment it happens, just like today.</div>
         <div class="side-note"><b>Nothing new to learn</b>Your members&rsquo; priority booking, prepaid sessions, digital intake forms and self check-in all keep working on Vagaro, just as they do now.</div>
         <div class="side-note"><b>Every button, one place</b>Each &ldquo;Book&rdquo; button on your site goes straight to your Vagaro page, with no redirect in between.</div>
+        </div>
       </div>
     </div>
-    <p class="tier-note" data-show="all" data-fold><span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span><span>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your Vagaro page.</span></p>
+    <p class="tier-note wf-note" data-show="all" data-fold><span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span><span>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your Vagaro page.</span></p>
     </div>
 
     
@@ -1251,7 +1273,7 @@
       <h2 style="max-width:16ch">Find a time <span class="acc">that suits you</span></h2>
       <p class="lede-s">See open times for the float suite and Fire &amp; Ice, and book online any time of day. If booking online gives you any trouble, just call <a href="tel:+17074602002" class="nw">(707) 460-2002</a>.</p>
       <div class="cta-row"><a class="btn" href="https://www.vagaro.com/floatuhumboldt" target="_blank" rel="noopener">Book now <svg aria-hidden="true"><use href="#i-ext"/></svg><span class="vh"> (opens Float U&rsquo;s Vagaro page in a new tab)</span></a><a class="btn ghost-n" href="tel:+17074602002">Call (707) 460-2002</a></div>
-      <p class="demo-note">With Mother, this button opens your real Vagaro page, the one you already use. Memberships, packages and intake forms keep working just as they do now.</p>
+      <p class="demo-note wf-note">With Mother, this button opens your real Vagaro page, the one you already use. Memberships, packages and intake forms keep working just as they do now.</p>
     </div>
 
     
@@ -1260,7 +1282,7 @@
       <h2 style="max-width:16ch">Call, text <span class="acc">or email</span></h2>
       <p class="lede-s">Call or text <a href="tel:+17074602002" class="nw">(707) 460-2002</a>, or email <span class="ph">your email</span>, and we&rsquo;ll find a time for your float. Open daily, 7 AM to 11 PM.</p>
       <div class="cta-row"><a class="btn" href="tel:+17074602002" aria-label="Call Float U at (707) 460-2002">Call</a><a class="btn ghost-n" href="sms:+17074602002" aria-label="Text Float U at (707) 460-2002">Text</a></div>
-      <p class="demo-note">With Maiden, people reach you by call, text or email. Your &ldquo;Book now&rdquo; button to Vagaro comes with Mother.</p>
+      <p class="demo-note wf-note">With Maiden, people reach you by call, text or email. Your &ldquo;Book now&rdquo; button to Vagaro comes with Mother.</p>
     </div>
   </div>
 </section>
@@ -1311,12 +1333,12 @@
       <p class="lede-s">A gift card for someone who needs it, or your own session paid ahead, right here on the site. Give it a try:</p>
     </div>
     <div class="gift-more">
-      <div class="gift-notes">
+      <div class="gift-notes wf-note">
         <div class="note"><b>Paid straight to you</b>Money lands in your own payment account, set up in your name.</div>
         <div class="note"><b>Cards send themselves</b>The buyer gets the gift card by email, ready to print or forward.</div>
       </div>
       <p style="margin-top:26px;font-size:16px;color:var(--ink-soft)">Or, as it works today:<br><a class="ext" href="https://www.vagaro.com/floatuhumboldt/gift-certificates" target="_blank" rel="noopener">Buy an e-gift card on Float U&rsquo;s Vagaro <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
-      <p class="tier-note" data-show="all" data-fold><span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span><span>With the Mother build, this spot is a simple link to the gift cards on your Vagaro.</span></p>
+      <p class="tier-note wf-note" data-show="all" data-fold><span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span><span>With the Mother build, this spot is a simple link to the gift cards on your Vagaro.</span></p>
     </div>
     <div class="gift-demo">
       <div class="gcard" id="gc" aria-live="polite">
@@ -1384,7 +1406,7 @@
     <h2 id="gl-h" style="max-width:16ch">Give someone an hour of <span class="acc">real quiet</span></h2>
     <p class="lede-s">A Float U e-gift card, good toward any session or add-on, sent straight to their inbox.</p>
     <div class="row-btns" style="margin-top:26px"><a class="btn" href="https://www.vagaro.com/floatuhumboldt/gift-certificates" target="_blank" rel="noopener">Buy a gift card <svg aria-hidden="true"><use href="#i-ext"/></svg><span class="vh"> (opens Float U&rsquo;s Vagaro in a new tab)</span></a></div>
-    <p class="demo-note" style="margin-top:16px">With Mother, this button opens the gift cards on your Vagaro. Gift cards sold right on your site come with Crone.</p>
+    <p class="demo-note wf-note" style="margin-top:26px">With Mother, this button opens the gift cards on your Vagaro. Gift cards sold right on your site come with Crone.</p>
   </div>
 </section>
 
@@ -1415,7 +1437,7 @@
       <p class="label"><span>Also on Vagaro</span> <span class="pv">placeholder</span></p>
       <h2 id="also-h">Massage and body care, <span class="acc">from $50</span></h2>
       <p class="lede-s" style="font-size:16px">Full-spectrum CBD oil on request.</p>
-      <p class="tier-note" style="margin-top:14px">Your Vagaro lists these with prices, so they&rsquo;re shown as a placeholder until you say they&rsquo;re on offer.</p>
+      <p class="tier-note wf-note" style="margin-top:22px">Your Vagaro lists these with prices, so they&rsquo;re shown as a placeholder until you say they&rsquo;re on offer.</p>
       <p style="margin-top:18px" data-show="mother crone all"><a class="ext" href="https://www.vagaro.com/floatuhumboldt/services" target="_blank" rel="noopener">See times and lengths on Vagaro <svg aria-hidden="true"><use href="#i-ext"/></svg></a></p>
     </div>
     <ul class="menu">
@@ -1637,7 +1659,7 @@
   <footer class="gutter">
     <div class="wrap">
       <div class="foot-row"><span>Float U Humboldt &middot; 426 B Street, Eureka, CA 95501 &middot; <span class="nw">(707) 460-2002</span></span><span>Open daily 7 AM to 11 PM</span></div>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+      <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     </div>
   </footer>
 </div>

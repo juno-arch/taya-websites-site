@@ -10,7 +10,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;600&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;600&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-bottom: 64px; }
   @media (max-width: 499px) { html { scroll-padding-bottom: 112px; } }
@@ -31,30 +31,31 @@
     --chip-ok: #22633a; --chip-ok-bg: #dcebdf;
     --band-bg: #151515;
     --paper: #fbf8f1; --paper-ink: #151515; --paper-soft: #5e5a52; --paper-line: #cfc8b8;
+    --slat: rgba(138, 98, 0, 0.07); 
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #151515; --ground-2: #1e1d1a; --ink: #ece7db; --ink-soft: #b9b4a8;
-      --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #34312b; --flash: #ef6a58;
+      --ground: #151515; --ground-2: #1e1f21; --ink: #ece7db; --ink-soft: #b9b4a8;
+      --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #333438; --flash: #ef6a58;
       --tag-bg: #2a2310; --tag-ink: #f3c24d; --tag-line: #4a3c14;
-      --chip-ok: #9fd4ae; --chip-ok-bg: #1d2b22; --band-bg: #0c0c0c;
+      --chip-ok: #9fd4ae; --chip-ok-bg: #1d2b22; --band-bg: #0c0c0c; --slat: rgba(235, 166, 0, 0.06);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --ground: #151515; --ground-2: #1e1d1a; --ink: #ece7db; --ink-soft: #b9b4a8;
-    --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #34312b; --flash: #ef6a58;
+    --ground: #151515; --ground-2: #1e1f21; --ink: #ece7db; --ink-soft: #b9b4a8;
+    --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #333438; --flash: #ef6a58;
     --tag-bg: #2a2310; --tag-ink: #f3c24d; --tag-line: #4a3c14;
-    --chip-ok: #9fd4ae; --chip-ok-bg: #1d2b22; --band-bg: #0c0c0c;
+    --chip-ok: #9fd4ae; --chip-ok-bg: #1d2b22; --band-bg: #0c0c0c; --slat: rgba(235, 166, 0, 0.06);
     color-scheme: dark;
   }
   
   .hero-band, .band, footer {
-    --ground: #151515; --ground-2: #1f1e1a; --ink: #ece7db; --ink-soft: #b9b4a8;
-    --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #3a362e; --flash: #ef6a58;
+    --ground: #151515; --ground-2: #1e1f21; --ink: #ece7db; --ink-soft: #b9b4a8;
+    --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #38393d; --flash: #ef6a58;
     --tag-bg: #2a2310; --tag-ink: #f3c24d; --tag-line: #4a3c14;
-    --chip-ok: #9fd4ae; --chip-ok-bg: #1d2b22;
+    --chip-ok: #9fd4ae; --chip-ok-bg: #1d2b22; --slat: rgba(235, 166, 0, 0.06);
     color-scheme: dark;
   }
 
@@ -234,7 +235,7 @@
   .their-words { font-family: 'Inknut Antiqua', Georgia, serif; font-size: 17px; line-height: 1.6; color: var(--ink-soft); border-left: 1px solid var(--accent); padding: 2px 0 2px 18px; }
   .artists { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 40px; }
   .artist { display: flex; flex-direction: column; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 4px; overflow: hidden; }
-  .a-port { position: relative; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; background: #1e1d1a; }
+  .a-port { position: relative; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; background: #1e1f21; }
   .a-port img { width: 100%; height: 100%; object-fit: cover; display: block; transition: scale 1.2s cubic-bezier(.2,.7,.3,1); }
   .artist:hover .a-port img { scale: 1.04; }
   .a-body { display: flex; flex-direction: column; gap: 8px; flex: 1; padding: 18px 18px 18px; }
@@ -261,7 +262,7 @@
   
   .you-note { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px 16px; align-items: start; margin-top: 26px;
     border: 1.5px dashed var(--accent); border-radius: 14px; padding: 18px 20px 18px 18px; color: var(--ink);
-    background: repeating-linear-gradient(-45deg, rgba(235, 166, 0, 0.06) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+    background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .you-note svg { color: var(--accent); margin-top: 3px; }
   .you-note p { font-size: 15.5px; }
   .you-note .label { margin-bottom: 6px; }
@@ -376,7 +377,7 @@
   .events .reveal.in:nth-child(3) { transition-delay: 0.2s; }
   .ev-note { margin-top: 18px; }
   
-  .news { --ground: #151515; --ground-2: #1f1e1a; --ink: #ece7db; --ink-soft: #b9b4a8; --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #3a362e;
+  .news { --ground: #151515; --ground-2: #1e1f21; --ink: #ece7db; --ink-soft: #b9b4a8; --accent: #eba600; --accent-deep: #f3c24d; --fill-line: #eba600; --hair: #38393d;
     --tag-bg: #2a2310; --tag-ink: #f3c24d; --tag-line: #4a3c14; color-scheme: dark;
     background: #151515; color: var(--ink); border: 1px solid rgba(235, 166, 0, 0.3); border-radius: 4px; padding: 28px 26px 26px; margin-top: 28px; }
   .news p { color: rgba(236, 231, 219, 0.86); }
@@ -464,7 +465,7 @@
 
   
   .feed { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 32px; }
-  .feed .photo { aspect-ratio: 1; border-radius: 2px; background: #1f1e1a; }
+  .feed .photo { aspect-ratio: 1; border-radius: 2px; background: #1e1f21; }
   .feed .photo .credit { right: 6px; bottom: 6px; font-size: 9px; padding: 4px 6px; letter-spacing: 0.1em; }
   .feed-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
 
@@ -507,7 +508,7 @@
   .linkcard b { display: block; font-size: 15px; font-weight: 600; line-height: 1.35; }
   .linkcard small { display: block; font-size: 12.5px; color: var(--ink-soft); }
   .found-sec { padding-top: 48px; }
-  .found-wrap { border: 1.5px dashed var(--accent); border-radius: 14px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, rgba(235, 166, 0, 0.05) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .found-wrap { border: 1.5px dashed var(--accent); border-radius: 14px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
   .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--accent); color: var(--accent-deep); }
 
@@ -552,7 +553,7 @@
   .status-try { display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; cursor: pointer;
     font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif; font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
     color: #f3c24d; background: #151515; border: 1px solid #eba600; border-top: 0; border-radius: 0 0 6px 6px; padding: 7px 12px 8px; }
-  .status-try:hover { background: #1f1e1a; }
+  .status-try:hover { background: #1e1f21; }
   .status-try svg { flex: none; transition: rotate 0.3s ease; }
   .status-try[aria-expanded="true"] svg { rotate: 180deg; }
   .status-try:focus-visible { outline: 2px solid #ece7db; outline-offset: 2px; }
@@ -754,6 +755,21 @@
   .steps .reveal.in:nth-child(2) { transition-delay: 0.12s; }
   .steps .reveal.in:nth-child(3) { transition-delay: 0.24s; }
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } .a-port img { transition: none; } }
+
+  
+  .views-card, .vpanel, .status-panel, .found-wrap, .mock-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border-style: dashed; border-width: 1.5px; }
+  .status-panel { border-bottom: 1.5px dashed var(--accent); }
+  .mock-note { border: 1.5px dashed var(--accent); border-radius: 14px; padding: 16px 18px 14px; }
+  .tier-note.mock-note { padding: 14px 16px 12px; }
+  
+  .views-card, .status-panel > .wrap, .found-wrap, .mock-note, .you-note { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .mock-note::after, .you-note::after {
+    content: "note for you, from Taya"; position: absolute; top: -12px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #3d2e00; white-space: nowrap;
+    background: #f8e8bd; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(20, 16, 12, 0.2); }
+  .status-panel { padding-top: 26px; }
+  .status-panel > .wrap::after { top: -21px; right: 0; }
 </style>
 </head>
 <body>
@@ -1028,8 +1044,8 @@
       </article>
     </div>
     <p class="hint ar-hint" id="ar-hint" role="status"></p>
-    <p class="tier-note" data-show="mother crone all" data-fold>Each Request button opens that artist&rsquo;s own request form, or their inbox or DMs, whichever they prefer. Nothing changes for your artists: the hub just gets people to the right door. <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-    <p class="tier-note" data-show="maiden" data-fold hidden>With Maiden, each card links to the artist&rsquo;s Instagram, where people already DM them. <span class="tag" data-go="maiden">Every build</span></p>
+    <p class="tier-note mock-note" data-show="mother crone all" data-fold>Each Request button opens that artist&rsquo;s own request form, or their inbox or DMs, whichever they prefer. Nothing changes for your artists: the hub just gets people to the right door. <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="tier-note mock-note" data-show="maiden" data-fold hidden>With Maiden, each card links to the artist&rsquo;s Instagram, where people already DM them. <span class="tag" data-go="maiden">Every build</span></p>
 
     <div class="notes-2">
       <div class="reveal you-note">
@@ -1171,7 +1187,7 @@
             <button type="button" class="bk-go ghost" id="rq-again">Try it again</button>
           </div>
         </div>
-        <div class="bk-side">
+        <div class="bk-side mock-note">
           <div class="bk-note"><b>What you see</b>Every request lands in your inbox with the photos attached. Forward it to the right artist in one tap.</div>
           <div class="bk-inbox" id="rq-inbox"><div class="from">New request</div><div id="rq-inboxtext">Waiting for a request&hellip; try the form</div></div>
           <div class="bk-note"><b>Photos stay private</b>Reference pictures go to you, not onto the site.</div>
@@ -1245,7 +1261,7 @@
           <p>A charity flash day with Companion Animal Foundation. Past events can stay up as a little archive, if you like.</p>
         </article>
       </div>
-      <p class="tier-note ev-note">These three are borrowed from your past posts, as examples. Email me the flyer and it&rsquo;s up the same day, here and on the banner. <span class="tag" data-go="maiden">Every build</span></p>
+      <p class="tier-note ev-note mock-note">These three are borrowed from your past posts, as examples. Email me the flyer and it&rsquo;s up the same day, here and on the banner. <span class="tag" data-go="maiden">Every build</span></p>
 
       <aside class="news" aria-labelledby="nl-h" data-show="mother crone all" data-fold data-thing="flash day alerts">
         <p class="label"><span>Flash day alerts</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
@@ -1303,7 +1319,7 @@
           <p class="demo-note">Preview only: nothing was signed or sent.</p>
           <button type="button" class="bk-go ghost" id="cs-again">Try it again</button>
         </div>
-        <div class="bk-note" style="margin-top:18px"><b>What you see</b>Each signed form is stored in your records, dated and searchable. Artists can add their own questions to it.</div>
+        <div class="bk-note mock-note" style="margin-top:18px"><b>What you see</b>Each signed form is stored in your records, dated and searchable. Artists can add their own questions to it.</div>
       </div>
       <div class="reveal care-card" data-thing="aftercare page">
         <p class="label"><span>Aftercare</span></p>
@@ -1315,7 +1331,7 @@
           <li><span class="care-t">Tender, warm and a little swollen the first few days is normal. Spreading redness, red streaks, fever or drainage can mean infection: please see a doctor.</span></li>
           <li><span class="care-t">Touch-ups: <span class="ph">your touch-up policy</span>.</span></li>
         </ol>
-        <p class="demo-note" style="margin-top:12px"><span class="tag" data-go="maiden">Every build</span> Tell me a few things and I&rsquo;ll write your touch-up, deposit and cancellation policies for you, in your voice.</p>
+        <p class="demo-note mock-note" style="margin-top:12px"><span class="tag" data-go="maiden">Every build</span> Tell me a few things and I&rsquo;ll write your touch-up, deposit and cancellation policies for you, in your voice.</p>
         <div class="care-actions">
           <button type="button" class="bk-go" id="ac-text-btn" aria-expanded="false" aria-controls="ac-text">Email me the aftercare</button>
           <button type="button" class="bk-go ghost" id="ac-pdf-btn" aria-expanded="false" aria-controls="ac-pdf">Download the card (PDF)</button>
@@ -1339,7 +1355,7 @@
           </div>
           <p class="ik-note">On your real site this downloads your aftercare sheet, in English or Spanish.</p>
         </div>
-        <div class="bk-note" style="margin-top:18px"><b>Written once, in two languages</b>Your English and Spanish aftercare sheets both live here, handed out by email or on paper.</div>
+        <div class="bk-note mock-note" style="margin-top:18px"><b>Written once, in two languages</b>Your English and Spanish aftercare sheets both live here, handed out by email or on paper.</div>
       </div>
     </div>
   </div>
@@ -1438,7 +1454,7 @@
         <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
       </div>
     </div>
-    <div class="gift-notes">
+    <div class="gift-notes mock-note">
       <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, in the shop&rsquo;s name, or to each artist if you&rsquo;d rather.</div>
       <div class="bk-note"><b>No more Venmo chasing</b>A deposit paid here is recorded with the request, so nobody has to ask &ldquo;did you send it?&rdquo;</div>
       <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward.</div>
@@ -1566,7 +1582,7 @@
         <div class="reveal"><b>Closed</b>Sunday and Monday</div>
         <div class="reveal span"><b>Instagram</b><span class="reach" style="margin-top:2px"><a href="https://www.instagram.com/sanghatattoostudio/" target="_blank" rel="noopener" aria-label="Sangha on Instagram, @sanghatattoostudio (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@sanghatattoostudio</a></span></div>
       </div>
-      <div class="bk-note" style="margin-top:28px"><b>Spam stays out</b>The form has a quiet check that bots fail and people never notice.</div>
+      <div class="bk-note mock-note" style="margin-top:28px"><b>Spam stays out</b>The form has a quiet check that bots fail and people never notice.</div>
     </div>
   </div>
 </section>

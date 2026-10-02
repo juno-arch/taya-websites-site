@@ -9,7 +9,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
   
   :root {
@@ -38,6 +38,7 @@
     --tag-ink: #45452B;
     --tag-line: rgba(72, 72, 47, 0.32);
     --chip: #785840;
+    --slat: rgba(120, 88, 64, 0.07);   
     --shadow: rgba(46, 34, 25, 0.18);
     --display: 'Cormorant Garamond', 'Cormorant', Garamond, 'Times New Roman', serif;
     --label: 'Josefin Sans', 'Futura', 'Century Gothic', 'Avenir Next', sans-serif;
@@ -46,24 +47,26 @@
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #1B1510; --ground-2: #241C15; --paper: #2A2119; --field: #140F0B;
-      --ink: #F4EADD; --ink-soft: #C9B7A3; --umber: #DDB792;
-      --sage: #C2BE8A; --sage-deep: #D2CD98; --sage-wash: #33251B; --on-accent: #1A150F;
-      --rust: #F0A06E; --hair: #3B2F25; --hair-2: #574738;
-      --bark: #110B07; --bark-2: #1F150E; --ember: #EE9A62; --ember-soft: #F3B184;
-      --tag-bg: #2C2A1D; --tag-ink: #DCD8AE; --tag-line: rgba(210, 205, 152, 0.3);
+      --ground: #171615; --ground-2: #222120; --paper: #262423; --field: #121211;
+      --ink: #F4EADD; --ink-soft: #C9BDB0; --umber: #DDB792;
+      --sage: #C2BE8A; --sage-deep: #D2CD98; --sage-wash: #232120; --on-accent: #171615;
+      --rust: #F0A06E; --hair: #353331; --hair-2: #4B4845;
+      --bark: #100F0E; --bark-2: #1E1C1B; --ember: #EE9A62; --ember-soft: #F3B184;
+      --tag-bg: #2A2927; --tag-ink: #DCD8AE; --tag-line: rgba(210, 205, 152, 0.3);
       --chip: #DDB792; --shadow: rgba(0, 0, 0, 0.5);
+      --slat: rgba(221, 183, 146, 0.06);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --ground: #1B1510; --ground-2: #241C15; --paper: #2A2119; --field: #140F0B;
-    --ink: #F4EADD; --ink-soft: #C9B7A3; --umber: #DDB792;
-    --sage: #C2BE8A; --sage-deep: #D2CD98; --sage-wash: #33251B; --on-accent: #1A150F;
-    --rust: #F0A06E; --hair: #3B2F25; --hair-2: #574738;
-    --bark: #110B07; --bark-2: #1F150E; --ember: #EE9A62; --ember-soft: #F3B184;
-    --tag-bg: #2C2A1D; --tag-ink: #DCD8AE; --tag-line: rgba(210, 205, 152, 0.3);
+    --ground: #171615; --ground-2: #222120; --paper: #262423; --field: #121211;
+    --ink: #F4EADD; --ink-soft: #C9BDB0; --umber: #DDB792;
+    --sage: #C2BE8A; --sage-deep: #D2CD98; --sage-wash: #232120; --on-accent: #171615;
+    --rust: #F0A06E; --hair: #353331; --hair-2: #4B4845;
+    --bark: #100F0E; --bark-2: #1E1C1B; --ember: #EE9A62; --ember-soft: #F3B184;
+    --tag-bg: #2A2927; --tag-ink: #DCD8AE; --tag-line: rgba(210, 205, 152, 0.3);
     --chip: #DDB792; --shadow: rgba(0, 0, 0, 0.5);
+    --slat: rgba(221, 183, 146, 0.06);
     color-scheme: dark;
   }
 
@@ -260,7 +263,7 @@
 
   
   .found-wrap { margin-top: 80px; border: 1.5px dashed var(--umber); border-radius: 26px; padding: 26px 26px 30px;
-    background: repeating-linear-gradient(-45deg, rgba(123, 91, 67, 0.045) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+    background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .found-wrap .found-h { margin-top: 0; }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 26px; font-size: 14.5px; color: var(--ink-soft); font-style: italic; }
   .not-site .sample { font-style: normal; color: var(--umber); border-color: var(--umber); }
@@ -1033,6 +1036,22 @@
     .float-book { transition: none; }
     .ember summary::after, .faq summary::after { transition: none; }
   }
+  
+  .views-card, .vpanel, .status-panel, .wf-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border: 1.5px dashed var(--umber); }
+  .status-panel { border-bottom: 1.5px dashed var(--umber); }
+  .wf-note { position: relative; border: 1.5px dashed var(--umber); border-radius: 16px; padding: 14px 18px; }
+  .ev-note.wf-note, .fa-note.wf-note, .pol-note.wf-note { margin-top: 28px; }
+  .bk-side.wf-note { padding: 22px 18px 18px; align-self: start; }
+  .gift-notes.wf-note { padding: 18px 18px 16px; }
+  footer .legend.wf-note { margin-top: 22px; padding: 12px 18px; }
+  
+  .status-panel > .wrap, .found-wrap { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .wf-note::after {
+    content: "note for you, from Taya"; position: absolute; top: -13px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', 'Cormorant Garamond', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #4A2F20; white-space: nowrap; font-style: normal;
+    letter-spacing: 0; text-transform: none; background: #F8DCC6; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(46, 34, 25, 0.22); }
+  .status-panel > .wrap::after { top: -2px; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -1401,7 +1420,7 @@
     </div>
     </div>
 
-    <p class="ev-note"><span class="sample">For you</span> Plan another workshop or a class in the movement room? Email me the date and it shows up here and on the strip up top.</p>
+    <p class="ev-note wf-note"><span class="sample">For you</span> Plan another workshop or a class in the movement room? Email me the date and it shows up here and on the strip up top.</p>
   </div>
 </section>
 
@@ -1457,7 +1476,7 @@
           <button type="button" class="btn quiet" id="bk-again">Try it again</button>
         </div>
       </div>
-      <aside class="bk-side" aria-label="About this booking preview">
+      <aside class="bk-side wf-note" aria-label="About this booking preview">
         <div class="bk-note"><b>What you see</b>Every new booking lands in that practitioner&rsquo;s own calendar and phone the moment it happens.</div>
         <div class="bk-inbox" aria-live="polite"><div class="from" id="bk-inboxfrom">New booking</div><div id="bk-inboxtext">Waiting for a booking&hellip; try the preview</div></div>
         <div class="bk-note"><b>One door for everyone</b>Every Book button on your site opens this same place, with the right practitioner already chosen.</div>
@@ -1466,7 +1485,7 @@
         <p class="bk-foot">Booking preview: nothing here books a real session. On your real site this runs on a booking tool in your own name, with each practitioner&rsquo;s hours and one checkout shared with gift certificates and the boutique.</p>
       </aside>
     </div>
-    <p class="fa-note" data-show="all" data-fold><span>With the Mother build, this spot is a simple Book now button that opens your Acuity page.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
+    <p class="fa-note wf-note" data-show="all" data-fold><span>With the Mother build, this spot is a simple Book now button that opens your Acuity page.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
 
     
@@ -1551,7 +1570,7 @@
         <div class="c-amt" id="cert-live">$150</div>
         <div class="c-who">Rest and care, whenever they&rsquo;re ready</div>
       </div>
-      <div class="gift-notes">
+      <div class="gift-notes wf-note">
         <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name.</div>
         <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email or text, ready to print or forward.</div>
       </div>
@@ -1587,7 +1606,7 @@
     </div>
   </div>
   <div class="wrap" data-show="all" data-fold>
-    <p class="fa-note"><span>With the Mother build, this spot is a Gift button that opens <a class="ext" href="https://app.squareup.com/gift/24QFEC9Q38058/order" target="_blank" rel="noopener">your Square gift card page<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens in a new tab)</span></a>, the one you already use.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
+    <p class="fa-note wf-note"><span>With the Mother build, this spot is a Gift button that opens <a class="ext" href="https://app.squareup.com/gift/24QFEC9Q38058/order" target="_blank" rel="noopener">your Square gift card page<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens in a new tab)</span></a>, the one you already use.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
   </div>
 
   
@@ -1786,7 +1805,7 @@
         <div><dt>Follow</dt><dd><a class="ext" href="https://www.instagram.com/mendingrootsbodytherapies/" target="_blank" rel="noopener">Instagram<svg aria-hidden="true"><use href="#i-out"/></svg></a> &nbsp;&middot;&nbsp; <a class="ext" href="https://www.facebook.com/mendingrootsbodytherapies" target="_blank" rel="noopener">Facebook<svg aria-hidden="true"><use href="#i-out"/></svg></a></dd></div>
       </dl>
       <figure class="photo visit-photo reveal"><img src="images/consult-room.jpg" alt="A quiet consult room at Mending Roots: two navy chairs, a woven rug, cushions and a mountain painting" loading="lazy"></figure>
-      <p class="pol-note"><span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span><span>Your cancellation policy lives on your booking page, but late arrivals, gift certificates and boutique returns aren&rsquo;t written down anywhere yet. Tell me a few things and I&rsquo;ll write your policies for you, in your voice.</span></p>
+      <p class="pol-note wf-note"><span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span><span>Your cancellation policy lives on your booking page, but late arrivals, gift certificates and boutique returns aren&rsquo;t written down anywhere yet. Tell me a few things and I&rsquo;ll write your policies for you, in your voice.</span></p>
     </div>
     <div class="contact-card" data-show="mother crone all" data-fold data-thing="contact form">
       <p class="eyebrow">Contact <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Mother + Crone<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span></p>
@@ -1838,7 +1857,7 @@
       </nav>
     </div>
     <div class="foot-legal"><span>&copy; <span id="yr">2026</span> Mending Roots Body Therapies, LLC</span><span>3034 H Street, Suite C, Eureka, CA</span></div>
-    <p class="legend"><svg aria-hidden="true"><use href="#i-spark"/></svg><span>Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Maiden<span class="tag-p"> <span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span> (full site, with your Acuity linked), <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg>Crone<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling built in). The status banner up top comes with <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></span></p>
+    <p class="legend wf-note"><svg aria-hidden="true"><use href="#i-spark"/></svg><span>Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Maiden<span class="tag-p"> <span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span> (full site, with your Acuity linked), <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg>Crone<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling built in). The status banner up top comes with <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></span></p>
   </div>
 </footer>
 

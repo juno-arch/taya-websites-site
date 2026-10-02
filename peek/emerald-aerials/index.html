@@ -10,7 +10,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -42,9 +42,9 @@
       --champagne: #efd9a6; --hair: #2a3a33;
       --tag-bg: #1d2e28; --tag-ink: #b8dccb; --tag-line: #2f4239;
       --rib-1: #167a5e; --rib-2: #5ad3a6; --rib-3: #0d4d3b; --rib-sheen: rgba(233, 243, 236, 0.45);
-      --sched-now: #3a3119; --sched-now-ink: #f1dc9e;
-      --full-bg: #3a221b; --full-ink: #f2bba9;
-      --kids: #3a3119; --kids-ink: #f1dc9e;
+      --sched-now: #1f4436; --sched-now-ink: #f1dc9e;
+      --full-bg: #43252c; --full-ink: #f6c2b4;
+      --kids: #e2cd98; --kids-ink: #1b2a22;
       color-scheme: dark;
     }
   }
@@ -54,9 +54,9 @@
     --champagne: #efd9a6; --hair: #2a3a33;
     --tag-bg: #1d2e28; --tag-ink: #b8dccb; --tag-line: #2f4239;
     --rib-1: #167a5e; --rib-2: #5ad3a6; --rib-3: #0d4d3b; --rib-sheen: rgba(233, 243, 236, 0.45);
-    --sched-now: #3a3119; --sched-now-ink: #f1dc9e;
-    --full-bg: #3a221b; --full-ink: #f2bba9;
-    --kids: #3a3119; --kids-ink: #f1dc9e;
+    --sched-now: #1f4436; --sched-now-ink: #f1dc9e;
+    --full-bg: #43252c; --full-ink: #f6c2b4;
+    --kids: #e2cd98; --kids-ink: #1b2a22;
     color-scheme: dark;
   }
 
@@ -534,7 +534,7 @@
   .linkcard small { display: block; font-size: 12.5px; color: var(--ink-soft); }
   .gbp { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
   .found-sec { border-top: 0; padding-top: 40px; }
-  .found-wrap { border: 1.5px dashed var(--em); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, rgba(17, 112, 90, 0.035) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .found-wrap { border: 1.5px dashed var(--em); border-radius: 22px; padding: 22px 22px 26px; }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
   .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--em); color: var(--em-deep); }
 
@@ -781,6 +781,34 @@
   .satin-card > :last-child, .sched-head > :last-child { margin-bottom: 0; }
   #words .wrap > .label { display: inline-flex; background: var(--card-bg); border: 1px solid var(--hair); border-radius: 999px; padding: 8px 14px; box-shadow: var(--card-shadow); }
 </style>
+
+<style id="mockup-sign">
+  
+  :root { --slat: rgba(17, 112, 90, 0.07); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --slat: rgba(94, 207, 166, 0.06); } }
+  :root[data-theme="dark"] { --slat: rgba(94, 207, 166, 0.06); }
+  .views-card, .status-panel, .vpanel, .found-wrap, .to-you { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border-style: dashed; border-width: 1.5px; }
+  .status-panel { border-bottom: 1.5px dashed var(--em); }
+  .found-wrap { border: 1.5px dashed var(--em); }
+  .to-you { border: 1.5px dashed var(--em); border-radius: 18px; padding: 20px 18px 16px; }
+  p.to-you { padding: 14px 16px 12px; }
+  
+  .views-card, .status-panel, .found-wrap, .to-you { position: relative; }
+  .status-panel > .wrap { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .to-you::after {
+    content: "note for you, from Taya"; position: absolute; top: -12px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', cursive; font-weight: 600; font-size: 15px; font-style: normal; letter-spacing: 0; text-transform: none; line-height: 1; color: #14231d; white-space: nowrap;
+    background: #f3e4bf; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(20, 14, 10, 0.2); }
+  .status-panel > .wrap::after { top: -2px; }
+  @media (max-width: 560px) { .status-panel > .wrap::after { top: auto; bottom: -4px; right: 0; font-size: 14px; } }
+  
+  .bk-side.to-you, .gift-notes.to-you { --slat: rgba(159, 230, 201, 0.08); border: 1.5px dashed rgba(159, 230, 201, 0.7); }
+  .care.to-you { padding: 22px 20px 20px; }
+  
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :is(.chip.kids, .who.kids .age) .ph { color: var(--kids-ink); text-decoration-color: currentColor; } }
+  :root[data-theme="dark"] :is(.chip.kids, .who.kids .age) .ph { color: var(--kids-ink); text-decoration-color: currentColor; }
+</style>
 </head>
 <body>
 <div class="status" id="status">
@@ -953,7 +981,7 @@
       <p class="week-key"><span><i class="k-kids"></i>Kids</span><span><i class="k-adult"></i>Adults</span><span><i class="k-full"></i>Full, waitlist open</span><span><i class="k-new"></i>Just added</span></p>
     </div>
 
-    <div class="care">
+    <div class="care to-you">
       <div class="care-card" id="care">
         <p class="care-h"><span>What you see</span> <span class="bk-demo">try it</span></p>
         <p style="font-size:15px;color:var(--ink-soft);margin-bottom:14px">Something changes? You email me, and the schedule above says so. Tap a message to see it land:</p>
@@ -1021,7 +1049,7 @@
       </div>
       <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Sign up&rdquo; button that opens whatever sign-up app you already use. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
-      <div class="bk-side">
+      <div class="bk-side to-you">
         <div class="bk-note"><b>What you see</b>Every sign-up lands in your inbox and your phone calendar the moment it happens, with the class, the day, and who&rsquo;s coming.</div>
         <div class="bk-inbox" id="tb-inbox"><div class="from">New sign-up</div><div id="tb-inboxtext">Waiting for a sign-up&hellip; try it on the left</div></div>
         <div class="bk-note"><b>Full means full</b>Each class has the number of spots you set. When it fills, the chip on the schedule turns to &ldquo;full&rdquo; and the waitlist opens, on its own.</div>
@@ -1183,7 +1211,7 @@
         <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
       </div>
     </div>
-    <div class="gift-notes">
+    <div class="gift-notes to-you">
       <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name. Packs are tracked for you, so you always know who has classes left.</div>
       <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward. A first-class gift comes with the waiver link and what to wear.</div>
     </div>

@@ -8,7 +8,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Unbounded:wght@500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -35,6 +35,7 @@
     --on-plum: #fbeaf6;
     --on-plum-soft: #d8bdd2;
     --neon: #ff5fd9;
+    --slat: rgba(184, 0, 159, 0.06);   
     --cobalt: #2b4bff;
     --sunny: #ffd23f;
     --sticker-shadow: #22122a;
@@ -55,6 +56,7 @@
       --beg-bg: #1f2766; --beg-ink: #c9d2ff; --int-bg: #4a0f42; --int-ink: #ffc2ee;
       --open-bg: #33303b; --open-ink: #dcdde4; --flow-bg: #37164f; --flow-ink: #e6ccfb;
       --show-bg: #4d3d05; --show-ink: #ffe38a;
+      --slat: rgba(255, 95, 217, 0.075);
       color-scheme: dark;
     }
   }
@@ -66,6 +68,7 @@
     --beg-bg: #1f2766; --beg-ink: #c9d2ff; --int-bg: #4a0f42; --int-ink: #ffc2ee;
     --open-bg: #33303b; --open-ink: #dcdde4; --flow-bg: #37164f; --flow-ink: #e6ccfb;
     --show-bg: #4d3d05; --show-ink: #ffe38a;
+    --slat: rgba(255, 95, 217, 0.075);
     color-scheme: dark;
   }
 
@@ -973,11 +976,31 @@
   
   .found-sec { padding-top: 64px; }
   .found-wrap { border: 2px dashed var(--accent); border-radius: 30px; padding: 24px 26px 30px;
-    background: repeating-linear-gradient(-45deg, rgba(224, 0, 200, 0.045) 0 10px, rgba(224, 0, 200, 0) 10px 22px); }
+    background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 24px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); font-style: italic; }
   .ns-chip { display: inline-block; font-style: normal; font-size: 10.5px; line-height: 1.2; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700;
     color: var(--accent); background: var(--card); border: 1.5px solid var(--accent); border-radius: 999px; padding: 4px 10px; }
   @media (max-width: 560px) { .found-wrap { padding: 18px 14px 24px; border-radius: 24px; } }
+
+  
+  .views-card, .vpanel, .status-panel, .wf-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border: 2px dashed var(--accent); }
+  .status-panel { border-bottom: 2px dashed var(--accent); }
+  .wf-note { position: relative; border: 1.5px dashed var(--accent); border-radius: 18px; padding: 14px 18px; }
+  p.wf-note, .gift-notes.wf-note { margin-top: 26px; }
+  .tier-note.wf-note + .tier-note.wf-note { margin-top: 10px; }
+  .gift-notes.wf-note { padding: 18px 18px 16px; }
+  .doc-note.wf-note { padding: 12px 14px; }
+  footer .wf-note { --slat: rgba(255, 95, 217, 0.08); border-color: var(--neon); }
+  footer .legend.wf-note { margin-top: 24px; padding: 14px 18px; }
+  
+  .status-panel > .wrap, .found-wrap { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .wf-note::after {
+    content: "note for you, from Taya"; position: absolute; top: -13px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', 'Instrument Serif', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #5c0a50; white-space: nowrap; font-style: normal;
+    letter-spacing: 0; text-transform: none; background: #ffdcf1; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(40, 0, 30, 0.22); }
+  .status-panel > .wrap::after { top: -2px; }
+  .tier-note.wf-note + .tier-note.wf-note::after { content: none; }   
 </style>
 
 <div class="status" id="status">
@@ -1138,8 +1161,8 @@
       <div class="rule reveal"><b>Plans changed?</b>Cancel more than 3 hours before and the class goes right back on your pack or membership.</div>
       <div class="rule reveal"><b>Small classes</b>Most classes cap at 7 dancers (Beginner Pole sometimes 10). You can also book through ClassPass.</div>
     </div>
-    <p class="tier-note"><span class="tag" data-go="maiden">Every build</span><span>What you see: your classes this week and the whole month, from your FitDegree schedule. With care, I keep it current: you email me a change and it&rsquo;s done. Mother adds a Book now button to every class.</span></p>
-    <p class="tier-note" data-show="crone all" data-thing="booking right on your site"><span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span><span>Or people book right here on your site. Tap a class and try &ldquo;Reserve right here&rdquo;.</span></p>
+    <p class="tier-note wf-note"><span class="tag" data-go="maiden">Every build</span><span>What you see: your classes this week and the whole month, from your FitDegree schedule. With care, I keep it current: you email me a change and it&rsquo;s done. Mother adds a Book now button to every class.</span></p>
+    <p class="tier-note wf-note" data-show="crone all" data-thing="booking right on your site"><span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span><span>Or people book right here on your site. Tap a class and try &ldquo;Reserve right here&rdquo;.</span></p>
     </div>
 
     
@@ -1148,7 +1171,7 @@
       <h2 class="big" style="margin-top:20px">call, text <span class="swipe">or email</span></h2>
       <p class="lede soft">Call or text the studio at <a href="tel:+15109265513" class="nw">(510) 926-5513</a>, or email <a href="mailto:bodyhighpoledance@gmail.com">bodyhighpoledance<wbr>@gmail.com</a>, and we&rsquo;ll save you a pole. Classes every day, and your first one is $20.</p>
       <span class="reach"><a href="tel:+15109265513" aria-label="Call Body High at (510) 926-5513"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+15109265513" aria-label="Text Body High at (510) 926-5513"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a><a href="mailto:bodyhighpoledance@gmail.com" aria-label="Email Body High at bodyhighpoledance@gmail.com"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6 8.5 7 8.5-7"/></svg>Email</a></span>
-      <p class="demo-note">With Maiden, people reach you by call, text or email. With Mother, your weekly schedule and Book now buttons to your FitDegree page go right here.</p>
+      <p class="demo-note wf-note">With Maiden, people reach you by call, text or email. With Mother, your weekly schedule and Book now buttons to your FitDegree page go right here.</p>
     </div>
   </div>
 </section>
@@ -1422,7 +1445,7 @@
       <div class="mate reveal"><span class="face" aria-hidden="true"><span>MJ</span></span><h3>Mary Jane</h3><p class="teaches">Intermediate Pole, Pole Tricks</p><p class="bio"><span class="ph">bio goes here</span></p></div>
     </div>
     <p class="hosts"><b>Open Pole hosts:</b> Nicole, Vicky, Christina and Julia.</p>
-    <p class="crew-note">First names as they appear on this season&rsquo;s FitDegree schedule. You&rsquo;d confirm your current crew and send your own photos and bios.</p>
+    <p class="crew-note wf-note">First names as they appear on this season&rsquo;s FitDegree schedule. You&rsquo;d confirm your current crew and send your own photos and bios.</p>
   </div>
 </section>
 
@@ -1432,7 +1455,7 @@
       <div class="head-row"><p class="sticker">gift cards</p><span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></div>
       <h2 class="big reveal" style="margin-top:20px">give the gift of <span class="swipe">spin</span></h2>
       <p class="lede soft">A gift card for someone who&rsquo;s secretly pole curious, or pay for a party or private lesson ahead of time, right on the site. Try it:</p>
-      <div class="gift-notes">
+      <div class="gift-notes wf-note">
         <div class="note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name.</div>
         <div class="note"><b>You already sell gift cards</b>Digital gift cards live in your FitDegree store today. With the Mother build, this spot links there: <a href="https://app.fitdegree.com/t/dashboard/fitspot/328/store/gift-cards?f=328&amp;co=308" target="_blank" rel="noopener">your FitDegree gift cards<span class="vh"> (opens in a new tab)</span></a>.</div>
       </div>
@@ -1496,7 +1519,7 @@
     <h2 class="big" style="margin-top:20px">give the gift of <span class="swipe">spin</span></h2>
     <p class="lede soft">A gift card for someone who&rsquo;s secretly pole curious, any amount, sent straight to their inbox.</p>
     <div class="cta-row"><a class="btn" href="https://app.fitdegree.com/t/dashboard/fitspot/328/store/gift-cards?f=328&amp;co=308" target="_blank" rel="noopener">Buy a gift card<svg class="ext" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 1.8h6.2V8M10 2 2.5 9.5"/></svg><span class="vh"> on FitDegree (your real gift card page, opens in a new tab)</span></a></div>
-    <p class="demo-note">With Mother, this button opens the gift cards already in your FitDegree store. With Crone, people buy them right here, paid straight to you.</p>
+    <p class="demo-note wf-note">With Mother, this button opens the gift cards already in your FitDegree store. With Crone, people buy them right here, paid straight to you.</p>
   </div>
 </section>
 
@@ -1517,7 +1540,7 @@
         <div class="doc-card fade-in" id="doc-card" hidden>
           <h4 class="doc-h" id="doc-h" tabindex="-1"><span id="doc-name">Studio rules</span> <span class="demo">preview</span></h4>
           <div class="paper" id="doc-paper" role="img" aria-label="Preview of a one page studio form"></div>
-          <p class="doc-note">Sample lines drawn from your public first timer and booking info. On your real site, your own studio rules, policy and waiver open here as PDFs (and the waiver is still signed in FitDegree at booking).</p>
+          <p class="doc-note wf-note">Sample lines drawn from your public first timer and booking info. On your real site, your own studio rules, policy and waiver open here as PDFs (and the waiver is still signed in FitDegree at booking).</p>
           <button type="button" class="linkish" id="doc-close">Close preview</button>
         </div>
       </div>
@@ -1606,7 +1629,7 @@
   <div class="wrap">
     <div class="fmark">BODY HIGH<span>pole dance</span></div>
     <p><span class="nw">445 I Street, Arcata, California</span> &middot; <span class="nw">(510) 926-5513</span></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p>Class times from your FitDegree schedule for Sep 30 to Oct 6, 2026; the month repeats that week, with Gothica (Oct 24) and the Halloween Pole Workshop (Oct 30) from your events. Sample photos from Unsplash. Reviews shown are samples.</p>
   </div>
 </footer>

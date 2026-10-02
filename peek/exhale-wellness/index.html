@@ -9,7 +9,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&family=Red+Hat+Text:ital,wght@0,300..700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&family=Red+Hat+Text:ital,wght@0,300..700;1,400&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -37,24 +37,25 @@
     --glow-a: rgba(255, 250, 246, 0.96);
     --glow-b: rgba(233, 185, 166, 0.34);
     --glow-c: rgba(246, 241, 236, 0);
+    --slat: rgba(142, 75, 60, 0.07); 
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #1b1614; --ground-2: #251e1b; --ink: #efe6df; --ink-soft: #c2b5ad;
-      --bark: #d9a08c; --bark-deep: #e8bba9; --fog: #a7bcb1; --band: #120f0e; --on-band: #ece3dc;
-      --rose: #f0c4b2; --hair: #382e2a; --tag-bg: #2d2421; --tag-ink: #e8bba9; --tag-line: #4b3b35;
+      --ground: #18191b; --ground-2: #222326; --ink: #efe6df; --ink-soft: #c2b5ad;
+      --bark: #d9a08c; --bark-deep: #e8bba9; --fog: #a7bcb1; --band: #111214; --on-band: #ece3dc;
+      --rose: #f0c4b2; --hair: #333438; --tag-bg: #2e2528; --tag-ink: #e8bba9; --tag-line: #4b3a3e;
       --mist-a: rgba(236, 227, 220, 0.5); --mist-b: rgba(236, 227, 220, 0.16);
-      --glow-card: var(--band); --glow-a: rgba(217, 160, 140, 0.26); --glow-b: rgba(217, 160, 140, 0.08); --glow-c: rgba(18, 15, 14, 0);
+      --glow-card: var(--band); --glow-a: rgba(217, 160, 140, 0.26); --glow-b: rgba(217, 160, 140, 0.08); --glow-c: rgba(17, 18, 20, 0); --slat: rgba(217, 160, 140, 0.06);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --ground: #1b1614; --ground-2: #251e1b; --ink: #efe6df; --ink-soft: #c2b5ad;
-    --bark: #d9a08c; --bark-deep: #e8bba9; --fog: #a7bcb1; --band: #120f0e; --on-band: #ece3dc;
-    --rose: #f0c4b2; --hair: #382e2a; --tag-bg: #2d2421; --tag-ink: #e8bba9; --tag-line: #4b3b35;
+    --ground: #18191b; --ground-2: #222326; --ink: #efe6df; --ink-soft: #c2b5ad;
+    --bark: #d9a08c; --bark-deep: #e8bba9; --fog: #a7bcb1; --band: #111214; --on-band: #ece3dc;
+    --rose: #f0c4b2; --hair: #333438; --tag-bg: #2e2528; --tag-ink: #e8bba9; --tag-line: #4b3a3e;
     --mist-a: rgba(236, 227, 220, 0.42); --mist-b: rgba(236, 227, 220, 0.12);
-    --glow-card: var(--band); --glow-a: rgba(217, 160, 140, 0.26); --glow-b: rgba(217, 160, 140, 0.08); --glow-c: rgba(18, 15, 14, 0);
+    --glow-card: var(--band); --glow-a: rgba(217, 160, 140, 0.26); --glow-b: rgba(217, 160, 140, 0.08); --glow-c: rgba(17, 18, 20, 0); --slat: rgba(217, 160, 140, 0.06);
     color-scheme: dark;
   }
 
@@ -703,7 +704,7 @@
   .tier-note button.tag { margin-left: 4px; }
   
   .found-sec { border-top: 0; padding-top: 40px; }
-  .found-wrap { border: 1.5px dashed var(--bark); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, rgba(142, 75, 60, 0.035) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .found-wrap { border: 1.5px dashed var(--bark); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
   .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
   .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--bark); color: var(--bark-deep); }
   @media (max-width: 560px) { .found-wrap { padding: 18px 14px 22px; } }
@@ -722,6 +723,21 @@
   .cue { font-family: 'Rosarivo', 'Baskerville', Georgia, serif; font-style: italic; font-size: clamp(26px, 5vw, 36px); line-height: 1.2; min-height: 1.2em; color: var(--on-band); }
   .cue-small { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.75; }
   @media (prefers-reduced-motion: reduce) { .orb, .breathe.in .orb, .breathe.hold .orb, .breathe.out .orb, .breathe.done .orb { transition: none; transform: scale(0.8); } }
+
+  
+  .views-card, .vpanel, .status-panel, .found-wrap, .mock-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .views-card, .vpanel { border-style: dashed; border-width: 1.5px; }
+  .status-panel { border-bottom: 1.5px dashed var(--bark); }
+  .mock-note { border: 1.5px dashed var(--bark); border-radius: 14px; padding: 16px 18px 14px; }
+  .tier-note.mock-note { padding: 14px 16px 12px; }
+  
+  .views-card, .status-panel > .wrap, .found-wrap, .mock-note, .you-note { position: relative; }
+  .status-panel > .wrap::after, .found-wrap::after, .mock-note::after, .you-note::after {
+    content: "note for you, from Taya"; position: absolute; top: -12px; right: 16px; z-index: 2; pointer-events: none;
+    font-family: 'Caveat', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #6c3729; white-space: nowrap;
+    background: #f5ddd1; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(20, 16, 12, 0.2); }
+  .status-panel { padding-top: 26px; }
+  .status-panel > .wrap::after { top: -21px; right: 0; }
 </style>
 
 <div class="status" id="status">
@@ -960,9 +976,9 @@
           <button type="button" class="bk-go" id="tb-again" style="background:transparent;color:var(--bark)">Try it again</button>
         </div>
       </div>
-      <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your GlossGenius page. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      <p class="tier-note mock-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your GlossGenius page. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
-      <div class="bk-side">
+      <div class="bk-side mock-note">
         <div class="bk-note"><b>What you see</b>Every new booking lands in your inbox and phone calendar the moment it happens.</div>
         <div class="bk-inbox" id="tb-inbox"><div class="from">New booking</div><div id="tb-inboxtext">Waiting for a booking&hellip; try it on the left</div></div>
         <div class="bk-note"><b>You already have this in GlossGenius</b>With Crone, booking lives on your own site instead, in your own name. With Mother, your site simply links to GlossGenius, which is all most spas need.</div>
@@ -1055,7 +1071,7 @@
         <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
       </div>
     </div>
-    <div class="gift-notes">
+    <div class="gift-notes mock-note">
       <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name.</div>
       <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward. Good for the holidays, and for the week after a hard one.</div>
     </div>
@@ -1156,7 +1172,7 @@
       <figure class="reveal photo"><img src="images/tile-pilates.jpg" alt="A Pilates reformer studio with a plant" loading="lazy"><span class="sample-tag">Sample</span></figure>
       <figure class="reveal photo"><img src="images/tile-path.jpg" alt="A path through foggy redwoods" loading="lazy"><span class="sample-tag">Sample</span></figure>
     </div>
-    <div class="ig-foot">
+    <div class="ig-foot mock-note">
       <div class="bk-note"><b>Post once, it shows up here too</b>Your latest posts are pulled in on their own. Nothing to copy over, nothing to remember.</div>
       <div class="bk-note"><b>What you see</b>These tiles are stand-ins. On your real site they&rsquo;re your real posts: results, the room, whatever you share that week.</div>
     </div>
