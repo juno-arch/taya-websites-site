@@ -178,6 +178,7 @@
   .list-head h2 { font-size: clamp(24px, 4vw, 30px); font-weight: 400; line-height: 1.15; }
   .list-head h2:focus { outline: none; }
   .list-head h2 .sum { color: var(--gold); }
+  .build.fits .b-name::after { content: "fits your answers"; margin-left: 10px; font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold, #e3b860); vertical-align: middle; }
   .made-from { margin: 10px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   /* "Change" sits inline at the end of the sentence, like a link */
   .made-from .later, .from-qc .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 2px 2px; margin: 0 0 0 2px; vertical-align: baseline; }
@@ -1779,18 +1780,28 @@
       reply: { no: 'Then we’ll choose one together. The first year comes with your build.', unsure: 'No problem. We’ll check together over email.' } },
     { id: 'booking', q: 'A booking app you use now?',
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
-      said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' } },
+      said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
+      reply: { has: 'Lovely. A Book now button to it comes with Mother and Crone.', want: 'Setting up booking for you is part of Crone.' } },
     { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true,
       a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
       said: Object.assign({}, APPS, { other: 'your booking app' }) },
     { id: 'sell', q: 'Will you sell anything online?', small: 'Like gift certificates, deposits or a few products.',
       a: [['yes', 'Yes'], ['no', 'No']],
-      said: { yes: 'selling online', no: 'no selling online' } },
+      said: { yes: 'selling online', no: 'no selling online' },
+      reply: { yes: 'Selling on your site is part of Crone: a small shop, up to about 20 items, in your own accounts.' } },
     { id: 'news', q: 'And a newsletter, to write to your people now and then?',
       a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No']],
       said: { yes: 'a newsletter', later: 'a newsletter maybe later', no: 'no newsletter' },
-      reply: { later: 'Easy to add anytime.' } }
+      reply: { yes: 'A newsletter signup comes with Mother and Crone.', later: 'Easy to add anytime.' } }
   ];
+  // which build their answers point to (Pollen, Oct 1: people should know what they're signing up for as they answer)
+  const BUILD_NAME = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone' };
+  function fitsBuild() {
+    if (have.booking === 'want' || have.sell === 'yes') return 'crone';
+    if (have.booking === 'has' || have.news === 'yes') return 'mother';
+    if (have.booking || have.sell || have.news) return 'maiden';
+    return '';
+  }
   const qcById = Object.fromEntries(QC.map((q) => [q.id, q]));
   let have = {};          // their answers: logo, kit, photos, domain, booking, app, sell, news
   let haveBy = {};        // who answered each one: 'link' (Taya's link) or 'you' (a tap on the page)
@@ -2701,11 +2712,12 @@
     // the one line at the top of the list
     const mine = qcQuestions().some((q) => haveBy[q.id] === 'you');
     $('#made-from').textContent = complete
-      ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(phrases(qcQuestions())) + '.'
+      ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(phrases(qcQuestions())) + '.' + (fitsBuild() ? ' That fits ' + BUILD_NAME[fitsBuild()] + '.' : '')
       : 'You skipped the quick check, so everything’s here. Skip whatever doesn’t fit.';
     $('#qc-change').textContent = complete ? 'Change' : 'Do the quick check';
     $('#qc-change').setAttribute('aria-label', complete ? 'Change what you already have' : 'Do the quick check');
     $('#qc-skip').hidden = complete;
+    $$('.build').forEach((l) => { l.classList.toggle('fits', l.dataset.build === fitsBuild()); });
     if (!qcOpen) { qcSeen = new Set(); return; }
 
     const thread = $('#qc-thread');
