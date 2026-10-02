@@ -36,12 +36,12 @@
   so it never feels like homework (Pollen's goal: "Your list: 5 things, about 30 minutes"):
     1. Sign and hold your spot: their build (a card to confirm when Taya's link chose it), name and email
        (the only musts anywhere), the one-page agreement, then the right deposit button unlocks
-    2. Pick a time for our call (early, so the date is set)
+    2. Want to chat? (optional) (early, so the date is set)
     3. A few quick things: four short, optional answers. Every build's words are written from the
        45-minute call, so their story is gathered there, not here
     4. Your look and photos (only the parts that apply)
     5. Your accounts: only what's worth starting before the call. Anything easier together is marked
-       "Together on our call" and isn't counted in the list or its time
+       "Together over email" and isn't counted in the list or its time
   Without a build in Taya's link, "Pick your build" comes first (6 things). Everything saves on the
   visitor's own device as they go (localStorage), and one button sends it all to Taya.
 
@@ -625,7 +625,7 @@
   .next-path li:last-child::after { display: none; }
   .small-h { margin: 26px 0 0; font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc); }
 
-  /* ============ inside a step: small headings, the kind note, and "together on our call" ============ */
+  /* ============ inside a step: small headings, the kind note, and "together over email" ============ */
   .sub-h {
     margin: 34px 0 0; padding-top: 22px; border-top: 1px solid rgba(var(--acc-glow), 0.18);
     font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500; line-height: 1.4;
@@ -853,7 +853,7 @@
 
 <main class="gutter" id="main"><div class="wrap wide">
   <noscript><div class="card"><p>This page needs JavaScript to save your answers and send them. No problem at all:
-    just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll do it together on a call.</p></div></noscript>
+    just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out together over email.</p></div></noscript>
 
   <!-- the quick check: a one-minute chat about what they already have, so the list only has what they need.
        The script draws the questions (QC below); Taya's link can answer some or all of them ahead of time. -->
@@ -886,9 +886,9 @@
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5v-8M12 12.5C12 8 9 5.2 4.2 5.2c0 4.6 3 7.3 7.8 7.3Zm0 0c0-3.6 2.5-6 6.6-6 0 3.7-2.6 6-6.6 6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span><b>Stop anytime</b>Your answers are saved on this device as you go. Come back later and pick up right where you left off.</span></li>
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.5s-7-4.3-7-9.3a3.9 3.9 0 0 1 7-2.4 3.9 3.9 0 0 1 7 2.4c0 5-7 9.3-7 9.3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        <span><b>Stuck? Skip it.</b>We’ll do it together on our call. Nothing here is a test, and there are no wrong answers.</span></li>
+        <span><b>Stuck? Skip it.</b>We’ll sort it out over email. Nothing here is a test, and there are no wrong answers.</span></li>
     </ul>
-    <p class="then">Then we meet for <b>45 minutes, on video or the phone</b>, and I take it from there.</p>
+    <p class="then">Then I take it from there, and we keep in touch <b>by email</b>. Rather talk? A chat is always optional.</p>
   </section>
 
   <div class="progress" id="progress" hidden>
@@ -971,7 +971,7 @@
             </label>
           </div>
           <div class="unsure opts">
-            <label class="opt"><input type="radio" name="build" value="unsure"> <span>Not sure yet, let’s decide on our call</span></label>
+            <label class="opt"><input type="radio" name="build" value="unsure"> <span>Not sure yet, let’s decide over email</span></label>
           </div>
           <p class="err" id="e-build" role="alert" hidden></p>
           <p class="soft-note">Ready-in times count from the day all your content is in.</p>
@@ -979,7 +979,7 @@
         <details class="more every">
           <summary>What every build comes with</summary>
           <ul class="checks">
-            <li>Your words, written for you from our <span class="nowrap">45-minute</span> chat</li>
+            <li>Your words, written for you from your answers</li>
             <li>A phone-first design</li>
             <li>Google-ready: clear titles and descriptions, business details Google can read, and a photo preview when someone texts your link</li>
             <li>Your Google profile, set up</li>
@@ -1023,7 +1023,7 @@
           </details>
         </fieldset>
 
-        <p class="soft-note" id="sell-note" hidden><span id="crone-what">Taking payments online is</span> part of Crone. No need to change anything now; we’ll talk it through on our call.</p>
+        <p class="soft-note" id="sell-note" hidden><span id="crone-what">Taking payments online is</span> part of Crone. No need to change anything now; we’ll figure it out over email.</p>
         <button type="button" class="toggle-more" id="price-toggle" aria-expanded="false" aria-controls="price-more" data-if="build-in-sign">Your price in full, and a few extras</button>
         <div id="price-more">
         <fieldset class="group">
@@ -1118,13 +1118,13 @@
             <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of September 30, 2026.</p>
             <ol>
               <li><b>What I’ll make.</b> Your <span data-a="build">build</span>: <span data-a="does">the site we choose together</span>
-                  Every build comes with your words written for you from a <span class="nowrap">45-minute</span> chat, a phone-first design,
+                  Every build comes with your words written for you from your answers, a phone-first design,
                   the Google basics (clear titles and descriptions, business details Google can read, a photo preview when someone texts your link),
                   your Google profile set up, a slim top banner for news (switching it is always free), a one-page brand sheet (your colors and fonts, and your logo if you have one, ready for any designer), your web address’s
                   first year, 30 days of settling-in tweaks, and a one-page “Your site” hand-off sheet.</li>
               <li><b>The price.</b> <span data-a="price">The price of your build</span>, paid once. Half to start (<span data-a="deposit">your deposit</span>),
                   which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By card or US bank account.</li>
-              <li><b>How we’ll work.</b> You send your content: the answers on this page, your photos, and our 45-minute call. The build clock starts
+              <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. The build clock starts
                   the day all your content is in. I send a first draft in about a week, on a private link. You get two rounds of changes; each round
                   is one email with everything in it. More rounds are priced like any change, $100 an hour, and I tell you the price first. Your site
                   is ready in about <span data-a="weeks">2, 3 or 4 weeks</span> from when your content is in.</li>
@@ -1178,7 +1178,7 @@
         <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, next step</span></button>
           <button type="button" class="later" data-skip>Skip for now</button>
-          <p class="foot-hint">Questions about the agreement? Skip it, and we’ll go through it together on our call.</p>
+          <p class="foot-hint">Questions about the agreement? Skip it, and email me. We’ll go through it together.</p>
         </div>
       </div>
     </li>
@@ -1187,25 +1187,25 @@
     <li class="step" id="s-call" data-step="call" data-min="2">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-call" aria-expanded="false" aria-controls="b-call">
         <span class="num" aria-hidden="true"><span>3</span><svg><use href="#i-check"/></svg></span>
-        <span class="step-name"><span class="sr-only sn">Step 3: </span><span class="st">Pick a time for our call</span></span>
+        <span class="step-name"><span class="sr-only sn">Step 3: </span><span class="st">Want to chat? (optional)</span></span>
         <span class="step-meta"><span class="time">About 2 minutes</span><span class="state"></span></span>
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body" id="b-call">
-        <p class="lead-in"><b>45 minutes, on video or the phone.</b> It’s the chat I write your words from, so bring your stories.
+        <p class="lead-in"><b>Totally optional.</b> Email works great for everything. If you’d rather talk something through, pick a time here.
            We’ll finish anything you skipped, too.</p>
         <div class="pay-card">
-          <a class="btn" id="call-btn" target="_blank" rel="noopener"><span>Pick a time for our call</span></a>
+          <a class="btn" id="call-btn" target="_blank" rel="noopener"><span>Want to chat? (optional)</span></a>
           <p class="preview-say" id="call-preview" role="status"></p>
           <p class="pay-note">It opens my calendar in a new tab. Pick any time that suits you.</p>
         </div>
         <div class="ticks" style="margin-top: 12px">
-          <label class="tick"><input type="checkbox" name="call_booked" value="yes"> I’ve booked our call</label>
+          <label class="tick"><input type="checkbox" name="call_booked" value="yes"> I’ve booked a chat</label>
         </div>
         <p class="together-line" id="call-together" hidden></p>
         <p class="small-h">What happens next</p>
         <ol class="next-path">
-          <li><b>Our call.</b> 45 minutes, and I do the writing afterward.</li>
+          <li><b>A chat, if you’d like one.</b> Otherwise it’s all email, and I do the writing.</li>
           <li><b>Your first draft,</b> about a week after your content is in, on a private link you can open on your phone.</li>
           <li><b>Two rounds of changes,</b> by email.</li>
           <li><b>Launch,</b> with your “Your site” sheet and your brand sheet.</li>
@@ -1228,7 +1228,7 @@
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body few" id="b-work">
-        <p class="lead-in">Just a head start, since I write your words from our call. <b>A line or two each is plenty</b>, and every one is optional.</p>
+        <p class="lead-in">Just a head start. I write your words from these answers, and I’ll email you if I need more. <b>A line or two each is plenty</b>, and every one is optional.</p>
         <p class="kind-note"><img src="taya.jpg" width="256" height="256" alt="" decoding="async"><span>I’ll ask the rest when we talk. Bring your stories, not your homework.</span></p>
         <div class="q">
           <label class="main" for="f-offer">What you offer, and your prices</label>
@@ -1380,7 +1380,7 @@
     </li>
 
     <!-- ================= accounts: only what's worth starting before our call =================
-         Anything easier together is marked "Together on our call" and isn't counted in the list's time. -->
+         Anything easier together is marked "Together over email" and isn't counted in the list's time. -->
     <li class="step" id="s-accounts" data-step="accounts" data-min="5">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-accounts" aria-expanded="false" aria-controls="b-accounts">
         <span class="num" aria-hidden="true"><span>6</span><svg><use href="#i-check"/></svg></span>
@@ -1389,7 +1389,7 @@
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body" id="b-accounts">
-        <p class="lead-in">Just what’s worth starting before we talk. Anything marked <b>together on our call</b> can wait for me.
+        <p class="lead-in">Just what’s worth starting before we talk. Anything marked <b>together over email</b> can wait for me.
            Everything is in your name, and I’m only ever added as a helper.</p>
 
         <!-- Google profile: always. Starting it is the to-do; Google's verification video can wait for our call -->
@@ -1410,14 +1410,13 @@
               <li>Go to <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a> and search for your business.
                   If it’s already there, claim it. If not, add it.</li>
               <li>Work from home, or go to your clients? Choose to hide your address, and list the towns you serve instead.</li>
-              <li>When Google asks you to verify, you can stop there. It’s usually a short video on your phone, and we can do it together
-                  on our call, or you can do it after. Then Google takes about 5 business days to look it over.</li>
+              <li>When Google asks you to verify, you can stop there. It’s usually a short video on your phone, and you can do it now or after, and I’m happy to help over email. Then Google takes about 5 business days to look it over.</li>
               <li>Once you’re verified, add me: open your profile’s menu, choose <b>Business Profile settings</b>, then
                   <b>People and access</b>, then <b>Add</b>. Type <span class="helper" data-helper>taya@webfaery.love</span> and choose <b>Manager</b>.
                   You stay the owner.</li>
             </ol>
             <p class="stuck">Google moves its buttons around now and then. If it looks different, or it asks for something odd, stop there and
-               we’ll do it together on our call.</p>
+               we’ll do it together over email.</p>
           </details>
           <div class="ticks">
             <label class="tick"><input type="checkbox" name="acct_google_started" value="yes"> I’ve claimed or added my business (or it’s already verified)</label>
@@ -1433,10 +1432,10 @@
               <h3 data-if="booking-current">Your booking link<span data-if="app-named">, from <span data-app>your app</span></span></h3>
               <h3 data-if="booking-calcom">Online booking with Cal.com</h3>
               <span class="t" data-if="booking-current">About 2 minutes</span>
-              <span class="t together" data-if="booking-calcom">Together on our call</span>
+              <span class="t together" data-if="booking-calcom">Together over email</span>
               <p data-if="booking-current">Keeping <span data-app>the app you already use</span>. Lovely: less to learn, and your Book now button goes straight to it.</p>
               <p data-if="booking-calcom">A free Cal.com account, in your own name (free for one person). Your clients pick a time, and you both get reminders.
-                 We’ll set it up together on our call (on video you can share your screen, or I’ll walk you through it by phone).</p>
+                 We’ll set it up together over email, step by step.</p>
             </div>
           </div>
           <details class="how" data-if="booking-current">
@@ -1474,14 +1473,14 @@
 
         <!-- web address: with care there's nothing to do. Without care: one they own stays where it is (just check the
              sign-in, since getting back in can take days); a new one lives in their own free Porkbun account, made
-             together on our call or anytime before launch -->
+             together over email or anytime before launch -->
         <div class="acct" id="acct-domain">
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 12h16.4M12 3.6c2.4 2.3 3.6 5.1 3.6 8.4s-1.2 6.1-3.6 8.4c-2.4-2.3-3.6-5.1-3.6-8.4s1.2-6.1 3.6-8.4Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
             <div>
               <h3>Your web address</h3>
               <span class="t" data-if="dom-point">About 2 minutes</span>
-              <span class="t together" data-if="dom-new">Together on our call, or anytime before launch</span>
+              <span class="t together" data-if="dom-new">Together over email, anytime before launch</span>
               <span class="t together" data-if="care-yes">Care looks after it</span>
               <p data-if="dom-point">Keep it right where it is. For now, just make sure you can still sign in where it lives, since getting back in can take a few days.
                  <span data-if="care-unsure">If you choose care, I can look after it for you instead.</span></p>
@@ -1516,7 +1515,7 @@
             <ol>
               <li>Find where your address lives: the company you pay for it each year, like GoDaddy, Squarespace or Porkbun. An old receipt email usually says.</li>
               <li>Sign in there, and check that it still works. Locked out? Their help page can get you back in; start now, since it can take a few days.</li>
-              <li>Around launch, we point it at your new site: about 5 minutes in its settings, with the <a href="domain.html">web address guide</a>, or together on a short call.</li>
+              <li>Around launch, we point it at your new site: about 5 minutes in its settings, with the <a href="domain.html">web address guide</a>, or together over email.</li>
             </ol>
           </details>
           <div class="q" data-if="dom-new">
@@ -1528,13 +1527,13 @@
           </div>
         </div>
 
-        <!-- newsletter: only if they picked it, without care. Made together on our call -->
+        <!-- newsletter: only if they picked it, without care. Made together over email -->
         <div class="acct later-card" id="acct-news" hidden>
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 7l8 6.2L20 7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
             <div>
               <h3>Your newsletter</h3>
-              <span class="t together">Together on our call</span>
+              <span class="t together">Together over email</span>
               <p>A free Buttondown account in your name: free up to 100 subscribers, then about $9 a month. We’ll make it and connect it to your site together.
                  <span data-if="care-unsure">If you choose care, care covers it.</span></p>
             </div>
@@ -1557,7 +1556,7 @@
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 10h17M7 14.5h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
             <div>
               <h3>Taking payments</h3>
-              <span class="t together">Together on our call</span>
+              <span class="t together">Together over email</span>
               <p>Your own Stripe account, in your name. <b>Your clients’ money goes straight to you, never through me.</b>
                  We’ll make it together; just have your bank details and ID handy. Already use Square? Keep it, and tell me below.</p>
             </div>
@@ -1596,7 +1595,7 @@
   <section class="send-sec" id="send" aria-labelledby="send-title">
     <svg class="moon-big" aria-hidden="true"><use href="#i-full"/></svg>
     <h2 id="send-title" tabindex="-1">Ready when you are</h2>
-    <p>Send it whenever you’ve done what you can. Anything still open, we’ll finish together on our call.</p>
+    <p>Send it whenever you’ve done what you can. Anything still open, we’ll finish together over email.</p>
     <ul class="open-list" id="open-list"></ul>
     <p class="open-note" id="open-note"></p>
     <div class="hp" aria-hidden="true"><label for="f-hp">Leave this empty</label><input type="text" id="f-hp" name="hp" tabindex="-1" autocomplete="off"></div>
@@ -1613,7 +1612,7 @@
     <div class="done-head">
       <svg class="moon-big" aria-hidden="true"><use href="#i-full"/></svg>
       <h2 id="done-title" tabindex="-1">It’s in my hands now. 🌱</h2>
-      <p>Thank you. I’ll read every word and write back within a couple of days<span id="done-call">, and I’ll see you on our call</span>.</p>
+      <p>Thank you. I’ll read every word and write back within a couple of days<span id="done-call">, and I’ll be in touch by email</span>.</p>
       <p id="done-copy">Here’s everything you sent, in case you’d like a copy.</p>
     </div>
     <div class="summary" id="summary"></div>
@@ -1777,7 +1776,7 @@
     { id: 'domain', q: 'A web address already?', small: 'Like yourname.com.',
       a: [['yes', 'Yes'], ['no', 'No'], ['unsure', 'Not sure']],
       said: { yes: 'a web address', no: 'no web address yet', unsure: 'maybe a web address' },
-      reply: { no: 'Then we’ll choose one together. The first year comes with your build.', unsure: 'No problem. We’ll check together on our call.' } },
+      reply: { no: 'Then we’ll choose one together. The first year comes with your build.', unsure: 'No problem. We’ll check together over email.' } },
     { id: 'booking', q: 'A booking app you use now?',
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
       said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' } },
@@ -1979,7 +1978,7 @@
     if (!BUILDS[c.build]) {
       const f = c.founding;
       box.append(make('p', 'r-empty', c.build === 'unsure'
-        ? 'We’ll pick your build together on our call. Maiden is ' + money(f ? 300 : 600) + ', Mother ' + money(f ? 600 : 1200) + ' and Crone ' + money(f ? 900 : 1800) + (f ? ' at the founding price' : '') + ', each paid once.'
+        ? 'We’ll pick your build together over email. Maiden is ' + money(f ? 300 : 600) + ', Mother ' + money(f ? 600 : 1200) + ' and Crone ' + money(f ? 900 : 1800) + (f ? ' at the founding price' : '') + ', each paid once.'
         : 'Pick a build above, and your price shows up here.'));
     } else box.append(rowsList(m.rows));
     box.append(make('p', 'r-label', 'After launch'));
@@ -2045,7 +2044,7 @@
   // hidden because it doesn't apply to them (not just a closed step)
   const planHidden = (el) => !!el.closest('[data-if][hidden], .step[hidden], #kit-box[hidden], .acct[hidden]');
   const shown = () => steps.filter((s) => !s.hidden);
-  // Each step's time counts only what they do before our call. Anything marked "Together on our call"
+  // Each step's time counts only what they do before our call. Anything marked "Together over email"
   // (Cal.com, a new web address at Porkbun, a newsletter, Stripe, Google's verification video) isn't counted.
   function stepMinutes(s, c) {
     const care = hasCare(c), md = modes(c);
@@ -2067,7 +2066,7 @@
   const minutes = (n) => n + (n === 1 ? ' minute' : ' minutes');
   // the list's size reads rounder: "about 30 minutes" (to the nearest 5 from 15 up)
   const approx = (n) => (n >= 15 ? Math.round(n / 5) * 5 : n);
-  // what we'll do together on our call instead (not on their list, and not in its time)
+  // what we'll do together over email instead (not on their list, and not in its time)
   function togetherList(c) {
     const care = hasCare(c), out = ['Google’s short verification video (if it asks for one)'];
     if (c.booking === 'calcom') out.push('your Cal.com booking');
@@ -2097,7 +2096,7 @@
     $('#acct-booking').hidden = !(c.booking === 'current' || c.booking === 'calcom');
     $('#acct-news').hidden = !(c.news && !care);
     $('#acct-pay').hidden = !c.sell;
-    // cards for later (together on our call, or looked after by care) are dashed, so they don't read as to-dos
+    // cards for later (together over email, or looked after by care) are dashed, so they don't read as to-dos
     $('#acct-booking').classList.toggle('later-card', c.booking === 'calcom');
     $('#acct-domain').classList.toggle('later-card', care || have.domain !== 'yes');
     $('#acct-covered').hidden = !(care && c.news);
@@ -2133,7 +2132,7 @@
         pr.append(make('strong', null, money(c.founding ? b.price / 2 : b.price)));
         if (c.founding) { const was = make('span', 'was'); was.append(make('span', 'sr-only', 'founding price, usually '), make('s', null, money(b.price))); pr.append(was); }
       }
-      $('#cf-does').textContent = b ? cap(b.does) : 'We’ll pick your build together on our call.';
+      $('#cf-does').textContent = b ? cap(b.does) : 'We’ll pick your build together over email.';
       $('#cf-ready').textContent = b ? 'Ready in about ' + b.weeks + ' weeks' + (c.founding ? ' \u00b7 founding price' : '') : '';
       $('#cf-ready').hidden = !b;
       const cc = $('#cf-care');
@@ -2149,11 +2148,11 @@
       $('#build-change').setAttribute('aria-label', md.careSet ? 'Change my build or care' : 'Change my build');
     }
 
-    // what we'll do together on our call, said in the call step so nothing moved there is hidden
+    // what we'll do together over email, said in the call step so nothing moved there is hidden
     const tog = togetherList(c);
     $('#call-together').hidden = !tog.length;
     $('#call-together').textContent = '';
-    $('#call-together').append(make('b', null, 'We’ll also do these together on our call: '), document.createTextNode(listOf(tog) + '.'));
+    $('#call-together').append(make('b', null, 'We’ll also do these together over email: '), document.createTextNode(listOf(tog) + '.'));
 
     // number the steps they can see, and time each one; the last one finishes the list
     const list = shown();
@@ -2260,7 +2259,7 @@
       const st = stepState[idOf(s)] || '';
       s.classList.toggle('done', st === 'done');
       s.classList.toggle('skipped', st === 'skipped');
-      $('.state', s).textContent = st === 'done' ? 'Done' : st === 'skipped' ? 'Saved for our call' : '';
+      $('.state', s).textContent = st === 'done' ? 'Done' : st === 'skipped' ? 'Saved for later' : '';
     });
     list.forEach((s, i) => {
       const st = stepState[idOf(s)] || '';
@@ -2270,12 +2269,12 @@
     const total = list.length;
     $('#p-done').textContent = done + ' of ' + total + ' done';
     $('#p-left').textContent = done + skipped === total
-      ? (skipped ? skipped + ' saved for our call' : 'all done, lovely')
+      ? (skipped ? skipped + ' saved for later' : 'all done, lovely')
       : 'about ' + minutes(approx(left)) + ' to go';
     const bar = $('#p-bar');
     bar.setAttribute('aria-valuemax', String(total));
     bar.setAttribute('aria-valuenow', String(done));
-    bar.setAttribute('aria-valuetext', done + ' of ' + total + ' done' + (skipped ? ', ' + skipped + ' saved for our call' : '') + (left ? ', about ' + minutes(approx(left)) + ' to go' : ''));
+    bar.setAttribute('aria-valuetext', done + ' of ' + total + ' done' + (skipped ? ', ' + skipped + ' saved for later' : '') + (left ? ', about ' + minutes(approx(left)) + ' to go' : ''));
     $('#list-sum').textContent = sizeText();
     renderSendList();
   }
@@ -2374,7 +2373,7 @@
       if (st === 'skipped') skipped++; else open++;
       const li = make('li'); const a = make('a', st === 'skipped' ? 'skipped' : '');
       a.href = '#' + s.id;
-      a.textContent = $('.step-name', s).textContent.replace(/^Step \d+: /, '') + (st === 'skipped' ? ' (for our call)' : '');
+      a.textContent = $('.step-name', s).textContent.replace(/^Step \d+: /, '') + (st === 'skipped' ? ' (for later)' : '');
       a.addEventListener('click', (e) => { e.preventDefault(); setOpen(s, true); scrollToEl(s); $('.step-toggle', s).focus({ preventScroll: true }); });
       li.append(a); ul.append(li);
     });
@@ -2383,7 +2382,7 @@
     const nums = [...new Set(lost.map((k) => shown().indexOf($('[data-drop="' + k + '"]').closest('.step')) + 1))].sort((x, y) => x - y);
     $('#open-note').textContent = (open + skipped === 0 ? 'Every step is done. Thank you!'
       : open ? 'Not finished? That’s okay. Send it anyway, and we’ll do the rest together.'
-      : 'We’ll do these together on our call.')
+      : 'We’ll do these together over email.')
       + (lost.length ? ' (Your ' + listOf(lost.map((k) => k === 'kit' ? 'brand kit' : k)) + ' from last time need adding again in step' + (nums.length > 1 ? 's ' : ' ') + listOf(nums.map(String)) + '.)' : '');
   }
 
@@ -2516,7 +2515,7 @@
         h.skipped_check && ['Quick check', 'Skipped, so everything was on the list']
       ].filter((row) => row && row[1])],
       ['Your build and price', [
-        ['Build', b ? b.name + (r.founding ? ' (founding client)' : '') : (r.build === 'unsure' ? 'Not sure yet, deciding on our call' : '')],
+        ['Build', b ? b.name + (r.founding ? ' (founding client)' : '') : (r.build === 'unsure' ? 'Not sure yet, deciding over email' : '')],
         ['Price', b ? money(m.price) + ', paid once' : ''],
         ['Deposit', b ? money(m.deposit) + (r.deposit_paid ? ' (paid)' : '') : ''],
         ['Balance at launch', b ? money(m.balance) : ''],
@@ -2543,16 +2542,16 @@
           : r.extras.booking === 'calcom' ? ('Cal.com' + (r.accounts.calcom_username ? ': ' + r.accounts.calcom_username : '')) : 'No online booking'],
         ['Web address', care ? 'Taya looks after it (care)'
           : have.domain === 'yes' ? 'Keeping it where it lives' + (r.accounts.domain_done ? ', and I can sign in there' : '')
-          : (r.accounts.porkbun_username ? 'Porkbun username: ' + r.accounts.porkbun_username : (r.accounts.domain_done ? 'Porkbun account made' : 'Together on our call'))],
+          : (r.accounts.porkbun_username ? 'Porkbun username: ' + r.accounts.porkbun_username : (r.accounts.domain_done ? 'Porkbun account made' : 'Together over email'))],
         onList('f-owned') && ['Web address, and where it lives', r.accounts.domain_owned], onList('f-domain') && ['Web address ideas', r.domain_wish],
-        ['Newsletter', r.extras.newsletter ? (care ? 'Covered by care' : (r.accounts.newsletter_done ? 'Buttondown account made' : 'Together on our call')) : (have.news === 'later' ? 'Maybe later' : 'No newsletter')],
-        r.extras.selling && ['Payments', [r.accounts.payments_done ? 'Stripe made, Taya invited' : 'Together on our call', r.accounts.payments_note].filter(Boolean).join('. ')]
+        ['Newsletter', r.extras.newsletter ? (care ? 'Covered by care' : (r.accounts.newsletter_done ? 'Buttondown account made' : 'Together over email')) : (have.news === 'later' ? 'Maybe later' : 'No newsletter')],
+        r.extras.selling && ['Payments', [r.accounts.payments_done ? 'Stripe made, Taya invited' : 'Together over email', r.accounts.payments_note].filter(Boolean).join('. ')]
       ])],
-      ['Agreement', [['Agreed', r.agreed ? 'Yes' : 'Not yet, going through it on our call'], ['Signed', r.agreed ? r.agreement_name + ', ' + longDate : ''],
+      ['Agreement', [['Agreed', r.agreed ? 'Yes' : 'Not yet, going through it over email'], ['Signed', r.agreed ? r.agreement_name + ', ' + longDate : ''],
         ['Show in recent work', r.show_in_work ? 'Yes, that’s fine' : '']]],
-      ['Our call', [['Booked', r.call_booked ? 'Yes' : 'Not yet'],
-        ['Steps saved for our call', shown().filter((s) => stepState[idOf(s)] !== 'done').map((s) => stepName(idOf(s))).join(', ')],
-        ['Together on our call', cap(listOf(togetherList(c)))]]]
+      ['A chat (optional)', [['Booked', r.call_booked ? 'Yes' : 'Not yet'],
+        ['Steps saved for later', shown().filter((s) => stepState[idOf(s)] !== 'done').map((s) => stepName(idOf(s))).join(', ')],
+        ['Together over email', cap(listOf(togetherList(c)))]]]
     ];
   }
   function summaryText(r) {

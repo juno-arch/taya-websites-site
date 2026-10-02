@@ -59,7 +59,7 @@
   const BUILDS = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone' };
   const BUILD_MOON = { maiden: 'i-wax', mother: 'i-full', crone: 'i-wan' };
   const STAGES = [
-    ['getting_started', 'Getting started'], ['call', 'Our call'], ['draft', 'Draft'],
+    ['getting_started', 'Getting started'], ['call', 'Your story'], ['draft', 'Draft'],
     ['changes', 'Changes'], ['launch', 'Launch'], ['settling_in', 'Settling in']
   ];
   const STAGE_SAY = {
@@ -81,14 +81,14 @@
     accounts: {
       steps: [
         'Sign in to a Google account you’ll keep for your business, then go to business.google.com and find your business. Claim it, or add it.',
-        'When Google asks you to verify, you can stop there. We can do it together on our call.',
+        'When Google asks you to verify, you can stop there. Email me and we’ll do it together.',
         'Once you’re verified, open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love and choose Manager. You stay the owner.'
       ],
       after: 'Google moves its buttons around now and then. If it looks different, stop there and we’ll do it together.'
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
     look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },
-    build: { steps: ['Maiden, Mother or Crone. Not sure yet? We’ll pick together on our call.'] },
+    build: { steps: ['Maiden, Mother or Crone. Not sure yet? We’ll pick together over email.'] },
     call: { steps: ['I’ll email you a link to pick a time.'] }
   };
   const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Let’s talk' };
@@ -749,7 +749,7 @@
     if (cur === 'care') return 'Live, and in my care';
     if (cur === 'resting') return 'Live, and all yours';
     if (cur === 'getting_started') return 'Now: getting started';
-    if (cur === 'call') return 'Now: our call' + (d ? (isPast(d) ? '' : ', ' + shortDate(d)) : '');
+    if (cur === 'call') return 'Now: gathering your story' + (d ? (isPast(d) ? '' : ', ' + shortDate(d)) : '');
     if (cur === 'draft') return 'Now: your draft' + (soon ? ', about ' + soon : '');
     if (cur === 'changes') return 'Now: your changes' + (soon ? ', about ' + soon : '');
     if (cur === 'launch') return 'Now: launch' + (soon ? ', about ' + soon : '');
@@ -860,7 +860,7 @@
         if (!me.things.agreement) steps.push('Sign our agreement');
         const dep = me.pay.find((p) => p.key === 'deposit');
         if (dep && dep.state !== 'paid' && !t.deposit) steps.push('Pay your deposit');
-        if (!stageDate('call') && !t.call) steps.push('Book our call');
+        // a chat is optional now (Oct 1 2026: email first), so it's never a to-do
         if (steps.length > 1) {
           const ol = make('ol', 'substeps');
           steps.forEach((x) => ol.append(make('li', null, x)));
@@ -893,10 +893,10 @@
     } else if (kind === 'link' && item.url) {
       if (item.id === 'd:call' && t.call) {
         body.append(sentLine('Booked? Thank you! It shows here once I see it.'));
-        act.append(outLink(item.url, 'Open the booking page again', 'later', 'your booking page for our call', 'call'));
+        act.append(outLink(item.url, 'Open the booking page again', 'later', 'your chat booking page', 'call'));
       } else {
         if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
-        const what = item.id === 'd:call' ? 'your booking page for our call' : item.id === 'd:draft' ? 'your private draft' : 'that page';
+        const what = item.id === 'd:call' ? 'your chat booking page' : item.id === 'd:draft' ? 'your private draft' : 'that page';
         act.append(outLink(item.url, item.id === 'd:call' ? 'Pick a time' : 'Open', item.status === 'sent' ? 'open-btn' : 'btn small', what, item.id === 'd:call' ? 'call' : ''));
         if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
       }
