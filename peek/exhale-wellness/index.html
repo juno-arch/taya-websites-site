@@ -654,20 +654,19 @@
   .views-q::before { content: "\2726"; content: "\2726" / ""; font-size: 9px; letter-spacing: 0; opacity: 0.8; }
   .views-price { margin: 0; font-family: 'Rosarivo', 'Baskerville', Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   .vseg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 16px; }
+  .views-care { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 10px 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 16px; }
+  .views-care .care-what { flex: 1 1 260px; font-size: 14px; line-height: 1.45; opacity: 0.85; }
   .vseg button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 58px; margin: 0; padding: 8px 6px;
     font: inherit; line-height: 1.2; text-align: center; color: var(--ink); background: transparent; border: 0; border-radius: 12px; cursor: pointer;
     transition: background-color 0.25s ease, color 0.25s ease; }
-  .vseg b { font-family: 'Rosarivo', 'Baskerville', Georgia, serif; font-weight: 400; font-size: 20px; line-height: 1.15; }
-  .vseg .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .vseg .pr strong { font-weight: 500; color: var(--bark-deep); }
-  .vseg .pr s { margin-left: 5px; }
+  .vseg b, .views-care b { font-family: 'Rosarivo', 'Baskerville', Georgia, serif; font-weight: 400; font-size: 20px; line-height: 1.15; }
+  .vseg .pr, .views-care .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .vseg .pr strong, .views-care .pr strong { font-weight: 500; color: var(--bark-deep); }
+  .vseg .pr s, .views-care .pr s { margin-left: 5px; }
   .vseg button:hover { background: var(--ground); }
   .vseg button[aria-pressed="true"] { background: var(--bark); color: var(--ground); }
   .vseg button[aria-pressed="true"] .pr, .vseg button[aria-pressed="true"] .pr strong { color: var(--ground); }
   .views-note { margin: 0 2px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
-  .views-care { margin: 0 2px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); grid-column: 1 / -1; }
-  .views-care strong { font-weight: 700; }
-  .views-care s { opacity: 0.7; }
   .views-note b { font-weight: 500; color: var(--ink); }
   .views-next { font: inherit; font-weight: 500; color: var(--bark-deep); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap;
     text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -824,7 +823,7 @@
       <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <p class="views-care">Care, if you want it: <strong>$35</strong> a month <s><span class="vh">regular price </span>$69</s>, or <strong>$350</strong> a year. Half off for as long as you keep it, and you can stop anytime.</p>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -1298,7 +1297,7 @@
       <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <p class="views-care">Care, if you want it: <strong>$35</strong> a month <s><span class="vh">regular price </span>$69</s>, or <strong>$350</strong> a year. Half off for as long as you keep it, and you can stop anytime.</p>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
