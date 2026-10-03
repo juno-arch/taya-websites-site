@@ -130,6 +130,12 @@
   html.wfm-real .tag, html.wfm-real .wf-note, html.wfm-real .legend, html.wfm-real .tier-note, html.wfm-real .views-card,
   html.wfm-real .vp, html.wfm-real .status-tab, html.wfm-real .status-panel, html.wfm-real .theme-tab, html.wfm-real .ribbon,
   html.wfm-real .bk-demo, html.wfm-real .not-site, html.wfm-real .found-sec, html.wfm-real .portrait-spot, html.wfm-real [data-mock-only] { display: none !important; }
+  /* (Oct 3 mockup audit) each mockup names its helpers a little differently */
+  html.wfm-real .views, html.wfm-real .views-slot,
+  html.wfm-real .mock-note, html.wfm-real .to-you, html.wfm-real .you-note, html.wfm-real .pv-note,
+  html.wfm-real .notes, html.wfm-real .notes-2, html.wfm-real .found-wrap, html.wfm-real .build,
+  html.wfm-real span.demo, html.wfm-real span.pv { display: none !important; }
+  html.wfm-real :is(.bk, .tour, .hold):has(> .bk-side) { grid-template-columns: minmax(0, 1fr) !important; }
   @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -333,7 +339,9 @@
         const t = n.lastChild;
         if (t && t.nodeType === 3 && / \(preview\)\s*$/.test(t.nodeValue)) { n.dataset.wfmWords = t.nodeValue; n.dataset.wfmReal = t.nodeValue.replace(/ \(preview\)\s*$/, ''); }
       });
-      document.querySelectorAll('.demo-note').forEach((n) => { if (!ours(n) && /^\s*With (Maiden|Mother|Crone)\b/.test(n.textContent)) n.setAttribute('data-mock-only', ''); });
+      // little lines that only explain the mockup ("With Mother, ...", "On your real site ...", "preview")
+      const MOCK_LINE = /^\s*(With (Maiden|Mother|Crone)\b|On your real site|On the one-page build|Sample tiles|These three are stand-ins|Preview\b|preview\b)/;
+      document.querySelectorAll('.demo-note, p.pv, p.gbp, span.sample').forEach((n) => { if (!ours(n) && MOCK_LINE.test(n.textContent) && !/[Nn]othing (is|was) (charged|sent)/.test(n.textContent)) n.setAttribute('data-mock-only', ''); }); // a pretend checkout keeps its "nothing is charged" 
     }
     document.querySelectorAll('[data-wfm-words]').forEach((n) => { n.lastChild.nodeValue = on ? n.dataset.wfmReal : n.dataset.wfmWords; });
   }
