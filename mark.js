@@ -75,8 +75,12 @@
     max-height: min(60vh, 520px); overflow: auto; padding: 14px; border-radius: 16px; background: #1b1a17; color: #efe6d4;
     border: 1.5px dashed rgba(240, 184, 103, 0.7); box-shadow: 0 18px 50px -10px rgba(0, 0, 0, 0.7); }
   .wfm-panel h2 { margin: 0 0 10px; font: 400 20px 'Gloock', Georgia, serif; color: #efe6d4; }
-  .wfm-panel ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-  .wfm-panel li { padding: 10px 12px; border-radius: 12px; background: #23221e; font-size: 14.5px; line-height: 1.45; }
+  .wfm-panel ol { margin: 0 !important; padding: 0 !important; list-style: none !important; display: grid !important; gap: 10px; grid-template-columns: minmax(0, 1fr) !important; }
+  /* a mockup's own list styles (flex rows, columns, counters) never reach the notes panel */
+  .wfm-panel li { display: block !important; width: auto !important; margin: 0 !important; padding: 10px 12px !important; border-radius: 12px; background: #23221e;
+    font-size: 14.5px; line-height: 1.45; text-align: left !important; columns: auto !important; }
+  .wfm-panel li::before, .wfm-panel li::after { content: none !important; }
+  .wfm-panel li > div { display: block !important; width: auto !important; margin: 0 !important; padding: 0 !important; }
   .wfm-panel .where { font-size: 12.5px; color: #c9bfac; }
   .wfm-panel .st { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; background: rgba(240, 184, 103, 0.16); color: #f2c77c; }
   .wfm-panel .reply { margin-top: 6px; padding-left: 10px; border-left: 2px solid rgba(240, 184, 103, 0.5); color: #e6dccb; }
@@ -149,8 +153,10 @@
   const listBtn = el('button', 'wfm-btn ghost', 'Your notes'); listBtn.type = 'button';
   const pauseBtn = el('button', 'wfm-btn ghost', 'Pause'); pauseBtn.type = 'button';
   const filesBtn = el('button', 'wfm-btn ghost', 'Send me anything'); filesBtn.type = 'button';
+  // their pick, always one tap away (Pollen, Oct 2: after "Show me everything" there was no way back)
+  const pickBtn = el('button', 'wfm-btn ghost', 'Pick a build'); pickBtn.type = 'button'; pickBtn.hidden = true;
   const done = el('button', 'wfm-btn', 'Done'); done.type = 'button';
-  bar.append(say, listBtn, filesBtn, pauseBtn, done);
+  bar.append(say, pickBtn, listBtn, filesBtn, pauseBtn, done);
   pauseBtn.addEventListener('click', () => {
     marking = !marking; pauseBtn.textContent = marking ? 'Pause' : 'Keep marking';
     say.lastChild.textContent = marking ? 'tap anything you’d like changed.' : 'paused, so the page works as usual.';
@@ -159,7 +165,17 @@
 
   /* ---------------- choosing a spot ---------------- */
   const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article';
-  const pickOf = (t) => { const n = t.closest && t.closest(PICKABLE); return n && !ours(n) ? n : null; };
+  // The mockup's own controls keep working while marking (Pollen, Oct 2: the "See it as" switcher and
+  // dropdowns opened a note instead): view switches, toggles, dropdowns, tabs and build tags.
+  // (the page's own <html data-view> says which view is showing: never a control)
+  const CONTROL = 'summary, select, option, button[aria-expanded], button[aria-pressed], [role="tab"], button[data-view], a[data-view], button[data-go], .tag[data-go], .build[data-go], a[data-go]';
+  const isControl = (t) => { const c = t.closest && t.closest(CONTROL); return !!(c && !ours(c)); };
+  // a mockup can mark a group as one spot (data-mark-whole), like the hours: one note for all of it
+  const pickOf = (t) => {
+    if (isControl(t)) return null;
+    const w = t.closest && t.closest('[data-mark-whole]'); if (w && !ours(w)) return w;
+    const n = t.closest && t.closest(PICKABLE); return n && !ours(n) ? n : null;
+  };
   let hovered = null;
   const clearHover = () => { if (hovered) hovered.classList.remove('wfm-hover'); hovered = null; };
   document.addEventListener('mouseover', (e) => {
@@ -169,6 +185,7 @@
   }, true);
   document.addEventListener('click', (e) => {
     if (!marking || driving || card || ours(e.target)) return;
+    if (isControl(e.target)) { setTimeout(syncView, 120); return; } // let the mockup do its thing
     const n = pickOf(e.target); if (!n) return;
     e.preventDefault(); e.stopPropagation();
     openPop(n);
@@ -176,6 +193,7 @@
 
   // a few words a person would use to say where this is: the page's section, and the thing itself
   const label = (n) => {
+    if (n.getAttribute('data-mark-label')) return n.getAttribute('data-mark-label');
     const txt = (n.getAttribute('alt') || n.getAttribute('aria-label') || n.textContent || '').replace(/\s+/g, ' ').trim();
     const img = n.matches('img, figure, .photo') ? (n.querySelector && n.querySelector('img') || n) : null;
     const alt = img && img.getAttribute && img.getAttribute('alt');
@@ -200,7 +218,7 @@
     const spot = spotOf(n);
     pop = el('div', 'wfm wfm-pop'); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Your note');
     const where = el('p', '', spot);
-    const ta = el('textarea'); ta.placeholder = 'What would you change here?'; ta.maxLength = 1000; ta.setAttribute('aria-label', 'Your note');
+    const ta = el('textarea'); ta.placeholder = n.getAttribute('data-mark-hint') || 'What would you change here?'; ta.maxLength = 1000; ta.setAttribute('aria-label', 'Your note');
     const err = el('p', 'err'); err.hidden = true;
     const row = el('div', 'row');
     const cancel = el('button', 'wfm-btn ghost', 'Cancel'); cancel.type = 'button';
@@ -293,8 +311,24 @@
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card) closeCard(); });
 
+  function showPick() {
+    if (!pickReady) return;
+    pickBtn.hidden = false;
+    pickBtn.textContent = myPick ? 'Seeing: ' + NAMES[myPick] : 'Pick a build';
+    pickBtn.setAttribute('aria-label', (myPick ? 'Seeing ' + NAMES[myPick] + '. ' : '') + 'Change which build you’re seeing');
+  }
+  // they switched the view with the mockup's own buttons: that's their pick now
+  function syncView() {
+    if (!pickReady) return;
+    const on = document.querySelector('.vseg [data-view][aria-pressed="true"]');
+    const v = on && on.getAttribute('data-view');
+    if (!v || !NAMES[v] || v === myPick) return;
+    myPick = v; renderPanel(); showPick();
+    say.lastChild.textContent = v === 'all' ? 'here’s everything. Tap anything you’d like changed.' : 'showing ' + NAMES[v] + '. Tap anything you’d like changed.';
+    call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
+  }
   function choose(v) {
-    myPick = v; closeCard(); showView(v); renderPanel();
+    myPick = v; closeCard(); showView(v); renderPanel(); showPick();
     say.lastChild.textContent = v === 'all' ? 'here’s everything. Tap anything you’d like changed.' : 'showing ' + NAMES[v] + '. Tap anything you’d like changed.';
     call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
   }
@@ -429,6 +463,7 @@
     const q = (spot.match(/“(.+?)…?”/) || [])[1];
     if (!q) return null;
     const words = q.replace(/^photo: /, '');
+    for (const g of document.querySelectorAll('[data-mark-label]')) if (g.getAttribute('data-mark-label') === words && !ours(g)) return g;
     const all = document.querySelectorAll(PICKABLE);
     for (const n of all) {
       if (ours(n)) continue;
@@ -495,6 +530,8 @@
       pickReady = true; founding = d.founding === true; myPick = d.pick;
       if (myPick && myPick !== 'all') showView(myPick);
       if (!myPick) openCard();
+      showPick();
+      pickBtn.addEventListener('click', openCard);
     }
     renderPins(); renderPanel();
   }).catch((x) => {
