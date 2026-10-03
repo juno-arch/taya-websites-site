@@ -1483,7 +1483,7 @@
         <div class="bk-note"><b>Each calendar stays hers</b>Tami, Jennifer and Yemaya keep their own hours. Clients just see one tidy list.</div>
         <div class="bk-note"><b>Forms ride along</b>Yemaya&rsquo;s intake form goes out with her bookings on its own.</div>
         <div class="bk-note"><b>Already have booking? Keep it.</b>Whatever you use now, your Book buttons can go straight to it. Starting fresh? Booking here runs on Cal.com, free and set up in your own name.</div>
-        <p class="bk-foot">Booking preview: nothing here books a real session. On your real site this runs on a booking tool in your own name, with each practitioner&rsquo;s hours and one checkout shared with gift certificates and the boutique.</p>
+        <p class="bk-foot">Booking preview: nothing here books a real session. On your real site this runs on a free Cal.com booking page in your own name, with each practitioner&rsquo;s hours and one checkout shared with gift certificates and the boutique.</p>
       </aside>
     </div>
     <p class="fa-note wf-note" data-show="all" data-fold><span>With the Mother build, this spot is a simple Book now button that opens your Acuity page.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Mother<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
@@ -1572,7 +1572,7 @@
         <div class="c-who">Rest and care, whenever they&rsquo;re ready</div>
       </div>
       <div class="gift-notes wf-note">
-        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own payment account, set up in your name.</div>
+        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, set up in your name.</div>
         <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email or text, ready to print or forward.</div>
       </div>
     </div>
@@ -1780,7 +1780,7 @@
         <div class="done pop" id="nl-done" hidden>
           <span class="ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
           <b class="t" id="nl-donetitle" tabindex="-1">You&rsquo;re on the list</b>
-          <p class="pv" id="nl-donetext">Preview: nothing was sent. On your real site this adds them to your own mailing list.</p>
+          <p class="pv" id="nl-donetext">Preview: nothing was sent. On your real site this adds them to your own Buttondown mailing list.</p>
           <button type="button" class="btn quiet" id="nl-again">Try it again</button>
         </div>
       </div>
@@ -1873,7 +1873,7 @@
       <button type="button" class="sheet-x" id="pay-x" aria-label="Close checkout preview"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
     </div>
     <h3 id="pay-title" tabindex="-1">Mending Roots</h3>
-    <p class="sheet-note">Preview: on your real site this opens a secure checkout in your own payment account. Nothing is charged.</p>
+    <p class="sheet-note">Preview: on your real site this opens a secure Stripe checkout, paid into your own Stripe account. Nothing is charged.</p>
     <div id="pay-main">
       <dl class="pay-lines" id="pay-lines"></dl>
       <form class="pay-form" id="pay-form" novalidate>
@@ -1902,7 +1902,7 @@
           </fieldset>
           <label class="field">Your name<input id="pay-name" autocomplete="off" placeholder="First and last name"></label>
         </div>
-        <div class="pay-card"><svg aria-hidden="true"><use href="#i-card"/></svg><span><b>Card or phone wallet</b>Entered on your payment provider&rsquo;s secure page, never on this preview.</span></div>
+        <div class="pay-card"><svg aria-hidden="true"><use href="#i-card"/></svg><span><b>Card or phone wallet</b>Entered on Stripe&rsquo;s secure page, never on this preview.</span></div>
         <button type="submit" class="btn" id="pay-go">Pay (preview)</button>
       </form>
     </div>
@@ -2266,7 +2266,7 @@
         $('cert-note').textContent = note ? '“' + note + '”' : ''; $('cert-note').hidden = !note;
         cert.hidden = false; rc.hidden = true;
         $('pay-donetitle').textContent = 'Your gift is ready';
-        $('pay-donetext').textContent = 'On your real site the certificate goes out by ' + (giftHow === 'text' ? 'text' : 'email') + (giftWhen === 'date' ? ' on the day they chose' : ' right away') + ', and the sale lands in your own payment account.';
+        $('pay-donetext').textContent = 'On your real site the certificate goes out by ' + (giftHow === 'text' ? 'text' : 'email') + (giftWhen === 'date' ? ' on the day they chose' : ' right away') + ', and the sale lands in your own Stripe account.';
       } else if (mode === 'session') {
         var r = form.querySelector('input[name="pay-svc"]:checked');
         cert.hidden = true; rc.hidden = false; rcLines([['Session', r.value], ['Paid today', money(r.dataset.p)]]);
@@ -2355,7 +2355,7 @@
     nl.addEventListener('submit', function (e) {
       e.preventDefault();
       var picked = nlChips.filter(function (b) { return b.getAttribute('aria-pressed') === 'true'; }).map(function (b) { return b.textContent.toLowerCase(); });
-      $('nl-donetext').textContent = (picked.length ? 'You’ll hear about ' + picked.join(', ').replace(/, ([^,]*)$/, ' and $1') + '. ' : '') + 'Preview: nothing was sent. On your real site this adds them to your own mailing list.';
+      $('nl-donetext').textContent = (picked.length ? 'You’ll hear about ' + picked.join(', ').replace(/, ([^,]*)$/, ' and $1') + '. ' : '') + 'Preview: nothing was sent. On your real site this adds them to your own Buttondown mailing list.';
       nl.hidden = true; $('nl-done').hidden = false; $('nl-donetitle').focus({ preventScroll: true });
     });
     $('nl-again').addEventListener('click', function (e) {
