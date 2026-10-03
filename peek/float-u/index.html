@@ -33,9 +33,9 @@
     --night-hair: rgba(232, 234, 242, 0.16);
     --glow: #9aa5ff;          
     --glow-strong: #6f7cff;
-    --moon: #36419c;          
-    --moon-hover: #2a3480;
-    --on-moon: #ffffff;
+    --wine: #7a2140;          
+    --wine-hover: #62192f;
+    --on-wine: #ffffff;
     --cedar: #c38a55;         
     --cedar-soft: #f1e6da;
     --cedar-ink: #6d4320;
@@ -54,7 +54,7 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --ground: #0b1226; --ground-2: #0f1830; --card: #121c3a; --ink: #e8eaf2; --ink-soft: #aab1c8; --hair: #25304f;
-      --lake: #9aa5ff; --night: #070c1c; --deep: #121b3d; --moon: #9aa5ff; --moon-hover: #b3bbff; --on-moon: #0d1630;
+      --lake: #9aa5ff; --night: #070c1c; --deep: #121b3d; --wine: #d77a93; --wine-hover: #e592a8; --on-wine: #1a0a12;
       --cedar-soft: #191a35; --cedar-ink: #e0b48a; --tag-bg: #1a2446; --tag-ink: #c3caff; --tag-line: #2c3866;
       --seg-on: #c3caff; --seg-on-ink: #0b1226; --double-bg: linear-gradient(100deg, rgba(195, 138, 85, 0.2), rgba(111, 124, 255, 0.14));
       --tl-bar: linear-gradient(90deg, #4050b8 0%, #6f7cff 55%, #9aa5ff 100%); --tl-mid: #6f7cff; --stripe: rgba(154, 165, 255, 0.04); --slat: rgba(154, 165, 255, 0.07);
@@ -63,7 +63,7 @@
   }
   :root[data-theme="dark"] {
     --ground: #0b1226; --ground-2: #0f1830; --card: #121c3a; --ink: #e8eaf2; --ink-soft: #aab1c8; --hair: #25304f;
-    --lake: #9aa5ff; --night: #070c1c; --deep: #121b3d; --moon: #9aa5ff; --moon-hover: #b3bbff; --on-moon: #0d1630;
+    --lake: #9aa5ff; --night: #070c1c; --deep: #121b3d; --wine: #d77a93; --wine-hover: #e592a8; --on-wine: #1a0a12;
     --cedar-soft: #191a35; --cedar-ink: #e0b48a; --tag-bg: #1a2446; --tag-ink: #c3caff; --tag-line: #2c3866;
     --seg-on: #c3caff; --seg-on-ink: #0b1226; --double-bg: linear-gradient(100deg, rgba(195, 138, 85, 0.2), rgba(111, 124, 255, 0.14));
     --tl-bar: linear-gradient(90deg, #4050b8 0%, #6f7cff 55%, #9aa5ff 100%); --tl-mid: #6f7cff; --stripe: rgba(154, 165, 255, 0.04); --slat: rgba(154, 165, 255, 0.07);
@@ -106,8 +106,8 @@
   
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; cursor: pointer;
     font: 700 16px/1.25 var(--f-body); letter-spacing: 0.01em; padding: 15px 24px; min-height: 50px; box-sizing: border-box; border-radius: 10px;
-    background: var(--moon); color: var(--on-moon); border: 1px solid var(--moon); transition: background 0.25s ease, border-color 0.25s ease; }
-  .btn:hover { background: var(--moon-hover); border-color: var(--moon-hover); }
+    background: var(--wine); color: var(--on-wine); border: 1px solid var(--wine); transition: background 0.25s ease, border-color 0.25s ease; }
+  .btn:hover { background: var(--wine-hover); border-color: var(--wine-hover); }
   .btn.quiet { background: transparent; color: var(--ink); border-color: var(--hair); }
   .btn.quiet:hover { border-color: var(--ink-soft); background: var(--ground-2); }
   .btn.salt { background: #f4f2ee; color: #0d1630; border-color: #f4f2ee; }
@@ -188,7 +188,7 @@
     background: linear-gradient(90deg, rgba(232, 234, 242, 0.85) 0%, rgba(154, 165, 255, 0.55) 55%, rgba(154, 165, 255, 0) 100%); }
   .hero-sub { font-size: clamp(16px, 2vw, 19px); line-height: 1.55; color: rgba(232, 234, 242, 0.9); max-width: 44ch; text-shadow: 0 1px 14px rgba(7, 12, 28, 0.55); }
   .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 26px; }
-  .hero-cta .btn { border-color: rgba(255, 255, 255, 0.32); box-shadow: 0 14px 34px -14px rgba(154, 165, 255, 0.5); }
+  .hero-cta .btn { border-color: rgba(255, 255, 255, 0.32); box-shadow: 0 14px 34px -14px rgba(215, 122, 147, 0.55); }
   .hours { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; color: rgba(232, 234, 242, 0.84); }
   .hours::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #9aa5ff; box-shadow: 0 0 0 4px rgba(154, 165, 255, 0.18); }
 
@@ -338,7 +338,7 @@
   .night .pv { color: rgba(232, 234, 242, 0.78); }
   .night .tier-note { color: var(--on-night-soft); }
   .night a { color: #c9cffd; }
-  .night a.btn:not(.salt):not(.ghost-n) { color: var(--on-moon); }
+  .night a.btn:not(.salt):not(.ghost-n) { color: var(--on-wine); }
   .stars { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
   .stars i { position: absolute; inset: 0; opacity: 0.55;
     background-image:
@@ -351,7 +351,7 @@
   .stars i:nth-child(2) { opacity: 0.4; background-size: 340px 240px; background-position: 90px 60px; }
   .stars::after { content: ""; position: absolute; inset: 0;
     background: radial-gradient(70% 60% at 85% 0%, rgba(111, 124, 255, 0.16), rgba(111, 124, 255, 0) 70%),
-                radial-gradient(60% 50% at 0% 100%, rgba(54, 65, 156, 0.22), rgba(54, 65, 156, 0) 70%); }
+                radial-gradient(60% 50% at 0% 100%, rgba(122, 33, 64, 0.2), rgba(122, 33, 64, 0) 70%); }
   @media (prefers-reduced-motion: no-preference) {
     .stars i { animation: twinkle 5.5s ease-in-out infinite alternate; }
     .stars i:nth-child(2) { animation-duration: 8s; animation-delay: -3s; }
@@ -455,7 +455,7 @@
   .gcard { position: relative; overflow: hidden; aspect-ratio: 1.62; border-radius: 18px; padding: clamp(18px, 3vw, 26px); box-sizing: border-box; color: #e8eaf2;
     display: flex; flex-direction: column; justify-content: space-between;
     background: radial-gradient(90% 80% at 88% 0%, rgba(111, 124, 255, 0.5) 0%, rgba(111, 124, 255, 0) 60%),
-                radial-gradient(70% 60% at 0% 100%, rgba(54, 65, 156, 0.5) 0%, rgba(54, 65, 156, 0) 70%),
+                radial-gradient(70% 60% at 0% 100%, rgba(122, 33, 64, 0.55) 0%, rgba(122, 33, 64, 0) 70%),
                 linear-gradient(160deg, #16224a 0%, #0d1630 70%);
     box-shadow: 0 30px 60px -34px rgba(13, 22, 48, 0.75); }
   .gcard::before { content: ""; position: absolute; inset: 0; opacity: 0.7; pointer-events: none;
@@ -486,7 +486,7 @@
   .money > span { position: absolute; left: 13px; top: 50%; translate: 0 -50%; color: var(--ink-soft); pointer-events: none; }
   .money input { padding-left: 26px; }
   #gf-any-wrap { margin-top: 12px; max-width: 200px; }
-  .hint { font-size: 14.5px; color: var(--moon); font-weight: 700; margin: 12px 0 0; }
+  .hint { font-size: 14.5px; color: var(--wine); font-weight: 700; margin: 12px 0 0; }
   .hint:empty { margin: 0; }
   .pay .btn { margin-top: 18px; }
   .sheet-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--f-body); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
