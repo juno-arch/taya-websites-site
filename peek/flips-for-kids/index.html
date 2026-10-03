@@ -181,9 +181,9 @@
   .hero-band .btn.quiet:hover { background: rgba(255, 248, 236, 0.12); }
   .hero-band .cta-row { margin-top: 30px; }
   @media (max-width: 760px) {
-    .hero-band::before { background-image: url('images/hero-tall.jpg'); background-position: 50% 0%; }
+    .hero-band::before { background-size: auto 92vw; background-position: 38% 0%; -webkit-mask-image: linear-gradient(#000 calc(92vw - 70px), transparent 92vw); mask-image: linear-gradient(#000 calc(92vw - 70px), transparent 92vw); }
     .hero-band::after { background: linear-gradient(rgba(20, 14, 8, 0.45) 0, rgba(20, 14, 8, 0) 120px), linear-gradient(to top, rgba(22, 15, 9, 0.94) 0%, rgba(22, 15, 9, 0.86) 44%, rgba(22, 15, 9, 0.2) 56%, rgba(22, 15, 9, 0) 64%); }
-    .hero-main { align-items: flex-end; padding-block: max(118vw, 300px) 56px; }
+    .hero-main { align-items: flex-end; padding-block: max(80vw, 300px) 56px; }
     .hero-band .lede { font-size: 17px; }
   }
   /* the beam + the cartwheeling star (signature) */
@@ -617,7 +617,7 @@
     var started = false;
     var go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
     var im = new Image(); im.onload = go; im.onerror = go;
-    im.src = window.matchMedia('(max-width: 760px)').matches ? 'images/hero-tall.jpg' : 'images/hero.jpg';
+    im.src = 'images/hero.jpg';
     if (im.complete) go();
     setTimeout(go, 1500);
   })();
