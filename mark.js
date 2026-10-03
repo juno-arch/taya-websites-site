@@ -306,16 +306,16 @@
     care.append(a, document.createTextNode('.'));
     box.append(care);
     const foot = el('div', 'foot');
-    const all = el('button', 'wfm-btn ghost', 'Just looking: show me everything'); all.type = 'button';
-    all.addEventListener('click', () => choose('all'));
-    foot.append(el('p', 'soft', 'Notes open once you pick a build. You can switch anytime, and nothing is final until we talk.'), all);
+    // a straight path (Pollen, Oct 2): pick a build, leave notes, done. No "show me everything".
+    foot.append(el('p', 'soft', 'You can switch anytime, and nothing is final until we talk.'));
     box.append(foot);
     card.append(box);
-    card.addEventListener('click', (e) => { if (e.target === card) closeCard(); });
+    card.dataset.picker = '1';
+    card.addEventListener('click', (e) => { if (e.target === card && canMark()) closeCard(); }); // a pick first
     document.body.appendChild(card);
     const first = grid.querySelector('.wfm-build'); if (first) first.focus({ preventScroll: true });
   }
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card) closeCard(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card && !(card.dataset.picker && !canMark())) closeCard(); });
 
   // The words that only make sense on a mockup: "Send (preview)" buttons read "Send", and the little
   // "With Mother, this button opens..." lines under a build's button go. Put back for "show me everything".
@@ -339,7 +339,7 @@
   function showPick() {
     if (pickReady) {
       pickBtn.hidden = false;
-      pickBtn.textContent = canMark() ? 'Seeing: ' + NAMES[myPick] : (myPick === 'all' ? 'Pick a build to leave notes' : 'Pick a build');
+      pickBtn.textContent = canMark() ? 'Seeing: ' + NAMES[myPick] : 'Pick a build';
       pickBtn.className = canMark() ? 'wfm-btn ghost' : 'wfm-btn';
       pickBtn.setAttribute('aria-label', (myPick ? 'Seeing ' + NAMES[myPick] + '. ' : '') + 'Choose which build you’re seeing');
     }
@@ -351,8 +351,8 @@
       setTimeout(renderPins, 60);
     }
     if (!canMark()) { clearHover(); closePop(); }
-    b.textContent = canMark() ? 'Magic mockup: ' : (myPick === 'all' ? 'Just looking: ' : 'Magic mockup: ');
-    say.lastChild.textContent = !canMark() ? (myPick === 'all' ? 'here’s everything I could build. Pick a build to leave notes on it.' : 'pick a build first, then tap anything to leave a note.')
+    b.textContent = 'Magic mockup: ';
+    say.lastChild.textContent = !canMark() ? 'pick a build first, then tap anything to leave a note.'
       : !marking ? 'paused, so the page works as usual.'
       : 'showing ' + NAMES[myPick] + '. Tap anything you’d like changed.';
   }
@@ -361,7 +361,7 @@
     if (!pickReady) return;
     const on = document.querySelector('.vseg [data-view][aria-pressed="true"]');
     const v = on && on.getAttribute('data-view');
-    if (!v || !NAMES[v] || v === myPick) return;
+    if (!v || !NAMES[v] || v === 'all' || v === myPick) return;
     myPick = v; renderPanel(); showPick();
     call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
   }
@@ -530,7 +530,7 @@
     panel.textContent = '';
     panel.append(el('h2', '', 'Your notes'));
     if (pickReady) {
-      const mp = el('p', 'mypick', myPick ? (myPick === 'all' ? 'You’re seeing everything. ' : 'Your pick: ' + NAMES[myPick] + '. ') : 'No build picked yet. ');
+      const mp = el('p', 'mypick', canMark() && myPick ? 'Your pick: ' + NAMES[myPick] + '. ' : 'No build picked yet. ');
       const ch = el('button', 'wfm-link', myPick ? 'Change my pick' : 'Pick one'); ch.type = 'button';
       ch.addEventListener('click', () => { panel.hidden = true; openCard(); });
       mp.append(ch); panel.append(mp);
@@ -566,7 +566,7 @@
     if (typeof d.pick === 'string') { // the server knows about picks
       pickReady = true; founding = d.founding === true; myPick = d.pick;
       if (myPick && myPick !== 'all') showView(myPick);
-      if (!myPick) openCard();
+      if (!myPick || myPick === 'all') openCard(); // "everything" from before: pick a real build now
       showPick();
       pickBtn.addEventListener('click', openCard);
     }
