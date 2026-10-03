@@ -159,7 +159,7 @@
   bar.append(say, pickBtn, listBtn, filesBtn, pauseBtn, done);
   pauseBtn.addEventListener('click', () => {
     marking = !marking; pauseBtn.textContent = marking ? 'Pause' : 'Keep marking';
-    say.lastChild.textContent = marking ? 'tap anything you’d like changed.' : 'paused, so the page works as usual.';
+    showPick();
     clearHover();
   });
 
@@ -179,12 +179,13 @@
   let hovered = null;
   const clearHover = () => { if (hovered) hovered.classList.remove('wfm-hover'); hovered = null; };
   document.addEventListener('mouseover', (e) => {
-    if (!marking || popOpen || card) return;
+    if (!marking || !canMark() || popOpen || card) return;
     const n = pickOf(e.target); if (n === hovered) return;
     clearHover(); if (n) { hovered = n; n.classList.add('wfm-hover'); }
   }, true);
   document.addEventListener('click', (e) => {
     if (!marking || driving || card || ours(e.target)) return;
+    if (!canMark()) { if (isControl(e.target)) setTimeout(syncView, 120); return; } // just looking: the page works as usual
     if (isControl(e.target)) { setTimeout(syncView, 120); return; } // let the mockup do its thing
     const n = pickOf(e.target); if (!n) return;
     e.preventDefault(); e.stopPropagation();
@@ -277,7 +278,7 @@
     card = el('div', 'wfm wfm-scrim');
     const box = el('div', 'wfm-card'); box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', 'wfm-card-h');
     const h = el('h2', '', 'Which one feels like you?'); h.id = 'wfm-card-h';
-    box.append(h, el('p', 'lead', 'Your mockup shows every piece I could build for you. Pick a build and the page shows just what it includes.'));
+    box.append(h, el('p', 'lead', 'Your mockup shows every piece I could build for you. Pick a build and the page shows just what it includes. Then tap anything on it to leave me a note.'));
     const grid = el('div', 'wfm-builds');
     BUILDS.forEach((bd) => {
       const btn = el('button', 'wfm-build' + (myPick === bd.key ? ' on' : '')); btn.type = 'button';
@@ -300,9 +301,9 @@
     care.append(a, document.createTextNode('.'));
     box.append(care);
     const foot = el('div', 'foot');
-    const all = el('button', 'wfm-btn ghost', 'Show me everything'); all.type = 'button';
+    const all = el('button', 'wfm-btn ghost', 'Just looking: show me everything'); all.type = 'button';
     all.addEventListener('click', () => choose('all'));
-    foot.append(el('p', 'soft', 'You can switch anytime. Nothing is final until we talk.'), all);
+    foot.append(el('p', 'soft', 'Notes open once you pick a build. You can switch anytime, and nothing is final until we talk.'), all);
     box.append(foot);
     card.append(box);
     card.addEventListener('click', (e) => { if (e.target === card) closeCard(); });
@@ -311,11 +312,22 @@
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card) closeCard(); });
 
+  // Notes only on a real build (Pollen, Oct 2: "they need to be only editing whenever it's showing what's
+  // actually on their site"). Not picked yet, or "show me everything": just looking. Older servers: always on.
+  function canMark() { return !pickReady || (!!myPick && myPick !== 'all'); }
   function showPick() {
-    if (!pickReady) return;
-    pickBtn.hidden = false;
-    pickBtn.textContent = myPick ? 'Seeing: ' + NAMES[myPick] : 'Pick a build';
-    pickBtn.setAttribute('aria-label', (myPick ? 'Seeing ' + NAMES[myPick] + '. ' : '') + 'Change which build you’re seeing');
+    if (pickReady) {
+      pickBtn.hidden = false;
+      pickBtn.textContent = canMark() ? 'Seeing: ' + NAMES[myPick] : (myPick === 'all' ? 'Pick a build to leave notes' : 'Pick a build');
+      pickBtn.className = canMark() ? 'wfm-btn ghost' : 'wfm-btn';
+      pickBtn.setAttribute('aria-label', (myPick ? 'Seeing ' + NAMES[myPick] + '. ' : '') + 'Choose which build you’re seeing');
+    }
+    pauseBtn.hidden = !canMark();
+    if (!canMark()) { clearHover(); closePop(); }
+    b.textContent = canMark() ? 'Magic mockup: ' : (myPick === 'all' ? 'Just looking: ' : 'Magic mockup: ');
+    say.lastChild.textContent = !canMark() ? (myPick === 'all' ? 'here’s everything I could build. Pick a build to leave notes on it.' : 'pick a build first, then tap anything to leave a note.')
+      : !marking ? 'paused, so the page works as usual.'
+      : 'showing ' + NAMES[myPick] + '. Tap anything you’d like changed.';
   }
   // they switched the view with the mockup's own buttons: that's their pick now
   function syncView() {
@@ -324,12 +336,10 @@
     const v = on && on.getAttribute('data-view');
     if (!v || !NAMES[v] || v === myPick) return;
     myPick = v; renderPanel(); showPick();
-    say.lastChild.textContent = v === 'all' ? 'here’s everything. Tap anything you’d like changed.' : 'showing ' + NAMES[v] + '. Tap anything you’d like changed.';
     call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
   }
   function choose(v) {
     myPick = v; closeCard(); showView(v); renderPanel(); showPick();
-    say.lastChild.textContent = v === 'all' ? 'here’s everything. Tap anything you’d like changed.' : 'showing ' + NAMES[v] + '. Tap anything you’d like changed.';
     call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
   }
 
@@ -501,7 +511,7 @@
     const fl = el('p', 'mypick', sentFiles ? 'Files sent: ' + sentFiles + '. ' : 'Got photos or a logo? ');
     const fb = el('button', 'wfm-link', sentFiles ? 'Send more' : 'Send me anything'); fb.type = 'button';
     fb.addEventListener('click', openFiles); fl.append(fb); panel.append(fl);
-    if (!notes.length) { panel.append(el('p', 'none', 'Nothing yet. Tap anything on your mockup to leave a note.')); }
+    if (!notes.length) { panel.append(el('p', 'none', canMark() ? 'Nothing yet. Tap anything on your mockup to leave a note.' : 'Nothing yet. Pick a build, then tap anything on your mockup to leave a note.')); }
     else {
       const ol = el('ol');
       notes.forEach((n, i) => {
