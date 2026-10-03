@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261002b">
+<link rel="stylesheet" href="portal.css?v=20261002c">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -97,7 +97,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261002b"></script>
+<script src="portal.js?v=20261002c"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -192,6 +192,14 @@
 
   <!-- ============ their project ============ -->
   <div id="v-project" hidden>
+
+    <!-- whose turn it is, while their magic mockup is the step (Oct 2 2026) -->
+    <section class="p-card turn" id="sec-turn" aria-labelledby="h-turn" hidden>
+      <span class="kicker" id="turn-kicker">Your turn</span>
+      <h2 id="h-turn"></h2>
+      <p id="turn-text"></p>
+      <p class="turn-act"><a class="btn" id="turn-btn" href="#"><span id="turn-btn-text">Open my mockup</span></a></p>
+    </section>
 
     <section class="p-card taya-note" id="sec-note" aria-labelledby="h-note" hidden>
       <img class="face" src="taya.jpg" width="256" height="256" alt="" decoding="async">

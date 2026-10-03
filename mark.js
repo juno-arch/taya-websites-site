@@ -497,6 +497,7 @@
   // Done: on to "one last thing" (files), then the thank-you, and what happens next (Taya writes back by email).
   done.addEventListener('click', () => openFiles());
   function thanks() {
+    call('/mockup-done', { page: PAGE }).catch((x) => { if (x.code === 'bad_link') expired(); }); // their portal: "My turn" 
     const box = scrim('wfm-done-h');
     const h = el('h2', '', 'Thank you' + (first ? ', ' + first : '') + '!'); h.id = 'wfm-done-h';
     const bits = [];

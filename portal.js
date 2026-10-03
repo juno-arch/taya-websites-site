@@ -701,6 +701,8 @@
         receipts: arr(th.receipts).map((r) => ({ name: str(r && r.name, 200), label: str(r && r.label, 120) || 'Receipt' })).filter((r) => r.name).slice(0, 20)
       },
       start_open: d.start_open !== false,   // Taya's getting-started switch (older servers: always open)
+      // their magic mockup while getting started is closed, and whether they've finished it
+      mockup: d.mockup && /^https:\/\/webfaery\.love\/peek\/[a-z0-9-]{1,40}\/\?mark=1$/.test(str(d.mockup.url)) ? { url: str(d.mockup.url), done_on: str(d.mockup.done_on, 30) } : null,
       pay: arr(d.pay).filter((p) => p && ['deposit', 'balance', 'care'].includes(p.key)).map((p) => ({
         key: p.key, amount: Math.max(0, Math.round(+p.amount || 0)), period: p.period === 'year' ? 'year' : 'month',
         state: ['paid', 'due', 'later', 'active'].includes(p.state) ? p.state : 'later', paid_on: str(p.paid_on, 30), starts_on: str(p.starts_on, 30),
@@ -813,6 +815,7 @@
     // the header's "Getting started" only while that page is still theirs to fill in
     $('#nav-start').hidden = !startItem();
     renderBack();
+    renderTurn();
     renderNote();
     renderList();
     renderTimeline();
@@ -842,6 +845,23 @@
     const before = up ? (me.list.open.length ? $('#sec-where') : $('#sec-list')) : null;
     if (before) { if (sec.nextElementSibling !== before) proj.insertBefore(sec, before); }
     else if (proj.lastElementChild !== sec) proj.append(sec);
+  }
+
+  /* ---- whose turn it is (the magic mockup step, Oct 2 2026) ---- */
+  function renderTurn() {
+    const sec = $('#sec-turn');
+    const m = me.mockup;
+    if (me.start_open || !m) { sec.hidden = true; return; }
+    const done = !!m.done_on;
+    $('#turn-kicker').textContent = done ? 'My turn' : 'Your turn';
+    $('#h-turn').textContent = done ? 'That’s it for you for now' : 'Look over your mockup';
+    $('#turn-text').textContent = done
+      ? 'Thank you! I’m looking over everything you sent, and I’ll email you with the next round. Nothing to sign or pay yet.'
+      : 'Pick the build that feels like you, then tap anything on it to leave me a note. When you’re finished, tap Done.';
+    $('#turn-btn').href = m.url;
+    $('#turn-btn').className = done ? 'btn secondary' : 'btn';
+    $('#turn-btn-text').textContent = done ? 'Add more to my mockup' : 'Open my mockup';
+    sec.hidden = false;
   }
 
   /* ---- a note from Taya ---- */
