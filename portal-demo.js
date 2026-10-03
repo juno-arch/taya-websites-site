@@ -10,7 +10,9 @@
 
    The sample: Rosa Linden of Fern & Clay Pottery, a founding Mother client (build $600 founding, deposit
    $300, care $35 a month founding). Four moments in her project, picked from "Show me":
-     new       she just said yes: one item, her getting-started page (signing, the deposit and the call are on it)
+     mockup    her first visit (Oct 2 2026 flow): "Your turn: look over your mockup", nothing to sign or pay
+     waiting   she tapped Done on her mockup: "My turn: that's it for you for now"
+     new       Taya opened getting started: one item, her getting-started page (signing and the deposit are on it)
      mid       the draft is under way (the default)
      launched  launch day: settling in, the second half due, care waiting until settling in ends, "Ask for a change" open
      care      in care: everything paid, two past asks with Taya's replies
@@ -87,6 +89,9 @@
   var receiptDays = {};
 
   var SCENES = {
+    // the magic mockup step: getting started is closed, so no list, no payments, and the turn card on top
+    mockup: function () { return mockupScene(''); },
+    waiting: function () { return mockupScene(today()); },
     'new': function () {
       return {
         ok: true,
@@ -221,6 +226,23 @@
     }
   };
 
+  function mockupScene(doneOn) {
+    return {
+      ok: true,
+      client: Object.assign({}, CLIENT),
+      note: null,
+      list: { open: [], done: doneOn ? [{ id: 'wfdemo00000009a', title: 'Things you sent from your mockup' }] : [] },
+      timeline: { current: 'getting_started', stages: stages([today()], 'getting_started'), care_since: '' },
+      things: { draft: null, agreement: null, brand_sheet: false, handoff_sheet: false, receipts: [] },
+      start_open: false,
+      mockup: { url: 'https://webfaery.love/peek/tera/?mark=1', done_on: doneOn },
+      sms: { available: false, on: false, last4: '' },
+      pay: [],
+      care_manage_url: '',
+      care: { can_ask: false, requests: [] },
+      session: { expires_at: '' }
+    };
+  }
   var scene = SCENES[ss.get(SCENE_KEY)] ? ss.get(SCENE_KEY) : 'mid';
   var data = SCENES[scene]();
   var failNext = '';
