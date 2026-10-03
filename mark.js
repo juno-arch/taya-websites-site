@@ -119,6 +119,11 @@
   .wfm-files .fs { color: #c9bfac; white-space: nowrap; }
   .wfm-files .ok { color: #9fc59a; } .wfm-files .bad { color: #f3a98c; }
   .wfm-card .sentcount { margin: 12px 0 0; font-size: 14px; color: #9fc59a; }
+  /* Once they've picked a build, the page is their site as it would be (Pollen, Oct 2: "I don't want it to show
+     anything that's not on the website"): Taya's tags, notes, demo labels, view switchers and the Google preview go. */
+  html.wfm-real .tag, html.wfm-real .wf-note, html.wfm-real .legend, html.wfm-real .tier-note, html.wfm-real .views-card,
+  html.wfm-real .vp, html.wfm-real .status-tab, html.wfm-real .status-panel, html.wfm-real .theme-tab, html.wfm-real .ribbon,
+  html.wfm-real .bk-demo, html.wfm-real .not-site, html.wfm-real .found-sec, html.wfm-real .portrait-spot, html.wfm-real [data-mock-only] { display: none !important; }
   @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -312,6 +317,22 @@
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card) closeCard(); });
 
+  // The words that only make sense on a mockup: "Send (preview)" buttons read "Send", and the little
+  // "With Mother, this button opens..." lines under a build's button go. Put back for "show me everything".
+  let wordsDone = false;
+  function realWords(on) {
+    if (!wordsDone) {
+      wordsDone = true;
+      document.querySelectorAll('button, a, input[type="submit"]').forEach((n) => {
+        if (ours(n)) return;
+        const t = n.lastChild;
+        if (t && t.nodeType === 3 && / \(preview\)\s*$/.test(t.nodeValue)) { n.dataset.wfmWords = t.nodeValue; n.dataset.wfmReal = t.nodeValue.replace(/ \(preview\)\s*$/, ''); }
+      });
+      document.querySelectorAll('.demo-note').forEach((n) => { if (!ours(n) && /^\s*With (Maiden|Mother|Crone)\b/.test(n.textContent)) n.setAttribute('data-mock-only', ''); });
+    }
+    document.querySelectorAll('[data-wfm-words]').forEach((n) => { n.lastChild.nodeValue = on ? n.dataset.wfmReal : n.dataset.wfmWords; });
+  }
+
   // Notes only on a real build (Pollen, Oct 2: "they need to be only editing whenever it's showing what's
   // actually on their site"). Not picked yet, or "show me everything": just looking. Older servers: always on.
   function canMark() { return !pickReady || (!!myPick && myPick !== 'all'); }
@@ -323,6 +344,12 @@
       pickBtn.setAttribute('aria-label', (myPick ? 'Seeing ' + NAMES[myPick] + '. ' : '') + 'Choose which build you’re seeing');
     }
     pauseBtn.hidden = !canMark();
+    const real = pickReady && canMark();
+    if (document.documentElement.classList.contains('wfm-real') !== real) {
+      document.documentElement.classList.toggle('wfm-real', real);
+      realWords(real);
+      setTimeout(renderPins, 60);
+    }
     if (!canMark()) { clearHover(); closePop(); }
     b.textContent = canMark() ? 'Magic mockup: ' : (myPick === 'all' ? 'Just looking: ' : 'Magic mockup: ');
     say.lastChild.textContent = !canMark() ? (myPick === 'all' ? 'here’s everything I could build. Pick a build to leave notes on it.' : 'pick a build first, then tap anything to leave a note.')

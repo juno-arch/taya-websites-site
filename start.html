@@ -521,6 +521,7 @@
   .care-opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
   .c-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17.5px; }
   .c-price { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .care-opt .c-price[data-care="yes"] { grid-column: 1 / -1; grid-row: 2; text-align: left; white-space: normal; font-size: 16px; }
   .c-note { grid-column: 1 / -1; font-size: 15px; color: var(--ink-soft); }
   .care-period { margin-top: 14px; }
   .care-period .care-how { margin: 0 0 8px; }
@@ -530,6 +531,7 @@
     .cares.two { grid-template-columns: repeat(2, 1fr); }
     .care-opt { grid-template-columns: 1fr; text-align: center; padding: 18px 14px; }
     .c-price { text-align: center; font-size: 21px; }
+    .care-opt .c-price[data-care="yes"] { text-align: center; font-size: 17px; }
   }
   details.more { margin-top: 12px; }
   details.more summary, details.how summary, details.full-text summary {
@@ -1076,7 +1078,7 @@
           <p class="hint">Care means I look after your site for you, so you never have to think about it. No need to decide today;
              it just needs settling by launch. The <a href="quiz.html"><span class="nowrap">two-minute</span> quiz</a> can help.</p>
           <div class="cares two">
-            <label class="care-opt"><input type="radio" name="care_q" value="yes"><span class="c-name">Yes, please</span><span class="c-note">I look after it for you</span></label>
+            <label class="care-opt"><input type="radio" name="care_q" value="yes"><span class="c-name">Yes, please</span><span class="c-price" data-care="yes">$69 a month, or $690 a year</span><span class="c-note">I look after it for you</span></label>
             <label class="care-opt"><input type="radio" name="care" value="none"><span class="c-name">No thanks</span><span class="c-note">I’ll ask when I need something</span></label>
           </div>
           <div class="care-period" id="care-period" hidden>
@@ -2204,6 +2206,7 @@
     }
     $('[data-care="monthly"]').textContent = money(c.founding ? CARE.foundingMonthly : CARE.monthly) + ' a month';
     $('[data-care="yearly"]').textContent = money(c.founding ? CARE.foundingYearly : CARE.yearly) + ' a year';
+    $('[data-care="yes"]').textContent = money(c.founding ? CARE.foundingMonthly : CARE.monthly) + ' a month, or ' + money(c.founding ? CARE.foundingYearly : CARE.yearly) + ' a year';
     $$('.build').forEach((l) => l.classList.toggle('on', $('input', l).checked));
     { // care: a yes or no first, then monthly or yearly (Pollen, Oct 2)
       const q = $('input[name="care_q"]');
