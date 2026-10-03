@@ -10,7 +10,7 @@
    (Maiden, Mother, Crone, or everything). Picking switches the mockup's own "See it as" view and saves the
    pick to their portal (/pick), so the view comes back on their next visit. "Change my pick" in the notes
    panel opens the card again.
-   Send me anything (Oct 2 2026): a card for photos, a logo, a menu, reviews, anything not on the mockup yet.
+   Send me anything (Oct 2 2026; the step after Done): a card for photos, a logo, a menu, reviews, anything not on the mockup yet.
    Files go one at a time to /mockup-upload and land on one list item in their portal ("Things you sent from
    your mockup"). "Done" says thank you and that Taya will email them: this is the whole first visit. Nothing
    to sign or pay here; that comes later, once Taya has written back. */
@@ -157,11 +157,10 @@
   const say = el('span'); const b = el('b', '', 'Magic mockup: '); say.append(b, document.createTextNode('tap anything you’d like changed.'));
   const listBtn = el('button', 'wfm-btn ghost', 'Your notes'); listBtn.type = 'button';
   const pauseBtn = el('button', 'wfm-btn ghost', 'Pause'); pauseBtn.type = 'button';
-  const filesBtn = el('button', 'wfm-btn ghost', 'Send me anything'); filesBtn.type = 'button';
   // their pick, always one tap away (Pollen, Oct 2: after "Show me everything" there was no way back)
   const pickBtn = el('button', 'wfm-btn ghost', 'Pick a build'); pickBtn.type = 'button'; pickBtn.hidden = true;
   const done = el('button', 'wfm-btn', 'Done'); done.type = 'button';
-  bar.append(say, pickBtn, listBtn, filesBtn, pauseBtn, done);
+  bar.append(say, pickBtn, listBtn, pauseBtn, done);
   pauseBtn.addEventListener('click', () => {
     marking = !marking; pauseBtn.textContent = marking ? 'Pause' : 'Keep marking';
     showPick();
@@ -390,7 +389,7 @@
   let busy = false;
   function openFiles() {
     const box = scrim('wfm-files-h');
-    const h = el('h2', '', 'Anything else for your site?'); h.id = 'wfm-files-h';
+    const h = el('h2', '', 'One last thing: anything else for your site?'); h.id = 'wfm-files-h';
     box.append(h, el('p', 'lead', 'If you’ve got something that isn’t on here yet, send it my way and I’ll find it a home. A few ideas, in case they help:'));
     const ul = el('ul', 'ideas'); IDEAS.forEach((t) => ul.append(el('li', '', t))); box.append(ul);
     box.append(el('p', 'small', 'Things like your hours or social links? Just tap the spot on your mockup and type them in a note. Nothing here is required.'));
@@ -403,9 +402,13 @@
     if (sentFiles) count.textContent = 'You’ve sent me ' + sentFiles + (sentFiles === 1 ? ' file' : ' files') + ' so far. Thank you!';
     box.append(drop, list, count);
     const foot = el('div', 'foot');
-    const close = el('button', 'wfm-btn', 'Done'); close.type = 'button';
-    close.addEventListener('click', () => { if (!busy) closeCard(); });
-    foot.append(el('p', 'soft', 'You can come back and send more anytime.'), close);
+    // the step after their notes (Pollen, Oct 2: uploads come after Done): back to the notes, or on to the thank-you
+    const back = el('button', 'wfm-btn ghost', 'Back to my notes'); back.type = 'button';
+    back.addEventListener('click', () => { if (!busy) closeCard(); });
+    const close = el('button', 'wfm-btn', sentFiles ? 'All done' : 'Skip, I’m done'); close.type = 'button';
+    close.addEventListener('click', () => { if (!busy) thanks(); });
+    const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(back, close);
+    foot.append(el('p', 'soft', 'You can come back and send more anytime.'), btns);
     box.append(foot);
     input.addEventListener('change', () => { send([...input.files]); input.value = ''; });
     drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
@@ -424,6 +427,7 @@
           sentFiles = res.sent_files || sentFiles + 1;
           st.className = 'fs ok'; st.textContent = 'Sent ✓';
           count.hidden = false; count.textContent = 'You’ve sent me ' + sentFiles + (sentFiles === 1 ? ' file' : ' files') + ' so far. Thank you!';
+          close.textContent = 'All done';
         } catch (x) {
           if (x.code === 'bad_link') { busy = false; closeCard(); expired(); return; }
           st.className = 'fs bad';
@@ -454,10 +458,10 @@
     }
     return data;
   }
-  filesBtn.addEventListener('click', openFiles);
 
-  // Done: the whole first visit. A thank-you, and what happens next (Taya writes back by email).
-  done.addEventListener('click', () => {
+  // Done: on to "one last thing" (files), then the thank-you, and what happens next (Taya writes back by email).
+  done.addEventListener('click', () => openFiles());
+  function thanks() {
     const box = scrim('wfm-done-h');
     const h = el('h2', '', 'Thank you' + (first ? ', ' + first : '') + '!'); h.id = 'wfm-done-h';
     const bits = [];
@@ -471,7 +475,7 @@
     const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(more, bye);
     foot.append(el('p', 'soft', 'Nothing to sign or pay. We’ll talk first.'), btns);
     box.append(foot);
-  });
+  }
 
   /* ---------------- talking to the portal ---------------- */
   // a portal sign-in first (exactly as before); else the magic link's key, in the body as k
@@ -535,9 +539,7 @@
       ch.addEventListener('click', () => { panel.hidden = true; openCard(); });
       mp.append(ch); panel.append(mp);
     }
-    const fl = el('p', 'mypick', sentFiles ? 'Files sent: ' + sentFiles + '. ' : 'Got photos or a logo? ');
-    const fb = el('button', 'wfm-link', sentFiles ? 'Send more' : 'Send me anything'); fb.type = 'button';
-    fb.addEventListener('click', openFiles); fl.append(fb); panel.append(fl);
+    if (sentFiles) panel.append(el('p', 'mypick', 'Files sent: ' + sentFiles + '. You can send more after Done.'));
     if (!notes.length) { panel.append(el('p', 'none', canMark() ? 'Nothing yet. Tap anything on your mockup to leave a note.' : 'Nothing yet. Pick a build, then tap anything on your mockup to leave a note.')); }
     else {
       const ol = el('ol');
