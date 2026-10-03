@@ -244,6 +244,25 @@
       <ul class="things" id="things"></ul>
     </section>
 
+    <!-- texts from Web Faery (Oct 2 2026): shows once texts are switched on on the server -->
+    <section class="p-card" id="sec-texts" aria-labelledby="h-texts" hidden>
+      <span class="kicker">Texts</span>
+      <h2 id="h-texts">Sign in with a text</h2>
+      <div id="texts-on" hidden>
+        <p class="texts-now" id="texts-now"></p>
+        <button type="button" class="later" id="b-texts-off">Turn off texts</button>
+      </div>
+      <form id="f-texts" novalidate hidden>
+        <p class="texts-why">Rather get your sign-in codes by text? Add your cell number.</p>
+        <label class="field-label" for="in-cell">Your cell number</label>
+        <input id="in-cell" name="cell" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" placeholder="707 555 0123">
+        <label class="texts-agree"><input type="checkbox" id="in-agree"> <span id="texts-consent"></span></label>
+        <p class="texts-fine"><a href="texts.html" target="_blank" rel="noopener">How texts from Web Faery work</a></p>
+        <p class="err" id="texts-err" hidden></p>
+        <button class="btn" type="submit" id="b-texts"><span>Text me</span></button>
+      </form>
+    </section>
+
     <section class="p-card" id="sec-pay" aria-labelledby="h-pay" tabindex="-1">
       <span class="kicker">Payments</span>
       <h2 id="h-pay">Paid and still to come</h2>

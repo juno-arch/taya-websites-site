@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Texts from Web Faery</title>
+<meta name="description" content="Only if you say yes: what Web Faery texts you, how often, and how to stop anytime. Your number is never shared.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webfaery.love/texts.html">
+<meta property="og:site_name" content="Web Faery">
+<meta property="og:title" content="Texts from Web Faery">
+<meta property="og:description" content="Only if you say yes: what I text, how often, and how to stop anytime.">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Texts from Web Faery">
+<meta name="twitter:description" content="Only if you say yes: what I text, how often, and how to stop anytime.">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
+<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261001f">
+<link rel="stylesheet" href="soil.css?v=20261001f">
+<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
+<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
+<script src="mycelium.js?v=20261001f" defer></script>
+<link rel="stylesheet" href="pages.css?v=20261001f">
+<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
+<link rel="stylesheet" href="faery.css?v=20261001f">
+<script src="faery.js?v=20261001f" defer></script>
+<style>
+  .card + .card { margin-top: 22px; }
+  .card p, .card li { font-size: 17px; }
+  .card ul { margin: 12px 0 0; padding-left: 22px; display: grid; gap: 6px; }
+  .quote { margin: 14px 0 0; padding: 14px 18px; border-left: 3px solid var(--acc); background: var(--paper); border-radius: 0 12px 12px 0; font-style: italic; color: var(--link); }
+  .kw { font-family: 'Spectral', Georgia, serif; font-weight: 600; letter-spacing: 0.06em; }
+  @media (max-width: 420px) { .card { padding: 22px 20px 24px; } }
+</style>
+</head>
+<body>
+<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<div class="soil" aria-hidden="true"></div>
+<header class="page-hero">
+  <picture><source type="image/webp" srcset="images/forest-800.webp 800w, images/forest-1200.webp 1200w, images/forest.webp 1600w" sizes="100vw"><img class="photo" src="images/forest.jpg" srcset="images/forest-1200.jpg 1200w, images/forest.jpg 1600w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></picture>
+  <div class="bar">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
+  </div>
+  <div class="words">
+    <span class="eyebrow">Texts</span>
+    <h1>Texts from <em>Web Faery</em></h1>
+    <p class="lede">Only if you say yes. Here’s exactly what I send, how often, and how to stop anytime.</p>
+  </div>
+</header>
+<script>
+  (function () {
+    var h = document.querySelector('.page-hero');
+    if (!h || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ph = h.querySelector('.photo');
+    h.classList.add('wait');
+    // play the intro only once the photo has fully arrived; if it's still on its way after
+    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
+    var settled = false;
+    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
+    var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
+    var ready = function () { if (ph.decode) ph.decode().then(go, go); else go(); };
+    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
+      });
+    }, { passive: true });
+  })();
+</script>
+
+<main class="gutter"><div class="wrap">
+
+  <section class="card reveal" aria-labelledby="t-what">
+    <span class="kicker">What I text</span>
+    <h2 id="t-what">Just the useful bits</h2>
+    <ul>
+      <li>Your sign-in codes for your Web Faery portal, when you ask for one.</li>
+      <li>Now and then, a short note about your website, like “your draft is ready to look over”.</li>
+      <li>Replies, if you text me and I answer.</li>
+    </ul>
+    <p>No ads, no promotions, and I never text anyone who hasn’t said yes. Texts come from <span class="nowrap">(707) 232-8986</span> and start with “Web Faery”.</p>
+  </section>
+
+  <section class="card reveal" aria-labelledby="t-yes">
+    <span class="kicker">Saying yes</span>
+    <h2 id="t-yes">Only if you tick the box</h2>
+    <p>In your portal, under Texts, you can add your cell number and tick a box that says:</p>
+    <p class="quote">Yes, text me my Web Faery sign-in codes and updates about my website at this number. A few texts a month at most. Message and data rates may apply. Reply STOP to stop, HELP for help. Saying yes is never required to work with me.</p>
+    <p>Saying no is completely fine. Everything still comes by email.</p>
+  </section>
+
+  <section class="card reveal" aria-labelledby="t-often">
+    <span class="kicker">How often</span>
+    <h2 id="t-often">A few a month at most</h2>
+    <p>Usually just a sign-in code when you ask for one, and a note when something is ready for you. Message and data rates may apply, depending on your phone plan.</p>
+  </section>
+
+  <section class="card reveal" aria-labelledby="t-stop">
+    <span class="kicker">Stopping</span>
+    <h2 id="t-stop">Stop anytime</h2>
+    <p>Reply <span class="kw">STOP</span> to any text and they stop right away. Reply <span class="kw">HELP</span> for help, or email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>. You can also turn texts off in your portal.</p>
+  </section>
+
+  <section class="card reveal" id="privacy" aria-labelledby="t-privacy">
+    <span class="kicker">Privacy</span>
+    <h2 id="t-privacy">Your number stays with me</h2>
+    <p>Your number is only used for these texts. I never sell, rent or share your number, or your yes to texts, with anyone for their marketing. The texts go out through Twilio, the text message service I use, only so they can reach you. Carriers aren’t responsible for texts that arrive late or don’t arrive.</p>
+    <p>What you share for your website (in your portal, getting-started page or emails) is only for building it. It’s never shared or sold.</p>
+  </section>
+
+</div></main>
+
+<footer class="site-foot">
+  <div class="foot-in">
+    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="quiz.html">Which build?</a></li>
+      <li><a href="intake.html">Getting started</a></li>
+      <li><a href="domain.html">Web address guide</a></li>
+      <li><a href="texts.html">Texts and privacy</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
+  </div>
+</footer>
+
+<script>
+  // gentle fade-up for cards below the fold; the page is fully readable without it
+  (function () {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var show = function (entries, obs) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
+      });
+    };
+    var io = new IntersectionObserver(show, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    // tall cards start as soon as their top edge is in view, so they never leave an empty gap
+    var ioTall = new IntersectionObserver(show, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.92) { el.classList.add('pre'); (r.height > window.innerHeight * 0.8 ? ioTall : io).observe(el); }
+    });
+  })();
+</script>
+</body>
+</html>

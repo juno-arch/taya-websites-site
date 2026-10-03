@@ -1740,6 +1740,7 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="quiz.html">Which build?</a></li>
       <li><a href="domain.html">Web address guide</a></li>
+      <li><a href="texts.html">Texts and privacy</a></li>
       <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
     </ul>
     <p class="fine">No trackers here. Your answers stay on this device until you send them. <button type="button" class="later" id="start-over" style="font-family: inherit; font-size: inherit; font-weight: 400; min-height: 44px">Start over</button></p>
@@ -3216,6 +3217,25 @@
   // the sign-in link brings them back here, with the same link options
   $('#p-cloud').href = '/portal.html?back=' + encodeURIComponent('/start.html' + location.search);
   showCloud();
+  // Getting started opens per client, once Taya has emailed them about their mockup (Oct 2 2026). A signed-in
+  // client whose turn it isn't yet sees a kind "not yet" instead of the agreement and deposit.
+  if (cloud.token) {
+    cloud.json('/me', {}).then((me) => {
+      if (!me || me.start_open !== false) return;
+      const main = document.getElementById('main');
+      const wrap = main && main.querySelector('.wrap');
+      if (!wrap) return;
+      [...wrap.children].forEach((n) => { n.hidden = true; });
+      const card = document.createElement('div'); card.className = 'card'; card.setAttribute('role', 'status');
+      const h = document.createElement('h2'); h.textContent = 'Not quite yet';
+      const p1 = document.createElement('p');
+      p1.textContent = 'This page opens once we’ve emailed about your mockup. For now it’s just your mockup: pick a build, leave me notes, and tap Done.';
+      const p2 = document.createElement('p');
+      const a = document.createElement('a'); a.className = 'btn'; a.href = me.mockup && /^https:\/\/webfaery\.love\/peek\//.test(me.mockup.url) ? me.mockup.url : '/portal.html';
+      a.textContent = me.mockup ? 'Open my mockup' : 'Back to my portal';
+      p2.append(a); card.append(h, p1, p2); wrap.prepend(card);
+    }).catch(() => {});
+  }
   if (cloud.token) {
     (async () => {
       let d = null;

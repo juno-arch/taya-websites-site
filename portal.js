@@ -401,7 +401,7 @@
     VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
     $('#foot-out').hidden = id !== 'v-project';
     $('#b-signout-top').hidden = id !== 'v-project';
-    if (id !== 'v-project') $('#nav-start').hidden = false;
+    if (id !== 'v-project') $('#nav-start').hidden = true; // only signed in, and only once Taya opens it
   };
   const announce = (text) => {
     const l = $('#live');
@@ -701,6 +701,7 @@
         receipts: arr(th.receipts).map((r) => ({ name: str(r && r.name, 200), label: str(r && r.label, 120) || 'Receipt' })).filter((r) => r.name).slice(0, 20)
       },
       start_open: d.start_open !== false,   // Taya's getting-started switch (older servers: always open)
+      sms: d.sms && typeof d.sms === 'object' ? { available: d.sms.available === true, on: d.sms.on === true, last4: /^\d{4}$/.test(str(d.sms.last4)) ? d.sms.last4 : '' } : null,
       // their magic mockup while getting started is closed, and whether they've finished it
       mockup: d.mockup && /^https:\/\/webfaery\.love\/peek\/[a-z0-9-]{1,40}\/\?mark=1$/.test(str(d.mockup.url)) ? { url: str(d.mockup.url), done_on: str(d.mockup.done_on, 30) } : null,
       pay: arr(d.pay).filter((p) => p && ['deposit', 'balance', 'care'].includes(p.key)).map((p) => ({
@@ -771,7 +772,7 @@
     const soon = d && !isPast(d) ? shortDate(d) : '';
     if (cur === 'care') return 'Live, and in my care';
     if (cur === 'resting') return 'Live, and all yours';
-    if (cur === 'getting_started') return 'Now: getting started';
+    if (cur === 'getting_started') return !me.start_open && me.mockup ? 'Now: your mockup' : 'Now: getting started';
     if (cur === 'call') return 'Now: gathering your story' + (d ? (isPast(d) ? '' : ', ' + shortDate(d)) : '');
     if (cur === 'draft') return 'Now: your draft' + (soon ? ', about ' + soon : '');
     if (cur === 'changes') return 'Now: your changes' + (soon ? ', about ' + soon : '');
@@ -820,6 +821,7 @@
     renderList();
     renderTimeline();
     renderThings();
+    renderTexts();
     renderPay();
     renderChange();
     placeChange();
@@ -845,6 +847,49 @@
     const before = up ? (me.list.open.length ? $('#sec-where') : $('#sec-list')) : null;
     if (before) { if (sec.nextElementSibling !== before) proj.insertBefore(sec, before); }
     else if (proj.lastElementChild !== sec) proj.append(sec);
+  }
+
+  /* ---- texts: sign in with a text (Oct 2 2026). The words match the server's SMS_CONSENT exactly. ---- */
+  const SMS_CONSENT = 'Yes, text me my Web Faery sign-in codes and updates about my website at this number. ' +
+    'A few texts a month at most. Message and data rates may apply. Reply STOP to stop, HELP for help. ' +
+    'Saying yes is never required to work with me.';
+  function renderTexts() {
+    const sec = $('#sec-texts');
+    const s = me.sms;
+    if (!s || !s.available) { sec.hidden = true; return; }
+    wireTexts();
+    sec.hidden = false;
+    $('#texts-on').hidden = !s.on;
+    $('#f-texts').hidden = s.on;
+    $('#h-texts').textContent = s.on ? 'Texts are on' : 'Sign in with a text';
+    $('#texts-now').textContent = 'Your sign-in codes can come by text to the number ending in ' + s.last4 + '. Reply STOP anytime to stop.';
+    $('#texts-consent').textContent = SMS_CONSENT;
+  }
+  let textsWired = false;
+  function wireTexts() {
+    if (textsWired) return; textsWired = true;
+    const err = (m) => { const p = $('#texts-err'); p.hidden = !m; p.textContent = m || ''; };
+    $('#f-texts').addEventListener('submit', async (ev) => {
+      ev.preventDefault(); err('');
+      const digits = $('#in-cell').value.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+      if (digits.length !== 10) { err('That doesn’t look like a 10-digit number.'); $('#in-cell').focus(); return; }
+      if (!$('#in-agree').checked) { err('Tick the box to say yes to texts.'); $('#in-agree').focus(); return; }
+      if (DEMO) { toast('Demo: nothing was saved.'); return; }
+      const b = $('#b-texts'); b.disabled = true;
+      try {
+        const d = await postJSON('/sms', { on: true, phone: digits, agree: true }, token);
+        me.sms = Object.assign({}, me.sms, d.sms || {}); renderTexts(); toast('Texts are on. Thank you!');
+      } catch (e) {
+        err(e.reason === 'taken' ? 'That number is already on another account. Email me and I’ll sort it out.'
+          : e.code === 'slow_down' ? 'That’s a lot of changes for now. Try again in a bit.'
+          : 'That didn’t go through. Try again?');
+      } finally { b.disabled = false; }
+    });
+    $('#b-texts-off').addEventListener('click', async () => {
+      if (DEMO) { toast('Demo: nothing was saved.'); return; }
+      try { const d = await postJSON('/sms', { on: false }, token); me.sms = Object.assign({}, me.sms, d.sms || {}); renderTexts(); toast('Texts are off.'); }
+      catch (e) { toast('That didn’t go through. Try again?'); }
+    });
   }
 
   /* ---- whose turn it is (the magic mockup step, Oct 2 2026) ---- */
@@ -882,6 +927,8 @@
     $('#todos').replaceChildren(...open.map(todoRow));
     $('#todos').hidden = !open.length;
     $('#list-empty').hidden = open.length > 0;
+    // their turn on the mockup: an empty list mustn't sit under "Your turn" saying "rest easy"
+    $('#sec-list').hidden = !open.length && !me.start_open && !!me.mockup && !me.mockup.done_on;
     $('#list-empty-text').textContent = cur === 'care' || cur === 'resting'
       ? 'Nothing on your list. Your site is in good hands.'
       : 'Nothing on your list right now. Rest easy, I’ve got the next bit.';
@@ -1274,6 +1321,7 @@
 
     // their live site once it's out, otherwise the draft
     if (c.site_url && ci >= 4) row('i-globe', 'Your site', hostOf(c.site_url), [outLink(c.site_url, 'Visit', null, 'your live site')]);
+    else if (me.mockup) row('i-eye', 'Your mockup', 'Pick a build and tap anything to leave me a note.', [outLink(me.mockup.url, 'Open', null, 'your mockup')]);
     else if (th.draft) row('i-eye', 'Your draft', th.draft.note || 'A private link, just for you.', [outLink(th.draft.url, 'Open', null, 'your private draft')]);
     else {
       const d = shortDate(stageDate('draft'));

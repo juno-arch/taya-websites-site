@@ -312,7 +312,7 @@
     box.append(care);
     const foot = el('div', 'foot');
     // a straight path (Pollen, Oct 2): pick a build, leave notes, done. No "show me everything".
-    foot.append(el('p', 'soft', 'You can switch anytime, and nothing is final until we talk.'));
+    foot.append(el('p', 'soft', 'You can switch anytime, and nothing is final until we’ve emailed.'));
     box.append(foot);
     card.append(box);
     card.dataset.picker = '1';
@@ -320,7 +320,7 @@
     document.body.appendChild(card);
     const first = grid.querySelector('.wfm-build'); if (first) first.focus({ preventScroll: true });
   }
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card && !(card.dataset.picker && !canMark())) closeCard(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card && !busy && !(card.dataset.picker && !canMark())) closeCard(); });
 
   // The words that only make sense on a mockup: "Send (preview)" buttons read "Send", and the little
   // "With Mother, this button opens..." lines under a build's button go. Put back for "show me everything".
@@ -415,15 +415,17 @@
     arow.append(amsg, asend); any.append(lab, ta, arow);
     box.append(drop, list, count, any);
     const anyNonce = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)).replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
-    let anyNo = 0;
-    async function sendAny() {
+    let anyNo = 0, anyP = null;
+    function sendAny() { return anyP || (anyP = sendAnyNow().finally(() => { anyP = null; })); } // one at a time
+    async function sendAnyNow() {
       const what = ta.value.trim();
       if (!what) return true;
       if (what.length < 3) { amsg.hidden = false; amsg.className = 'msg bad'; amsg.textContent = 'Just a few words is plenty.'; return false; }
       asend.disabled = true; asend.textContent = 'Sending…';
       try {
         const spot = 'Anything else (the last step)';
-        const res = await call('/mark', { what, page: PAGE, spot, nonce: (anyNonce + '-' + (anyNo++)).slice(0, 40) });
+        const res = await call('/mark', { what, page: PAGE, spot, nonce: (anyNonce + '-' + anyNo).slice(0, 40) }); // a retry reuses it
+        anyNo++;
         notes.push({ id: res.id, what, spot, status: 'new', reply: '', el: null });
         ta.value = ''; amsg.hidden = false; amsg.className = 'msg'; amsg.textContent = 'Sent ✓ Thank you!';
         asend.disabled = false; asend.textContent = 'Send to Taya'; close.textContent = 'All done'; renderPanel();
@@ -441,7 +443,11 @@
     const back = el('button', 'wfm-btn ghost', 'Back to my notes'); back.type = 'button';
     back.addEventListener('click', () => { if (!busy) closeCard(); });
     const close = el('button', 'wfm-btn', sentFiles ? 'All done' : 'Skip, I’m done'); close.type = 'button';
-    close.addEventListener('click', async () => { if (busy) return; if (await sendAny()) thanks(); }); // typed but not sent: send it
+    close.addEventListener('click', async () => {
+      if (busy || close.disabled) return;
+      close.disabled = true;
+      try { if (await sendAny()) thanks(); } finally { close.disabled = false; } // typed but not sent: send it
+    });
     const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(back, close);
     foot.append(el('p', 'soft', 'You can come back and send more anytime.'), btns);
     box.append(foot);
@@ -470,6 +476,7 @@
             : x.reason === 'full' ? 'Your space is full. Email me the rest?'
             : x.reason === 'too_many' ? 'That’s the most this spot holds. Email me the rest?'
             : x.reason === 'type' ? 'This kind of file won’t go. Email it to me?'
+            : x.code === 'signed_out' ? 'Your sign-in ran out. Sign in at your portal again, then come back.'
             : 'Didn’t go through. Try again?';
           if (x.code === 'slow_down') break;
         }
@@ -479,7 +486,7 @@
   }
   async function upload(f) {
     const fd = new FormData();
-    fd.append('page', PAGE); if (!token) fd.append('k', magic);
+    fd.append('page', PAGE); if (magic) fd.append('k', magic);
     fd.append('files', f, f.name);
     const headers = {}; if (token) headers['X-WF-Session'] = token;
     let res;
@@ -493,11 +500,28 @@
     }
     return data;
   }
+  // (a file that fails because the sign-in ran out says so, below)
 
   // Done: on to "one last thing" (files), then the thank-you, and what happens next (Taya writes back by email).
   done.addEventListener('click', () => openFiles());
+  // "Done" has to reach the server (their portal flips to "My turn", Taya gets her email): if it can't now,
+  // it's kept for this page and sent again on the next visit.
+  const DONE_KEY = 'wf-mockup-done:' + PAGE;
+  async function sendDone() {
+    for (let i = 0; i < 3; i++) {
+      try { await call('/mockup-done', { page: PAGE }); store((s) => s.removeItem(DONE_KEY)); return true; }
+      catch (x) {
+        if (x.code === 'bad_link') { expired(); return false; }
+        if (x.code === 'signed_out' || x.code === 'slow_down') break;
+        await new Promise((r) => setTimeout(r, 1500 * (i + 1)));
+      }
+    }
+    store((s) => s.setItem(DONE_KEY, '1'));
+    return false;
+  }
+  let startOpen = false; // from /marks: getting started is already open for them
   function thanks() {
-    call('/mockup-done', { page: PAGE }).catch((x) => { if (x.code === 'bad_link') expired(); }); // their portal: "My turn" 
+    sendDone(); // their portal: "My turn" 
     const box = scrim('wfm-done-h');
     const h = el('h2', '', 'Thank you' + (first ? ', ' + first : '') + '!'); h.id = 'wfm-done-h';
     const bits = [];
@@ -509,7 +533,7 @@
     const more = el('button', 'wfm-btn ghost', 'Keep going'); more.type = 'button'; more.addEventListener('click', closeCard);
     const bye = el('a', 'wfm-btn', 'Close my notes'); bye.href = exitUrl;
     const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(more, bye);
-    foot.append(el('p', 'soft', 'Nothing to sign or pay. We’ll talk first.'), btns);
+    foot.append(el('p', 'soft', startOpen ? 'I’ll email you once I’ve looked them over.' : 'Nothing to sign or pay yet. I’ll email you first.'), btns);
     box.append(foot);
   }
 
@@ -519,7 +543,7 @@
     let res;
     const headers = { 'Content-Type': 'application/json' };
     if (token) headers['X-WF-Session'] = token;
-    const send = token ? body : Object.assign({}, body, { k: magic });
+    const send = magic ? Object.assign({}, body, { k: magic }) : body; // the server picks: own sign-in, else this page's key
     try {
       res = await fetch(BASE + path, { method: 'POST', headers,
         body: JSON.stringify(send), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
@@ -571,7 +595,7 @@
     panel.append(el('h2', '', 'Your notes'));
     if (pickReady) {
       const mp = el('p', 'mypick', canMark() && myPick ? 'Your pick: ' + NAMES[myPick] + '. ' : 'No build picked yet. ');
-      const ch = el('button', 'wfm-link', myPick ? 'Change my pick' : 'Pick one'); ch.type = 'button';
+      const ch = el('button', 'wfm-link', canMark() && myPick ? 'Change my pick' : 'Pick one'); ch.type = 'button';
       ch.addEventListener('click', () => { panel.hidden = true; openCard(); });
       mp.append(ch); panel.append(mp);
     }
@@ -601,6 +625,9 @@
   call('/marks', { page: PAGE }).then((d) => {
     notes = (d.marks || []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, status: x.status, reply: x.reply }));
     sentFiles = Math.max(0, +d.sent_files || 0); first = typeof d.first === 'string' ? d.first.slice(0, 40) : '';
+    startOpen = d.start_open === true;
+    let pending = false; store((s) => { if (s.getItem(DONE_KEY)) pending = true; });
+    if (pending) sendDone(); // last time's Done didn't reach the server
     if (typeof d.pick === 'string') { // the server knows about picks
       pickReady = true; founding = d.founding === true; myPick = d.pick;
       if (myPick && myPick !== 'all') showView(myPick);
@@ -616,6 +643,9 @@
       bar.append(el('span', '', 'Your sign-in ran out. Sign in at your portal again to leave notes.'));
       const a = el('a', 'wfm-btn', 'Sign in'); a.href = '/portal.html?back=' + encodeURIComponent(location.pathname + '?mark=1' + location.hash);
       bar.append(a); marking = false;
+      return;
     }
+    // the server couldn't be reached: say so, rather than letting notes go nowhere
+    say.lastChild.textContent = 'I couldn’t reach my server just now, so notes may not send. Try reloading in a minute.';
   });
 })();
