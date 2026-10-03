@@ -156,6 +156,14 @@
     background: #0d1630; color: #e8eaf2; isolation: isolate; }
   .hero-photo { position: absolute; inset: -2% 0 0; z-index: -3; background: url('images/hero.jpg') var(--hero-pos, 50% 50%) / cover no-repeat;
     translate: 0 var(--hero-shift, 0px); }
+  /* shooting stars: now and then one streaks across the sky in the photo */
+  .meteors { position: absolute; inset: 15% 0 42% 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .meteor { position: absolute; height: 1.5px; border-radius: 2px; transform-origin: 100% 50%; opacity: 0;
+    background: linear-gradient(90deg, rgba(214, 220, 255, 0), rgba(214, 220, 255, 0.45) 65%, #fff);
+    animation: meteor var(--d) cubic-bezier(.35, .05, .65, 1) forwards; }
+  .meteor::after { content: ""; position: absolute; right: -2px; top: 50%; width: 3px; height: 3px; margin-top: -1.5px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px rgba(205, 212, 255, 0.85); }
+  @keyframes meteor { 0% { opacity: 0; transform: rotate(var(--r)) translateX(0) scaleX(0.25); } 12% { opacity: 1; } 65% { opacity: 0.95; } 100% { opacity: 0; transform: rotate(var(--r)) translateX(var(--dist)) scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .meteors { display: none; } }
   .hero-veil { position: absolute; inset: 0; z-index: -2; pointer-events: none;
     background:
       radial-gradient(90% 60% at 12% 92%, rgba(13, 22, 48, 0.62) 0%, rgba(13, 22, 48, 0) 70%),
@@ -984,6 +992,7 @@
 <div class="hero" id="top">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
+  <div class="meteors" id="meteors" aria-hidden="true"></div>
   <div class="hero-top gutter">
     <header class="wrap bar">
       <a class="mark" href="#top" aria-label="Float U Humboldt, back to top"><svg class="lotus" viewBox="0 0 287 195" aria-hidden="true" focusable="false"><use href="#fu-lotus"/></svg><b>Float U</b><span>Humboldt</span></a>
@@ -1666,6 +1675,31 @@
   <button type="button" class="wl-x" id="wl-x" aria-label="Close the waitlist"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
 </dialog>
 
+<script>
+  (function () {
+    var box = document.getElementById('meteors'), hero = document.querySelector('.hero');
+    if (!box || !hero || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var seen = true, timer;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { seen = e[0].isIntersecting; }).observe(hero);
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function shoot() {
+      if (seen && !document.hidden) {
+        var m = document.createElement('i'), w = box.clientWidth, h = box.clientHeight;
+        m.className = 'meteor';
+        m.style.width = Math.round(rnd(110, 190)) + 'px';
+        m.style.left = Math.round(rnd(0.3, 0.95) * w) + 'px';
+        m.style.top = Math.round(rnd(0.04, 0.55) * h) + 'px';
+        m.style.setProperty('--r', rnd(148, 164).toFixed(1) + 'deg');
+        m.style.setProperty('--dist', Math.round(rnd(240, Math.min(460, w * 0.6))) + 'px');
+        m.style.setProperty('--d', rnd(1.1, 1.7).toFixed(2) + 's');
+        box.appendChild(m);
+        m.addEventListener('animationend', function () { m.remove(); });
+      }
+      timer = setTimeout(shoot, rnd(4200, 9500));
+    }
+    timer = setTimeout(shoot, 5200);
+  })();
+</script>
 <span class="ribbon">A mockup from Web Faery</span>
 <button type="button" class="theme-tab" id="theme-tab" aria-label="Light or dark" aria-expanded="false" aria-controls="theme-panel" hidden><svg aria-hidden="true"><use href="#i-theme"/></svg><span>Light / dark</span></button>
 <div class="theme-panel fade-in" id="theme-panel" hidden>
