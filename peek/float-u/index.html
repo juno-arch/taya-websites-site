@@ -160,15 +160,6 @@
     background:
       radial-gradient(90% 60% at 12% 92%, rgba(13, 22, 48, 0.62) 0%, rgba(13, 22, 48, 0) 70%),
       linear-gradient(to top, rgba(13, 22, 48, 0.78) 0%, rgba(13, 22, 48, 0.3) 44%, rgba(13, 22, 48, 0.06) 66%, rgba(13, 22, 48, 0.46) 100%); }
-  .hero-rings { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-  .rp { position: absolute; left: 66%; top: 70%; width: 360px; height: 66px; translate: -50% -50%; }
-  .rp.b { left: 33%; top: 85%; width: 230px; height: 42px; }
-  .rp i { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(220, 225, 255, 0.6); box-shadow: 0 0 10px rgba(180, 190, 255, 0.2), inset 0 0 8px rgba(180, 190, 255, 0.14); opacity: 0; transform: scale(0.04); }
-  .rp i:nth-child(2) { border-color: rgba(220, 225, 255, 0.48); }
-  .rp i:nth-child(3) { border-color: rgba(220, 225, 255, 0.36); }
-  .rp i:nth-child(4) { border-color: rgba(220, 225, 255, 0.26); }
-  .rp i:nth-child(5) { border-color: rgba(220, 225, 255, 0.17); }
-  .rp b { position: absolute; left: 50%; top: 50%; width: 12px; height: 4px; margin: -2px 0 0 -6px; border-radius: 50%; background: rgba(236, 238, 255, 0.95); box-shadow: 0 0 14px 4px rgba(200, 208, 255, 0.45); opacity: 0; }
   .hero-top { position: relative; z-index: 2; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-block: 20px; }
   .mark { display: inline-flex; align-items: baseline; gap: 10px; color: inherit; text-decoration: none; padding-block: 10px; margin-block: -10px; }
@@ -212,30 +203,13 @@
   .hero.go .hero-sub { animation: surface-sm 1.6s cubic-bezier(.22, 1, .36, 1) 4.7s both; }
   .hero.go .hero-cta { animation: surface-sm 1.6s cubic-bezier(.22, 1, .36, 1) 5.1s both; }
   .hero.go .sample-tag { animation: fade 1.6s ease 3s both; }
-  /* a drop lands, then rings roll out one after another and fade as they spread */
-  .hero.go .rp i { animation: ripple 7s cubic-bezier(.12, .62, .3, 1) infinite; }
-  .hero.go .rp b { animation: splash 7s ease-out infinite; }
-  .hero.go .rp.a b, .hero.go .rp.a i:nth-child(1) { animation-delay: 4.6s; }
-  .hero.go .rp.a i:nth-child(2) { animation-delay: 4.95s; }
-  .hero.go .rp.a i:nth-child(3) { animation-delay: 5.3s; }
-  .hero.go .rp.a i:nth-child(4) { animation-delay: 5.65s; }
-  .hero.go .rp.a i:nth-child(5) { animation-delay: 6s; }
-  .hero.go .rp.b b, .hero.go .rp.b i:nth-child(1) { animation-delay: 8.1s; }
-  .hero.go .rp.b i:nth-child(2) { animation-delay: 8.45s; }
-  .hero.go .rp.b i:nth-child(3) { animation-delay: 8.8s; }
-  .hero.go .rp.b i:nth-child(4) { animation-delay: 9.15s; }
   @keyframes hero-photo { from { opacity: 0; transform: scale(1.16); } 22% { opacity: 1; } to { opacity: 1; transform: none; } }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes surface { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
   @keyframes surface-sm { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } to { opacity: 1; transform: none; filter: blur(0); } }
   @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-  @keyframes ripple { 0% { opacity: 0; transform: scale(0.04); } 3% { opacity: 0.9; } 52% { opacity: 0; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
-  @keyframes splash { 0% { opacity: 0; transform: scale(0.3); } 1.5% { opacity: 1; transform: scale(1); } 9% { opacity: 0; transform: scale(2.2, 0.5); } 100% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .hero-rings { display: none; } }
   @media (max-aspect-ratio: 3 / 4) {
     .hero-photo { background-size: auto 116%; background-position: 50% 100%; }
-    .rp { left: 72%; top: 47%; width: 250px; height: 46px; }
-    .rp.b { left: 30%; top: 58%; width: 160px; height: 30px; }
   }
 
   
@@ -1021,7 +995,6 @@
 <div class="hero" id="top">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
-  <div class="hero-rings" aria-hidden="true"><span class="rp a"><b></b><i></i><i></i><i></i><i></i><i></i></span><span class="rp b"><b></b><i></i><i></i><i></i><i></i></span></div>
   <div class="hero-top gutter">
     <header class="wrap bar">
       <a class="mark" href="#top" aria-label="Float U Humboldt, back to top"><svg class="lotus" viewBox="0 0 287 195" aria-hidden="true" focusable="false"><use href="#fu-lotus"/></svg><b>Float U</b><span>Humboldt</span></a>
