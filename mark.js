@@ -9,7 +9,11 @@
    The build picker (Oct 2 2026): the first time they open it, a welcome card asks "Which one feels like you?"
    (Maiden, Mother, Crone, or everything). Picking switches the mockup's own "See it as" view and saves the
    pick to their portal (/pick), so the view comes back on their next visit. "Change my pick" in the notes
-   panel opens the card again. */
+   panel opens the card again.
+   Send me anything (Oct 2 2026): a card for photos, a logo, a menu, reviews, anything not on the mockup yet.
+   Files go one at a time to /mockup-upload and land on one list item in their portal ("Things you sent from
+   your mockup"). "Done" says thank you and that Taya will email them: this is the whole first visit. Nothing
+   to sign or pay here; that comes later, once Taya has written back. */
 (function () {
   'use strict';
   if (window.__wfMark) return; window.__wfMark = true;
@@ -100,6 +104,17 @@
   .wfm-card .care a { color: #f2c77c; }
   .wfm-card .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 14px; }
   .wfm-card .soft { margin: 0; font-size: 14px; color: #c9bfac; font-style: italic; }
+  .wfm-card ul.ideas { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 4px; font-size: 15px; line-height: 1.45; color: #e6dccb; }
+  .wfm-card .small { margin: 0 0 14px; font-size: 13.5px; line-height: 1.45; color: #c9bfac; }
+  .wfm-drop { display: grid; place-items: center; gap: 8px; padding: 18px; border-radius: 14px; border: 1.5px dashed rgba(240, 184, 103, 0.6);
+    background: #23221e; text-align: center; font-size: 15px; color: #d9cfbd; cursor: pointer; }
+  .wfm-drop.over { border-color: #f0b867; background: #2a2823; }
+  .wfm-drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .wfm-files { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; }
+  .wfm-files li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; border-radius: 10px; background: #23221e; }
+  .wfm-files .fs { color: #c9bfac; white-space: nowrap; }
+  .wfm-files .ok { color: #9fc59a; } .wfm-files .bad { color: #f3a98c; }
+  .wfm-card .sentcount { margin: 12px 0 0; font-size: 14px; color: #9fc59a; }
   @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -133,8 +148,9 @@
   const say = el('span'); const b = el('b', '', 'Magic mockup: '); say.append(b, document.createTextNode('tap anything you’d like changed.'));
   const listBtn = el('button', 'wfm-btn ghost', 'Your notes'); listBtn.type = 'button';
   const pauseBtn = el('button', 'wfm-btn ghost', 'Pause'); pauseBtn.type = 'button';
-  const done = el('a', 'wfm-btn', 'Done'); done.href = exitUrl;
-  bar.append(say, listBtn, pauseBtn, done);
+  const filesBtn = el('button', 'wfm-btn ghost', 'Send me anything'); filesBtn.type = 'button';
+  const done = el('button', 'wfm-btn', 'Done'); done.type = 'button';
+  bar.append(say, listBtn, filesBtn, pauseBtn, done);
   pauseBtn.addEventListener('click', () => {
     marking = !marking; pauseBtn.textContent = marking ? 'Pause' : 'Keep marking';
     say.lastChild.textContent = marking ? 'tap anything you’d like changed.' : 'paused, so the page works as usual.';
@@ -283,6 +299,109 @@
     call('/pick', { page: PAGE, pick: v }).catch((x) => { if (x.code === 'bad_link') expired(); });
   }
 
+  /* ---------------- send me anything ---------------- */
+  let sentFiles = 0, first = '';
+  const IDEAS = ['Your logo, the biggest version you have', 'Photos of you, your space or your work (phone photos are great)',
+    'A menu, price list or list of what you offer', 'Reviews or kind words people have sent you', 'A bio, your story, or any words you love',
+    'Flyers, cards or anything you’ve had printed', 'Colors or fonts you love'];
+  const EXTS = /\.(jpe?g|png|webp|heic|heif|gif|pdf|svg|eps|ai|ps|zip)$/i;
+  const MAX = 15 * 1024 * 1024;
+  const sizeOf = (n) => n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+  function scrim(labelId) {
+    closeCard(); closePop(); clearHover(); panel.hidden = true;
+    card = el('div', 'wfm wfm-scrim');
+    const box = el('div', 'wfm-card'); box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', labelId);
+    card.append(box);
+    card.addEventListener('click', (e) => { if (e.target === card && !busy) closeCard(); });
+    document.body.appendChild(card);
+    return box;
+  }
+  let busy = false;
+  function openFiles() {
+    const box = scrim('wfm-files-h');
+    const h = el('h2', '', 'Anything else for your site?'); h.id = 'wfm-files-h';
+    box.append(h, el('p', 'lead', 'If you’ve got something that isn’t on here yet, send it my way and I’ll find it a home. A few ideas, in case they help:'));
+    const ul = el('ul', 'ideas'); IDEAS.forEach((t) => ul.append(el('li', '', t))); box.append(ul);
+    box.append(el('p', 'small', 'Things like your hours or social links? Just tap the spot on your mockup and type them in a note. Nothing here is required.'));
+    const drop = el('label', 'wfm-drop');
+    const input = el('input'); input.type = 'file'; input.multiple = true;
+    input.accept = 'image/*,.pdf,.svg,.eps,.ai,.ps,.zip,.heic,.heif';
+    drop.append(input, el('b', '', 'Choose files'), el('span', '', 'or drop them here. Photos, PDFs, logo files or a zip, up to 15 MB each.'));
+    const list = el('ul', 'wfm-files');
+    const count = el('p', 'sentcount', ''); count.hidden = !sentFiles;
+    if (sentFiles) count.textContent = 'You’ve sent me ' + sentFiles + (sentFiles === 1 ? ' file' : ' files') + ' so far. Thank you!';
+    box.append(drop, list, count);
+    const foot = el('div', 'foot');
+    const close = el('button', 'wfm-btn', 'Done'); close.type = 'button';
+    close.addEventListener('click', () => { if (!busy) closeCard(); });
+    foot.append(el('p', 'soft', 'You can come back and send more anytime.'), close);
+    box.append(foot);
+    input.addEventListener('change', () => { send([...input.files]); input.value = ''; });
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); send([...(e.dataTransfer && e.dataTransfer.files || [])]); });
+    async function send(files) {
+      if (!files.length || busy) return;
+      busy = true; close.disabled = true;
+      for (const f of files.slice(0, 20)) {
+        const li = el('li'); const st = el('span', 'fs', 'Sending…');
+        li.append(el('span', '', f.name.length > 40 ? f.name.slice(0, 37) + '…' : f.name), st); list.append(li);
+        if (!EXTS.test(f.name)) { st.className = 'fs bad'; st.textContent = 'This kind of file won’t go. Email it to me?'; continue; }
+        if (f.size > MAX) { st.className = 'fs bad'; st.textContent = 'Over 15 MB (' + sizeOf(f.size) + '). Email it to me?'; continue; }
+        try {
+          const res = await upload(f);
+          sentFiles = res.sent_files || sentFiles + 1;
+          st.className = 'fs ok'; st.textContent = 'Sent ✓';
+          count.hidden = false; count.textContent = 'You’ve sent me ' + sentFiles + (sentFiles === 1 ? ' file' : ' files') + ' so far. Thank you!';
+        } catch (x) {
+          if (x.code === 'bad_link') { busy = false; closeCard(); expired(); return; }
+          st.className = 'fs bad';
+          st.textContent = x.code === 'slow_down' ? 'That’s a lot for one day! Send the rest tomorrow.'
+            : x.reason === 'full' ? 'Your space is full. Email me the rest?'
+            : x.reason === 'too_many' ? 'That’s the most this spot holds. Email me the rest?'
+            : x.reason === 'type' ? 'This kind of file won’t go. Email it to me?'
+            : 'Didn’t go through. Try again?';
+          if (x.code === 'slow_down') break;
+        }
+      }
+      busy = false; close.disabled = false; renderPanel();
+    }
+  }
+  async function upload(f) {
+    const fd = new FormData();
+    fd.append('page', PAGE); if (!token) fd.append('k', magic);
+    fd.append('files', f, f.name);
+    const headers = {}; if (token) headers['X-WF-Session'] = token;
+    let res;
+    try { res = await fetch(BASE + '/mockup-upload', { method: 'POST', headers, body: fd, mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
+    catch (e) { const x = new Error('network'); x.code = 'network'; throw x; }
+    let data = null; try { data = await res.json(); } catch (e) { data = null; }
+    if (!res.ok || !data || !data.ok) {
+      const code = (data && data.error) || 'server';
+      if (code === 'signed_out' && token && magic) { token = ''; return upload(f); }
+      const x = new Error('fail'); x.code = code; x.reason = data && data.reason; throw x;
+    }
+    return data;
+  }
+  filesBtn.addEventListener('click', openFiles);
+
+  // Done: the whole first visit. A thank-you, and what happens next (Taya writes back by email).
+  done.addEventListener('click', () => {
+    const box = scrim('wfm-done-h');
+    const h = el('h2', '', 'Thank you' + (first ? ', ' + first : '') + '!'); h.id = 'wfm-done-h';
+    const bits = [];
+    if (notes.length) bits.push('your ' + (notes.length === 1 ? 'note' : notes.length + ' notes'));
+    if (sentFiles) bits.push('your ' + (sentFiles === 1 ? 'file' : 'files'));
+    box.append(h, el('p', 'lead', 'That’s everything for now. I’ll look over ' + (bits.length ? bits.join(' and ') : 'your mockup') +
+      ' and email you with the next round. This link keeps working, so come back anytime to add more.'));
+    const foot = el('div', 'foot');
+    const more = el('button', 'wfm-btn ghost', 'Keep going'); more.type = 'button'; more.addEventListener('click', closeCard);
+    const bye = el('a', 'wfm-btn', 'Close my notes'); bye.href = exitUrl;
+    const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(more, bye);
+    foot.append(el('p', 'soft', 'Nothing to sign or pay. We’ll talk first.'), btns);
+    box.append(foot);
+  });
+
   /* ---------------- talking to the portal ---------------- */
   // a portal sign-in first (exactly as before); else the magic link's key, in the body as k
   async function call(path, body) {
@@ -344,6 +463,9 @@
       ch.addEventListener('click', () => { panel.hidden = true; openCard(); });
       mp.append(ch); panel.append(mp);
     }
+    const fl = el('p', 'mypick', sentFiles ? 'Files sent: ' + sentFiles + '. ' : 'Got photos or a logo? ');
+    const fb = el('button', 'wfm-link', sentFiles ? 'Send more' : 'Send me anything'); fb.type = 'button';
+    fb.addEventListener('click', openFiles); fl.append(fb); panel.append(fl);
     if (!notes.length) { panel.append(el('p', 'none', 'Nothing yet. Tap anything on your mockup to leave a note.')); }
     else {
       const ol = el('ol');
@@ -368,6 +490,7 @@
 
   call('/marks', { page: PAGE }).then((d) => {
     notes = (d.marks || []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, status: x.status, reply: x.reply }));
+    sentFiles = Math.max(0, +d.sent_files || 0); first = typeof d.first === 'string' ? d.first.slice(0, 40) : '';
     if (typeof d.pick === 'string') { // the server knows about picks
       pickReady = true; founding = d.founding === true; myPick = d.pick;
       if (myPick && myPick !== 'all') showView(myPick);

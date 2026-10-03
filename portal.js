@@ -700,6 +700,7 @@
         brand_sheet: !!th.brand_sheet, handoff_sheet: !!th.handoff_sheet,
         receipts: arr(th.receipts).map((r) => ({ name: str(r && r.name, 200), label: str(r && r.label, 120) || 'Receipt' })).filter((r) => r.name).slice(0, 20)
       },
+      start_open: d.start_open !== false,   // Taya's getting-started switch (older servers: always open)
       pay: arr(d.pay).filter((p) => p && ['deposit', 'balance', 'care'].includes(p.key)).map((p) => ({
         key: p.key, amount: Math.max(0, Math.round(+p.amount || 0)), period: p.period === 'year' ? 'year' : 'month',
         state: ['paid', 'due', 'later', 'active'].includes(p.state) ? p.state : 'later', paid_on: str(p.paid_on, 30), starts_on: str(p.starts_on, 30),
@@ -1265,6 +1266,9 @@
       const signed = a.signed_name ? 'Signed' + (a.signed_on ? ' ' + shortDate(a.signed_on) : '') + ' as ' + a.signed_name : 'Signed, thank you';
       if (a.file) row('i-sign', 'Our agreement', signed, [fileButton('agreement', null, 'Open', 'agreement')]);
       else row('i-sign', 'Our agreement', signed + '. Want a copy? Just ask.', null);
+    } else if (!me.start_open) {
+      // nothing to sign until Taya has written back after their mockup
+      row('i-sign', 'Our agreement', 'Nothing to sign yet. It comes later, once we’ve talked over email.', null, true);
     } else {
       const st = startItem();
       if (st && st.status === 'sent') {
