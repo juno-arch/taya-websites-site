@@ -382,14 +382,6 @@
   .addon:disabled { opacity: 1; border-style: dashed; }
   .addon:disabled > :not([data-why]) { opacity: 0.4; }
   .addon:disabled [data-why] { color: rgba(232, 234, 242, 0.78); }
-  .bk-days { display: flex; gap: 8px; overflow-x: auto; padding: 2px 26px 6px; margin: 0 -26px; scroll-padding-inline: 26px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
-  .day { flex: 0 0 auto; min-width: 66px; text-align: center; padding: 10px 8px; scroll-snap-align: start; }
-  .day small { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(232, 234, 242, 0.7); }
-  .day b { display: block; font-size: 22px; font-weight: 700; line-height: 1.2; }
-  .times { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
-  .time { text-align: center; padding: 11px 6px; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 15.5px; }
-  .time:disabled { text-decoration: line-through; }
-  .slot-note { margin-top: 12px; font-size: 14px; color: rgba(232, 234, 242, 0.7); }
   .call-note { border-left: 2px solid #9aa5ff; padding: 6px 0 6px 16px; color: rgba(232, 234, 242, 0.88); }
   .call-note b { color: #f4f2ee; }
   .bk-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; align-items: center; }
@@ -714,10 +706,8 @@
     .room .p { grid-column: 2; grid-row: 1; margin: 0; font-size: 28px; }
     .room small { grid-column: 1 / -1; }
     .addons { grid-template-columns: minmax(0, 1fr); }
-    .times { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .bk-card { padding: 20px 16px; }
-    .bk-days { padding-inline: 16px; margin-inline: -16px; scroll-padding-inline: 16px; }
-    .bk-side { grid-template-columns: minmax(0, 1fr); }
+      .bk-card { padding: 20px 16px; }
+      .bk-side { grid-template-columns: minmax(0, 1fr); }
     .bk-side .rc { grid-row: auto; }
     .plans { grid-template-columns: minmax(0, 1fr); gap: 10px; }
     .plan { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: baseline; padding: 18px; }
@@ -763,8 +753,7 @@
     .gutter { padding-inline: 16px; }
     .split .split-copy, .split.flip .split-copy { padding-inline: 16px; }
     .mark span { display: none; }
-    .times { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .kicker { font-size: 11px; letter-spacing: 0.18em; }
+      .kicker { font-size: 11px; letter-spacing: 0.18em; }
     .seg button { padding-inline: 10px; font-size: 14px; }
     .dp-mid { max-width: 150px; padding-inline: 12px; }
     .bk-nav .btn { padding-inline: 12px; }
@@ -1198,12 +1187,12 @@
   <div class="wrap">
     <div data-show="crone all" data-fold data-thing="booking guide">
     <p class="label"><span>Book your float</span> <span class="pv">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-    <h2 class="reveal" id="book-h" style="max-width:17ch">Pick a room, add what you like, <span class="acc">choose a time</span></h2>
-    <p class="lede-s">Here&rsquo;s how booking feels, start to finish. The real booking happens on Float U&rsquo;s Vagaro page, one tap away.</p>
+    <h2 class="reveal" id="book-h" style="max-width:17ch">Pick a room, add what you like, <span class="acc">then book</span></h2>
+    <p class="lede-s">See your room, your extras and your price first. Then one tap opens Float U&rsquo;s Vagaro right on that room, to pick your time.</p>
 
     <div class="bk">
       <div class="bk-card" id="bk">
-        <ol class="bk-steps" aria-hidden="true"><li data-n="1" class="on">Room</li><li data-n="2">Add-ons</li><li data-n="3">Day &amp; time</li><li data-n="4">Review</li></ol>
+        <ol class="bk-steps" aria-hidden="true"><li data-n="1" class="on">Room</li><li data-n="2">Add-ons</li><li data-n="3">Book</li></ol>
 
         <div data-pane="1">
           <h3 class="bk-h" tabindex="-1">Choose your room</h3>
@@ -1225,25 +1214,16 @@
         </div>
 
         <div data-pane="3" hidden>
-          <h3 class="bk-h" tabindex="-1">Pick a day and time</h3>
-          <div id="bk-pick">
-            <div class="bk-days" id="bk-days" role="group" aria-label="Day"></div>
-            <div class="times" id="bk-times" role="group" aria-label="Start time"></div>
-            <p class="slot-note">Every visit is an 80 minute slot. Open daily, 7 AM to 11 PM.</p>
-          </div>
-          <p class="call-note" id="bk-call" hidden>The Double Session is scheduled with a person, not a calendar. After you buy it, <b>call (707) 460-2002</b> and they&rsquo;ll set up your back-to-back time with you.</p>
-        </div>
-
-        <div data-pane="4" hidden>
           <h3 class="bk-h" tabindex="-1">Ready when you are</h3>
           <p class="review-sum" id="bk-summary"></p>
-          <p class="preview-note"><svg aria-hidden="true"><use href="#i-info"/></svg><span>Preview: nothing here books a real float. On your real site, this last step finishes on your Vagaro page.</span></p>
+          <p class="call-note" id="bk-call" hidden>The Double Session is scheduled with a person, not a calendar. After you buy it, <b>call (707) 460-2002</b> and they&rsquo;ll set up your back-to-back time with you.</p>
+          <p class="preview-note"><svg aria-hidden="true"><use href="#i-info"/></svg><span>Preview: nothing here books a real float. On your real site, this button opens your Vagaro straight to the room they picked. They add their extras and choose a time there, and it lands in your Vagaro calendar like any booking.</span></p>
         </div>
 
         <div class="bk-nav">
           <button type="button" class="btn ghost-n" id="bk-back" hidden>Back</button>
           <button type="button" class="btn" id="bk-next" disabled>Next</button>
-          <a class="btn salt" id="bk-real" href="https://www.vagaro.com/floatuhumboldt" target="_blank" rel="noopener" hidden>Book on Float U&rsquo;s Vagaro page <svg aria-hidden="true"><use href="#i-ext"/></svg></a>
+          <a class="btn salt" id="bk-real" href="https://www.vagaro.com/floatuhumboldt/services" target="_blank" rel="noopener" hidden><span id="bk-real-t">Book on Float U&rsquo;s Vagaro</span> <svg aria-hidden="true"><use href="#i-ext"/></svg></a>
           <button type="button" class="btn ghost-n" id="bk-again" hidden>Start over</button>
         </div>
       </div>
@@ -1264,6 +1244,7 @@
       </div>
     </div>
     <p class="tier-note wf-note" data-show="all" data-fold><span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span><span>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your Vagaro page.</span></p>
+    <p class="tier-note wf-note" data-show="crone all" data-fold><span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span><span>Happy on Vagaro? Then nothing changes. If you&rsquo;d ever rather have the whole booking (room, extras and time) right here on your own site, Crone can run it on Cal.com instead, free and in your own name. Totally your call.</span></p>
     </div>
 
     
@@ -1790,12 +1771,9 @@
       red: { name: 'Red light therapy', say: 'red light therapy', price: 25, rooms: ['fire'], why: 'Fire & Ice only', no: 'Fire & Ice only' },
       fif: { name: 'Float It Forward', say: 'Float It Forward', price: 10, rooms: ['float', 'fire'], why: 'Float U matches it for someone else', no: 'Add it to a Float or Fire & Ice visit' }
     };
-    var SLOTS = ['7:00 AM', '8:20 AM', '9:40 AM', '11:00 AM', '12:20 PM', '1:40 PM', '3:00 PM', '4:20 PM', '5:40 PM', '7:00 PM', '8:20 PM', '9:40 PM'];
-    var DN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var st;
     var panes = all('[data-pane]'), steps = all('.bk-steps li'), rooms = all('[data-room]'), adds = all('[data-add]');
     var next = $('bk-next'), back = $('bk-back'), real = $('bk-real'), again = $('bk-again');
-    var days = $('bk-days'), times = $('bk-times');
 
     function allowed(k) { return !!st.room && ADDS[k].rooms.indexOf(st.room) > -1; }
     function total() {
@@ -1817,7 +1795,6 @@
       $('rc-total').textContent = '$' + total();
       var when = 'Open daily, 7 AM to 11 PM';
       if (st.room === 'double') when = 'Scheduled by phone after purchase';
-      else if (st.day && st.time) when = st.day + ' at ' + st.time + ', 80 min';
       else if (st.room) when = '80 min visit: 10 to settle, 60 in the room, 10 to rinse';
       $('rc-when').textContent = when;
     }
@@ -1833,56 +1810,27 @@
         b.querySelector('[data-why]').textContent = ok ? ADDS[k].why : ADDS[k].no;
       });
       var dbl = st.room === 'double';
-      $('bk-pick').hidden = dbl; $('bk-call').hidden = !dbl;
+      $('bk-call').hidden = !dbl;
       back.hidden = st.step === 1;
-      next.hidden = st.step === 4; real.hidden = st.step !== 4; again.hidden = st.step !== 4;
-      next.disabled = st.step === 1 ? !st.room : st.step === 3 ? !(dbl || (st.day && st.time)) : false;
-      next.textContent = st.step === 3 ? 'Review' : 'Next';
-      if (st.step === 4) {
+      next.hidden = st.step === 3; real.hidden = st.step !== 3; again.hidden = st.step !== 3;
+      next.disabled = st.step === 1 ? !st.room : false;
+      next.textContent = st.step === 2 ? 'Review' : 'Next';
+      if (st.step === 3) {
         var extras = Object.keys(ADDS).filter(function (k) { return st.adds[k]; }).map(function (k) { return ADDS[k].say; });
         var list = extras.length > 1 ? extras.slice(0, -1).join(', ') + ' and ' + extras[extras.length - 1] : extras.join('');
         var s = ROOMS[st.room].name + (extras.length ? ', with ' + list : '');
-        s += dbl ? '. You call to set the time after you buy.' : ', ' + st.day + ' at ' + st.time + '.';
-        $('bk-summary').textContent = s + ' Total $' + total() + '.';
+        $('bk-summary').textContent = s + '. Total $' + total() + (dbl ? '.' : ', and you pick your time on Vagaro.');
+        $('bk-real-t').textContent = (dbl ? 'Buy the Double Session' : 'Book the ' + ROOMS[st.room].name) + ' on Vagaro';
       }
       receipt();
     }
     function go(n) { st.step = n; paint(); quietFocus(card.querySelector('[data-pane="' + n + '"] .bk-h')); }
-    function drawDays() {
-      days.innerHTML = '';
-      var t = new Date();
-      for (var i = 1; i <= 7; i++) {
-        (function (d) {
-          var b = document.createElement('button'); b.type = 'button'; b.className = 'opt day'; b.setAttribute('aria-pressed', 'false');
-          var label = DN[d.getDay()] + ', ' + MN[d.getMonth()] + ' ' + d.getDate();
-          b.setAttribute('aria-label', label);
-          b.innerHTML = '<small>' + DN[d.getDay()] + '</small><b>' + d.getDate() + '</b>';
-          b.addEventListener('click', function () {
-            days.querySelectorAll('.day').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-            b.setAttribute('aria-pressed', 'true'); st.day = label; st.time = null; drawTimes(d.getDate()); paint();
-          });
-          days.appendChild(b);
-        })(new Date(t.getFullYear(), t.getMonth(), t.getDate() + i));
-      }
-    }
-    function drawTimes(seed) {
-      times.innerHTML = '';
-      SLOTS.forEach(function (s, k) {
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'opt time'; b.textContent = s; b.setAttribute('aria-pressed', 'false');
-        if ((seed * 7 + k * 5) % 6 === 0) { b.disabled = true; b.setAttribute('aria-label', s + ', booked'); }
-        b.addEventListener('click', function () {
-          times.querySelectorAll('.time').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-          b.setAttribute('aria-pressed', 'true'); st.time = s; paint();
-        });
-        times.appendChild(b);
-      });
-    }
     rooms.forEach(function (b) { b.addEventListener('click', function () { st.room = b.dataset.room; paint(); }); });
     adds.forEach(function (b) { b.addEventListener('click', function () { var k = b.dataset.add; if (!allowed(k)) return; st.adds[k] = !st.adds[k]; paint(); }); });
-    next.addEventListener('click', function () { if (!next.disabled && st.step < 4) go(st.step + 1); });
+    next.addEventListener('click', function () { if (!next.disabled && st.step < 3) go(st.step + 1); });
     back.addEventListener('click', function () { if (st.step > 1) go(st.step - 1); });
     again.addEventListener('click', function () { reset(); go(1); });
-    function reset() { st = { step: 1, room: null, adds: {}, day: null, time: null }; drawDays(); times.innerHTML = ''; }
+    function reset() { st = { step: 1, room: null, adds: {} }; }
     reset(); paint();
   })();
 </script>
