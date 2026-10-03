@@ -119,6 +119,12 @@
   .wfm-files .fs { color: #c9bfac; white-space: nowrap; }
   .wfm-files .ok { color: #9fc59a; } .wfm-files .bad { color: #f3a98c; }
   .wfm-card .sentcount { margin: 12px 0 0; font-size: 14px; color: #9fc59a; }
+  .wfm-card .anything { margin: 18px 0 0; }
+  .wfm-card .anything label { display: block; margin: 0 0 6px; font-size: 15px; color: #e6dccb; }
+  .wfm-card .anything textarea { width: 100%; min-height: 84px; resize: vertical; padding: 10px; border-radius: 10px; border: 1px solid rgba(239, 230, 212, 0.25);
+    background: #121210; color: #efe6d4; font-size: 16px; line-height: 1.45; font-family: inherit; }
+  .wfm-card .anything .row { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+  .wfm-card .anything .msg { margin: 0; font-size: 14px; color: #9fc59a; } .wfm-card .anything .msg.bad { color: #f3a98c; }
   /* Once they've picked a build, the page is their site as it would be (Pollen, Oct 2: "I don't want it to show
      anything that's not on the website"): Taya's tags, notes, demo labels, view switchers and the Google preview go. */
   html.wfm-real .tag, html.wfm-real .wf-note, html.wfm-real .legend, html.wfm-real .tier-note, html.wfm-real .views-card,
@@ -400,13 +406,42 @@
     const list = el('ul', 'wfm-files');
     const count = el('p', 'sentcount', ''); count.hidden = !sentFiles;
     if (sentFiles) count.textContent = 'You’ve sent me ' + sentFiles + (sentFiles === 1 ? ' file' : ' files') + ' so far. Thank you!';
-    box.append(drop, list, count);
+    // and a box for anything at all (Pollen, Oct 2), saved as one more note
+    const any = el('div', 'anything');
+    const lab = el('label', '', 'Anything else you’d like me to know?'); lab.htmlFor = 'wfm-any';
+    const ta = el('textarea'); ta.id = 'wfm-any'; ta.maxLength = 1000; ta.placeholder = 'Your story, a link to your Instagram, a color you love, anything at all.';
+    const arow = el('div', 'row'); const amsg = el('p', 'msg'); amsg.hidden = true;
+    const asend = el('button', 'wfm-btn ghost', 'Send to Taya'); asend.type = 'button';
+    arow.append(amsg, asend); any.append(lab, ta, arow);
+    box.append(drop, list, count, any);
+    const anyNonce = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)).replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
+    let anyNo = 0;
+    async function sendAny() {
+      const what = ta.value.trim();
+      if (!what) return true;
+      if (what.length < 3) { amsg.hidden = false; amsg.className = 'msg bad'; amsg.textContent = 'Just a few words is plenty.'; return false; }
+      asend.disabled = true; asend.textContent = 'Sending…';
+      try {
+        const spot = 'Anything else (the last step)';
+        const res = await call('/mark', { what, page: PAGE, spot, nonce: (anyNonce + '-' + (anyNo++)).slice(0, 40) });
+        notes.push({ id: res.id, what, spot, status: 'new', reply: '', el: null });
+        ta.value = ''; amsg.hidden = false; amsg.className = 'msg'; amsg.textContent = 'Sent ✓ Thank you!';
+        asend.disabled = false; asend.textContent = 'Send to Taya'; close.textContent = 'All done'; renderPanel();
+        return true;
+      } catch (x) {
+        if (x.code === 'bad_link') { closeCard(); expired(); return false; }
+        asend.disabled = false; asend.textContent = 'Send to Taya'; amsg.hidden = false; amsg.className = 'msg bad';
+        amsg.textContent = x.code === 'slow_down' ? 'That’s a lot for one day! Email me the rest?' : 'That didn’t go through. Try again?';
+        return false;
+      }
+    }
+    asend.addEventListener('click', sendAny);
     const foot = el('div', 'foot');
     // the step after their notes (Pollen, Oct 2: uploads come after Done): back to the notes, or on to the thank-you
     const back = el('button', 'wfm-btn ghost', 'Back to my notes'); back.type = 'button';
     back.addEventListener('click', () => { if (!busy) closeCard(); });
     const close = el('button', 'wfm-btn', sentFiles ? 'All done' : 'Skip, I’m done'); close.type = 'button';
-    close.addEventListener('click', () => { if (!busy) thanks(); });
+    close.addEventListener('click', async () => { if (busy) return; if (await sendAny()) thanks(); }); // typed but not sent: send it
     const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(back, close);
     foot.append(el('p', 'soft', 'You can come back and send more anytime.'), btns);
     box.append(foot);
