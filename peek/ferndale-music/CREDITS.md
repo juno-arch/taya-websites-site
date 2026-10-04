@@ -29,4 +29,3 @@ All photos are THEIR OWN, downloaded from ferndalemusiccompany.com (Squarespace 
 | chris-pierce.webp | /calendar (Oct 24 2026 event) | GABRIEL BARRETO - DSC05065.jpeg (2500, exported 1400) | press photo, credited "Photo: Gabriel Barreto" on the card |
 | ferndale-lettering.png | site logo | title3.png (600x300) | only the red "Ferndale" letters, keyed to transparent and used as a CSS mask |
 
-Signature tune: an original 17-note melody in D major pentatonic, synthesized live in the browser with Web Audio (no audio files, no samples).
