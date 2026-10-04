@@ -197,7 +197,7 @@
   .played ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 0; font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5; color: var(--ink); }
   .played li:not(:last-child)::after { content: "\2726"; font-family: 'Jost', sans-serif; font-size: 10px; color: var(--amber); margin: 0 12px; vertical-align: 4px; }
 
-  /* THE HALL, at night: the singing window (signature) */
+  /* THE HALL, at night: the glowing window (signature) */
   .band { background: var(--band); color: var(--on-band); border-top: none; position: relative; overflow: hidden; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: var(--glow); }
@@ -218,25 +218,13 @@
   .win .came { fill: none; stroke: #120c0a; stroke-width: 3.2; stroke-linejoin: round; }
   .win .frame { fill: none; stroke: #5b3a24; stroke-width: 10; }
   .win .frame-in { fill: none; stroke: #8a5a34; stroke-width: 2; }
-  .win .pane { cursor: pointer; outline: none; }
   .win .pane .glass { transition: filter 0.4s ease; }
   .win .pane .lite { fill: #fff3c8; opacity: 0; mix-blend-mode: screen; animation: sunwalk 21s ease-in-out infinite; animation-delay: calc(var(--i) * 3s - 21s); }
-  .win .pane.on .lite { animation: none; opacity: 0.85; transition: opacity 0.05s ease; }
-  .win .pane.off .lite { transition: opacity 0.9s ease; }
-  .win.playing .pane:not(.on) .lite { animation: none; opacity: 0; }
-  .win .pane:hover .glass, .win .pane:focus-visible .glass { filter: brightness(1.25) saturate(1.1); }
-  .win .pane:focus-visible .came-f { stroke: #ffd59a; stroke-width: 3; }
   @keyframes sunwalk { 0%, 100% { opacity: 0; } 6% { opacity: 0.55; } 14% { opacity: 0.12; } 22% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
     .win .pane .lite { animation: none; opacity: 0.16; }
     .win-wrap::before { animation: none; opacity: 0.8; }
   }
-  .win-cap { position: relative; z-index: 1; text-align: center; font-size: 14px; color: rgba(245, 234, 216, 0.78); max-width: 34ch; }
-  .win-play { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 10px; font: inherit; font-weight: 500; font-size: 13.5px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: #2a1306; background: var(--glow); border: 0; border-radius: 999px; padding: 12px 22px; min-height: 46px; cursor: pointer; }
-  .win-play:hover { filter: brightness(1.08); }
-  .win-play:focus-visible { outline: 2px solid var(--on-band); outline-offset: 3px; }
-  .win-play svg { flex: none; }
   .band .photo.pano { margin-top: 56px; }
   .owls { margin-top: 40px; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 22px; align-items: center; border: 1px solid rgba(245, 234, 216, 0.16); border-radius: 6px; padding: 16px; }
   .owls .photo { aspect-ratio: 1; border-radius: 4px; background: #000; }
@@ -751,7 +739,7 @@
       </div>
     </div>
     <div class="win-wrap">
-      <svg class="win" id="win" viewBox="0 0 240 400" role="group" aria-label="A stained glass window you can play. Each pane plays a note.">
+      <svg class="win" id="win" viewBox="0 0 240 400" role="img" aria-label="A stained glass window after the hall's tall memorial windows, with sunlight drifting through its panes">
         <defs>
           <linearGradient id="g-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6c766"/><stop offset="1" stop-color="#c97a1f"/></linearGradient>
           <linearGradient id="g-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbe08f"/><stop offset="1" stop-color="#e2a83a"/></linearGradient>
@@ -763,17 +751,15 @@
         </defs>
         <!-- the arch, after their tall memorial windows -->
         <path class="frame" d="M14 392V150a106 106 0 0 1 212 0v242Z"/>
-        <g class="pane" data-n="6" tabindex="0" role="button" aria-label="Rose window, high E" style="--i:6"><circle class="glass" cx="120" cy="104" r="52" fill="url(#g-rose)"/><circle class="lite" cx="120" cy="104" r="52"/><g class="came came-f"><circle cx="120" cy="104" r="52"/><circle cx="120" cy="104" r="17"/><path d="M120 52v35M120 121v35M68 104h35M137 104h35M83 67l25 25M132 116l25 25M157 67l-25 25M108 116l-25 25"/></g></g>
-        <g class="pane" data-n="5" tabindex="0" role="button" aria-label="Left arch pane, high D" style="--i:5"><path class="glass" d="M26 168a94 94 0 0 1 34-62v62Z" fill="url(#g-teal)"/><path class="lite" d="M26 168a94 94 0 0 1 34-62v62Z"/><path class="came came-f" d="M26 168a94 94 0 0 1 34-62v62Z"/></g>
-        <g class="pane" data-n="4" tabindex="0" role="button" aria-label="Right arch pane, B" style="--i:4"><path class="glass" d="M214 168a94 94 0 0 0-34-62v62Z" fill="url(#g-teal)"/><path class="lite" d="M214 168a94 94 0 0 0-34-62v62Z"/><path class="came came-f" d="M214 168a94 94 0 0 0-34-62v62Z"/></g>
-        <g class="pane" data-n="3" tabindex="0" role="button" aria-label="Left lancet, top pane, A" style="--i:3"><path class="glass" d="M26 176h88v70H26Z" fill="url(#g-ruby)"/><path class="lite" d="M26 176h88v70H26Z"/><g class="came came-f"><path d="M26 176h88v70H26Z"/><path d="M70 186l18 25-18 25-18-25Z"/></g></g>
-        <g class="pane" data-n="2" tabindex="0" role="button" aria-label="Right lancet, top pane, F sharp" style="--i:2"><path class="glass" d="M126 176h88v70h-88Z" fill="url(#g-violet)"/><path class="lite" d="M126 176h88v70h-88Z"/><g class="came came-f"><path d="M126 176h88v70h-88Z"/><path d="M170 186l18 25-18 25-18-25Z"/></g></g>
-        <g class="pane" data-n="1" tabindex="0" role="button" aria-label="Left lancet, lower pane, E" style="--i:1"><path class="glass" d="M26 254h88v130H26Z" fill="url(#g-amber)"/><path class="lite" d="M26 254h88v130H26Z"/><g class="came came-f"><path d="M26 254h88v130H26Z"/><path d="M26 298h88M26 342h88M70 254v130"/></g></g>
-        <g class="pane" data-n="0" tabindex="0" role="button" aria-label="Right lancet, lower pane, low D" style="--i:0"><path class="glass" d="M126 254h88v130h-88Z" fill="url(#g-gold)"/><path class="lite" d="M126 254h88v130h-88Z"/><g class="came came-f"><path d="M126 254h88v130h-88Z"/><path d="M126 298h88M126 342h88M170 254v130"/></g></g>
+        <g class="pane" data-n="6" style="--i:6"><circle class="glass" cx="120" cy="104" r="52" fill="url(#g-rose)"/><circle class="lite" cx="120" cy="104" r="52"/><g class="came came-f"><circle cx="120" cy="104" r="52"/><circle cx="120" cy="104" r="17"/><path d="M120 52v35M120 121v35M68 104h35M137 104h35M83 67l25 25M132 116l25 25M157 67l-25 25M108 116l-25 25"/></g></g>
+        <g class="pane" data-n="5" style="--i:5"><path class="glass" d="M26 168a94 94 0 0 1 34-62v62Z" fill="url(#g-teal)"/><path class="lite" d="M26 168a94 94 0 0 1 34-62v62Z"/><path class="came came-f" d="M26 168a94 94 0 0 1 34-62v62Z"/></g>
+        <g class="pane" data-n="4" style="--i:4"><path class="glass" d="M214 168a94 94 0 0 0-34-62v62Z" fill="url(#g-teal)"/><path class="lite" d="M214 168a94 94 0 0 0-34-62v62Z"/><path class="came came-f" d="M214 168a94 94 0 0 0-34-62v62Z"/></g>
+        <g class="pane" data-n="3" style="--i:3"><path class="glass" d="M26 176h88v70H26Z" fill="url(#g-ruby)"/><path class="lite" d="M26 176h88v70H26Z"/><g class="came came-f"><path d="M26 176h88v70H26Z"/><path d="M70 186l18 25-18 25-18-25Z"/></g></g>
+        <g class="pane" data-n="2" style="--i:2"><path class="glass" d="M126 176h88v70h-88Z" fill="url(#g-violet)"/><path class="lite" d="M126 176h88v70h-88Z"/><g class="came came-f"><path d="M126 176h88v70h-88Z"/><path d="M170 186l18 25-18 25-18-25Z"/></g></g>
+        <g class="pane" data-n="1" style="--i:1"><path class="glass" d="M26 254h88v130H26Z" fill="url(#g-amber)"/><path class="lite" d="M26 254h88v130H26Z"/><g class="came came-f"><path d="M26 254h88v130H26Z"/><path d="M26 298h88M26 342h88M70 254v130"/></g></g>
+        <g class="pane" data-n="0" style="--i:0"><path class="glass" d="M126 254h88v130h-88Z" fill="url(#g-gold)"/><path class="lite" d="M126 254h88v130h-88Z"/><g class="came came-f"><path d="M126 254h88v130h-88Z"/><path d="M126 298h88M126 342h88M170 254v130"/></g></g>
         <path class="frame-in" d="M20 388V150a100 100 0 0 1 200 0v238Z"/>
       </svg>
-      <button type="button" class="win-play" id="win-play" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="currentColor"><path d="M3 1.5v11l9-5.5Z"/></svg><span id="win-play-t">Play the window</span></button>
-      <p class="win-cap">A little original tune for the hall. Or tap any pane to play a note yourself. Sound plays only when you tap.</p>
     </div>
   </div>
   <div class="wrap">
@@ -1300,63 +1286,6 @@
     document.querySelectorAll('.reveal').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); } });
   })();
 
-  /* THE SINGING WINDOW: each pane is a note of D major pentatonic. Sound only after a tap. */
-  (function () {
-    var win = document.getElementById('win'), play = document.getElementById('win-play'), playT = document.getElementById('win-play-t');
-    if (!win || !play) return;
-    var panes = [].slice.call(win.querySelectorAll('.pane'));
-    var byN = {}; panes.forEach(function (p) { byN[p.dataset.n] = p; });
-    var FREQ = [293.66, 329.63, 369.99, 440.0, 493.88, 587.33, 659.25];
-    var ctx = null, master = null, timers = [], playing = false;
-    function audio() {
-      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
-      if (!ctx) {
-        ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.55;
-        var delay = ctx.createDelay(1), fb = ctx.createGain(), wet = ctx.createGain(), lp = ctx.createBiquadFilter();
-        delay.delayTime.value = 0.27; fb.gain.value = 0.3; wet.gain.value = 0.22; lp.type = 'lowpass'; lp.frequency.value = 2200;
-        master.connect(ctx.destination); master.connect(delay); delay.connect(lp); lp.connect(fb); fb.connect(delay); lp.connect(wet); wet.connect(ctx.destination);
-      }
-      if (ctx.state === 'suspended') ctx.resume();
-      return ctx;
-    }
-    function pluck(f, at) {
-      var c = audio(); if (!c) return;
-      var t = at || c.currentTime, g = c.createGain(), o1 = c.createOscillator(), o2 = c.createOscillator(), g2 = c.createGain(), lp = c.createBiquadFilter();
-      o1.type = 'triangle'; o1.frequency.value = f; o2.type = 'sine'; o2.frequency.value = f * 2; g2.gain.value = 0.22;
-      lp.type = 'lowpass'; lp.frequency.setValueAtTime(3200, t); lp.frequency.exponentialRampToValueAtTime(700, t + 1.2);
-      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.34, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
-      o1.connect(lp); o2.connect(g2); g2.connect(lp); lp.connect(g); g.connect(master);
-      o1.start(t); o2.start(t); o1.stop(t + 1.9); o2.stop(t + 1.9);
-    }
-    function flash(n) {
-      var p = byN[n]; if (!p) return;
-      p.classList.remove('off'); p.classList.add('on');
-      clearTimeout(p._t); p._t = setTimeout(function () { p.classList.remove('on'); p.classList.add('off'); }, 260);
-    }
-    function hit(n) { pluck(FREQ[n]); flash(n); }
-    panes.forEach(function (p) {
-      p.addEventListener('pointerdown', function (e) { e.preventDefault(); hit(+p.dataset.n); });
-      p.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hit(+p.dataset.n); } });
-    });
-    /* an original little tune, in the lilt of a slow strum: [pane, beats] */
-    var TUNE = [[3,.5],[4,.5],[5,1],[4,.5],[3,.5],[2,1],[1,.5],[2,.5],[3,1.5],[5,.5],[6,.5],[5,.5],[4,1],[3,.5],[2,.5],[1,1],[0,2]];
-    var BEAT = 0.4;
-    function stop() {
-      timers.forEach(clearTimeout); timers = []; playing = false; win.classList.remove('playing');
-      play.setAttribute('aria-pressed', 'false'); playT.textContent = 'Play the window';
-    }
-    play.addEventListener('click', function () {
-      if (playing) { stop(); return; }
-      var c = audio(); playing = true; win.classList.add('playing'); play.setAttribute('aria-pressed', 'true'); playT.textContent = 'Stop';
-      var t0 = c ? c.currentTime + 0.12 : 0, ms = 120;
-      TUNE.forEach(function (x) {
-        if (c) pluck(FREQ[x[0]], t0 + (ms - 120) / 1000);
-        (function (n, d) { timers.push(setTimeout(function () { flash(n); }, d)); })(x[0], ms);
-        ms += x[1] * BEAT * 1000;
-      });
-      timers.push(setTimeout(stop, ms + 900));
-    });
-  })();
 
   /* demos: lessons, tickets, tour, contact, newsletter, owl */
   (function () {
