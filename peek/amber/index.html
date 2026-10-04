@@ -223,6 +223,8 @@
   .sheet-slot { display: flex; align-items: center; gap: 12px; border: 1.5px dashed var(--hair); border-radius: 8px; padding: 12px 14px; margin-top: 8px; font-size: 14.5px; color: var(--ink-soft); }
   .sheet-slot svg { flex: none; color: var(--accent); }
   .sheet-actions { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
+  .sheet-actions .bk-go.link { border-color: transparent; padding-inline: 12px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .sheet-actions .bk-go.link:hover { background: transparent; }
 
   
   .you-note { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px 16px; align-items: start; margin-top: 28px; border: 1.5px dashed var(--accent); border-radius: 14px; padding: 18px 20px 18px 18px; color: var(--ink);
@@ -1131,7 +1133,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your note is on its way to Amber.</p>
           <p class="demo-note">On your real site this lands in your inbox. Nothing was sent.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="sheet-actions"><button type="button" class="bk-go ghost" id="cf-again">Try it again</button><button type="button" class="bk-go ghost link" id="cf-edit">Change something</button></div>
         </div>
       </div>
     </div>
@@ -1207,7 +1209,7 @@
       <h3 id="co-done-h" tabindex="-1">Thank you!</h3>
       <p id="co-done-text"></p>
       <p class="demo-note">Preview only: nothing was charged, and nothing was sent.</p>
-      <button type="button" class="bk-go ghost" id="co-again">Keep shopping</button>
+      <div class="sheet-actions"><button type="button" class="bk-go ghost" id="co-again">Keep shopping</button><button type="button" class="bk-go ghost link" id="co-edit">Change something</button></div>
     </div>
   </div>
 </div>
@@ -1415,6 +1417,7 @@
         mode('done'); quietFocus($('co-done-h'));
       });
       $('co-again').addEventListener('click', function () { bag = []; paint(); mode('bag'); close(); });
+      $('co-edit').addEventListener('click', function () { hint.textContent = ''; paint(); mode('bag'); quietFocus($('bag-h')); });
       document.addEventListener('amber:bag', paint);
       document.addEventListener('amber:view', function (e) { var v = e.detail && e.detail.view; if (v === 'maiden' || v === 'mother') close(false); });
       mode('bag'); paint();
@@ -1447,6 +1450,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('cf-edit').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
     })();
 
     

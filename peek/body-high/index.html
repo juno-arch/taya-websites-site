@@ -382,6 +382,7 @@
   .rsv .hint:empty { display: none; }
   .rsv-done h4 { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 20px; color: #fff; }
   .rsv-done p { margin-top: 8px; }
+  .rsv-done .sheet-actions { gap: 0 24px; margin-top: 6px; }
   .linkish { font: inherit; font-size: 14px; font-weight: 700; background: none; border: 0; padding: 10px 0; min-height: 44px; color: inherit; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
   .t-panel .linkish { color: #fff; }
 
@@ -1428,7 +1429,7 @@
         <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
         <p id="cf-done-text">Your note is on its way to the studio.</p>
         <p class="demo-note">Preview only: nothing was sent. On your real site this lands in your inbox.</p>
-        <button type="button" class="act ghost" id="cf-again" style="margin-top:14px">Try it again</button>
+        <div class="sheet-actions"><button type="button" class="act ghost" id="cf-again">Try it again</button><button type="button" class="linkish" id="cf-edit">Change something</button></div>
       </div>
     </div>
   </div>
@@ -1511,7 +1512,7 @@
         <h3 id="gf-done-h" tabindex="-1">All set!</h3>
         <p id="gf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="act ghost" id="gf-again" style="margin-top:14px">Try it again</button>
+        <div class="sheet-actions"><button type="button" class="act ghost" id="gf-again">Try it again</button><button type="button" class="linkish" id="gf-edit">Change something</button></div>
       </div>
     </div>
   </div>
@@ -1817,7 +1818,7 @@
           '</div>' +
           '<div class="rsv-done fade-in" id="rsv-done" hidden><h4 id="rsv-done-h" tabindex="-1">You&rsquo;re in!</h4><p id="rsv-done-t"></p>' +
             '<p class="t-extra">Preview only: nothing was booked. What you see: the booking lands in your inbox and phone calendar, and a confirmation and reminder go out on their own.</p>' +
-            '<button type="button" class="linkish" id="rsv-again">Try it again</button></div>' +
+            '<div class="sheet-actions"><button type="button" class="linkish" id="rsv-again">Try it again</button><button type="button" class="linkish" id="rsv-edit">Change something</button></div></div>' +
           '</div></div>';
       }
       html += '<button type="button" class="linkish" id="tp-close" style="margin-top:10px">Close</button>';
@@ -1850,7 +1851,15 @@
         panel.querySelector('#rsv-done-t').innerHTML = esc(name.split(/\s+/)[0]) + ', your pole is saved for ' + esc(c[2]) + ' on ' + w.d + ', ' + w.m + ' ' + w.n + ' at ' + c[0] + ' ' + c[1].toUpperCase() + ' (' + esc(choice) + '). See you there!';
         rsv.hidden = true; open.hidden = true; done.hidden = false; quietFocus(panel.querySelector('#rsv-done-h')); showInView(done);
       });
-      panel.querySelector('#rsv-again').addEventListener('click', function () { done.hidden = true; open.hidden = false; rsv.hidden = false; open.setAttribute('aria-expanded', 'true'); quietFocus(opts[0]); });
+      function reopen() { done.hidden = true; open.hidden = false; rsv.hidden = false; open.setAttribute('aria-expanded', 'true'); }
+      panel.querySelector('#rsv-again').addEventListener('click', function () {
+        choice = '$20 intro offer'; opts.forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.o === choice ? 'true' : 'false'); });
+        panel.querySelector('#rsv-name').value = 'Maya R.'; panel.querySelector('#rsv-hint').textContent = '';
+        reopen(); quietFocus(opts[0]); showInView(rsv);
+      });
+      panel.querySelector('#rsv-edit').addEventListener('click', function () {
+        reopen(); quietFocus(panel.querySelector('.opt[aria-pressed="true"]') || opts[0]); showInView(rsv);
+      });
     }
 
     
@@ -1935,6 +1944,7 @@
         form.reset(); topic = 'party'; pressOnly(topics, 't', topic); $('cf-party').hidden = false; $('cf-msg').value = MSG.party;
         hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]'));
       });
+      $('cf-edit').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); showInView(form); });
     })();
 
     
@@ -1979,6 +1989,7 @@
       $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); showInView(done); });
       $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
+      $('gf-edit').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h')); showInView(sheet); });
       reset();
     })();
 

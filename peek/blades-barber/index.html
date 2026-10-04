@@ -574,8 +574,15 @@
   .bk > * { min-width: 0; }
   .bk-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 14px; padding: 24px; }
   .bk-steps { display: flex; gap: 2px 8px; flex-wrap: wrap; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; }
-  .bk-steps span { white-space: nowrap; }
-  .bk-steps span.on { color: var(--navy); font-weight: 600; }
+  .bk-steps { margin-bottom: 10px; row-gap: 0; }
+  .bk-steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; border-radius: 6px; margin: 0; padding: 6px 0; white-space: nowrap; cursor: pointer; }
+  .bk-steps button:not(:disabled):not(.on) { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 4px; }
+  .bk-steps button:not(:disabled):not(.on):hover { color: var(--navy); }
+  .bk-steps button:disabled { cursor: default; }
+  .bk-steps button.on { color: var(--navy); font-weight: 600; cursor: default; }
+  .bk-acts { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+  .bk-acts .bk-go { margin-top: 0; }
+  .bk-acts .bk-go.link { border-color: transparent; padding-inline: 14px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
   .bk-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
   @media (min-width: 540px) { .bk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .bk-pros { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1127,7 +1134,7 @@
     <div class="bk">
       <div class="bk-main">
       <div class="bk-card" id="tb-card">
-        <div class="bk-steps" aria-hidden="true"><span data-s="1" class="on">1 Chair &amp; service</span><span data-s="2">2 Day &amp; time</span><span data-s="3">3 Your details</span></div>
+        <div class="bk-steps" role="group" aria-label="Booking steps"><button type="button" data-s="1" class="on" aria-current="step">1 Chair &amp; service</button><button type="button" data-s="2" disabled>2 Day &amp; time</button><button type="button" data-s="3" disabled>3 Your details</button></div>
         <div id="tb-s1">
           <p class="bk-q" id="tb-who-q">Who</p>
           <div class="bk-pros" role="group" aria-labelledby="tb-who-q" id="tb-pros">
@@ -1152,12 +1159,12 @@
             <label for="tb-mail">Phone or email<input id="tb-mail" autocomplete="off" value="(707) 555-0142"></label>
           </div>
         </div>
-        <button type="button" class="bk-go" id="tb-go" disabled>Next</button>
+        <div class="bk-acts" id="tb-nav"><button type="button" class="bk-go ghost" id="tb-back" hidden>Back</button><button type="button" class="bk-go" id="tb-go" disabled>Next</button></div>
         <div class="bk-done" id="tb-done" hidden>
           <h3 id="tb-done-h" tabindex="-1">You&rsquo;re booked!</h3>
           <p id="tb-summary"></p>
           <p style="margin-top:10px;color:var(--ink-soft);font-size:14px">A confirmation is on its way, and a reminder text arrives the day before. Need to change it? One tap in the message.</p>
-          <button type="button" class="bk-go" id="tb-again" style="background:transparent;color:var(--navy)">Try it again</button>
+          <div class="bk-acts"><button type="button" class="bk-go" id="tb-again" style="background:transparent;color:var(--navy)">Try it again</button><button type="button" class="bk-go ghost link" id="tb-edit">Change something</button></div>
         </div>
       </div>
       <p class="tier-note mock-note" data-show="all" data-fold>With the Mother build, this spot is a short note and a Book on Booksy button, and the Book with buttons up in The chairs open each pro&rsquo;s own Booksy page. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
@@ -1254,7 +1261,7 @@
         <h3 id="gf-done-h" tabindex="-1">All set!</h3>
         <p id="gf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
+        <div class="bk-acts"><button type="button" class="bk-go ghost" id="gf-again">Try it again</button><button type="button" class="bk-go ghost link" id="gf-edit">Change something</button></div>
       </div>
     </div>
     <div class="gift-notes mock-note">
@@ -1363,7 +1370,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your note is on its way to the shop.</p>
           <p class="demo-note">On your real site this lands in your inbox.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="bk-acts"><button type="button" class="bk-go ghost" id="cf-again">Try it again</button><button type="button" class="bk-go ghost link" id="cf-edit">Change something</button></div>
         </div>
       </div>
     </div>
@@ -1617,9 +1624,16 @@
 <script>
   
   (function () {
-    var P = 'tb', st = { s: 1 };
+    var P = 'tb', st = { s: 1, max: 1 };
     function $(id) { return document.getElementById(P + '-' + id); }
     var go = $('go'), card = $('card'); if (!go || !card) return;
+    var back = $('back'), nav = $('nav'), bar = card.querySelector('.bk-steps'), stepBtns = [].slice.call(bar.querySelectorAll('[data-s]'));
+    function ok(n) { return n === 1 ? !!(st.pro && st.svc) : n === 2 ? !!(st.day && st.time) : true; }
+    function reach(n) { if (n > st.max) return false; for (var k = 1; k < n; k++) if (!ok(k)) return false; return true; }
+    function stepFocus() { var s = $('s' + st.s); quietFocus(s.querySelector('[aria-pressed="true"]') || s.querySelector('button, input')); }
+    function goTo(n, moveFocus) { st.s = n; steps(); if (moveFocus) stepFocus(); }
+    stepBtns.forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && reach(n)) goTo(n, false); }); });
+    back.addEventListener('click', function () { if (st.s > 1) goTo(st.s - 1, st.s - 1 === 1); });
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var SVC = {
       barber: [['Haircut', '1 hr', '$35'], ['Haircut and beard', '1 hr', '$40'], ['Hot towel shave', '30 min', 'your rate']],
@@ -1628,10 +1642,15 @@
     };
     var svcs = $('svcs'), pros = [].slice.call(card.querySelectorAll('.bk-pro'));
     function steps() {
-      card.querySelectorAll('.bk-steps span').forEach(function (sp) { sp.classList.toggle('on', +sp.dataset.s === st.s); });
+      stepBtns.forEach(function (b) {
+        var n = +b.dataset.s, on = n === st.s;
+        b.classList.toggle('on', on); if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+        b.disabled = !on && !reach(n);
+      });
       [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
       go.textContent = st.s === 3 ? 'Book it (demo)' : 'Next';
-      go.disabled = st.s === 1 ? !(st.pro && st.svc) : st.s === 2 ? !(st.day && st.time) : false;
+      go.disabled = !ok(st.s);
+      back.hidden = st.s === 1;
     }
     function drawSvcs(kind) {
       svcs.innerHTML = '';
@@ -1650,7 +1669,9 @@
     }
     function setPro(b) {
       pros.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      st.pro = b.dataset.pro; st.svc = null; drawSvcs(b.dataset.kind); steps();
+      st.pro = b.dataset.pro;
+      if (b.dataset.kind !== st.kind || !st.svc) { st.kind = b.dataset.kind; st.svc = null; drawSvcs(st.kind); }
+      steps();
     }
     pros.forEach(function (b) { b.addEventListener('click', function () { setPro(b); }); });
     var days = $('days'), times = $('times'), names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1682,17 +1703,23 @@
       });
     }
     go.addEventListener('click', function () {
-      if (st.s < 3) { st.s++; steps(); return; }
+      if (st.s < 3) { st.s++; st.max = Math.max(st.max, st.s); steps(); return; }
       var who = ($('name').value || 'A new client').trim();
       $('summary').textContent = st.svc + ' with ' + st.pro + ' on ' + st.day + ' at ' + st.time + '.';
       $('inboxtext').textContent = who + ' booked ' + st.svc + ' (' + st.len + ') with ' + st.pro + ', ' + st.day + ' at ' + st.time + '.';
       [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; });
-      go.hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false;
+      nav.hidden = true; bar.hidden = true; $('done').hidden = false;
       quietFocus($('done-h'));
     });
+    $('edit').addEventListener('click', function () {
+      $('done').hidden = true; nav.hidden = false; bar.hidden = false;
+      $('inboxtext').textContent = 'Waiting for a booking… try it on the left';
+      goTo(3, true);
+    });
     function reset() {
-      st = { s: 1 }; card.querySelectorAll('[aria-pressed]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-      drawSvcs('barber'); times.innerHTML = ''; $('done').hidden = true; go.hidden = false; card.querySelector('.bk-steps').hidden = false;
+      st = { s: 1, max: 1 }; card.querySelectorAll('[aria-pressed]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+      $('name').value = 'Maya R.'; $('mail').value = '(707) 555-0142';
+      drawSvcs('barber'); times.innerHTML = ''; $('done').hidden = true; nav.hidden = false; bar.hidden = false;
       $('inboxtext').textContent = 'Waiting for a booking… try it on the left'; steps();
     }
     $('again').addEventListener('click', function () { reset(); quietFocus(pros[0]); });
@@ -1760,6 +1787,7 @@
       $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
       $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
+      $('gf-edit').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h')); });
       reset();
     })();
 
@@ -1786,6 +1814,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('cf-edit').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
     })();
 
     
