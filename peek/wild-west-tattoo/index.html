@@ -323,6 +323,7 @@
   .sheet-slot svg { flex: none; color: var(--amber); }
   .sheet-note { font-size: 13px; color: var(--ink-soft); margin-top: 12px; }
   .sheet-actions { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
+  .done-acts { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
 
   /* pre-drawn designs */
   .flash { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 34px; }
@@ -864,7 +865,7 @@
             <h3 id="rq-done-h" tabindex="-1">Got it!</h3>
             <p id="rq-done-t"></p>
             <p class="demo-note">Preview only: nothing was sent.</p>
-            <button type="button" class="bk-go ghost" id="rq-again">Try it again</button>
+            <div class="done-acts"><button type="button" class="bk-go ghost" id="rq-change">Change something</button><button type="button" class="bk-go ghost" id="rq-again">Try it again</button></div>
           </div>
         </div>
         <div class="side wf-note">
@@ -945,7 +946,7 @@
         <h3 id="pay-done-h" tabindex="-1">All set!</h3>
         <p id="pay-done-t"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="pay-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="pay-change">Change something</button><button type="button" class="bk-go ghost" id="pay-again">Try it again</button></div>
       </div>
     </div>
   </div>
@@ -1076,7 +1077,7 @@
         <h3 id="nl-done-h" tabindex="-1" style="font-size:24px">You&rsquo;re on the list!</h3>
         <p style="margin-top:6px">The next heads-up goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
         <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-        <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
       </div>
     </div>
   </div>
@@ -1345,7 +1346,8 @@
         $('rq-inbox').textContent = name + ' (' + mail + ') wants ' + (artist === 'Either' ? 'either artist' : artist) + ': ' + $('rq-place').value.trim() + ', ' + $('rq-size').value.trim() + ' in, budget ' + $('rq-budget').value.trim() + '. ' + (pics ? pics + ' photos attached.' : 'No photos yet.');
         form.hidden = true; done.hidden = false; quietFocus($('rq-done-h'));
       });
-      $('rq-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; $('rq-inbox').textContent = 'Waiting for a request… try it on the left'; quietFocus(form.querySelector('[type="submit"]')); });
+      $('rq-again').addEventListener('click', function () { form.reset(); setWho('Sean'); if (pics) drop.click(); hint.textContent = ''; done.hidden = true; form.hidden = false; $('rq-inbox').textContent = 'Waiting for a request… try it on the left'; quietFocus(form.querySelector('[type="submit"]')); });
+      $('rq-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; $('rq-inbox').textContent = 'Editing the request… send it again to see it land here'; quietFocus($('rq-idea')); });
     })();
 
     /* deposit + gift card */
@@ -1374,9 +1376,10 @@
         }
         hint.textContent = ''; form.hidden = true; sheet.hidden = false; quietFocus($('pay-sheet-h'));
       });
-      $('pay-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; });
+      $('pay-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('pay-change').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('pay-sheet-h')); });
       $('pay-complete').addEventListener('click', function () { $('pay-done-t').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('pay-done-h')); });
-      $('pay-again').addEventListener('click', reset);
+      $('pay-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
       reset();
     })();
 
@@ -1399,7 +1402,8 @@
         if (!isEmail(mail)) { hint.textContent = 'Add an email address first.'; $('nl-mail').focus(); return; }
         hint.textContent = ''; $('nl-to').textContent = mail; form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
-      $('nl-again').addEventListener('click', function () { form.reset(); done.hidden = true; form.hidden = false; });
+      $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; });
+      $('nl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
     })();
   })();
 </script>

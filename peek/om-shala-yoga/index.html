@@ -433,6 +433,7 @@
   .bk-go { margin-top: 16px; font: inherit; letter-spacing: 0.03em; padding: 12px 22px; border-radius: 999px; border: 1px solid #b3201f; background: #b3201f; color: #fbf7f2; cursor: pointer; }
   .bk-go:hover { background: #941a19; }
   .bk-go.ghost { background: transparent; color: var(--slate-deep); border-color: var(--slate); }
+  .done-acts { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
   .hint { font-size: 14px; color: var(--red); margin: 10px 0 0; }
   .hint:empty { margin: 0; }
   .sheet { background: var(--ground); border: 1px solid var(--hair); border-radius: 16px; padding: 14px 18px 18px; box-shadow: 0 22px 40px -28px rgba(20, 25, 24, 0.6); }
@@ -903,7 +904,7 @@
         <h3 id="pf-done-h" tabindex="-1">All set!</h3>
         <p id="pf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="pf-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="pf-change">Change something</button><button type="button" class="bk-go ghost" id="pf-again">Try it again</button></div>
       </div>
     </div>
   </div>
@@ -1002,7 +1003,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your note is on its way to the studio.</p>
           <p class="demo-note">On your real site this lands in your inbox.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="done-acts"><button type="button" class="bk-go ghost" id="cf-change">Change something</button><button type="button" class="bk-go ghost" id="cf-again">Try it again</button></div>
         </div>
       </div>
     </div>
@@ -1020,7 +1021,7 @@
         <h4 id="nl-done-h" tabindex="-1" style="font-size:24px;margin-bottom:6px">You&rsquo;re on the list!</h4>
         <p>The next studio note goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
         <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-        <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
       </div>
     </aside>
   </div>
@@ -1102,7 +1103,7 @@
     <h2 id="rsv-done-h" tabindex="-1">You&rsquo;re in!</h2>
     <p id="rsv-done-text" style="margin-top:8px"></p>
     <p class="demo-note">Preview only: nothing was reserved or charged. On your real site, the studio sees each reservation in its inbox, and a reminder goes out on its own.</p>
-    <button type="button" class="bk-go ghost" id="rsv-close">Close</button>
+    <div class="done-acts"><button type="button" class="bk-go ghost" id="rsv-change">Change something</button><button type="button" class="bk-go ghost" id="rsv-close">Close</button></div>
   </div>
   <button type="button" class="dlg-x" id="rsv-x" aria-label="Close"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
 </dialog>
@@ -1390,6 +1391,7 @@
     });
     function closeR() { dlg.close(); }
     $('rsv-x').addEventListener('click', closeR); $('rsv-close').addEventListener('click', closeR);
+    $('rsv-change').addEventListener('click', function () { $('rsv-hint').textContent = ''; $('rsv-done').hidden = true; $('rsv-ask').hidden = false; quietFocus($('rsv-h')); });
     dlg.addEventListener('click', function (e) { if (e.target !== dlg) return; var r = dlg.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeR(); });
     dlg.addEventListener('close', function () { quietFocus(opener); });
 
@@ -1429,9 +1431,10 @@
         $('pf-price').textContent = $('pf-total').textContent = '$' + amt;
         form.hidden = true; $('pf-sheet').hidden = false; quietFocus($('pf-sheet-h'));
       });
-      $('pf-back').addEventListener('click', function () { $('pf-sheet').hidden = true; form.hidden = false; });
+      $('pf-back').addEventListener('click', function () { $('pf-sheet').hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('pf-change').addEventListener('click', function () { $('pf-done').hidden = true; $('pf-sheet').hidden = false; quietFocus($('pf-sheet-h')); });
       $('pf-complete').addEventListener('click', function () { $('pf-done-text').textContent = st.done; $('pf-sheet').hidden = true; $('pf-done').hidden = false; quietFocus($('pf-done-h')); });
-      $('pf-again').addEventListener('click', function () { st = { mode: 'pass', p: 'drop' }; $('pf-done').hidden = true; form.hidden = false; paint(true); });
+      $('pf-again').addEventListener('click', function () { st = { mode: 'pass', p: 'drop' }; $('pf-to').value = 'Jules'; $('pf-from').value = 'Maya R.'; $('pf-done').hidden = true; form.hidden = false; paint(true); quietFocus(form.querySelector('[data-mode]')); });
       paint(true);
     })();
 
@@ -1448,6 +1451,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; });
+      $('cf-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
     })();
 
     /* newsletter */
@@ -1459,6 +1463,7 @@
         hint.textContent = ''; $('nl-to').textContent = mail; form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
       $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; });
+      $('nl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
     })();
 
     /* section bar: mark where you are */

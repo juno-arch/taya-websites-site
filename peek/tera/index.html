@@ -536,8 +536,16 @@
   .bk > * { min-width: 0; }
   .bk-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 14px; padding: 24px; }
   .bk-steps { display: flex; gap: 2px 8px; flex-wrap: wrap; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; }
-  .bk-steps span { white-space: nowrap; }
-  .bk-steps span.on { color: var(--moss); font-weight: 600; }
+  .bk-steps span, .bk-steps button { white-space: nowrap; }
+  .bk-steps span.on, .bk-steps button.on { color: var(--moss); font-weight: 600; }
+  .bk-steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 4px 0; margin: 0; border-radius: 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .bk-steps button:hover { color: var(--moss-deep); }
+  .bk-steps button.on, .bk-steps button:disabled { text-decoration: none; }
+  .bk-steps button.on { cursor: default; }
+  .bk-steps button:disabled { cursor: default; }
+  .bk-steps button:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
+  .bk-nav { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
+  .done-acts { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
   .bk-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
   @media (min-width: 540px) { .bk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .bk-opt, .bk-day, .bk-time { font: inherit; color: var(--ink); background: var(--ground); border: 1px solid var(--hair); border-radius: 14px; padding: 12px; text-align: left; cursor: pointer; }
@@ -970,7 +978,7 @@
     <div class="bk">
       <div class="bk-main">
       <div class="bk-card" id="tb-card">
-        <div class="bk-steps" aria-hidden="true"><span data-s="1" class="on">1 Session</span><span data-s="2">2 Day &amp; time</span><span data-s="3">3 Your details</span></div>
+        <nav class="bk-steps" aria-label="Booking steps"><button type="button" data-s="1" class="on" aria-current="step">1 Session</button><button type="button" data-s="2" disabled>2 Day &amp; time</button><button type="button" data-s="3" disabled>3 Your details</button></nav>
         <div id="tb-s1">
           <div class="bk-grid"><button type="button" class="bk-opt" data-svc="Deep Tissue" data-price="your rate" data-len="90 min"><b>Deep Tissue</b><span>90 min &middot; <i data-wf-price="massage-90">your rate</i></span></button><button type="button" class="bk-opt" data-svc="Swedish" data-price="your rate" data-len="60 min"><b>Swedish</b><span>60 min &middot; <i data-wf-price="massage-60">your rate</i></span></button><button type="button" class="bk-opt" data-svc="Polarity" data-price="your rate" data-len="60 min"><b>Polarity</b><span>60 min &middot; <i data-wf-price="massage-60">your rate</i></span></button></div>
           <p class="bk-q" id="tb-where-q" hidden>Where</p>
@@ -989,12 +997,12 @@
             <label for="tb-addr" id="tb-addr-wrap" hidden>Your address, for the home visit<input id="tb-addr" autocomplete="off" placeholder="Street and town"></label>
           </div>
         </div>
-        <button type="button" class="bk-go" id="tb-go" disabled>Next</button>
+        <div class="bk-nav" id="tb-nav"><button type="button" class="bk-go" id="tb-go" disabled>Next</button><button type="button" class="bk-go ghost" id="tb-back" hidden>Back</button></div>
         <div class="bk-done" id="tb-done" hidden>
           <h3 id="tb-done-h" tabindex="-1">You&rsquo;re booked!</h3>
           <p id="tb-summary"></p>
           <p style="margin-top:10px;color:var(--ink-soft);font-size:14px">A confirmation is on its way, and a reminder will arrive the day before. Need to change it? One tap in the email.</p>
-          <button type="button" class="bk-go" id="tb-again" style="background:transparent;color:var(--moss)">Try it again</button>
+          <div class="done-acts"><button type="button" class="bk-go ghost" id="tb-change">Change something</button><button type="button" class="bk-go ghost" id="tb-again">Try it again</button></div>
         </div>
       </div>
       <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your own booking app. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
@@ -1092,7 +1100,7 @@
         <h3 id="gf-done-h" tabindex="-1">All set!</h3>
         <p id="gf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="gf-change">Change something</button><button type="button" class="bk-go ghost" id="gf-again">Try it again</button></div>
       </div>
     </div>
     <div class="gift-notes wf-note">
@@ -1202,7 +1210,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your note is on its way to Tera.</p>
           <p class="demo-note">On your real site this lands in your inbox.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="done-acts"><button type="button" class="bk-go ghost" id="cf-change">Change something</button><button type="button" class="bk-go ghost" id="cf-again">Try it again</button></div>
         </div>
       </div>
     </div>
@@ -1219,7 +1227,7 @@
         <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
         <p>The next seasonal note will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
         <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-        <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
       </div>
     </aside>
   </div>
@@ -1277,7 +1285,7 @@
     <h2 id="wl-done-h" tabindex="-1">You&rsquo;re on the list!</h2>
     <p>Tera will email you at <span id="wl-to" style="overflow-wrap:anywhere">your inbox</span> as soon as a spot opens up.</p>
     <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-    <button type="button" class="bk-go ghost" id="wl-close">Close</button>
+    <div class="done-acts"><button type="button" class="bk-go ghost" id="wl-change">Change something</button><button type="button" class="bk-go ghost" id="wl-close">Close</button></div>
   </div>
   <button type="button" class="wl-x" id="wl-x" aria-label="Close the waitlist"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
 </dialog>
@@ -1358,6 +1366,7 @@
     function closeWl() { dlg.close(); }
     $('wl-x').addEventListener('click', closeWl);
     $('wl-close').addEventListener('click', closeWl);
+    $('wl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; ask.hidden = false; quietFocus($('wl-h')); });
     dlg.addEventListener('click', function (e) {  
       if (e.target !== dlg) return;
       var r = dlg.getBoundingClientRect();
@@ -1436,15 +1445,32 @@
 
 <script>
   (function () {
-    var P = 'tb', st = { s: 1, place: 'studio' };
+    var P = 'tb', st = { s: 1, max: 1, place: 'studio' };
     function $(id) { return document.getElementById(P + '-' + id); }
-    var go = $('go'), card = $('card');
+    var go = $('go'), back = $('back'), card = $('card'), stepBtns = [].slice.call(card.querySelectorAll('.bk-steps [data-s]'));
+    function ok(n) { return n === 1 ? !!st.svc : n === 2 ? !!(st.day && st.time) : true; }
+    function canJump(n) { if (n > st.max) return false; for (var k = 1; k < n; k++) if (!ok(k)) return false; return true; }
     function steps() {
-      card.querySelectorAll('.bk-steps span').forEach(function (sp) { sp.classList.toggle('on', +sp.dataset.s === st.s); });
+      stepBtns.forEach(function (b) {
+        var n = +b.dataset.s, on = n === st.s;
+        b.classList.toggle('on', on);
+        if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+        b.disabled = !on && !canJump(n);
+      });
       [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
       go.textContent = st.s === 3 ? 'Book it (demo)' : 'Next';
-      go.disabled = st.s === 1 ? !st.svc : st.s === 2 ? !(st.day && st.time) : false;
+      go.disabled = !ok(st.s);
+      back.hidden = st.s === 1;
     }
+    function firstIn(n) { var box = $('s' + n); return box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input'); }
+    function toStep(n) { st.s = n; if (n > st.max) st.max = n; steps(); }
+    stepBtns.forEach(function (b) {
+      b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && canJump(n)) toStep(n); });
+    });
+    back.addEventListener('click', function () {
+      if (st.s < 2) return; toStep(st.s - 1);
+      if (back.hidden) quietFocus(firstIn(st.s));
+    });
     card.querySelectorAll('.bk-opt[data-svc]').forEach(function (b) {
       b.addEventListener('click', function () {
         card.querySelectorAll('.bk-opt[data-svc]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
@@ -1488,20 +1514,25 @@
       });
     }
     go.addEventListener('click', function () {
-      if (st.s < 3) { st.s++; steps(); return; }
+      if (st.s < 3) { toStep(st.s + 1); return; }
       var who = ($('name').value || 'A new client').trim(), addr = ($('addr').value || '').trim();
       var where = st.place === 'mobile' ? 'a home visit' : 'the studio in Arcata';
       var whereIn = st.place === 'mobile' ? 'home visit' + (addr ? ' to ' + addr : ', address to follow') : 'at the studio';
       $('summary').textContent = st.svc + ' (' + st.len + ') on ' + st.day + ' at ' + st.time + ', ' + (st.place === 'mobile' ? 'as ' : 'at ') + where + '.';
       $('inboxtext').textContent = who + ' booked ' + st.svc + ', ' + st.len + ', ' + st.day + ' at ' + st.time + ', ' + whereIn + '.';
       [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; });
-      go.hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false;
+      $('nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false;
       quietFocus($('done-h'));
     });
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    $('change').addEventListener('click', function () {
+      $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
+      $('inboxtext').textContent = 'Editing the booking… book it again to see it land here';
+      toStep(3); quietFocus($('name'));
+    });
     $('again').addEventListener('click', function () {
-      st = { s: 1 }; card.querySelectorAll('[aria-pressed]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-      setPlace('studio'); $('addr').value = ''; times.innerHTML = ''; $('done').hidden = true; go.hidden = false; card.querySelector('.bk-steps').hidden = false;
+      st = { s: 1, max: 1 }; card.querySelectorAll('[aria-pressed]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+      setPlace('studio'); $('addr').value = ''; times.innerHTML = ''; $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
       $('inboxtext').textContent = 'Waiting for a booking… try it on the left'; steps();
       quietFocus(card.querySelector('.bk-opt'));
     });
@@ -1564,6 +1595,7 @@
       $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
       $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
+      $('gf-change').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h')); });
       reset();
     })();
 
@@ -1590,6 +1622,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('cf-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
     })();
 
     
@@ -1604,6 +1637,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
       $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('nl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
     })();
   })();
 </script>

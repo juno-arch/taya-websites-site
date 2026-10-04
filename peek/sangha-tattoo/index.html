@@ -313,6 +313,7 @@
   .bk-go.ghost { background: transparent; color: var(--accent-deep); border-color: var(--accent); }
   .bk-go.ghost:hover { background: var(--ground-2); }
   .bk-done { text-align: left; }
+  .done-acts { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
   .bk-done h3 { margin: 0 0 8px; }
   .fld { font-size: 13px; color: var(--ink-soft); display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .fld input, .fld textarea, .fld select, .nl-row input { font: inherit; font-size: 16px; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px;
@@ -1187,7 +1188,7 @@
             <h3 id="rq-thanks" tabindex="-1">Request sent!</h3>
             <p id="rq-sum"></p>
             <p class="demo-note">Preview only: nothing was sent, and no photo left your phone.</p>
-            <button type="button" class="bk-go ghost" id="rq-again">Try it again</button>
+            <div class="done-acts"><button type="button" class="bk-go ghost" id="rq-change">Change something</button><button type="button" class="bk-go ghost" id="rq-again">Try it again</button></div>
           </div>
         </div>
         <div class="bk-side mock-note">
@@ -1279,7 +1280,7 @@
           <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
           <p>The next flash day note will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
           <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-          <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
+          <div class="done-acts"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
         </div>
       </aside>
     </div>
@@ -1320,7 +1321,7 @@
           <h3 id="cs-thanks" tabindex="-1">Signed!</h3>
           <p>A dated copy is on its way to your inbox, and one to the shop.</p>
           <p class="demo-note">Preview only: nothing was signed or sent.</p>
-          <button type="button" class="bk-go ghost" id="cs-again">Try it again</button>
+          <div class="done-acts"><button type="button" class="bk-go ghost" id="cs-change">Change something</button><button type="button" class="bk-go ghost" id="cs-again">Try it again</button></div>
         </div>
         <div class="bk-note mock-note" style="margin-top:18px"><b>What you see</b>Each signed form is stored in your records, dated and searchable. Artists can add their own questions to it.</div>
       </div>
@@ -1454,7 +1455,7 @@
         <h3 id="gf-done-h" tabindex="-1">All set!</h3>
         <p id="gf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
+        <div class="done-acts"><button type="button" class="bk-go ghost" id="gf-change">Change something</button><button type="button" class="bk-go ghost" id="gf-again">Try it again</button></div>
       </div>
     </div>
     <div class="gift-notes mock-note">
@@ -1572,7 +1573,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your inquiry is on its way to the shop.</p>
           <p class="demo-note">On your real site this lands in your inbox.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="done-acts"><button type="button" class="bk-go ghost" id="cf-change">Change something</button><button type="button" class="bk-go ghost" id="cf-again">Try it again</button></div>
         </div>
       </div>
     </div>
@@ -1643,7 +1644,7 @@
     <h2 id="wl-done-h" tabindex="-1">You&rsquo;re on the list!</h2>
     <p>The shop will email you at <span id="wl-to" style="overflow-wrap:anywhere">your inbox</span> as soon as a spot opens up.</p>
     <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-    <button type="button" class="bk-go ghost" id="wl-close">Close</button>
+    <div class="done-acts"><button type="button" class="bk-go ghost" id="wl-change">Change something</button><button type="button" class="bk-go ghost" id="wl-close">Close</button></div>
   </div>
   <button type="button" class="wl-x" id="wl-x" aria-label="Close the waitlist"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
 </dialog>
@@ -1723,6 +1724,7 @@
     function closeWl() { dlg.close(); }
     $('wl-x').addEventListener('click', closeWl);
     $('wl-close').addEventListener('click', closeWl);
+    $('wl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; ask.hidden = false; quietFocus($('wl-h')); });
     dlg.addEventListener('click', function (e) {
       if (e.target !== dlg) return;
       var r = dlg.getBoundingClientRect();
@@ -1845,6 +1847,11 @@
         $('rq-inboxtext').textContent = 'Waiting for a request… try the form';
         quietFocus(form.querySelector('[type="submit"]'));
       });
+      $('rq-change').addEventListener('click', function () {
+        hint.textContent = ''; done.hidden = true; form.hidden = false;
+        $('rq-inboxtext').textContent = 'Editing the request… send it again to see it land here';
+        quietFocus($('rq-idea'));
+      });
     })();
 
     
@@ -1880,6 +1887,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('cs-thanks'));
       });
       $('cs-again').addEventListener('click', function () { form.reset(); clear(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cs-name')); });
+      $('cs-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cs-name')); });
     })();
 
     
@@ -1959,6 +1967,7 @@
       $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
       $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
+      $('gf-change').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h')); });
       reset();
     })();
 
@@ -1977,6 +1986,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('cf-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
     })();
 
     
@@ -1991,6 +2001,7 @@
         form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
       $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+      $('nl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
     })();
 
     (function () {
