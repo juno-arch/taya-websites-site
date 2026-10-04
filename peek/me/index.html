@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>This device is me &middot; Web Faery</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root { --char: #1c1b18; --char-2: #24221e; --line: #3b3832; --bone: #efe6d4; --muted: #b8ae9c; --gold: #f2c77c; --moss: #a9c08a; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--char); color: var(--bone); font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.55; display: grid; place-items: center; padding: 24px 16px; }
+  main { max-width: 520px; width: 100%; background: var(--char-2); border: 1px solid var(--line); border-radius: 18px; padding: 28px 24px; }
+  h1 { font-weight: normal; font-size: 28px; line-height: 1.2; margin: 0 0 12px; color: var(--gold); }
+  p { margin: 0 0 14px; }
+  .state { font-size: 19px; }
+  .state.on { color: var(--moss); }
+  .small { color: var(--muted); font-size: 15px; }
+  button { font: inherit; font-size: 17px; cursor: pointer; border-radius: 999px; padding: 10px 20px; margin: 6px 0 18px; border: 1px solid var(--gold); background: var(--gold); color: var(--char); }
+  button.off { background: transparent; color: var(--gold); }
+  button:focus-visible { outline: 3px solid var(--bone); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Your own visits</h1>
+  <p class="state" id="state" role="status" aria-live="polite">Checking this device&hellip;</p>
+  <button type="button" id="toggle" hidden></button>
+  <p class="small">Your studio counts how often each mockup is opened after you send it, so you can see who&rsquo;s had a look. Switch this on and your own looks from this device won&rsquo;t be counted.</p>
+  <p class="small">It&rsquo;s remembered by this browser only, so do it once on each phone, tablet and computer you use (and again if you clear its browsing data). Nothing about you is sent anywhere.</p>
+</main>
+<script>
+(function () {
+  var state = document.getElementById('state'), btn = document.getElementById('toggle');
+  function read() { try { return localStorage.getItem('wf-me') === '1'; } catch (e) { return null; } }
+  function show() {
+    var on = read();
+    if (on === null) {
+      state.className = 'state';
+      state.textContent = 'This browser won’t save it (a private window, or site data is blocked). Try a regular window.';
+      btn.hidden = true;
+      return;
+    }
+    state.className = on ? 'state on' : 'state';
+    state.textContent = on
+      ? 'Done! This device is you. Your visits to the mockups won’t be counted.'
+      : 'This device is counted like anyone else right now.';
+    btn.textContent = on ? 'Count this device again' : 'This device is me';
+    btn.className = on ? 'off' : '';
+    btn.hidden = false;
+  }
+  btn.addEventListener('click', function () {
+    try {
+      if (read()) localStorage.removeItem('wf-me');
+      else localStorage.setItem('wf-me', '1');
+    } catch (e) {}
+    show();
+  });
+  show();
+})();
+</script>
+</body>
+</html>

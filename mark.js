@@ -5,7 +5,10 @@
    or a private magic link from Taya's email (?mark=1&k=...): the key is kept for this one page (so a reload or
    a later visit still works), taken out of the address bar, and opens notes on this mockup only.
    Loaded only when the address has ?mark=1, by a one-line loader the peek pages carry. No outside scripts,
-   no tracking, and it never changes the mockup itself.
+   and it never changes the mockup itself. It works as the client's own portal, so Taya's studio sees their notes,
+   their pick and when they last opened it. Separately, the peek pages themselves (a tiny inline script next to
+   that loader, Oct 4 2026) count anonymous opens for Taya's outreach list: just the page's name, no cookies and
+   no personal data. That count skips ?mark=1 links like this one.
    The build picker (Oct 2 2026): the first time they open it, a welcome card asks "Which one feels like you?"
    (Maiden, Mother, Crone, or everything). Picking switches the mockup's own "See it as" view and saves the
    pick to their portal (/pick), so the view comes back on their next visit. "Change my pick" in the notes
