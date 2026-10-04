@@ -34,6 +34,8 @@
     --slat: rgba(138, 98, 0, 0.07); 
     color-scheme: light;
   }
+  /* tap a photo to see it whole (shared /lightbox.js), themed to the black and marigold */
+  :root { --lb-veil: rgba(17, 16, 14, 0.97); --lb-ink: #ece7db; --lb-accent: #eba600; --lb-caption-font: 'Inknut Antiqua', Georgia, serif; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --ground: #151515; --ground-2: #1e1f21; --ink: #ece7db; --ink-soft: #b9b4a8;
@@ -920,7 +922,7 @@
           <p class="a-links"><a href="https://www.facebook.com/randy.meyer.988" target="_blank" rel="noopener">Randy on Facebook<span class="vh"> (opens in a new tab)</span></a></p>
         </div>
         <div class="a-tail">
-          <ul class="a-work" aria-label="Randy's work">
+          <ul class="a-work" data-lightbox aria-label="Randy's work">
             <li><img src="images/work-randy-fox.jpg" alt="A geometric fox chest piece" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-randy-sleeve.jpg" alt="A mandala and geometry sleeve" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-randy-lion.jpg" alt="A lion inside a dotwork triangle, across the torso" width="360" height="360" loading="lazy"></li>
@@ -938,7 +940,7 @@
           <p class="a-links"><a href="https://www.instagram.com/labrujatatuu_/" target="_blank" rel="noopener">@labrujatatuu_<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
         </div>
         <div class="a-tail">
-          <ul class="a-work" aria-label="Alexa's work">
+          <ul class="a-work" data-lightbox aria-label="Alexa's work">
             <li><img src="images/work-alexa-roses.jpg" alt="Black and gray roses on a forearm" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-alexa-babayaga.jpg" alt="Baba Yaga's hut on chicken legs, in black and gray" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-alexa-vulture.jpg" alt="A black and gray vulture" width="360" height="360" loading="lazy"></li>
@@ -956,7 +958,7 @@
           <p class="a-links"><a href="https://www.instagram.com/calcium_art/" target="_blank" rel="noopener">@calcium_art<span class="vh"> on Instagram (opens in a new tab)</span></a><a href="http://calciumtattoo.com" target="_blank" rel="noopener">Cal&rsquo;s website<span class="vh"> (opens in a new tab)</span></a></p>
         </div>
         <div class="a-tail">
-          <ul class="a-work" aria-label="Cal's work">
+          <ul class="a-work" data-lightbox aria-label="Cal's work">
             <li><img src="images/work-cal-poppies.jpg" alt="Orange California poppies in color" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-cal-hearts.jpg" alt="A bleeding heart vine in color" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-cal-hares.jpg" alt="Three hares in a circle, linocut style" width="360" height="360" loading="lazy"></li>
@@ -988,7 +990,7 @@
           <p class="a-links"><a href="https://www.instagram.com/ewok_ink/" target="_blank" rel="noopener">@ewok_ink<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
         </div>
         <div class="a-tail">
-          <ul class="a-work" aria-label="Ewok's work">
+          <ul class="a-work" data-lightbox aria-label="Ewok's work">
             <li><img src="images/work-ewok-stork.jpg" alt="A black and gray stork in flight" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-ewok-chest.jpg" alt="A bold black and gray chest piece with tentacles" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-ewok-poe.jpg" alt="A portrait of Edgar Allan Poe" width="360" height="360" loading="lazy"></li>
@@ -1006,7 +1008,7 @@
           <p class="a-links"><a href="https://www.instagram.com/k.munstertattoo/" target="_blank" rel="noopener">@k.munstertattoo<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
         </div>
         <div class="a-tail">
-          <ul class="a-work" aria-label="Kara's work">
+          <ul class="a-work" data-lightbox aria-label="Kara's work">
             <li><img src="images/work-kara-jiji.jpg" alt="A black cat in a teacup, in color" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-kara-pansies.jpg" alt="Purple pansies in color" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-kara-snorlax.jpg" alt="Snorlax eating ramen, in color" width="360" height="360" loading="lazy"></li>
@@ -1038,7 +1040,7 @@
           <p class="a-links"><a href="https://www.instagram.com/estreladapraia.ink/" target="_blank" rel="noopener">@estreladapraia.ink<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
         </div>
         <div class="a-tail">
-          <ul class="a-work" aria-label="Sofí's work">
+          <ul class="a-work" data-lightbox aria-label="Sofí's work">
             <li><img src="images/work-sofi-floral.jpg" alt="A fine floral back piece along the spine" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-sofi-mermaid.jpg" alt="A mermaid in black and gray with a green flower" width="360" height="360" loading="lazy"></li>
             <li><img src="images/work-sofi-leopard.jpg" alt="A leopard curled along the spine" width="360" height="360" loading="lazy"></li>
@@ -2274,5 +2276,6 @@
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script src="/note-motion.js?v=1" defer></script>
+<script src="/lightbox.js?v=2" defer></script>
 </body>
 </html>

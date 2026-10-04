@@ -38,6 +38,8 @@
     --rope-a: #b88a4c; --rope-b: #7f5a2b; --rope-c: #d6ad6c;
     color-scheme: light;
   }
+  /* tap a photo to see it whole (shared /lightbox.js), themed to the logo black and orange */
+  :root { --lb-veil: rgba(19, 17, 15, 0.97); --lb-ink: #efe6d6; --lb-accent: #de8e1d; --lb-caption-font: 'Rye', Georgia, serif; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --ground: #161514; --ground-2: #201e1c; --ink: #eee6d8; --ink-soft: #b8ad9d;
@@ -741,7 +743,7 @@
         <button type="button" class="chip" data-f="film" aria-pressed="false">Characters</button>
       </div>
     </div>
-    <div class="gallery" id="gallery">
+    <div class="gallery" id="gallery" data-lightbox>
       <figure class="reveal photo tall" data-f="color wild"><img src="images/work-redwoods.jpg" width="900" height="900" alt="A color tattoo of redwood trunks seen from the forest floor looking up, framed in a diamond" loading="lazy"><figcaption><b>Sean &middot; Color</b>Looking up through the redwoods</figcaption></figure>
       <figure class="reveal photo" data-f="bg wild"><img src="images/work-deer.jpg" width="900" height="900" alt="A black and gray tattoo of a buck in a misty pine forest" loading="lazy"><figcaption><b>Sean &middot; Black and gray</b>Permanent wildlife</figcaption></figure>
       <figure class="reveal photo" data-f="color wild"><img src="images/work-fox.jpg" width="900" height="900" alt="A color tattoo of a white arctic fox under bright northern lights" loading="lazy"><figcaption><b>Sean &middot; Color</b>Fox under the northern lights</figcaption></figure>
@@ -959,7 +961,7 @@
     <p class="label with-pill"><span>Pre-drawn designs</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Drawn by hand, <em>ready to wear</em></h2>
     <p class="soft measure" style="margin-top:14px">Get one on you before someone else does. Claim a design with your deposit, and it&rsquo;s yours.</p>
-    <div class="flash">
+    <div class="flash" data-lightbox>
       <article class="card reveal"><figure class="photo"><img src="images/flash-koi.jpg" width="600" height="750" alt="A red pencil sketch of a koi swimming up through waves and peonies" loading="lazy"></figure><div class="card-body"><h3>Koi</h3><p>Damen &middot; would look sweet on the side of a leg</p><p><span class="ph">your price</span></p><button type="button" class="bk-go claim" aria-pressed="false">Claim it</button></div></article>
       <article class="card reveal"><figure class="photo"><img src="images/flash-thunder.jpg" width="600" height="750" alt="A red pencil sketch of a thunderbird with lightning in its talons" loading="lazy"></figure><div class="card-body"><h3>Thunder chicken</h3><p>Damen &middot; on paper, with a pencil</p><p><span class="ph">your price</span></p><button type="button" class="bk-go claim" aria-pressed="false">Claim it</button></div></article>
       <article class="card reveal"><figure class="photo"><img src="images/flash-hanya.jpg" width="600" height="750" alt="A red pencil sketch of a horned Hanya mask with chrysanthemums" loading="lazy"></figure><div class="card-body"><h3>Hanya mask</h3><p>Damen &middot; with chrysanthemums</p><p><span class="ph">your price</span></p><button type="button" class="bk-go claim" aria-pressed="false">Claim it</button></div></article>
@@ -1590,5 +1592,6 @@
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script src="/note-motion.js?v=1" defer></script>
+<script src="/lightbox.js?v=2" defer></script>
 </body>
 </html>

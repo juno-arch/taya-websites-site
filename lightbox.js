@@ -180,6 +180,12 @@
   function attach(c) {
     if (c.__lbOn) return; c.__lbOn = true;
     var imgs = [].slice.call(c.querySelectorAll('img')).filter(function (im) { return im.getAttribute('src') || im.getAttribute('data-full'); });
+    // photos a filter has hidden (the hidden attribute) are left out of the flip-through
+    function openFrom(im, t) {
+      var shown = imgs.filter(function (x) { var h = x.closest('[hidden]'); return !h || !c.contains(h); });
+      if (shown.indexOf(im) < 0) shown = imgs;
+      open(shown, shown.indexOf(im), t);
+    }
     imgs.forEach(function (im, i) {
       var t = im.closest('a, button, figure, li') || im;
       if (!c.contains(t) || t === c) t = im;
@@ -190,9 +196,9 @@
       if (!native) { t.setAttribute('role', 'button'); t.tabIndex = 0; }
       t.setAttribute('aria-label', label);
       t.setAttribute('aria-haspopup', 'dialog');
-      t.addEventListener('click', function (e) { e.preventDefault(); open(imgs, i, t); });
+      t.addEventListener('click', function (e) { e.preventDefault(); openFrom(im, t); });
       if (!native) t.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(imgs, i, t); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFrom(im, t); }
       });
     });
   }

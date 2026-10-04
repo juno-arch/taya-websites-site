@@ -41,6 +41,8 @@
     --paper: #f7f3ea;
     color-scheme: light;
   }
+  /* tap a photo to see it whole (shared /lightbox.js), themed to the shop's dark band and brass */
+  :root { --lb-veil: rgba(13, 19, 21, 0.97); --lb-ink: #ede7d8; --lb-accent: #dcbb6b; --lb-caption-font: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --ground: #151717; --ground-2: #1e2121; --ink: #e9ebe8; --ink-soft: #b2b9b7;
@@ -797,7 +799,7 @@
 </section>
 
 <section class="workband" aria-label="Fresh work">
-  <div class="wb-row">
+  <div class="wb-row" data-lightbox>
     <figure class="photo reveal"><img src="images/w-lilies.jpg" alt="Pink lilies in full color on a forearm" width="600" height="750" loading="lazy"></figure>
     <figure class="photo reveal"><img src="images/w-kestrel.jpg" alt="A kestrel diving with talons out, in bright color" width="600" height="750" loading="lazy"></figure>
     <figure class="photo reveal"><img src="images/w-rose.jpg" alt="A blue rose on a pink starry background" width="600" height="750" loading="lazy"></figure>
@@ -1570,5 +1572,6 @@
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script src="/note-motion.js?v=1" defer></script>
+<script src="/lightbox.js?v=2" defer></script>
 </body>
 </html>
