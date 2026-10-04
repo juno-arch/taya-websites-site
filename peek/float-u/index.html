@@ -358,6 +358,10 @@
   .bk-steps li.on { color: #f4f2ee; }
   .bk-steps li.on::before { background: #6f7cff; border-color: #6f7cff; color: #fff; }
   .bk-steps li.done { color: var(--glow); }
+  .bk-steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; border-radius: 6px; padding: 4px 2px; margin: -4px -2px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .bk-steps button:hover { color: #f4f2ee; }
+  .bk-steps button:disabled, .bk-steps li.on button { cursor: default; text-decoration: none; }
+  .bk-steps button:focus-visible { outline: 2px solid #f4f2ee; outline-offset: 2px; }
   .bk-h { font-size: 22px; font-weight: 400; color: #f4f2ee; margin-bottom: 14px; }
   .rooms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
   .opt { font: inherit; color: var(--on-night); text-align: left; cursor: pointer; border-radius: 14px; padding: 16px;
@@ -1205,7 +1209,7 @@
 
     <div class="bk">
       <div class="bk-card" id="bk">
-        <ol class="bk-steps" aria-hidden="true"><li data-n="1" class="on">Room</li><li data-n="2">Add-ons</li><li data-n="3">Book</li></ol>
+        <ol class="bk-steps" aria-label="Booking steps, tap one you have done to go back"><li data-n="1" class="on"><button type="button" data-step="1" aria-current="step">Room</button></li><li data-n="2"><button type="button" data-step="2" disabled>Add-ons</button></li><li data-n="3"><button type="button" data-step="3" disabled>Book</button></li></ol>
 
         <div data-pane="1">
           <h3 class="bk-h" tabindex="-1">Choose your room</h3>
@@ -1385,7 +1389,7 @@
           <h3 id="gf-done-h" tabindex="-1">All set!</h3>
           <p id="gf-done-text" style="color:var(--ink-soft)"></p>
           <p class="demo-note">Preview only. Nothing was charged.</p>
-          <button type="button" class="linkish" id="gf-again">Try it again</button>
+          <div class="row-btns"><button type="button" class="linkish" id="gf-again">Try it again</button><button type="button" class="linkish" id="gf-edit">Change something</button></div>
         </div>
       </div>
     </div>
@@ -1610,7 +1614,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p style="color:var(--ink-soft)">Your note is on its way to Float U.</p>
           <p class="demo-note">Preview only. On your real site this lands in your inbox.</p>
-          <button type="button" class="linkish" id="cf-again">Try it again</button>
+          <div class="row-btns"><button type="button" class="linkish" id="cf-again">Try it again</button><button type="button" class="linkish" id="cf-edit">Change something</button></div>
         </div>
       </div>
     </div>
@@ -1850,7 +1854,13 @@
     }
     function paint() {
       panes.forEach(function (p) { p.hidden = +p.dataset.pane !== st.step; });
-      steps.forEach(function (li, i) { li.classList.toggle('on', i + 1 === st.step); li.classList.toggle('done', i + 1 < st.step); });
+      st.max = Math.max(st.max || 1, st.step);
+      steps.forEach(function (li, i) {
+        var n = i + 1, on = n === st.step, b = li.querySelector('button');
+        li.classList.toggle('on', on); li.classList.toggle('done', n < st.step);
+        if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+        b.disabled = !on && !canGo(n);
+      });
       rooms.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.room === st.room ? 'true' : 'false'); });
       adds.forEach(function (b) {
         var k = b.dataset.add, ok = allowed(k);
@@ -1874,13 +1884,15 @@
       }
       receipt();
     }
+    function canGo(n) { return n === 1 || (!!st.room && st.max >= n); }
+    steps.forEach(function (li, i) { li.querySelector('button').addEventListener('click', function () { var n = i + 1; if (n !== st.step && canGo(n)) go(n); }); });
     function go(n) { st.step = n; paint(); quietFocus(card.querySelector('[data-pane="' + n + '"] .bk-h')); }
     rooms.forEach(function (b) { b.addEventListener('click', function () { st.room = b.dataset.room; paint(); }); });
     adds.forEach(function (b) { b.addEventListener('click', function () { var k = b.dataset.add; if (!allowed(k)) return; st.adds[k] = !st.adds[k]; paint(); }); });
     next.addEventListener('click', function () { if (!next.disabled && st.step < 3) go(st.step + 1); });
     back.addEventListener('click', function () { if (st.step > 1) go(st.step - 1); });
     again.addEventListener('click', function () { reset(); go(1); });
-    function reset() { st = { step: 1, room: null, adds: {} }; }
+    function reset() { st = { step: 1, max: 1, room: null, adds: {} }; }
     reset(); paint();
   })();
 </script>
@@ -1963,6 +1975,7 @@
       $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
       $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
+      $('gf-edit').addEventListener('click', function () { done.hidden = true; sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[aria-pressed="true"]') || form.querySelector('[type="submit"]')); });
       reset();
     })();
 
@@ -1988,6 +2001,7 @@
         $('cf-thanks').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '!';
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
+      $('cf-edit').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
     })();
 

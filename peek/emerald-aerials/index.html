@@ -384,6 +384,12 @@
   .bk-steps { display: flex; gap: 2px 8px; flex-wrap: wrap; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; }
   .bk-steps span { white-space: nowrap; }
   .bk-steps span.on { color: var(--em); font-weight: 700; }
+  .bk-steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; border-radius: 6px; padding: 4px 2px; margin: -4px 0; white-space: nowrap; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .bk-steps button:hover { color: var(--em); }
+  .bk-steps button.on { color: var(--em); font-weight: 700; text-decoration: none; cursor: default; }
+  .bk-steps button:disabled { cursor: default; text-decoration: none; }
+  .bk-nav { display: flex; flex-wrap: wrap; gap: 0 10px; align-items: center; }
+  @media (max-width: 480px) { .bk-nav .bk-go { padding-inline: 18px; } }
   .bk-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
   @media (min-width: 540px) { .bk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .bk-opt, .bk-day, .bk-time { font: inherit; color: var(--ink); background: var(--ground); border: 1px solid var(--hair); border-radius: 14px; padding: 12px; text-align: left; cursor: pointer; }
@@ -1017,7 +1023,7 @@
     <div class="bk">
       <div class="bk-main">
       <div class="bk-card" id="tb-card">
-        <div class="bk-steps" aria-hidden="true"><span data-s="1" class="on">1 Class</span><span data-s="2">2 Day &amp; time</span><span data-s="3">3 Your details</span></div>
+        <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Class</button><button type="button" data-s="2" disabled>2 Day &amp; time</button><button type="button" data-s="3" disabled>3 Your details</button></div>
         <div id="tb-s1">
           <div class="bk-grid">
             <button type="button" class="bk-opt" data-svc="Adult silks, beginner" data-len="60 min" data-days="1,6" data-time="6:00 pm|11:30 am"><b>Adult silks, beginner</b><span>60 min &middot; <i>your drop-in rate</i></span></button>
@@ -1042,12 +1048,12 @@
           </div>
           <p class="bk-mob-note" id="tb-waiver-note">First time? You&rsquo;ll sign the waiver on your phone before class. <span data-show="crone all">It&rsquo;s one tap from your confirmation.</span></p>
         </div>
-        <button type="button" class="bk-go" id="tb-go" disabled>Next</button>
+        <div class="bk-nav" id="tb-nav"><button type="button" class="bk-go" id="tb-go" disabled>Next</button><button type="button" class="bk-go ghost" id="tb-back" hidden>Back</button></div>
         <div class="bk-done" id="tb-done" hidden>
           <h3 id="tb-done-h" tabindex="-1">You&rsquo;re in!</h3>
           <p id="tb-summary"></p>
           <p style="margin-top:10px;color:var(--ink-soft);font-size:14px">A confirmation is on its way, with the waiver link and what to wear. A reminder arrives the day before. Need to change it? One tap in the email.</p>
-          <button type="button" class="bk-go" id="tb-again" style="background:transparent;color:var(--em)">Try it again</button>
+          <div class="bk-nav"><button type="button" class="bk-go" id="tb-again" style="background:transparent;color:var(--em)">Try it again</button><button type="button" class="bk-go ghost" id="tb-edit">Change something</button></div>
         </div>
       </div>
       <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Sign up&rdquo; button that opens whatever sign-up app you already use. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
@@ -1212,7 +1218,7 @@
         <h3 id="gf-done-h" tabindex="-1">All set!</h3>
         <p id="gf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
+        <div class="bk-nav"><button type="button" class="bk-go ghost" id="gf-again">Try it again</button><button type="button" class="bk-go ghost" id="gf-edit">Change something</button></div>
       </div>
     </div>
     <div class="gift-notes to-you">
@@ -1325,7 +1331,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your note is on its way to Tawnie.</p>
           <p class="demo-note">On your real site this lands in your inbox.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="bk-nav"><button type="button" class="bk-go ghost" id="cf-again">Try it again</button><button type="button" class="bk-go ghost" id="cf-edit">Change something</button></div>
         </div>
       </div>
     </div>
@@ -1647,7 +1653,13 @@
     var go = $('go'), card = $('card'); if (!card) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     function steps() {
-      card.querySelectorAll('.bk-steps span').forEach(function (sp) { sp.classList.toggle('on', +sp.dataset.s === st.s); });
+      st.max = Math.max(st.max || 1, st.s);
+      card.querySelectorAll('.bk-steps [data-s]').forEach(function (sp) {
+        var n = +sp.dataset.s, on = n === st.s; sp.classList.toggle('on', on);
+        if (on) sp.setAttribute('aria-current', 'step'); else sp.removeAttribute('aria-current');
+        sp.disabled = !on && !canGo(n);
+      });
+      $('back').hidden = st.s === 1;
       [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
       go.textContent = st.s === 3 ? 'Save my spot (demo)' : 'Next';
       go.disabled = st.s === 1 ? !st.svc : st.s === 2 ? !(st.day && st.time) : false;
@@ -1658,6 +1670,7 @@
       b.addEventListener('click', function () {
         card.querySelectorAll('.bk-opt[data-svc]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
         b.setAttribute('aria-pressed', 'true');
+        if (st.svc === b.dataset.svc) { steps(); return; }
         st.svc = b.dataset.svc; st.len = b.dataset.len; st.kid = !!b.dataset.kid;
         st.runs = b.dataset.days.split(',').map(Number); st.times = b.dataset.time.split('|');
         st.day = null; st.time = null; drawDays(); steps();
@@ -1689,6 +1702,16 @@
       b.addEventListener('click', function () { b.setAttribute('aria-pressed', 'true'); st.time = t; steps(); });
       times.appendChild(b);
     }
+    function canGo(n) { return n === 1 || (n === 2 ? !!st.svc && st.max >= 2 : !!(st.svc && st.day && st.time) && st.max >= 3); }
+    function focusStep() {
+      var box = $('s' + st.s);
+      quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input') || go);
+    }
+    function jump(n) { st.s = n; steps(); focusStep(); }
+    card.querySelectorAll('.bk-steps [data-s]').forEach(function (sp) {
+      sp.addEventListener('click', function () { var n = +sp.dataset.s; if (n !== st.s && canGo(n)) jump(n); });
+    });
+    $('back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
     go.addEventListener('click', function () {
       if (st.s < 3) { st.s++; steps(); if (st.s === 2) quietFocus(days.querySelector('.bk-day')); return; }
       var who = ($('name').value || 'A new student').trim(), kid = ($('kid').value || 'their child').trim();
@@ -1696,12 +1719,17 @@
       $('summary').textContent = (st.kid ? kid + ' is in ' : 'You’re in ') + st.svc + ' (' + st.len + ') on ' + st.day + ' at ' + st.time + '.';
       $('inboxtext').textContent = whoIn + ' signed up for ' + st.svc + ', ' + st.day + ' at ' + st.time + '.' + (st.kid ? ' Waiver: parent to sign.' : '');
       [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; });
-      go.hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false;
+      $('nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false;
       quietFocus($('done-h'));
+    });
+    $('edit').addEventListener('click', function () {
+      $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
+      $('inboxtext').textContent = 'Waiting for a sign-up… try it on the left';
+      st.s = 3; steps(); quietFocus(go);
     });
     $('again').addEventListener('click', function () {
       st = { s: 1 }; card.querySelectorAll('[aria-pressed]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-      days.innerHTML = ''; times.innerHTML = ''; $('done').hidden = true; go.hidden = false; card.querySelector('.bk-steps').hidden = false;
+      days.innerHTML = ''; times.innerHTML = ''; $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
       $('inboxtext').textContent = 'Waiting for a sign-up… try it on the left'; steps();
       quietFocus(card.querySelector('.bk-opt'));
     });
@@ -1766,6 +1794,7 @@
       $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
       $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
+      $('gf-edit').addEventListener('click', function () { done.hidden = true; sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[aria-pressed="true"]') || form.querySelector('[type="submit"]')); });
       reset();
     })();
 
@@ -1791,6 +1820,7 @@
         $('cf-thanks').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '!';
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
+      $('cf-edit').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
     })();
 

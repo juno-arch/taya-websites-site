@@ -482,6 +482,7 @@
   .cardbox { border: 1.5px solid var(--hair); border-radius: 12px; padding: 12px; font-size: 14px; color: var(--ink-soft); background: var(--ground-2); display: flex; align-items: center; gap: 10px; }
   .back { font: inherit; background: none; border: 0; color: var(--red-deep); text-decoration: underline; cursor: pointer; padding: 6px 0; width: fit-content; }
   .done h3 { font-size: 26px; }
+  .done-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 16px; }
   .side { display: grid; gap: 14px; }
   .inbox { background: var(--ground); border: 1px dashed var(--hair); border-radius: 14px; padding: 12px 14px; font-size: 14px; }
   .inbox .from { font-size: 12px; color: var(--ink-soft); }
@@ -962,7 +963,7 @@
             <h3 tabindex="-1" id="su-done-h">You&rsquo;re signed up!</h3>
             <p id="su-done-text" style="margin-top:10px"></p>
             <p class="demo-note">Preview only. Nothing was charged and no spot was taken.</p>
-            <button type="button" class="btn quiet" id="su-again" style="margin-top:16px">Try another</button>
+            <div class="done-acts"><button type="button" class="btn quiet" id="su-again">Try another</button><button type="button" class="back" id="su-edit">Change something</button></div>
           </div>
         </div>
 
@@ -1541,7 +1542,16 @@
     }
     $('su-pay').addEventListener('click', function () { finish(false); });
     $('su-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus($('su-go')); });
-    $('su-again').addEventListener('click', function () { done.hidden = true; form.hidden = false; quietFocus(tabs[0]); });
+    var WAIT = $('su-inbox').textContent;
+    $('su-edit').addEventListener('click', function () {
+      $('su-inbox').textContent = WAIT; done.hidden = true;
+      if (last && !last.r.approval) { sheet.hidden = false; quietFocus($('su-sheet-h')); }
+      else { form.hidden = false; quietFocus($('su-go')); }
+    });
+    $('su-again').addEventListener('click', function () {
+      $('su-inbox').textContent = WAIT; done.hidden = true; sheet.hidden = true; form.hidden = false;
+      sel.value = 'ss'; st.cls = 'ss'; drawClass(); setK('class'); quietFocus(tabs[0]);
+    });
     drawClass(); paint();
   })();
 </script>
