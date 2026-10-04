@@ -437,6 +437,9 @@
   .bk-go { margin-top: 16px; font: inherit; font-weight: 700; padding: 13px 22px; border-radius: 999px; border: 1px solid var(--brand); background: var(--brand); color: var(--on-brand); cursor: pointer; }
   .bk-go.ghost { background: transparent; color: var(--brand-deep); }
   .bk-done h3 { font-size: 26px; margin-bottom: 8px; }
+  .again-row .bk-go.link, .news .again-row .bk-go.link { border-color: transparent; padding-inline: 14px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .again-row { display: flex; flex-wrap: wrap; gap: 0 10px; align-items: center; }
+  .again-row .bk-go { flex: 0 0 auto; }
   .sheet { background: var(--ground); border: 1px solid var(--hair); border-radius: 18px; padding: 16px 20px 20px; }
   .sheet-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Manrope', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
   .sheet-lines > div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--hair); }
@@ -906,7 +909,7 @@
         <h3 id="gf-done-h" tabindex="-1">All set!</h3>
         <p id="gf-done-text"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="gf-again">Try it again</button>
+        <div class="again-row"><button type="button" class="bk-go ghost" id="gf-again">Try it again</button><button type="button" class="bk-go ghost link" id="gf-change">Back</button></div>
       </div>
     </div>
   </div>
@@ -1052,7 +1055,7 @@
           <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
           <p>Your note is on its way to the studio.</p>
           <p class="demo-note">On your real site this lands in your inbox.</p>
-          <button type="button" class="bk-go ghost" id="cf-again">Try it again</button>
+          <div class="again-row"><button type="button" class="bk-go ghost" id="cf-again">Try it again</button><button type="button" class="bk-go ghost link" id="cf-change">Change something</button></div>
         </div>
       </div>
     </div>
@@ -1069,7 +1072,7 @@
         <h4 id="nl-done-h" tabindex="-1" style="font-size:24px;margin-top:18px">You&rsquo;re on the list!</h4>
         <p>The next studio note will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
         <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-        <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
+        <div class="again-row"><button type="button" class="bk-go ghost" id="nl-again">Try it again</button><button type="button" class="bk-go ghost link" id="nl-change">Change my email</button></div>
       </div>
     </aside>
   </div>
@@ -1325,9 +1328,10 @@
         $('gf-done-text').textContent = 'A gift card for ' + pick.dataset.what.charAt(0).toLowerCase() + pick.dataset.what.slice(1) + ', for ' + to + ' from ' + from + ', is on its way to your inbox, ready to print or forward.';
         form.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h'));
       });
-      $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; });
+      $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(pick); });
       $('gf-complete').addEventListener('click', function () { sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
-      $('gf-again').addEventListener('click', function () { done.hidden = true; form.hidden = false; quietFocus(amts[0]); });
+      $('gf-again').addEventListener('click', function () { form.reset(); pick = amts[0]; amts.forEach(function (x) { x.setAttribute('aria-pressed', x === pick ? 'true' : 'false'); }); done.hidden = true; form.hidden = false; quietFocus(amts[0]); });
+      $('gf-change').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h')); });
     })();
     (function () {
       var form = $('cf'); if (!form) return;
@@ -1341,6 +1345,7 @@
         hint.textContent = ''; $('cf-thanks').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '!';
         form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
       });
+      $('cf-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-name')); });
       $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; });
     })();
     (function () {
@@ -1352,6 +1357,7 @@
         if (!isEmail(mail)) { hint.textContent = 'Add an email address first.'; $('nl-mail').focus(); return; }
         hint.textContent = ''; $('nl-to').textContent = mail; form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
+      $('nl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
       $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; });
     })();
   })();

@@ -278,6 +278,8 @@
   .bk-go { margin-top: 14px; font: inherit; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 14.5px; padding: 13px 22px; border-radius: 4px; border: 1px solid var(--teal); background: var(--teal); color: var(--ground); cursor: pointer; justify-self: start; }
   .bk-go.ghost { background: transparent; color: var(--teal-deep); }
   .bk-go:disabled { opacity: 0.45; cursor: not-allowed; }
+  .again-row .bk-go.link, .news .again-row .bk-go.link { border-color: transparent; padding-inline: 14px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .again-row { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
   .demo-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
   .bk-demo { display: inline-block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); border: 1px solid var(--ink-soft); border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: middle; line-height: 1.7; }
   .label.with-pill .bk-demo { margin-left: 0; }
@@ -840,7 +842,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px"><input id="nl-mail" type="email" autocomplete="off" value="sam@example.com" style="flex:999 1 190px;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--hair);border-radius:4px;background:var(--ground);color:var(--ink);min-width:0"><button type="submit" class="bk-go" style="margin-top:0">Sign me up</button></div>
             <p class="hint" id="nl-hint" role="status"></p>
           </form>
-          <div id="nl-done" class="fade-in" hidden><p><b>You&rsquo;re on the list.</b> The next flash drop goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p><p class="demo-note">Preview only: nothing was sent, and no list was joined.</p><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
+          <div id="nl-done" class="fade-in" hidden><p><b>You&rsquo;re on the list.</b> The next flash drop goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p><p class="demo-note">Preview only: nothing was sent, and no list was joined.</p><div class="again-row"><button type="button" class="bk-go ghost" id="nl-again">Try it again</button><button type="button" class="bk-go ghost link" id="nl-change">Change my email</button></div></div>
         </aside>
       </div>
     </div>
@@ -904,7 +906,7 @@
             <h3 id="rq-h" tabindex="-1" style="font-size:34px">Got it!</h3>
             <p id="rq-sum" style="margin-top:6px"></p>
             <p class="demo-note">Preview only: nothing was sent, and no photos left your phone.</p>
-            <button type="button" class="bk-go ghost" id="rq-again">Try it again</button>
+            <div class="again-row"><button type="button" class="bk-go ghost" id="rq-again">Try it again</button><button type="button" class="bk-go ghost link" id="rq-change">Change something</button></div>
           </div>
         </div>
         <div class="req-side wf-note">
@@ -1009,7 +1011,7 @@
         <h3 id="dp-done-h" tabindex="-1" style="font-size:34px">You&rsquo;re all set</h3>
         <p id="dp-done-t" style="margin-top:6px"></p>
         <p class="demo-note">Preview only. Nothing was charged.</p>
-        <button type="button" class="bk-go ghost" id="dp-again">Try it again</button>
+        <div class="again-row"><button type="button" class="bk-go ghost" id="dp-again">Try it again</button><button type="button" class="bk-go ghost link" id="dp-change">Back</button></div>
       </div>
     </div>
     <div class="pay-notes wf-note">
@@ -1135,7 +1137,7 @@
     <h2 id="wl-done-h" tabindex="-1">You&rsquo;re on <em>the list</em></h2>
     <p style="margin-top:8px">We&rsquo;ll email <span id="wl-to" style="overflow-wrap:anywhere">you</span> when books open.</p>
     <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-    <button type="button" class="bk-go ghost" id="wl-close">Close</button>
+    <div class="again-row"><button type="button" class="bk-go ghost" id="wl-close">Close</button><button type="button" class="bk-go ghost link" id="wl-change">Change my email</button></div>
   </div>
   <button type="button" class="wl-x" id="wl-x" aria-label="Close"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
 </dialog>
@@ -1218,6 +1220,7 @@
     });
     function closeWl() { dlg.close(); }
     $('wl-x').addEventListener('click', closeWl); $('wl-close').addEventListener('click', closeWl);
+    $('wl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; ask.hidden = false; quietFocus($('wl-mail')); });
     dlg.addEventListener('click', function (e) { if (e.target !== dlg) return; var r = dlg.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeWl(); });
     dlg.addEventListener('close', function () { resetWl(); quietFocus(link); });
   })();
@@ -1310,7 +1313,8 @@
         $('rq-inbox').textContent = name + first + ' → ' + who + ': “' + idea.slice(0, 80) + (idea.length > 80 ? '…' : '') + '”, ' + $('rq-where').value + ', ' + $('rq-size').value + '.';
         form.hidden = true; $('rq-done').hidden = false; quietFocus($('rq-h'));
       });
-      $('rq-again').addEventListener('click', function () { form.hidden = false; $('rq-done').hidden = true; $('rq-inbox').textContent = 'Waiting for a request… try it'; quietFocus(form.querySelector('[type="submit"]')); });
+      $('rq-again').addEventListener('click', function () { form.reset(); who = 'Help me choose'; pick(opts, 'data-a', who); $('rq-count').textContent = 'or skip it'; $('rq-hint').textContent = ''; form.hidden = false; $('rq-done').hidden = true; $('rq-inbox').textContent = 'Waiting for a request… try it'; quietFocus(opts[0]); });
+      $('rq-change').addEventListener('click', function () { form.hidden = false; $('rq-done').hidden = true; $('rq-inbox').textContent = 'Waiting for a request… try it'; quietFocus(form.querySelector('[aria-pressed="true"]')); });
     })();
 
     // aftercare tabs
@@ -1328,7 +1332,8 @@
         if (!isEmail(mail)) { $('nl-hint').textContent = 'Add an email address first.'; $('nl-mail').focus(); return; }
         $('nl-hint').textContent = ''; $('nl-to').textContent = mail; form.hidden = true; $('nl-done').hidden = false;
       });
-      $('nl-again').addEventListener('click', function () { form.hidden = false; $('nl-done').hidden = true; });
+      $('nl-again').addEventListener('click', function () { form.reset(); $('nl-hint').textContent = ''; form.hidden = false; $('nl-done').hidden = true; quietFocus(form.querySelector('[type="submit"]')); });
+      $('nl-change').addEventListener('click', function () { form.hidden = false; $('nl-done').hidden = true; quietFocus($('nl-mail')); });
     })();
 
     // deposits + gift cards
@@ -1359,7 +1364,8 @@
       });
       $('dp-back').addEventListener('click', function () { $('dp-sheet').hidden = true; form.hidden = false; quietFocus($('dp-go')); });
       $('dp-pay').addEventListener('click', function () { $('dp-done-t').textContent = st.doneText; $('dp-sheet').hidden = true; $('dp-done').hidden = false; quietFocus($('dp-done-h')); });
-      $('dp-again').addEventListener('click', function () { $('dp-done').hidden = true; form.hidden = false; quietFocus($('dp-go')); });
+      $('dp-again').addEventListener('click', function () { form.reset(); st = { mode: 'dep', a: 'Alex', amt: '150' }; paint(); $('dp-hint').textContent = ''; $('dp-done').hidden = true; form.hidden = false; quietFocus(modes[0]); });
+      $('dp-change').addEventListener('click', function () { $('dp-done').hidden = true; $('dp-sheet').hidden = false; quietFocus($('dp-sheet-h')); });
       paint();
     })();
   })();
