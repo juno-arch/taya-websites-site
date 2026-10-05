@@ -375,15 +375,19 @@
     'In Bloom': ' It also pays for email from your own address, your Instagram feed, your newsletter’s paid plan once your list passes 100 people (up to 1,000), and your booking, payments or shop running on my server.'
   };
 
-  // Which accounts this client would have: all in their name, with Taya added as a helper. The newsletter list is
-  // theirs too, in their own Buttondown account, but with no helper: the sign-up only needs their username.
+  // Which accounts this client would have, all in their name (pricing-oct2026.md, "Account setup flow"). Their Google
+  // profile, a booking app they already use, and Stripe have Taya added as a helper. Their Buttondown list and a new
+  // Cal.com are set up by Taya with their email and handed over at launch (the newsletter list never has a helper).
   function accountsLine(p, build) {
     var acc = ['Your Google profile'];
-    if (p[2] === 2 || p[2] === 3 || build === 'In Bloom') acc.push('your booking app');
+    if (p[2] === 2) acc.push('your booking app');
     if (build === 'In Bloom') acc.push('your Stripe account');
     var who = acc.length > 1 ? acc.slice(0, -1).join(', ') + ' and ' + acc[acc.length - 1] + ' are all' : acc[0] + ' is';
-    var news = p[3] >= 2 ? ' Your newsletter list is yours too, in your own Buttondown account.' : '';
-    return who + ' in your name, with me added as a helper.' + news + ' Your web address is legally yours too: I hold it for you, with you listed as the owner, and renew it as part of care.';
+    var news = p[3] >= 2, cal = p[2] === 3, made = '';
+    if (news && cal) made = ' Your newsletter list is yours too, in your own Buttondown account, and your booking lives in your own Cal.com account. I set both up with your email and hand you the logins at launch.';
+    else if (news) made = ' Your newsletter list is yours too, in your own Buttondown account, which I set up with your email and hand you at launch.';
+    else if (cal) made = ' Your booking lives in your own Cal.com account, which I set up with your email and hand you at launch.';
+    return who + ' in your name, with me added as a helper.' + made + ' Your web address is legally yours too: I hold it for you, with you listed as the owner, and renew it as part of care.';
   }
 
   function costLines(p, build) {
@@ -396,7 +400,9 @@
       lines.push(['Booking', 'The booking app you already use stays on your own account, at whatever it costs you now. Cal.com is free for one person, if you’d like a free one.']);
     }
     if (build === 'In Bloom') {
-      lines.push(['Booking', 'Your own booking account. Cal.com is free for one person (paid upgrades optional).']);
+      // "set booking up for me": their own Cal.com (the accounts line says I make it with their email); selling: booking if they'd like it
+      lines.push(['Booking', p[2] === 3 ? 'Your own Cal.com account, free for one person (paid upgrades optional).'
+        : 'If you’d like booking too, Cal.com is free for one person (paid upgrades optional), and I set it up for you, in your name.']);
       lines.push(['Card payments', 'Stripe keeps about 2.9% + 30¢ per payment, taken from your own sales.']);
     }
     var notCovered = ['paid plans of apps you already use (Square, Vagaro, Acuity and the like)', 'ads'];

@@ -73,7 +73,7 @@
     call: 'A few easy questions by email. I do the writing after.',
     draft: 'I’m building your draft. You’ll get a private link to peek.',
     changes: 'Two rounds, each one email with everything in it.',
-    launch: 'Your site goes live at your own web address.',
+    launch: 'Your site goes live at your own web address, and I hand you your logins.',
     settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
   };
   // start.html's steps (#s-<step>); a few older names point to the step that holds them now.
@@ -84,13 +84,15 @@
     you: 's-sign', agree: 's-sign', deposit: 's-sign', photos: 's-look'
   };
   const HOWTO = {
+    // (pricing-oct2026.md, "Account setup flow": the owner adds Taya as a manager; no profile yet, Taya builds it.
+    // Newsletter and booking accounts Taya sets up herself, in the client's name, and hands over at launch.)
     accounts: {
       steps: [
-        'Sign in to a Google account you’ll keep for your business, then go to business.google.com and find your business. Claim it, or add it.',
-        'When Google asks you to verify, you can stop there. Email me and we’ll do it together.',
-        'Once you’re verified, open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love and choose Manager. You stay the owner.'
+        'Go to business.google.com and sign in with the Google account that owns your profile.',
+        'Open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love, choose Manager, and send it. You stay the owner. (Google moves its buttons around now and then; if it looks different, stop there and we’ll do it together.)',
+        'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Later, Google asks you for one quick check that it’s really your business (a short video, or a code it sends you).'
       ],
-      after: 'Google moves its buttons around now and then. If it looks different, stop there and we’ll do it together.'
+      after: 'Anything else, like your newsletter or booking, I set up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
     look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },

@@ -9,7 +9,8 @@
 //     30 days of settling in; changes are the same in every tier (email anytime, as often as needed, reply within
 //     2 business days, anything broken fixed free, big new things quoted first);
 //   stop care anytime: the site is still theirs, every file and login handed over;
-//   anyone quoted before Oct 5 keeps their quote (one quiet line on the main page).
+//   anyone quoted before Oct 5 keeps their quote, and the new care price if it's lower for them (one quiet line
+//     on the main page).
 //
 // Fails (exit 1) if any page:
 //   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490), care as optional,
@@ -25,6 +26,13 @@
 //   - links to a local file or #anchor that doesn't exist
 //   - (the main page) grows back the removed sections, or its questions stop being 6 to 8 closed accordions
 //   - shows a straight quote or apostrophe instead of a curly one
+//   - drifts from the account setup flow (pricing-oct2026.md, "Account setup flow", Oct 5 2026): Taya sets up
+//     the newsletter (Buttondown) and booking (Cal.com) in the client's name, with the client's email, and hands
+//     over the logins at launch, each with its own strong password the client changes; she never asks for a
+//     password they already use; the old "Please do it for me" / forward-me-the-code / sign-up-yourself steps
+//     are gone; Google: the owner adds Taya as a manager, or Taya builds it and makes them its owner at launch;
+//     Stripe the client makes, then adds Taya as a Developer; hosting: GitHub Pages, or Cloudflare Pages for an
+//     In Bloom site that takes payments or runs a shop
 // (Folders starting with "_" are not published by GitHub Pages.)
 
 import fs from 'node:fs';
@@ -97,7 +105,7 @@ for (const page of PAGES) {
   if (!/big[^.]{0,60}quote/i.test(t)) fail('index.html: doesn’t say big new things are quoted first');
   if (!/half off the build/i.test(t)) fail('index.html: doesn’t say founding clients get half off the build');
   if (!/every file and login/.test(t)) fail('index.html: doesn’t say stopping care means every file and login handed over');
-  if (!t.includes('Quoted before October 5? Your quote stands, just as I wrote it 💛')) fail('index.html: lacks the quoted-before-October-5 line');
+  if (!t.includes('Quoted before October 5? Your quote stands, just as I wrote it, and if the new care price is lower for you, it’s yours 💛')) fail('index.html: lacks the quoted-before-October-5 line (with the lower-care-price offer)');
   for (const name of Object.keys(TIERS)) if (!t.includes(name)) fail(`index.html: never names ${name}`);
 }
 // care starts after the settling-in days, wherever care is priced
@@ -188,6 +196,41 @@ if (!/Porkbun username/.test(plain['domain.html'])) fail('domain.html: the push 
 if (!/ID check/.test(plain['domain.html'])) fail('domain.html: doesn’t mention the new-account ID check');
 if (!/Accept within 3 days/.test(plain['domain.html'])) fail('domain.html: doesn’t give the 3-day window to accept');
 if ((plain['domain.html'].match(/2606:50c0:800[0-3]::153/g) || []).length !== 4) fail('domain.html: needs the four GitHub Pages AAAA records');
+
+// ---- the account setup flow (pricing-oct2026.md, "Account setup flow", Oct 5 2026) ----
+// gone everywhere: the old opt-in "do it for me", forwarding sign-in codes, one shared password, and the
+// sign-up-yourself steps for Buttondown and Cal.com (Taya makes those now, with the client's email)
+for (const page of PAGES) {
+  const raw = texts[page]; // what a visitor sees (and the links they'd tap), comments and scripts dropped
+  for (const [re, what] of [
+    [/do it for me|do-it-for-me/i, 'the old "Please do it for me" opt-in (setting accounts up for them is simply how it works now)'],
+    [/forward me[^.]{0,40}code/i, 'forwarding sign-in codes to Taya (accounts are made with their own email)'],
+    [/generic password|same password|one password for/i, 'one shared password (every account gets its own)'],
+    [/cal\.com\/signup|Your Cal\.com username|Your Buttondown username/i, 'a sign-up-yourself step for Cal.com or Buttondown (Taya makes them)'],
+    [/A helper invite or a username is all I ever need/, 'the old password note'],
+  ]) {
+    const m = raw.match(re);
+    if (m) fail(`${page}: still has ${what}: "${raw.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
+  }
+}
+{
+  const need = (page, re, what) => { if (!re.test(plain[page])) fail(`${page}: ${what}`); };
+  need('index.html', /in your name and with your email, then hand you the logins at launch/, 'doesn’t say I set up their accounts with their email and hand over the logins at launch');
+  need('index.html', /confirm-your-email/, 'doesn’t tell them to expect a confirm-your-email message or two');
+  need('index.html', /at launch I make you its owner/, 'doesn’t say a Google profile I build becomes theirs at launch');
+  need('start.html', /never ask for a password you already use/, 'doesn’t promise I’ll never ask for a password they already use');
+  need('start.html', /its own strong password/, 'doesn’t say every account I set up gets its own strong password');
+  need('start.html', /hand you the logins/, 'doesn’t say I hand over the logins at launch');
+  need('start.html', /ID, tax number and bank account/, 'doesn’t say why Stripe has to be them (their own ID, tax number and bank account)');
+  need('start.html', /Developer/, 'doesn’t ask them to add me to Stripe as a Developer');
+  need('start.html', /GitHub Pages[^.]*Cloudflare Pages/, 'the agreement doesn’t say where sites are hosted (GitHub Pages; Cloudflare Pages for In Bloom with payments or a shop)');
+  need('welcome.html', /never ask for a password you already use/, 'doesn’t promise I’ll never ask for a password they already use');
+  need('welcome.html', /logins to the accounts I set up for you/, 'doesn’t say the logins come at launch');
+  need('intake.html', /Buttondown account \(it’s your list\), which I set up for you with your email/, 'doesn’t say I set up their Buttondown with their email');
+  need('intake.html', /Cal\.com account, free for one person, which I set up for you with your email/, 'doesn’t say I set up their Cal.com with their email');
+  need('domain.html', /GitHub Pages[^.]*\. An In Bloom site that takes payments or runs a shop lives on Cloudflare Pages/, 'doesn’t say In Bloom sites with payments or a shop live on Cloudflare Pages');
+  need('domain.html', /register it with your own email/, 'doesn’t say the web address is registered with their own email');
+}
 
 // ---- the main page stays simple: what do you make, what does it cost, how do I start ----
 {

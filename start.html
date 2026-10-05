@@ -40,12 +40,16 @@
     2. A few quick things: four short, optional answers. Every build's words are written from a few
        easy questions by email, so the rest of their story is gathered there, not here
     3. Your look and photos (only the parts that apply)
-    4. Your accounts: only what their build needs (pricing-oct2026.md, "Accounts and third-party services"):
-       a Google profile with taya@webfaery.love as manager (every build); their booking link, or a free
-       Cal.com account (Tended, In Bloom); their own Buttondown list (Tended, In Bloom, when they'd like a
-       newsletter); Stripe in their name with Taya as Developer (In Bloom). Their web address needs no
-       account: Taya registers it with them as its legal owner and renews it as part of care. Anything
-       easier together is marked "Together over email" and isn't counted in the list or its time
+    4. Your accounts: only the bits that have to be them (pricing-oct2026.md, "Account setup flow"):
+       their Google profile (already have one: add taya@webfaery.love as a manager, 2 minutes; none yet:
+       tick "I don't have one" and Taya builds it, they do Google's one quick check later); the link to a
+       booking app they already use; and, for In Bloom with payments, Stripe in their own name with Taya as
+       a Developer (together over email). Buttondown and Cal.com aren't to-dos any more: Taya makes them in
+       the client's name with the client's email during the build and hands over the logins at launch, so the
+       page only asks which email to use (blank = their contact email) and says to expect a confirm-your-email
+       message or two. Their web address needs no account: Taya registers it with them as its legal owner
+       and renews it as part of care. Anything easier together is marked "Together over email" and isn't
+       counted in the list or its time
   Without a build in Taya's link, "Pick your build" comes first (5 things). Everything saves on the
   visitor's own device as they go (localStorage), and one button sends it all to Taya.
 
@@ -177,14 +181,9 @@
   .fit-why { margin: 8px auto 0; max-width: 34em; font-size: 16.5px; line-height: 1.5; color: var(--ink-soft); }
   #b-work.has-mock > :not(.mock-q):not(.step-foot) { display: none; }
   .mock-q textarea { width: 100%; box-sizing: border-box; }
-  .google-no { margin: 12px 0 0; }
   .p-cloud { margin-left: 8px; font-weight: 600; color: var(--acc); text-underline-offset: 3px; }
   .domain-check { margin: 10px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
   .domain-check .hint { margin: 0; }
-  .google-no-note { display: none; }
-  #acct-google:has(input[name="acct_google_no"]:checked) .google-no-note { display: block; }
-  #acct-google:has(input[name="acct_google_no"]:checked) .how,
-  #acct-google:has(input[name="acct_google_no"]:checked) .ticks { display: none; }
   .love-it { margin: 0 0 22px; padding: 18px 20px; border-radius: 16px; background: rgba(var(--acc-glow), 0.1); border: 1px solid var(--acc-line); text-align: center; }
   .magic-it { margin: -6px 0 22px; padding: 18px 20px; border-radius: 16px; border: 1.5px dashed var(--acc-line); text-align: center; }
   .magic-it p { margin: 0 0 12px; font-size: 17px; line-height: 1.45; }
@@ -624,6 +623,11 @@
   .tick input { width: 20px; height: 20px; accent-color: var(--acc-fill); flex: none; margin: 0; }
   .helper { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 0.88em; letter-spacing: 0.01em; color: var(--ink); white-space: nowrap; }
   .never-pw { margin: 18px 0 0; font-size: 15.5px; color: var(--ink-soft); font-style: italic; }
+  /* what I set up for them (Buttondown, Cal.com): a short list under the note */
+  .made-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
+  .made-list li { padding-left: 1.3em; position: relative; }
+  .made-list li::before { content: "\2740"; content: "\2740" / ""; position: absolute; left: 0; top: 0; color: var(--acc); font-size: 0.85em; }
+  .made-list b { color: var(--ink); font-weight: 500; }
 
   /* ============ the agreement, inside "Sign and hold your spot" ============ */
   .in-short { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 0; }
@@ -1187,16 +1191,21 @@
               <li><b>If life gets busy.</b> If your content isn’t in 30 days after you say yes, I’ll nudge you gently. At 60 days the project closes,
                   so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
                   it counts toward finishing.</li>
-              <li><b>Launch.</b> Your site goes live at your own web address, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
+              <li><b>Launch.</b> Your site goes live at your own web address, I hand you the logins to the accounts I set up for you, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
               <li><b>After launch.</b> <span data-a="after-long">Care at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span>
                   Care doesn’t cover Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (like Square,
                   Vagaro or Acuity), ads, or a newsletter list over 1,000 people.</li>
               <li><b>What’s yours.</b> Everything: your site, your words, your photos, your web address (with you as its legal owner), your Google profile,
-                  and your booking and payment accounts. I’m only ever added as a helper, and I never need your passwords. If you ever stop care,
+                  your newsletter list, and your booking and payment accounts. Any account I set up for you, like your newsletter or booking,
+                  is made in your name, with your email, and its own strong password, which I hand you at launch for you to change. A Google
+                  profile I build for you is yours at launch too: I make you its owner. After that, where I need a way in, I’m added
+                  as a helper. I’ll never ask for a password you already use. If you ever stop care,
                   your site is still yours: I hand over every file and login within a week, and your site never goes down. With In Bloom, your booking,
                   payments or shop can’t keep running on my server after care, so I help you move them into your own accounts. Care is monthly, and it ends at the
                   end of the month you’ve paid for.</li>
-              <li><b>Hosting.</b> Hosting is part of care, so there’s nothing else to pay for it. If you ever stop care, your files are yours to host anywhere you like.</li>
+              <li><b>Hosting.</b> Hosting is part of care, so there’s nothing else to pay for it. Most sites live on GitHub Pages; an In Bloom site
+                  that takes payments or runs a shop lives on Cloudflare Pages. If either one ever changes its rules or prices, moving your site is
+                  part of care too. If you ever stop care, your files are yours to host anywhere you like.</li>
               <li><b>Your part.</b> Send only photos, logos and words you have the right to use, and tell me if anything on your site is wrong.</li>
               <li><b>Honest limits.</b> I build carefully for Google, but no one can promise a ranking or a number of new clients. Outside services
                   (Google, your booking app, your payment company, your newsletter app, Porkbun) have their own rules and prices, which can change; the prices here are
@@ -1420,77 +1429,74 @@
       </div>
     </li>
 
-    <!-- ================= accounts: only what their build needs, and only what's worth starting now =================
-         Google: every build. Booking and a newsletter list: Tended and In Bloom. Stripe: In Bloom. (Before a build is
-         picked, everything they asked for shows.) Anything easier together is marked "Together over email" and
-         isn't counted in the list's time. -->
-    <li class="step" id="s-accounts" data-step="accounts" data-min="5">
+    <!-- ================= accounts: only the bits that have to be them (pricing-oct2026.md, "Account setup flow") =================
+         Taya sets up everything else in the client's name, with the client's email, during the build, and hands
+         over the logins at launch (each with its own strong password from Proton Pass, changed on first login).
+         Here: Google (every build: add Taya as a manager, or "I don't have one yet" and Taya builds it), the link
+         to a booking app they already use (Tended, In Bloom), and Stripe in their own name with Taya as a Developer
+         (In Bloom, together over email). Buttondown and Cal.com are a note plus one question: which email to use.
+         (Before a build is picked, everything they asked for shows.) Anything easier together is marked
+         "Together over email" and isn't counted in the list's time. -->
+    <li class="step" id="s-accounts" data-step="accounts" data-min="2">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-accounts" aria-expanded="false" aria-controls="b-accounts">
         <span class="num" aria-hidden="true"><span>5</span><svg><use href="#i-check"/></svg></span>
         <span class="step-name"><span class="sr-only sn">Step 5: </span><span class="st">Your accounts</span></span>
-        <span class="step-meta"><span class="time">About 5 minutes</span><span class="state"></span></span>
+        <span class="step-meta"><span class="time">About 2 minutes</span><span class="state"></span></span>
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body" id="b-accounts">
-        <p class="lead-in">Only what your build needs, and just what’s worth starting now. Anything marked <b>together over email</b> can wait for me.
-           Everything is in your name; where I need a way in, I’m added as a helper.</p>
-        <div class="love-it">
-          <p><b>Rather not do any of this?</b> I’ll set up what I can for you, in your name: you just forward me the sign-in code
-             each one emails you. When it’s done, I hand it over and you change the password, so it’s only yours.
-             A few things have to be you, like your payment account (it needs your own details) and Google’s quick check
-             that it’s really your business. I’ll walk you through those over email.</p>
-          <button type="button" class="btn" id="do-it-for-me"><span>Please do it for me</span></button>
-        </div>
+        <p class="lead-in">Just the few bits that have to be you. Everything else I set up for you during the build, in your name.
+           Anything marked <b>together over email</b> can wait for me.</p>
 
-        <!-- Google profile: offered to everyone, with a "no thanks" (Pollen, Oct 1). Starting it is the to-do; Google's verification can wait -->
+        <!-- Google profile: every build, with a "no thanks" (Pollen, Oct 1). Only the owner can add a manager, so that's
+             theirs (about 2 minutes). No profile yet: Taya builds it in her own Google account, they do Google's one quick
+             check later (a short video or a code), and at launch she makes them its owner and stays on as manager. -->
         <div class="acct" id="acct-google">
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>
             <div>
-              <h3>Start your Google profile</h3>
-              <span class="t">About 5 minutes</span>
+              <h3>Your Google profile</h3>
+              <span class="t" data-if="g-has">About 2 minutes</span>
+              <span class="t together" data-if="g-none">I build it for you</span>
+              <span class="t together" data-if="g-no">Skipped for now</span>
               <p>It’s what shows up on Google Maps and beside a Google search: your hours, photos, reviews and a button to your site.
                  It’s free, it’s <b>yours</b>, and it matters as much as the site does.</p>
+              <p data-if="g-has">Already have one? Add me as a manager, so I can keep it fresh for you. You stay the owner.</p>
             </div>
           </div>
-          <label class="tick google-no"><input type="checkbox" name="acct_google_no" value="yes"> No thanks, I don’t want a Google profile</label>
-          <p class="soft-note google-no-note">No problem, it’s skipped. You can add one anytime, just say the word.</p>
-          <details class="how">
-            <summary>How to start it</summary>
+          <details class="how" data-if="g-has">
+            <summary>How to add me</summary>
             <ol>
-              <li>Sign in to a Google account you’ll keep for your business (a Gmail you already use is fine).</li>
-              <li>Go to <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a> and search for your business.
-                  If it’s already there, claim it. If not, add it.</li>
-              <li>Work from home, or go to your clients? Choose to hide your address, and list the towns you serve instead.</li>
-              <li>When Google asks you to verify, you can stop there. It’s usually a short video on your phone, and you can do it now or after, and I’m happy to help over email. Then Google takes about 5 business days to look it over.</li>
-              <li>Once you’re verified, add me: open your profile’s menu, choose <b>Business Profile settings</b>, then
-                  <b>People and access</b>, then <b>Add</b>. Type <span class="helper" data-helper>taya@webfaery.love</span> and choose <b>Manager</b>.
-                  You stay the owner.</li>
+              <li>Go to <a href="https://business.google.com" target="_blank" rel="noopener">business.google.com</a> and sign in with the Google account that owns your profile.</li>
+              <li>Open your profile’s menu and choose <b>Business Profile settings</b>, then <b>People and access</b>, then <b>Add</b>.</li>
+              <li>Type <span class="helper" data-helper>taya@webfaery.love</span>, choose <b>Manager</b>, and send it. You stay the owner, and you can remove me anytime.</li>
             </ol>
-            <p class="stuck">Google moves its buttons around now and then. If it looks different, or it asks for something odd, stop there and
-               we’ll do it together over email.</p>
+            <p class="stuck">Google moves its buttons around now and then. If it looks different, or you can’t get into your profile, stop there
+               and we’ll sort it out together over email.</p>
           </details>
           <div class="ticks">
-            <label class="tick"><input type="checkbox" name="acct_google_started" value="yes"> I’ve claimed or added my business (or it’s already verified)</label>
-            <label class="tick"><input type="checkbox" name="acct_google_manager" value="yes"> I’ve added Taya as a manager (this can wait until you’re verified)</label>
+            <label class="tick" data-if="g-has"><input type="checkbox" name="acct_google_manager" value="yes"> I’ve added Taya as a manager</label>
+            <label class="tick" data-if="g-not-no"><input type="checkbox" name="acct_google_none" value="yes"> I don’t have one yet</label>
+            <label class="tick"><input type="checkbox" name="acct_google_no" value="yes"> No thanks, I don’t want a Google profile</label>
           </div>
+          <p class="soft-note" data-if="g-none">No problem, I’ll build it for you. Later in the build, Google asks for one quick check that it’s really
+             your business (a short video, or a code it sends you), and I’ll walk you through it by email. At launch I make you its owner,
+             and I stay on as your manager for care.</p>
+          <p class="soft-note" data-if="g-no">No problem, it’s skipped. You can add one anytime, just say the word.</p>
         </div>
 
-        <!-- booking: only if they picked it. Their own app's link is a 2-minute to-do; Cal.com we set up together -->
+        <!-- booking they already have: only when they keep their own app (Tended, In Bloom). Its link is a 2-minute
+             to-do. (A new Cal.com is no longer a card: Taya makes it for them, in #acct-made just below.) -->
         <div class="acct" id="acct-booking" hidden>
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
             <div>
-              <h3 data-if="booking-current">Your booking link<span data-if="app-named">, from <span data-app>your app</span></span></h3>
-              <h3 data-if="booking-calcom">Online booking with Cal.com</h3>
-              <span class="t" data-if="booking-current">About 2 minutes</span>
-              <span class="t together" data-if="booking-calcom">Together over email</span>
-              <p data-if="booking-current">Keeping <span data-app>the app you already use</span>. Lovely: less to learn, and your Book now button goes straight to it.</p>
-              <p data-if="booking-calcom">A free Cal.com account, in your own name (free for one person). Your clients pick a time, and you both get reminders.
-                 We’ll set it up together over email, step by step.</p>
+              <h3>Your booking link<span data-if="app-named">, from <span data-app>your app</span></span></h3>
+              <span class="t">About 2 minutes</span>
+              <p>Keeping <span data-app>the app you already use</span>. Lovely: less to learn, and your Book now button goes straight to it.</p>
             </div>
           </div>
-          <details class="how" data-if="booking-current">
+          <details class="how">
             <summary>How to do it</summary>
             <ol>
               <li>Paste your booking link below (the one you send clients).</li>
@@ -1498,59 +1504,49 @@
                   Some apps charge for each extra person, and then please don’t: your link is all I really need.</li>
             </ol>
           </details>
-          <details class="how" data-if="booking-calcom">
-            <summary>Want a head start?</summary>
-            <ol>
-              <li>Go to <a href="https://cal.com/signup" target="_blank" rel="noopener">cal.com</a> and sign up with your own email. It’s free for one person.</li>
-              <li>Pick a username you like. It becomes your booking link, like cal.com/yourname.</li>
-              <li>Then stop right there. We’ll set up your sessions, hours and reminders together.</li>
-            </ol>
-          </details>
-          <div class="q" data-if="booking-current app-ask">
+          <div class="q" data-if="app-ask">
             <label class="main" for="f-bookapp">Which booking app do you use?</label>
             <input type="text" id="f-bookapp" name="booking_app" maxlength="80" placeholder="like Vagaro, Square or Acuity">
           </div>
-          <div class="q" data-if="booking-current">
+          <div class="q">
             <label class="main" for="f-booklink">Your booking link</label>
             <input type="text" id="f-booklink" name="booking_link" inputmode="url" maxlength="300" spellcheck="false">
           </div>
-          <div class="q" data-if="booking-calcom">
-            <label class="main" for="f-caluser">Your Cal.com username <span class="opt-tag">(if you’ve signed up already)</span></label>
-            <input type="text" id="f-caluser" name="calcom_username" maxlength="80" spellcheck="false" autocapitalize="off">
-          </div>
           <div class="ticks">
-            <label class="tick"><input type="checkbox" name="acct_booking" value="yes"> <span data-if="booking-current">Done</span><span data-if="booking-calcom">I’ve signed up already</span></label>
+            <label class="tick"><input type="checkbox" name="acct_booking" value="yes"> Done</label>
           </div>
         </div>
 
-        <!-- newsletter: Tended and In Bloom, when they'd like one. The list lives in their own free Buttondown account
-             (it's their list). The sign-up on their site only needs the username, so there's no helper invite here:
-             Buttondown's team access is a paid add-on. Free up to 100 people; past that, care covers the paid plan up
-             to 1,000 (pricing-oct2026.md). -->
-        <div class="acct" id="acct-news" hidden>
+        <!-- set up for them (pricing-oct2026.md, "Account setup flow"): their Buttondown list (Tended, In Bloom, when
+             they'd like a newsletter) and their Cal.com booking (Tended, In Bloom, when they'd like booking and don't
+             already use an app). Taya makes each one in the client's name with the client's email during the build,
+             gives each its own strong password (Proton Pass), and hands the logins over at launch; the client changes
+             each password on first login. The client's only part: which email to use (blank = their contact email),
+             and clicking the confirm-your-email messages. Not counted in the list's time. -->
+        <div class="acct later-card" id="acct-made" hidden>
           <div class="acct-top">
-            <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 7.5l7.5 5.6 7.5-5.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10.6 13 18.5 5.1M15.6 8l2.4 2.4M17.6 6l1.9 1.9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
             <div>
-              <h3>Your newsletter list</h3>
-              <span class="t">About 3 minutes</span>
-              <p>A free Buttondown account, in your own name, because your list is yours. It’s free until your list passes
-                 100 people, and then care covers its paid plan (up to 1,000 people). The sign-up on your site only needs your username.</p>
+              <h3><span data-if="made-both">Your newsletter and booking</span><span data-if="made-news-only">Your newsletter list</span><span data-if="made-cal-only">Your online booking</span></h3>
+              <span class="t together">Nothing for you to make</span>
+              <p>I’ll set <span data-if="made-both">these</span><span data-if="made-one">it</span> up in your name, with your email, and hand you the
+                 login<span data-if="made-both">s</span> at launch. You’ll get one or two confirm-your-email messages from
+                 <span data-if="made-both">them</span><span data-if="made-news-only">Buttondown</span><span data-if="made-cal-only">Cal.com</span>
+                 during the build; just click them.</p>
             </div>
           </div>
-          <details class="how">
-            <summary>How to do it</summary>
-            <ol>
-              <li>Go to <a href="https://buttondown.com" target="_blank" rel="noopener">buttondown.com</a> and sign up with your own email. It’s free.</li>
-              <li>Pick a username you like. It becomes your newsletter’s link, like buttondown.com/yourname.</li>
-              <li>Type your username below, and stop right there. I’ll connect the sign-up on your site, and we’ll make your first letter look lovely together over email.</li>
-            </ol>
-          </details>
+          <ul class="made-list">
+            <li data-if="made-news"><b>Your newsletter list, on Buttondown.</b> It’s your list, so it lives in your own account: free until it passes
+                100 people, and then care covers it (up to 1,000).</li>
+            <li data-if="made-cal"><b>Your booking, on Cal.com,</b> free for one person. Clients pick a time, and you both get reminders.
+                We’ll settle your sessions and hours together over email.</li>
+          </ul>
           <div class="q">
-            <label class="main" for="f-newsuser">Your Buttondown username</label>
-            <input type="text" id="f-newsuser" name="buttondown_username" maxlength="80" spellcheck="false" autocapitalize="off">
-          </div>
-          <div class="ticks">
-            <label class="tick"><input type="checkbox" name="acct_news" value="yes"> I’ve signed up</label>
+            <label class="main" for="f-acctemail">The email for your accounts <span class="opt-tag">(if it’s not your contact email)</span></label>
+            <p class="hint" id="h-acctemail">They’re made with this email, so they’re truly yours, and any codes or password resets come straight
+               to you. Leave it blank and I’ll use <span data-contact-email>your contact email</span>.</p>
+            <input type="email" id="f-acctemail" name="accounts_email" autocomplete="email" maxlength="200" spellcheck="false" autocapitalize="off" aria-describedby="h-acctemail">
+            <p class="err" id="e-f-acctemail" hidden></p>
           </div>
         </div>
 
@@ -1568,7 +1564,8 @@
               <p data-if="dom-point">It stays yours. Keep it where it is and we point it at your new site, or move it in with mine and care renews it
                  from then on. For now, just make sure you can still sign in where it lives, since getting back in can take a few days.</p>
               <p data-if="dom-new">I buy it during the build (the first year comes with your build), with you as its legal owner. It lives in my
-                 Porkbun account and care renews it, so there’s no account for you to make and nothing to renew.</p>
+                 Porkbun account and care renews it, so there’s no account for you to make and nothing to renew. If an email comes
+                 asking you to confirm your email address for it, just click it.</p>
             </div>
           </div>
           <div class="q" data-if="dom-owned">
@@ -1598,7 +1595,8 @@
           </div>
         </div>
 
-        <!-- payments: In Bloom, and only if they're selling. Stripe asks a lot, so we do it together -->
+        <!-- payments: In Bloom, and only if they're selling. Stripe needs the owner's own ID, tax number and bank account,
+             so the client makes it (Taya helps over email), then adds Taya as a Developer -->
         <div class="acct later-card" id="acct-pay" hidden>
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 10h17M7 14.5h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
@@ -1606,15 +1604,16 @@
               <h3>Taking payments</h3>
               <span class="t together">Together over email</span>
               <p>Your own Stripe account, in your name. <b>Your clients’ money goes straight to you, never through me.</b>
-                 We’ll make it together; just have your bank details and ID handy. Already use Square? Keep it, and tell me below.</p>
+                 This one has to be you, since Stripe asks for your own ID, tax number and bank account, but I’ll help over email,
+                 step by step. Then you add me as a Developer, so I can set up your payments. Already use Square? Keep it, and tell me below.</p>
             </div>
           </div>
           <details class="how">
             <summary>Want a head start?</summary>
             <ol>
-              <li>Have your bank details and ID handy.</li>
-              <li>Go to <a href="https://stripe.com" target="_blank" rel="noopener">stripe.com</a>, sign up, and follow its steps. It asks about your business and where your money should land.</li>
-              <li>Then invite me: in Stripe’s <b>Settings</b>, find <b>Team</b>, and add <span class="helper" data-helper>taya@webfaery.love</span> with the <b>Developer</b> role.
+              <li>Have your ID, your tax number (your Social Security number or EIN) and your bank details handy.</li>
+              <li>Go to <a href="https://stripe.com" target="_blank" rel="noopener">stripe.com</a>, sign up with your own email, and follow its steps. It asks about your business and where your money should land.</li>
+              <li>Then add me: in Stripe’s <b>Settings</b>, find <b>Team</b>, and add <span class="helper" data-helper>taya@webfaery.love</span> with the <b>Developer</b> role.
                   That lets me set up your products and payment links without your password, and you can remove me anytime.</li>
             </ol>
             <p class="stuck">Stripe asks a lot of questions. If any of them stump you, stop there; we’ll finish it together.</p>
@@ -1624,15 +1623,16 @@
             <input type="text" id="f-paynote" name="payments_note" maxlength="300">
           </div>
           <div class="ticks">
-            <label class="tick"><input type="checkbox" name="acct_pay" value="yes"> I’ve made it already, and invited Taya</label>
+            <label class="tick"><input type="checkbox" name="acct_pay" value="yes"> I’ve made it already, and added Taya as a Developer</label>
           </div>
         </div>
 
-        <p class="never-pw">Never send me a password, please. A helper invite or a username is all I ever need.</p>
+        <p class="never-pw">I’ll never ask for a password you already use. Anything I set up for you gets its own strong password, sent to you
+           privately at launch through Proton Pass, and you change it to your own the first time you sign in.</p>
         <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, all finished</span></button>
           <button type="button" class="later" data-skip>Skip for now</button>
-          <p class="foot-hint">Stopped where Google asks you to verify? That counts as done.</p>
+          <p class="foot-hint">Anything you’re not sure of? Leave it, and we’ll finish it together over email.</p>
         </div>
       </div>
     </li>
@@ -1651,7 +1651,7 @@
         <li><b>A few easy questions by email,</b> if I need anything more. I do the writing.</li>
         <li><b>Your first draft,</b> about a week after your content is in, on a private link you can open on your phone.</li>
         <li><b>Two rounds of changes,</b> by email.</li>
-        <li><b>Launch,</b> with your “Your site” sheet and your brand sheet.</li>
+        <li><b>Launch,</b> with your “Your site” sheet, your brand sheet, and the logins to anything I set up for you.</li>
         <li><b>30 days of settling in.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
         <li><b>After that, care,</b> <span data-a="care">at your build’s monthly price</span>: you email me what’s changing, and I do the rest.</li>
       </ol>
@@ -1765,8 +1765,10 @@
      work              json   the "A few quick things" answers: offer, when_where, policies, words
      look              json   { moods[], colors_love, colors_avoid, sites, has_brand_kit, has_logo, anything_to_change }
      photo_notes       json   { album_link, stock_ok, no_face }
-     accounts          json   the accounts step's ticks, booking app and link, Cal.com username, Buttondown username, owned domain,
-                              payments note, and "have": the quick check's answers (logo, brand_kit, photos, web_address,
+     accounts          json   the accounts step's ticks (Google: has one and Taya added as manager, none yet so Taya builds it,
+                              or no thanks), booking app and link, the email Taya makes their accounts with (accounts_email:
+                              what they typed, or their contact email), owned domain, payments note, and "have": the quick
+                              check's answers (logo, brand_kit, photos, web_address,
                               booking, booking_app, selling, newsletter), which of them Taya's link answered, and
                               whether they skipped the check. No new fields needed.
      steps             json   { sign: "done" | "skipped", work, look, accounts, and build when it shows }
@@ -1887,7 +1889,7 @@
     { id: 'news', q: 'And a newsletter, to write to your people now and then?',
       a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No']],
       said: { yes: 'a newsletter', later: 'a newsletter maybe later', no: 'no newsletter' },
-      reply: { yes: 'A newsletter sign-up comes with Tended and In Bloom, with your list in your own free Buttondown account.', later: 'Easy to add anytime.' } }
+      reply: { yes: 'A newsletter sign-up comes with Tended and In Bloom, with your list in your own free Buttondown account. I set it up for you, in your name.', later: 'Easy to add anytime.' } }
   ];
   // which build their answers point to (Pollen, Oct 1: people should know what they're signing up for as they answer)
   const BUILD_NAME = { maiden: BUILDS.maiden.name, mother: BUILDS.mother.name, crone: BUILDS.crone.name };
@@ -2240,7 +2242,14 @@
   function flagsFor(c) {
     const h = have, md = modes(c);
     const named = h.booking === 'has' && !!h.app && h.app !== 'other';
+    // the Google card: they have one (add Taya as a manager), none yet (Taya builds it), or no thanks
+    const gNo = ticked('acct_google_no'), gNone = !gNo && ticked('acct_google_none');
+    // what Taya sets up for them in their name: their Buttondown list and their Cal.com booking
+    const need = acctNeeds(c), mNews = !!need.news, mCal = !!need.booking && c.booking === 'calcom';
     return {
+      'g-has': !gNo && !gNone, 'g-none': gNone, 'g-no': gNo, 'g-not-no': !gNo,
+      'made-news': mNews, 'made-cal': mCal, 'made-both': mNews && mCal, 'made-one': mNews !== mCal,
+      'made-news-only': mNews && !mCal, 'made-cal-only': mCal && !mNews,
       'build-confirm': md.confirm, 'build-choose': !md.confirm,
       'build-in-sign': !!linkBuild, 'build-own-step': !linkBuild,
       'booking-current': c.booking === 'current', 'booking-calcom': c.booking === 'calcom',
@@ -2270,8 +2279,9 @@
       pay: tier >= 2 && c.sell
     };
   }
-  // Each step's time counts only what they do now. Anything marked "Together over email"
-  // (Cal.com, Stripe, Google's verification video) or looked after by care (their web address) isn't counted.
+  // Each step's time counts only what they do now. Anything marked "Together over email" (Stripe, Google's
+  // quick check), set up by Taya (Buttondown, Cal.com, a Google profile they don't have yet: only a minute to read
+  // the note and say which email to use) or looked after by care (their web address) isn't counted.
   function stepMinutes(s, c) {
     const md = modes(c);
     switch (idOf(s)) {
@@ -2283,12 +2293,13 @@
       case 'work': return $('#b-work').classList.contains('has-mock') ? 2 : 5;
       // the look 3 (a brand kit to add, or moods and colors), a logo 1, photos 5 (none with free stock photos)
       case 'look': return 3 + (have.kit !== 'yes' && have.logo !== 'no' ? 1 : 0) + (have.photos === 'stock' ? 0 : 5);
-      // start the Google profile 5, their booking link 2, their Buttondown sign-up 3, and a sign-in check for a
-      // web address they own 2 (a new one needs nothing from them: no registrar account, care renews it)
+      // add Taya as a manager on the Google profile they have 2 (none yet, or no thanks: nothing), the link to the
+      // booking app they keep 2, a glance at what I set up for them and which email to use 1, and a sign-in check
+      // for a web address they own 2 (a new one needs nothing from them: no registrar account, care renews it)
       case 'accounts': {
         const need = acctNeeds(c);
-        return (form.querySelector('input[name="acct_google_no"]:checked') ? 0 : 5) + (need.booking && c.booking === 'current' ? 2 : 0)
-          + (need.news ? 3 : 0) + (have.domain === 'yes' ? 2 : 0);
+        return (ticked('acct_google_no') || ticked('acct_google_none') ? 0 : 2) + (need.booking && c.booking === 'current' ? 2 : 0)
+          + (need.news || (need.booking && c.booking === 'calcom') ? 1 : 0) + (have.domain === 'yes' ? 2 : 0);
       }
       default: return +s.getAttribute('data-min');
     }
@@ -2298,8 +2309,9 @@
   const approx = (n) => (n >= 15 ? Math.round(n / 5) * 5 : n);
   // what we'll do together over email instead (not on their list, and not in its time)
   function togetherList(c) {
-    const out = ['Google’s short verification video (if it asks for one)'], need = acctNeeds(c);
-    if (need.booking && c.booking === 'calcom') out.push('your Cal.com booking');
+    const out = [], need = acctNeeds(c);
+    if (ticked('acct_google_none') && !ticked('acct_google_no')) out.push('Google’s one quick check for your new profile (a short video or a code)');
+    if (need.booking && c.booking === 'calcom') out.push('your booking details for Cal.com');
     if (need.pay) out.push('taking payments with Stripe');
     return out;
   }
@@ -2322,12 +2334,16 @@
 
     // the accounts: only the ones their build needs and their site leans on
     const need = acctNeeds(c);
-    $('#acct-booking').hidden = !need.booking;
-    $('#acct-news').hidden = !need.news;
+    $('#acct-booking').hidden = !(need.booking && c.booking === 'current');
+    $('#acct-made').hidden = !(show['made-news'] || show['made-cal']);
     $('#acct-pay').hidden = !need.pay;
-    // cards for later (together over email, or looked after by care) are dashed, so they don't read as to-dos
-    $('#acct-booking').classList.toggle('later-card', c.booking === 'calcom');
+    // cards for later (together over email, set up by me, or looked after by care) are dashed, so they don't read as to-dos
+    $('#acct-google').classList.toggle('later-card', !show['g-has']);
     $('#acct-domain').classList.toggle('later-card', have.domain !== 'yes');
+    // the email their accounts are made with: blank means their contact email, said right there
+    const contact = emailOk(val('f-email')) ? val('f-email') : '';
+    $$('[data-contact-email]').forEach((el) => { el.textContent = contact || 'your contact email'; });
+    $('#f-acctemail').placeholder = contact;
     const app = appName();
     $$('[data-app]').forEach((el) => { if (el.dataset.plain == null) el.dataset.plain = el.textContent; el.textContent = app || el.dataset.plain; });
 
@@ -2534,6 +2550,13 @@
       const y = CHECKS.you(), a = CHECKS.agree(true);
       return b || y || a;
     },
+    // the email for their accounts is optional (blank = their contact email), but if they type one it should work
+    accounts() {
+      const el = $('#f-acctemail'), v = val('f-acctemail');
+      const bad = !!v && !planHidden(el) && !emailOk(v);
+      setErr(el, $('#e-f-acctemail'), bad ? 'That email doesn’t look quite right. Mind checking it? Or leave it blank, and I’ll use your contact email.' : '');
+      return bad ? el : null;
+    },
     agree(strict) {
       const box = $('#f-agree'), sig = $('#f-sig');
       const a = box.checked, s = !!val('f-sig');
@@ -2545,8 +2568,8 @@
     }
   };
   // live: clear an error as soon as it's fixed
-  ['f-name', 'f-email', 'f-sig'].forEach((id) => $('#' + id).addEventListener('input', () => {
-    if ($('#' + id).getAttribute('aria-invalid') === 'true') (id === 'f-sig' ? CHECKS.agree(false) : CHECKS.you());
+  ['f-name', 'f-email', 'f-sig', 'f-acctemail'].forEach((id) => $('#' + id).addEventListener('input', () => {
+    if ($('#' + id).getAttribute('aria-invalid') === 'true') (id === 'f-sig' ? CHECKS.agree(false) : id === 'f-acctemail' ? CHECKS.accounts() : CHECKS.you());
   }));
   $('#f-agree').addEventListener('change', () => { if ($('#e-f-agree').textContent) CHECKS.agree(false); });
   form.addEventListener('change', (e) => { if (e.target.name === 'build' && $('#e-build').textContent) CHECKS.build(); });
@@ -2682,12 +2705,13 @@
         has_brand_kit: kit, has_logo: have.logo || (files.logo.length ? 'yes' : ''), anything_to_change: said('f-change') },
       photo_notes: { album_link: said('f-album'), stock_ok: have.photos === 'stock' || have.photos === 'mix' || (have.photos == null && yes('stock_ok')), no_face: yes('no_face') },
       accounts: {
-        google_wanted: !yes('acct_google_no'), google_sent: yes('acct_google_started'), google_manager_added: yes('acct_google_manager'),
-        booking_done: yes('acct_booking'), booking_app: app, booking_link: said('f-booklink'), calcom_username: said('f-caluser'),
-        newsletter_done: yes('acct_news'), buttondown_username: said('f-newsuser'),
+        // Google: has one (and whether Taya's been added as a manager), none yet (Taya builds it), or no thanks
+        google_wanted: !yes('acct_google_no'), google_none_yet: yes('acct_google_none'), google_manager_added: yes('acct_google_manager'),
+        booking_done: yes('acct_booking'), booking_app: app, booking_link: said('f-booklink'),
+        // the email Taya makes their Buttondown and Cal.com with (blank on the page = their contact email)
+        accounts_email: said('f-acctemail') || (onList('f-acctemail') ? val('f-email') : ''), accounts_email_is_contact: !said('f-acctemail'),
         domain_done: yes('acct_domain'), domain_owned: said('f-owned'),
         payments_done: yes('acct_pay'), payments_note: said('f-paynote'),
-        do_it_for_me: !!(form.querySelector('input[name="accounts_for_me"]') || {}).value,
         // the quick check (Taya's PocketBase already has this json field, so nothing new is needed there)
         have: {
           logo: have.logo || '', brand_kit: have.kit || '', photos: have.photos || '', web_address: have.domain || '',
@@ -2751,23 +2775,25 @@
         ['No faces', r.photo_notes.no_face ? 'Yes, please' : '']
       ])],
       ['Accounts', rows([
-        ['Google profile', [r.accounts.google_sent && 'Claimed or added', r.accounts.google_manager_added && 'Taya added as manager'].filter(Boolean).join(', ')],
+        ['Google profile', !r.accounts.google_wanted ? 'No thanks' : r.accounts.google_none_yet ? 'I don’t have one yet, so Taya builds it'
+          : r.accounts.google_manager_added ? 'I have one, and I’ve added Taya as a manager' : ''],
         ['Booking', r.extras.booking === 'current' ? [r.accounts.booking_app, r.accounts.booking_link || 'Keeping my app'].filter(Boolean).join(': ')
-          : r.extras.booking === 'calcom' ? ('Cal.com' + (r.accounts.calcom_username ? ': ' + r.accounts.calcom_username : '')) : 'No online booking'],
+          : r.extras.booking === 'calcom' ? (acctNeeds(c).booking ? 'Cal.com, set up by Taya in my name' : 'Part of Tended and In Bloom, so we’ll talk it over by email') : 'No online booking'],
+        onList('f-acctemail') && ['Email for my accounts', r.accounts.accounts_email ? r.accounts.accounts_email + (r.accounts.accounts_email_is_contact ? ' (my contact email)' : '') : 'My contact email'],
         ['Web address', have.domain === 'yes' ? 'Already mine: we point it, or it moves in with Taya’s and care renews it' + (r.accounts.domain_done ? ' (I can sign in where it lives)' : '')
           : 'Taya buys it during the build with me as its legal owner, and care renews it'],
         onList('f-owned') && ['Web address, and where it lives', r.accounts.domain_owned], onList('f-domain') && ['Web address ideas', r.domain_wish],
         ['Newsletter', !r.extras.newsletter ? (have.news === 'later' ? 'Maybe later' : 'No newsletter')
-          : acctNeeds(c).news ? 'My own Buttondown list' + (r.accounts.buttondown_username ? ': ' + r.accounts.buttondown_username : r.accounts.newsletter_done ? ', signed up' : ', not made yet')
+          : acctNeeds(c).news ? 'My own Buttondown list, set up by Taya in my name'
           : 'Part of Tended and In Bloom, so we’ll talk it over by email'],
-        r.extras.selling && ['Payments', acctNeeds(c).pay ? [r.accounts.payments_done ? 'Stripe made, Taya invited' : 'Together over email', r.accounts.payments_note].filter(Boolean).join('. ')
+        r.extras.selling && ['Payments', acctNeeds(c).pay ? [r.accounts.payments_done ? 'Stripe made, Taya added as a Developer' : 'Together over email', r.accounts.payments_note].filter(Boolean).join('. ')
           : 'Part of In Bloom, so we’ll talk it over by email']
       ])],
       ['Agreement', [['Agreed', r.agreed ? 'Yes' : 'Not yet, going through it over email'], ['Signed', r.agreed ? r.agreement_name + ', ' + longDate : ''],
         ['Show in recent work', r.show_in_work ? 'Yes, that’s fine' : '']]],
       ['Still to do', [
         ['Steps saved for later', shown().filter((s) => stepState[idOf(s)] !== 'done').map((s) => stepName(idOf(s))).join(', ')],
-        ['Together over email', cap(listOf(togetherList(c)))]]]
+        ['Together over email', togetherList(c).length ? cap(listOf(togetherList(c))) : 'Nothing']]]
     ];
   }
   function summaryText(r) {
@@ -2847,15 +2873,18 @@
     const status = $('#send-status'), btn = $('#send-btn');
     status.className = 'status'; status.textContent = '';
     // the only musts: a name and an email (and a signature that's whole, if they started one)
-    // (both live in "Sign and hold your spot")
-    const problems = [['you', CHECKS.you()], ['agree', CHECKS.agree(false)]].filter((p) => p[1]);
+    // (both live in "Sign and hold your spot"), plus an email for their accounts that works, if they typed one
+    // (it's what I make their accounts with, so a typo would send their confirm-your-email messages astray)
+    const problems = [['you', CHECKS.you()], ['agree', CHECKS.agree(false)], ['accounts', CHECKS.accounts()]].filter((p) => p[1]);
     if (problems.length) {
       const [id, field] = problems[0];
-      const s = $('#s-sign');
+      const s = $(id === 'accounts' ? '#s-accounts' : '#s-sign');
       setOpen(s, true);
       status.className = 'status err';
       const n = shown().indexOf(s) + 1;
-      status.textContent = id === 'you' ? 'Just one thing first: your name and email in step ' + n + ', so I know who this is from.' : 'One small thing in step ' + n + ': the agreement is half signed.';
+      status.textContent = id === 'you' ? 'Just one thing first: your name and email in step ' + n + ', so I know who this is from.'
+        : id === 'accounts' ? 'One small thing in step ' + n + ': the email for your accounts doesn’t look quite right. Or leave it blank, and I’ll use your contact email.'
+        : 'One small thing in step ' + n + ': the agreement is half signed.';
       field.focus();
       return;
     }
@@ -3117,14 +3146,7 @@
     const first = (val('f-domain').split(/[\s,;]+/)[0] || '').toLowerCase().replace(/^https?:\/\//, '').replace(/[^a-z0-9.-]/g, '');
     $('#domain-check').href = 'https://porkbun.com/checkout/search' + (first ? '?q=' + encodeURIComponent(first) : '');
   });
-  // "Please do it for me": noted for Taya, and the accounts step is done for them
-  $('#do-it-for-me').addEventListener('click', () => {
-    let h = form.querySelector('input[name="accounts_for_me"]');
-    if (!h) { h = document.createElement('input'); h.type = 'hidden'; h.name = 'accounts_for_me'; form.append(h); }
-    h.value = 'yes'; saveSoon();
-    // then on to the next thing (or the send button); I email them the steps and we go one at a time
-    $('#s-accounts [data-next]').click();
-  });
+  // (The old "Please do it for me" button is gone, Oct 5 2026: setting accounts up for them is simply how it works now.)
   ['photos', 'logo', 'kit'].forEach(async (k) => {
     const rows = await fileStore.get(k);
     if (!rows.length || files[k].length) return;

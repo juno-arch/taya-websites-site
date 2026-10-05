@@ -130,6 +130,11 @@ combos.forEach((picks, n) => {
   // the newsletter list lives in their own Buttondown account, with no helper (Oct 5 2026)
   if (/newsletter[^.]{0,80}helper|helper[^.]{0,80}newsletter/i.test(costs)) failures.push(`${tag}: the newsletter is listed with helper access`);
   if (picks[3] >= 2 && !/newsletter list is yours too, in your own Buttondown account/.test(costs)) failures.push(`${tag}: doesn't say the newsletter list lives in their own Buttondown account`);
+  // the account setup flow (pricing-oct2026.md, Oct 5 2026): Taya makes their Buttondown and a new Cal.com with
+  // their email and hands them over at launch; a booking app they already use is never "set up" by her
+  if ((picks[3] >= 2 || picks[2] === 3) && !/I set (?:both )?up with your email and hand you(?: the logins)? at launch|which I set up with your email and hand you at launch/.test(costs)) failures.push(`${tag}: doesn't say I set up their Buttondown or Cal.com with their email and hand it over at launch`);
+  if (picks[2] === 3 && !/booking lives in your own Cal\.com account/.test(costs)) failures.push(`${tag}: "set booking up for me" doesn't say their booking lives in their own Cal.com account`);
+  if (picks[2] === 2 && /I set (?:it|both) up|I set up[^.]{0,30}booking/i.test(costs.replace(/newsletter list[^.]*\./g, ''))) failures.push(`${tag}: says I set up booking for someone who keeps their own app`);
   if (!/Fixes: Anything broken, always free/.test(costs)) failures.push(`${tag}: cost list lacks free fixes`);
 
   const text = ['r-build-what', 'r-build-founding', 'r-build-ready', 'r-build-because', 'r-build-points', 'r-build-also',

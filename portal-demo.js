@@ -126,7 +126,7 @@
           open: [
             item('wfdemo00000002a', 'Send your photos', 'You at the wheel, your pieces, your studio. A few is plenty. Big photos shrink on your phone before they send.', 'upload', { accept: 'photos' }),
             item('wfdemo00000002b', 'What’s your web address?', 'If you already own one, like fernandclay.com. Not sure? Just say so.', 'answer'),
-            item('wfdemo00000002c', 'Add me as a manager on your Google profile', 'About 5 minutes, and the steps are right here.', 'start', { start_step: 'accounts' }),
+            item('wfdemo00000002c', 'Add me as a manager on your Google profile', 'About 2 minutes, and the steps are right here.', 'start', { start_step: 'accounts' }),
             item('d:draft', 'Look over your draft', 'Jot down anything you’d like changed.', 'link', { url: 'https://draft.example.com/fern-and-clay' })
           ],
           done: [
@@ -308,7 +308,8 @@
         'Your site: fernandclay.com', '',
         'Your web address: held for you, and you are the legal owner.',
         'Your Google profile: you are the owner, and I am a manager.',
-        'Your newsletter tool: in your name, with your password.', '',
+        'Your newsletter on Buttondown: in your name, with your email.',
+        'Your logins came to you privately at launch. Change each password the first time you sign in.', '',
         'How to reach me: taya@webfaery.love', 'I usually reply within 2 business days.', '', SAMPLE
       ]);
     },
