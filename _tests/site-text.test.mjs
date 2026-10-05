@@ -15,7 +15,8 @@
 //   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490), care as optional,
 //     pay as you go, an hourly rate, yearly care, "subscription", trades, self-editing, an offer of a call or
 //     chat (email only), or a dash
-//   - shows a monthly price other than care's $12 / $45 / $90 (or the $3 own-address email)
+//   - shows a monthly price other than care's $12 / $45 / $90, or a side cost "paid by you" (email from their
+//     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026)
 //   - (the main page) leaves out the three care prices, the reply time, "quoted first", the settling-in start,
 //     the quoted-before-October-5 line, or the hand-over promise
 //   - shows the founding count ("4 left") anywhere but once, inside id="founding" on the main page
@@ -62,6 +63,7 @@ const FORBIDDEN = [
   [/two months free|paid yearly|yearly care|care[^.]{0,30}a year\b/i, 'yearly care (monthly only now)'],
   [/quick change|update session|change it yourself|change these yourself|coming soon/i, 'self-editing (not offered)'],
   [/subscription/i, 'the word "subscription"'],
+  [/paid by you/i, 'a side cost "paid by you" (no add-ons: own-address email comes with Tended and In Bloom)'],
   [/\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately)'],
   [/founding spots last/i, 'open-ended founding wording (show the count and the deadline)'],
   [/\bon call\b/i, '"on call"'],
@@ -80,9 +82,9 @@ for (const page of PAGES) {
     const m = text.match(re);
     if (m) fail(`${page}: contains ${what}: "${text.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
   }
-  // every monthly price is care's ($12 / $45 / $90), or the $3 own-address email
+  // every monthly price is care's ($12 / $45 / $90); no side costs (the old $3 own-address email for Planted is gone)
   for (const m of plain[page].matchAll(/\$(\d+) a month/g)) {
-    if (![...CARE, 3].includes(+m[1])) fail(`${page}: shows $${m[1]} a month: "${plain[page].slice(Math.max(0, m.index - 60), m.index + 20)}"`);
+    if (!CARE.includes(+m[1])) fail(`${page}: shows $${m[1]} a month: "${plain[page].slice(Math.max(0, m.index - 60), m.index + 20)}"`);
   }
 }
 

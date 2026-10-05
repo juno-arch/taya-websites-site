@@ -4,15 +4,17 @@
 //   node _tests/quiz-paths.test.mjs
 //
 // Pricing as of Oct 5 2026 (web-faery-kit/pricing-oct2026.md): care comes with every site and matches the build.
-// The BUILD comes from what the site needs to do (questions 1 to 3), plus the newsletter (question 4):
+// The BUILD comes from what the site needs to do (questions 1 to 3), plus the extras (question 4):
 //   In Bloom if they said "Yes, set booking up for me" or "Yes, selling"
 //   Tended   if they already use a booking app (Tended's Book button links to it), or have "Quite a bit"
-//            to say, or want the site to gather something, or want a newsletter
+//            to say, or want the site to gather something, or want email from their own address or a
+//            newsletter (both come with Tended and In Bloom; Oct 5 2026, no side add-ons for Planted)
 //   Planted  otherwise
 // Care is always the build's own: Planted $12, Tended $45, In Bloom $90 a month.
 // Also fails (exit 1) if focus doesn't land on the new question / the result, if a price is wrong,
 // if the intake link loses the build, or if an old name, price or rule (Maiden / Mother / Crone, $69, $35,
-// pay as you go, $100 an hour, yearly care, optional care), "subscription", a trade or a dash sneaks in.
+// pay as you go, $100 an hour, yearly care, optional care), "subscription", a trade or a dash sneaks in,
+// or a side cost "paid by you" (like the old $3 a month for own-address email on Planted).
 // (Folders starting with "_" are not published by GitHub Pages.)
 
 import fs from 'node:fs';
@@ -63,14 +65,15 @@ const $ = (id) => document.getElementById(id);
 
 // ---- the rules, written out independently of the page ----
 const PRICES = { 'Planted': [600, 300, 12], 'Tended': [1200, 600, 45], 'In Bloom': [1800, 900, 90] };
-const expectBuild = (p) => (p[2] >= 3 ? 'In Bloom' : (p[2] === 2 || p[0] === 1 || p[1] === 1 || p[3] >= 2) ? 'Tended' : 'Planted');
+const expectBuild = (p) => (p[2] >= 3 ? 'In Bloom' : (p[2] === 2 || p[0] === 1 || p[1] === 1 || p[3] >= 1) ? 'Tended' : 'Planted');
 const usd = (n) => '$' + n.toLocaleString('en-US');
 
 // words that must never appear: old names, prices and rules, the word Pollen dislikes, trades, dashes
 const FORBIDDEN = [/\bMaiden\b/, /\bMother\b/, /\bCrone\b/, /\$69\b/, /\$690/, /\$35\b/, /\$350/, /\$49\b/, /\$490/,
   /pay(?:ing)? as you go/i, /without care/i, /an hour/i, /per hour/i, /\$25 to \$50/, /quick change/i, /update session/i,
   /a year\b[^.]{0,20}care/i, /two months free/i, /care is optional/i, /optional care/i, /skip (?:it|care)/i,
-  /subscription/i, /\btrad(?:e|es|ed|ing)\b/i, /\bon call\b/i, /\bchat\b/i, /—/, /–/, /&mdash;/, /&ndash;/, /\$-/, /NaN|undefined/];
+  /subscription/i, /\btrad(?:e|es|ed|ing)\b/i, /\bon call\b/i, /\bchat\b/i, /—/, /–/, /&mdash;/, /&ndash;/, /\$-/, /NaN|undefined/,
+  /paid by you/i, /\$3 a month/i];
 const visible = html
   .replace(/<script[\s\S]*?<\/script>/g, (m) => (m.includes('quiz-logic') ? m.replace(/\/\/.*$/gm, '') : ''))
   .replace(/<style[\s\S]*?<\/style>/g, '')
@@ -124,7 +127,9 @@ combos.forEach((picks, n) => {
   if (!/I hand you every file and login/.test(careAlso)) failures.push(`${tag}: the hand-over promise is missing`);
   if (picks[2] === 2 && !/booking app you already use/.test(costs)) failures.push(`${tag}: booking-app cost line missing`);
   if (build === 'In Bloom' && !/about 2\.9% \+ 30¢ per payment/.test(costs)) failures.push(`${tag}: In Bloom cost list lacks the payment fee`);
-  if (build === 'Planted' && (picks[3] === 1 || picks[3] === 3) && !/about \$3 a month/i.test(costs)) failures.push(`${tag}: Planted own-address email cost missing`);
+  // the newsletter list lives in their own Buttondown account, with no helper (Oct 5 2026)
+  if (/newsletter[^.]{0,80}helper|helper[^.]{0,80}newsletter/i.test(costs)) failures.push(`${tag}: the newsletter is listed with helper access`);
+  if (picks[3] >= 2 && !/newsletter list is yours too, in your own Buttondown account/.test(costs)) failures.push(`${tag}: doesn't say the newsletter list lives in their own Buttondown account`);
   if (!/Fixes: Anything broken, always free/.test(costs)) failures.push(`${tag}: cost list lacks free fixes`);
 
   const text = ['r-build-what', 'r-build-founding', 'r-build-ready', 'r-build-because', 'r-build-points', 'r-build-also',

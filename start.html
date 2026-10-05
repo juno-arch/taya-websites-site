@@ -1086,7 +1086,7 @@
           <legend class="main">A few extras</legend>
           <p class="hint">So I know what your site needs. The price below follows along.</p>
           <div class="opts">
-            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month, paid by you.</span></small></span></label>
+            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Part of Tended and In Bloom, covered by care.</span></small></span></label>
             <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and your own Buttondown list for writing to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom, with sending covered by care.</span></small></span></label>
           </div>
           <fieldset class="group" style="margin-top: 18px" data-if="x-booking">
@@ -1847,7 +1847,6 @@
     mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes whenever you email me, your Google profile kept fresh, and email from your own address and newsletter sending covered.',
     crone: 'Everything in Tended’s care, plus keeping your booking, payments or shop in full bloom, a flyer for one event a month, and a yearly refresh.'
   };
-  const COSTS = { emailMonth: 3 }; // outside services: estimates, Oct 2026 (email from your own address, with Planted)
   const STORE_KEY = 'webfaery-start-v1';
 
   /* ================= the quick check: what they already have =================
@@ -2119,11 +2118,8 @@
       m.after.push({ label: 'Care for your ' + b.name + ' site', amt: money(m.care) + ' a month',
         note: 'It starts after your 30 days of settling in. ' + CARE_SHORT[c.build] });
       year = m.care * 12;
-      // email from their own address is covered by Tended and In Bloom care; with Planted they pay for it (about $3 a month)
-      if (c.email && c.build === 'maiden') {
-        m.after.push({ label: 'Sending email from your own address', amt: 'about ' + money(COSTS.emailMonth) + ' a month', note: 'About ' + money(COSTS.emailMonth * 12) + ' a year, paid by you.' });
-        year += COSTS.emailMonth * 12;
-      }
+      // email from their own address comes with Tended and In Bloom care only (Oct 5 2026): a Planted client who
+      // wants it moves up to Tended, so it's never a side cost here (the note under the build says so)
     }
     if (c.booking === 'calcom') m.after.push({ label: 'Cal.com booking', amt: 'free', note: 'Free for one person. A few of you? Each person can have their own free account, and your site links to each one.' });
     if (c.booking === 'current') m.after.push({ label: appName() ? 'Your ' + appName() + ' booking' : 'Your booking app', amt: 'no change', note: 'Whatever you pay for it now.' });
@@ -2168,14 +2164,16 @@
     incl.append(make('p', 'care-same', 'Changes are the same in every build: email me anytime, as often as you need, and I usually reply within 2 business days. Anything broken is fixed free, and big new things, like a new page or a new feature, I quote first. If you ever stop care, your site is still yours, and I hand over every file and login.'));
     // email from your own address and the newsletter: what they come with, for the build they picked
     const big = c.build === 'mother' || c.build === 'crone';
-    $('[data-x="email"]').textContent = big ? 'Covered by care.' : c.build === 'maiden' ? 'About $3 a month, paid by you.'
-      : 'Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month, paid by you.';
+    $('[data-x="email"]').textContent = big ? 'Covered by care.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
+      : 'Part of Tended and In Bloom, covered by care.';
     $('[data-x="news"]').textContent = big ? 'Sending is covered by care.' : 'Part of Tended and In Bloom, with sending covered by care.';
-    // anything they'd like that a bigger build brings (booking and payments: In Bloom; a newsletter or a Book now button: Tended)
+    // anything they'd like that a bigger build brings (booking and payments: In Bloom; a newsletter, email from their
+    // own address or a Book now button: Tended)
     const bloom = [], tended = [];
     if (c.booking === 'calcom') bloom.push('setting up booking');
     if (c.sell) bloom.push('taking payments online');
     if (c.news) tended.push('a newsletter');
+    if (c.email) tended.push('email from your own address');
     if (c.booking === 'current') tended.push('a Book now button');
     let say = '';
     if (b && c.build !== 'crone' && bloom.length) say = cap(listOf(bloom)) + (bloom.length > 1 ? ' are' : ' is') + ' part of In Bloom.';
