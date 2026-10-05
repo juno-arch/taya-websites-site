@@ -425,7 +425,7 @@
   .legend { margin-top: 14px; line-height: 2.2; font-size: 13.5px; }
   footer.site .tag { --tag-bg: #7a2228; --tag-ink: #fbe3a6; --tag-line: #94383f; }
 
-  /* ---------- VIEWS (Maiden / Mother / Crone / Everything) + Care box ---------- */
+  /* ---------- VIEWS (Planted / Tended / In Bloom / Everything; keys maiden / mother / crone / all) + Care box ---------- */
   .views { padding-block: 22px 24px; background: var(--ground); }
   .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; border: 1.5px dashed var(--orange); border-radius: 14px; padding: 16px 16px 14px; }
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
@@ -588,15 +588,15 @@
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done, from a new practitioner&rsquo;s card to the next Healing Day schedule. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy and current. Email me any change and it&rsquo;s done, from a new practitioner&rsquo;s card to the next Healing Day schedule. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -830,7 +830,7 @@
 
     <div class="board-wrap" data-show="crone all" data-thing="Healing Day sign-up board that fills itself in">
       <div class="bk-card" id="hd-card">
-        <p class="label" style="margin-bottom:10px"><span>Sign up</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+        <p class="label" style="margin-bottom:10px"><span>Sign up</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
         <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Pick a time</button><button type="button" data-s="2" disabled>2 Your details</button></div>
         <div id="hd-s1">
           <div class="board" role="group" aria-label="Healing Day sessions. Taken times can't be picked.">
@@ -889,7 +889,7 @@
       </div>
 
       <div class="bk-card" style="margin-top:18px" data-show="crone all" data-thing="retreat spots paid through your Stripe">
-        <p class="label" style="margin-bottom:10px"><span>Save a spot</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+        <p class="label" style="margin-bottom:10px"><span>Save a spot</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
         <form id="rt" method="dialog" novalidate aria-label="Save a retreat spot, preview">
           <div class="fld-row"><label class="fld">Your name<input id="rt-name" autocomplete="name" value="Jordan M."></label><label class="fld">Your email<input id="rt-mail" type="email" autocomplete="email" value="jordan@example.com"></label></div>
           <p class="demo-note" id="rt-left">7 of 10 spots left</p>
@@ -912,7 +912,7 @@
       </div>
 
       <div class="bk-card" style="margin-top:18px" data-show="mother crone all" data-thing="retreat and Healing Day news list on Buttondown">
-        <p class="label" style="margin-bottom:10px"><span>Hear about the next one</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+        <p class="label" style="margin-bottom:10px"><span>Hear about the next one</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
         <form id="nl" method="dialog" novalidate aria-label="Retreat and Healing Day news, preview">
           <label class="fld" for="nl-mail">Your email</label>
           <div class="nl-row"><input id="nl-mail" type="email" autocomplete="email" value="jordan@example.com"><button type="submit" class="bk-go">Keep me posted</button></div>
@@ -921,7 +921,7 @@
         <div class="fade-in" id="nl-done" hidden>
           <h3 id="nl-done-h" tabindex="-1" style="font-size:28px">You&rsquo;re on the list!</h3>
           <p>The next retreat and Healing Day news goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
-          <p class="demo-note">Preview only: nothing was sent, and no list was joined. Runs on Buttondown, free up to 100 people.</p>
+          <p class="demo-note">Preview only: nothing was sent, and no list was joined. On your real site, sign-ups go to your own Buttondown list, and your care covers the sending (up to 1,000 people).</p>
           <div class="bk-nav"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
         </div>
       </div>
@@ -961,7 +961,7 @@
 <section id="faq" class="gutter" style="background:var(--ground-2)" data-show="mother crone all" data-fold>
   <div class="wrap faq">
     <div>
-      <p class="label"><span class="no">09</span><span>Questions</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label"><span class="no">09</span><span>Questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Before <em>your first visit</em></h2>
     </div>
     <div class="faq-list" data-thing="FAQ">
@@ -1022,7 +1022,7 @@
       <p>940 9th Street, Arcata, CA 95521 &middot; <a href="mailto:ahachealers@gmail.com">ahachealers@gmail.com</a> &middot; <a href="tel:+17076333069">707.633.3069</a></p>
       <p style="margin-top:4px"><a href="https://www.facebook.com/Arcatahealers" target="_blank" rel="noopener">Facebook</a> &middot; <a href="https://www.instagram.com/arcata.healing.arts.center" target="_blank" rel="noopener">Instagram</a> &middot; <a href="#healers">Find your practitioner</a></p>
       <p style="margin-top:10px;opacity:.85">Cooperatively run by a group of healing arts practitioners who share the common vision of a community centered healing space.</p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (sign-ups and payments). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which Web Faery build includes each piece, at your founding build price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (sign-ups and payments). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
     </div>
   </div>
 </footer>
@@ -1034,12 +1034,12 @@
   <div class="vpanel" id="vp-panel" hidden>
     <p class="views-q" id="vp-q">See your site as</p>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><strong>$300</strong> <s>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><strong>$600</strong> <s>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><strong>$900</strong> <s>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><strong>$35</strong>/mo <s>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1126,7 +1126,7 @@
         cards.forEach(function (card) { var on = f === 'all' || (' ' + card.dataset.k + ' ').indexOf(' ' + f + ' ') > -1; card.classList.toggle('hide', !on); if (on) { n++; card.classList.remove('pre'); card.classList.add('in'); } });
         count.textContent = f === 'all' ? 'Showing all ten practitioners.' : 'Showing ' + n + (n === 1 ? ' practitioner' : ' practitioners') + ' for ' + WORD[f] + '.';
       }); });
-      /* when the filter is hidden (Maiden view), show everyone again */
+      /* when the filter is hidden (Planted view), show everyone again */
       document.addEventListener('ex:view', function (e) { if (e.detail && e.detail.view === 'maiden') { var a = chips[0]; if (a) a.click(); } });
     })();
 
@@ -1231,16 +1231,16 @@
 </script>
 
 <script>
-  /* see your site as Maiden / Mother / Crone / Everything */
+  /* see your site as Planted / Tended / In Bloom / Everything (keys maiden / mother / crone / all) */
   (function () {
     var root = document.documentElement;
     function $(id) { return document.getElementById(id); }
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one strong page with all ten practitioners and how to book each one, everything you offer, your rates, Healing Day, the retreat, your photos, your reviews and how to find you.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with the "what are you looking for?" filter on the practitioners, a retreat and Healing Day news list, and an FAQ.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus Healing Day sign-ups that fill themselves in, and retreat spots paid through your own Stripe. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one strong page, planted and kept healthy, with all ten practitioners and how to book each one, everything you offer, your rates, Healing Day, the retreat, your photos, your reviews and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with the "what are you looking for?" filter on the practitioners, a retreat and Healing Day news list, and an FAQ.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus the pieces that do the work for you: Healing Day sign-ups that fill themselves in, and retreat spots paid through your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));
@@ -1251,8 +1251,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Mother, ' + more('maiden', 'crone') + ' with Crone.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Crone.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {

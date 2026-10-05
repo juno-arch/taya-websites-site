@@ -326,7 +326,7 @@
   .band .ph { color: var(--brass-hi); text-decoration-color: var(--brass-hi); }
 
   /* aftercare + consent */
-  .care { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 32px; }
+  #care .care { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 32px; } /* scoped to the aftercare section, so the picker card's own .care line keeps its shape */
   .care .card h3 { font-size: 30px; line-height: 1; margin-bottom: 10px; }
   .care .card p { color: var(--ink-soft); }
   .care-list { list-style: none; display: grid; gap: 8px; margin-top: 12px; counter-reset: c; }
@@ -339,7 +339,7 @@
   .consent .l { font-size: 11.5px; color: #5b5f57; border-bottom: 1px solid #c9cfc8; padding-top: 12px; line-height: 1.6; }
   .consent .pair { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; }
 
-  /* deposits + gift cards (Crone) */
+  /* deposits + gift cards (In Bloom) */
   .pay { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); grid-template-areas: "intro card" "notes card"; column-gap: 48px; align-items: start; }
   .pay-intro { grid-area: intro; } .pay-notes { grid-area: notes; display: grid; gap: 12px; margin-top: 26px; } .pay-card { grid-area: card; }
   .amts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
@@ -551,7 +551,7 @@
     .shop-grid { grid-template-columns: minmax(0, 1fr); min-height: 0; }
     .shop-copy { padding: 64px 20px 40px; }
     .shop .photo.edge { aspect-ratio: 4 / 5; }
-    .book-foot, .crew, .flash-grid, .req, .pierce, .care, .faq, .found { grid-template-columns: minmax(0, 1fr); }
+    .book-foot, .crew, .flash-grid, .req, .pierce, #care .care, .faq, .found { grid-template-columns: minmax(0, 1fr); }
     .faq-list { margin-top: 26px; }
     .pay { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "card" "notes"; }
     .pay-card { margin-top: 26px; }
@@ -661,15 +661,15 @@
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your story, your artists, how to book, flash days and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: a Request button for each artist, a request form with photos, piercing, aftercare, consent forms and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits and gift cards paid straight to your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -843,7 +843,7 @@
           </div>
         </div>
         <aside class="card" style="margin-top:12px" data-show="mother crone all" data-fold data-thing="flash day alerts">
-          <p class="label with-pill" style="margin-bottom:8px"><span>Flash day alerts</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+          <p class="label with-pill" style="margin-bottom:8px"><span>Flash day alerts</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
           <form id="nl" method="dialog" novalidate aria-label="Flash day alerts, preview">
             <label class="fld" for="nl-mail">Get an email when flash drops</label>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px"><input id="nl-mail" type="email" autocomplete="off" value="sam@example.com" style="flex:999 1 190px;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--hair);border-radius:4px;background:var(--ground);color:var(--ink);min-width:0"><button type="submit" class="bk-go" style="margin-top:0">Sign me up</button></div>
@@ -859,10 +859,10 @@
 <section id="piercing" class="band gutter" data-show="mother crone all" data-fold data-thing="piercing menu">
   <div class="wrap pierce">
     <div>
-      <p class="label with-pill"><span>Piercing</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Piercing</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Piercing by <em>Amy</em> &amp; the team</h2>
       <p style="margin-top:16px">Three piercers, walk-ins welcome. <span class="ph">(what&rsquo;s included in the price, like jewelry)</span></p>
-      <p class="demo-note">With Mother, your whole piercing menu lives here, and you email me when a price changes.</p>
+      <p class="demo-note">With Tended, your whole piercing menu lives here, and you email me when a price changes.</p>
     </div>
     <table class="menu reveal">
       <thead><tr><th>Piercing</th><th>Price</th></tr></thead>
@@ -881,7 +881,7 @@
 <section id="request" class="gutter">
   <div class="wrap">
     <div data-show="mother crone all" data-fold data-thing="shop request form">
-      <p class="label with-pill"><span>Tell us your idea</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Tell us your idea</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Send the shop <em>your idea</em></h2>
       <p class="measure soft" style="margin-top:14px">No more explaining it in a DM thread. Pick an artist, or let us match you. Try it:</p>
       <div class="req bk">
@@ -928,14 +928,14 @@
       <p class="label with-pill"><span>To book</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2>Message us, <em>or walk in</em></h2>
       <p class="measure soft" style="margin-top:14px">DM <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener">@norcaltattoo707</a> with your idea, or come by 1618 G Street. We&rsquo;ll help you find the right artist.</p>
-      <p class="demo-note">With Maiden, people reach you on Instagram, by phone, or by walking in.</p>
+      <p class="demo-note">With Planted, people reach you on Instagram, by phone, or by walking in.</p>
     </div>
   </div>
 </section>
 
 <section id="care" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap">
-    <p class="label with-pill"><span>Before &amp; after</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>Before &amp; after</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Aftercare &amp; <em>consent</em>, done right</h2>
     <div class="care">
       <div class="card reveal" data-thing="aftercare page">
@@ -959,7 +959,7 @@
           <span class="l">Health questions</span>
           <span class="l">Signature</span>
         </div>
-        <p class="demo-note">With Mother, this is your own form, your wording, ready on any phone.</p>
+        <p class="demo-note">With Tended, this is your own form, your wording, ready on any phone.</p>
       </div>
     </div>
   </div>
@@ -968,7 +968,7 @@
 <section id="deposit" class="gutter" data-show="crone all" data-fold data-thing="deposits and gift cards">
   <div class="wrap pay">
     <div class="pay-intro">
-      <p class="label with-pill"><span>Deposits &amp; gift cards</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="label with-pill"><span>Deposits &amp; gift cards</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Hold your date, <em>right here</em></h2>
       <p class="soft" style="margin-top:14px">After the consult, your artist sends a link, and the deposit is paid on your site, with your policy right above the button. Gift cards too. Try it:</p>
     </div>
@@ -1029,11 +1029,11 @@
   </div>
 </section>
 
-<section id="feed" class="band gutter" data-show="crone all" data-fold data-thing="Instagram feed">
+<section id="feed" class="band gutter" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
     <div class="feed-head">
       <div>
-        <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+        <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
         <h2 class="reveal">Fresh <em>every week</em></h2>
       </div>
       <a class="btn quiet" href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener" style="color:var(--on-band);border-color:rgba(237,231,216,0.5)">@norcaltattoo707</a>
@@ -1046,14 +1046,14 @@
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-kestrel.jpg" alt="A kestrel diving in color" width="600" height="750" loading="lazy"></a>
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-lilies.jpg" alt="Pink lilies on a forearm" width="600" height="750" loading="lazy"></a>
     </div>
-    <p class="demo-note" style="color:rgba(237,231,216,0.75)">With Crone, your newest posts show up here on their own.</p>
+    <p class="demo-note" style="color:rgba(237,231,216,0.75)">With Tended or In Bloom, your newest posts show up here on their own, as you post.</p>
   </div>
 </section>
 
 <section id="faq" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap faq">
     <div>
-      <p class="label with-pill"><span>Good questions</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Good questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Before <em>you come in</em></h2>
     </div>
     <div class="faq-list" data-thing="FAQ">
@@ -1125,7 +1125,7 @@
     <span class="gild" aria-hidden="true" id="foot-gild">Nor Cal<span class="glint" aria-hidden="true">Nor Cal</span></span>
     <p style="margin-top:14px"><span class="nw">Nor Cal Tattoo &amp; Piercing &middot;</span> <span class="nw">Family owned since 2007 &middot;</span> <span class="nw">1618 G St, Arcata</span></p>
     <p class="foot-reach"><a class="tel" href="tel:+17074967034">(707) 496-7034</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener">@norcaltattoo707</a></p>
-    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (deposits, gift cards and your feed). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span> All the work photos are James Kerr&rsquo;s, from his own site; the other artists&rsquo; work goes in their cards.</p>
+    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (deposits and gift cards). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span> All the work photos are James Kerr&rsquo;s, from his own site; the other artists&rsquo; work goes in their cards.</p>
   </div>
 </footer>
 
@@ -1166,15 +1166,15 @@
   <div class="vpanel" id="vp-panel" hidden>
     <div class="views-head">
       <p class="views-q" id="vp-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your story, your artists, how to book, flash days and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: a Request button for each artist, a request form with photos, piercing, aftercare, consent forms and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits and gift cards paid straight to your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1398,7 +1398,7 @@
 </script>
 
 <script>
-  /* See your site as: build views */
+  /* See your site as: build views (Planted / Tended / In Bloom; keys maiden, mother, crone, all) */
   (function () {
     var root = document.documentElement, body = document.body;
     function $(id) { return document.getElementById(id); }
@@ -1406,9 +1406,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one strong page with your story, artists, how to book, flash days and how to find you.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with a Request button for each artist, a request form with photos, your piercing menu, aftercare, consent forms and FAQ.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus deposits and gift cards paid straight to your own Stripe, and your Instagram feed. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one strong page, planted and kept healthy, with your story, artists, how to book, flash days and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with a Request button for each artist, a request form with photos, your piercing menu, aftercare, consent forms, FAQ and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus deposits and gift cards paid straight to your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1422,8 +1422,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Mother, ' + more('maiden', 'crone') + ' with Crone.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Crone.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {

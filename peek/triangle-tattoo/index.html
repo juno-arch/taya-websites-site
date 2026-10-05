@@ -438,7 +438,7 @@
   .legend { margin-top: 14px; line-height: 2.1; font-size: 15px; }
   .legend .tag { --tag-bg: #2c1a28; --tag-ink: #f3a9d3; --tag-line: #4d2c45; }
 
-  /* ---------- VIEWS (Maiden / Mother / Crone / Everything) + Care box ---------- */
+  /* ---------- VIEWS (Planted / Tended / In Bloom / Everything) + Care box ---------- */
   .views { padding-block: 22px 24px; background: var(--ground); }
   .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; border: 1.5px dashed var(--fuchsia); border-radius: 10px; padding: 16px 16px 14px; }
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
@@ -719,12 +719,12 @@
       <p class="views-price">Your founding price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, keeping it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -902,7 +902,7 @@
     </div>
     <div>
       <span class="tris" aria-hidden="true"></span>
-      <p class="label with-pill"><span>Spin the wheel</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Spin the wheel</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Let fate <em>pick your flash</em></h2>
       <p class="soft" style="margin-top:14px">Spin it, and whatever it lands on is your next little tattoo. Feeling brave?</p>
       <div class="cta-row" style="margin-top:20px"><button type="button" class="btn" id="spin-go">Spin the wheel</button></div>
@@ -916,7 +916,7 @@
   <div class="wrap">
     <div data-show="mother crone all" data-fold data-thing="tattoo and museum tour request form">
       <span class="tris" aria-hidden="true"></span>
-      <p class="label with-pill"><span>Sign our guestbook</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Sign our guestbook</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Sign <em>the guestbook</em></h2>
       <p class="measure soft" style="margin-top:14px">Walk-ins are always welcome. Sign here to say hi from the road, to ask for an appointment with Mr. G or a bigger custom piece, or to plan a school or group tour of the museum.</p>
       <div class="req">
@@ -973,7 +973,7 @@
         <div class="side mock-note wf-note">
           <div class="bk-note"><b>What you see</b>Each request lands in your email, photos attached, ready to answer when you have a minute.</div>
           <div class="bk-inbox"><div class="from">New request</div><div id="rq-inbox">Waiting for one&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>A guestbook, like the old days</b>&ldquo;Just saying hi&rdquo; notes go up in the guestbook for everyone to read, and you can take any of them down. Tattoo and tour requests stay private and only come to you.</div>
+          <div class="bk-note"><b>A guestbook, like the old days</b>&ldquo;Just saying hi&rdquo; notes go up in the guestbook for everyone to read, and any of them comes down the moment you email me. Tattoo and tour requests stay private and only come to you.</div>
           <div class="bk-note"><b>The phone still works</b>People can still call or walk in. This just catches the ones who&rsquo;d rather write, and the teachers planning a field trip.</div>
         </div>
       </div>
@@ -996,7 +996,7 @@
 <section id="shop" class="gutter" style="background:var(--ground-2)" data-show="crone all" data-fold data-thing="book shop and gift cards through your Stripe">
   <div class="wrap">
     <span class="tris" aria-hidden="true"></span>
-    <p class="label with-pill"><span>The book shelf</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+    <p class="label with-pill"><span>The book shelf</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Signed by <em>the author</em></h2>
     <p class="measure soft" style="margin-top:14px">Madame Chinchilla&rsquo;s books on tattoo history, signed to whoever you like. Plus gift cards for a tattoo at Triangle.</p>
     <div class="books">
@@ -1069,7 +1069,7 @@
   <div class="wrap faq">
     <div>
       <span class="tris" aria-hidden="true"></span>
-      <p class="label with-pill"><span>Questions</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Before <em>you come</em></h2>
     </div>
     <div class="faq-list" data-thing="FAQ">
@@ -1100,9 +1100,9 @@
   </div>
 </section>
 
-<section id="insta" class="gutter" style="background:var(--ground-2)" data-show="crone all" data-fold data-thing="Instagram feed">
+<section id="insta" class="gutter" style="background:var(--ground-2)" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
-    <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+    <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Fresh from <em>@triangletattoomuseum</em></h2>
     <div class="ig-grid" role="img" aria-label="Recent Instagram posts">
       <figure class="photo"><img src="images/w-bee.jpg" alt="" loading="lazy"></figure>
@@ -1112,14 +1112,14 @@
       <figure class="photo"><img src="images/w-eye.jpg" alt="" loading="lazy"></figure>
       <figure class="photo"><img src="images/w-owl.jpg" alt="" loading="lazy"></figure>
     </div>
-    <p class="demo-note">With Crone, your newest posts show up here on their own.</p>
+    <p class="demo-note">With Tended or In Bloom, your newest posts show up here on their own as you post.</p>
   </div>
 </section>
 
 <section id="curiosities" class="night gutter curio" data-show="mother crone all" data-fold data-thing="links and curiosities page">
   <div class="wrap">
     <span class="tris" aria-hidden="true"></span>
-    <p class="label with-pill"><span>Links &amp; curiosities</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>Links &amp; curiosities</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Every room <em>of the old site</em></h2>
     <p class="measure soft" style="margin-top:14px">Black pages, hot pink links, and years of friends, heroes, motorcycles and books. All of it came along: every link from triangletattoo.com is here, and the ones that still work still go somewhere.</p>
     <blockquote class="curio-q">&ldquo;We become walking, talking, pulsing, indelible art statements&hellip; &lsquo;Art with a pulse.&rsquo;&rdquo;<small>Madame Chinchilla, from About the Shop</small></blockquote>
@@ -1326,7 +1326,7 @@
       <p class="foot-name">Triangle Tattoo &amp; Museum</p>
       <p>356 B North Main Street, Fort Bragg &middot; <a href="tel:+17079648814">(707) 964-8814</a> &middot; since 1986</p>
       <p style="margin-top:4px"><a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">@triangletattoomuseum</a> &middot; <a href="mailto:g@triangletattoo.com">g@triangletattoo.com</a></p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
       <div class="foot-y2k">
         <p class="counter"><span class="px counter-lbl" id="odo-lbl">You are visitor #</span><button type="button" class="odo" id="odo" aria-label="You are visitor number 1. Tap to roll the counter again."><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">1</span></span></button></p>
         <button type="button" class="px-btn" id="sparkle-tog" aria-pressed="true" hidden>&#10022; Sparkles: on</button>
@@ -1344,12 +1344,12 @@
   <div class="vpanel" id="vp-panel" hidden>
     <p class="views-q" id="vp-q">See your site as</p>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><strong>$300</strong> <s>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><strong>$600</strong> <s>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><strong>$900</strong> <s>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><strong>$35</strong>/mo <s>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, keeping it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1684,16 +1684,16 @@
 </script>
 
 <script>
-  /* see your site as Maiden / Mother / Crone / Everything */
+  /* see your site as Planted / Tended / In Bloom / Everything (keys maiden / mother / crone / all) */
   (function () {
     var root = document.documentElement;
     function $(id) { return document.getElementById(id); }
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one beautiful page with the museum, your artists and their work, your story, reviews, and how to visit.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with a guestbook that takes tattoo and museum tour requests (photos included), the spin the wheel, a filter for each artist’s work, an FAQ, and every link and curiosity from your old site.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus Madame Chinchilla’s signed books and gift cards through your own Stripe, and your Instagram feed. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with the museum, your artists and their work, your story, reviews, and how to visit.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with a guestbook that takes tattoo and museum tour requests (photos included), the spin the wheel, a filter for each artist’s work, an FAQ, every link and curiosity from your old site, and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus Madame Chinchilla’s signed books and gift cards through your own Stripe, so your site does business for you. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));
@@ -1704,8 +1704,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Mother, ' + more('maiden', 'crone') + ' with Crone.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Crone.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {

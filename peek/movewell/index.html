@@ -435,7 +435,7 @@
   .legend { margin-top: 14px; line-height: 2.2; font-size: 13.5px; }
   footer.site .ph { color: #f3e2b6; text-decoration-color: var(--band-gold); }
 
-  /* ---------- VIEWS (Maiden / Mother / Crone / Everything) + Care box ---------- */
+  /* ---------- VIEWS (Planted / Tended / In Bloom / Everything) + Care box ---------- */
   .views { padding-block: 22px 24px; background: var(--ground); }
   .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; border: 1.5px dashed var(--gold); border-radius: 6px; padding: 16px 16px 14px; }
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
@@ -599,15 +599,15 @@
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your week of classes and prices, the apparatus lab, Tamra and your teachers, photos, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: the Where do I start? class finder, your WeMovewell online page, a studio news list and an FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus gift cards paid through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done, including your Mindbody schedule. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change, your Mindbody schedule too, and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -637,7 +637,7 @@
       <a class="btn" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book on Mindbody <span class="arrow" aria-hidden="true">&rarr;</span></a>
       <a class="btn quiet" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=41&amp;sTG=102&amp;prodId=1988" target="_blank" rel="noopener">New client special</a>
     </div>
-    <p class="mock-note wf-note" style="margin-top:34px;font-size:14.5px;max-width:760px">These are your real October classes, straight from Mindbody (mornings are a.m.). Right now your site only says &ldquo;Schedule&rdquo; and sends people off to Mindbody, and its Find a Class link still opens on April 7, 2025. Here the week is right on the page. With care, when you change your schedule, I change it here too.</p>
+    <p class="mock-note wf-note" style="margin-top:34px;font-size:14.5px;max-width:760px">These are your real October classes, straight from Mindbody (mornings are a.m.). Right now your site only says &ldquo;Schedule&rdquo; and sends people off to Mindbody, and its Find a Class link still opens on April 7, 2025. Here the week is right on the page, and when you change your schedule, I change it here too: that&rsquo;s part of care.</p>
 
     <div class="classes">
       <article class="klass reveal">
@@ -766,7 +766,7 @@
 
 <section id="start" class="gutter" data-show="mother crone all" data-fold data-thing="Where do I start? class finder">
   <div class="wrap">
-    <p class="label"><span class="no">03</span><span>New here</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label"><span class="no">03</span><span>New here</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Where do I <em>start?</em></h2>
     <p class="measure soft" style="margin-top:14px">Three quick questions, and it points you to the right first class, with your own advice built in. Give it a try:</p>
     <div class="finder">
@@ -870,7 +870,7 @@
   <div class="wrap online">
     <div class="framed" style="margin-right:14px"><figure class="photo reveal" data-lightbox><img src="images/mat-lying.webp" width="1600" height="770" alt="Tamra on her mat in a gentle back extension, lifting her chest, in front of the studio's cubbies and plants" loading="lazy" style="aspect-ratio:16/9"></figure></div>
     <div>
-      <p class="label"><span class="no">05</span><span>WeMovewell</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label"><span class="no">05</span><span>WeMovewell</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Move well <em>anywhere</em></h2>
       <p style="margin-top:16px">All you need is a mat. Your on demand Pilates membership: a growing library of online classes, training courses and special events, with certified teachers and a focus on good form.</p>
       <div class="plans">
@@ -925,10 +925,10 @@
 <section id="list" class="gutter" style="background:var(--ground-2)" data-show="mother crone all" data-fold data-thing="studio news email list on Buttondown">
   <div class="wrap two">
     <div>
-      <p class="label"><span class="no">08</span><span>Studio news</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label"><span class="no">08</span><span>Studio news</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Hear it <em>first</em></h2>
       <p style="margin-top:14px">A new class time, a canceled Sunday, Pilates on the farm, a prenatal series with Ellie. A short note, only when there&rsquo;s news.</p>
-      <p class="mock-note wf-note" style="margin-top:22px;font-size:14.5px">The newsletter sign up at the bottom of your home page looks like it isn&rsquo;t connected to a list yet (Squarespace calls it &ldquo;needs a storage option&rdquo;), so sign ups there may not be landing anywhere. This one goes to your own Buttondown list, free up to 100 people.</p>
+      <p class="mock-note wf-note" style="margin-top:22px;font-size:14.5px">The newsletter sign up at the bottom of your home page looks like it isn&rsquo;t connected to a list yet (Squarespace calls it &ldquo;needs a storage option&rdquo;), so sign ups there may not be landing anywhere. This one goes to your own Buttondown list, and care covers the sending (up to 1,000 people).</p>
     </div>
     <div class="bk-card">
       <form id="nl" method="dialog" novalidate aria-label="Studio news sign up, preview">
@@ -949,11 +949,11 @@
 <section id="gift" class="gutter" data-show="crone all" data-fold data-thing="gift cards through your Stripe">
   <div class="wrap two" style="align-items:start">
     <div>
-      <p class="label"><span class="no">09</span><span>Gifts</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="label"><span class="no">09</span><span>Gifts</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Give someone <em>a class</em></h2>
       <p class="soft" style="margin-top:14px">A mat class, a pack, or any amount, sent as a gift card to print or forward. Lovely for birthdays and new moms.</p>
       <div class="side mock-note wf-note" style="margin-top:24px">
-        <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe account, in your name. Stripe keeps about 3% per payment. I never touch the money.</div>
+        <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe account, in your name. Stripe keeps about 2.9% + 30&cent; per payment. I never touch the money.</div>
         <div class="bk-note"><b>Your prices</b>The gift amounts are your real Mindbody prices. The person you give it to books on Mindbody like anyone else.</div>
       </div>
     </div>
@@ -993,7 +993,7 @@
 <section id="faq" class="gutter" style="background:var(--ground-2)" data-show="mother crone all" data-fold>
   <div class="wrap faq">
     <div>
-      <p class="label"><span class="no">10</span><span>Questions</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label"><span class="no">10</span><span>Questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Before <em>your first class</em></h2>
     </div>
     <div class="faq-list" data-thing="FAQ">
@@ -1052,7 +1052,7 @@
       <p>Pilates &middot; 789 I Street, Arcata, CA 95521 &middot; <a href="mailto:movewellarcata@gmail.com">movewellarcata@gmail.com</a> &middot; <a href="tel:+17075992321">(707) 599-2321</a></p>
       <p style="margin-top:4px"><a href="https://www.instagram.com/movewellarcata/" target="_blank" rel="noopener">Instagram</a> &middot; <a href="https://www.facebook.com/movewellarcata/" target="_blank" rel="noopener">Facebook</a> &middot; <a href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book on Mindbody</a></p>
       <p style="margin-top:10px;opacity:.85">&ldquo;We don&rsquo;t stop playing because we grow old, we grow old because we stop playing.&rdquo; George Bernard Shaw</p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
     </div>
   </div>
 </footer>
@@ -1064,12 +1064,12 @@
   <div class="vpanel" id="vp-panel" hidden>
     <p class="views-q" id="vp-q">See your site as</p>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><strong>$300</strong> <s>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><strong>$600</strong> <s>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><strong>$900</strong> <s>$1,800</s></span></button>
-      <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your week of classes and prices, the apparatus lab, Tamra and your teachers, photos, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: the Where do I start? class finder, your WeMovewell online page, a studio news list and an FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus gift cards paid through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><strong>$35</strong>/mo <s>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Stop anytime.</span></div>
+    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change, your Mindbody schedule too, and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1278,16 +1278,16 @@
 </script>
 
 <script>
-  /* see your site as Maiden / Mother / Crone / Everything */
+  /* see your site as Planted / Tended / In Bloom / Everything (keys: maiden, mother, crone, all) */
   (function () {
     var root = document.documentElement;
     function $(id) { return document.getElementById(id); }
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one strong page with your week of classes and prices, the apparatus lab, Tamra and your teachers, your photos, your reviews and how to find you. Booking stays on Mindbody.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with the Where do I start? class finder, your WeMovewell online page, a studio news list, and an FAQ.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus gift cards through your own Stripe. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one strong page, planted and kept healthy, with your week of classes and prices, the apparatus lab, Tamra and your teachers, your photos, your reviews and how to find you. Booking stays on Mindbody.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with the Where do I start? class finder, your WeMovewell online page, a studio news list, and an FAQ.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus gift cards through your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));
@@ -1298,8 +1298,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Mother, ' + more('maiden', 'crone') + ' with Crone.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Crone.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {
