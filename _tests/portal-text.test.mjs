@@ -8,9 +8,11 @@
 // Fails (exit 1) if:
 //   - any of it has a dash (em or en), the word "subscription", trades, "on call", an old price or rule,
 //     or a straight apostrophe or quote in words people read (use ’ “ ”)
-//   - $35 or $350 shows up without "founding" close by, or care at anything but $69 / $690 ($35 / $350 founding),
-//     or the old founding care price ($49 / $490) shows up at all
-//   - "$100 an hour" shows up without the price coming before I start
+//   - anything from before the Oct 5 2026 pricing shows up: Maiden / Mother / Crone as words people read
+//     (the lowercase keys maiden / mother / crone are fine), care at anything but $12 / $45 / $90 a month,
+//     $69 / $690 / $35 / $350 / $49 / $490, any hourly rate, "$25 to $50", pay as you go, care without care,
+//     yearly care, a founding care price, offers of a call or a chat, or do-it-yourself editing
+//   - the "Change it yourself" editors come back (their section in portal.html, or their code in portal.js)
 //   - portal.html links to a local file or #anchor that doesn't exist
 //   - a getting-started step the portal links to (#s-<step>) is missing from start.html
 //     (start.html is being worked on elsewhere: this catches a renamed step)
@@ -63,10 +65,15 @@ const FORBIDDEN = [
   [/subscription/i, 'the word "subscription"'],
   [/\btrad(?:e|es|ed|ing)\b/i, 'trades'],
   [/\bon call\b/i, '"on call" (care is a reply within 2 business days)'],
-  [/\$444|\$666|\$888|\$588|\$25\b(?! to \$50)/, 'an old price'],
-  [/\$49(?:0)?\b/, 'the old founding care price ($49 / $490; founding care is half off now, $35 / $350)'],
+  [/\$444|\$666|\$888|\$588|\$25\b|\$69\b|\$690\b|\$35\b|\$350\b|\$49\b|\$490\b/, 'an old price'],
   [/quick change|update session|an hour a month|\broll(?:s|ed)? over/i, 'an old care rule'],
-  [/\$(?!100 an hour)\d[\d,.]* an hour|per hour|by the minute/i, 'an hourly rate other than $100 an hour'],
+  [/\$\d[\d,.]* an hour|per hour|by the minute|hourly/i, 'an hourly rate (gone since Oct 5 2026: anything big is quoted first)'],
+  [/pay(?:ing)? as you go|without care|optional care|care is optional|skip (?:it|care)|only if you want it/i, 'care as optional (care comes with every site now)'],
+  [/two months free|care[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}care/i, 'yearly care (care is monthly only)'],
+  [/founding[^.]{0,60}\bcare\b|\bcare\b[^.]{0,60}founding/i, 'a founding care price (founding is half off the build only)'],
+  [/\b(?:Maiden|Mother|Crone)\b/, 'an old build name (Planted / Tended / In Bloom now)'],
+  [/\bchat\b|a call\b|pick a time|rather talk|on the phone/i, 'an offer of a call or a chat (email only)'],
+  [/(?:change|edit|update) (?:it|these|them|this) yourself|coming soon|do it yourself/i, 'do-it-yourself editing (Taya makes every change)'],
 ];
 for (const [file, strings] of sources) {
   for (const s of strings) {
@@ -74,19 +81,21 @@ for (const [file, strings] of sources) {
       const m = s.match(re);
       if (m) fail(`${file}: ${what}: "${s.slice(Math.max(0, m.index - 40), m.index + 40)}"`);
     }
-    // $35 / $350 are only ever the founding care price
-    for (const m of s.matchAll(/\$35(?:0)?\b/g)) {
-      const around = s.slice(Math.max(0, m.index - 200), m.index + 60);
-      if (!/founding/i.test(around)) fail(`${file}: ${m[0]} without "founding" nearby: "${around}"`);
-    }
     for (const m of s.matchAll(/\bcare(?: is| at)? \$(\d+)/gi)) {
-      if (![69, 690, 35, 350].includes(+m[1])) fail(`${file}: care shown at $${m[1]}: "${m[0]}"`);
+      if (![12, 45, 90].includes(+m[1])) fail(`${file}: care shown at $${m[1]}: "${m[0]}"`);
     }
-    if (/\$100 an hour/.test(s) && !/price (?:before I start|first)/i.test(s)) fail(`${file}: "$100 an hour" without the price coming first: "${s}"`);
   }
 }
-// the page's own care amounts are built from numbers, so check the numbers too
-if (!/founding price: half off for as long as you keep care/i.test(js)) fail('portal.js: the care row no longer says the founding price is half off for as long as they keep care');
+// the sample client's care amounts are numbers, not words, so check those too (care is $12 / $45 / $90 a month)
+for (const m of demo.matchAll(/key: 'care', amount: (\d+), period: '(\w*)'/g)) {
+  if (![12, 45, 90].includes(+m[1]) || m[2] !== 'month') fail(`portal-demo.js: the sample's care is $${m[1]} a ${m[2]} (care is $12 / $45 / $90 a month)`);
+}
+// the care row never offers a founding care price (founding is half off the build only)
+if (/half off for as long as you keep care/i.test(js)) fail('portal.js: the care row still offers founding care at half off');
+
+// ---- no do-it-yourself editing (Oct 5 2026): the editors can never show ----
+if (/id="sec-quick"|id="quick-list"|Change it yourself/i.test(html)) fail('portal.html: the "Change it yourself" section is back');
+if (/\b(?:loadQuick|renderQuick|contentSave|contentLoad|photoUpload|flyerUpload)\b|\/content-save|#sec-quick/.test(js)) fail('portal.js: the "Change it yourself" editors are back');
 
 // ---- straight quotes in words people read ----
 // portal.html: between tags only. The scripts: a \' inside a string is almost always a word like don\'t.

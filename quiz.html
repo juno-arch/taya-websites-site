@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Which build fits? &middot; Web Faery</title>
-<meta name="description" content="Six quick questions: find the build that fits what your site needs to do (Maiden, Mother or Crone), and whether care is worth it for you, with every cost shown.">
+<meta name="description" content="Four quick questions: find the build that fits what your site needs to do (Planted, Tended or In Bloom), what its care covers, and every cost.">
 <link rel="canonical" href="https://webfaery.love/quiz.html">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -13,14 +13,14 @@
 <meta property="og:url" content="https://webfaery.love/quiz.html">
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Which build fits you? A two-minute quiz">
-<meta property="og:description" content="Six quick taps: find the build that fits what your site needs to do, and whether care is worth it for you, with every cost shown.">
+<meta property="og:description" content="Four quick taps: find the build that fits what your site needs to do, what its care covers, and every cost.">
 <meta property="og:image" content="https://webfaery.love/images/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Which build fits you? A two-minute quiz">
-<meta name="twitter:description" content="Six quick taps: find the build that fits what your site needs to do, and whether care is worth it for you, with every cost shown.">
+<meta name="twitter:description" content="Four quick taps: find the build that fits what your site needs to do, what its care covers, and every cost.">
 <meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
 <meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
 <meta name="theme-color" content="#0e0e0c">
@@ -129,8 +129,8 @@
   <div class="words">
     <span class="eyebrow">A two-minute quiz</span>
     <h1>Which build <em>fits you?</em></h1>
-    <p class="lede">Six quick taps, no email needed. You’ll get a build size from what your site
-       needs to do, and an honest take on whether care is worth it for you, with the costs.</p>
+    <p class="lede">Four quick taps, no email needed. You’ll get the build that fits what your site
+       needs to do, what its care looks after, and every cost.</p>
   </div>
 </header>
 <script>
@@ -162,7 +162,7 @@
     <a href="index.html">the main page</a>, or just email <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p></div></noscript>
 
   <div id="quiz" hidden>
-    <div class="progress" id="progress">Question 1 of 6</div>
+    <div class="progress" id="progress">Question 1 of 4</div>
     <div class="qcard">
       <h2 id="q-title" tabindex="-1" aria-describedby="progress"></h2>
       <p class="why" id="q-why"></p>
@@ -197,9 +197,8 @@
       <span class="kicker">Every cost, plainly</span>
       <h3 id="plainly-title">What yours would cost</h3>
       <ul id="r-costs"></ul>
-      <p class="dated">My prices are fixed; other companies’ prices are estimates as of September 2026.
-         Founding clients (5 spots, through Dec 31, 2026) get half off the build, and half off care for as long as
-         they keep it: $35 a month (or $350 a year). <a href="index.html#founding">See how many are left</a>.</p>
+      <p class="dated">My prices are fixed; other companies’ prices are estimates as of October 2026.
+         Founding clients (5 spots, through Dec 31, 2026) get half off the build. <a href="index.html#founding">See how many are left</a>.</p>
     </section>
 
     <div class="cta-row">
@@ -225,8 +224,9 @@
 </footer>
 
 <script id="quiz-logic">
-  // Questions 1 to 3 pick the BUILD (what the site does). Questions 4 to 6 pick CARE or
-  // WITHOUT CARE (how often things change, and the extras care covers). The two answers are separate on purpose.
+  // Questions 1 to 3 pick the BUILD (what the site does). Question 4 asks about the extras (email from your own
+  // address, a newsletter): a newsletter means at least Tended, where the sign-up and its sending live.
+  // Care comes with every site and matches the build (Oct 5 2026): Planted $12, Tended $45, In Bloom $90 a month.
   // _tests/quiz-paths.test.mjs clicks through every path and checks the rules below.
   var QUESTIONS = [
     {
@@ -244,7 +244,7 @@
       why: 'Beyond showing your phone number and email.',
       answers: [
         { t: 'No, a phone number and email are plenty' },
-        { t: 'Yes, something like that', sub: 'Messages through a form, newsletter signups, or forms clients download' },
+        { t: 'Yes, something like that', sub: 'Messages through a form, or forms clients download' },
         { t: 'Not sure yet', sub: 'We can sort it out by email' }
       ]
     },
@@ -255,76 +255,81 @@
       answers: [
         { t: 'No, I like being reached the old way', sub: 'Calls, texts, emails' },
         { t: 'Maybe someday, not yet' },
-        { t: 'Yes, and I already use a booking app', sub: 'A Book now button linked to it is plenty' },
+        { t: 'Yes, and I already use a booking app', sub: 'A Book button linked to it is plenty' },
         { t: 'Yes, set booking up for me', sub: 'Services, hours, reminders, payments' },
-        { t: 'Yes, selling', sub: 'Gift certificates, deposits, or a small shop' }
+        { t: 'Yes, selling', sub: 'Gift certificates, deposits, a small shop, or online orders' }
       ]
     },
     {
-      part: 'after launch',
-      title: 'After launch, how often would something on the site need changing?',
-      why: 'Hours, prices, photos, new offerings. A few little things sent together in one email count once.',
-      answers: [
-        { t: 'Once or twice a year' },
-        { t: 'A few times a year, with the seasons' },
-        { t: 'About once a month' },
-        { t: 'Every week or two' }
-      ]
-    },
-    {
-      part: 'after launch',
+      part: 'the extras',
       title: 'Would you like email from your own address, or a newsletter?',
-      why: 'Both are optional. Care covers them; without care, each has a small cost of its own.',
+      why: 'Both are optional. Tended and In Bloom care cover them.',
       answers: [
         { t: 'No, my everyday email is fine' },
-        { t: 'Email from my own address', sub: 'Like hello@yourname.com. About $3 a month without care' },
-        { t: 'A newsletter', sub: 'Free up to 100 subscribers, then about $9 a month without care' },
+        { t: 'Email from my own address', sub: 'Like hello@yourbusiness.com' },
+        { t: 'A newsletter', sub: 'A sign-up on your site, and the sending covered' },
         { t: 'Both, please' }
-      ]
-    },
-    {
-      part: 'after launch',
-      title: 'Which sounds more like you?',
-      why: 'No wrong answer. It only matters when the math is close.',
-      answers: [
-        { t: 'Keep my costs as low as possible', sub: 'I’m happy paying for changes as they come' },
-        { t: 'One bill, and someone looking after it', sub: 'I’d rather not think about it' },
-        { t: 'No idea yet' }
       ]
     }
   ];
 
   var BUILDS = {
-    Maiden: {
-      orb: 'maiden', what: 'One beautiful page', price: 600, founding: 300, ready: 'about 2 weeks',
+    'Planted': {
+      orb: 'maiden', emoji: '🌱', what: 'One beautiful page, planted and kept healthy', price: 600, founding: 300, care: 12, ready: 'about 2 weeks',
       because: 'Everything a new client needs fits on one lovely page, and nothing needs gathering. Simple is a strength here.',
       points: [
         'One page: who you are, what you offer, prices, how to reach you, photos',
         'Google-ready: clear titles and descriptions, business details Google can read, a photo preview when someone texts your link',
-        'The words written for you, from a few easy questions by email (or a chat, if you like)'
+        'The words written for you, from a few easy questions by email'
       ],
-      also: 'Want more pages or booking later? What you paid counts toward the bigger build.'
+      also: 'Want more pages or booking later? What you paid counts toward the bigger build.',
+      careLead: 'Planted care keeps your page healthy and current, with me looking after it.',
+      carePoints: [
+        'Hosting, your web address, security and backups',
+        'Your own magic link: tap anything on your site and leave me a note right there',
+        'A “your changes are up” email the moment it’s live',
+        'A monthly check-in about your business, so you never have to think about what to update',
+        'New reviews added as they come in',
+        'A heads-up before holidays, so your hours are never wrong'
+      ]
     },
-    Mother: {
-      orb: 'mother', what: 'A full site', price: 1200, founding: 600, ready: 'about 3 weeks',
-      because: 'You have more to share than one page can hold, or you’d like the site to gather things for you: messages, newsletter signups, forms.',
+    'Tended': {
+      orb: 'mother', emoji: '🌿', what: 'A full site, tended as the seasons change', price: 1200, founding: 600, care: 45, ready: 'about 3 weeks',
+      because: 'You have more to share than one page can hold, or you’d like the site to gather things for you: messages, newsletter sign-ups, forms.',
       points: [
         'About, services, FAQ and a contact form',
-        'A newsletter signup and downloadable forms, if you need them',
-        'A Book now button linked to the booking app you use (or a free one in your name)'
+        'A newsletter sign-up and downloadable forms, if you need them',
+        'A Book button linked to the booking app you use (or a free one in your name)'
       ],
-      also: 'If you ever want booking or selling, what you paid counts toward Crone.'
+      also: 'If you ever want booking or selling, what you paid counts toward In Bloom.',
+      careLead: 'Tended care keeps your site fresh as the seasons change, and your Google profile and newsletter going.',
+      carePoints: [
+        'Everything in Planted care: hosting, your web address, backups, your magic link, a monthly check-in, new reviews and holiday heads-ups',
+        'Your Google profile kept fresh: once a month I share one of your recent posts there',
+        'Your contact form and newsletter sign-up, with sending covered',
+        'Your Instagram feed on your site, filling itself in as you post',
+        'Email from your own address (you@yourbusiness.com), covered',
+        'A seasonal refresh: new photos and wording as the year turns'
+      ]
     },
-    Crone: {
-      orb: 'crone', what: 'A full site that books, sells, or both', price: 1800, founding: 900, ready: 'about 4 weeks',
+    'In Bloom': {
+      orb: 'crone', emoji: '🌸', what: 'A site in full bloom, doing business for you', price: 1800, founding: 900, care: 90, ready: 'about 4 weeks',
       because: 'People could book a time or pay you right on the site, so it becomes a working part of your business, not just a brochure.',
       points: [
-        'Everything in Mother',
-        'Online booking, selling, or both (gift certificates, deposits, a small shop of up to about 20 items), set up in your own accounts, with a hand-off lesson',
-        'The money goes straight to you, never through me',
-        'Your latest Instagram posts on your site, updating on their own (needs a free Business or Creator account)'
+        'Everything in Tended',
+        'Online booking, payments, or a small shop (gift certificates, deposits, up to about 20 items), set up in your own accounts and running on my server',
+        'The money goes straight to you, never through me'
       ],
-      also: 'We test it all with pretend clients before anything goes public.'
+      also: 'We test it all with pretend clients before anything goes public.',
+      careLead: 'In Bloom care keeps everything in full bloom: your booking, payments or shop running and doing business for you.',
+      carePoints: [
+        'Everything in Tended care, from your Google profile to your own email address and a seasonal refresh',
+        'Your booking, payments or shop kept running (Stripe, sold-out stamps)',
+        'For food businesses: online ordering right on your site (DoorDash’s free ordering)',
+        'A flyer for one event a month',
+        'Private visitor counts, no tracking',
+        'A yearly refresh: new photos from your year, your story updated, every page checked on phones'
+      ]
     }
   };
 
@@ -332,145 +337,49 @@
   var EVERY_BUILD = [
     'Your Google Business Profile set up: the listing that shows on Google Maps',
     'A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer or print shop',
-    'A slim banner across the top of your site for news like “Now booking” or “Away until Nov 3”, switched for free whenever you like'
+    'A slim banner across the top of your site for news like “Now booking” or “Away until Nov 3”'
   ];
-
-  // Without care: $100 an hour, and I give the price before I start (one email with everything in it). Most small
-  // changes come to about $25 to $50, so the comparison counts each change at the middle, $37.50, plus the web
-  // address, plus any extras they want.
-  var CHANGE = 37.5;
-  var PER_YEAR = [[1, 2], [3, 4], [12, 12], [26, 52]];   // changes a year, low and high
-  var WEB_ADDRESS = 12;                                  // about $12 a year (included with care)
-  // own-address email about $3 a month; a newsletter is free up to 100 subscribers, then about $9 a month
-  var EXTRAS = [[0, 0], [36, 36], [0, 108], [36, 144]];
-  var CARE_MONTH = 69;
-  var CARE_YEAR = CARE_MONTH * 12;   // $828 paid monthly
-  var CARE_PREPAID = 690;            // paid yearly (two months free)
-  var CLOSE_CALL = 450;              // within about $250 a year of care (about a change a month): then what they'd like decides
-  var FREQ_WORDS = ['A change or two a year', 'Three or four changes a year', 'About a change a month', 'A change every week or two'];
-  var EXTRA_WORDS = ['your web address', 'your web address and email from your own address',
-    'your web address and a newsletter', 'your web address, email from your own address and a newsletter'];
-  var WANTS_WORDS = ['', 'email from your own address, and care covers it', 'a newsletter, and care covers it',
-    'your own email address and a newsletter, and care covers both'];
+  // changes are the same in every tier
+  var CHANGES = 'Email me anytime and I make your changes (hours, prices, photos, wording), as often as you need, usually within 2 business days. Anything broken, I fix free. Big new things, like a new page, I quote first.';
 
   function money(n) { return '$' + n.toLocaleString('en-US'); }
-  function withoutCare(p) {
-    return [PER_YEAR[p[3]][0] * CHANGE + WEB_ADDRESS + EXTRAS[p[4]][0], PER_YEAR[p[3]][1] * CHANGE + WEB_ADDRESS + EXTRAS[p[4]][1]];
-  }
-  function middle(p) { var r = withoutCare(p); return (r[0] + r[1]) / 2; }
-  function roughly(n) { return money(Math.max(10, Math.round(n / 10) * 10)); }
-  // keep a few phrases on one line ("$25 / to $50" or "before I / start" read badly split)
-  var KEEP_TOGETHER = ['I start', '$25 to $50', '$100 an hour'];
-  function glue(t) {
-    KEEP_TOGETHER.forEach(function (k) { t = t.split(k).join(k.replace(/ /g, '\u00a0')); });
-    return t;
-  }
-  function rangeWords(r) {
-    var lo = roughly(r[0]), hi = roughly(r[1]);
-    return lo === hi ? 'about ' + lo + ' a year' : 'about ' + lo + ' to ' + hi + ' a year';
-  }
-  var CARE_PRICE_WORDS = 'Care is ' + money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year if you pay yearly';
 
-  // The build comes only from what the site needs to do.
+  // The build comes from what the site needs to do, and a newsletter needs at least Tended.
   function recommendBuild(p) {
-    if (p[2] >= 3) return 'Crone';                 // "Yes, set booking up for me" or "Yes, selling"
-    if (p[2] === 2) return 'Mother';               // already uses a booking app: Mother's Book now button
-    if (p[0] === 1 || p[1] === 1) return 'Mother'; // lots to say, or something to gather
-    return 'Maiden';
+    if (p[2] >= 3) return 'In Bloom';                // "Yes, set booking up for me" or "Yes, selling"
+    if (p[2] === 2) return 'Tended';                 // already uses a booking app: Tended's Book button
+    if (p[0] === 1 || p[1] === 1) return 'Tended';   // lots to say, or something to gather
+    if (p[3] >= 2) return 'Tended';                  // a newsletter: the sign-up and its sending live in Tended
+    return 'Planted';
   }
 
-  // Care or not comes only from the after-launch answers: the yearly cost without care against care
-  // paid yearly. When it's close, "one bill" tips it to care, and so does wanting the extras care covers,
-  // unless they asked to keep costs as low as possible.
-  function recommendCare(p) {
-    var mid = middle(p);
-    if (mid >= CARE_PREPAID) return 'care';
-    if (mid >= CLOSE_CALL && (p[5] === 1 || (p[5] === 2 && p[4] > 0))) return 'care';
-    return 'payg';
-  }
-
-  function careCopy(p, which) {
-    var r = withoutCare(p);
-    var mid = middle(p);
-    var pace = FREQ_WORDS[p[3]] + ' at about $25 to $50 each, plus ' + EXTRA_WORDS[p[4]] + ', comes to ' + rangeWords(r) + ' without care.';
-    if (which === 'care') {
-      var because;
-      if (mid >= CARE_YEAR) {
-        because = pace + ' ' + CARE_PRICE_WORDS + ', so care costs less, and it’s easier too: you email me, and it’s done.';
-      } else if (mid >= CARE_PREPAID) {
-        because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, care comes out about the same or a little less; paid monthly, a little more. Either way it’s one bill, and every small change is just an email, with no price to wait on.';
-      } else {
-        because = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '. Paid yearly, that’s about ' + roughly(CARE_PREPAID - mid) + ' a year more than going without. ' +
-          (p[5] === 1
-            ? 'Since you’d like one bill and someone looking after it, care fits.'
-            : 'Since you’d like ' + WANTS_WORDS[p[4]] + ', care fits.');
-      }
-      return {
-        name: 'Care, ' + money(CARE_MONTH) + ' a month',
-        because: because,
-        points: [
-          'Just email me: I make your changes whenever you ask, and reply within 2 business days',
-          'Anything big, like a new page, I’ll quote first',
-          'Your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered',
-          'Your Google profile kept fresh: hours and holidays, new photos, a monthly post, and a review card for your counter',
-          'One event flyer a month, designed in your brand',
-          'Billing starts after your 30 days of settling in, not at launch',
-          'Cancel anytime. Your site stays yours and stays up'
-        ],
-        also: 'Fixes for anything I got wrong are always free, with or without care.'
-      };
-    }
-    var why;
-    if (mid >= CLOSE_CALL) {
-      why = 'It’s a close call. ' + pace + ' ' + CARE_PRICE_WORDS + '.' + (p[5] === 0
-        // they want costs low: say plainly which way it leans
-        ? ' Since you’d like to keep costs low, start without care: you only pay when something changes. If you find yourself writing to me more than once or twice a month, care starts to win, and you can add it anytime.'
-        : ' Either way works. Without care, you only pay when something changes. If you find yourself writing to me more than once or twice a month, or you’d rather hand it all to me, you can add care anytime.');
-    } else {
-      why = pace + ' ' + CARE_PRICE_WORDS + ', so going without care makes more sense for you.';
-      // they asked for one bill and someone looking after it, but the math says otherwise: name the difference
-      if (p[5] === 1) why += ' You said you’d like one bill and someone looking after it. At this pace, care would cost about ' +
-        roughly(CARE_PREPAID - mid) + ' a year more, even paid yearly. If that peace of mind is worth it to you, choose care anyway. There’s no wrong answer.';
-    }
+  function careCopy(p, build) {
+    var b = BUILDS[build];
+    var because = 'Care comes with every site, and it matches yours. ' + b.careLead + ' It’s ' + money(b.care) + ' a month, starting after your 30 days of settling in.';
+    if (build === 'Planted' && p[3] === 1) because += ' Email from your own address is covered by Tended care; with Planted it’s about $3 a month in your own account.';
     return {
-      name: 'Without care, $100 an hour',
-      because: why,
-      points: [
-        'Send one email with everything you’d like changed, and I’ll reply with a price before I start ($100 an hour)',
-        'Most small changes, like new hours, a price or a photo, come to about $25 to $50. Anything big is quoted the same way, and nothing starts until you say yes',
-        'Your web address moves into your own account at launch. The first year is included; after that it’s about $12 a year on your card',
-        'Fixes for anything I got wrong: always free'
-      ],
-      also: 'If things start changing more often, care is there anytime: ' + money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year. Then every small change is just an email, with no price to wait on.'
+      name: b.emoji + ' ' + build + ' care, ' + money(b.care) + ' a month',
+      because: because,
+      points: b.carePoints,
+      also: CHANGES + ' If you ever stop, your site is still yours, and I hand you every file and login.'
     };
   }
 
-  function costLines(p, build, care) {
+  function costLines(p, build) {
     var b = BUILDS[build];
     var lines = [
-      ['The build', money(b.price) + ' once (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or bank transfer.']
+      ['The build', money(b.price) + ' once (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or bank transfer.'],
+      ['Care', money(b.care) + ' a month, starting after your 30 days of settling in. Hosting and your web address are covered (its first year comes with your build), so there’s nothing to renew.']
     ];
-    if (care === 'care') {
-      lines.push(['Care', money(CARE_MONTH) + ' a month, or ' + money(CARE_PREPAID) + ' a year (two months free). I make your changes whenever you ask and keep your Google profile fresh, and your web address, email from your own address and the newsletter tool (up to 1,000 subscribers) are covered. Billing starts after your 30 days of settling in, not at launch. Founding clients: $35 a month, or $350 a year (half off, for as long as you keep it).']);
-    } else {
-      var changes = [PER_YEAR[p[3]][0] * CHANGE, PER_YEAR[p[3]][1] * CHANGE];
-      lines.push(['Changes', 'About $25 to $50 a change, quoted first ($100 an hour). At the pace you described, that’s ' + rangeWords(changes) + '. Anything big is quoted the same way.']);
-      lines.push(['Your web address', 'The first year is included. After that, about $12 a year on your own card. It’s the only cost you must pay each year.']);
-      var extras = [];
-      if (p[4] === 1 || p[4] === 3) extras.push('Email from your own address, about $3 a month.');
-      if (p[4] === 2 || p[4] === 3) extras.push('A newsletter: free up to 100 subscribers, then about $9 a month.');
-      if (extras.length) lines.push(['The extras you wanted', extras.join(' ')]);
-      else lines.push(['Optional, only if you want them', 'Email from your own address, about $3 a month. A newsletter: free up to 100 subscribers, then about $9 a month.']);
-    }
-    lines.push(['Hosting', 'Free, forever. If that ever changed, I’d move your site for free.']);
-    if (build !== 'Crone' && p[2] === 2) {
+    if (build === 'Planted' && (p[3] === 1 || p[3] === 3)) lines.push(['Email from your own address', 'About $3 a month in your own account (Tended and In Bloom care cover it).']);
+    if (build !== 'In Bloom' && p[2] === 2) {
       lines.push(['Booking', 'The booking app you already use stays on your own account, at whatever it costs you now. Cal.com is free for one person, if you’d like a free one.']);
     }
-    if (build === 'Crone') {
+    if (build === 'In Bloom') {
       lines.push(['Booking', 'Your own booking account. Cal.com is free for one person (paid upgrades optional).']);
-      lines.push(['Card payments', 'The payment company keeps about 3% + 30¢ per payment (it varies a little by payment company), taken from your sales.']);
+      lines.push(['Card payments', 'Stripe keeps about 2.9% + 30¢ per payment, taken from your sales.']);
     }
-    lines.push(['Fixes for my mistakes', 'Always free.']);
+    lines.push(['Fixes', 'Anything broken, always free.']);
     return lines;
   }
 
@@ -521,7 +430,6 @@
 
   function finish() {
     var build = recommendBuild(picks);
-    var care = recommendCare(picks);
     var b = BUILDS[build];
     el('r-orb').className = 'orb ' + b.orb;
     el('r-build-name').textContent = build;
@@ -532,31 +440,32 @@
     el('r-build-because').textContent = b.because;
     fillList('r-build-points', b.points.concat(EVERY_BUILD));
     var also = b.also;
-    if (picks[2] === 1 && build !== 'Crone') also = 'When you’re ready for booking, what you paid counts toward Crone.';
-    if (picks[2] === 2) also = 'Your Book now button links straight to the booking app you already use. If you’d ever like booking fully set up for you, what you paid counts toward Crone.';
+    if (picks[2] === 1 && build !== 'In Bloom') also = 'When you’re ready for booking, what you paid counts toward In Bloom.';
+    if (picks[2] === 2) also = 'Your Book button links straight to the booking app you already use. If you’d ever like booking fully set up for you, what you paid counts toward In Bloom.';
     if (picks[2] === 4) also = 'Need a full online store (catalog, inventory, shipping)? That’s quoted separately, before anything starts. ' + also;
+    if (build === 'Tended' && picks[3] >= 2 && picks[0] === 0 && picks[1] !== 1 && picks[2] < 2) also = 'One page would hold everything, but a newsletter lives in Tended: the sign-up on your site, and its sending covered by care. ' + also;
     el('r-build-also').textContent = also;
 
-    var c = careCopy(picks, care);
+    var c = careCopy(picks, build);
     el('r-care-name').textContent = c.name;
-    el('r-care-because').textContent = glue(c.because);
-    fillList('r-care-points', c.points.map(glue));
+    el('r-care-because').textContent = c.because;
+    fillList('r-care-points', c.points);
     el('r-care-also').textContent = c.also;
 
     var ul = el('r-costs');
     ul.textContent = '';
-    costLines(picks, build, care).forEach(function (pair) {
+    costLines(picks, build).forEach(function (pair) {
       var li = document.createElement('li');
       var label = document.createElement('b');
       label.textContent = pair[0] + ': ';
       li.appendChild(label);
-      li.appendChild(document.createTextNode(glue(pair[1])));
+      li.appendChild(document.createTextNode(pair[1]));
       ul.appendChild(li);
     });
 
     var start = el('r-start');
     start.textContent = 'Start with ' + build;
-    start.href = 'intake.html?plan=' + encodeURIComponent(build) + '&care=' + care;
+    start.href = 'intake.html?plan=' + encodeURIComponent(build);
 
     el('quiz').style.display = 'none';
     el('result').classList.add('show');

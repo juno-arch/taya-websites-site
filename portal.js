@@ -56,15 +56,21 @@
   const CHANGE_MAX = 10 * MB, CHANGE_FILES = 3, WHAT_MAX = 2000, ANSWER_MAX = 1000;
   const SAFE_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
 
-  const BUILDS = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone' };
+  const BUILDS = { maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }; // keys stay; only the words changed (Oct 5 2026)
   const BUILD_MOON = { maiden: 'i-wax', mother: 'i-full', crone: 'i-wan' };
+  // what care does for each build, in the garden words of its name (the care row under Payments)
+  const CARE_SAY = {
+    maiden: 'Keeps your site healthy: hosting, your web address, backups, and your changes whenever you email me.',
+    mother: 'Tending as the seasons change: hosting, your web address, backups, and your changes whenever you email me.',
+    crone: 'Keeps you in full bloom: booking and payments kept running, hosting, backups, and your changes whenever you email me.'
+  };
   const STAGES = [
     ['getting_started', 'Getting started'], ['call', 'Your story'], ['draft', 'Draft'],
     ['changes', 'Changes'], ['launch', 'Launch'], ['settling_in', 'Settling in']
   ];
   const STAGE_SAY = {
     getting_started: 'Your answers, photos and a few little setup bits.',
-    call: 'A few easy questions by email (or a chat, if you’d rather talk). I do the writing after.',
+    call: 'A few easy questions by email. I do the writing after.',
     draft: 'I’m building your draft. You’ll get a private link to peek.',
     changes: 'Two rounds, each one email with everything in it.',
     launch: 'Your site goes live at your own web address.',
@@ -74,7 +80,7 @@
   // Only the whole page (a new client) and signing link there now: on a new device start.html opens at its
   // quick check, so every other step's few lines live right in the list item (HOWTO below).
   const START_STEPS = {
-    build: 's-build', sign: 's-sign', call: 's-call', work: 's-work', look: 's-look', accounts: 's-accounts',
+    build: 's-build', sign: 's-sign', call: 's-work', work: 's-work', look: 's-look', accounts: 's-accounts',
     you: 's-sign', agree: 's-sign', deposit: 's-sign', photos: 's-look'
   };
   const HOWTO = {
@@ -88,8 +94,8 @@
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
     look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },
-    build: { steps: ['Maiden, Mother or Crone. Not sure yet? We’ll pick together over email.'] },
-    call: { steps: ['Nothing to book. I’ll email you a few easy questions. Rather talk? Just say so and I’ll send a link to pick a time.'] }
+    build: { steps: ['Planted (one page), Tended (a full site) or In Bloom (booking, payments or a small shop). Not sure yet? We’ll pick together over email.'] },
+    call: { steps: ['Nothing to book. I’ll email you a few easy questions, and you answer whenever suits you.'] }
   };
   const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Let’s talk' };
   // what each upload spot takes (the server checks again, and so does the field itself)
@@ -352,13 +358,7 @@
     upload: (id, files, onProgress) => sendForm('/upload', [['todo', id]], files, token, onProgress),
     change: (req, onProgress) => (req.files.length
       ? sendForm('/change', [['what', req.what], ['where_on_site', req.where], ['nonce', req.nonce]], req.files, token, onProgress)
-      : postJSON('/change', { what: req.what, where_on_site: req.where, nonce: req.nonce }, token)),
-    contentLoad: () => postJSON('/content-load', {}, token),
-    contentSave: (kind, value) => postJSON('/content-save', { kind, value }, token),
-    photoUpload: (slot, file, onProgress) => sendForm('/photo-upload', [['slot', slot]], [file], token, onProgress),
-    photoUndo: (slot) => postJSON('/photo-undo', { slot }, token),
-    flyerUpload: (eventId, file, onProgress) => sendForm('/flyer-upload', [['event', eventId]], [file], token, onProgress),
-    flyerRemove: (eventId) => postJSON('/flyer-remove', { event: eventId }, token)
+      : postJSON('/change', { what: req.what, where_on_site: req.where, nonce: req.nonce }, token))
   };
   let api = realApi;
 
@@ -584,7 +584,6 @@
   function quietSignOut(moveFocus) {
     token = '';
     store.clear();
-    forgetQuick();
     toEmailStep('You were signed out after a quiet while. Here’s a fresh start.' +
       (drafts.any() ? ' Your words are kept: sign in again to send them.' : ''), moveFocus !== false);
   }
@@ -596,7 +595,6 @@
     taps.clearAll();   // a shared computer: nothing of theirs stays behind
     drafts.clearAll();
     pending.clear();
-    forgetQuick();
     if (key) api.logout(key).catch(() => { /* the key is gone from here either way; the server forgets it soon */ });
     toEmailStep('You’re signed out. See you soon!', false);
     focusEl($('#h-email'), true);
@@ -613,7 +611,6 @@
       lastLoad = Date.now();
       render();
       show('v-project');
-      loadQuick();
       if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
     } catch (err) {
@@ -632,12 +629,10 @@
       me = clean(data);
       lastLoad = Date.now();
       render();
-      loadQuick();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
-  // (the editors under Change it yourself always hold words, so they count only once someone changes one)
-  const isTyping = () => pics.length > 0 || quick.dirty.size > 0 ||
-    $$('#v-project textarea:not(.qc-in), #v-project input[type="text"]:not(.qc-in)').some((t) => t.value.trim());
+  const isTyping = () => pics.length > 0 ||
+    $$('#v-project textarea, #v-project input[type="text"]').some((t) => t.value.trim());
 
   // Back from Stripe (its "after payment" link can be portal.html?paid=deposit, or ?paid=1): note it, so the
   // pay button turns into a thank-you instead of asking again while Taya waits to see it land.
@@ -686,7 +681,8 @@
       },
       note: d.note && str(d.note.text).trim() ? { text: str(d.note.text, 600).trim(), date: str(d.note.date, 30) } : null,
       list: {
-        open: arr(list.open).map(item).filter(Boolean).slice(0, 60),
+        // email only since Oct 5 2026: a booking link for a call is never shown, even if an old one comes through
+        open: arr(list.open).map(item).filter((x) => x && x.id !== 'd:call').slice(0, 60),
         done: arr(list.done).map((x) => ({ id: str(x && x.id, 40), title: str(x && x.title, 120) })).filter((x) => x.title).slice(0, 60)
       },
       timeline: {
@@ -1003,15 +999,10 @@
       }
       if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
     } else if (kind === 'link' && item.url) {
-      if (item.id === 'd:call' && t.call) {
-        body.append(sentLine('Booked? Thank you! It shows here once I see it.'));
-        act.append(outLink(item.url, 'Open the booking page again', 'later', 'your chat booking page', 'call'));
-      } else {
-        if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
-        const what = item.id === 'd:call' ? 'your chat booking page' : item.id === 'd:draft' ? 'your private draft' : 'that page';
-        act.append(outLink(item.url, item.id === 'd:call' ? 'Pick a time to chat' : 'Open', item.status === 'sent' ? 'open-btn' : 'btn small', what, item.id === 'd:call' ? 'call' : ''));
-        if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
-      }
+      if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
+      const what = item.id === 'd:draft' ? 'your private draft' : 'that page';
+      act.append(outLink(item.url, 'Open', item.status === 'sent' ? 'open-btn' : 'btn small', what, ''));
+      if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
       if (item.id === 'd:draft') {
         // a round of changes: one email with everything in it
         const m = make('a', 'later', 'Send me your changes');
@@ -1268,7 +1259,7 @@
       if (d) {
         if (s.state === 'done') when = d;
         else if (s.key === 'settling_in') when = (s.state === 'now' ? 'Until ' : 'Until about ') + d;
-        else if (s.key === 'call') when = isPast(s.date) ? d : 'Booked for ' + d;
+        else if (s.key === 'call') when = isPast(s.date) ? d : 'About ' + d;
         else if (draftHere) when = isPast(s.date) ? '' : 'Finished about ' + d;
         else if (s.state === 'now') when = isPast(s.date) ? 'Since ' + d : 'About ' + d;
         else when = 'About ' + d;
@@ -1426,7 +1417,7 @@
       else {
         name = 'Care';
         amt = money(p.amount) + (p.period === 'year' ? ' a year' : ' a month');
-        sub = (c.founding ? 'Your founding price: half off for as long as you keep care. ' : '') + 'Changes whenever you ask.' +
+        sub = (CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes whenever you email me.') +
           (p.state === 'due' && starts ? ' Care begins ' + starts + ', right where settling in leaves off.' : '');
         payLabel = 'Start my care';
         thanks = 'Set up? Thank you! It shows here once it’s running. No need to do it again.';
@@ -1487,7 +1478,7 @@
       const settle = shortDate(stageDate('settling_in'));
       $('#change-email-text').textContent = me.timeline.current === 'settling_in'
         ? 'Settling-in tweaks are on me' + (settle ? ' until ' + settle : '') + '. Send me one email with everything you’d like changed.'
-        : 'Want a change? Send me one email with everything in it. It’s $100 an hour, and you’ll get the price before I start. Anything I got wrong is always fixed free. If you’d rather not wait on a price for the little things, care is there anytime. Just ask.';
+        : 'Want a change? Send me one email with everything in it, and I’ll reply with a price before I start. Anything broken, or anything I got wrong, is always fixed free.';
       return;
     }
     sec.hidden = true;
@@ -1612,744 +1603,10 @@
     $('#in-what').focus();
   }
 
-  /* ================= change it yourself: hours, banner, prices and more (Oct 2 2026) =================
-     Small editors for the bits of their own site a client can change any time, with no waiting on
-     Taya: each kind shows only once Taya has switched it on for them. Saved straight to their site
-     (content.js there reads it). Everything the server sends is shown with textContent only. */
-  const QK = ['hours', 'banner', 'prices', 'contact', 'events', 'booking', 'closures', 'photos'];
-  const QK_TITLE = {
-    hours: 'Opening hours', banner: 'A banner across the top', prices: 'Prices', contact: 'How to reach you',
-    events: 'Events', booking: 'Your booking link', closures: 'Days you’re closed', photos: 'Photos'
-  };
-  const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const SOCIALS = [['instagram', 'Instagram'], ['facebook', 'Facebook'], ['tiktok', 'TikTok'], ['youtube', 'YouTube'],
-    ['etsy', 'Etsy'], ['depop', 'Depop'], ['ebay', 'eBay'], ['linkedin', 'LinkedIn'], ['other', 'Another link']];
-  const PHOTO_MAX = 8 * MB;
-  const quick = { data: null, dirty: new Set(), open: new Set(), gen: 0 };
-
-  // "17:30" -> "5:30 PM"
-  const clock = (t) => {
-    const m = /^(\d{2}):(\d{2})$/.exec(str(t));
-    if (!m) return '';
-    const h = +m[1], ap = h < 12 ? 'AM' : 'PM', h12 = h % 12 || 12;
-    return h12 + (m[2] === '00' ? '' : ':' + m[2]) + ' ' + ap;
-  };
-  const isDayStr = (s) => /^\d{4}-\d{2}-\d{2}$/.test(str(s));
-
-  // signed out: nothing of theirs stays on the page
-  function forgetQuick() {
-    quick.data = null;
-    quick.dirty.clear();
-    quick.open.clear();
-    quick.gen++;
-    $('#sec-quick').hidden = true;
-    $('#quick-list').replaceChildren();
-  }
-
-  async function loadQuick() {
-    const sec = $('#sec-quick');
-    if (!api.contentLoad || !token) { sec.hidden = true; return; }
-    if (busy || quick.dirty.size) return; // never pull the rug from under someone mid-edit
-    const gen = ++quick.gen;
-    try {
-      const d = await api.contentLoad();
-      if (gen !== quick.gen || busy || quick.dirty.size) return;
-      quick.data = cleanQuick(d);
-      renderQuick();
-    } catch (err) {
-      if (err.code === 'signed_out') { quietSignOut(false); return; }
-      if (!quick.data) sec.hidden = true; // not there yet: nothing to show (the rest of the page is fine)
-    }
-  }
-
-  // only the fields this page knows, in the shapes it expects
-  function cleanQuick(d) {
-    d = d && typeof d === 'object' ? d : {};
-    const en = d.enabled || {};
-    const o = { enabled: {} };
-    QK.forEach((k) => { o.enabled[k] = en[k] === true; });
-    const h = d.hours && typeof d.hours === 'object' ? d.hours : null;
-    o.hours = h ? {
-      days: DAY_NAMES.map((_, i) => {
-        const x = arr(h.days)[i] || {};
-        return { closed: x.closed === true, appt: x.appt === true, open: str(x.open, 5), close: str(x.close, 5) };
-      }),
-      note: str(h.note, 120)
-    } : null;
-    const b = d.banner && typeof d.banner === 'object' ? d.banner : null;
-    o.banner = b ? { on: b.on === true, text: str(b.text, 140), link: safeUrl(b.link), until: isDayStr(b.until) ? b.until : '' } : null;
-    o.prices = arr(d.prices).slice(0, 60).map((x) => ({ id: str(x && x.id, 40), label: str(x && x.label, 80), price: str(x && x.price, 24) })).filter((x) => x.id);
-    const c = d.contact && typeof d.contact === 'object' ? d.contact : null;
-    o.contact = c ? {
-      phone: str(c.phone, 30), email: str(c.email, 120), address: arr(c.address).slice(0, 3).map((x) => str(x, 80)),
-      socials: arr(c.socials).slice(0, 8).map((x) => ({ kind: SOCIALS.some((s) => s[0] === (x && x.kind)) ? x.kind : 'other', url: safeUrl(x && x.url) }))
-    } : null;
-    const ev = d.events && typeof d.events === 'object' && Array.isArray(d.events.items) ? d.events : null;
-    o.events = ev ? {
-      items: ev.items.slice(0, 20).map((x) => ({
-        id: str(x && x.id, 40), title: str(x && x.title, 80), date: isDayStr(x && x.date) ? x.date : '', end_date: isDayStr(x && x.end_date) ? x.end_date : '',
-        time: str(x && x.time, 40), place: str(x && x.place, 80), link: safeUrl(x && x.link), featured: !!(x && x.featured === true),
-        flyer: /^\/api\/files\/[A-Za-z0-9_]+\/[a-z0-9]{15}\/[A-Za-z0-9._-]+$/.test(str(x && x.flyer, 400)) ? x.flyer : ''
-      })),
-      feature_next: ev.feature_next === true, announce: ev.announce === true
-    } : null;
-    o.booking = d.booking && typeof d.booking === 'object' ? { url: safeUrl(d.booking.url) } : null;
-    o.closures = Array.isArray(d.closures) ? d.closures.slice(0, 10).map((x) => ({
-      from: isDayStr(x && x.from) ? x.from : '', to: isDayStr(x && x.to) ? x.to : '', note: str(x && x.note, 80)
-    })) : null;
-    o.photos = arr(d.photos).slice(0, 12).map((x) => ({
-      id: str(x && x.id, 40), label: str(x && x.label, 80), max_w: Math.max(100, Math.min(4000, +(x && x.max_w) || 1600)),
-      max_h: Math.max(100, Math.min(4000, +(x && x.max_h) || 1600)),
-      url: /^\/api\/files\/[A-Za-z0-9_]+\/[a-z0-9]{15}\/[A-Za-z0-9._-]+$/.test(str(x && x.url, 400)) ? x.url : '',
-      versions: Math.max(0, Math.min(9, Math.round(+(x && x.versions) || 0)))
-    })).filter((x) => x.id);
-    return o;
-  }
-
-  // the one line under each title, so they can see what's on their site without opening it
-  function quickSub(k) {
-    const q = quick.data;
-    if (k === 'hours') {
-      const open = q.hours.days.filter((d) => !d.closed && !d.appt).length;
-      const appt = q.hours.days.filter((d) => d.appt).length;
-      if (!open && !appt) return 'Not filled in yet';
-      return (open ? 'Open ' + plural(open, 'day', 'days') + ' a week' : '') + (open && appt ? ', ' : '') + (appt ? plural(appt, 'day', 'days') + ' by appointment' : '');
-    }
-    if (k === 'banner') return q.banner.on && q.banner.text ? 'On: ' + q.banner.text : 'Off';
-    if (k === 'prices') return plural(q.prices.length, 'price', 'prices');
-    if (k === 'contact') return q.contact.phone || q.contact.email || q.contact.address[0] || 'Not filled in yet';
-    if (k === 'events') { const n = q.events.items.filter((e) => (e.end_date || e.date) >= todayISO).length; return n ? plural(n, 'event', 'events') + ' coming up' : 'Nothing coming up'; }
-    if (k === 'booking') return q.booking.url ? hostOf(q.booking.url) : 'Your site’s own link for now';
-    if (k === 'closures') {
-      const nowC = q.closures.find((c) => c.from <= todayISO && todayISO <= c.to);
-      if (nowC) return 'Closed now, through ' + shortDate(nowC.to);
-      const next = q.closures.filter((c) => c.from > todayISO).length;
-      return next ? plural(next, 'closure', 'closures') + ' coming up' : 'None coming up';
-    }
-    if (k === 'photos') return plural(q.photos.length, 'photo', 'photos') + ' you can swap';
-    return '';
-  }
-
-  function renderQuick() {
-    const sec = $('#sec-quick');
-    const q = quick.data;
-    const kinds = q ? QK.filter((k) => q.enabled[k] && (k !== 'photos' || q.photos.length) && (k !== 'prices' || q.prices.length)) : [];
-    if (!kinds.length) { sec.hidden = true; return; }
-    // for everyone; care clients hear that they never have to
-    $('#quick-lede').textContent = me && me.client.care_active
-      ? 'You never have to touch these: just email me and I’ll do it. They’re here if you ever want to.'
-      : 'Change these yourself, anytime. They show on your site right away.';
-    $('#quick-list').replaceChildren(...kinds.map((k) => {
-      const det = make('details', 'qc');
-      det.id = 'qc-' + k;
-      det.open = quick.open.has(k);
-      det.addEventListener('toggle', () => { if (det.open) quick.open.add(k); else quick.open.delete(k); });
-      const sum = make('summary');
-      const t = make('span', 'qc-title', QK_TITLE[k]);
-      const sub = make('span', 'qc-sub', quickSub(k));
-      sum.append(t, sub);
-      const body = make('div', 'qc-body');
-      det.append(sum, body);
-      buildQuick(k, body);
-      return det;
-    }));
-    sec.hidden = false;
-  }
-
-  // re-draw one editor after a save (its title line too), keeping it open
-  function redrawQuick(k) {
-    const det = $('#qc-' + k);
-    if (!det) return;
-    det.querySelector('.qc-sub').textContent = quickSub(k);
-    const body = det.querySelector('.qc-body');
-    body.replaceChildren();
-    buildQuick(k, body);
-  }
-
-  function buildQuick(k, body) {
-    if (k === 'photos') { photosEditor(body); return; }
-    const f = make('form', 'qc-form');
-    f.noValidate = true;
-    const fields = make('div', 'qc-fields');
-    const err = make('p', 'err');
-    err.hidden = true;
-    err.id = 'qc-' + k + '-err';
-    const status = make('p', 'qc-status');
-    status.setAttribute('role', 'status');
-    const row = make('div', 'qc-row');
-    const btn = make('button', 'btn small');
-    btn.type = 'submit';
-    btn.append(make('span', null, 'Save'));
-    row.append(btn, status);
-    f.append(fields, err, row);
-    body.append(f);
-    const valueOf = EDITORS[k](fields);
-    // (a flyer's file picker saves on its own, so it doesn't count as an unsaved change here)
-    const mark = (ev) => { if (ev.target.classList.contains('up-input')) return; quick.dirty.add(k); status.textContent = ''; status.classList.remove('ok'); };
-    f.addEventListener('input', mark);
-    f.addEventListener('change', mark);
-    f.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      err.hidden = true;
-      $$('[aria-invalid]', f).forEach((x) => x.removeAttribute('aria-invalid'));
-      const value = valueOf();
-      setBusy(btn, true, 'Saving…');
-      busy++;
-      try {
-        const r = await api.contentSave(k, value);
-        busy--;
-        quick.dirty.delete(k);
-        const fresh = cleanQuick({ enabled: quick.data.enabled, [k]: r && r.value });
-        if (fresh[k]) quick.data[k] = fresh[k];
-        redrawQuick(k);
-        const st = $('#qc-' + k + ' .qc-status');
-        if (st) { st.textContent = 'Saved. Your site shows it within a minute.'; st.classList.add('ok'); }
-        announce('Saved. Your site shows it within a minute.');
-      } catch (e2) {
-        busy--;
-        setBusy(btn, false);
-        if (e2.code === 'signed_out') { quietSignOut(true); return; }
-        if (e2.code === 'not_found') { quick.dirty.delete(k); toast('That one was just switched off. Try refreshing the page.'); return; }
-        err.textContent = quickWords(k, e2);
-        err.hidden = false;
-        const bad = e2.at !== undefined ? $$('[data-at="' + e2.at + '"]', f)[0] : null;
-        const target = (bad && $('input, select, textarea', bad)) || $('input, select, textarea', f);
-        if (target) { target.setAttribute('aria-invalid', 'true'); target.focus(); }
-      }
-    });
-  }
-
-  // what people read when a save doesn't go through
-  function quickWords(k, err) {
-    const r = err.reason || '';
-    if (err.code !== 'input') return words(err);
-    const https = 'Links need to start with https://';
-    const which = err.at !== undefined && (k === 'events' || k === 'closures') ? ' (number ' + (err.at + 1) + ')' : '';
-    const say = {
-      hours: { time: 'Check the times: each open day needs an opening time before its closing time.', note: 'The note can be up to 120 characters.' },
-      banner: { text: 'Write a few words for the banner (up to 140 characters), or switch it off.', link: https + ', up to 300 characters.', until: 'That end date doesn’t look quite right.' },
-      prices: { price: 'Each price can be up to 24 characters, and can’t be left empty.', rename: 'Your price list just changed. Try refreshing the page.', unknown_id: 'Your price list just changed. Try refreshing the page.' },
-      contact: {
-        phone: 'That phone number has something odd in it. Numbers, spaces and ( ) + - . all work.', email: 'That email doesn’t look quite right. Check for a little typo?',
-        address: 'Up to 3 lines for the address, 80 characters each.', social_url: https + '.', social_kind: https + '.', socials: 'Up to 8 links.'
-      },
-      events: {
-        title: 'Each event needs a name, up to 80 characters' + which + '.', date: 'Each event needs a date' + which + '.', end_date: 'An event can’t end before it starts' + which + '.',
-        time: 'The time can be up to 40 characters' + which + '.', place: 'The place can be up to 80 characters' + which + '.', link: https + which + '.',
-        shape: 'Up to 20 events at a time.', unknown_id: 'Your events just changed. Try refreshing the page.', featured: 'Just one event can be the featured one.'
-      },
-      booking: { url: 'Your booking link needs to start with https://' },
-      closures: { from: 'Each one needs a first day' + which + '.', to: 'The last day can’t come before the first' + which + '.', note: 'The note can be up to 80 characters' + which + '.', shape: 'Up to 10 at a time.' }
-    };
-    return (say[k] && say[k][r]) || 'Something in there didn’t fit. Could you check it and try again?';
-  }
-
-  // a labelled field
-  const qField = (wrap, label, el, opt) => {
-    const id = 'qf-' + Math.random().toString(36).slice(2, 9);
-    el.id = id;
-    const l = make('label', 'field-label');
-    l.htmlFor = id;
-    l.append(label);
-    if (opt) l.append(' ', make('span', 'opt-tag', '(optional)'));
-    wrap.append(l, el);
-    return el;
-  };
-  const qInput = (type, value, max, cls) => {
-    const i = make('input', 'qc-in' + (cls ? ' ' + cls : ''));
-    i.type = type;
-    if (max) i.maxLength = max;
-    i.value = value || '';
-    i.autocomplete = 'off';
-    return i;
-  };
-  const qCount = (input, max) => {
-    const c = make('p', 'count');
-    c.setAttribute('aria-live', 'polite');
-    const upd = () => { const n = input.value.length; c.textContent = n ? (max - n) + ' characters left' : ''; c.classList.toggle('near', n > max - 20); };
-    input.addEventListener('input', upd);
-    upd();
-    return c;
-  };
-  const qButton = (label, cls) => { const b = make('button', cls || 'later', label); b.type = 'button'; return b; };
-
-  const EDITORS = {
-    hours(f) {
-      const h = quick.data.hours;
-      const rows = h.days.map((d, i) => {
-        const r = make('div', 'qc-day');
-        r.dataset.at = String(i);
-        const name = make('span', 'qc-dname', DAY_NAMES[i]);
-        const sel = make('select', 'qc-in qc-sel');
-        sel.setAttribute('aria-label', DAY_NAMES[i]);
-        [['open', 'Open'], ['closed', 'Closed'], ['appt', 'By appointment']].forEach(([v, t]) => { const o = make('option', null, t); o.value = v; sel.append(o); });
-        sel.value = d.closed ? 'closed' : d.appt ? 'appt' : 'open';
-        const times = make('span', 'qc-times');
-        const o = qInput('time', d.open);
-        o.setAttribute('aria-label', DAY_NAMES[i] + ' opens');
-        const c = qInput('time', d.close);
-        c.setAttribute('aria-label', DAY_NAMES[i] + ' closes');
-        times.append(o, make('span', 'qc-to', 'to'), c);
-        const sync = () => {
-          times.hidden = sel.value !== 'open';
-          if (sel.value === 'open' && !o.value && !c.value) {
-            const prev = rows.slice(0, i).reverse().find((x) => x.sel.value === 'open' && x.o.value && x.c.value);
-            o.value = prev ? prev.o.value : '09:00';
-            c.value = prev ? prev.c.value : '17:00';
-          }
-        };
-        sel.addEventListener('change', sync);
-        r.append(name, sel, times);
-        f.append(r);
-        const it = { sel, o, c, times };
-        times.hidden = sel.value !== 'open';
-        return it;
-      });
-      const copy = qButton('Use Monday’s hours for every weekday');
-      copy.addEventListener('click', () => {
-        for (let i = 1; i < 5; i++) { rows[i].sel.value = rows[0].sel.value; rows[i].o.value = rows[0].o.value; rows[i].c.value = rows[0].c.value; rows[i].times.hidden = rows[0].sel.value !== 'open'; }
-        quick.dirty.add('hours');
-        announce('Tuesday to Friday now match Monday. Save to put them on your site.');
-      });
-      f.append(copy);
-      const note = qField(f, 'A short note', qInput('text', h.note, 120), true);
-      note.placeholder = 'Like: Closed Thanksgiving Day';
-      f.append(qCount(note, 120));
-      return () => ({
-        days: rows.map((r) => (r.sel.value === 'closed' ? { closed: true } : r.sel.value === 'appt' ? { appt: true } : { closed: false, open: r.o.value, close: r.c.value })),
-        note: cleanLine(note.value, 200)
-      });
-    },
-
-    banner(f) {
-      const b = quick.data.banner;
-      const lab = make('label', 'qc-check');
-      const on = make('input', 'qc-in');
-      on.type = 'checkbox';
-      on.checked = b.on;
-      lab.append(on, make('span', null, 'Show a banner on my site'));
-      f.append(lab);
-      const text = qField(f, 'What it says', qInput('text', b.text, 140));
-      text.placeholder = 'Like: Fall sale this week, 20% off everything';
-      f.append(qCount(text, 140));
-      const link = qField(f, 'Where it links to', qInput('url', b.link, 300), true);
-      link.placeholder = 'https://';
-      link.inputMode = 'url';
-      const until = qField(f, 'Hide it after', qInput('date', b.until), true);
-      f.append(make('p', 'qc-fine', 'It hides itself the day after this date.'));
-      return () => ({ on: on.checked, text: cleanLine(text.value, 200), link: link.value.trim(), until: until.value });
-    },
-
-    prices(f) {
-      const inputs = quick.data.prices.map((p, i) => {
-        const r = make('div', 'qc-price');
-        r.dataset.at = String(i);
-        const l = make('label', 'qc-plabel', p.label);
-        const inp = qInput('text', p.price, 24);
-        l.htmlFor = inp.id = 'qp-' + p.id;
-        r.append(l, inp);
-        f.append(r);
-        return { id: p.id, inp };
-      });
-      f.append(make('p', 'qc-fine', 'To add, rename or take one away, just email me.'));
-      return () => inputs.map((x) => ({ id: x.id, price: cleanLine(x.inp.value, 40) }));
-    },
-
-    contact(f) {
-      const c = quick.data.contact;
-      const phone = qField(f, 'Phone', qInput('tel', c.phone, 30), true);
-      phone.autocomplete = 'off';
-      const email = qField(f, 'Email', qInput('email', c.email, 120), true);
-      const addr = qField(f, 'Address', make('textarea', 'qc-in short'), true);
-      addr.rows = 3;
-      addr.value = c.address.join('\n');
-      addr.placeholder = 'Up to 3 lines';
-      f.append(make('p', 'field-label', 'Links to find you'));
-      const list = make('div', 'qc-list');
-      f.append(list);
-      const rows = [];
-      const add = (s) => {
-        const r = make('div', 'qc-social');
-        const sel = make('select', 'qc-in qc-sel');
-        sel.setAttribute('aria-label', 'Which site');
-        SOCIALS.forEach(([v, t]) => { const o = make('option', null, t); o.value = v; sel.append(o); });
-        sel.value = s.kind;
-        const url = qInput('url', s.url, 300);
-        url.placeholder = 'https://';
-        url.setAttribute('aria-label', 'Link');
-        const x = qButton('Take off', 'later qc-x');
-        const it = { r, sel, url };
-        x.addEventListener('click', () => { rows.splice(rows.indexOf(it), 1); r.remove(); renum(); quick.dirty.add('contact'); addBtn.hidden = rows.length >= 8; });
-        r.append(sel, url, x);
-        list.append(r);
-        rows.push(it);
-        renum();
-        return it;
-      };
-      const renum = () => rows.forEach((x, i) => { x.r.dataset.at = String(i); });
-      c.socials.forEach(add);
-      const addBtn = qButton('Add a link');
-      addBtn.hidden = rows.length >= 8;
-      addBtn.addEventListener('click', () => { const it = add({ kind: 'instagram', url: '' }); it.url.focus(); addBtn.hidden = rows.length >= 8; });
-      f.append(addBtn);
-      return () => ({
-        phone: cleanLine(phone.value, 60), email: email.value.trim(),
-        address: cleanText(addr.value, 400).split('\n').map((x) => cleanLine(x, 200)).filter(Boolean),
-        socials: rows.filter((x) => x.url.value.trim()).map((x) => ({ kind: x.sel.value, url: x.url.value.trim() }))
-      });
-    },
-
-    events(f) {
-      const E = quick.data.events;
-      // the two switches, each with a plain line about what it does
-      const sw = (label, help, on) => {
-        const lab = make('label', 'qc-check');
-        const box = make('input', 'qc-in');
-        box.type = 'checkbox';
-        box.checked = on;
-        lab.append(box, make('span', null, label));
-        f.append(lab, make('p', 'qc-fine qc-help', help));
-        return box;
-      };
-      const featNext = sw('Always feature my next event', 'With none starred, the next one coming up gets the big spot on your site.', E.feature_next);
-      const announce = sw('Announce my next event in the banner', 'When your banner is off and you’re open, it says what’s next.', E.announce);
-      const list = make('div', 'qc-list');
-      f.append(list);
-      const rows = [];
-      const renum = () => rows.forEach((x, i) => { x.r.dataset.at = String(i); x.n.textContent = 'Event ' + (i + 1) + (x.star.checked ? ', the featured one' : ''); });
-      const add = (ev) => {
-        const r = make('fieldset', 'qc-ev');
-        const n = make('legend', 'qc-legend');
-        r.append(n);
-        const starLab = make('label', 'qc-check qc-star');
-        const star = make('input', 'qc-in');
-        star.type = 'checkbox';
-        star.checked = ev.featured;
-        starLab.append(star, make('span', null, 'Feature this one'));
-        r.append(starLab);
-        const title = qField(r, 'Name', qInput('text', ev.title, 80));
-        title.placeholder = 'Like: Herb walk';
-        const dates = make('div', 'qc-two');
-        const d1 = make('div');
-        const d2 = make('div');
-        const date = qField(d1, 'Date', qInput('date', ev.date));
-        const end = qField(d2, 'Last day', qInput('date', ev.end_date), true);
-        dates.append(d1, d2);
-        r.append(dates);
-        const time = qField(r, 'Time', qInput('text', ev.time, 40), true);
-        time.placeholder = 'Like: 10 AM to 2 PM';
-        const place = qField(r, 'Where', qInput('text', ev.place, 80), true);
-        const link = qField(r, 'Link', qInput('url', ev.link, 300), true);
-        link.placeholder = 'https://';
-        if (ev.date && (ev.end_date || ev.date) < todayISO) r.append(make('p', 'qc-fine', 'This one has passed, so your site doesn’t show it anymore.'));
-        const fl = make('div', 'qc-flyer');
-        r.append(fl);
-        const it = { r, n, id: ev.id, star, title, date, end, time, place, link };
-        flyerBlock(fl, ev);
-        star.addEventListener('change', () => { if (star.checked) rows.forEach((x) => { if (x !== it) x.star.checked = false; }); renum(); });
-        const x = qButton('Take this one off', 'later qc-x');
-        x.addEventListener('click', () => { rows.splice(rows.indexOf(it), 1); r.remove(); renum(); quick.dirty.add('events'); addBtn.hidden = rows.length >= 20; });
-        r.append(x);
-        list.append(r);
-        rows.push(it);
-        renum();
-        return it;
-      };
-      E.items.forEach(add);
-      if (!rows.length) list.append(make('p', 'qc-fine qc-none', 'No events yet.'));
-      const addBtn = qButton('Add an event');
-      addBtn.hidden = rows.length >= 20;
-      addBtn.addEventListener('click', () => { const none = $('.qc-none', list); if (none) none.remove(); const it = add({ id: '', title: '', date: '', end_date: '', time: '', place: '', link: '', featured: false, flyer: '' }); it.title.focus(); addBtn.hidden = rows.length >= 20; quick.dirty.add('events'); });
-      f.append(addBtn);
-      return () => ({
-        items: rows.map((x) => {
-          const o = { title: cleanLine(x.title.value, 200), date: x.date.value, end_date: x.end.value, time: cleanLine(x.time.value, 100), place: cleanLine(x.place.value, 200), link: x.link.value.trim(), featured: x.star.checked };
-          if (x.id) o.id = x.id;
-          return o;
-        }),
-        feature_next: featNext.checked,
-        announce: announce.checked
-      });
-    },
-
-    booking(f) {
-      const url = qField(f, 'Booking link', qInput('url', quick.data.booking.url, 300));
-      url.placeholder = 'https://';
-      f.append(make('p', 'qc-fine', 'Every booking button on your site opens this.'));
-      return () => ({ url: url.value.trim() });
-    },
-
-    closures(f) {
-      f.append(make('p', 'qc-fine', 'While one of these is on, your site says you’re closed, then goes back by itself.'));
-      const list = make('div', 'qc-list');
-      f.append(list);
-      const rows = [];
-      const renum = () => rows.forEach((x, i) => { x.r.dataset.at = String(i); });
-      const add = (c) => {
-        const r = make('div', 'qc-close');
-        const two = make('div', 'qc-two');
-        const a = make('div');
-        const b = make('div');
-        const from = qField(a, 'First day closed', qInput('date', c.from));
-        const to = qField(b, 'Last day closed', qInput('date', c.to));
-        two.append(a, b);
-        r.append(two);
-        const note = qField(r, 'A short note', qInput('text', c.note, 80), true);
-        note.placeholder = 'Like: Away at a retreat';
-        const x = qButton('Take this one off', 'later qc-x');
-        const it = { r, from, to, note };
-        x.addEventListener('click', () => { rows.splice(rows.indexOf(it), 1); r.remove(); renum(); quick.dirty.add('closures'); addBtn.hidden = rows.length >= 10; });
-        r.append(x);
-        list.append(r);
-        rows.push(it);
-        renum();
-        return it;
-      };
-      quick.data.closures.forEach(add);
-      const addBtn = qButton('Add days you’re closed');
-      addBtn.hidden = rows.length >= 10;
-      addBtn.addEventListener('click', () => { const it = add({ from: '', to: '', note: '' }); it.from.focus(); addBtn.hidden = rows.length >= 10; quick.dirty.add('closures'); });
-      f.append(addBtn);
-      return () => rows.map((x) => ({ from: x.from.value, to: x.to.value || x.from.value, note: cleanLine(x.note.value, 200) }));
-    }
-  };
-
-  /* ---- an event's flyer: add, look, replace or take off (saved right away, on its own) ---- */
-  function flyerBlock(wrap, ev) {
-    wrap.replaceChildren();
-    wrap.append(make('p', 'field-label', 'Flyer'));
-    if (!ev.id) { wrap.append(make('p', 'qc-fine', 'Save the event first, then you can add a flyer.')); return; }
-    if (ev.flyer) {
-      const img = make('img', 'qc-flyer-img');
-      img.src = SERVER + ev.flyer;
-      img.alt = 'Flyer for ' + (ev.title || 'this event');
-      img.loading = 'lazy';
-      wrap.append(img);
-    }
-    const id = 'qfl-' + ev.id;
-    const input = make('input', 'up-input');
-    input.type = 'file';
-    input.id = id;
-    input.accept = 'image/jpeg,image/png,image/webp';
-    const pick = make('label', 'pick pick-btn');
-    pick.htmlFor = id;
-    pick.append(icon('i-up'), make('span', null, ev.flyer ? 'Replace the flyer' : 'Add a flyer'));
-    const row = make('div', 'qc-row');
-    row.append(input, pick);
-    const status = make('p', 'qc-status');
-    status.setAttribute('role', 'status');
-    if (ev.flyer) {
-      const rm = qButton('Take the flyer off');
-      rm.addEventListener('click', async () => {
-        setBusy(rm, true, 'Taking it off…');
-        busy++;
-        try {
-          await api.flyerRemove(ev.id);
-          busy--;
-          ev.flyer = '';
-          flyerBlock(wrap, ev);
-          const st = $('.qc-status', wrap);
-          st.textContent = 'The flyer is off your site.';
-          st.classList.add('ok');
-          announce('The flyer is off your site.');
-        } catch (err) {
-          busy--;
-          setBusy(rm, false);
-          if (err.code === 'signed_out') { quietSignOut(true); return; }
-          status.textContent = words(err);
-        }
-      });
-      row.append(rm);
-    }
-    wrap.append(row, status);
-    input.addEventListener('change', async () => {
-      const file = (input.files || [])[0];
-      input.value = '';
-      if (!file) return;
-      status.classList.remove('ok');
-      if (!/^image\/(jpeg|png|webp)$/.test(file.type) && !['jpg', 'jpeg', 'png', 'webp'].includes(extOf(file.name))) { status.textContent = 'Flyers as JPEG, PNG or WebP work here.'; return; }
-      status.textContent = 'Getting it ready…';
-      const ready = await fitPhoto(file, 1600, 2400);
-      if (ready.size > PHOTO_MAX) { status.textContent = 'That flyer is over 8 MB, even made smaller. Try another one?'; return; }
-      const url = URL.createObjectURL(ready);
-      const prev = make('div', 'qc-preview');
-      const img = make('img', 'qc-flyer-img');
-      img.src = url;
-      img.alt = 'Your new flyer';
-      prev.append(make('p', 'qc-fine', 'Here’s how it looks. Put it on your site?'), img);
-      const r2 = make('div', 'qc-row');
-      const go = make('button', 'btn small');
-      go.type = 'button';
-      go.append(make('span', null, 'Save this flyer'));
-      const no = qButton('Never mind');
-      r2.append(go, no);
-      prev.append(r2);
-      status.textContent = '';
-      row.hidden = true;
-      wrap.insertBefore(prev, status);
-      quick.dirty.add('flyer:' + ev.id);
-      go.focus();
-      const done = () => { URL.revokeObjectURL(url); prev.remove(); row.hidden = false; quick.dirty.delete('flyer:' + ev.id); };
-      no.addEventListener('click', () => { done(); pick.focus(); });
-      go.addEventListener('click', async () => {
-        setBusy(go, true, 'Saving…');
-        no.disabled = true;
-        busy++;
-        try {
-          const r = await api.flyerUpload(ev.id, ready, (x) => { go.querySelector('span').textContent = 'Saving… ' + Math.min(99, Math.round(x * 100)) + '%'; });
-          busy--;
-          done();
-          const fresh = cleanQuick({ events: { items: [{ id: ev.id, flyer: r && r.flyer }] } }).events.items[0];
-          ev.flyer = fresh ? fresh.flyer : '';
-          flyerBlock(wrap, ev);
-          const st = $('.qc-status', wrap);
-          st.textContent = 'Saved. Your site shows it within a minute.';
-          st.classList.add('ok');
-          announce('Saved. Your site shows it within a minute.');
-        } catch (err) {
-          busy--;
-          setBusy(go, false);
-          no.disabled = false;
-          if (err.code === 'signed_out') { quietSignOut(true); return; }
-          status.textContent = err.code === 'input' && err.reason === 'size' ? 'That flyer is over 8 MB. Try a smaller one?'
-            : err.code === 'input' && err.reason === 'type' ? 'That one isn’t a picture I can use. JPEG, PNG or WebP work here.'
-              : err.code === 'not_found' ? 'That event isn’t saved yet. Save it first, then add the flyer.' : words(err);
-        }
-      });
-    });
-  }
-
-  /* ---- photos: one card per spot Taya made; pick, look, save; undo puts the one before back ---- */
-  function photosEditor(body) {
-    body.append(make('p', 'qc-fine', 'Photos as JPEG, PNG or WebP, up to 8 MB. Big ones are made smaller first, so they load fast.'));
-    quick.data.photos.forEach((p) => body.append(photoCard(p)));
-  }
-
-  function photoCard(p) {
-    const card = make('div', 'qc-photo');
-    card.append(make('p', 'qc-plabel', p.label));
-    const view = make('div', 'qc-view');
-    const now = p.url ? make('img') : null;
-    if (now) { now.src = SERVER + p.url; now.alt = 'Your ' + p.label.toLowerCase() + ' now'; now.loading = 'lazy'; view.append(now); }
-    else view.append(make('p', 'qc-fine', 'Your site’s own photo for now.'));
-    card.append(view);
-    const id = 'qph-' + p.id;
-    const input = make('input', 'up-input');
-    input.type = 'file';
-    input.id = id;
-    input.accept = 'image/jpeg,image/png,image/webp';
-    const pick = make('label', 'pick pick-btn');
-    pick.htmlFor = id;
-    pick.append(icon('i-up'), make('span', null, 'Choose a new photo'));
-    const acts = make('div', 'qc-row');
-    acts.append(input, pick);
-    const status = make('p', 'qc-status');
-    status.setAttribute('role', 'status');
-    card.append(acts, status);
-    if (p.versions > 0) {
-      const undo = qButton('Undo, put the old photo back');
-      undo.addEventListener('click', () => undoPhoto(p, undo, status));
-      acts.append(undo);
-    }
-    input.addEventListener('change', async () => {
-      const f = (input.files || [])[0];
-      input.value = '';
-      if (!f) return;
-      status.classList.remove('ok');
-      if (!/^image\/(jpeg|png|webp)$/.test(f.type) && !['jpg', 'jpeg', 'png', 'webp'].includes(extOf(f.name))) { status.textContent = 'Photos as JPEG, PNG or WebP work here.'; return; }
-      status.textContent = 'Getting it ready…';
-      const ready = await fitPhoto(f, p.max_w, p.max_h);
-      if (ready.size > PHOTO_MAX) { status.textContent = 'That photo is over 8 MB, even made smaller. Try another one?'; return; }
-      status.textContent = '';
-      // a look before it goes on the site
-      const url = URL.createObjectURL(ready);
-      const prev = make('div', 'qc-preview');
-      const img = make('img');
-      img.src = url;
-      img.alt = 'Your new ' + p.label.toLowerCase();
-      prev.append(make('p', 'qc-fine', 'Here’s how it looks. Put it on your site?'), img);
-      const row = make('div', 'qc-row');
-      const go = make('button', 'btn small');
-      go.type = 'button';
-      go.append(make('span', null, 'Save this photo'));
-      const no = qButton('Never mind');
-      row.append(go, no);
-      prev.append(row);
-      acts.hidden = true;
-      card.insertBefore(prev, status);
-      quick.dirty.add('photos:' + p.id);
-      go.focus();
-      const done = () => { URL.revokeObjectURL(url); prev.remove(); acts.hidden = false; quick.dirty.delete('photos:' + p.id); };
-      no.addEventListener('click', () => { done(); pick.focus(); });
-      go.addEventListener('click', async () => {
-        setBusy(go, true, 'Saving…');
-        no.disabled = true;
-        busy++;
-        try {
-          const r = await api.photoUpload(p.id, ready, (x) => { go.querySelector('span').textContent = 'Saving… ' + Math.min(99, Math.round(x * 100)) + '%'; });
-          busy--;
-          done();
-          swapPhoto(p, card, r, 'Saved. Your site shows it within a minute.');
-        } catch (err) {
-          busy--;
-          setBusy(go, false);
-          no.disabled = false;
-          if (err.code === 'signed_out') { quietSignOut(true); return; }
-          status.textContent = err.code === 'input' && err.reason === 'size' ? 'That photo is over 8 MB. Try a smaller one?'
-            : err.code === 'input' && err.reason === 'type' ? 'That one isn’t a photo I can use. JPEG, PNG or WebP work here.'
-              : err.code === 'not_found' ? 'This photo spot was just switched off. Try refreshing the page.' : words(err);
-        }
-      });
-    });
-    return card;
-  }
-
-  // the server's answer about one photo spot: redraw its card
-  function swapPhoto(p, card, r, msg) {
-    const fresh = cleanQuick({ photos: [r && r.photo] }).photos[0];
-    if (fresh) Object.assign(p, fresh);
-    const next = photoCard(p);
-    card.replaceWith(next);
-    $('#qc-photos .qc-sub').textContent = quickSub('photos');
-    const st = $('.qc-status', next);
-    st.textContent = msg;
-    st.classList.add('ok');
-    announce(msg);
-    focusEl(st, true);
-  }
-
-  async function undoPhoto(p, btn, status) {
-    setBusy(btn, true, 'Putting it back…');
-    busy++;
-    try {
-      const r = await api.photoUndo(p.id);
-      busy--;
-      swapPhoto(p, btn.closest('.qc-photo'), r, (r && r.photo && r.photo.url) ? 'The photo before is back on your site.' : 'Your site’s own photo is back.');
-    } catch (err) {
-      busy--;
-      setBusy(btn, false);
-      if (err.code === 'signed_out') { quietSignOut(true); return; }
-      status.textContent = err.code === 'not_found' ? 'There’s no older photo to put back.' : words(err);
-    }
-  }
-
-  // made to fit the spot Taya set up (its longest sides), as a JPEG (a PNG stays a PNG, for see-through logos)
-  async function fitPhoto(f, maxW, maxH) {
-    if (!window.createImageBitmap) return f;
-    try {
-      const bmp = await createImageBitmap(f);
-      const k = Math.min(1, maxW / bmp.width, maxH / bmp.height);
-      const png = f.type === 'image/png';
-      if (k === 1 && f.size <= PHOTO_MAX && /^image\/(jpeg|png|webp)$/.test(f.type)) return f;
-      const cv = document.createElement('canvas');
-      cv.width = Math.max(1, Math.round(bmp.width * k));
-      cv.height = Math.max(1, Math.round(bmp.height * k));
-      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
-      const blob = await new Promise((res) => cv.toBlob(res, png ? 'image/png' : 'image/jpeg', 0.86));
-      if (!blob) return f;
-      return new File([blob], (f.name.replace(/\.\w+$/, '') || 'photo') + (png ? '.png' : '.jpg'), { type: png ? 'image/png' : 'image/jpeg', lastModified: f.lastModified });
-    } catch (e) { return f; }
-  }
+  /* ================= no do-it-yourself editing (Oct 5 2026) =================
+     The "Change it yourself" editors (hours, banner, prices and more) were retired with the Oct 5 2026
+     pricing: every change goes through Taya, by email or the change form above. Their code is gone on
+     purpose, so they can never show. The content.js that live sites load still reads what was saved. */
 
   /* ================= the preview: the sample client ================= */
   function loadDemo() {
@@ -2514,7 +1771,6 @@
       loadDemo().then((D) => { wireDemo(D); start(); }, () => {
         const nowhere = () => Promise.reject(fail('network'));
         api = { requestCode: nowhere, verifyCode: nowhere, me: nowhere, logout: nowhere, todo: nowhere, file: nowhere, upload: nowhere, change: nowhere };
-        // (no contentLoad here: Change it yourself stays hidden in a preview that can't load)
         start();
       });
     }

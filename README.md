@@ -1,16 +1,15 @@
 # Web Faery
 
 The website for Web Faery: hand-built websites for small local businesses, paid once,
-with optional care. Live at https://webfaery.love
+with care that keeps them running. Live at https://webfaery.love
 
-The pricing, said the same way on every page: builds $600 / $1,200 / $1,800, paid once.
-After launch, care is $69 a month (or $690 a year) and changes come whenever you ask,
-or skip it and pay as you go: $100 an hour, and the client gets the price before any work starts (one email with
-everything in it; most small changes come to about $25 to $50). Anything big is quoted the same way. The only other cost is the
-web address, about $12 a year. Founding clients get half off the build, and half off care for as long as they keep it:
-$35 a month (or $350 a year). Every build also comes with the Google profile set up and a one-page brand
-sheet (colors and fonts, and their logo if they have one); care keeps the Google profile fresh (hours and holidays, new photos,
-a monthly post, and a review card for the counter).
+The pricing (Oct 5 2026; source of truth: web-faery-kit/pricing-oct2026.md), said the same way on every page:
+Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payments or a small shop) $1,800, paid once.
+Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. Care comes with every
+site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
+are the same in every tier: email anytime, as often as needed, anything broken fixed free, big new things quoted first.
+Stop care anytime and the site is still theirs, with every file and login handed over. Internal keys stay
+maiden / mother / crone. Anyone quoted before Oct 5 2026 keeps their quote as written.
 
 | File | What it is |
 |---|---|

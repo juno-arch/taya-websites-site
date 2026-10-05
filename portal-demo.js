@@ -8,8 +8,8 @@
    Demo sign-in: demo@webfaery.love, code 000000. Any other code gets the wrong-code message. The real
    server has no fixed code and no demo account: this file is the only place either exists.
 
-   The sample: Rosa Linden of Fern & Clay Pottery, a founding Mother client (build $600 founding, deposit
-   $300, care $35 a month founding). Four moments in her project, picked from "Show me":
+   The sample: Rosa Linden of Fern & Clay Pottery, a founding Tended client (build $600 founding, deposit
+   $300; care $45 a month, always full price). Four moments in her project, picked from "Show me":
      mockup    her first visit (Oct 2 2026 flow): "Your turn: look over your mockup", nothing to sign or pay
      waiting   she tapped Done on her mockup: "My turn: that's it for you for now"
      new       Taya opened getting started: one item, her getting-started page (signing and the deposit are on it)
@@ -63,7 +63,7 @@
 
   /* ---------------- the four moments ---------------- */
   var CLIENT = {
-    first_name: 'Rosa', business: 'Fern & Clay Pottery', build: 'mother', build_label: 'Mother', founding: true,
+    first_name: 'Rosa', business: 'Fern & Clay Pottery', build: 'mother', build_label: 'Tended', founding: true,
     care: 'monthly', care_active: false, site_url: '', email: EMAIL
   };
   function stages(dates, current) {
@@ -108,7 +108,7 @@
         pay: [
           { key: 'deposit', amount: 300, period: '', state: 'later', paid_on: '', starts_on: '', url: '' },
           { key: 'balance', amount: 300, period: '', state: 'later', paid_on: '', starts_on: '', url: '' },
-          { key: 'care', amount: 35, period: 'month', state: 'later', paid_on: '', starts_on: '', url: '' }
+          { key: 'care', amount: 45, period: 'month', state: 'later', paid_on: '', starts_on: '', url: '' }
         ],
         care_manage_url: '',
         care: { can_ask: false, requests: [] },
@@ -143,7 +143,7 @@
         pay: [
           { key: 'deposit', amount: 300, period: '', state: 'paid', paid_on: DEPOSIT_DAY.mid, starts_on: '', url: '' },
           { key: 'balance', amount: 300, period: '', state: 'later', paid_on: '', starts_on: '', url: '' },
-          { key: 'care', amount: 35, period: 'month', state: 'later', paid_on: '', starts_on: d[5], url: '' }
+          { key: 'care', amount: 45, period: 'month', state: 'later', paid_on: '', starts_on: d[5], url: '' }
         ],
         care_manage_url: '',
         care: { can_ask: false, requests: [] },
@@ -177,7 +177,7 @@
           { key: 'deposit', amount: 300, period: '', state: 'paid', paid_on: DEPOSIT_DAY.launched, starts_on: '', url: '' },
           { key: 'balance', amount: 300, period: '', state: 'due', paid_on: '', starts_on: '', url: STRIPE },
           // what the server sends on launch day: care waits until a few days before settling in ends
-          { key: 'care', amount: 35, period: 'month', state: 'later', paid_on: '', starts_on: d[5], url: '' }
+          { key: 'care', amount: 45, period: 'month', state: 'later', paid_on: '', starts_on: d[5], url: '' }
         ],
         care_manage_url: '',
         care: { can_ask: true, requests: [] },
@@ -209,7 +209,7 @@
         pay: [
           { key: 'deposit', amount: 300, period: '', state: 'paid', paid_on: DEPOSIT_DAY.care, starts_on: '', url: '' },
           { key: 'balance', amount: 300, period: '', state: 'paid', paid_on: d[4], starts_on: '', url: '' },
-          { key: 'care', amount: 35, period: 'month', state: 'active', paid_on: d[5], starts_on: '', url: '' }
+          { key: 'care', amount: 45, period: 'month', state: 'active', paid_on: d[5], starts_on: '', url: '' }
         ],
         care_manage_url: 'https://billing.stripe.com/sample-link-for-the-preview',
         care: {
@@ -284,13 +284,13 @@
     agreement: function () {
       return pdf('Our agreement (sample)', [
         'Between Taya of Web Faery and Rosa Linden, Fern & Clay Pottery.', '',
-        'What we are building: a Mother build. A full site with a contact form,',
+        'What we are building: a Tended build. A full site with a contact form,',
         'newsletter signup and a Book now button to your booking app.', '',
         'Price: $600, a founding price (half off), paid once.',
         'Half to start, half at launch.', '',
-        'After launch: care at $35 a month, a founding price (half off),',
-        'for as long as you keep care.',
-        'Billing starts after 30 days of settling in.', '',
+        'After launch: care at $45 a month, which keeps your site running.',
+        'Billing starts after 30 days of settling in. If you ever stop care,',
+        'the site is still yours, with every file and login.', '',
         'Two rounds of changes by email. The site is yours.', '',
         'Signed ' + spoken(data.things.agreement ? data.things.agreement.signed_on : today()) + ' as Rosa Linden. Version 2026-09-30.', '', SAMPLE
       ]);
@@ -306,18 +306,18 @@
     handoff_sheet: function () {
       return pdf('Your site sheet (sample)', [
         'Your site: fernandclay.com', '',
-        'Your web address: held for you with care, and you are the legal owner.',
+        'Your web address: held for you, and you are the legal owner.',
         'Your Google profile: you are the owner, and I am a manager.',
         'Your newsletter tool: in your name, with your password.', '',
-        'How to reach me: taya@webfaery.love', 'With care, I reply within 2 business days.', '', SAMPLE
+        'How to reach me: taya@webfaery.love', 'I usually reply within 2 business days.', '', SAMPLE
       ]);
     },
     receipt: function (name) {
       var r = [RECEIPT_DEPOSIT, RECEIPT_BALANCE, RECEIPT_CARE].filter(function (x) { return x.name === name; })[0];
       if (!r) return null;
-      var lines = r === RECEIPT_DEPOSIT ? ['Deposit for a Mother build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.deposit || today()) + ' by card']
-        : r === RECEIPT_BALANCE ? ['Second half of a Mother build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.balance || today()) + ' by card']
-          : ['Care, one month (founding price)', 'Amount: $35.00, the founding care price', 'Paid ' + spoken(receiptDays.care || today()) + ' by card'];
+      var lines = r === RECEIPT_DEPOSIT ? ['Deposit for a Tended build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.deposit || today()) + ' by card']
+        : r === RECEIPT_BALANCE ? ['Second half of a Tended build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.balance || today()) + ' by card']
+          : ['Care, one month', 'Amount: $45.00', 'Paid ' + spoken(receiptDays.care || today()) + ' by card'];
       return pdf('Web Faery receipt (sample)', lines.concat(['', 'Thank you, Rosa!', '', SAMPLE]));
     }
   };

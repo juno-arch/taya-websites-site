@@ -10,7 +10,7 @@
    that loader, Oct 4 2026) count anonymous opens for Taya's outreach list: just the page's name, no cookies and
    no personal data. That count skips ?mark=1 links like this one.
    The build picker (Oct 2 2026): the first time they open it, a welcome card asks "Which one feels like you?"
-   (Maiden, Mother, Crone, or everything). Picking switches the mockup's own "See it as" view and saves the
+   (each build by the name and price the page itself shows: see "the build picker" below). Picking switches the mockup's own "See it as" view and saves the
    pick to their portal (/pick), so the view comes back on their next visit. "Change my pick" in the notes
    panel opens the card again.
    Send me anything (Oct 2 2026; the step after Done): a card for photos, a logo, a menu, reviews, anything not on the mockup yet.
@@ -106,6 +106,7 @@
   .wfm-build .price { font-size: 15px; color: #f2c77c; font-weight: 600; }
   .wfm-build .price s { color: #a99f8d; font-weight: 400; margin-left: 4px; }
   .wfm-build .price .once { color: #c9bfac; font-weight: 400; }
+  .wfm-build .price .care-mo { display: block; font-size: 14px; margin-top: 2px; }
   .wfm-build .what { font-size: 14.5px; line-height: 1.45; color: #d9cfbd; }
   .wfm-card .care { margin: 16px 0 0; font-size: 14px; color: #c9bfac; }
   .wfm-card .care a { color: #f2c77c; }
@@ -272,13 +273,57 @@
   }
 
   /* ---------------- the build picker ---------------- */
-  // Words from webfaery.love's own build cards; prices are paid once (founding: half, with the full price struck through).
-  const BUILDS = [
-    { key: 'maiden', name: 'Maiden', full: 600, founding: 300, what: 'One beautiful page with everything people need to find you and reach you.' },
-    { key: 'mother', name: 'Mother', full: 1200, founding: 600, what: 'A full site with a contact form, newsletter signup and a Book now button to the booking app you already use.' },
-    { key: 'crone', name: 'Crone', full: 1800, founding: 900, what: 'Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items), and your latest Instagram posts on your site.' },
-  ];
+  // Tier names and prices come from the page itself (the pricing changed Oct 5 2026, and mockups already
+  // emailed must keep showing exactly what they were sent). The contract, also written down in
+  // web-faery-kit/pricing-oct2026.md under "Mockup page contract":
+  //   On each "See it as" tier button, .vseg button[data-view="maiden|mother|crone"], a repriced page sets
+  //     data-tier-name="Planted"   the visible name
+  //     data-tier-price="600"      full build price, digits only
+  //     data-tier-founding="300"   founding build price, digits only
+  //     data-tier-care="12"        care a month, digits only
+  //     data-tier-what="..."       optional one sentence for the card (else the webfaery.love words below)
+  //   A page with data-tier-name on its buttons shows those names and prices, plus the care line for the
+  //   new pricing. A page without them ("as sent") takes each name from the button's own <b> text and keeps
+  //   the old prices, words and "Care is optional" line it was sent with. Keys (data-view, data-go, the saved
+  //   pick, the server's mockup_pick) stay maiden / mother / crone / all either way.
+  const KEYS = ['maiden', 'mother', 'crone'];
+  // the words those first mockups were sent with (Oct 1 to 4 2026): never change these
+  const AS_SENT = {
+    maiden: { name: 'Maiden', full: 600, founding: 300, what: 'One beautiful page with everything people need to find you and reach you.' },
+    mother: { name: 'Mother', full: 1200, founding: 600, what: 'A full site with a contact form, newsletter signup and a Book now button to the booking app you already use.' },
+    crone: { name: 'Crone', full: 1800, founding: 900, what: 'Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items), and your latest Instagram posts on your site.' },
+  };
+  // webfaery.love's own words for each tier, used when a repriced page doesn't give its own data-tier-what
+  const WHAT_NOW = {
+    maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you.',
+    mother: 'A full site, tended as the seasons change: your pages, a contact form, a newsletter sign-up and a Book button.',
+    crone: 'Your site in full bloom, doing business for you: everything in Tended, plus booking, payments or a small shop.',
+  };
+  const num = (v) => { const n = parseInt(String(v || '').replace(/[^0-9]/g, ''), 10); return n > 0 ? n : 0; };
+  function readBuilds() {
+    const btnFor = (k) => document.querySelector('.vseg [data-view="' + k + '"][data-tier-name]');
+    if (KEYS.some(btnFor)) {
+      return { priced: true, list: KEYS.map((k) => {
+        const b = btnFor(k), o = AS_SENT[k];
+        if (!b) return Object.assign({ key: k }, o);
+        const full = num(b.dataset.tierPrice) || o.full;
+        return { key: k, name: b.dataset.tierName.trim() || o.name, full: full, founding: num(b.dataset.tierFounding) || Math.round(full / 2),
+          care: num(b.dataset.tierCare), what: (b.dataset.tierWhat || '').trim() || WHAT_NOW[k] };
+      }) };
+    }
+    return { priced: false, list: KEYS.map((k) => {
+      const b = document.querySelector('.vseg [data-view="' + k + '"] b');
+      const shown = b && b.textContent.replace(/\s+/g, ' ').trim();
+      return Object.assign({ key: k }, AS_SENT[k], shown ? { name: shown } : {});
+    }) };
+  }
+  let BUILDS = [], PRICED = false;
   const NAMES = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone', all: 'Everything' };
+  function loadBuilds() {
+    const r = readBuilds(); BUILDS = r.list; PRICED = r.priced;
+    BUILDS.forEach((bd) => { NAMES[bd.key] = bd.name; });
+  }
+  loadBuilds();
   const usd = (n) => '$' + n.toLocaleString('en-US');
   let myPick = '', founding = false, pickReady = false, driving = false, card = null;
 
@@ -293,7 +338,7 @@
 
   function closeCard() { if (card) { card.remove(); card = null; } }
   function openCard() {
-    closeCard(); closePop(); clearHover();
+    closeCard(); closePop(); clearHover(); loadBuilds();
     card = el('div', 'wfm wfm-scrim');
     const box = el('div', 'wfm-card'); box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', 'wfm-card-h');
     const h = el('h2', '', 'Which one feels like you?'); h.id = 'wfm-card-h';
@@ -309,13 +354,15 @@
       } else {
         price.append(document.createTextNode(usd(bd.full)), el('span', 'once', ' paid once'));
       }
+      if (PRICED && bd.care) price.append(el('span', 'once care-mo', 'then ' + usd(bd.care) + ' a month for care'));
       btn.append(el('span', 'nm', bd.name), price, el('span', 'what', bd.what));
       btn.setAttribute('aria-pressed', myPick === bd.key ? 'true' : 'false');
       btn.addEventListener('click', () => choose(bd.key));
       grid.append(btn);
     });
     box.append(grid);
-    const care = el('p', 'care', 'Care is optional, and every cost is written out at ');
+    const care = el('p', 'care', PRICED ? 'Care is part of every site: it keeps yours healthy and current. Every cost is written out at '
+      : 'Care is optional, and every cost is written out at ');
     const a = el('a', '', 'webfaery.love'); a.href = 'https://webfaery.love/'; a.target = '_blank'; a.rel = 'noopener';
     care.append(a, document.createTextNode('.'));
     box.append(care);
@@ -343,7 +390,7 @@
         if (t && t.nodeType === 3 && / \(preview\)\s*$/.test(t.nodeValue)) { n.dataset.wfmWords = t.nodeValue; n.dataset.wfmReal = t.nodeValue.replace(/ \(preview\)\s*$/, ''); }
       });
       // little lines that only explain the mockup ("With Mother, ...", "On your real site ...", "preview")
-      const MOCK_LINE = /^\s*(With (Maiden|Mother|Crone)\b|On your real site|On the one-page build|Sample tiles|These three are stand-ins|Preview\b|preview\b)/;
+      const MOCK_LINE = /^\s*(With (Maiden|Mother|Crone|Planted|Tended|In Bloom)\b|On your real site|On the one-page build|Sample tiles|These three are stand-ins|Preview\b|preview\b)/;
       document.querySelectorAll('.demo-note, p.pv, p.gbp, span.sample').forEach((n) => { if (!ours(n) && MOCK_LINE.test(n.textContent) && !/[Nn]othing (is|was) (charged|sent)/.test(n.textContent)) n.setAttribute('data-mock-only', ''); }); // a pretend checkout keeps its "nothing is charged" 
     }
     document.querySelectorAll('[data-wfm-words]').forEach((n) => { n.lastChild.nodeValue = on ? n.dataset.wfmReal : n.dataset.wfmWords; });

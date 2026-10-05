@@ -31,26 +31,31 @@
 <!--
   start.html: the getting-started page for a client who has said yes (Sep 30, 2026).
   It takes the place of the plain questions page (intake.html) once someone is ready to begin.
-  It opens with a one-minute quick check (a little chat: do you have a logo, a brand kit, photos, a web
+  It opens with a one-minute quick check (a few taps: do you have a logo, a brand kit, photos, a web
   address, a booking app, will you sell, a newsletter?), then shows a short list with only what they need,
-  so it never feels like homework (Pollen's goal: "Your list: 5 things, about 30 minutes"):
-    1. Sign and hold your spot: their build (a card to confirm when Taya's link chose it), name and email
-       (the only musts anywhere), the one-page agreement, then the right deposit button unlocks
-    2. Want to chat? (optional) (early, so the date is set)
-    3. A few quick things: four short, optional answers. Every build's words are written from the
-       45-minute call, so their story is gathered there, not here
-    4. Your look and photos (only the parts that apply)
-    5. Your accounts: only what's worth starting before the call. Anything easier together is marked
+  so it never feels like homework (Pollen's goal: "Your list: 4 things, about 30 minutes"):
+    1. Sign and hold your spot: their build (a card to confirm when Taya's link chose it) with its build
+       price and its care price, name and email (the only musts anywhere), the one-page agreement, then
+       the right deposit button unlocks
+    2. A few quick things: four short, optional answers. Every build's words are written from a few
+       easy questions by email, so the rest of their story is gathered there, not here
+    3. Your look and photos (only the parts that apply)
+    4. Your accounts: only what's worth starting now. Anything easier together is marked
        "Together over email" and isn't counted in the list or its time
-  Without a build in Taya's link, "Pick your build" comes first (6 things). Everything saves on the
+  Without a build in Taya's link, "Pick your build" comes first (5 things). Everything saves on the
   visitor's own device as they go (localStorage), and one button sends it all to Taya.
 
-  The link to send a client can answer things ahead of time (build, founding, care, name, and what they
+  Pricing (Oct 5 2026, web-faery-kit/pricing-oct2026.md): Planted / Tended / In Bloom (internal keys
+  maiden / mother / crone), builds $600 / $1,200 / $1,800 paid once (founding: half off the build only),
+  and care is part of every site, monthly only, matching the build: $12 / $45 / $90 a month, starting
+  after the 30 days of settling in. There's no care choice on this page. Clients reach Taya by email only.
+
+  The link to send a client can answer things ahead of time (build, founding, name, and what they
   already have). Every link option, with three example links, is written out in the comment at the top
   of the script near the bottom.
 
   Before sending this page to anyone, fill in CONFIG at the top of the script near the bottom
-  (the six deposit links and the call link), then set LIVE = true once the PocketBase collection
+  (the six deposit links), then set LIVE = true once the PocketBase collection
   exists (its fields and rules are written out just above CONFIG).
 
   Words: warm but plain, no dashes, curly quotes. Taya doesn't make logos: with no logo, the client's
@@ -360,7 +365,7 @@
     transition: border-color 0.25s ease, box-shadow 0.35s ease, transform 0.35s ease;
   }
   .build:hover { border-color: rgba(var(--acc-glow), 0.5); }
-  .build input, .care-opt input, .switch input {
+  .build input, .switch input {
     position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none;
   }
   .b-sky { display: grid; place-items: center; background: radial-gradient(ellipse 110% 50% at 50% 120%, var(--hill)), var(--night); }
@@ -373,6 +378,7 @@
   .b-price strong { font-size: 27px; font-weight: 400; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; line-height: 1.1; }
   .b-price .was { font-size: 14.5px; color: var(--ink-soft); }
   .b-price .was s { text-decoration-thickness: 1.5px; text-decoration-color: rgba(var(--acc-glow), 0.8); }
+  .b-care { font-size: 14.5px; line-height: 1.4; color: var(--ink-soft); margin-top: 2px; }
   .b-check {
     position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%;
     display: grid; place-items: center; background: var(--acc-fill); color: var(--on-acc);
@@ -443,7 +449,7 @@
     .b-price { grid-column: 2; grid-row: 1; margin: 0; justify-content: flex-end; align-self: baseline; text-align: right; }
     .b-price strong { font-size: 24px; }
     .b-price .was { flex-basis: 100%; text-align: right; font-size: 13.5px; }
-    .b-does, .b-ready { grid-column: 1 / -1; }
+    .b-does, .b-ready, .b-care { grid-column: 1 / -1; }
     .b-check { top: 10px; left: 10px; right: auto; width: 24px; height: 24px; }
   }
   .unsure { margin-top: 12px; }
@@ -466,6 +472,7 @@
   .cf-does { margin: 2px 0 0; font-size: 16px; line-height: 1.45; color: var(--ink-soft); }
   .cf-body .b-ready { margin: 4px 0 0; }
   .cf-care { margin: 10px 0 0; padding-top: 10px; border-top: 1px dotted rgba(var(--acc-glow), 0.35); font-size: 16px; line-height: 1.45; }
+  .cf-care:empty { display: none; }
   .cf-care b { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
   .cf-body .later { justify-self: start; margin-top: 4px; font-size: 15.5px; padding: 0 2px; }
   @media (max-width: 420px) {
@@ -509,30 +516,13 @@
   .switch input:focus-visible + .track { outline: 2px solid var(--focus); outline-offset: 3px; }
   .founding .hint { margin: 6px 0 0; }
 
-  /* care: three small cards */
-  .cares { display: grid; gap: 10px; }
-  .care-opt {
-    position: relative; display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 2px 14px; cursor: pointer;
-    background: var(--field); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px;
-    transition: border-color 0.25s ease, box-shadow 0.35s ease;
-  }
-  .care-opt:hover { border-color: rgba(var(--acc-glow), 0.5); }
-  .care-opt:has(input:checked), .care-opt.on { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc), 0 0 30px -8px rgba(var(--acc-glow), 0.5); }
-  .care-opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
-  .c-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17.5px; }
-  .c-price { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .care-opt .c-price[data-care="yes"] { grid-column: 1 / -1; grid-row: 2; text-align: left; white-space: normal; font-size: 16px; }
-  .c-note { grid-column: 1 / -1; font-size: 15px; color: var(--ink-soft); }
-  .care-period { margin-top: 14px; }
-  .care-period .care-how { margin: 0 0 8px; }
-  #care-none-note { margin-top: 12px; }
-  @media (min-width: 720px) {
-    .cares { grid-template-columns: repeat(3, 1fr); }
-    .cares.two { grid-template-columns: repeat(2, 1fr); }
-    .care-opt { grid-template-columns: 1fr; text-align: center; padding: 18px 14px; }
-    .c-price { text-align: center; font-size: 21px; }
-    .care-opt .c-price[data-care="yes"] { text-align: center; font-size: 17px; }
-  }
+  /* care: part of every site, its price follows the build (no choice to make, just what it is and what it covers) */
+  .care-box { margin-top: 26px; }
+  .care-box .hint { margin: 0; }
+  .care-box .hint b { font-style: normal; font-weight: 500; color: var(--ink); }
+  .care-incl h4 { margin: 14px 0 6px; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16.5px; line-height: 1.35; color: var(--ink); }
+  .care-incl h4:first-child { margin-top: 6px; }
+  .care-incl .care-same { margin: 14px 0 4px; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   details.more { margin-top: 12px; }
   details.more summary, details.how summary, details.full-text summary {
     cursor: pointer; color: var(--link); font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px;
@@ -659,7 +649,7 @@
   .sign .opt-line { margin-top: 12px; padding-top: 10px; border-top: 1px dotted rgba(var(--acc-glow), 0.25); }
   .sign .opt-line .tick { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 16px; color: var(--ink-soft); }
 
-  /* ============ the deposit and our call ============ */
+  /* ============ the deposit, and what happens next ============ */
   .pay-card {
     margin-top: 18px; padding: 22px 20px 20px; border-radius: 18px; text-align: center;
     background: radial-gradient(ellipse 90% 70% at 50% 130%, rgba(230, 168, 82, 0.2), transparent 70%), var(--field);
@@ -668,8 +658,6 @@
   .pay-amt { margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 48px; line-height: 1; letter-spacing: -0.01em; color: var(--gold); font-variant-numeric: tabular-nums; }
   .pay-what { margin: 8px 0 0; color: var(--ink-soft); font-size: 16.5px; }
   .pay-card .btn { margin-top: 18px; gap: 10px; }
-  .cal-frame { margin-top: 16px; }
-  .cal-frame iframe { display: block; width: 100%; height: 700px; border: 0; border-radius: 14px; background: var(--field); }
   .pay-card .btn svg { width: 16px; height: 16px; }
   .pay-note { margin: 12px auto 0; max-width: 30em; font-size: 15px; color: var(--ink-soft); }
   .gate { margin: 14px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--link-wash); font-size: 15.5px; }
@@ -748,6 +736,9 @@
   .open-list .skipped { border-style: dashed; color: var(--ink-soft); }
   .open-note { margin: 10px auto 0; font-size: 15px; font-style: italic; color: var(--ink-soft); }
   .open-note:empty { display: none; }
+  /* what happens next, just above the send button: read like a list, not centered */
+  .send-sec .next-wrap { margin: 26px auto 0; max-width: 34em; text-align: left; }
+  .send-sec .next-wrap .small-h { margin-top: 0; }
   .send-sec .btn.send { margin-top: 22px; min-height: 56px; padding: 14px 40px; font-size: 18px; }
   .send-sec .btn.send:disabled { opacity: 0.55; cursor: wait; }
   .status { margin: 14px auto 0; min-height: 1.5em; font-size: 16px; max-width: 32em; }
@@ -959,7 +950,7 @@
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.5s-7-4.3-7-9.3a3.9 3.9 0 0 1 7-2.4 3.9 3.9 0 0 1 7 2.4c0 5-7 9.3-7 9.3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
         <span><b>Stuck? Skip it.</b>We’ll sort it out over email. Nothing here is a test, and there are no wrong answers.</span></li>
     </ul>
-    <p class="then">Then I take it from there, and we keep in touch <b>by email</b>. Rather talk? A chat is always optional.</p>
+    <p class="then">Then I take it from there, and we keep in touch <b>by email</b>. Anything else I need, I’ll ask you there.</p>
   </section>
 
   <div class="progress" id="progress" hidden>
@@ -987,17 +978,17 @@
       </button></h2>
       <div class="step-body" id="b-build">
         <div id="build-slot-own">
-        <!-- the build block: the build (a card to confirm, or the chooser), founding, care, extras and the price -->
+        <!-- the build block: the build (a card to confirm, or the chooser) with its care, founding, extras and the price -->
         <div id="build-block">
         <div class="fit-card" id="fit-card" hidden><p class="fit-k">From your answers</p><p class="fit-h"><span id="fit-name"></span> fits you best</p><p class="fit-why" id="fit-why"></p></div>
-        <p class="lead-in" data-if="build-choose">Each build is paid once, and it’s yours to keep. If you outgrow it later, what you paid counts toward a bigger build.</p>
+        <p class="lead-in" data-if="build-choose">Each build is paid once, and it’s yours to keep. After launch, care keeps it running, at a monthly price that matches your build. If you outgrow it later, what you paid counts toward a bigger build.</p>
 
         <!-- when Taya's link picked the build: a card to confirm it (the script fills it in) -->
         <div class="confirm" id="build-confirm" data-if="build-confirm" role="group" aria-labelledby="cf-k">
           <span class="b-sky" aria-hidden="true"><svg><use id="cf-moon" href="#i-full"/></svg></span>
           <div class="cf-body">
             <p class="cf-k" id="cf-k">Your build</p>
-            <div class="cf-top"><p class="cf-name" id="cf-name">Mother</p><span class="b-price" id="cf-price"></span></div>
+            <div class="cf-top"><p class="cf-name" id="cf-name">Tended</p><span class="b-price" id="cf-price"></span></div>
             <p class="cf-does" id="cf-does"></p>
             <p class="b-ready" id="cf-ready"></p>
             <p class="cf-care" id="cf-care" hidden></p>
@@ -1012,10 +1003,11 @@
               <input type="radio" name="build" value="maiden">
               <span class="b-sky" aria-hidden="true"><svg><use href="#i-wax"/></svg></span>
               <span class="b-body">
-                <span class="b-name">Maiden</span>
-                <span class="b-does">One beautiful page with everything people need to find you and reach you.</span>
+                <span class="b-name">Planted</span>
+                <span class="b-does">One beautiful page with who you are, what you offer and how to reach you, planted and kept healthy.</span>
                 <span class="b-ready">Ready in about 2 weeks</span>
                 <span class="b-price" data-price="maiden"><strong>$600</strong></span>
+                <span class="b-care">Then care, $12 a month</span>
               </span>
               <span class="b-check" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
             </label>
@@ -1023,10 +1015,11 @@
               <input type="radio" name="build" value="mother">
               <span class="b-sky" aria-hidden="true"><svg><use href="#i-full"/></svg></span>
               <span class="b-body">
-                <span class="b-name">Mother</span>
-                <span class="b-does">A full site with a contact form, newsletter signup and a Book now button to your booking app.</span>
+                <span class="b-name">Tended</span>
+                <span class="b-does">A full site with a contact form, newsletter sign-up and a Book now button to your booking app, tended as the seasons change.</span>
                 <span class="b-ready">Ready in about 3 weeks</span>
                 <span class="b-price" data-price="mother"><strong>$1,200</strong></span>
+                <span class="b-care">Then care, $45 a month</span>
               </span>
               <span class="b-check" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
             </label>
@@ -1034,10 +1027,11 @@
               <input type="radio" name="build" value="crone">
               <span class="b-sky" aria-hidden="true"><svg><use href="#i-wan"/></svg></span>
               <span class="b-body">
-                <span class="b-name">Crone</span>
-                <span class="b-does">Everything in Mother, plus booking, selling or both, set up in your own accounts (a small shop, up to about 20 items), and your latest Instagram posts on your site.</span>
+                <span class="b-name">In Bloom</span>
+                <span class="b-does">Everything in Tended, plus booking, payments or a small shop (up to about 20 items) in your own accounts: your site in full bloom, doing business for you.</span>
                 <span class="b-ready">Ready in about 4 weeks</span>
                 <span class="b-price" data-price="crone"><strong>$1,800</strong></span>
+                <span class="b-care">Then care, $90 a month</span>
               </span>
               <span class="b-check" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
             </label>
@@ -1057,7 +1051,7 @@
             <li>Your Google profile, set up</li>
             <li>A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer</li>
             <li>A slim banner across the top for news like “Now booking” or “Away until Nov 3” (switching it is always free)</li>
-            <li>Your web address’s first year</li>
+            <li>Your web address’s first year (then care looks after it, so there’s nothing to renew)</li>
             <li>30 days of settling-in tweaks after launch</li>
             <li>A one-page “Your site” hand-off sheet</li>
           </ul>
@@ -1069,48 +1063,29 @@
             <span class="track" aria-hidden="true"></span>
             <span class="sw-text">I’m a founding client</span>
           </label>
-          <p class="hint" id="h-founding">You have one of my 5 founding spots, so this is on for you: half off the build, and half off
-             care for as long as you keep it, $35 a month (or $350 a year).</p>
+          <p class="hint" id="h-founding">You have one of my 5 founding spots, so this is on for you: half off your build. Care stays at its usual monthly price.</p>
         </div>
 
-        <fieldset class="group" id="g-care" data-if="care-choose">
-          <legend class="main">Would you like care after launch?</legend>
-          <p class="hint">Care means I look after your site for you, so you never have to think about it. No need to decide today;
-             it just needs settling by launch. The <a href="quiz.html"><span class="nowrap">two-minute</span> quiz</a> can help.</p>
-          <div class="cares two">
-            <label class="care-opt"><input type="radio" name="care_q" value="yes"><span class="c-name">Yes, please</span><span class="c-price" data-care="yes">$69 a month, or $690 a year</span><span class="c-note">I look after it for you</span></label>
-            <label class="care-opt"><input type="radio" name="care" value="none"><span class="c-name">No thanks</span><span class="c-note">I’ll ask when I need something</span></label>
-          </div>
-          <div class="care-period" id="care-period" hidden>
-            <p class="hint care-how">How would you like to pay for it?</p>
-            <div class="cares two">
-              <label class="care-opt"><input type="radio" name="care" value="monthly"><span class="c-name">Monthly</span><span class="c-price" data-care="monthly">$69 a month</span><span class="c-note">Cancel anytime</span></label>
-              <label class="care-opt"><input type="radio" name="care" value="yearly"><span class="c-name">Yearly</span><span class="c-price" data-care="yearly">$690 a year</span><span class="c-note">Two months free</span></label>
-            </div>
-          </div>
-          <p class="soft-note" id="care-none-note" hidden>Totally fine. Your site is still all yours, with no monthly bill. Whenever you’d like something changed, just email me and I’ll give you a price first.</p>
-          <details class="more">
-            <summary>What care includes, and how changes work without it</summary>
-            <p><b>With care,</b> you never have to think about your website again. I make your changes whenever you ask, by email, and reply within 2 business days. Your web address,
-               sending email from your own address and your newsletter (up to 1,000 subscribers) are covered, and I keep your
-               Google profile fresh: hours, holidays, photos, a monthly post, and a QR card that makes reviews easy, plus one event flyer a month in your brand. Anything big,
-               like a new page, I’ll quote first. Billing starts after your 30 days of settling in, not at launch. Cancel anytime;
-               your site stays yours.</p>
-            <p><b>Without care,</b> send me one email with everything you’d like changed, and I’ll reply with a price before I start
-               ($100 an hour; most small changes come to about $25 to $50). Nothing starts until you say yes.</p>
-            <p>Either way, fixes for anything I got wrong are always free.</p>
+        <!-- care: part of every site, so there's nothing to choose. Its price follows the build (the script fills in
+             the price and what it covers for the build they picked, or all three before they pick) -->
+        <div class="care-box" id="care-box">
+          <h3 class="main" data-if="build-choose">Care, after launch</h3>
+          <p class="hint" id="care-say" data-if="build-choose">Care is part of every site: it’s what keeps yours running. <b id="care-price">$12, $45 or $90 a month, matching your build</b>, starting after your 30 days of settling in.</p>
+          <details class="more every">
+            <summary>What care includes</summary>
+            <div class="care-incl" id="care-incl"></div>
           </details>
-        </fieldset>
+        </div>
 
-        <p class="soft-note" id="sell-note" hidden><span id="crone-what">Taking payments online is</span> part of Crone. No need to change anything now; we’ll figure it out over email.</p>
+        <p class="soft-note" id="sell-note" hidden></p>
         <button type="button" class="toggle-more" id="price-toggle" aria-expanded="false" aria-controls="price-more" data-if="build-in-sign">Your price in full, and a few extras</button>
         <div id="price-more">
         <fieldset class="group">
           <legend class="main">A few extras</legend>
-          <p class="hint">These only change what you pay after launch, so the price below stays honest.</p>
+          <p class="hint">So I know what your site needs. The price below follows along.</p>
           <div class="opts">
-            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">About $3 a month in your own account, or covered by care.</span></small></span></label>
-            <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A signup on your site, and an easy way to write to your people. <span class="x-cost" data-x="news">Free up to 100 subscribers, then about $9 a month, or covered by care (up to 1,000).</span></small></span></label>
+            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month in your own account.</span></small></span></label>
+            <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and an easy way to write to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom, with sending covered by care.</span></small></span></label>
           </div>
           <fieldset class="group" style="margin-top: 18px" data-if="x-booking">
             <legend class="main sub-legend" style="margin-top: 0">Online booking</legend>
@@ -1121,7 +1096,7 @@
             </div>
           </fieldset>
           <div class="opts" style="margin-top: 18px" data-if="x-sell">
-            <label class="opt"><input type="checkbox" name="x_sell" value="yes"><span><b>Take payments online</b><small>Deposits, gift certificates or a small shop, part of Crone. The money goes straight to you, and card fees are about 3% + 30¢ per payment (it varies a little by payment company).</small></span></label>
+            <label class="opt"><input type="checkbox" name="x_sell" value="yes"><span><b>Take payments online</b><small>Deposits, gift certificates or a small shop, part of In Bloom. The money goes straight to you, and Stripe keeps about 2.9% + 30¢ per payment.</small></span></label>
           </div>
           <p class="from-qc" data-if="x-from-qc"><span id="from-qc">From your quick check.</span> <button type="button" class="later" data-qc-change>Change</button></p>
         </fieldset>
@@ -1129,7 +1104,7 @@
         <section class="receipt" aria-labelledby="r-title">
           <h3 id="r-title"><svg aria-hidden="true"><use href="#i-full"/></svg>Your price</h3>
           <div id="receipt-body"><p class="r-empty">Pick a build above, and your price shows up here.</p></div>
-          <p class="r-fine">Paid by card or US bank account. Prices for outside services are estimates as of September 2026.</p>
+          <p class="r-fine">Paid by card or US bank account. Prices for outside services are estimates as of October 2026.</p>
           <p class="sr-only" id="r-live" aria-live="polite"></p>
         </section>
         </div>
@@ -1184,17 +1159,17 @@
           <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
           <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>, paid once: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
           <li><span class="k">Timing</span><span>The clock starts when all your content is in. A first draft in about a week, and ready in about <span data-a="weeks">2, 3 or 4 weeks</span>.</span></li>
-          <li><span class="k">Changes</span><span>Once you’re live, care covers your changes anytime, at no extra cost. While I’m building, you get two rounds of changes, each one email with everything in it. Without care, later changes are $100 an hour, and I tell you the price first.</span></li>
+          <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one email with everything in it; any more rounds, I quote first. Once you’re live, email me your changes anytime, as often as you need, and care covers them.</span></li>
           <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
-          <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">care or pay as you go, whichever you choose</span>. Fixes for anything I got wrong are always free.</span></li>
-          <li><span class="k">Yours</span><span>Everything is in your name. Leaving is easy and free.</span></li>
+          <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">care at your build’s monthly price</span>. Fixes for anything broken, or anything I got wrong, are always free.</span></li>
+          <li><span class="k">Yours</span><span>Everything is in your name. If you ever stop care, your site is still yours, and I hand over every file and login.</span></li>
         </ul>
 
         <details class="full-text">
           <summary>Read the whole agreement</summary>
           <div class="agreement-doc">
             <h3>Our agreement</h3>
-            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of September 30, 2026.</p>
+            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of October 5, 2026.</p>
             <ol>
               <li><b>What I’ll make.</b> Your <span data-a="build">build</span>: <span data-a="does">the site we choose together</span>
                   Every build comes with your words written for you from your answers, a phone-first design,
@@ -1205,22 +1180,22 @@
                   which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By card or US bank account.</li>
               <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. The build clock starts
                   the day all your content is in. I send a first draft in about a week, on a private link. You get two rounds of changes; each round
-                  is one email with everything in it. More rounds are priced like any change, $100 an hour, and I tell you the price first. Your site
+                  is one email with everything in it. Any more rounds, I quote first, and nothing starts until you say yes. Your site
                   is ready in about <span data-a="weeks">2, 3 or 4 weeks</span> from when your content is in.</li>
               <li><b>If life gets busy.</b> If your content isn’t in 30 days after you say yes, I’ll nudge you gently. At 60 days the project closes,
                   so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
                   it counts toward finishing.</li>
               <li><b>Launch.</b> Your site goes live at your own web address, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
-              <li><b>After launch.</b> <span data-a="after-long">Care or pay as you go, whichever you choose by launch.</span> Fixes for anything I got wrong are always free.</li>
+              <li><b>After launch.</b> <span data-a="after-long">Care at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span></li>
               <li><b>What’s yours.</b> Everything: your site, your words, your photos, your web address (with you as its legal owner), your Google profile,
-                  and your booking and payment accounts. I’m only ever added as a helper, and I never need your passwords. If you ever want to move on,
-                  it’s easy and free: I move everything over to you within a week, and your site never goes down. Monthly care ends at the
-                  end of the month you’ve paid for, and with yearly care, unused full months are refunded.</li>
-              <li><b>Hosting.</b> Hosting your site is free, forever. If that ever changed, I’d move your site for free.</li>
+                  and your booking and payment accounts. I’m only ever added as a helper, and I never need your passwords. If you ever stop care,
+                  your site is still yours: I hand over every file and login within a week, and your site never goes down. Care is monthly, and it ends at the
+                  end of the month you’ve paid for.</li>
+              <li><b>Hosting.</b> Hosting is part of care, so there’s nothing else to pay for it. If you ever stop care, your files are yours to host anywhere you like.</li>
               <li><b>Your part.</b> Send only photos, logos and words you have the right to use, and tell me if anything on your site is wrong.</li>
               <li><b>Honest limits.</b> I build carefully for Google, but no one can promise a ranking or a number of new clients. Outside services
                   (Google, your booking app, your payment company, Porkbun) have their own rules and prices, which can change; the prices here are
-                  estimates as of September 2026.</li>
+                  estimates as of October 2026.</li>
               <li><b>Upgrading later.</b> If you outgrow your build, what you paid counts toward a bigger one.</li>
               <li><b>Privacy.</b> What you share here is only for building your site. It’s never shared or sold.</li>
             </ol>
@@ -1263,11 +1238,11 @@
     </li>
 
 
-    <!-- ================= a few quick things (the rest of their story comes by email, or a chat if they like) ================= -->
+    <!-- ================= a few quick things (the rest of their story comes by email) ================= -->
     <li class="step" id="s-work" data-step="work" data-min="5">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-work" aria-expanded="false" aria-controls="b-work">
-        <span class="num" aria-hidden="true"><span>4</span><svg><use href="#i-check"/></svg></span>
-        <span class="step-name"><span class="sr-only sn">Step 4: </span><span class="st">A few quick things</span></span>
+        <span class="num" aria-hidden="true"><span>3</span><svg><use href="#i-check"/></svg></span>
+        <span class="step-name"><span class="sr-only sn">Step 3: </span><span class="st">A few quick things</span></span>
         <span class="step-meta"><span class="time">About 5 minutes</span><span class="state"></span></span>
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
@@ -1321,8 +1296,8 @@
     <!-- ================= your look and photos (only the parts that apply) ================= -->
     <li class="step" id="s-look" data-step="look" data-min="8">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-look" aria-expanded="false" aria-controls="b-look">
-        <span class="num" aria-hidden="true"><span>5</span><svg><use href="#i-check"/></svg></span>
-        <span class="step-name"><span class="sr-only sn">Step 5: </span><span class="st">Your look and photos</span></span>
+        <span class="num" aria-hidden="true"><span>4</span><svg><use href="#i-check"/></svg></span>
+        <span class="step-name"><span class="sr-only sn">Step 4: </span><span class="st">Your look and photos</span></span>
         <span class="step-meta"><span class="time">About 8 minutes</span><span class="state"></span></span>
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
@@ -1440,12 +1415,12 @@
       </div>
     </li>
 
-    <!-- ================= accounts: only what's worth starting before our call =================
+    <!-- ================= accounts: only what's worth starting now =================
          Anything easier together is marked "Together over email" and isn't counted in the list's time. -->
     <li class="step" id="s-accounts" data-step="accounts" data-min="5">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-accounts" aria-expanded="false" aria-controls="b-accounts">
-        <span class="num" aria-hidden="true"><span>6</span><svg><use href="#i-check"/></svg></span>
-        <span class="step-name"><span class="sr-only sn">Step 6: </span><span class="st">Your accounts</span></span>
+        <span class="num" aria-hidden="true"><span>5</span><svg><use href="#i-check"/></svg></span>
+        <span class="step-name"><span class="sr-only sn">Step 5: </span><span class="st">Your accounts</span></span>
         <span class="step-meta"><span class="time">About 5 minutes</span><span class="state"></span></span>
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
@@ -1541,22 +1516,20 @@
           </div>
         </div>
 
-        <!-- web address: with care there's nothing to do. Without care: one they own stays where it is (just check the
-             sign-in, since getting back in can take days); a new one lives in their own free Porkbun account, made
-             together over email or anytime before launch -->
+        <!-- web address: care looks after it for everyone, with them as its legal owner. One they own stays in their
+             name; the only to-do is checking they can still sign in where it lives (getting back in can take days),
+             and around launch we point it at the new site. A new one I buy during the build, so there's nothing to do -->
         <div class="acct" id="acct-domain">
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 12h16.4M12 3.6c2.4 2.3 3.6 5.1 3.6 8.4s-1.2 6.1-3.6 8.4c-2.4-2.3-3.6-5.1-3.6-8.4s1.2-6.1 3.6-8.4Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
             <div>
               <h3>Your web address</h3>
               <span class="t" data-if="dom-point">About 2 minutes</span>
-              <span class="t together" data-if="dom-new">Together over email, anytime before launch</span>
-              <span class="t together" data-if="care-yes">Care looks after it</span>
-              <p data-if="dom-point">Keep it right where it is. For now, just make sure you can still sign in where it lives, since getting back in can take a few days.
-                 <span data-if="care-unsure">If you choose care, I can look after it for you instead.</span></p>
-              <p data-if="dom-new">It will live in your own free Porkbun account. I buy it during the build (the first year comes with your build),
-                 and at launch I send it over to you. <span data-if="care-unsure">If you choose care, I’ll look after it for you instead.</span></p>
-              <p data-if="care-yes">With care, I look after it for you, with you as its legal owner.</p>
+              <span class="t together" data-if="dom-new">Care looks after it</span>
+              <p data-if="dom-point">It stays in your name, and care looks after it from launch on. For now, just make sure you can still sign in where it lives,
+                 since getting back in can take a few days.</p>
+              <p data-if="dom-new">I buy it during the build (the first year comes with your build), with you as its legal owner, and care looks after it
+                 from then on, so there’s nothing to renew.</p>
             </div>
           </div>
           <div class="q" data-if="dom-owned">
@@ -1571,17 +1544,6 @@
             <p class="domain-check"><a class="later" id="domain-check" href="https://porkbun.com/checkout/search" target="_blank" rel="noopener">Check if one’s free</a>
                <span class="hint">Just looking is free. No need to buy it yet: we’ll pick it together.</span></p>
           </div>
-          <details class="how" data-if="dom-new">
-            <summary>Want a head start?</summary>
-            <ol>
-              <li>Go to <a href="https://porkbun.com" target="_blank" rel="noopener">porkbun.com</a> (yes, really) and sign up with your everyday email. The account is free.</li>
-              <li>Do the quick ID check Porkbun asks new accounts for. It has to be done before an address can move in.</li>
-              <li>Type your Porkbun username below. That’s it for now.</li>
-              <li>At launch, Porkbun emails you about your incoming address. Click <b>Accept</b> within 3 days. After that it’s about $12 a year, paid straight to Porkbun.</li>
-            </ol>
-            <p class="stuck">Want to send email from your own address too? It lives in your Porkbun account (about $3 a month), and we’ll switch it on together.
-               There’s more in the <a href="domain.html">web address guide</a>.</p>
-          </details>
           <details class="how" data-if="dom-point">
             <summary>How to do it</summary>
             <ol>
@@ -1590,35 +1552,8 @@
               <li>Around launch, we point it at your new site: about 5 minutes in its settings, with the <a href="domain.html">web address guide</a>, or together over email.</li>
             </ol>
           </details>
-          <div class="q" data-if="dom-new">
-            <label class="main" for="f-porkbun">Your Porkbun username <span class="opt-tag">(once you have one)</span></label>
-            <input type="text" id="f-porkbun" name="porkbun_username" maxlength="80" spellcheck="false" autocapitalize="off">
-          </div>
-          <div class="ticks" data-if="care-no">
-            <label class="tick"><input type="checkbox" name="acct_domain" value="yes"> <span data-if="dom-new">I’ve made my Porkbun account</span><span data-if="dom-point">I can sign in where it lives</span></label>
-          </div>
-        </div>
-
-        <!-- newsletter: only if they picked it, without care. Made together over email -->
-        <div class="acct later-card" id="acct-news" hidden>
-          <div class="acct-top">
-            <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 7l8 6.2L20 7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
-            <div>
-              <h3>Your newsletter</h3>
-              <span class="t together">Together over email</span>
-              <p>A free Buttondown account in your name: free up to 100 subscribers, then about $9 a month. We’ll make it and connect it to your site together.
-                 <span data-if="care-unsure">If you choose care, care covers it.</span></p>
-            </div>
-          </div>
-          <details class="how">
-            <summary>Want a head start?</summary>
-            <ol>
-              <li>Go to <a href="https://buttondown.com" target="_blank" rel="noopener">buttondown.com</a> and sign up with your email. Pick the free plan.</li>
-              <li>That’s all for now. We’ll do the rest together.</li>
-            </ol>
-          </details>
-          <div class="ticks">
-            <label class="tick"><input type="checkbox" name="acct_news" value="yes"> I’ve signed up already</label>
+          <div class="ticks" data-if="dom-point">
+            <label class="tick"><input type="checkbox" name="acct_domain" value="yes"> I can sign in where it lives</label>
           </div>
         </div>
 
@@ -1652,50 +1587,12 @@
           </div>
         </div>
 
-        <p class="nothing" id="acct-covered" hidden><svg aria-hidden="true"><use href="#i-check"/></svg><span id="covered-what">With care, your newsletter is looked after for you.</span></p>
+        <p class="nothing" id="acct-covered" hidden><svg aria-hidden="true"><use href="#i-check"/></svg><span id="covered-what">Your newsletter is set up by me and its sending is covered by care, so there’s nothing to do for it here.</span></p>
         <p class="never-pw">Never send me a password, please. I’m always added as a helper instead.</p>
         <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, all finished</span></button>
           <button type="button" class="later" data-skip>Skip for now</button>
           <p class="foot-hint">Stopped where Google asks you to verify? That counts as done.</p>
-        </div>
-      </div>
-    </li>
-    <!-- ================= want to chat? (optional: email is the default) ================= -->
-    <li class="step" id="s-call" data-step="call" data-min="2">
-      <h2 class="step-h"><button type="button" class="step-toggle" id="t-call" aria-expanded="false" aria-controls="b-call">
-        <span class="num" aria-hidden="true"><span>3</span><svg><use href="#i-check"/></svg></span>
-        <span class="step-name"><span class="sr-only sn">Step 3: </span><span class="st">Want to chat? (optional)</span></span>
-        <span class="step-meta"><span class="time">About 2 minutes</span><span class="state"></span></span>
-        <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
-      </button></h2>
-      <div class="step-body" id="b-call">
-        <p class="love-it" id="call-for-me" hidden><b>Let’s set up your accounts together.</b> I’ll email you the steps and we’ll go one at a time.
-           Rather do it in one go on a chat? Pick a time below.</p>
-        <p class="lead-in"><b>Totally optional.</b> Email works great for everything. Looked it all over and stuck on something, or just rather talk it through? Pick a time here.
-           We’ll finish anything you skipped, too.</p>
-        <div class="pay-card">
-          <a class="btn" id="call-btn" target="_blank" rel="noopener"><span>Want to chat? (optional)</span></a>
-          <p class="preview-say" id="call-preview" role="status"></p>
-          <p class="pay-note" id="call-note">My calendar opens right here. Pick any time that suits you.</p>
-          <div class="cal-frame" id="cal-frame" hidden></div>
-        </div>
-        <div class="ticks" style="margin-top: 12px">
-          <label class="tick"><input type="checkbox" name="call_booked" value="yes"> I’ve booked a chat</label>
-        </div>
-        <p class="together-line" id="call-together" hidden></p>
-        <p class="small-h">What happens next</p>
-        <ol class="next-path">
-          <li><b>A chat, if you’d like one.</b> Otherwise it’s all email, and I do the writing.</li>
-          <li><b>Your first draft,</b> about a week after your content is in, on a private link you can open on your phone.</li>
-          <li><b>Two rounds of changes,</b> by email.</li>
-          <li><b>Launch,</b> with your “Your site” sheet and your brand sheet.</li>
-          <li><b>30 days of settling in.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
-          <li><b>After that,</b> <span data-if="care-yes">care carries on the same way: you email me, I do the rest.</span><span data-if="care-no">just email me whenever you’d like a change. With care, I take it from there; without it, I send you a price first.</span></li>
-        </ol>
-        <div class="step-foot">
-          <button type="button" class="btn" data-next><span>Done, next step</span></button>
-          <button type="button" class="later" data-skip>Skip for now</button>
         </div>
       </div>
     </li>
@@ -1708,6 +1605,18 @@
     <p>Send it whenever you’ve done what you can. Anything still open, we’ll finish together over email.</p>
     <ul class="open-list" id="open-list"></ul>
     <p class="open-note" id="open-note"></p>
+    <div class="next-wrap">
+      <p class="small-h">What happens next</p>
+      <ol class="next-path">
+        <li><b>A few easy questions by email,</b> if I need anything more. I do the writing.</li>
+        <li><b>Your first draft,</b> about a week after your content is in, on a private link you can open on your phone.</li>
+        <li><b>Two rounds of changes,</b> by email.</li>
+        <li><b>Launch,</b> with your “Your site” sheet and your brand sheet.</li>
+        <li><b>30 days of settling in.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
+        <li><b>After that, care,</b> <span data-a="care">at your build’s monthly price</span>: you email me what’s changing, and I do the rest.</li>
+      </ol>
+      <p class="together-line" id="together-line" hidden></p>
+    </div>
     <div class="hp" aria-hidden="true"><label for="f-hp">Leave this empty</label><input type="text" id="f-hp" name="hp" tabindex="-1" autocomplete="off"></div>
     <button type="submit" class="btn send" id="send-btn"><span>Send it to Taya</span></button>
     <p class="status" id="send-status" role="status"></p>
@@ -1722,7 +1631,7 @@
     <div class="done-head">
       <svg class="moon-big" aria-hidden="true"><use href="#i-full"/></svg>
       <h2 id="done-title" tabindex="-1">It’s in my hands now. 🌱</h2>
-      <p>Thank you. I’ll read every word and write back within a couple of days<span id="done-call">, and I’ll be in touch by email</span>.</p>
+      <p>Thank you. I’ll read every word and write back by email within a couple of days.</p>
       <p id="done-copy">Here’s everything you sent, in case you’d like a copy.</p>
     </div>
     <div class="summary" id="summary"></div>
@@ -1758,11 +1667,13 @@
    picks on the page always wins over the link (it's saved on their device).
 
      name        their first name, for the greeting ("Welcome in, Juliet.")
-     build       maiden, mother or crone. With a build, there's no build step: the build shows as a short card to
-                 confirm at the top of "Sign and hold your spot" (with a Change button), instead of the whole chooser.
+     build       maiden (Planted), mother (Tended) or crone (In Bloom). These keys never show; the page shows the names.
+                 With a build, there's no build step: the build shows as a short card to confirm (its build price and
+                 its care price) at the top of "Sign and hold your spot" (with a Change button), instead of the whole chooser.
      founding    1 if they have one of the founding spots (the founding switch only shows up when the link
                  has this, so nobody else sees a half-off switch or can pay a founding deposit by mistake)
-     care        monthly, yearly or none
+     care        (retired Oct 5 2026: care is part of every build now, monthly, at the build's price. Older links
+                 that still say care=monthly, yearly or none work fine; the page just ignores it.)
      have        what they already have, comma separated:
                    logo       a logo                         no-logo       not yet (their name in a nice font)
                    brandkit   a brand kit from a designer    no-brandkit   no brand kit
@@ -1780,15 +1691,15 @@
                  and the look step is left off their list. Example: start.html?name=Amber&mockup=amber
 
    Three examples:
-     A founding Mother client on monthly care who has a logo and uses Vagaro (the quick check asks only
-     about a brand kit, photos, a web address, selling and a newsletter):
-       start.html?name=Juliet&build=mother&founding=1&care=monthly&have=logo&booking=vagaro
-     A Maiden starting with nothing yet, paying as she goes (every question is answered, so there's no
-     quick check at all, just her list):
-       start.html?name=Rosa&build=maiden&care=none&have=none&booking=no-need&sell=0&newsletter=0
-     A Crone who sells online and has a brand kit, on yearly care (the quick check asks about a logo,
-     photos, a web address, booking and a newsletter):
-       start.html?name=Wren&build=crone&care=yearly&have=brandkit&sell=1
+     A founding Tended client who has a logo and uses Vagaro (the quick check asks only about a brand kit,
+     photos, a web address, selling and a newsletter):
+       start.html?name=Juliet&build=mother&founding=1&have=logo&booking=vagaro
+     A Planted client starting with nothing yet (every question is answered, so there's no quick check
+     at all, just her list):
+       start.html?name=Rosa&build=maiden&have=none&booking=no-need&sell=0&newsletter=0
+     An In Bloom client who sells online and has a brand kit (the quick check asks about a logo, photos,
+     a web address, booking and a newsletter):
+       start.html?name=Wren&build=crone&have=brandkit&sell=1
 
    ---- WHEN THIS GOES LIVE (set LIVE = true below) ----
    "Send it to Taya" creates one record in the PocketBase collection "webfaery_intake" on
@@ -1803,29 +1714,31 @@
      name              text, required, max 120
      business          text, max 160
      email             email, required
-     phone             text, max 40    (sent empty now: the call booking asks for a number if they'd like the phone)
+     phone             text, max 40    (always sent empty: everything is by email)
      website           text, max 300
      domain_wish       text, max 200
      build             select (single): maiden, mother, crone, unsure
      founding          bool
-     care              select (single): monthly, yearly, none
+     care              select (single): monthly, yearly, none (always "monthly" since Oct 5 2026: care is part of
+                                         every build; the other options stay so older records still fit)
      extras            json   { send_email, newsletter, booking: none|current|calcom, selling }
      work              json   the "A few quick things" answers: offer, when_where, policies, words
      look              json   { moods[], colors_love, colors_avoid, sites, has_brand_kit, has_logo, anything_to_change }
      photo_notes       json   { album_link, stock_ok, no_face }
-     accounts          json   the accounts step's ticks, booking app and link, Cal.com username, Porkbun username, owned domain,
+     accounts          json   the accounts step's ticks, booking app and link, Cal.com username, owned domain,
                               payments note, and "have": the quick check's answers (logo, brand_kit, photos, web_address,
                               booking, booking_app, selling, newsletter), which of them Taya's link answered, and
                               whether they skipped the check. No new fields needed.
-     steps             json   { sign: "done" | "skipped", call, work, look, accounts, and build when it shows }
-     price             json   the price summary exactly as the client saw it (numbers and lines)
+     steps             json   { sign: "done" | "skipped", work, look, accounts, and build when it shows }
+     price             json   the price summary exactly as the client saw it (numbers and lines, and care_month:
+                              the build's care price a month)
      deposit           number the deposit shown, in dollars
      deposit_paid      bool   (the client's own tick; check Stripe to be sure)
-     call_booked       bool
+     call_booked       bool   (no longer sent: there's no call to book. Left in the collection for older records)
      agreed            bool
      agreement_name    text, max 120   (their typed signature)
      agreement_date    date            (when they sent it)
-     agreement_version text, max 40    ("2026-09-30")
+     agreement_version text, max 40    ("2026-10-05")
      show_in_work      bool
      summary_text      text, max 20000 (everything above as one readable message)
      photos            file, multiple, max 40 files, 15 MB each: image/jpeg, image/png, image/webp, image/heic, image/heif, image/gif, application/pdf
@@ -1851,25 +1764,50 @@
       mother: { regular: 'https://buy.stripe.com/28E3co3Eo6W37BrgzBfEk06', founding: 'https://buy.stripe.com/cNi9AM6QA6W3bRH979fEk07' },
       crone:  { regular: 'https://buy.stripe.com/6oU4gs3Eo4NV3lb3MPfEk08', founding: 'https://buy.stripe.com/5kQcMY4IsgwD3lbbfhfEk09' }
     },
-    // the 45-minute getting-started call (hidden Cal.com event: only people with this link can book it)
-    callLink: 'https://cal.com/webfaery/getting-started',
     foundingOpen: true,   // founding spots still open: everyone sees founding prices, like the home page (turn off when the 5 are taken)
     magicSite: true,    // the magic mockup is live (Oct 1 2026): their link is webfaery.love/peek/KEY/?mark=1
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
     collection: 'webfaery_intake',
-    agreementVersion: '2026-09-30',
+    agreementVersion: '2026-10-05',   // the agreement's words changed with the Oct 5 pricing
     maxUploadMB: 30                              // a little under the server's limit
   };
 
-  /* ================= prices: the same numbers as the main page ================= */
+  /* ================= prices: the same numbers as the main page (web-faery-kit/pricing-oct2026.md) =================
+     The keys stay maiden / mother / crone (links, Stripe, saved answers, the server); only the names show. */
   const BUILDS = {
-    maiden: { name: 'Maiden', price: 600, weeks: 2, does: 'one beautiful page with everything people need to find you and reach you.' },
-    mother: { name: 'Mother', price: 1200, weeks: 3, does: 'a full site with a contact form, newsletter signup and a Book now button to your booking app.' },
-    crone:  { name: 'Crone', price: 1800, weeks: 4, does: 'everything in Mother, plus booking, selling or both, set up in your own accounts (a small shop, up to about 20 items), and your latest Instagram posts on your site.' }
+    maiden: { name: 'Planted', price: 600, weeks: 2, does: 'one beautiful page with who you are, what you offer and how to reach you, planted and kept healthy.' },
+    mother: { name: 'Tended', price: 1200, weeks: 3, does: 'a full site with a contact form, newsletter sign-up and a Book now button to your booking app, tended as the seasons change.' },
+    crone:  { name: 'In Bloom', price: 1800, weeks: 4, does: 'everything in Tended, plus booking, payments or a small shop (up to about 20 items) in your own accounts: your site in full bloom, doing business for you.' }
   };
-  const CARE = { monthly: 69, yearly: 690, foundingMonthly: 35, foundingYearly: 350 };
-  const COSTS = { domainYear: 12, emailMonth: 3, newsletterMonth: 9, hourly: 100 }; // outside services: estimates, Sept 2026
+  // care: part of every site, monthly only, always full price (founding is half off the build only)
+  const CARE = { maiden: 12, mother: 45, crone: 90 };
+  // what care covers, tier by tier (each one adds to the one before)
+  const CARE_INCL = {
+    maiden: ['Hosting, your web address, security and backups', 'Email me anytime and I make your changes',
+      'Your own magic link: tap anything on your site and leave me a note right there', 'A “your changes are up” email the moment it’s live',
+      'A monthly check-in about your business, so you never have to think about what to update', 'New reviews added as they come in',
+      'A heads-up before holidays, so your hours are never wrong'],
+    mother: ['Your Google profile kept fresh: once a month I share one of your recent posts there', 'Contact form and newsletter sign-up, with sending covered',
+      'Your Instagram feed on your site, filling itself in as you post', 'Email from your own address (you@yourbusiness.com), covered',
+      'A seasonal refresh: new photos and wording as the year turns'],
+    crone: ['Booking, payments or your shop kept running (Stripe, sold-out stamps)', 'Order direct for food businesses (DoorDash’s free online ordering on your site)',
+      'A flyer for one event a month', 'Private visitor counts, no tracking',
+      'A yearly refresh: new photos from your year, your story updated, every page checked on phones']
+  };
+  // how each care reads as a whole (gently in the garden's words: planted and kept healthy, tended as the seasons
+  // change, in full bloom doing business for you)
+  const CARE_HEAD = {
+    maiden: 'planted and kept healthy',
+    mother: 'everything above, plus regular tending as the seasons change',
+    crone: 'everything above, plus keeping it in full bloom, doing business for you'
+  };
+  const CARE_SHORT = {
+    maiden: 'It keeps your site planted and healthy: hosting, your web address and backups, and your changes whenever you email me.',
+    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes whenever you email me, your Google profile kept fresh, and email from your own address and newsletter sending covered.',
+    crone: 'Everything in Tended’s care, plus keeping your booking, payments or shop in full bloom, a flyer for one event a month, and a yearly refresh.'
+  };
+  const COSTS = { emailMonth: 3 }; // outside services: estimates, Oct 2026 (email from your own address, with Planted)
   const STORE_KEY = 'webfaery-start-v1';
 
   /* ================= the quick check: what they already have =================
@@ -1894,25 +1832,25 @@
     { id: 'domain', q: 'A web address already?', small: 'Like yourname.com.',
       a: [['yes', 'Yes'], ['no', 'No'], ['unsure', 'Not sure']],
       said: { yes: 'a web address', no: 'no web address yet', unsure: 'maybe a web address' },
-      reply: { no: 'Then we’ll choose one together. The first year comes with your build.', unsure: 'No problem. We’ll check together over email.' } },
+      reply: { no: 'Then we’ll choose one together. The first year comes with your build, and care looks after it from then on.', unsure: 'No problem. We’ll check together over email.' } },
     { id: 'booking', q: 'A booking app you use now?',
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
       said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
-      reply: { has: 'Lovely. A Book now button to it comes with Mother and Crone.', want: 'Setting up booking for you is part of Crone.' } },
+      reply: { has: 'Lovely. A Book now button to it comes with Tended and In Bloom.', want: 'Setting up booking for you is part of In Bloom.' } },
     { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true, sub: true,
       a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
       said: Object.assign({}, APPS, { other: 'your booking app' }) },
     { id: 'sell', q: 'Will you sell anything online?', small: 'Like gift certificates, deposits or a few products.',
       a: [['yes', 'Yes'], ['no', 'No']],
       said: { yes: 'selling online', no: 'no selling online' },
-      reply: { yes: 'Selling on your site is part of Crone: a small shop, up to about 20 items, in your own accounts.' } },
+      reply: { yes: 'Selling on your site is part of In Bloom: a small shop, up to about 20 items, in your own accounts.' } },
     { id: 'news', q: 'And a newsletter, to write to your people now and then?',
       a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No']],
       said: { yes: 'a newsletter', later: 'a newsletter maybe later', no: 'no newsletter' },
-      reply: { yes: 'A newsletter signup comes with Mother and Crone.', later: 'Easy to add anytime.' } }
+      reply: { yes: 'A newsletter sign-up comes with Tended and In Bloom.', later: 'Easy to add anytime.' } }
   ];
   // which build their answers point to (Pollen, Oct 1: people should know what they're signing up for as they answer)
-  const BUILD_NAME = { maiden: 'Maiden', mother: 'Mother', crone: 'Crone' };
+  const BUILD_NAME = { maiden: BUILDS.maiden.name, mother: BUILDS.mother.name, crone: BUILDS.crone.name };
   // tapping the build (or "Not sure yet") that's already picked clears it again, like a checkbox
   document.addEventListener('pointerdown', (e) => {
     const r = e.target.closest('label') && e.target.closest('label').querySelector('input[name="build"]');
@@ -1928,7 +1866,7 @@
     if (have.booking === 'want') why.push('booking set up for you');
     if (have.sell === 'yes') why.push('selling on your site');
     if (have.booking === 'has') why.push('a Book now button to your booking app');
-    if (have.news === 'yes') why.push('a newsletter signup');
+    if (have.news === 'yes') why.push('a newsletter sign-up');
     return why;
   }
   function showFit(complete) {
@@ -2066,13 +2004,6 @@
     if (link) link.hidden = !!cloud.token;
   }
 
-  // care yes/no: keep the two answers from both being on (runs before the page's own input/change handling)
-  const careYesNo = (e) => {
-    if (e.target.name === 'care_q' && e.target.checked) { const no = $('input[name="care"][value="none"]'); if (no.checked) no.checked = false; }
-    if (e.target.name === 'care' && e.target.value === 'none' && e.target.checked) $('input[name="care_q"]').checked = false;
-  };
-  form.addEventListener('input', careYesNo, true);
-  form.addEventListener('change', careYesNo, true);
   function snapshot() {
     const fields = {};
     for (const el of form.elements) {
@@ -2128,65 +2059,40 @@
     return {
       build: BUILDS[b] ? b : (b === 'unsure' ? 'unsure' : ''),
       founding: $('#f-founding').checked,
-      care: radio('care'),
       email: ticked('x_email'), news: ticked('x_news'), booking: radio('x_booking'), sell: ticked('x_sell')
     };
   }
-  const hasCare = (c) => c.care === 'monthly' || c.care === 'yearly';
 
+  // the build, paid once, then care at the build's monthly price (no care choice: it's part of every site)
   function priceModel(c) {
-    const m = { build: c.build, founding: c.founding, care: c.care, rows: [], after: [], total: '' };
+    const m = { build: c.build, founding: c.founding, rows: [], after: [], total: '' };
     const b = BUILDS[c.build];
+    let year = 0;
     if (b) {
       m.full = b.price; m.price = c.founding ? b.price / 2 : b.price; m.deposit = m.price / 2; m.balance = m.price - m.deposit;
       m.rows.push({ label: b.name + ' build' + (c.founding ? ', founding price' : ''), amt: money(m.price),
         note: c.founding ? 'Half off ' + money(b.price) + '. Paid once, yours to keep.' : 'Paid once, yours to keep.' });
       m.rows.push({ label: 'Deposit today (half, it holds your spot)', amt: money(m.deposit), big: true });
       m.rows.push({ label: 'Balance at launch', amt: money(m.balance) });
-    }
-    let low = 0, high = 0;
-    if (hasCare(c)) {
-      const mo = c.founding ? CARE.foundingMonthly : CARE.monthly, yr = c.founding ? CARE.foundingYearly : CARE.yearly;
-      if (c.care === 'monthly') {
-        m.after.push({ label: 'Care, paid monthly' + (c.founding ? ' (founding, half off)' : ''), amt: money(mo) + ' a month',
-          note: 'It starts after your 30 days of settling in.' });
-        low = high = mo * 12;
-      } else {
-        m.after.push({ label: 'Care, paid yearly' + (c.founding ? ' (founding, half off)' : ''), amt: money(yr) + ' a year',
-          note: 'Two months free. It starts after your 30 days of settling in.' });
-        low = high = yr;
-      }
-      const covered = ['your web address'];
-      if (c.email) covered.push('sending email');
-      if (c.news) covered.push('your newsletter (up to 1,000 subscribers)');
-      covered.push('your Google profile kept fresh');
-      m.after.push({ label: 'Covered by care', amt: 'included', note: cap(listOf(covered)) + ', and changes whenever you ask.' });
-    } else if (c.care === 'none') {
-      m.after.push({ label: 'Web address', amt: 'about ' + money(COSTS.domainYear) + ' a year', note: 'The first year comes with your build.' });
-      low += COSTS.domainYear; high += COSTS.domainYear;
-      if (c.email) {
+      m.care = CARE[c.build];
+      m.after.push({ label: 'Care for your ' + b.name + ' site', amt: money(m.care) + ' a month',
+        note: 'It starts after your 30 days of settling in. ' + CARE_SHORT[c.build] });
+      year = m.care * 12;
+      // email from their own address is covered by Tended and In Bloom care; with Planted it's in their own account
+      if (c.email && c.build === 'maiden') {
         m.after.push({ label: 'Sending email from your own address', amt: 'about ' + money(COSTS.emailMonth) + ' a month', note: 'About ' + money(COSTS.emailMonth * 12) + ' a year, in your own account.' });
-        low += COSTS.emailMonth * 12; high += COSTS.emailMonth * 12;
+        year += COSTS.emailMonth * 12;
       }
-      if (c.news) {
-        m.after.push({ label: 'Newsletter', amt: 'free to start', note: 'Free up to 100 subscribers, then about ' + money(COSTS.newsletterMonth) + ' a month.' });
-        high += COSTS.newsletterMonth * 12;
-      }
-      m.after.push({ label: 'Changes, when you want them', amt: money(COSTS.hourly) + ' an hour', note: 'I give you the price before I start. Most small changes come to about $25 to $50.' });
     }
     if (c.booking === 'calcom') m.after.push({ label: 'Cal.com booking', amt: 'free', note: 'Free for one person. A few of you? Each person can have their own free account, and your site links to each one.' });
     if (c.booking === 'current') m.after.push({ label: appName() ? 'Your ' + appName() + ' booking' : 'Your booking app', amt: 'no change', note: 'Whatever you pay for it now.' });
-    if (c.sell) m.after.push({ label: 'Card fees', amt: 'per payment', note: 'About 3% + 30¢ per payment (it varies a little by payment company), kept by the payment company.' });
-    m.yearLow = low; m.yearHigh = high;
+    if (c.sell) m.after.push({ label: 'Card fees', amt: 'per payment', note: 'About 2.9% + 30¢ per payment, kept by Stripe. The rest goes straight to you.' });
+    m.yearLow = m.yearHigh = year;
     // what the yearly figure can't include: the booking app they already pay for, and card fees
     const plus = [];
     if (c.booking === 'current') plus.push('what you pay for your booking app now');
     if (c.sell) plus.push('card fees when you’re paid online');
-    if (hasCare(c)) m.total = 'About ' + money(low) + ' a year after launch' + (plus.length ? ', plus ' + listOf(plus) : ', all in') + '.';
-    else if (c.care === 'none') {
-      m.total = 'About ' + money(low) + ' a year after launch' + (low === high ? '' : ' (up to ' + money(high) + ' once your newsletter passes 100 subscribers)')
-        + '. Plus ' + listOf(plus.concat('any changes you ask for')) + '.';
-    }
+    if (b) m.total = 'About ' + money(year) + ' a year after launch' + (plus.length ? ', plus ' + listOf(plus) : ', all in') + '.';
     return m;
   }
   function listOf(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
@@ -2205,27 +2111,36 @@
         el.append(was);
       } else el.append(make('strong', null, money(full)));
     }
-    $('[data-care="monthly"]').textContent = money(c.founding ? CARE.foundingMonthly : CARE.monthly) + ' a month';
-    $('[data-care="yearly"]').textContent = money(c.founding ? CARE.foundingYearly : CARE.yearly) + ' a year';
-    $('[data-care="yes"]').textContent = money(c.founding ? CARE.foundingMonthly : CARE.monthly) + ' a month, or ' + money(c.founding ? CARE.foundingYearly : CARE.yearly) + ' a year';
     $$('.build').forEach((l) => l.classList.toggle('on', $('input', l).checked));
-    { // care: a yes or no first, then monthly or yearly (Pollen, Oct 2)
-      const q = $('input[name="care_q"]');
-      if (c.care === 'monthly' || c.care === 'yearly') q.checked = true;
-      $('#care-period').hidden = !q.checked;
-      $('#care-none-note').hidden = c.care !== 'none';
-    }
-    $$('.care-opt, .opt').forEach((l) => { const i = $('input', l); if (i) l.classList.toggle('on', i.checked); });
-    const care = hasCare(c), none = c.care === 'none';
-    $('[data-x="email"]').textContent = care ? 'Covered by care.' : none ? 'About $3 a month, in your own account.' : 'About $3 a month in your own account, or covered by care.';
-    $('[data-x="news"]').textContent = care ? 'Covered by care, up to 1,000 subscribers.' : none ? 'Free up to 100 subscribers, then about $9 a month.' : 'Free up to 100 subscribers, then about $9 a month, or covered by care (up to 1,000).';
-    // setting up booking and taking payments online are part of Crone
-    const crone = [];
-    if (c.booking === 'calcom') crone.push('setting up booking');
-    if (c.sell) crone.push('taking payments online');
-    const note = crone.length > 0 && !!c.build && c.build !== 'crone';
-    $('#sell-note').hidden = !note;
-    if (note) $('#crone-what').textContent = cap(listOf(crone)) + (crone.length > 1 ? ' are' : ' is');
+    $$('.opt').forEach((l) => { const i = $('input', l); if (i) l.classList.toggle('on', i.checked); });
+    const b = BUILDS[c.build];
+    // care: its price follows the build, and what it covers (every tier up to theirs, or all three before they pick)
+    $('#care-price').textContent = b ? money(CARE[c.build]) + ' a month for ' + b.name : '$12, $45 or $90 a month, matching your build';
+    const incl = $('#care-incl'), upTo = b ? Object.keys(BUILDS).indexOf(c.build) : 2;
+    incl.textContent = '';
+    Object.keys(BUILDS).slice(0, upTo + 1).forEach((k, i) => {
+      const head = ['🌱', '🌿', '🌸'][i] + ' ' + BUILDS[k].name + ', ' + money(CARE[k]) + ' a month: ' + CARE_HEAD[k];
+      const ul = make('ul', 'checks');
+      CARE_INCL[k].forEach((t) => ul.append(make('li', null, t)));
+      incl.append(make('h4', null, head), ul);
+    });
+    incl.append(make('p', 'care-same', 'Changes are the same in every build: email me anytime, as often as you need, and I usually reply within 2 business days. Anything broken is fixed free, and big new things, like a new page or a new feature, I quote first. If you ever stop care, your site is still yours, and I hand over every file and login.'));
+    // email from your own address and the newsletter: what they come with, for the build they picked
+    const big = c.build === 'mother' || c.build === 'crone';
+    $('[data-x="email"]').textContent = big ? 'Covered by care.' : c.build === 'maiden' ? 'About $3 a month, in your own account.'
+      : 'Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month in your own account.';
+    $('[data-x="news"]').textContent = big ? 'Sending is covered by care.' : 'Part of Tended and In Bloom, with sending covered by care.';
+    // anything they'd like that a bigger build brings (booking and payments: In Bloom; a newsletter or a Book now button: Tended)
+    const bloom = [], tended = [];
+    if (c.booking === 'calcom') bloom.push('setting up booking');
+    if (c.sell) bloom.push('taking payments online');
+    if (c.news) tended.push('a newsletter');
+    if (c.booking === 'current') tended.push('a Book now button');
+    let say = '';
+    if (b && c.build !== 'crone' && bloom.length) say = cap(listOf(bloom)) + (bloom.length > 1 ? ' are' : ' is') + ' part of In Bloom.';
+    else if (c.build === 'maiden' && tended.length) say = cap(listOf(tended)) + (tended.length > 1 ? ' are' : ' is') + ' part of Tended and In Bloom.';
+    $('#sell-note').hidden = !say;
+    $('#sell-note').textContent = say ? say + ' No need to change anything now; we’ll figure it out over email.' : '';
   }
 
   let lastSpoken = '';
@@ -2235,12 +2150,14 @@
     if (!BUILDS[c.build]) {
       const f = c.founding;
       box.append(make('p', 'r-empty', c.build === 'unsure'
-        ? 'We’ll pick your build together over email. Maiden is ' + money(f ? 300 : 600) + ', Mother ' + money(f ? 600 : 1200) + ' and Crone ' + money(f ? 900 : 1800) + (f ? ' at the founding price' : '') + ', each paid once.'
+        ? 'We’ll pick your build together over email. Planted is ' + money(f ? 300 : 600) + ', Tended ' + money(f ? 600 : 1200) + ' and In Bloom ' + money(f ? 900 : 1800) + (f ? ' at the founding price' : '') + ', each paid once.'
         : 'Pick a build above, and your price shows up here.'));
     } else box.append(rowsList(m.rows));
     box.append(make('p', 'r-label', 'After launch'));
-    if (!c.care) box.append(make('p', 'r-empty', 'Pick care or pay as you go above, and what comes after launch shows up here.'));
-    else {
+    if (!BUILDS[c.build]) {
+      box.append(make('p', 'r-empty', 'Care, which keeps your site running: $12, $45 or $90 a month, matching your build. It starts after your 30 days of settling in.'));
+      if (m.after.length) box.append(rowsList(m.after));
+    } else {
       box.append(rowsList(m.after));
       const t = make('p', 'r-total');
       t.append(make('b', null, 'In all: '), document.createTextNode(m.total));
@@ -2262,7 +2179,7 @@
 
   /* ================= the plan: only what they need =================
      Everything marked data-if="a b" shows only when every one of its flags is true. */
-  let linkBuild = '', linkCare = '', buildChanging = false, foundingLink = false, foundingAsk = false;
+  let linkBuild = '', buildChanging = false, foundingLink = false, foundingAsk = false;
   let priceOpen = null;   // the "Your price in full" fold, once they've tapped it (null: open only when extras need answers)
   const applies = (q) => !q.when || q.when(have);
   const qcQuestions = () => QC.filter(applies);
@@ -2279,15 +2196,13 @@
   // When Taya's link chose the build, there's no build step: the build sits at the top of "Sign and hold your
   // spot" as a short card to confirm (or the chooser, if they tap Change). Without it, "Pick your build" comes first.
   function modes(c) {
-    const confirm = !!linkBuild && !buildChanging && !!c.build;
-    return { confirm, careSet: confirm && !!linkCare && !!c.care };
+    return { confirm: !!linkBuild && !buildChanging && !!c.build };
   }
   function flagsFor(c) {
-    const care = hasCare(c), h = have, md = modes(c);
+    const h = have, md = modes(c);
     const named = h.booking === 'has' && !!h.app && h.app !== 'other';
     return {
-      'care-yes': care, 'care-no': !care, 'care-unsure': !c.care,
-      'build-confirm': md.confirm, 'build-choose': !md.confirm, 'care-choose': !md.careSet,
+      'build-confirm': md.confirm, 'build-choose': !md.confirm,
       'build-in-sign': !!linkBuild, 'build-own-step': !linkBuild,
       'booking-current': c.booking === 'current', 'booking-calcom': c.booking === 'calcom',
       'app-named': named || !!val('f-bookapp'), 'app-ask': !named,
@@ -2295,7 +2210,7 @@
       'x-from-qc': h.news != null || h.booking != null || h.sell != null,
       'dom-wish': h.domain !== 'yes', 'dom-owned': h.domain === 'yes' || h.domain == null,
       'dom-have': h.domain === 'yes', 'dom-maybe': h.domain == null || h.domain === 'unsure', 'dom-unsure': h.domain === 'unsure',
-      'dom-new': !care && h.domain !== 'yes', 'dom-point': !care && h.domain === 'yes',
+      'dom-new': h.domain !== 'yes', 'dom-point': h.domain === 'yes',
       'kit-yes': h.kit === 'yes', 'kit-not-yes': h.kit !== 'yes', 'kit-ask': h.kit == null,
       'logo-yes': h.logo === 'yes', 'logo-no': h.logo === 'no', 'logo-not-no': h.logo !== 'no', 'logo-maybe': h.logo == null,
       'logo-drop': h.kit !== 'yes' && h.logo !== 'no',
@@ -2305,22 +2220,21 @@
   // hidden because it doesn't apply to them (not just a closed step)
   const planHidden = (el) => !!el.closest('[data-if][hidden], .step[hidden], #kit-box[hidden], .acct[hidden]');
   const shown = () => steps.filter((s) => !s.hidden);
-  // Each step's time counts only what they do before our call. Anything marked "Together over email"
-  // (Cal.com, a new web address at Porkbun, a newsletter, Stripe, Google's verification video) isn't counted.
+  // Each step's time counts only what they do now. Anything marked "Together over email"
+  // (Cal.com, Stripe, Google's verification video) or looked after by care isn't counted.
   function stepMinutes(s, c) {
-    const care = hasCare(c), md = modes(c);
+    const md = modes(c);
     switch (idOf(s)) {
       case 'build': return 5;
       // who you are 1, read and sign 3, pay the deposit 3; plus the build at the top when Taya's link set it:
-      // nothing more to confirm it with care set, 2 to choose care, 3 for the whole chooser, 1 for extras to answer
-      case 'sign': return 7 + (!linkBuild ? 0 : md.confirm ? (md.careSet ? 0 : 2) : 3)
+      // nothing more to confirm it (its care comes with it), 3 for the whole chooser, 1 for extras to answer
+      case 'sign': return 7 + (!linkBuild ? 0 : md.confirm ? 0 : 3)
         + (linkBuild && (have.news == null || have.booking == null || have.sell == null) ? 1 : 0);
-      case 'call': return 2;
       case 'work': return $('#b-work').classList.contains('has-mock') ? 2 : 5;
       // the look 3 (a brand kit to add, or moods and colors), a logo 1, photos 5 (none with free stock photos)
       case 'look': return 3 + (have.kit !== 'yes' && have.logo !== 'no' ? 1 : 0) + (have.photos === 'stock' ? 0 : 5);
       // start the Google profile 5, their booking link 2, and a sign-in check for a web address they own 2
-      case 'accounts': return (form.querySelector('input[name="acct_google_no"]:checked') ? 0 : 5) + (c.booking === 'current' ? 2 : 0) + (!care && have.domain === 'yes' ? 2 : 0);
+      case 'accounts': return (form.querySelector('input[name="acct_google_no"]:checked') ? 0 : 5) + (c.booking === 'current' ? 2 : 0) + (have.domain === 'yes' ? 2 : 0);
       default: return +s.getAttribute('data-min');
     }
   }
@@ -2329,16 +2243,14 @@
   const approx = (n) => (n >= 15 ? Math.round(n / 5) * 5 : n);
   // what we'll do together over email instead (not on their list, and not in its time)
   function togetherList(c) {
-    const care = hasCare(c), out = ['Google’s short verification video (if it asks for one)'];
+    const out = ['Google’s short verification video (if it asks for one)'];
     if (c.booking === 'calcom') out.push('your Cal.com booking');
-    if (!care && have.domain !== 'yes') out.push('your Porkbun account for your web address');
-    if (c.news && !care) out.push('your newsletter');
     if (c.sell) out.push('taking payments with Stripe');
     return out;
   }
 
   function renderPlan(c) {
-    const show = flagsFor(c), care = hasCare(c), md = modes(c);
+    const show = flagsFor(c), md = modes(c);
     $$('[data-if]').forEach((el) => { el.hidden = !el.getAttribute('data-if').split(' ').every((k) => show[k]); });
     // the build: its own first step, or the top of "Sign and hold your spot" when Taya's link chose it
     $('#s-build').hidden = !!linkBuild;
@@ -2355,13 +2267,12 @@
 
     // the accounts: only the ones their site leans on
     $('#acct-booking').hidden = !(c.booking === 'current' || c.booking === 'calcom');
-    $('#acct-news').hidden = !(c.news && !care);
     $('#acct-pay').hidden = !c.sell;
     // cards for later (together over email, or looked after by care) are dashed, so they don't read as to-dos
     $('#acct-booking').classList.toggle('later-card', c.booking === 'calcom');
-    $('#acct-domain').classList.toggle('later-card', care || have.domain !== 'yes');
-    $('#acct-covered').hidden = !(care && c.news);
-    $('#covered-what').textContent = 'With care, your newsletter is looked after for you, so there’s nothing to do for it.';
+    $('#acct-domain').classList.toggle('later-card', have.domain !== 'yes');
+    // a newsletter is set up by Taya and its sending is covered by care, so there's no account to make
+    $('#acct-covered').hidden = !c.news;
     const app = appName();
     $$('[data-app]').forEach((el) => { if (el.dataset.plain == null) el.dataset.plain = el.textContent; el.textContent = app || el.dataset.plain; });
 
@@ -2396,24 +2307,19 @@
       $('#cf-does').textContent = b ? cap(b.does) : 'We’ll pick your build together over email.';
       $('#cf-ready').textContent = b ? 'Ready in about ' + b.weeks + ' weeks' + (c.founding ? ' \u00b7 founding price' : '') : '';
       $('#cf-ready').hidden = !b;
+      // its care, which comes with it: the build price above, the care price here
       const cc = $('#cf-care');
-      cc.hidden = !md.careSet;
       cc.textContent = '';
-      if (md.careSet) {
-        const mo = money(c.founding ? CARE.foundingMonthly : CARE.monthly), yr = money(c.founding ? CARE.foundingYearly : CARE.yearly);
-        const [name, rest] = c.care === 'monthly' ? ['Care, paid monthly', mo + ' a month' + (c.founding ? ', the founding price, half off for as long as you keep it' : '') + '. It starts after your 30 days of settling in.']
-          : c.care === 'yearly' ? ['Care, paid yearly', yr + ' a year' + (c.founding ? ', the founding price, half off for as long as you keep it' : ', two months free') + '. It starts after your 30 days of settling in.']
-          : ['Pay as you go', 'changes are $100 an hour, and I give you the price before I start.'];
-        cc.append(make('b', null, name + ': '), document.createTextNode(rest));
-      }
-      $('#build-change').setAttribute('aria-label', md.careSet ? 'Change my build or care' : 'Change my build');
+      cc.hidden = !b;
+      if (b) cc.append(make('b', null, 'Care: '), document.createTextNode(money(CARE[c.build]) + ' a month, starting after your 30 days of settling in. It keeps your site running, and you email me your changes anytime.'));
+      $('#build-change').setAttribute('aria-label', 'Change my build');
     }
 
-    // what we'll do together over email, said in the call step so nothing moved there is hidden
-    const tog = togetherList(c);
-    $('#call-together').hidden = !tog.length;
-    $('#call-together').textContent = '';
-    $('#call-together').append(make('b', null, 'We’ll also do these together over email: '), document.createTextNode(listOf(tog) + '.'));
+    // what we'll do together over email, said just above the send button so nothing moved there is hidden
+    const tog = togetherList(c), tl = $('#together-line');
+    tl.hidden = !tog.length;
+    tl.textContent = '';
+    tl.append(make('b', null, 'We’ll also do these together over email: '), document.createTextNode(listOf(tog) + '.'));
 
     // number the steps they can see, and time each one; the last one finishes the list
     const list = shown();
@@ -2438,17 +2344,13 @@
     set('weeks', b ? b.weeks + ' weeks' : '2, 3 or 4 weeks');
     const name = val('f-name');
     set('client', name ? name + (val('f-biz') ? ' (' + val('f-biz') + ')' : '') : 'you');
-    const mo = money(c.founding ? CARE.foundingMonthly : CARE.monthly), yr = money(c.founding ? CARE.foundingYearly : CARE.yearly);
-    const careShort = c.care === 'monthly' ? 'care at ' + mo + ' a month' : c.care === 'yearly' ? 'care at ' + yr + ' a year' : c.care === 'none' ? 'pay as you go ($100 an hour, with the price before I start)' : 'care or pay as you go, whichever you choose by launch';
-    set('after', careShort + (hasCare(c) && c.founding ? ', the founding price (half off for as long as you keep care)' : ''));
-    let long;
-    if (hasCare(c)) {
-      long = 'Care, ' + (c.care === 'monthly' ? mo + ' a month' : yr + ' a year') + (c.founding ? ' (the founding price, half off for as long as you keep it)' : '')
-        + ': I make your changes whenever you ask and reply within 2 business days. Your web address, sending email and newsletter (up to 1,000 subscribers) are covered, and I keep your Google profile fresh. Anything big, like a new page, I quote first. Billing starts after your 30 days of settling in. Cancel anytime; your site stays yours.';
-    } else if (c.care === 'none') {
-      long = 'Pay as you go: send me one email with everything you’d like changed, and I’ll reply with a price before I start ($100 an hour). Nothing starts until you say yes. At launch your web address moves into your own account.';
-    } else long = 'Care or pay as you go, whichever you choose by launch.';
-    set('after-long', long);
+    // care: part of every build, at the build's monthly price (always full price, founding or not)
+    const careMo = b ? money(CARE[c.build]) + ' a month' : 'your build’s monthly price ($12, $45 or $90 a month)';
+    set('after', 'care at ' + careMo);
+    set('care', b ? 'at ' + money(CARE[c.build]) + ' a month for your ' + b.name + ' site' : 'at your build’s monthly price ($12, $45 or $90 a month)');
+    set('after-long', 'Care, ' + careMo + ', starting after your 30 days of settling in. It covers hosting, your web address and backups,'
+      + ' and you email me your changes anytime, as often as you need (I usually reply within 2 business days).'
+      + ' Anything broken, or anything I got wrong, is fixed free. Big new things, like a new page or a new feature, I quote first.');
     $('#sig-date').textContent = ($('#f-agree').checked && val('f-sig')) ? 'Signed ' + longDate : 'Dated ' + longDate;
   }
 
@@ -2478,33 +2380,6 @@
     if (!isLink(link)) { e.preventDefault(); $('#pay-preview').textContent = 'Preview: the payment link isn’t added yet, so nothing opens. (' + link + ')'; }
   });
   $('#pay-btn').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !$('#pay-btn').href) { e.preventDefault(); $('#pay-btn').click(); } });
-
-  const callBtn = $('#call-btn');
-  if (isLink(CONFIG.callLink)) {
-    callBtn.href = CONFIG.callLink;   // still works as a plain link if scripts or frames are blocked
-    // the calendar opens right on the page (Pollen, Oct 1), loaded only when they ask for it
-    callBtn.addEventListener('click', (e) => {
-      const box = $('#cal-frame');
-      e.preventDefault();
-      if (!box.hidden) { box.hidden = true; callBtn.firstElementChild.textContent = 'Want to chat? (optional)'; return; }
-      if (!box.firstChild) {
-        const f = document.createElement('iframe');
-        f.src = CONFIG.callLink + (CONFIG.callLink.includes('?') ? '&' : '?') + 'embed=true&theme=dark&layout=month_view';
-        f.title = 'Pick a time to chat'; f.loading = 'lazy'; f.allow = 'payment';
-        box.append(f);
-        const alt = make('p', 'pay-note');
-        const a = make('a', '', 'Open it in a new tab instead'); a.href = CONFIG.callLink; a.target = '_blank'; a.rel = 'noopener';
-        alt.append('Calendar not showing? ', a, '.'); box.append(alt);
-      }
-      box.hidden = false; callBtn.firstElementChild.textContent = 'Hide the calendar';
-    });
-  }
-  else {
-    callBtn.setAttribute('role', 'link'); callBtn.tabIndex = 0;
-    const say = () => { $('#call-preview').textContent = 'Preview: the calendar link isn’t added yet, so nothing opens.'; };
-    callBtn.addEventListener('click', (e) => { e.preventDefault(); say(); });
-    callBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); say(); } });
-  }
 
   function renderAll() {
     const c = choices(), m = priceModel(c);
@@ -2726,7 +2601,7 @@
   });
 
   /* ================= everything, gathered up ================= */
-  // "A few quick things": four short answers (the rest of their story comes on our call)
+  // "A few quick things": four short answers (the rest of their story comes by email)
   const Q_WORK = ['f-offer', 'f-when', 'f-policies', 'f-words'];
   const labelOf = (id) => { const l = $('label[for="' + id + '"]'); return l ? l.childNodes[0].textContent.trim() : id; };
   // a field only counts when it's on their list (an answer typed before the plan changed stays saved, but isn't sent)
@@ -2740,10 +2615,12 @@
     const kit = have.kit === 'yes' || (have.kit == null && yes('has_kit'));
     const app = have.booking === 'has' ? (appName() || 'another app') : (c.booking === 'current' ? said('f-bookapp') : '');
     return {
-      // (phone stays in the record for the same PocketBase fields; the call booking asks for a number if they'd like the phone)
+      // (phone stays in the record for the same PocketBase fields; it's always empty now, since everything is by email)
       name: val('f-name'), business: val('f-biz'), email: val('f-email'), phone: '',
       website: val('f-site'), domain_wish: said('f-domain'),
-      build: c.build, founding: c.founding, care: c.care,
+      // care is part of every build now (monthly, at the build's price), so this is always 'monthly' and the
+      // server's select field (monthly, yearly, none) still fits
+      build: c.build, founding: c.founding, care: 'monthly',
       extras: { send_email: c.email, newsletter: c.news, booking: c.booking || 'none', selling: c.sell },
       work: Object.assign({}, work, { mockup_changes: said('f-mock') }),
       look: { moods: have.kit === 'yes' ? [] : $$('input[name="moods"]:checked').map((i) => i.value), colors_love: said('f-love'), colors_avoid: said('f-avoid'), sites: said('f-sites'),
@@ -2752,8 +2629,8 @@
       accounts: {
         google_wanted: !yes('acct_google_no'), google_sent: yes('acct_google_started'), google_manager_added: yes('acct_google_manager'),
         booking_done: yes('acct_booking'), booking_app: app, booking_link: said('f-booklink'), calcom_username: said('f-caluser'),
-        domain_done: yes('acct_domain'), porkbun_username: said('f-porkbun'), domain_owned: said('f-owned'),
-        newsletter_done: yes('acct_news'), payments_done: yes('acct_pay'), payments_note: said('f-paynote'),
+        domain_done: yes('acct_domain'), domain_owned: said('f-owned'),
+        payments_done: yes('acct_pay'), payments_note: said('f-paynote'),
         do_it_for_me: !!(form.querySelector('input[name="accounts_for_me"]') || {}).value,
         // the quick check (Taya's PocketBase already has this json field, so nothing new is needed there)
         have: {
@@ -2764,9 +2641,9 @@
         }
       },
       steps: Object.assign({}, stepState),
-      price: { build: c.build, founding: c.founding, full: m.full || 0, price: m.price || 0, deposit: m.deposit || 0, balance: m.balance || 0, care: c.care,
+      price: { build: c.build, founding: c.founding, full: m.full || 0, price: m.price || 0, deposit: m.deposit || 0, balance: m.balance || 0, care: 'monthly', care_month: m.care || 0,
         year_low: m.yearLow, year_high: m.yearHigh, lines: m.rows.concat(m.after).map((r) => r.label + ': ' + r.amt + (r.note ? ' (' + r.note + ')' : '')), total: m.total },
-      deposit: m.deposit || 0, deposit_paid: yes('deposit_paid'), call_booked: yes('call_booked'),
+      deposit: m.deposit || 0, deposit_paid: yes('deposit_paid'),
       agreed: $('#f-agree').checked && !!val('f-sig'), agreement_name: val('f-sig'),
       agreement_date: today.toISOString(), agreement_version: CONFIG.agreementVersion,
       show_in_work: yes('show_in_work')
@@ -2776,8 +2653,8 @@
   // the same things, as sections for the thank-you page and as plain text for Taya
   // (a row left out with false doesn't apply to them; a row with '' shows as "Nothing yet")
   function sections(r) {
-    const c = choices(), m = priceModel(c), b = BUILDS[r.build], care = hasCare(c), h = r.accounts.have;
-    const careName = { monthly: 'Care, paid monthly', yearly: 'Care, paid yearly', none: 'Pay as you go' }[r.care] || 'Not chosen yet';
+    const c = choices(), m = priceModel(c), b = BUILDS[r.build], h = r.accounts.have;
+    const careName = b ? 'Care, ' + money(CARE[r.build]) + ' a month, starting after the 30 days of settling in' : 'Care, at the monthly price of the build we choose';
     const bookingName = { none: 'No online booking', current: 'Keep my current booking app', calcom: 'Set me up with Cal.com' }[r.extras.booking] || 'No online booking';
     const extras = [r.extras.send_email && 'email from my own address', r.extras.newsletter && 'a newsletter', bookingName !== 'No online booking' && bookingName.toLowerCase().replace('cal.com', 'Cal.com'), r.extras.selling && 'taking payments online'].filter(Boolean);
     const stepName = (id) => $('.step-name', $('[data-step="' + id + '"]')).textContent.replace(/^Step \d+: /, '');
@@ -2821,16 +2698,15 @@
         ['Google profile', [r.accounts.google_sent && 'Claimed or added', r.accounts.google_manager_added && 'Taya added as manager'].filter(Boolean).join(', ')],
         ['Booking', r.extras.booking === 'current' ? [r.accounts.booking_app, r.accounts.booking_link || 'Keeping my app'].filter(Boolean).join(': ')
           : r.extras.booking === 'calcom' ? ('Cal.com' + (r.accounts.calcom_username ? ': ' + r.accounts.calcom_username : '')) : 'No online booking'],
-        ['Web address', care ? 'Taya looks after it (care)'
-          : have.domain === 'yes' ? 'Keeping it where it lives' + (r.accounts.domain_done ? ', and I can sign in there' : '')
-          : (r.accounts.porkbun_username ? 'Porkbun username: ' + r.accounts.porkbun_username : (r.accounts.domain_done ? 'Porkbun account made' : 'Together over email'))],
+        ['Web address', have.domain === 'yes' ? 'Keeping it in my name, and care looks after it' + (r.accounts.domain_done ? ' (I can sign in where it lives)' : '')
+          : 'Taya buys it in my name during the build, and care looks after it'],
         onList('f-owned') && ['Web address, and where it lives', r.accounts.domain_owned], onList('f-domain') && ['Web address ideas', r.domain_wish],
-        ['Newsletter', r.extras.newsletter ? (care ? 'Covered by care' : (r.accounts.newsletter_done ? 'Buttondown account made' : 'Together over email')) : (have.news === 'later' ? 'Maybe later' : 'No newsletter')],
+        ['Newsletter', r.extras.newsletter ? 'Taya sets it up, and care covers its sending' : (have.news === 'later' ? 'Maybe later' : 'No newsletter')],
         r.extras.selling && ['Payments', [r.accounts.payments_done ? 'Stripe made, Taya invited' : 'Together over email', r.accounts.payments_note].filter(Boolean).join('. ')]
       ])],
       ['Agreement', [['Agreed', r.agreed ? 'Yes' : 'Not yet, going through it over email'], ['Signed', r.agreed ? r.agreement_name + ', ' + longDate : ''],
         ['Show in recent work', r.show_in_work ? 'Yes, that’s fine' : '']]],
-      ['A chat (optional)', [['Booked', r.call_booked ? 'Yes' : 'Not yet'],
+      ['Still to do', [
         ['Steps saved for later', shown().filter((s) => stepState[idOf(s)] !== 'done').map((s) => stepName(idOf(s))).join(', ')],
         ['Together over email', cap(listOf(togetherList(c)))]]]
     ];
@@ -2895,7 +2771,6 @@
     form.hidden = true; $('#qc').hidden = true; $('.intro').hidden = true; $('#progress').hidden = true;
     $('#done').hidden = false;
     $('#done-preview').hidden = LIVE;
-    $('#done-call').hidden = !r.call_booked;
     const h = $('#done-title');
     window.scrollTo({ top: $('#done').getBoundingClientRect().top + window.scrollY - 24, behavior: 'auto' });
     h.focus({ preventScroll: true });
@@ -3137,8 +3012,8 @@
   $('#preview-pill-wrap').hidden = LIVE;
   const saved = store.get();
   if (saved && saved.v === 1) restore(saved);
-  // a link from Taya's welcome email can pick the build, founding and care ahead of time, and say what they
-  // already have (what they pick on the page wins)
+  // a link from Taya's welcome email can pick the build and founding ahead of time, and say what they
+  // already have (what they pick on the page wins). An older link's care= is simply ignored: care comes with every build.
   try {
     const qs = new URLSearchParams(location.search);
     const f = (saved && saved.fields) || {};
@@ -3149,20 +3024,17 @@
     // the founding switch is only for someone Taya gave a founding spot (her link says founding=1)
     const linkFounding = /^(1|yes|true)$/i.test(qs.get('founding') || '');
     foundingLink = linkFounding || (CONFIG.foundingOpen && !/^(0|no|false)$/i.test(qs.get('founding') || ''));
-    if (!linkFounding && foundingLink) $('#h-founding').textContent = 'While my 5 founding spots last, this is on for you: half off the build, and half off care for as long as you keep it, $35 a month (or $350 a year).';
+    if (!linkFounding && foundingLink) $('#h-founding').textContent = 'While my 5 founding spots last, this is on for you: half off your build. Care stays at its usual monthly price.';
     if (foundingLink && !saved) $('#f-founding').checked = true;
     foundingAsk = foundingLink && !$('#f-founding').checked;
-    const care = (qs.get('care') || '').trim().toLowerCase();
-    if (['monthly', 'yearly', 'none'].includes(care) && !f.care) pick('care', care);
-    if (['monthly', 'yearly', 'none'].includes(care)) linkCare = care;
     // what they already have: the link answers these unless they've answered them on the page themselves
     for (const [k, v] of Object.entries(haveFromLink(qs))) if (haveBy[k] !== 'you') { have[k] = v; haveBy[k] = 'link'; }
     // a mockup already holds their words, photos and look: check it instead of retyping (Pollen, Oct 1)
     const mock = (qs.get('mockup') || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
     if (mock) {
       $('#love-it').addEventListener('click', () => { $('#s-work [data-next]').click(); });
-      if (CONFIG.magicSite) { $('#magic-it').hidden = false; $('#magic-link').href = url + '?mark=1'; $('label[for="f-mock"]').firstChild.textContent = 'Rather write it here? '; }
       const url = 'https://webfaery.love/peek/' + mock + '/';
+      if (CONFIG.magicSite) { $('#magic-it').hidden = false; $('#magic-link').href = url + '?mark=1'; $('label[for="f-mock"]').firstChild.textContent = 'Rather write it here? '; }
       $('#mock-link').href = url; $('#mock-link').textContent = 'webfaery.love/peek/' + mock;
       $('#mock-q').hidden = false; $('#b-work').classList.add('has-mock');
       $('#s-work .st').textContent = 'Check your mockup';
@@ -3191,13 +3063,8 @@
     let h = form.querySelector('input[name="accounts_for_me"]');
     if (!h) { h = document.createElement('input'); h.type = 'hidden'; h.name = 'accounts_for_me'; form.append(h); }
     h.value = 'yes'; saveSoon();
+    // then on to the next thing (or the send button); I email them the steps and we go one at a time
     $('#s-accounts [data-next]').click();
-    // then open the chat step with its calendar, so they can pick a time to do it together (Pollen, Oct 1)
-    const chat = $('#s-call');
-    steps.forEach((st) => setOpen(st, st === chat));
-    $('#call-for-me').hidden = false;
-    if ($('#cal-frame').hidden && isLink(CONFIG.callLink)) $('#call-btn').click();
-    setTimeout(() => scrollToEl(chat), 60);
   });
   ['photos', 'logo', 'kit'].forEach(async (k) => {
     const rows = await fileStore.get(k);
