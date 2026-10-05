@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Headlands Coffeehouse, on Laurel Street in downtown Fort Bragg since 1995. Rich espresso drinks, Belgian waffles, panini and pizza, soups and salads, wine and beer, live music every weekend and a new local artist on the walls every month.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23871212'/%3E%3Cpath d='M9 13h12v7a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5Z' fill='%23f7f2e8'/%3E%3Cpath d='M21 15h1.5a2.5 2.5 0 0 1 0 5H21' fill='none' stroke='%23f7f2e8' stroke-width='1.8'/%3E%3Cpath d='M13 10c-1-1.5 1-2.5 0-4M17 10c-1-1.5 1-2.5 0-4' fill='none' stroke='%23f5bb2a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
-<link rel="preload" as="image" href="images/hero-cappuccino.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-sky.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Varela+Round&family=Caveat:wght@600&display=swap">
@@ -121,49 +121,108 @@
   .btn:hover { background: var(--red-deep); border-color: var(--red-deep); }
   .btn.quiet { background: transparent; color: var(--red-deep); }
 
-  /* ---------- HERO: a cappuccino by the window, their red wall glowing outside ---------- */
-  .hero-band { position: relative; overflow: hidden; min-height: 96vh; min-height: 96svh; display: flex; flex-direction: column; background: #2a1a16; color: #fff8ee; }
-  .hero-band > .gutter { position: relative; z-index: 3; }
-  .hero-band.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 0;
-    background: url('images/hero-cappuccino.webp') var(--hero-pos, 50% 50%) / cover no-repeat; }
-  .hero-band.has-photo::after { content: ""; position: absolute; inset: 0; z-index: 1;
-    background:
-      linear-gradient(rgba(30, 14, 10, 0.62) 0, rgba(30, 14, 10, 0) 180px),
-      linear-gradient(rgba(30, 14, 10, 0) 34%, rgba(30, 14, 10, 0.5) 60%, rgba(30, 14, 10, 0.88) 100%),
-      linear-gradient(90deg, rgba(30, 14, 10, 0.55) 0%, rgba(30, 14, 10, 0) 62%); }
-  .hero-band .mark { color: #fff8ee; text-shadow: 0 1px 14px rgba(20, 8, 6, 0.6); }
-  .hero-band .mark small { color: #ffd77a; }
-  .hero-band nav a { color: #fff8ee; text-shadow: 0 1px 2px rgba(20, 8, 6, 0.6), 0 0 14px rgba(20, 8, 6, 0.6); }
-  .hero-band nav a:hover, .hero-band nav a:focus-visible { color: #ffd77a; }
-  .hero-band a:focus-visible { outline-color: #fff8ee; }
+  /* ---------- HERO: Peter Gealey's painted sky over the headlands, like their own site. The cloud holds the words,
+     the waffle and the mug stand on the two bluffs. On load the bluffs rise into place and the two of them hop;
+     as you scroll, the bluffs part to the sides and the words sink behind the sea, so the whole view opens up. ---------- */
+  .hero-band { --hred: #871212; --hbrown: #463629; position: relative; overflow: hidden; isolation: isolate; min-height: 96vh; min-height: 96svh;
+    display: flex; flex-direction: column; background: #a9d3ea; color: var(--hbrown); }
+  .hero-sky { position: absolute; inset: -2% 0 0; z-index: 0; background: url('images/hero-sky.webp') 50% 0 / cover no-repeat; will-change: transform; }
+  .hero-band > .gutter { position: relative; z-index: 2; }
+  .hero-band .mark { color: var(--hred); }
+  .hero-band .mark small { color: var(--hbrown); }
+  .hero-band nav a { color: var(--hred); }
+  .hero-band nav a:hover, .hero-band nav a:focus-visible { color: var(--hbrown); }
+  .hero-band a:focus-visible { outline-color: var(--hred); }
   .hero-band .wrap { max-width: 1200px; }
-  .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 60px 70px; }
-  .hero-copy { max-width: 660px; }
-  .hero-band .label { color: #ffd77a; font-size: 14px; }
-  .hero-band h1 { font-size: clamp(76px, 13vw, 160px); line-height: 0.86; color: #fff8ee; text-shadow: 0 2px 30px rgba(20, 8, 6, 0.45); }
-  .hero-band h1 .h1-b { display: block; color: #ffd77a; font-size: 0.62em; margin-top: 4px; }
-  .hero-band .lede { margin-top: 20px; font-size: clamp(18px, 2.2vw, 21px); color: rgba(255, 248, 238, 0.95); max-width: 46ch; text-shadow: 0 1px 12px rgba(20, 8, 6, 0.55); }
-  .hero-band .btn { background: #fff8ee; border-color: #fff8ee; color: #6c0e0e; }
-  .hero-band .btn:hover { background: #ffffff; }
-  .hero-band .btn.quiet { color: #fff8ee; background: rgba(30, 14, 10, 0.35); border-color: rgba(255, 248, 238, 0.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  .hero-band .since { margin-top: 18px; font-size: 15.5px; color: rgba(255, 248, 238, 0.85); }
-  .hero-band.wait::before, .hero-band.wait::after,
+  .hero-main { flex: 1; display: flex; align-items: flex-start; padding-block: clamp(24px, 6vh, 70px) calc(var(--water-h) + 30px); }
+  .hero-copy { max-width: 900px; margin-inline: auto; text-align: center; will-change: transform, opacity; }
+  .hero-band .label { color: var(--hred); font-size: 14px; }
+  .hero-band .label::before { box-shadow: 14px 0 0 -1px var(--gold); }
+  .hero-band h1 { font-size: clamp(56px, 8.4vw, 116px); line-height: 0.86; color: var(--hred); }
+  .hero-band h1 .h1-b { display: block; color: var(--hbrown); font-size: 0.66em; margin-top: 6px; }
+  .hero-band .lede { margin: 16px auto 0; font-size: clamp(18px, 2vw, 20px); color: #3a2c22; max-width: 58ch; }
+  .hero-band .cta-row { justify-content: center; }
+  .hero-band .btn { background: var(--hred); border-color: var(--hred); color: #fff8ee; }
+  .hero-band .btn:hover { background: #6c0e0e; border-color: #6c0e0e; }
+  :root[data-theme="dark"] .hero-band .btn:not(.quiet) { color: #fff8ee; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero-band .btn:not(.quiet) { color: #fff8ee; } }
+  .hero-band .btn.quiet { background: rgba(247, 242, 232, 0.6); color: var(--hred); }
+  .hero-band .btn.quiet:hover { background: #f7f2e8; }
+  .hero-band .since { margin-top: 16px; font-size: 15.5px; color: #5a4a3e; }
+  /* the scene: their sea, the two bluffs, the waffle and the mug */
+  .hero-band { --bluff-w: clamp(150px, 25vw, 400px); --water-h: max(76px, calc(var(--bluff-w) * 0.42)); --scene-h: calc(var(--bluff-w) * 1.15); }
+  .hero-scene { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; height: var(--scene-h); pointer-events: none; }
+  .hero-water { position: absolute; left: 0; right: 0; bottom: 0; height: var(--water-h); background: url('images/hero-water.webp') 50% 0 / cover no-repeat; }
+  .bluff { position: absolute; bottom: 0; width: var(--bluff-w); will-change: transform; }
+  .bluff.l { left: 0; } .bluff.r { right: 0; }
+  .bluff-in { position: relative; }
+  .bluff-in > img:first-child { display: block; width: 100%; height: auto; }
+  .bluff .who { position: absolute; bottom: 76%; height: auto; pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .bluff.l .who { left: -9%; width: 74%; }
+  .bluff.r .who { right: -3%; width: 72%; }
+  .hero-band.wait .hero-sky, .hero-band.wait .hero-water, .hero-band.wait .bluff-in, .hero-band.wait .who,
   .hero-band.wait .label, .hero-band.wait h1, .hero-band.wait .lede, .hero-band.wait .cta-row, .hero-band.wait .since { opacity: 0; }
-  .hero-band.go::before { animation: hero-photo 4s cubic-bezier(.22,1,.36,1) both; }
-  .hero-band.go::after { animation: hero-fade 2.4s ease 0.8s both; }
-  .hero-band.go .label { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.5s both; }
-  .hero-band.go h1 { animation: hero-rise 2.6s cubic-bezier(.22,1,.36,1) 1.8s both; }
-  .hero-band.go .lede { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 2.7s both; }
-  .hero-band.go .cta-row { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.3s both; }
-  .hero-band.go .since { animation: hero-fade 2s ease 3.8s both; }
-  @keyframes hero-photo { from { opacity: 0; transform: scale(1.1); } 20% { opacity: 1; } to { opacity: 1; transform: none; } }
+  .hero-band.go .hero-sky { animation: sky-in 2.4s cubic-bezier(.22,1,.36,1) both; }
+  .hero-band.go .label { animation: hero-rise-sm 1.6s cubic-bezier(.22,1,.36,1) 0.5s both; }
+  .hero-band.go h1 { animation: cloud-pop 1.5s cubic-bezier(.3,1.4,.5,1) 0.7s both; }
+  .hero-band.go .lede { animation: hero-rise-sm 1.8s cubic-bezier(.22,1,.36,1) 1.3s both; }
+  .hero-band.go .cta-row { animation: hero-rise-sm 1.6s cubic-bezier(.22,1,.36,1) 1.6s both; }
+  .hero-band.go .since { animation: hero-fade 1.6s ease 2s both; }
+  .hero-band.go .hero-water { animation: water-in 1.6s cubic-bezier(.22,1,.36,1) 0.3s both; }
+  .hero-band.go .bluff.l .bluff-in { animation: bluff-up 1.5s cubic-bezier(.3,1.25,.5,1) 0.9s both; }
+  .hero-band.go .bluff.r .bluff-in { animation: bluff-up 1.5s cubic-bezier(.3,1.25,.5,1) 1.05s both; }
+  .hero-band.go .bluff.l .who { animation: pop-up 1.1s cubic-bezier(.3,1.5,.5,1) 2s both; }
+  .hero-band.go .bluff.r .who { animation: pop-up 1.1s cubic-bezier(.3,1.5,.5,1) 2.2s both; }
+  @keyframes sky-in { from { opacity: 0; transform: scale(1.08); } 25% { opacity: 1; } to { opacity: 1; transform: none; } }
+  @keyframes cloud-pop { from { opacity: 0; transform: scale(0.82); } 40% { opacity: 1; } to { opacity: 1; transform: none; } }
+  @keyframes water-in { from { opacity: 0; transform: translateY(40%); } to { opacity: 1; transform: none; } }
+  @keyframes bluff-up { from { transform: translateY(105%); } to { transform: none; } }
+  @keyframes pop-up { from { opacity: 0; transform: translateY(46%) scale(0.7); transform-origin: 50% 100%; } 30% { opacity: 1; } to { opacity: 1; transform: none; transform-origin: 50% 100%; } }
   @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes hero-rise { from { opacity: 0; transform: translateY(44px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  :root[data-theme="dark"] .hero-sky, :root[data-theme="dark"] .hero-scene { filter: brightness(0.88); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero-sky, :root:not([data-theme="light"]) .hero-scene { filter: brightness(0.88); } }
   @media (max-width: 760px) {
-    .hero-band { min-height: 92svh; }
-    .hero-band.has-photo::before { --hero-pos: 64% 50%; }
-    .hero-main { padding-block: 40px 46px; }
+    .hero-band { min-height: 92svh; --bluff-w: clamp(132px, 40vw, 260px); }
+    .hero-main { padding-block: 22px calc(var(--scene-h) + 8px); }
+    .hero-sky { inset: -110px 0 0; }
+  }
+
+  /* ---------- Peter's characters, out and about (like their site): hop when you hover (or tap), the waffle and
+     the pizza ride down the page with you, the mugs and the food gang wander across, the lemon cookie peeks in to say hi.
+     Transform and opacity only. Reduced motion: everyone stays put, still visible. ---------- */
+  .hop { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .ride-zone { position: relative; overflow-x: hidden; }
+  @supports (overflow: clip) { .ride-zone { overflow-x: clip; } }
+  .rail { position: absolute; z-index: 4; width: var(--rider-w); pointer-events: none; }
+  .rail-l { left: 0; top: 0; height: 74%; }
+  .rail-r { right: 0; top: 17%; bottom: 0; }
+  .ride-zone { --rider-w: clamp(64px, 12vw, 190px); --peek: 30%; }
+  .rider { position: sticky; top: 30vh; top: 30svh; }
+  .rail-r .rider { top: 48vh; top: 48svh; }
+  .rail-l .rider { transform: translateX(calc(var(--peek) * -1)); }
+  .rail-r .rider { transform: translateX(var(--peek)); }
+  .rider .bob { will-change: transform; transform-origin: 50% 60%; }
+  .rider img { display: block; width: 100%; height: auto; pointer-events: auto; }
+  @media (max-width: 1260px) { .ride-zone { --peek: 46%; --rider-w: clamp(64px, 11vw, 120px); } }
+  @media (max-width: 760px) { .ride-zone { --peek: 54%; --rider-w: 60px; } }
+  .cookie-peek { position: absolute; left: 0; bottom: 70px; z-index: 4; width: clamp(96px, 13vw, 180px); pointer-events: none; }
+  .cookie-peek .slide { transform: translateX(-34%); will-change: transform; }
+  .cookie-peek img { display: block; width: 100%; height: auto; rotate: 12deg; pointer-events: auto; }
+  #menu { position: relative; }
+  .lane { position: relative; overflow: hidden; margin: 44px -20px 0; height: var(--lane-h); pointer-events: none; }
+  .lane .walk { position: absolute; left: 0; bottom: 0; width: var(--walker-w); will-change: transform; }
+  .lane img { display: block; width: 100%; height: auto; pointer-events: auto; }
+  .lane.on img { animation: step 0.9s ease-in-out infinite alternate; }
+  .lane-mugs { --walker-w: clamp(190px, 25vw, 330px); --lane-h: calc(var(--walker-w) * 0.47 + 6px); }
+  .lane-mugs img { filter: invert(1) sepia(0.35); }
+  .lane-food { --walker-w: clamp(230px, 31vw, 420px); --lane-h: calc(var(--walker-w) * 0.514 + 6px); margin-top: 34px; }
+  @keyframes step { from { transform: translateY(0) rotate(-1.2deg); } to { transform: translateY(-5%) rotate(1.2deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .rider { position: relative; top: auto; }
+    .lane .walk { transform: none; left: 50%; translate: -50% 0; }
+    .lane.on img { animation: none; }
+    .cookie-peek .slide { transform: translateX(-34%); }
   }
 
   /* ---------- photos + art ---------- */
@@ -209,44 +268,16 @@
   .play-here { margin-top: 26px; padding: 18px 20px; border-radius: 14px; border: 1px solid var(--hair); background: var(--ground); font-size: 16.5px; }
   .play-here b { font-family: 'Amatic SC', cursive; font-size: 28px; display: block; line-height: 1.05; margin-bottom: 4px; }
 
-  /* ---------- THE STEAM (signature): their own mug, by Peter Gealey, sways to the music while its steam
-     curls up and turns into notes that drift off toward the ceiling (16s). Reduced motion: notes resting in the air. ---------- */
+  /* ---------- the band: since 1995, with the cappuccino by the window ---------- */
   .band { background: var(--band); color: var(--on-band); position: relative; overflow: hidden; border-top: 0 !important; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: var(--band-gold); }
   .band .label { color: var(--band-gold); }
   .band p { color: rgba(247, 239, 227, 0.88); }
   .band .ph { color: #ffd77a; text-decoration-color: var(--band-gold); }
-  .steam-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
-  .steam-art { display: grid; place-items: center; }
-  .steam { width: min(100%, 440px); height: auto; overflow: visible; }
-  .steam .glow { fill: url(#cup-glow); }
-  .steam .mug { transform-box: view-box; transform-origin: 250px 470px; animation: mug-sway 8s ease-in-out infinite; }
-  .steam .wisp { fill: none; stroke: rgba(247, 239, 227, 0.55); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 260; stroke-dashoffset: 260; animation: wisp 16s ease-in-out infinite; }
-  .steam .wisp.w2 { animation-delay: -5.3s; stroke: rgba(255, 215, 122, 0.5); }
-  .steam .wisp.w3 { animation-delay: -10.6s; }
-  .steam .note { fill: var(--band-gold); opacity: 0; transform-box: fill-box; transform-origin: 50% 100%; animation: note-rise 16s cubic-bezier(.35,.1,.3,1) infinite; }
-  .steam .note path, .steam .note ellipse { fill: inherit; }
-  .steam .note .stem { fill: none; stroke: var(--band-gold); stroke-width: 4.5; stroke-linecap: round; }
-  .steam .note.n2 { animation-delay: -4s; fill: #f3a99c; } .steam .note.n2 .stem { stroke: #f3a99c; }
-  .steam .note.n3 { animation-delay: -8s; }
-  .steam .note.n4 { animation-delay: -12s; fill: #f7efe3; } .steam .note.n4 .stem { stroke: #f7efe3; }
-  @keyframes mug-sway { 0%, 100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.4deg); } }
-  @keyframes wisp { 0% { stroke-dashoffset: 260; opacity: 0; } 12% { opacity: 1; } 45% { stroke-dashoffset: 0; opacity: 1; } 70%, 100% { stroke-dashoffset: -260; opacity: 0; } }
-  @keyframes note-rise {
-    0% { opacity: 0; transform: translate(0, 0) rotate(-8deg) scale(0.6); }
-    8% { opacity: 1; }
-    30% { transform: translate(var(--dx1), -120px) rotate(6deg) scale(1); }
-    50% { opacity: 1; }
-    62% { opacity: 0; transform: translate(var(--dx2), -250px) rotate(-6deg) scale(1.05); }
-    100% { opacity: 0; transform: translate(var(--dx2), -250px) rotate(-6deg) scale(1.05); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .steam .mug, .steam .wisp, .steam .note { animation: none; }
-    .steam .wisp { stroke-dashoffset: 0; }
-    .steam .note { opacity: 1; transform: translate(var(--dx1), -120px); }
-    .steam .note.n3, .steam .note.n4 { transform: translate(var(--dx2), -230px); }
-  }
+  .band-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+  .band-pic { aspect-ratio: 3 / 2; }
+  .band-pic + .art-cap { color: rgba(247, 239, 227, 0.7); }
   .when3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; margin-top: 44px; }
   .when3 div { border-top: 1px solid rgba(247, 239, 227, 0.22); padding-top: 16px; }
   .when3 b { display: block; font-family: 'Amatic SC', cursive; font-size: 34px; line-height: 1; margin-bottom: 6px; color: var(--band-gold); }
@@ -259,7 +290,7 @@
   .menu-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px 40px; margin-top: 28px; }
   .menu-card { position: relative; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 22px 24px 18px; }
   .menu-card h3 { font-size: 36px; line-height: 1; color: var(--red); padding-right: 110px; }
-  .menu-card .critter { position: absolute; top: -26px; right: 10px; width: 112px; height: auto; pointer-events: none; }
+  .menu-card .critter { position: absolute; top: -26px; right: 10px; width: 112px; height: auto; }
   .menu-card .intro { font-size: 15.5px; color: var(--ink-soft); margin-top: 6px; }
   .menu { list-style: none; margin-top: 8px; }
   .menu li { padding: 9px 0; border-bottom: 1px solid var(--hair); }
@@ -568,14 +599,12 @@
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
   @media (max-width: 760px) {
-    .two, .music-grid, .steam-grid, .menu-cols, .menu-foot, .art-grid, .story, .visit-grid, .touch, .faq, .found, .fb-grid { grid-template-columns: minmax(0, 1fr); }
+    .two, .music-grid, .band-grid, .menu-cols, .menu-foot, .art-grid, .story, .visit-grid, .touch, .faq, .found, .fb-grid { grid-template-columns: minmax(0, 1fr); }
     .music-grid, .art-grid, .story, .visit-grid, .touch { row-gap: 36px; }
     .faq-list { margin-top: 26px; }
     section { padding-block: 60px; }
     .reviews, .when3 { grid-template-columns: minmax(0, 1fr); }
     .gal { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-    .steam { width: min(80%, 340px); }
-    .steam-art { order: -1; }
     .menu-cols { row-gap: 40px; margin-top: 44px; }
     .music-grid .art { width: min(80%, 340px); }
   }
@@ -619,7 +648,8 @@
   <p class="vh" role="status" id="status-live"></p>
 </div>
 
-<div class="hero-band has-photo">
+<div class="hero-band" id="hero">
+  <div class="hero-sky" aria-hidden="true"></div>
   <div class="gutter">
     <div class="wrap">
       <header class="top">
@@ -648,15 +678,21 @@
       </div>
     </div>
   </main>
+  <div class="hero-scene" aria-hidden="true">
+    <div class="hero-water"></div>
+    <div class="bluff l"><div class="bluff-in"><img src="images/art-bluff-left.webp" width="680" height="425" alt=""><img class="who hop" src="images/art-waffle.webp" width="644" height="540" alt=""></div></div>
+    <div class="bluff r"><div class="bluff-in"><img src="images/art-bluff-right.webp" width="669" height="410" alt=""><img class="who hop" src="images/art-mug.webp" width="553" height="493" alt=""></div></div>
+  </div>
 </div>
 <script>
+  /* hero: wait for Peter's sky, then the bluffs rise, the words pop into the cloud, and the waffle and the mug pop up */
   (function () {
-    var h = document.querySelector('.hero-band.has-photo');
+    var h = document.getElementById('hero');
     if (!h || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     h.classList.add('wait');
     var started = false;
     var go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
-    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-cappuccino.webp';
+    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-sky.webp';
     if (im.complete) go();
     setTimeout(go, 1500);
   })();
@@ -686,7 +722,7 @@
       <p class="label with-pill"><span>Live music</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Who&rsquo;s playing <em>at Headlands</em></h2>
       <p class="soft" style="margin-top:16px">Jazz, folk, blues, Irish tunes and the occasional art rock band, right here between the espresso machine and the piano. All ages, and never a cover: just order something good.</p>
-      <img class="art reveal" src="images/art-band.webp" width="576" height="447" alt="A drawing by Peter Gealey: a coffee mug on piano, a pastry on upright bass and a cup on drums, playing a set inside the coffeehouse" loading="lazy">
+      <img class="art reveal wiggle" src="images/art-band.webp" width="576" height="447" alt="A drawing by Peter Gealey: a coffee mug on piano, a pastry on upright bass and a cup on drums, playing a set inside the coffeehouse" loading="lazy">
       <p class="art-cap">The house band, drawn by Peter Gealey</p>
     </div>
     <div>
@@ -716,27 +752,14 @@
 </section>
 
 <section id="band" class="band gutter">
-  <div class="wrap steam-grid">
+  <div class="wrap band-grid">
     <div>
       <p class="label">Since 1995</p>
       <h2 class="reveal">Excellent espresso, <em>cool jazz</em></h2>
       <p style="margin-top:18px" class="measure">Dave, Mary and Peter Gealey opened Headlands with one goal: an upbeat, comfortable headquarters for delicious light fare, excellent espresso drinks and cool jazz. Thirty years later, the music still plays every weekend.</p>
     </div>
-    <div class="steam-art" aria-hidden="true">
-      <svg class="steam" viewBox="0 -270 553 763" focusable="false">
-        <defs>
-          <radialGradient id="cup-glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f5bb2a" stop-opacity="0.28"/><stop offset="1" stop-color="#f5bb2a" stop-opacity="0"/></radialGradient>
-        </defs>
-        <ellipse class="glow" cx="260" cy="250" rx="280" ry="260"/>
-        <path class="wisp" d="M236 40C214 6 262 -24 238 -62S262 -128 244 -164"/>
-        <path class="wisp w2" d="M268 36C292 2 248 -34 276 -70S250 -140 280 -176"/>
-        <path class="wisp w3" d="M252 30C236 -10 280 -40 258 -84S286 -150 262 -196"/>
-        <g class="mug"><image href="images/art-mug.webp" x="0" y="0" width="553" height="493"/></g>
-        <g class="note n1" style="--dx1:-40px;--dx2:-80px"><ellipse cx="238" cy="36" rx="15" ry="11" transform="rotate(-20 238 36)"/><path class="stem" d="M251 32V-14"/></g>
-        <g class="note n2" style="--dx1:50px;--dx2:120px"><ellipse cx="262" cy="36" rx="13" ry="10" transform="rotate(-20 262 36)"/><ellipse cx="300" cy="28" rx="13" ry="10" transform="rotate(-20 300 28)"/><path class="stem" d="M273 32V-12L311 -20V24"/></g>
-        <g class="note n3" style="--dx1:10px;--dx2:-30px"><ellipse cx="250" cy="36" rx="15" ry="11" transform="rotate(-20 250 36)"/><path class="stem" d="M263 32V-16C275 -8 284 -2 280 12"/></g>
-        <g class="note n4" style="--dx1:70px;--dx2:150px"><ellipse cx="246" cy="36" rx="13" ry="10" transform="rotate(-20 246 36)"/><path class="stem" d="M257 32V-12"/></g>
-      </svg>
+    <div>
+      <figure class="photo reveal band-pic"><img src="images/hero-cappuccino.webp" width="1500" height="1000" alt="A cappuccino and a pastry on the table by the window, the red wall glowing outside" loading="lazy"></figure>
     </div>
   </div>
   <div class="wrap">
@@ -746,7 +769,12 @@
       <div class="reveal"><b>Always free</b><p>All ages, no cover. A food or drink purchase keeps the music going.</p></div>
     </div>
   </div>
+  <div class="lane lane-mugs" data-dir="left" aria-hidden="true"><div class="walk"><img class="hop" src="images/art-walking-mugs.webp" width="1347" height="632" alt="" loading="lazy"></div></div>
 </section>
+
+<div class="ride-zone">
+<div class="rail rail-l" aria-hidden="true"><div class="rider"><div class="bob" data-spin="1"><img class="hop" src="images/art-waffle-shadow.webp" width="667" height="598" alt="" loading="lazy"></div></div></div>
+<div class="rail rail-r" aria-hidden="true"><div class="rider"><div class="bob" data-spin="-1"><img class="hop" src="images/art-pizza.webp" width="511" height="668" alt="" loading="lazy"></div></div></div>
 
 <section id="menu" class="gutter">
   <div class="wrap">
@@ -764,7 +792,7 @@
 
     <div class="menu-cols" data-panel="eat">
       <div class="menu-card reveal">
-        <img class="critter" src="images/art-waffle.webp" width="644" height="540" alt="" loading="lazy">
+        <img class="critter hop" src="images/art-waffle.webp" width="644" height="540" alt="" loading="lazy">
         <h3>Morning</h3>
         <ul class="menu">
           <li><b>Our world famous Belgian waffles</b><span>With maple syrup. Add fresh fruit and vanilla yogurt.</span></li>
@@ -777,7 +805,7 @@
         </ul>
       </div>
       <div class="menu-card reveal">
-        <img class="critter" src="images/art-pizza.webp" width="511" height="668" alt="" loading="lazy" style="width:88px">
+        <img class="critter hop" src="images/art-pizza.webp" width="511" height="668" alt="" loading="lazy" style="width:88px">
         <h3>Panini &amp; more</h3>
         <ul class="menu">
           <li><b>Panini</b><span>Grilled on Costeaux focaccia with a small garden salad. Pestini, Pompeii, Sicilian, Roman, Santa Fe or turkey.</span></li>
@@ -789,7 +817,7 @@
         </ul>
       </div>
       <div class="menu-card reveal" style="grid-column:1/-1">
-        <img class="critter" src="images/art-lemon-cookie.webp" width="576" height="416" alt="" loading="lazy">
+        <img class="critter hop" src="images/art-lemon-cookie.webp" width="576" height="416" alt="" loading="lazy">
         <h3>Something sweet</h3>
         <ul class="menu">
           <li><b>From Costeaux French Bakery</b><span>Almond tart (frangipane), lemon tart, princess torte, chocolate torte, brownies and chocolate macaroons, and other rotating treats.</span></li>
@@ -800,7 +828,7 @@
 
     <div class="menu-cols" data-panel="drink" hidden>
       <div class="menu-card">
-        <img class="critter" src="images/art-mug-shadow.webp" width="585" height="501" alt="" loading="lazy">
+        <img class="critter hop" src="images/art-mug-shadow.webp" width="585" height="501" alt="" loading="lazy">
         <h3>Coffee &amp; tea</h3>
         <ul class="menu">
           <li><b>Espresso drinks</b><span>Mr. Espresso&rsquo;s oakwood roasted Neapolitan espresso, and fine coffees from Big River Coffee Company. Any coffee drink decaf or over ice.</span></li>
@@ -810,7 +838,7 @@
         </ul>
       </div>
       <div class="menu-card">
-        <img class="critter" src="images/art-wine.webp" width="720" height="409" alt="" loading="lazy" style="width:130px;top:-18px">
+        <img class="critter hop" src="images/art-wine.webp" width="720" height="409" alt="" loading="lazy" style="width:130px;top:-18px">
         <h3>Cold, &amp; after five</h3>
         <ul class="menu">
           <li><b>Our famous espresso shake</b><span>Espresso ice cream, a shot of espresso and a splash of milk. Or vanilla, chocolate, fruit, and root beer floats.</span></li>
@@ -824,9 +852,10 @@
 
     <div class="menu-foot">
       <p class="tier-note mock-note wf-note">Your whole menu, straight from your site. Your site says &ldquo;please visit us for prices&rdquo;, so I left them off. If you&rsquo;d like them here, send me your board and I keep them current.</p>
-      <p class="tier-note mock-note wf-note">All the little characters are Peter Gealey&rsquo;s, from your own site. They&rsquo;re the heart of your look, so they stay.</p>
+      <p class="tier-note mock-note wf-note">All the little characters are Peter Gealey&rsquo;s, from your own site. They&rsquo;re the heart of your look, so they stay, and they get to move around like they do on your site now.</p>
     </div>
   </div>
+  <div class="cookie-peek" aria-hidden="true"><div class="slide"><img class="hop" src="images/art-lemon-cookie.webp" width="576" height="416" alt="" loading="lazy"></div></div>
 </section>
 
 <section id="art" class="gutter">
@@ -844,7 +873,7 @@
       <p class="soft" style="margin-top:18px;font-size:16.5px">Want to show at Headlands? Email <a href="mailto:info@headlandscoffeehouse.com">info@headlandscoffeehouse.com</a> with a note about yourself and five jpgs of your work.</p>
     </div>
     <div>
-      <img class="art reveal" src="images/art-artist.webp" width="648" height="520" alt="A drawing by Peter Gealey: a cream coffee mug at an easel, paintbrushes in hand, painting its own portrait" loading="lazy">
+      <img class="art reveal wiggle" src="images/art-artist.webp" width="648" height="520" alt="A drawing by Peter Gealey: a cream coffee mug at an easel, paintbrushes in hand, painting its own portrait" loading="lazy">
       <p class="art-cap">Artwork by Peter Gealey</p>
     </div>
   </div>
@@ -912,6 +941,7 @@
       <figure class="reveal photo"><img src="images/g-trio-window.webp" width="768" height="562" alt="An accordion, guitar and upright bass playing by the front window on a bright afternoon" loading="lazy"></figure>
     </div>
   </div>
+  <div class="lane lane-food" data-dir="right" aria-hidden="true"><div class="walk"><img class="hop" src="images/art-food.webp" width="1008" height="518" alt="" loading="lazy"></div></div>
 </section>
 
 <section id="gallery" class="gutter">
@@ -943,17 +973,17 @@
     </ul>
     <div class="reviews">
       <figure class="reveal review">
-        <img class="q-mug art" src="images/art-mug.webp" width="553" height="493" alt="" loading="lazy">
+        <img class="q-mug art hop" src="images/art-mug.webp" width="553" height="493" alt="" loading="lazy">
         <blockquote><p>&ldquo;The Belgian waffles are a must! Topped with fruit and yogurt. Filling and delicious.&rdquo;</p></blockquote>
         <figcaption>A visitor, on Tripadvisor</figcaption>
       </figure>
       <figure class="reveal review">
-        <img class="q-mug art" src="images/art-mug.webp" width="553" height="493" alt="" loading="lazy">
+        <img class="q-mug art hop" src="images/art-mug.webp" width="553" height="493" alt="" loading="lazy">
         <blockquote><p>&ldquo;When in Fort Bragg, we always stop for coffee and cake at this place.&rdquo;</p></blockquote>
         <figcaption>A 5 star review</figcaption>
       </figure>
       <figure class="reveal review">
-        <img class="q-mug art" src="images/art-mug.webp" width="553" height="493" alt="" loading="lazy">
+        <img class="q-mug art hop" src="images/art-mug.webp" width="553" height="493" alt="" loading="lazy">
         <blockquote><p>&ldquo;Amazing cappuccino!! Comfy atmosphere!&rdquo;</p></blockquote>
         <figcaption>A 5 star review</figcaption>
       </figure>
@@ -1012,6 +1042,7 @@
     </div>
   </div>
 </section>
+</div>
 
 <section id="fb" class="gutter" data-show="crone all" data-fold data-thing="Facebook feed">
   <div class="wrap">
@@ -1221,6 +1252,111 @@
     document.querySelectorAll('.reveal').forEach(function (el) {
       if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); }
     });
+  })();
+</script>
+
+<script>
+  /* Peter's characters, out and about. One scroll loop, reads first then writes, transform and opacity only.
+     Hero: the bluffs part and the words sink behind the sea. Riders: the waffle and the pizza rock as they ride down.
+     Lanes: the mugs and the food gang wander across. The lemon cookie peeks in near the sweets. Hover (or tap) to hop. */
+  (function () {
+    var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    var HOP = [
+      { transform: 'none' },
+      { transform: 'translateY(3%) scale(1.07, 0.9)', offset: 0.16 },
+      { transform: 'translateY(-26%) scale(0.95, 1.06) rotate(-5deg)', offset: 0.46 },
+      { transform: 'translateY(0) scale(1.06, 0.93)', offset: 0.72 },
+      { transform: 'translateY(-5%) rotate(2deg)', offset: 0.86 },
+      { transform: 'none' }
+    ];
+    var WIGGLE = [
+      { transform: 'none' }, { transform: 'rotate(-2.5deg)', offset: 0.2 }, { transform: 'rotate(2deg)', offset: 0.45 },
+      { transform: 'rotate(-1.2deg)', offset: 0.7 }, { transform: 'none' }
+    ];
+    function play(el) {
+      if (mq.matches || typeof el.animate !== 'function') return;
+      if (el._hop && el._hop.playState === 'running') return;
+      var w = el.classList.contains('wiggle');
+      if (!w) el.style.transformOrigin = '50% 100%';
+      el._hop = el.animate(w ? WIGGLE : HOP, { duration: w ? 620 : 720, easing: 'cubic-bezier(.3,.7,.4,1)' });
+    }
+    function target(e) { var t = e.target; return t && t.closest ? t.closest('.hop, .wiggle') : null; }
+    document.addEventListener('pointerover', function (e) {
+      if (e.pointerType !== 'mouse') return; var el = target(e);
+      if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) play(el);
+    });
+    document.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') return; var el = target(e); if (el) play(el); }, { passive: true });
+
+    var hero = document.getElementById('hero');
+    var copy = hero && hero.querySelector('.hero-copy'), sky = hero && hero.querySelector('.hero-sky');
+    var bl = hero && hero.querySelector('.bluff.l'), br = hero && hero.querySelector('.bluff.r');
+    var bobs = [].slice.call(document.querySelectorAll('.rider .bob'));
+    var lanes = [].slice.call(document.querySelectorAll('.lane')).map(function (l) { return { el: l, walk: l.querySelector('.walk'), dir: l.getAttribute('data-dir') === 'right' ? 1 : -1, w: 0 }; });
+    var cookie = document.querySelector('.cookie-peek'), slide = cookie && cookie.querySelector('.slide');
+    var heroH = 0, heroStart = 0, bluffW = 0, heroDone = false, seen = new Set();
+    function measure() {
+      if (hero) { heroH = hero.offsetHeight; heroStart = Math.max(0, hero.offsetTop + heroH - window.innerHeight); bluffW = bl ? bl.offsetWidth : 0; }
+      lanes.forEach(function (l) { l.w = l.walk.offsetWidth; });
+    }
+    function clear() {
+      [copy, sky, bl, br, slide].concat(bobs, lanes.map(function (l) { return l.walk; })).forEach(function (el) { if (el) { el.style.transform = ''; el.style.opacity = ''; } });
+    }
+    var ticking = false;
+    function frame() {
+      ticking = false; if (mq.matches) return;
+      var y = window.pageYOffset, vh = window.innerHeight;
+      /* reads */
+      var laneRects = lanes.map(function (l) { return seen.has(l.el) ? l.el.getBoundingClientRect() : null; });
+      var cr = cookie && seen.has(cookie) ? cookie.getBoundingClientRect() : null;
+      /* writes */
+      if (hero && heroH) {
+        if (y < heroH * 1.1) {
+          var yy = Math.max(0, y - heroStart), p = Math.min(1, yy / (Math.min(heroH, vh) * 0.9)), e = p * p * (3 - 2 * p);
+          if (bl) bl.style.transform = 'translate3d(' + (-e * bluffW * 1.08).toFixed(1) + 'px,0,0)';
+          if (br) br.style.transform = 'translate3d(' + (e * bluffW * 1.08).toFixed(1) + 'px,0,0)';
+          if (copy) { copy.style.transform = 'translate3d(0,' + (yy * (vh > heroH * 0.9 ? 0.42 : 0.22)).toFixed(1) + 'px,0)'; copy.style.opacity = Math.max(0, 1 - yy / Math.min(heroH, vh)).toFixed(3); }
+          if (sky) sky.style.transform = 'translate3d(0,' + (y * 0.18).toFixed(1) + 'px,0)';
+          heroDone = false;
+        } else if (!heroDone) {
+          heroDone = true;
+          if (bl) bl.style.transform = 'translate3d(' + (-bluffW * 1.08) + 'px,0,0)';
+          if (br) br.style.transform = 'translate3d(' + (bluffW * 1.08) + 'px,0,0)';
+          if (copy) copy.style.opacity = '0';
+        }
+      }
+      bobs.forEach(function (b, i) {
+        var k = +b.getAttribute('data-spin') || 1, a = y / (i ? 230 : 270) + i * 1.7;
+        b.style.transform = 'translate3d(0,' + (Math.sin(a * 1.3) * 16).toFixed(1) + 'px,0) rotate(' + (k * Math.sin(a) * 14).toFixed(2) + 'deg)';
+      });
+      lanes.forEach(function (l, i) {
+        var r = laneRects[i]; if (!r) return;
+        var t = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+        t = Math.max(0, Math.min(1, (t - 0.08) / 0.84));
+        var span = r.width + l.w, x = l.dir < 0 ? r.width - t * span : -l.w + t * span;
+        l.walk.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
+      });
+      if (cr && slide) {
+        var c = Math.max(0, Math.min(1, (vh - cr.top) / (vh * 0.55)));
+        var out = c < 0.35 ? 0 : c > 0.8 ? 1 : (c - 0.35) / 0.45;
+        out = 1 - Math.pow(1 - out, 3);
+        slide.style.transform = 'translate3d(' + (-104 + out * 80).toFixed(1) + '%,0,0) rotate(' + ((1 - out) * -18).toFixed(1) + 'deg)';
+      }
+    }
+    function kick() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { if (en.isIntersecting) seen.add(en.target); else seen.delete(en.target); en.target.classList.toggle('on', en.isIntersecting); });
+        kick();
+      }, { rootMargin: '120px 0px' });
+      lanes.forEach(function (l) { io.observe(l.el); }); if (cookie) io.observe(cookie);
+    } else { lanes.forEach(function (l) { seen.add(l.el); l.el.classList.add('on'); }); if (cookie) seen.add(cookie); }
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', function () { measure(); kick(); });
+    if (window.ResizeObserver && hero) new ResizeObserver(function () { measure(); kick(); }).observe(hero);
+    var onMq = function () { if (mq.matches) clear(); else { measure(); kick(); } };
+    if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);
+    window.addEventListener('load', function () { measure(); kick(); });
+    measure(); kick();
   })();
 </script>
 

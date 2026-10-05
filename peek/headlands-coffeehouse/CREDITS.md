@@ -3,16 +3,25 @@
 Every photo and drawing on this page is the coffeehouse's own. No stock photos are used. Captured Oct 4 2026.
 
 ## Artwork by Peter Gealey, from their own site (headlandscoffeehouse.com, Webflow CDN, transparent PNGs)
-- art-mug.webp (Home_Hero_Mug): the steaming mug, arms out. Used in the signature band and as the review marks.
+- art-mug.webp (Home_Hero_Mug): the steaming mug, arms out. Stands on the right bluff in the hero, and is the review marks.
 - art-band.webp (the-band): mugs and pastries playing piano, bass and drums inside the coffeehouse.
-- art-waffle, art-pizza, art-lemon-cookie, art-mug-shadow, art-wine (alcohol.png): the menu characters.
+- art-waffle (waffle2), art-pizza (pizza-shadow), art-lemon-cookie, art-mug-shadow, art-wine (alcohol.png): the menu characters. The waffle also stands on the left bluff in the hero, the pizza rides down the right edge of the page, and the lemon cookie peeks in by the sweets.
 - art-artist.webp: the mug at the easel (their Art page).
-- art-walking-mugs.webp: three mugs strolling (Easter egg).
+- art-walking-mugs.webp: three mugs strolling. They wander across the bottom of the music band (inverted to cream on the dark band) and in the Easter egg.
 - art-logo.webp (HCH-Logo): the mug on the headland bluff, black ink. A 6 px sliver on the left edge was cropped (a stray line in the source file). Inverted for dark mode.
-- art-bluff-left/right, art-drinks, art-food: kept for later, not on the page yet.
+- art-bluff-left/right (Home_Hero_BluffLeft/Right): the two headland bluffs in the hero.
+- art-food (food_cmp): the food gang, wandering across the bottom of the story section.
+- art-drinks: kept for later, not on the page yet.
+
+## Added Oct 5 2026 for the hero and the moving characters (full size originals, Webflow CDN, captured in a browser on their site)
+- hero-sky.webp (Home_Hero_Sky_Short.cmp.jpg, 2207 x 1014): Peter's painted sky with the big cloud the words sit in.
+- hero-water.webp (Home_Hero_Water2.png, 1800 x 237): the sea between the bluffs, with the whale spout, the fishing boat and the gulls.
+- art-waffle-shadow.webp (waffle2-shadow.png, 667 x 598): the waffle with his drop shadow, who rides down the left edge of the page like on their Eat page.
+
+The motion is our own code, made in the spirit of their site (their hero bluffs part on scroll, the walking mugs cross the story, the waffle and pizza ride down the Eat page, the characters bounce on hover). None of their scripts are used.
 
 ## Photos
-- hero-cappuccino.webp / .jpg: cappuccino and pastry by the window, the red wall glowing outside. From their Fort Bragg Restaurant Week listing (fortbraggfood.com/headlands, FBRW_headlands2.jpg, 1500 x 1000).
+- hero-cappuccino.webp / .jpg: cappuccino and pastry by the window, the red wall glowing outside. Now in the "Since 1995" music band (the hero is Peter's sky). From their Fort Bragg Restaurant Week listing (fortbraggfood.com/headlands, FBRW_headlands2.jpg, 1500 x 1000).
 - g-bagel.webp: jalapeno cheddar bagel and coffee. From their Visit Fort Bragg listing (visitfortbraggca.com, headlands.jpg, 1000 x 1000).
 - g-cappuccino-scone.webp: their Facebook profile photo (1066 x 1599).
 - g-pear-rye-cake.webp, g-pear-rye-slice.webp: their Facebook post of Oct 3/4 2026, "Just out of the oven... house made Ginger, Pear, Rye Cake" (originals 1803 and 1177 wide, resized to 1000).
