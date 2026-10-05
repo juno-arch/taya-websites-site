@@ -356,29 +356,55 @@
   function careCopy(p, build) {
     var b = BUILDS[build];
     var because = 'Care comes with every site, and it matches yours. ' + b.careLead + ' It’s ' + money(b.care) + ' a month, starting after your 30 days of settling in.';
-    if (build === 'Planted' && p[3] === 1) because += ' Email from your own address is covered by Tended care; with Planted it’s about $3 a month in your own account.';
+    if (build === 'Planted' && p[3] === 1) because += ' Email from your own address is covered by Tended care; with Planted it’s about $3 a month, paid by you.';
+    var also = CHANGES + ' If you ever stop, your site is still yours, and I hand you every file and login.';
+    if (build === 'In Bloom') also += ' Your booking, payments or shop can’t keep running on my server after that, so I help you move them into your own accounts.';
     return {
       name: b.emoji + ' ' + build + ' care, ' + money(b.care) + ' a month',
       because: because,
       points: b.carePoints,
-      also: CHANGES + ' If you ever stop, your site is still yours, and I hand you every file and login.'
+      also: also
     };
+  }
+
+  // What care pays for beyond hosting, backups and the web address, tier by tier
+  // (pricing-oct2026.md, "Accounts and third-party services")
+  var CARE_ALSO_PAYS = {
+    'Planted': '',
+    'Tended': ' It also pays for email from your own address, your Instagram feed on your site, and your newsletter’s paid plan once your list passes 100 people (up to 1,000).',
+    'In Bloom': ' It also pays for email from your own address, your Instagram feed, your newsletter’s paid plan once your list passes 100 people (up to 1,000), and your booking, payments or shop running on my server.'
+  };
+
+  // Which accounts this client would have: all in their name, with Taya added as a helper
+  function accountsLine(p, build) {
+    var acc = ['Your Google profile'];
+    if (p[2] === 2 || p[2] === 3 || build === 'In Bloom') acc.push('your booking app');
+    if (p[3] >= 2) acc.push('your newsletter list');
+    if (build === 'In Bloom') acc.push('your Stripe account');
+    var who = acc.length > 1 ? acc.slice(0, -1).join(', ') + ' and ' + acc[acc.length - 1] + ' are all' : acc[0] + ' is';
+    return who + ' in your name, with me added as a helper. Your web address is legally yours too: I hold it for you, with you listed as the owner, and renew it as part of care.';
   }
 
   function costLines(p, build) {
     var b = BUILDS[build];
     var lines = [
       ['The build', money(b.price) + ' once (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or bank transfer.'],
-      ['Care', money(b.care) + ' a month, starting after your 30 days of settling in. Hosting and your web address are covered (its first year comes with your build), so there’s nothing to renew.']
+      ['Care', money(b.care) + ' a month, starting after your 30 days of settling in. It pays for hosting, backups and your web address (its first year comes with your build), so there’s nothing to renew.' + CARE_ALSO_PAYS[build]]
     ];
-    if (build === 'Planted' && (p[3] === 1 || p[3] === 3)) lines.push(['Email from your own address', 'About $3 a month in your own account (Tended and In Bloom care cover it).']);
+    if (build === 'Planted' && (p[3] === 1 || p[3] === 3)) lines.push(['Email from your own address', 'About $3 a month, paid by you (Tended and In Bloom care cover it).']);
     if (build !== 'In Bloom' && p[2] === 2) {
       lines.push(['Booking', 'The booking app you already use stays on your own account, at whatever it costs you now. Cal.com is free for one person, if you’d like a free one.']);
     }
     if (build === 'In Bloom') {
       lines.push(['Booking', 'Your own booking account. Cal.com is free for one person (paid upgrades optional).']);
-      lines.push(['Card payments', 'Stripe keeps about 2.9% + 30¢ per payment, taken from your sales.']);
+      lines.push(['Card payments', 'Stripe keeps about 2.9% + 30¢ per payment, taken from your own sales.']);
     }
+    var notCovered = ['paid plans of apps you already use (Square, Vagaro, Acuity and the like)', 'ads'];
+    if (build === 'In Bloom') notCovered.unshift('Stripe’s card fee');
+    if (build !== 'Planted') notCovered.push('a newsletter list over 1,000 people');
+    var nc = notCovered.length > 2 ? notCovered.slice(0, -1).join(', ') + ', or ' + notCovered[notCovered.length - 1] : notCovered.join(' or ');
+    lines.push(['Care doesn’t pay for', nc.charAt(0).toUpperCase() + nc.slice(1) + '.']);
+    lines.push(['Your accounts', accountsLine(p, build)]);
     lines.push(['Fixes', 'Anything broken, always free.']);
     return lines;
   }

@@ -31,7 +31,7 @@ bone ink `#ece6da`, and chanterelle gold: `#f2c77c` for links and the italic wor
 `pages.css` and `start.html` (and `faery.css` for her bubble); every word on the soil is checked against the brightest
 thread and light (the notes are in `soil.css`).
 
-The founding count ("4 left") lives in one place only: the `#founding` line in `index.html`.
+The founding count ("3 left") lives in one place only: the `#founding` line in `index.html`.
 
 The free 30-minute chat link lives in one place only: `FREE_CHAT` in the first script after the hero in
 `index.html` (still a placeholder, `https://cal.com/webfaery/free-chat`: swap in the real Cal.com link).

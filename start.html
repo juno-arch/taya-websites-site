@@ -40,8 +40,12 @@
     2. A few quick things: four short, optional answers. Every build's words are written from a few
        easy questions by email, so the rest of their story is gathered there, not here
     3. Your look and photos (only the parts that apply)
-    4. Your accounts: only what's worth starting now. Anything easier together is marked
-       "Together over email" and isn't counted in the list or its time
+    4. Your accounts: only what their build needs (pricing-oct2026.md, "Accounts and third-party services"):
+       a Google profile with taya@webfaery.love as manager (every build); their booking link, or a free
+       Cal.com account (Tended, In Bloom); their own Buttondown list (Tended, In Bloom, when they'd like a
+       newsletter); Stripe in their name with Taya as Developer (In Bloom). Their web address needs no
+       account: Taya registers it with them as its legal owner and renews it as part of care. Anything
+       easier together is marked "Together over email" and isn't counted in the list or its time
   Without a build in Taya's link, "Pick your build" comes first (5 things). Everything saves on the
   visitor's own device as they go (localStorage), and one button sends it all to Taya.
 
@@ -618,8 +622,6 @@
   .ticks { display: grid; gap: 4px; margin-top: 8px; }
   .tick { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 16.5px; }
   .tick input { width: 20px; height: 20px; accent-color: var(--acc-fill); flex: none; margin: 0; }
-  .nothing { display: flex; align-items: center; gap: 10px; margin: 10px 0 4px; font-size: 16.5px; color: var(--ink); }
-  .nothing svg { width: 20px; height: 20px; color: var(--acc); flex: none; }
   .helper { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 0.88em; letter-spacing: 0.01em; color: var(--ink); white-space: nowrap; }
   .never-pw { margin: 18px 0 0; font-size: 15.5px; color: var(--ink-soft); font-style: italic; }
 
@@ -1084,8 +1086,8 @@
           <legend class="main">A few extras</legend>
           <p class="hint">So I know what your site needs. The price below follows along.</p>
           <div class="opts">
-            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month in your own account.</span></small></span></label>
-            <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and an easy way to write to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom, with sending covered by care.</span></small></span></label>
+            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month, paid by you.</span></small></span></label>
+            <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and your own Buttondown list for writing to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom, with sending covered by care.</span></small></span></label>
           </div>
           <fieldset class="group" style="margin-top: 18px" data-if="x-booking">
             <legend class="main sub-legend" style="margin-top: 0">Online booking</legend>
@@ -1186,15 +1188,18 @@
                   so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
                   it counts toward finishing.</li>
               <li><b>Launch.</b> Your site goes live at your own web address, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
-              <li><b>After launch.</b> <span data-a="after-long">Care at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span></li>
+              <li><b>After launch.</b> <span data-a="after-long">Care at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span>
+                  Care doesn’t cover Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (like Square,
+                  Vagaro or Acuity), ads, or a newsletter list over 1,000 people.</li>
               <li><b>What’s yours.</b> Everything: your site, your words, your photos, your web address (with you as its legal owner), your Google profile,
                   and your booking and payment accounts. I’m only ever added as a helper, and I never need your passwords. If you ever stop care,
-                  your site is still yours: I hand over every file and login within a week, and your site never goes down. Care is monthly, and it ends at the
+                  your site is still yours: I hand over every file and login within a week, and your site never goes down. With In Bloom, your booking,
+                  payments or shop can’t keep running on my server after care, so I help you move them into your own accounts. Care is monthly, and it ends at the
                   end of the month you’ve paid for.</li>
               <li><b>Hosting.</b> Hosting is part of care, so there’s nothing else to pay for it. If you ever stop care, your files are yours to host anywhere you like.</li>
               <li><b>Your part.</b> Send only photos, logos and words you have the right to use, and tell me if anything on your site is wrong.</li>
               <li><b>Honest limits.</b> I build carefully for Google, but no one can promise a ranking or a number of new clients. Outside services
-                  (Google, your booking app, your payment company, Porkbun) have their own rules and prices, which can change; the prices here are
+                  (Google, your booking app, your payment company, your newsletter app, Porkbun) have their own rules and prices, which can change; the prices here are
                   estimates as of October 2026.</li>
               <li><b>Upgrading later.</b> If you outgrow your build, what you paid counts toward a bigger one.</li>
               <li><b>Privacy.</b> What you share here is only for building your site. It’s never shared or sold.</li>
@@ -1415,8 +1420,10 @@
       </div>
     </li>
 
-    <!-- ================= accounts: only what's worth starting now =================
-         Anything easier together is marked "Together over email" and isn't counted in the list's time. -->
+    <!-- ================= accounts: only what their build needs, and only what's worth starting now =================
+         Google: every build. Booking and a newsletter list: Tended and In Bloom. Stripe: In Bloom. (Before a build is
+         picked, everything they asked for shows.) Anything easier together is marked "Together over email" and
+         isn't counted in the list's time. -->
     <li class="step" id="s-accounts" data-step="accounts" data-min="5">
       <h2 class="step-h"><button type="button" class="step-toggle" id="t-accounts" aria-expanded="false" aria-controls="b-accounts">
         <span class="num" aria-hidden="true"><span>5</span><svg><use href="#i-check"/></svg></span>
@@ -1425,8 +1432,8 @@
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body" id="b-accounts">
-        <p class="lead-in">Just what’s worth starting now. Anything marked <b>together over email</b> can wait for me.
-           Everything is in your name, and I’m only ever added as a helper.</p>
+        <p class="lead-in">Only what your build needs, and just what’s worth starting now. Anything marked <b>together over email</b> can wait for me.
+           Everything is in your name; where I need a way in, I’m added as a helper.</p>
         <div class="love-it">
           <p><b>Rather not do any of this?</b> I’ll set up what I can for you, in your name: you just forward me the sign-in code
              each one emails you. When it’s done, I hand it over and you change the password, so it’s only yours.
@@ -1516,9 +1523,41 @@
           </div>
         </div>
 
-        <!-- web address: care looks after it for everyone, with them as its legal owner. One they own stays in their
-             name; the only to-do is checking they can still sign in where it lives (getting back in can take days),
-             and around launch we point it at the new site. A new one I buy during the build, so there's nothing to do -->
+        <!-- newsletter: Tended and In Bloom, when they'd like one. The list lives in their own free Buttondown account
+             (it's their list). The sign-up on their site only needs the username, so there's no helper invite here:
+             Buttondown's team access is a paid add-on. Free up to 100 people; past that, care covers the paid plan up
+             to 1,000 (pricing-oct2026.md). -->
+        <div class="acct" id="acct-news" hidden>
+          <div class="acct-top">
+            <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 7.5l7.5 5.6 7.5-5.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div>
+              <h3>Your newsletter list</h3>
+              <span class="t">About 3 minutes</span>
+              <p>A free Buttondown account, in your own name, because your list is yours. It’s free until your list passes
+                 100 people, and then care covers its paid plan (up to 1,000 people). The sign-up on your site only needs your username.</p>
+            </div>
+          </div>
+          <details class="how">
+            <summary>How to do it</summary>
+            <ol>
+              <li>Go to <a href="https://buttondown.com" target="_blank" rel="noopener">buttondown.com</a> and sign up with your own email. It’s free.</li>
+              <li>Pick a username you like. It becomes your newsletter’s link, like buttondown.com/yourname.</li>
+              <li>Type your username below, and stop right there. I’ll connect the sign-up on your site, and we’ll make your first letter look lovely together over email.</li>
+            </ol>
+          </details>
+          <div class="q">
+            <label class="main" for="f-newsuser">Your Buttondown username</label>
+            <input type="text" id="f-newsuser" name="buttondown_username" maxlength="80" spellcheck="false" autocapitalize="off">
+          </div>
+          <div class="ticks">
+            <label class="tick"><input type="checkbox" name="acct_news" value="yes"> I’ve signed up</label>
+          </div>
+        </div>
+
+        <!-- web address: never a registrar account for them. A new one Taya registers during the build with them as its
+             legal owner, in her Porkbun account, renewed as part of care. One they own stays theirs: they keep it where it
+             is and we point it, or it moves in with Taya's (after any 60-day lock, e.g. one bought through Wix). The only
+             to-do is checking they can still sign in where it lives (getting back in can take days). domain.html has it all. -->
         <div class="acct" id="acct-domain">
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 12h16.4M12 3.6c2.4 2.3 3.6 5.1 3.6 8.4s-1.2 6.1-3.6 8.4c-2.4-2.3-3.6-5.1-3.6-8.4s1.2-6.1 3.6-8.4Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
@@ -1526,10 +1565,10 @@
               <h3>Your web address</h3>
               <span class="t" data-if="dom-point">About 2 minutes</span>
               <span class="t together" data-if="dom-new">Care looks after it</span>
-              <p data-if="dom-point">It stays in your name, and care looks after it from launch on. For now, just make sure you can still sign in where it lives,
-                 since getting back in can take a few days.</p>
-              <p data-if="dom-new">I buy it during the build (the first year comes with your build), with you as its legal owner, and care looks after it
-                 from then on, so there’s nothing to renew.</p>
+              <p data-if="dom-point">It stays yours. Keep it where it is and we point it at your new site, or move it in with mine and care renews it
+                 from then on. For now, just make sure you can still sign in where it lives, since getting back in can take a few days.</p>
+              <p data-if="dom-new">I buy it during the build (the first year comes with your build), with you as its legal owner. It lives in my
+                 Porkbun account and care renews it, so there’s no account for you to make and nothing to renew.</p>
             </div>
           </div>
           <div class="q" data-if="dom-owned">
@@ -1550,6 +1589,8 @@
               <li>Find where your address lives: the company you pay for it each year, like GoDaddy, Squarespace or Porkbun. An old receipt email usually says.</li>
               <li>Sign in there, and check that it still works. Locked out? Their help page can get you back in; start now, since it can take a few days.</li>
               <li>Around launch, we point it at your new site: about 5 minutes in its settings, with the <a href="domain.html">web address guide</a>, or together over email.</li>
+              <li>Rather I renewed it for you? It can move in with mine, once it’s free to move: every registrar locks an address for 60 days
+                  after it’s bought or moved (say, through Wix with an old site). Until then, we just point it.</li>
             </ol>
           </details>
           <div class="ticks" data-if="dom-point">
@@ -1557,7 +1598,7 @@
           </div>
         </div>
 
-        <!-- payments: only if they're selling. Stripe asks a lot, so we do it together -->
+        <!-- payments: In Bloom, and only if they're selling. Stripe asks a lot, so we do it together -->
         <div class="acct later-card" id="acct-pay" hidden>
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 10h17M7 14.5h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
@@ -1587,8 +1628,7 @@
           </div>
         </div>
 
-        <p class="nothing" id="acct-covered" hidden><svg aria-hidden="true"><use href="#i-check"/></svg><span id="covered-what">Your newsletter is set up by me and its sending is covered by care, so there’s nothing to do for it here.</span></p>
-        <p class="never-pw">Never send me a password, please. I’m always added as a helper instead.</p>
+        <p class="never-pw">Never send me a password, please. A helper invite or a username is all I ever need.</p>
         <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, all finished</span></button>
           <button type="button" class="later" data-skip>Skip for now</button>
@@ -1725,7 +1765,7 @@
      work              json   the "A few quick things" answers: offer, when_where, policies, words
      look              json   { moods[], colors_love, colors_avoid, sites, has_brand_kit, has_logo, anything_to_change }
      photo_notes       json   { album_link, stock_ok, no_face }
-     accounts          json   the accounts step's ticks, booking app and link, Cal.com username, owned domain,
+     accounts          json   the accounts step's ticks, booking app and link, Cal.com username, Buttondown username, owned domain,
                               payments note, and "have": the quick check's answers (logo, brand_kit, photos, web_address,
                               booking, booking_app, selling, newsletter), which of them Taya's link answered, and
                               whether they skipped the check. No new fields needed.
@@ -1832,7 +1872,8 @@
     { id: 'domain', q: 'A web address already?', small: 'Like yourname.com.',
       a: [['yes', 'Yes'], ['no', 'No'], ['unsure', 'Not sure']],
       said: { yes: 'a web address', no: 'no web address yet', unsure: 'maybe a web address' },
-      reply: { no: 'Then we’ll choose one together. The first year comes with your build, and care looks after it from then on.', unsure: 'No problem. We’ll check together over email.' } },
+      reply: { yes: 'Lovely. It stays yours: we point it at your new site, or move it in with mine so care renews it.',
+        no: 'Then we’ll choose one together. The first year comes with your build, and care looks after it from then on.', unsure: 'No problem. We’ll check together over email.' } },
     { id: 'booking', q: 'A booking app you use now?',
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
       said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
@@ -1847,7 +1888,7 @@
     { id: 'news', q: 'And a newsletter, to write to your people now and then?',
       a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No']],
       said: { yes: 'a newsletter', later: 'a newsletter maybe later', no: 'no newsletter' },
-      reply: { yes: 'A newsletter sign-up comes with Tended and In Bloom.', later: 'Easy to add anytime.' } }
+      reply: { yes: 'A newsletter sign-up comes with Tended and In Bloom, with your list in your own free Buttondown account.', later: 'Easy to add anytime.' } }
   ];
   // which build their answers point to (Pollen, Oct 1: people should know what they're signing up for as they answer)
   const BUILD_NAME = { maiden: BUILDS.maiden.name, mother: BUILDS.mother.name, crone: BUILDS.crone.name };
@@ -2078,9 +2119,9 @@
       m.after.push({ label: 'Care for your ' + b.name + ' site', amt: money(m.care) + ' a month',
         note: 'It starts after your 30 days of settling in. ' + CARE_SHORT[c.build] });
       year = m.care * 12;
-      // email from their own address is covered by Tended and In Bloom care; with Planted it's in their own account
+      // email from their own address is covered by Tended and In Bloom care; with Planted they pay for it (about $3 a month)
       if (c.email && c.build === 'maiden') {
-        m.after.push({ label: 'Sending email from your own address', amt: 'about ' + money(COSTS.emailMonth) + ' a month', note: 'About ' + money(COSTS.emailMonth * 12) + ' a year, in your own account.' });
+        m.after.push({ label: 'Sending email from your own address', amt: 'about ' + money(COSTS.emailMonth) + ' a month', note: 'About ' + money(COSTS.emailMonth * 12) + ' a year, paid by you.' });
         year += COSTS.emailMonth * 12;
       }
     }
@@ -2127,8 +2168,8 @@
     incl.append(make('p', 'care-same', 'Changes are the same in every build: email me anytime, as often as you need, and I usually reply within 2 business days. Anything broken is fixed free, and big new things, like a new page or a new feature, I quote first. If you ever stop care, your site is still yours, and I hand over every file and login.'));
     // email from your own address and the newsletter: what they come with, for the build they picked
     const big = c.build === 'mother' || c.build === 'crone';
-    $('[data-x="email"]').textContent = big ? 'Covered by care.' : c.build === 'maiden' ? 'About $3 a month, in your own account.'
-      : 'Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month in your own account.';
+    $('[data-x="email"]').textContent = big ? 'Covered by care.' : c.build === 'maiden' ? 'About $3 a month, paid by you.'
+      : 'Covered by care with Tended and In Bloom. With Planted, it’s about $3 a month, paid by you.';
     $('[data-x="news"]').textContent = big ? 'Sending is covered by care.' : 'Part of Tended and In Bloom, with sending covered by care.';
     // anything they'd like that a bigger build brings (booking and payments: In Bloom; a newsletter or a Book now button: Tended)
     const bloom = [], tended = [];
@@ -2220,8 +2261,19 @@
   // hidden because it doesn't apply to them (not just a closed step)
   const planHidden = (el) => !!el.closest('[data-if][hidden], .step[hidden], #kit-box[hidden], .acct[hidden]');
   const shown = () => steps.filter((s) => !s.hidden);
+  // The accounts their build needs (pricing-oct2026.md): a Google profile for every build; their booking app or
+  // Cal.com and a Buttondown list with Tended and In Bloom; Stripe with In Bloom. Each only when they'd like it,
+  // and before a build is picked (or "not sure yet"), everything they asked for shows.
+  function acctNeeds(c) {
+    const tier = BUILDS[c.build] ? Object.keys(BUILDS).indexOf(c.build) : 2; // 0 Planted, 1 Tended, 2 In Bloom
+    return {
+      booking: tier >= 1 && (c.booking === 'current' || c.booking === 'calcom'),
+      news: tier >= 1 && c.news,
+      pay: tier >= 2 && c.sell
+    };
+  }
   // Each step's time counts only what they do now. Anything marked "Together over email"
-  // (Cal.com, Stripe, Google's verification video) or looked after by care isn't counted.
+  // (Cal.com, Stripe, Google's verification video) or looked after by care (their web address) isn't counted.
   function stepMinutes(s, c) {
     const md = modes(c);
     switch (idOf(s)) {
@@ -2233,8 +2285,13 @@
       case 'work': return $('#b-work').classList.contains('has-mock') ? 2 : 5;
       // the look 3 (a brand kit to add, or moods and colors), a logo 1, photos 5 (none with free stock photos)
       case 'look': return 3 + (have.kit !== 'yes' && have.logo !== 'no' ? 1 : 0) + (have.photos === 'stock' ? 0 : 5);
-      // start the Google profile 5, their booking link 2, and a sign-in check for a web address they own 2
-      case 'accounts': return (form.querySelector('input[name="acct_google_no"]:checked') ? 0 : 5) + (c.booking === 'current' ? 2 : 0) + (have.domain === 'yes' ? 2 : 0);
+      // start the Google profile 5, their booking link 2, their Buttondown sign-up 3, and a sign-in check for a
+      // web address they own 2 (a new one needs nothing from them: no registrar account, care renews it)
+      case 'accounts': {
+        const need = acctNeeds(c);
+        return (form.querySelector('input[name="acct_google_no"]:checked') ? 0 : 5) + (need.booking && c.booking === 'current' ? 2 : 0)
+          + (need.news ? 3 : 0) + (have.domain === 'yes' ? 2 : 0);
+      }
       default: return +s.getAttribute('data-min');
     }
   }
@@ -2243,9 +2300,9 @@
   const approx = (n) => (n >= 15 ? Math.round(n / 5) * 5 : n);
   // what we'll do together over email instead (not on their list, and not in its time)
   function togetherList(c) {
-    const out = ['Google’s short verification video (if it asks for one)'];
-    if (c.booking === 'calcom') out.push('your Cal.com booking');
-    if (c.sell) out.push('taking payments with Stripe');
+    const out = ['Google’s short verification video (if it asks for one)'], need = acctNeeds(c);
+    if (need.booking && c.booking === 'calcom') out.push('your Cal.com booking');
+    if (need.pay) out.push('taking payments with Stripe');
     return out;
   }
 
@@ -2265,14 +2322,14 @@
     // founding=1 but it opened off (answers saved from an earlier visit), so she can turn it on
     $('#founding-box').hidden = !(foundingLink || $('#f-founding').checked) || (md.confirm && !foundingAsk);
 
-    // the accounts: only the ones their site leans on
-    $('#acct-booking').hidden = !(c.booking === 'current' || c.booking === 'calcom');
-    $('#acct-pay').hidden = !c.sell;
+    // the accounts: only the ones their build needs and their site leans on
+    const need = acctNeeds(c);
+    $('#acct-booking').hidden = !need.booking;
+    $('#acct-news').hidden = !need.news;
+    $('#acct-pay').hidden = !need.pay;
     // cards for later (together over email, or looked after by care) are dashed, so they don't read as to-dos
     $('#acct-booking').classList.toggle('later-card', c.booking === 'calcom');
     $('#acct-domain').classList.toggle('later-card', have.domain !== 'yes');
-    // a newsletter is set up by Taya and its sending is covered by care, so there's no account to make
-    $('#acct-covered').hidden = !c.news;
     const app = appName();
     $$('[data-app]').forEach((el) => { if (el.dataset.plain == null) el.dataset.plain = el.textContent; el.textContent = app || el.dataset.plain; });
 
@@ -2629,6 +2686,7 @@
       accounts: {
         google_wanted: !yes('acct_google_no'), google_sent: yes('acct_google_started'), google_manager_added: yes('acct_google_manager'),
         booking_done: yes('acct_booking'), booking_app: app, booking_link: said('f-booklink'), calcom_username: said('f-caluser'),
+        newsletter_done: yes('acct_news'), buttondown_username: said('f-newsuser'),
         domain_done: yes('acct_domain'), domain_owned: said('f-owned'),
         payments_done: yes('acct_pay'), payments_note: said('f-paynote'),
         do_it_for_me: !!(form.querySelector('input[name="accounts_for_me"]') || {}).value,
@@ -2698,11 +2756,14 @@
         ['Google profile', [r.accounts.google_sent && 'Claimed or added', r.accounts.google_manager_added && 'Taya added as manager'].filter(Boolean).join(', ')],
         ['Booking', r.extras.booking === 'current' ? [r.accounts.booking_app, r.accounts.booking_link || 'Keeping my app'].filter(Boolean).join(': ')
           : r.extras.booking === 'calcom' ? ('Cal.com' + (r.accounts.calcom_username ? ': ' + r.accounts.calcom_username : '')) : 'No online booking'],
-        ['Web address', have.domain === 'yes' ? 'Keeping it in my name, and care looks after it' + (r.accounts.domain_done ? ' (I can sign in where it lives)' : '')
-          : 'Taya buys it in my name during the build, and care looks after it'],
+        ['Web address', have.domain === 'yes' ? 'Already mine: we point it, or it moves in with Taya’s and care renews it' + (r.accounts.domain_done ? ' (I can sign in where it lives)' : '')
+          : 'Taya buys it during the build with me as its legal owner, and care renews it'],
         onList('f-owned') && ['Web address, and where it lives', r.accounts.domain_owned], onList('f-domain') && ['Web address ideas', r.domain_wish],
-        ['Newsletter', r.extras.newsletter ? 'Taya sets it up, and care covers its sending' : (have.news === 'later' ? 'Maybe later' : 'No newsletter')],
-        r.extras.selling && ['Payments', [r.accounts.payments_done ? 'Stripe made, Taya invited' : 'Together over email', r.accounts.payments_note].filter(Boolean).join('. ')]
+        ['Newsletter', !r.extras.newsletter ? (have.news === 'later' ? 'Maybe later' : 'No newsletter')
+          : acctNeeds(c).news ? 'My own Buttondown list' + (r.accounts.buttondown_username ? ': ' + r.accounts.buttondown_username : r.accounts.newsletter_done ? ', signed up' : ', not made yet')
+          : 'Part of Tended and In Bloom, so we’ll talk it over by email'],
+        r.extras.selling && ['Payments', acctNeeds(c).pay ? [r.accounts.payments_done ? 'Stripe made, Taya invited' : 'Together over email', r.accounts.payments_note].filter(Boolean).join('. ')
+          : 'Part of In Bloom, so we’ll talk it over by email']
       ])],
       ['Agreement', [['Agreed', r.agreed ? 'Yes' : 'Not yet, going through it over email'], ['Signed', r.agreed ? r.agreement_name + ', ' + longDate : ''],
         ['Show in recent work', r.show_in_work ? 'Yes, that’s fine' : '']]],
