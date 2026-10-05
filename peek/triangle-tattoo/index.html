@@ -16,7 +16,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Sancreek&family=Crimson+Pro:ital,wght@0,400..700;1,400..500&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Sancreek&family=Crimson+Pro:ital,wght@0,400..700;1,400..500&family=Caveat:wght@600&family=VT323&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -519,6 +519,129 @@
     .artist { display: grid; grid-template-columns: 120px minmax(0, 1fr); }
     .artist .photo { aspect-ratio: auto; height: 100%; }
   }
+
+  /* ---------- Y2K, in their own colors: their first site was black pages, hot magenta (#ff00ff) and red ---------- */
+  :root { --hot: #ff00ff; --hot-soft: #ffc1e8; --hot-lo: #5a0f3c; --hot-hi: #ff8ad8; --px: 'VT323', ui-monospace, Menlo, monospace; }
+  .px { font-family: var(--px); font-weight: 400; }
+  /* bevel buttons, like the old FrontPage nav */
+  .px-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; box-sizing: border-box; padding: 6px 14px 5px; margin: 0; cursor: pointer; text-decoration: none; -webkit-appearance: none; appearance: none;
+    font-family: var(--px); font-size: 21px; line-height: 1; letter-spacing: 0.02em; color: var(--hot-soft); background: #24182a;
+    border: 3px solid; border-color: var(--hot-hi) var(--hot-lo) var(--hot-lo) var(--hot-hi); border-radius: 0; }
+  .px-btn:hover { background: var(--hot); color: #120a10; }
+  .px-btn:active, .px-btn[aria-pressed="true"] { border-color: var(--hot-lo) var(--hot-hi) var(--hot-hi) var(--hot-lo); }
+  .px-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  /* NOW SHOWING: a marquee of their real exhibits; each name jumps to its wall */
+  .marq { background: #0d0a0f; color: var(--hot-soft); border-block: 2px solid var(--hot); overflow: hidden; }
+  .marq-in { display: flex; align-items: stretch; }
+  .marq-lbl { flex: none; display: flex; align-items: center; margin: 0; padding: 0 14px 0 16px; background: var(--hot); color: #120a10; font-family: var(--px); font-size: 22px; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+  .marq-win { position: relative; flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 22px, #000 calc(100% - 22px), transparent); mask-image: linear-gradient(90deg, transparent, #000 22px, #000 calc(100% - 22px), transparent); }
+  .marq-track { display: flex; width: max-content; animation: marq 48s linear infinite; }
+  .marq:hover .marq-track, .marq:focus-within .marq-track, .marq.paused .marq-track { animation-play-state: paused; }
+  @keyframes marq { to { transform: translateX(-50%); } }
+  .marq-list { display: flex; list-style: none; margin: 0; padding: 0; }
+  .marq-list li { display: flex; align-items: center; }
+  .marq-list li::after { content: "\25B2"; content: "\25B2" / ""; color: var(--neon); font-size: 11px; padding: 0 16px; }
+  .marq-list a { display: block; padding: 11px 2px 10px; font-family: var(--px); font-size: 25px; line-height: 1; text-transform: uppercase; white-space: nowrap; color: var(--hot-soft); text-decoration: none; }
+  .marq-list a:hover { color: #fff; text-decoration: underline; text-decoration-color: var(--hot); text-underline-offset: 4px; }
+  .marq-list a:focus-visible { outline: 2px solid var(--hot); outline-offset: -3px; }
+  .marq-pause { flex: none; align-self: center; min-height: 34px; margin: 0 10px; padding: 4px 10px 3px; font-size: 18px; }
+  @media (prefers-reduced-motion: reduce) {
+    .marq-track { animation: none; width: auto; }
+    .marq-list { flex-wrap: wrap; padding-inline: 8px; }
+    .marq-list[aria-hidden="true"], .marq-pause { display: none; }
+    .marq-win { -webkit-mask-image: none; mask-image: none; }
+    .marq-list a { white-space: normal; }
+  }
+  @media (prefers-reduced-motion: reduce) and (max-width: 620px) { .marq-in { flex-direction: column; } .marq-lbl { padding: 8px 12px 7px; } .marq-list li::after { padding: 0 10px; } }
+  @media (max-width: 520px) { .marq-lbl { font-size: 19px; padding: 0 10px 0 12px; } .marq-list a { font-size: 22px; } .marq-pause { margin: 0 6px; } }
+  .ex-list li { scroll-margin-top: 110px; margin-inline: -10px; padding-inline: 10px; }
+  .ex-list li.lit { animation: lit 2.6s ease both; }
+  @keyframes lit { 0%, 45% { background: rgba(255, 0, 255, 0.16); box-shadow: inset 3px 0 0 var(--hot); } 100% { background: rgba(255, 0, 255, 0); box-shadow: inset 3px 0 0 rgba(255, 0, 255, 0); } }
+  @media (prefers-reduced-motion: reduce) { .ex-list li.lit { animation: none; background: rgba(255, 0, 255, 0.16); box-shadow: inset 3px 0 0 var(--hot); } }
+
+  /* LINKS & CURIOSITIES: every room and link of the old site */
+  .curio-q { margin-top: 26px; max-width: 40ch; font-family: 'IM Fell English', serif; font-style: italic; font-size: clamp(21px, 2.4vw, 25px); line-height: 1.3; color: #fff3e6; }
+  .curio-q small { display: block; margin-top: 8px; font-family: 'Crimson Pro', serif; font-style: normal; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--night-soft); }
+  .curio-h { margin: 38px 0 12px; font-size: 24px; line-height: 1.1; color: var(--hot-soft); text-transform: uppercase; }
+  .rooms { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+  .curio-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
+  .curio-card { background: #1d1520; border: 3px solid; border-color: #4d2c45 #0a070b #0a070b #4d2c45; padding: 22px 22px 20px; scroll-margin-top: 20px; min-width: 0; }
+  .curio-card.wide { grid-column: 1 / -1; }
+  .curio-card h3 { font-size: 28px; line-height: 1.1; color: var(--on-night); }
+  .curio-card .when { margin-top: 4px; font-family: var(--px); font-size: 20px; color: var(--pink); }
+  .curio-card > p { margin-top: 10px; font-size: 17px; color: var(--night-soft); }
+  .curio-card > p.say { font-family: 'IM Fell English', serif; font-style: italic; font-size: 19px; color: #fff3e6; }
+  .clist { list-style: none; margin-top: 14px; display: grid; gap: 0; border-top: 1px solid rgba(241, 233, 222, 0.14); }
+  .clist li { padding: 9px 0; border-bottom: 1px solid rgba(241, 233, 222, 0.14); font-size: 16.5px; line-height: 1.45; color: var(--night-soft); overflow-wrap: anywhere; }
+  .clist li b { color: var(--on-night); font-weight: 600; }
+  .clist a { font-weight: 600; }
+  .clist .k { font-family: var(--px); font-size: 17px; letter-spacing: 0.02em; color: var(--pink); margin-right: 6px; text-transform: uppercase; }
+  .clist li.hush { color: #a99ba3; }
+  .ext::after { content: " \2197"; content: " \2197" / ""; font-size: 0.85em; }
+  .gone { color: #9d8f97; }
+  .gone small, small.gone { font-family: var(--px); font-size: 16px; letter-spacing: 0.02em; color: #c9a3b6; white-space: nowrap; }
+  .curio-sub { margin: 22px 0 8px; font-family: var(--px); font-size: 20px; text-transform: uppercase; color: var(--hot-soft); }
+  /* webring-style badges */
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+  .badge { display: inline-flex; align-items: stretch; min-height: 36px; box-sizing: border-box; text-decoration: none; border: 2px solid; border-color: var(--hot-hi) var(--hot-lo) var(--hot-lo) var(--hot-hi); background: #120c14; color: var(--hot-soft); font-family: var(--px); font-size: 18px; line-height: 1; transition: background-color 0.2s ease; }
+  .badge i { display: grid; place-items: center; padding: 0 7px; font-style: normal; font-size: 11px; background: var(--red); color: #fff; }
+  .badge span { display: flex; align-items: center; padding: 4px 9px 3px; }
+  a.badge:hover, a.badge.on { background: var(--hot); color: #120a10; }
+  a.badge.on i { background: #120a10; color: var(--hot); }
+  a.badge:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .badge.gone { border-color: #3a2f3c; border-style: dashed; color: #9d8f97; background: transparent; }
+  .badge.gone i { background: #3a2f3c; color: #9d8f97; }
+  .badge.gone small { padding: 4px 9px 3px 0; display: flex; align-items: center; }
+  .ring { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 14px; padding: 10px; background: #0d0a0f; border: 2px solid; border-color: var(--hot-lo) var(--hot-hi) var(--hot-hi) var(--hot-lo); }
+  .ring-screen { margin: 0; text-align: center; min-width: 0; }
+  .ring-screen .px { display: block; font-size: 16px; color: var(--pink); text-transform: uppercase; }
+  .ring-screen a { font-family: 'IM Fell English', serif; font-size: 23px; line-height: 1.2; color: #fff3e6; }
+  .ring-screen small { display: block; margin-top: 2px; font-size: 15px; color: var(--night-soft); }
+  .ring-btns { display: flex; gap: 6px; }
+  .ring .px-btn { font-size: 18px; padding-inline: 10px; }
+  @media (max-width: 620px) { .ring { grid-template-columns: minmax(0, 1fr); } .ring-btns { justify-content: center; } .ring-btns.r { order: 3; } }
+  .library summary { cursor: pointer; margin-top: 14px; font-family: var(--px); font-size: 21px; color: var(--hot-soft); text-transform: uppercase; }
+  .library summary:hover { color: #fff; }
+  .shelf { columns: 2 260px; column-gap: 26px; list-style: none; margin-top: 8px; }
+  .shelf li { break-inside: avoid; padding: 5px 0; font-size: 16px; line-height: 1.4; color: var(--night-soft); }
+  .shelf li i { display: block; font-size: 14.5px; }
+  .curio .mock-note { margin-top: 26px; font-size: 16px; color: var(--night-soft); }
+  @media (max-width: 760px) { .curio-grid { grid-template-columns: minmax(0, 1fr); } .curio-card { padding: 18px 16px; } }
+
+  /* GUESTBOOK (the request form, wearing its old web clothes) */
+  .gbook { margin-top: 26px; background: var(--ground); border: 3px solid; border-color: var(--hair) var(--ink-soft) var(--ink-soft) var(--hair); padding: 18px 20px 20px; }
+  .gb-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 14px; margin: 0; font-size: 26px; line-height: 1; color: var(--red); text-transform: uppercase; }
+  .gb-h span { font-size: 19px; color: var(--ink-soft); }
+  .gb-list { list-style: none; margin-top: 12px; display: grid; gap: 10px; }
+  .gb-list li { border-top: 1px dashed var(--hair); padding-top: 10px; }
+  .gb-list li:first-child { border-top: 0; padding-top: 0; }
+  .gb-list .who { font-family: var(--px); font-size: 20px; line-height: 1.1; color: var(--fuchsia); }
+  .gb-list .who em { font-style: normal; color: var(--ink-soft); }
+  .gb-list .new { display: inline-block; margin-left: 8px; padding: 1px 6px 0; font-family: var(--px); font-size: 16px; background: var(--hot); color: #120a10; animation: blink 1.1s steps(2, start) 4; }
+  @keyframes blink { to { visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) { .gb-list .new { animation: none; } }
+  .gb-list p { font-family: 'IM Fell English', serif; font-size: 20px; line-height: 1.35; color: var(--ink); }
+  .gb-list .gb-empty { font-style: italic; color: var(--ink-soft); }
+
+  /* FOOTER: the visitor counter, an odometer */
+  .foot-y2k { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 30px; }
+  .counter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; }
+  .counter-lbl { font-size: 24px; line-height: 1; color: var(--hot-soft); text-transform: uppercase; }
+  .odo { display: inline-flex; gap: 3px; padding: 4px; margin: 0; cursor: pointer; background: #000; border: 3px solid; border-color: var(--hot-lo) var(--hot-hi) var(--hot-hi) var(--hot-lo); font: inherit; }
+  .odo:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .odo-d { display: block; width: 0.62em; height: 1em; overflow: hidden; font-family: var(--px); font-size: 36px; line-height: 1; text-align: center; color: var(--hot); background: linear-gradient(#0a0508, #2a0d20 50%, #0a0508); }
+  .odo-s { display: block; will-change: transform; }
+  .odo-s span { display: block; height: 1em; }
+  .foot-y2k .px-btn { font-size: 18px; min-height: 36px; }
+  .best { font-family: var(--px); font-size: 18px; color: var(--night-soft); border: 1px dashed #4d2c45; padding: 5px 9px 4px; }
+  footer .mock-note { margin-top: 18px; font-size: 15.5px; color: var(--night-soft); border-color: rgba(240, 138, 198, 0.6); background-image: repeating-linear-gradient(-45deg, rgba(240, 138, 198, 0.06) 0 10px, rgba(0,0,0,0) 10px 22px); }
+
+  /* sparkly cursor trail: desktop mice only, never with reduced motion; triangles over anything you can click */
+  .spk { position: fixed; z-index: 60; pointer-events: none; left: 0; top: 0; font-size: 15px; line-height: 1; color: var(--hot); text-shadow: 0 0 6px rgba(255, 0, 255, 0.65); animation: spk 0.8s ease-out forwards; }
+  .spk.hot { color: #ff3d5e; font-size: 11px; text-shadow: 0 0 6px rgba(255, 61, 94, 0.7); }
+  @keyframes spk { from { opacity: 1; transform: translate(-50%, -50%) scale(1); } to { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + 22px)) scale(0.4) rotate(50deg); } }
+  @media print { .spk, .marq-pause { display: none; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -557,6 +680,7 @@
           <a href="#artists">Artists</a>
           <a href="#shop" data-show="crone all">Books</a>
           <a href="#visit">Visit</a>
+          <a href="#curiosities" data-show="mother crone all">Links</a>
         </nav>
       </header>
     </div>
@@ -607,6 +731,25 @@
 </div>
 
 <main>
+<div class="marq" id="marq" role="region" aria-label="Now showing in the museum">
+  <div class="marq-in">
+    <p class="marq-lbl">Now showing</p>
+    <div class="marq-win">
+      <div class="marq-track" id="marq-track">
+        <ul class="marq-list">
+          <li><a href="#ex-moko">Maori moko portraits</a></li>
+          <li><a href="#ex-stairs">American Patriotic Tattoo</a></li>
+          <li><a href="#ex-tools">Before the electric machine</a></li>
+          <li><a href="#ex-machines">Electric tattoo machines</a></li>
+          <li><a href="#ex-japan">Japanese Tattoo</a></li>
+          <li><a href="#ex-sideshow">Tattooing in the Circus Sideshow</a></li>
+          <li><a href="#ex-women">The Women&rsquo;s Wall</a></li>
+        </ul>
+      </div>
+    </div>
+    <button type="button" class="px-btn marq-pause" id="marq-pause" aria-pressed="false">Pause</button>
+  </div>
+</div>
 <section id="museum" class="night gutter">
   <div class="wrap">
     <div class="museum">
@@ -649,13 +792,13 @@
       <div>
         <p class="label">What&rsquo;s on the walls</p>
         <ul class="ex-list">
-          <li><b>Ta moko</b><span>Portraits of Maori in New Zealand with traditional moko, from the 1800s to the present.</span></li>
-          <li><b>The stairway</b><span>The American Patriotic Tattoo exhibit, with traditional designs from WWI to the present, all the way up.</span></li>
-          <li><b>Before electricity</b><span>The hand tools used in tattooing before the electric machine, from cultures all over the world.</span></li>
-          <li><b>The machines</b><span>A showcase of electric tattoo machines, from traditional coil machines to prison style rotaries.</span></li>
-          <li><b>Japanese tattoo</b><span>Antique hand tattooing instruments, portraits of the masters, and examples of their work.</span></li>
-          <li><b>The circus sideshow</b><span>Designs, photographs, and the retired costumes of Captain Don Leslie, one of the last of the living sideshow sword swallowers.</span></li>
-          <li><b>The Women&rsquo;s Wall</b><span>An entire wall of portraits of tattooed women, from different cultures and eras.</span></li>
+          <li id="ex-moko"><b>Ta moko</b><span>Portraits of Maori in New Zealand with traditional moko, from the 1800s to the present.</span></li>
+          <li id="ex-stairs"><b>The stairway</b><span>The American Patriotic Tattoo exhibit, with traditional designs from WWI to the present, all the way up.</span></li>
+          <li id="ex-tools"><b>Before electricity</b><span>The hand tools used in tattooing before the electric machine, from cultures all over the world.</span></li>
+          <li id="ex-machines"><b>The machines</b><span>A showcase of electric tattoo machines, from traditional coil machines to prison style rotaries.</span></li>
+          <li id="ex-japan"><b>Japanese tattoo</b><span>Antique hand tattooing instruments, portraits of the masters, and examples of their work.</span></li>
+          <li id="ex-sideshow"><b>The circus sideshow</b><span>Designs, photographs, and the retired costumes of Captain Don Leslie, one of the last of the living sideshow sword swallowers.</span></li>
+          <li id="ex-women"><b>The Women&rsquo;s Wall</b><span>An entire wall of portraits of tattooed women, from different cultures and eras.</span></li>
           <li class="hush"><b>Tattoos without consent</b><span>A quiet room about marks that were forced on people, so they&rsquo;re never forgotten.</span></li>
         </ul>
         <p class="soft" style="margin-top:16px;font-size:17px">Please no photos or video in the museum, and children come with a grown-up. School and personal tours are given on request: <span data-show="maiden" hidden>call ahead.</span><span data-show="mother crone all">call ahead, or <a href="#request">ask here</a>.</span></p>
@@ -773,16 +916,16 @@
   <div class="wrap">
     <div data-show="mother crone all" data-fold data-thing="tattoo and museum tour request form">
       <span class="tris" aria-hidden="true"></span>
-      <p class="label with-pill"><span>Ask ahead</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 class="reveal">A tattoo, <em>or a tour</em></h2>
-      <p class="measure soft" style="margin-top:14px">Walk-ins are always welcome. For an appointment with Mr. G, a bigger custom piece, or a school or group tour of the museum, send it here first:</p>
+      <p class="label with-pill"><span>Sign our guestbook</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <h2 class="reveal">Sign <em>the guestbook</em></h2>
+      <p class="measure soft" style="margin-top:14px">Walk-ins are always welcome. Sign here to say hi from the road, to ask for an appointment with Mr. G or a bigger custom piece, or to plan a school or group tour of the museum.</p>
       <div class="req">
         <div class="bk-card" id="rq-card">
           <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 What</button><button type="button" data-s="2" disabled>2 Details</button><button type="button" data-s="3" disabled>3 About you</button></div>
           <div id="rq-s1" class="stack">
-            <p class="q" id="rq-kind-q">What would you like?</p>
-            <div class="seg" role="group" aria-labelledby="rq-kind-q" style="margin-top:-6px">
-              <button type="button" data-kind="tattoo" aria-pressed="true">A tattoo</button><button type="button" data-kind="tour" aria-pressed="false">A museum tour</button>
+            <p class="q" id="rq-kind-q">What brings you here?</p>
+            <div class="seg three" role="group" aria-labelledby="rq-kind-q" style="margin-top:-6px">
+              <button type="button" data-kind="tattoo" aria-pressed="true">A tattoo</button><button type="button" data-kind="tour" aria-pressed="false">A tour</button><button type="button" data-kind="hi" aria-pressed="false">Just saying hi</button>
             </div>
             <div id="rq-who-wrap">
               <p class="q" id="rq-who-q">With</p>
@@ -805,12 +948,17 @@
               </div>
               <label class="fld">Who&rsquo;s coming?<input id="rq-group" autocomplete="off" value="A high school art class, with two teachers"></label>
             </div>
+            <div id="rq-hi" class="stack" hidden>
+              <label class="fld">Where are you from?<input id="rq-from" autocomplete="off" value="Eugene, Oregon"></label>
+              <label class="fld">Your note for the guestbook<textarea id="rq-note" rows="3">Hi from the road! Coming back next summer for a tattoo.</textarea></label>
+            </div>
           </div>
           <div id="rq-s3" class="stack" hidden>
             <div class="fld-row">
               <label class="fld">Your name<input id="rq-name" autocomplete="name" value="Sam L."></label>
               <label class="fld">Email<input id="rq-mail" type="email" autocomplete="email" value="sam@example.com"></label>
             </div>
+            <p class="soft" style="font-size:15px">Your email stays private. Only your name, where you&rsquo;re from and your note go in the guestbook.</p>
           </div>
           <p class="hint" id="rq-hint" role="status"></p>
           <div class="bk-nav" id="rq-nav"><button type="button" class="bk-go" id="rq-go">Next</button><button type="button" class="bk-go ghost" id="rq-back" hidden>Back</button></div>
@@ -825,8 +973,13 @@
         <div class="side mock-note wf-note">
           <div class="bk-note"><b>What you see</b>Each request lands in your email, photos attached, ready to answer when you have a minute.</div>
           <div class="bk-inbox"><div class="from">New request</div><div id="rq-inbox">Waiting for one&hellip; try it on the left</div></div>
+          <div class="bk-note"><b>A guestbook, like the old days</b>&ldquo;Just saying hi&rdquo; notes go up in the guestbook for everyone to read, and you can take any of them down. Tattoo and tour requests stay private and only come to you.</div>
           <div class="bk-note"><b>The phone still works</b>People can still call or walk in. This just catches the ones who&rsquo;d rather write, and the teachers planning a field trip.</div>
         </div>
+      </div>
+      <div class="gbook" id="gbook">
+        <p class="gb-h px"><b style="font-weight:400">&#9733; Guestbook &#9733;</b> <span id="gb-count">no signatures yet</span></p>
+        <ol class="gb-list" id="gb-list" aria-live="polite"><li class="gb-empty">Nobody has signed this preview yet. Pick &ldquo;Just saying hi&rdquo; above and be the first.</li></ol>
       </div>
     </div>
 
@@ -963,6 +1116,187 @@
   </div>
 </section>
 
+<section id="curiosities" class="night gutter curio" data-show="mother crone all" data-fold data-thing="links and curiosities page">
+  <div class="wrap">
+    <span class="tris" aria-hidden="true"></span>
+    <p class="label with-pill"><span>Links &amp; curiosities</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <h2 class="reveal">Every room <em>of the old site</em></h2>
+    <p class="measure soft" style="margin-top:14px">Black pages, hot pink links, and years of friends, heroes, motorcycles and books. All of it came along: every link from triangletattoo.com is here, and the ones that still work still go somewhere.</p>
+    <blockquote class="curio-q">&ldquo;We become walking, talking, pulsing, indelible art statements&hellip; &lsquo;Art with a pulse.&rsquo;&rdquo;<small>Madame Chinchilla, from About the Shop</small></blockquote>
+
+    <p class="px curio-h">&#9654; Rooms of the old site</p>
+    <ul class="rooms" aria-label="Rooms of the old site">
+      <li><a class="px-btn" href="#story">About the Shop</a></li>
+      <li><a class="px-btn" href="#museum">About the Museum</a></li>
+      <li><a class="px-btn" href="#artists">Portfolios</a></li>
+      <li data-show="crone all"><a class="px-btn" href="#shop">Books for Sale!</a></li>
+      <li><a class="px-btn" href="#c-exhibits">Online Exhibits</a></li>
+      <li><a class="px-btn" href="#c-capt">Capt. Don Leslie</a></li>
+      <li><a class="px-btn" href="#c-scooter">Mr. G&rsquo;s Scooter Page</a></li>
+      <li><a class="px-btn" href="#c-frames">Frames for Sale!</a></li>
+      <li><a class="px-btn" href="#c-friends">Friends and Visitors</a></li>
+      <li><a class="px-btn" href="#c-links">Cool Links</a></li>
+      <li><a class="px-btn" href="#c-library">Our Library</a></li>
+      <li><a class="px-btn" href="#visit">Contact Info</a></li>
+    </ul>
+
+    <div class="curio-grid">
+      <article class="curio-card" id="c-capt">
+        <h3>Capt. Don Leslie, <em>Mr. Sideshow</em></h3>
+        <p class="when">December 26, 1937 to June 4, 2007</p>
+        <p>Sword swallower, fire-eater, human blockhead and tattooed circus man, a generous contributor to the museum, and a dear friend. One wing holds his memorabilia from 42 years of circus life: photographs, drawings and costumes, floor to ceiling.</p>
+        <p class="say">Long live Mr. Sideshow!</p>
+        <ul class="clist">
+          <li><span class="k">Page</span><a class="ext" href="http://www.triangletattoo.com/capt.htm" target="_blank" rel="noopener">His page on your old site</a></li>
+          <li><span class="k">Book</span><a class="ext" href="http://www.triangletattoo.com/biography_of_capt_don_leslie.htm" target="_blank" rel="noopener">The biography by Madame Chinchilla</a><span data-show="crone all">, signed copies on <a href="#shop">the book shelf</a></span></li>
+          <li><span class="k">Video</span><a class="ext" href="https://www.youtube.com/watch?v=ue5h7yKnjtA" target="_blank" rel="noopener">&ldquo;The Human Volcano,&rdquo; an excerpt</a></li>
+          <li><span class="k">Press</span><a class="ext" href="https://www.sfgate.com/bayarea/article/captain-don-leslie-world-record-sword-2585393.php" target="_blank" rel="noopener">His San Francisco Chronicle obituary, 2007</a></li>
+        </ul>
+      </article>
+
+      <article class="curio-card" id="c-exhibits">
+        <h3>Online <em>exhibits</em></h3>
+        <p>The rooms you could visit from anywhere.</p>
+        <ul class="clist">
+          <li><a class="ext" href="http://www.triangletattoo.com/flash.html" target="_blank" rel="noopener">Flash from the Past</a>: Lone Wolf, London, and Ole, Copenhagen, both 1950s; a ship design from the early 1900s; a Terry Pope pin-up.</li>
+          <li><a class="ext" href="http://www.triangletattoo.com/machines.htm" target="_blank" rel="noopener">The Machine Exhibit</a>: from Edison&rsquo;s 1876 electric autograph machine, made into a tattoo machine in the 1920s, to a Percy Waters kit from the late 1930s that was never used.</li>
+          <li class="hush"><a class="ext" href="http://www.triangletattoo.com/old__tattooed_skin.htm" target="_blank" rel="noopener">Old Tattooed Skin</a>: two very old tattoos a reader wrote in about, and Mr. G&rsquo;s answer. Not for the squeamish.</li>
+          <li><span class="k">Video</span><a class="ext" href="https://www.youtube.com/watch?v=lvTSqS0Th0k" target="_blank" rel="noopener">&ldquo;The Way It Was: Monkeys, Blood and Guns,&rdquo; part 1</a>, from The Vanishing Tattoo</li>
+        </ul>
+      </article>
+
+      <article class="curio-card" id="c-scooter">
+        <h3>Mr. G&rsquo;s <em>scooter page</em></h3>
+        <p class="say">&ldquo;I love to ride my motorcycles!&rdquo;</p>
+        <p>Two shovelheads, a 74 inch bagger and a big bore 88 inch wide glide. Mr. G is a Road Captain of the Too Much Fun Club, with a street bike hill climb near Markleeville and the Coastal Run near Salt Point.</p>
+        <ul class="clist">
+          <li><span class="k">Page</span><a class="ext" href="http://www.triangletattoo.com/webdoc2.htm" target="_blank" rel="noopener">The scooter page on your old site</a></li>
+          <li><span class="k">Club</span><a class="ext" href="https://toomuchfunclub.org/" target="_blank" rel="noopener">Too Much Fun Club</a></li>
+          <li><span class="k">Record</span><a class="ext" href="http://www.triangletattoo.com/tattoo%20harley.htm" target="_blank" rel="noopener">The &ldquo;Salt Shaker&rdquo;</a>: California Fritz rode a 1970 shovelhead to a land speed record at Bonneville, 171.88 mph</li>
+          <li><span class="k">Video</span><a class="ext" href="https://www.youtube.com/watch?v=G3E1eZxdpeQ" target="_blank" rel="noopener">228 MPH, California Fritz at Bonneville, 2007</a></li>
+          <li><span class="k">Video</span><a class="ext" href="https://www.youtube.com/watch?v=OtMOUAmRc-s" target="_blank" rel="noopener">&ldquo;The Bitch Seat&rdquo;</a> and <a class="ext" href="https://www.youtube.com/watch?v=eNbbxs9A6pA" target="_blank" rel="noopener">&ldquo;Tequila&rdquo;</a></li>
+        </ul>
+        <p class="curio-sub" id="c-frames">&#9654; Frames for sale!</p>
+        <ul class="clist">
+          <li><a class="ext" href="http://www.triangletattoo.com/tattoo_machine_frames.htm" target="_blank" rel="noopener">&ldquo;Jolt-A-Matic&rdquo; tattoo machine frames by Mr. G</a>: numbered limited editions in brass, aluminum and 12L14 steel, plus drilled blanks. Sold out for now.</li>
+          <li class="gone">British Ink DC <small>(link is gone)</small></li>
+        </ul>
+      </article>
+
+      <article class="curio-card" id="c-friends">
+        <h3>Friends <em>and visitors</em></h3>
+        <p>Who&rsquo;s come through the door over the years.</p>
+        <ul class="clist">
+          <li><b>The Horitoshi tattoo family of Tokyo</b>, who tattooed at the shop for a week in October 1998, and again in April 2001</li>
+          <li><b>Gregg Allman</b>, Christmas 1992</li>
+          <li><b>Chi Cheng</b>, bass player for the Deftones, with Adrianne and baby Gabe. <span class="gone">oneloveforchi.com <small>(link is gone)</small></span></li>
+          <li><b>Billy Idol</b>, with Steve McGrath</li>
+          <li><b>Mona</b>, Sammy Hagar&rsquo;s bass player</li>
+          <li><b>Johnny Kid, Baby Lee, Indiana Slim, &ldquo;Kaiser&rdquo; Jim and Uncle Mark</b>, doing the &ldquo;Snack Shack Shuffle&rdquo;</li>
+          <li><b>Swanny</b>, who stopped by in the 1980s on his way to the Tip Top Lounge, wearing tattoos he got passing through the Panama Canal when it first opened. Their question still stands: did Christian Warlich, or someone who worked with him, tattoo there?</li>
+          <li><span class="k">Video</span><a class="ext" href="https://www.youtube.com/watch?v=oBuY16RvXZg" target="_blank" rel="noopener">Hori Smoku out-take: &ldquo;The best pineapple juice in the world&rdquo;</a></li>
+          <li><span class="k">Page</span><a class="ext" href="http://www.triangletattoo.com/tattoofriends.htm" target="_blank" rel="noopener">Friends and Visitors on your old site</a></li>
+        </ul>
+      </article>
+
+      <article class="curio-card wide" id="c-links">
+        <h3>Cool <em>tattoo links</em></h3>
+        <p>&ldquo;For more in-depth research, please visit our tireless friends.&rdquo; Hop through the ring, or tap any badge.</p>
+        <div class="ring" id="ring" role="group" aria-label="Triangle Tattoo friends ring">
+          <div class="ring-btns"><button type="button" class="px-btn" data-ring="prev">&laquo; Prev</button></div>
+          <p class="ring-screen" aria-live="polite"><span class="px">Triangle Tattoo friends ring</span><a class="ext" id="ring-name" href="https://vanishingtattoo.com/tattoo-history-museum/" target="_blank" rel="noopener">Vanishing Tattoo online museum</a><small id="ring-what">Tattoo history from around the world, online</small></p>
+          <div class="ring-btns r"><button type="button" class="px-btn" data-ring="rand">Random</button><button type="button" class="px-btn" data-ring="next">Next &raquo;</button></div>
+        </div>
+        <p class="curio-sub">From the home page</p>
+        <ul class="badges">
+          <li><a class="badge" href="https://vanishingtattoo.com/tattoo-history-museum/" target="_blank" rel="noopener" data-what="Tattoo history from around the world, online"><i aria-hidden="true">&#9650;</i><span>Vanishing Tattoo online museum</span></a></li>
+          <li><a class="badge" href="https://www.tattooarchive.com/" target="_blank" rel="noopener" data-what="Hundreds of articles on tattoo history"><i aria-hidden="true">&#9650;</i><span>Tattoo Archives</span></a></li>
+          <li><a class="badge" href="https://www.tattooroadtrip.com/" target="_blank" rel="noopener" data-what="Old shops and tattoo history, town by town"><i aria-hidden="true">&#9650;</i><span>Tattoo Road Trip</span></a></li>
+        </ul>
+        <p class="curio-sub">From the Cool Links page</p>
+        <ul class="badges">
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Horiyoshi III</span><small>(link is gone)</small></span></li>
+          <li><a class="badge" href="https://www.prm.ox.ac.uk/" target="_blank" rel="noopener" data-what="Oxford&rsquo;s museum of anthropology and world archaeology"><i aria-hidden="true">&#9650;</i><span>Pitt Rivers Museum</span></a></li>
+          <li><a class="badge" href="https://vanishingtattoo.com/" target="_blank" rel="noopener" data-what="Vince Hemingson&rsquo;s tattoo history, from his travels"><i aria-hidden="true">&#9650;</i><span>The Vanishing Tattoo</span></a></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Princess Judy</span><small>(link is gone)</small></span></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>bod-mod.com</span><small>(link is gone)</small></span></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>British Tattoo Museum</span><small>(link is gone)</small></span></li>
+          <li><a class="badge" href="https://www.thepolynesiantattoo.com/" target="_blank" rel="noopener" data-what="Polynesian tattoo, from tattooist Tricia Allen (at her new address)"><i aria-hidden="true">&#9650;</i><span>Tattoo Traditions, Tricia Allen</span></a></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Tattoo History Source Book</span><small>(link is gone)</small></span></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Oceania Tattoos</span><small>(link is gone)</small></span></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Homeward Bound Tattoo</span><small>(link is gone)</small></span></li>
+          <li><a class="badge" href="https://www.skinandink.com/" target="_blank" rel="noopener" data-what="The tattoo magazine that ran Mr. G&rsquo;s columns"><i aria-hidden="true">&#9650;</i><span>Skin &amp; Ink</span></a></li>
+          <li><a class="badge" href="https://tattoos.com/" target="_blank" rel="noopener" data-what="Still online, though the old pages are gone"><i aria-hidden="true">&#9650;</i><span>Tattoos.com</span></a></li>
+          <li><a class="badge" href="https://toomuchfunclub.org/" target="_blank" rel="noopener" data-what="Mr. G&rsquo;s motorcycle club"><i aria-hidden="true">&#9650;</i><span>Too Much Fun Club</span></a></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Japanese Institute</span><small>(link is gone)</small></span></li>
+          <li><a class="badge" href="https://darkimages.com/" target="_blank" rel="noopener" data-what="Paul Booth&rsquo;s art"><i aria-hidden="true">&#9650;</i><span>Last Rites Tattoo, Dark Images</span></a></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Leu Family&rsquo;s Iron</span><small>(link is gone)</small></span></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Borderlands Magazine</span><small>(link is gone)</small></span></li>
+          <li><span class="badge gone"><i aria-hidden="true">&#9650;</i><span>Rusty Savage</span><small>(link is gone)</small></span></li>
+        </ul>
+      </article>
+
+      <article class="curio-card wide library" id="c-library">
+        <h3>Our <em>library</em></h3>
+        <p>Mr. G &amp; Chinchilla&rsquo;s bookstore: books from the museum library that helped them understand tattooing, and some that got them through long winter nights next to the woodstove on their houseboat. Suggestions still welcome at <a href="mailto:books@triangletattoo.com">books@triangletattoo.com</a>.</p>
+        <details>
+          <summary>&#9654; All 32 books on the shelf</summary>
+          <p class="curio-sub">Tattoo, art &amp; history</p>
+          <ul class="shelf">
+            <li><a class="ext" href="https://www.amazon.com/dp/0446670014" target="_blank" rel="noopener">The Total Tattoo Book</a><i>&ldquo;Look for some pages about Triangle Tattoo.&rdquo;</i></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/1890451002" target="_blank" rel="noopener">Bodies of Subversion: A Secret History of Women and Tattoo</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0896597989" target="_blank" rel="noopener">Japanese Tattoo</a><i>&ldquo;We&rsquo;ve looked at this book hundreds of times.&rdquo;</i></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0863692729" target="_blank" rel="noopener">Skin Shows: The Art of Tattoo</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0863696775" target="_blank" rel="noopener">Skin Shows III: The Art of Tattoo</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0863699480" target="_blank" rel="noopener">Skin Shows IV</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0912383445" target="_blank" rel="noopener">Tattoo: Pigments of Imagination</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/1560240237" target="_blank" rel="noopener">Bad Boys and Tough Tattoos</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0934496072" target="_blank" rel="noopener">Body Designs</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0934496099" target="_blank" rel="noopener">Henna (Mehndi) Bodyart Handbook</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0916638782" target="_blank" rel="noopener">The Father of American Tattooing: Franklin Paul Rogers</a><i>&ldquo;The title says it all!&rdquo;</i></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0965575608" target="_blank" rel="noopener">The Hawaiian Tattoo</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/084534756X" target="_blank" rel="noopener">Art, Sex and Symbol: The Mystery of Tattooing</a><i>One of the first books Mr. G read as an apprentice.</i></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0070687900" target="_blank" rel="noopener">Heavily Tattooed Men and Women</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/094064214X" target="_blank" rel="noopener">Modern Primitives (Re/Search #12)</a><i>With an interview with their good friend Capt. Don.</i></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0930741137" target="_blank" rel="noopener">Marks of Civilization</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0942324099" target="_blank" rel="noopener">Pierced Hearts and True Love</a><i>&ldquo;Definitely a fine art book.&rdquo;</i></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0945367139" target="_blank" rel="noopener">Flash from the Past: Classic American Tattoo Designs 1890 to 1965</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0394542053" target="_blank" rel="noopener">Tibetan Thangka Painting: Methods and Materials</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0500270627" target="_blank" rel="noopener">Tao Magic: The Secret Language of Diagrams and Calligraphy</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/1570621225" target="_blank" rel="noopener">Sacred Calligraphy of the East</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0486229874" target="_blank" rel="noopener">Art Forms in Nature</a><i>For when you&rsquo;ve been in the studio too long.</i></li>
+          </ul>
+          <p class="curio-sub">Scooter type reading</p>
+          <ul class="shelf">
+            <li><a class="ext" href="https://www.amazon.com/dp/0760301646" target="_blank" rel="noopener">Harley-Davidson Shovelhead</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0962411310" target="_blank" rel="noopener">The Big Book of Harley-Davidson</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0879389346" target="_blank" rel="noopener">How to Restore Your Harley-Davidson</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0933078072" target="_blank" rel="noopener">Special Tools for Harley-Davidson</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/1859675042" target="_blank" rel="noopener">The Classic Harley-Davidson</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/1887110143" target="_blank" rel="noopener">Collecting Harley-Davidson</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0760302081" target="_blank" rel="noopener">The Harley-Davidson and Indian Wars</a></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0760300097" target="_blank" rel="noopener">Harley-Davidson Big Twin Performance Handbook</a></li>
+            <li>Harley-Davidson Knuckleheads <small class="gone">(link is gone)</small></li>
+            <li><a class="ext" href="https://www.amazon.com/dp/0879389982" target="_blank" rel="noopener">Harley-Davidson Panheads</a></li>
+          </ul>
+        </details>
+      </article>
+
+      <article class="curio-card wide" id="c-press">
+        <h3>In <em>print</em></h3>
+        <ul class="clist">
+          <li><span class="k">Mag</span><a class="ext" href="https://www.skinandink.com/" target="_blank" rel="noopener">Skin &amp; Ink</a>, home of Mr. G&rsquo;s articles and columns, with Triangle in the March 1998 and March 2007 issues</li>
+          <li><span class="k">Mag</span>Tattoo Planet, January 1998 &middot; Skin Art #50 &middot; Tattoo Review #53</li>
+          <li><span class="k">TV</span>The Discovery Channel&rsquo;s &ldquo;Tattoo! Beauty, Art &amp; Pain,&rdquo; with eleven segments filmed at the shop</li>
+          <li><span class="k">List</span>&ldquo;101 Most Influential People in Tattoo,&rdquo; No. 17: Mr. G and Madame Chinchilla, on Tattoo Road Trip <small class="gone">(link is gone)</small></li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="mock-note wf-note">I went through every page of triangletattoo.com, all 24 of them, and kept every link. The ones that still work go where they always did, the ones that moved go to their new address, and the ones that are gone say so. The old videos needed Flash, so they open on YouTube now. On your real site, each of these rooms can be its own page again.</p>
+  </div>
+</section>
+
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
     <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
@@ -993,6 +1327,12 @@
       <p>356 B North Main Street, Fort Bragg &middot; <a href="tel:+17079648814">(707) 964-8814</a> &middot; since 1986</p>
       <p style="margin-top:4px"><a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">@triangletattoomuseum</a> &middot; <a href="mailto:g@triangletattoo.com">g@triangletattoo.com</a></p>
       <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <div class="foot-y2k">
+        <p class="counter"><span class="px counter-lbl" id="odo-lbl">You are visitor #</span><button type="button" class="odo" id="odo" aria-label="You are visitor number 1. Tap to roll the counter again."><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">1</span></span></button></p>
+        <button type="button" class="px-btn" id="sparkle-tog" aria-pressed="true" hidden>&#10022; Sparkles: on</button>
+        <span class="best">Best viewed with your eyes open &#9650;</span>
+      </div>
+      <p class="mock-note wf-note">On your real site this counts your actual visitors. On this preview it counts your own visits from this device, so come back and watch it tick over. On a computer, the sparkles turn into little red triangles over anything you can click, and anyone can switch them off.</p>
     </div>
   </div>
 </footer>
@@ -1133,7 +1473,7 @@
         [1, 2, 3].forEach(function (n) { $('rq-s' + n).hidden = st.s !== n; });
         $('rq-back').hidden = st.s === 1; go.textContent = st.s === 3 ? 'Send it (preview)' : 'Next';
         press(kinds, 'kind', st.kind); press(whos, 'who', st.who);
-        $('rq-who-wrap').hidden = st.kind !== 'tattoo'; $('rq-tat').hidden = st.kind !== 'tattoo'; $('rq-tour').hidden = st.kind !== 'tour';
+        $('rq-who-wrap').hidden = st.kind !== 'tattoo'; $('rq-tat').hidden = st.kind !== 'tattoo'; $('rq-tour').hidden = st.kind !== 'tour'; $('rq-hi').hidden = st.kind !== 'hi';
         list.innerHTML = '';
         st.files.forEach(function (f, i) {
           var li = document.createElement('li'); li.innerHTML = '<img src="' + f[0] + '" alt=""><span>' + f[1] + '</span>';
@@ -1145,12 +1485,13 @@
       kinds.forEach(function (b) { b.addEventListener('click', function () { st.kind = b.dataset.kind; paint(); }); });
       whos.forEach(function (b) { b.addEventListener('click', function () { st.who = b.dataset.who; paint(); }); });
       $('rq-drop').addEventListener('click', function () { if (st.files.length < REFS.length) st.files.push(REFS[st.files.length]); paint(); hint.textContent = st.files.length >= REFS.length ? 'That’s all the sample photos for the preview.' : ''; });
-      function jump(n) { st.s = n; st.max = Math.max(st.max, n); hint.textContent = ''; paint(); quietFocus($('rq-s' + n).querySelector('[aria-pressed="true"], input:not([hidden]), textarea, button')); }
+      function jump(n) { st.s = n; st.max = Math.max(st.max, n); hint.textContent = ''; paint(); quietFocus(all($('rq-s' + n), '[aria-pressed="true"], input, textarea, button').filter(function (el) { return el.getClientRects().length; })[0]); }
       all(card, '.bk-steps [data-s]').forEach(function (sp) { sp.addEventListener('click', function () { var n = +sp.dataset.s; if (n !== st.s && n <= st.max) jump(n); }); });
       $('rq-back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
       go.addEventListener('click', function () {
         if (st.s === 2 && st.kind === 'tattoo' && !$('rq-idea').value.trim()) { hint.textContent = 'Add a few words about your idea first.'; $('rq-idea').focus(); return; }
         if (st.s === 2 && st.kind === 'tour' && !$('rq-day').value.trim()) { hint.textContent = 'Say which day you’d like to come.'; $('rq-day').focus(); return; }
+        if (st.s === 2 && st.kind === 'hi' && !$('rq-note').value.trim()) { hint.textContent = 'Write a little note for the guestbook first.'; $('rq-note').focus(); return; }
         if (st.s < 3) { jump(st.s + 1); return; }
         var name = $('rq-name').value.trim(), mail = $('rq-mail').value.trim();
         if (!name) { hint.textContent = 'Add your name first.'; $('rq-name').focus(); return; }
@@ -1160,16 +1501,32 @@
         if (st.kind === 'tattoo') {
           rows = [['For', 'A tattoo with ' + st.who.toLowerCase().replace('mr. g', 'Mr. G').replace('niki', 'Niki').replace('nicola', 'Nicola')], ['Idea', $('rq-idea').value.trim()], ['Where', $('rq-place').value.trim()], ['Photos', st.files.length ? st.files.length + ' attached' : 'none yet']];
           inbox = name + ' would like a tattoo (' + rows[0][1].replace('A tattoo with ', '') + '): ' + $('rq-idea').value.trim().slice(0, 70) + '… ' + (st.files.length ? st.files.length + ' photo' + (st.files.length > 1 ? 's' : '') + ' attached.' : 'No photos yet.');
+        } else if (st.kind === 'hi') {
+          var from = $('rq-from').value.trim(), msg = $('rq-note').value.trim();
+          rows = [['For', 'The guestbook'], ['From', from || 'somewhere'], ['Note', msg]];
+          inbox = name + (from ? ' from ' + from : '') + ' signed the guestbook: “' + msg.slice(0, 80) + (msg.length > 80 ? '…' : '') + '”';
+          signBook(name, from, msg);
         } else {
           rows = [['For', 'A museum tour'], ['Day', $('rq-day').value.trim()], ['People', $('rq-size').value.trim()], ['Who', $('rq-group').value.trim()]];
           inbox = name + ' would like a tour on ' + $('rq-day').value.trim() + ' for ' + $('rq-size').value.trim() + ': ' + $('rq-group').value.trim().toLowerCase() + '.';
         }
-        $('rq-done-h').textContent = 'Sent, ' + first + '!';
-        $('rq-done-t').textContent = 'The shop will write back to ' + mail + '.';
+        $('rq-done-h').textContent = (st.kind === 'hi' ? 'Signed, ' : 'Sent, ') + first + '!';
+        $('rq-done-t').textContent = st.kind === 'hi' ? 'Your note is up in the guestbook, just below.' : 'The shop will write back to ' + mail + '. Requests stay private, so this one isn’t in the guestbook.';
         $('rq-sum').innerHTML = ''; rows.forEach(function (r) { var dv = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = r[0]; dd.textContent = r[1]; dv.appendChild(dt); dv.appendChild(dd); $('rq-sum').appendChild(dv); });
         $('rq-inbox').textContent = inbox;
         [1, 2, 3].forEach(function (n) { $('rq-s' + n).hidden = true; }); $('rq-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('rq-done').hidden = false; quietFocus($('rq-done-h'));
       });
+      /* the guestbook: "just saying hi" notes go up for everyone; tattoo and tour requests stay private */
+      var signed = 0;
+      function signBook(name, from, msg) {
+        var ol = $('gb-list'), empty = ol.querySelector('.gb-empty'); if (empty) empty.remove();
+        var old = ol.querySelector('.new'); if (old) old.remove();
+        var li = document.createElement('li'), who = document.createElement('p'), em = document.createElement('em'), nw = document.createElement('span'), p = document.createElement('p');
+        who.className = 'who'; who.textContent = name; em.textContent = (from ? ', ' + from : '') + ' · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        nw.className = 'new'; nw.textContent = 'new!'; who.appendChild(em); who.appendChild(nw);
+        p.textContent = '“' + msg + '”'; li.appendChild(who); li.appendChild(p); ol.insertBefore(li, ol.firstChild);
+        signed++; $('gb-count').textContent = signed + (signed === 1 ? ' signature' : ' signatures');
+      }
       function back(toStep) { $('rq-done').hidden = true; $('rq-nav').hidden = false; card.querySelector('.bk-steps').hidden = false; jump(toStep); }
       $('rq-change').addEventListener('click', function () { back(1); });
       $('rq-again').addEventListener('click', function () { fresh(); $('rq-inbox').textContent = 'Waiting for one… try it on the left'; back(1); });
@@ -1230,6 +1587,103 @@
 </script>
 
 <script>
+  /* Y2K bits, each one doing a job */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var mq = window.matchMedia ? function (q) { return window.matchMedia(q).matches; } : function () { return false; };
+    var reduce = mq('(prefers-reduced-motion: reduce)');
+
+    /* NOW SHOWING: a second copy keeps the loop seamless; names jump to their wall and light it up */
+    (function () {
+      var marq = $('marq'), track = $('marq-track'), btn = $('marq-pause'); if (!marq || !track) return;
+      var list = track.querySelector('.marq-list'), copy = list.cloneNode(true);
+      copy.setAttribute('aria-hidden', 'true'); [].forEach.call(copy.querySelectorAll('a'), function (a) { a.tabIndex = -1; });
+      track.appendChild(copy);
+      btn.addEventListener('click', function () { var p = !marq.classList.contains('paused'); marq.classList.toggle('paused', p); btn.setAttribute('aria-pressed', p ? 'true' : 'false'); btn.textContent = p ? 'Play' : 'Pause'; });
+      marq.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href^="#ex-"]'); if (!a) return;
+        var li = document.getElementById(a.getAttribute('href').slice(1)); if (!li) return;
+        e.preventDefault();
+        li.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        li.classList.remove('lit'); void li.offsetWidth; li.classList.add('lit');
+        clearTimeout(li._lit); li._lit = setTimeout(function () { li.classList.remove('lit'); }, 2700);
+        try { history.replaceState(null, '', a.getAttribute('href')); } catch (er) {}
+      });
+    })();
+
+    /* visitor counter: an odometer. Here it counts this device's own visits (one per browsing session) */
+    (function () {
+      var odo = $('odo'); if (!odo) return;
+      var n = 1;
+      try {
+        n = +localStorage.getItem('tt-visits') || 0;
+        if (!sessionStorage.getItem('tt-counted')) { n++; localStorage.setItem('tt-visits', String(n)); sessionStorage.setItem('tt-counted', '1'); }
+      } catch (e) { n = n || 1; }
+      if (!(n >= 1)) n = 1;
+      var digits = ('000000' + n).slice(-6).split(''), wheels = [].slice.call(odo.querySelectorAll('.odo-s'));
+      var strip = ''; for (var r = 0; r < 3; r++) for (var d = 0; d < 10; d++) strip += '<span>' + d + '</span>';
+      wheels.forEach(function (w) { w.innerHTML = strip; w.setAttribute('aria-hidden', 'true'); });
+      odo.setAttribute('aria-label', 'You are visitor number ' + n + '. Tap to roll the counter again.');
+      function park(spin) {
+        wheels.forEach(function (w, k) {
+          var d = +digits[k];
+          if (!spin || reduce) { w.style.transition = 'none'; w.style.transform = 'translateY(-' + (20 + d) + 'em)'; return; }
+          w.style.transition = 'none'; w.style.transform = 'translateY(0)'; void w.offsetHeight;
+          w.style.transition = 'transform ' + (1.1 + k * 0.28).toFixed(2) + 's cubic-bezier(.15,.85,.25,1)';
+          w.style.transform = 'translateY(-' + (20 + d) + 'em)';
+        });
+      }
+      park(false);
+      odo.addEventListener('click', function () { park(true); });
+      if (!reduce && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); park(true); } }, { threshold: 0.6 });
+        io.observe(odo);
+      }
+    })();
+
+    /* friends ring: Prev / Random / Next walk through the links that still work */
+    (function () {
+      var ring = $('ring'); if (!ring) return;
+      var bs = [].slice.call(document.querySelectorAll('#c-links a.badge')), i = 0, name = $('ring-name'), what = $('ring-what');
+      if (!bs.length) return;
+      function show(k) {
+        i = (k + bs.length) % bs.length;
+        bs.forEach(function (b, j) { b.classList.toggle('on', j === i); });
+        name.textContent = bs[i].querySelector('span').textContent; name.href = bs[i].href; what.textContent = bs[i].getAttribute('data-what') || '';
+      }
+      ring.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-ring]'); if (!b) return; var how = b.getAttribute('data-ring');
+        if (how === 'prev') show(i - 1); else if (how === 'next') show(i + 1);
+        else { var r = i; while (bs.length > 1 && r === i) r = Math.floor(Math.random() * bs.length); show(r); }
+      });
+      show(0);
+    })();
+
+    /* sparkly cursor trail: desktop mouse only, never with reduced motion; red triangles over anything clickable */
+    (function () {
+      if (reduce || !mq('(hover: hover) and (pointer: fine)')) return;
+      var tog = $('sparkle-tog'), on = true, last = 0, lx = -99, ly = -99, alive = 0, CH = ['✦', '✧'];
+      try { on = localStorage.getItem('tt-sparkles') !== 'off'; } catch (e) {}
+      function paint() { if (!tog) return; tog.setAttribute('aria-pressed', on ? 'true' : 'false'); tog.textContent = '✦ Sparkles: ' + (on ? 'on' : 'off'); }
+      if (tog) { tog.hidden = false; paint(); tog.addEventListener('click', function () { on = !on; try { localStorage.setItem('tt-sparkles', on ? 'on' : 'off'); } catch (e) {} paint(); }); }
+      document.addEventListener('pointermove', function (e) {
+        if (!on || e.pointerType !== 'mouse' || document.hidden) return;
+        var now = e.timeStamp || Date.now(); if (now - last < 32) return;
+        var dx = e.clientX - lx, dy = e.clientY - ly; if (dx * dx + dy * dy < 150) return;
+        last = now; lx = e.clientX; ly = e.clientY; if (alive > 24) return;
+        var t = e.target, hot = t && t.closest && t.closest('a[href], button:not(:disabled), summary, label, [role="button"]');
+        var s = document.createElement('span'); s.className = 'spk' + (hot ? ' hot' : ''); s.setAttribute('aria-hidden', 'true');
+        s.textContent = hot ? '▲' : CH[Math.random() < 0.6 ? 0 : 1];
+        s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px'; s.style.setProperty('--dx', Math.round(Math.random() * 26 - 13) + 'px');
+        alive++; document.body.appendChild(s);
+        var done = function () { if (s.parentNode) { s.parentNode.removeChild(s); alive--; } };
+        s.addEventListener('animationend', done); setTimeout(done, 1200);
+      }, { passive: true });
+    })();
+  })();
+</script>
+
+<script>
   /* see your site as Maiden / Mother / Crone / Everything */
   (function () {
     var root = document.documentElement;
@@ -1238,7 +1692,7 @@
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
       maiden: { name: 'Maiden', price: '$300', what: 'one beautiful page with the museum, your artists and their work, your story, reviews, and how to visit.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with tattoo and museum tour requests (photos included), the spin the wheel, a filter for each artist’s work, and an FAQ.', next: 'crone' },
+      mother: { name: 'Mother', price: '$600', what: 'a full site with a guestbook that takes tattoo and museum tour requests (photos included), the spin the wheel, a filter for each artist’s work, an FAQ, and every link and curiosity from your old site.', next: 'crone' },
       crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus Madame Chinchilla’s signed books and gift cards through your own Stripe, and your Instagram feed. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
