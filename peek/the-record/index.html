@@ -227,12 +227,36 @@
   .tt .spin { transform-box: view-box; transform-origin: 170px 160px; animation: spin 9s linear infinite; animation-play-state: paused; }
   .tt.on .spin { animation-play-state: running; }
   @keyframes spin { to { rotate: 360deg; } }
-  .tt .arm { transform-box: view-box; transform-origin: 352px 46px; rotate: -24deg; transition: rotate 2.8s cubic-bezier(.3,.7,.2,1); }
+  .tt .arm { transform-box: view-box; transform-origin: 352px 46px; rotate: -24deg; transition: rotate 1.6s cubic-bezier(.3,.7,.2,1); }
   .tt.on .arm { rotate: 0deg; }
   .tt .sheen { mix-blend-mode: screen; }
+  .tt .lamp { transition: fill 0.4s ease, opacity 0.4s ease; }
+  .tt.on .lamp { fill: #7dff8f; opacity: 1; }
+  .tt-hit { display: block; padding: 0; margin: 0; border: 0; background: none; color: inherit; cursor: pointer; border-radius: 22px; -webkit-tap-highlight-color: transparent; }
+  .tt-hit:focus-visible { outline: 2px solid var(--glow); outline-offset: 6px; }
   .now { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(242, 236, 220, 0.82); text-align: center; }
   .now b { color: var(--glow); font-weight: 700; }
-  @media (prefers-reduced-motion: reduce) { .tt .spin { animation: none; } .tt .arm { rotate: 0deg; transition: none; } }
+  .deck { width: min(440px, 100%); display: grid; gap: 12px; justify-items: center; text-align: center; }
+  .deck-ctl { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .deck-ctl button { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 13.5px; letter-spacing: 0.05em; min-height: 46px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+    border: 1.5px solid var(--glow); background: transparent; color: var(--on-wall); }
+  .deck-ctl .deck-play { background: var(--glow); color: #1b120b; border-color: var(--glow); }
+  .deck-ctl .deck-play[aria-pressed="true"] { background: transparent; color: var(--glow); }
+  .deck-ctl button[aria-disabled="true"] { background: transparent; color: rgba(242, 236, 220, 0.75); border-color: rgba(242, 236, 220, 0.35); border-style: dashed; cursor: default; }
+  .deck-ctl button:hover { border-color: #ffd2ad; }
+  .deck-ctl button:focus-visible { outline: 2px solid #ffd2ad; outline-offset: 3px; }
+  .deck-ctl .deck-prev { padding: 0 14px; }
+  .deck-card { width: 100%; border: 1px solid rgba(242, 236, 220, 0.2); border-radius: 10px; padding: 14px 16px; background: rgba(0, 0, 0, 0.16); text-align: left; }
+  .deck-card h3 { font-size: 22px; color: var(--on-wall); line-height: 1.15; }
+  .deck-card .deck-when { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #ffc9a0; margin-top: 4px; }
+  .deck-card p.deck-say { font-size: 15.5px; margin-top: 8px; }
+  .deck-card a { color: var(--glow); text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .deck-card a:focus-visible { outline: 2px solid #ffd2ad; outline-offset: 2px; border-radius: 2px; }
+  .deck-player { margin-top: 10px; }
+  .deck-player iframe { display: block; width: 100%; border: 0; border-radius: 8px; background: #0d1a16; }
+  .band .deck-note { border-color: rgba(243, 165, 104, 0.55); text-align: left; width: 100%; margin-top: 4px; }
+  .deck-src { font-size: 13px !important; color: rgba(242, 236, 220, 0.7) !important; margin-top: 6px; }
+  @media (prefers-reduced-motion: reduce) { .tt .spin { animation: none; } .tt .arm { transition: none; } .tt .lamp { transition: none; } }
   .name-story { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 36px; align-items: center; margin-top: 64px; padding-top: 44px; border-top: 1px solid rgba(242, 236, 220, 0.18); }
   .name-story .photo { aspect-ratio: 3 / 2; }
   .name-story h3 { font-size: clamp(26px, 3.2vw, 34px); color: var(--on-wall); line-height: 1.1; margin-bottom: 12px; }
@@ -341,6 +365,31 @@
   .sheet-lines > div > span:last-child { text-align: right; }
   .sheet-slot { display: flex; align-items: center; gap: 12px; border: 1.5px dashed var(--hair); border-radius: 6px; padding: 12px 14px; margin-top: 6px; font-size: 14.5px; color: var(--ink-soft); }
   .sheet-slot svg { flex: none; color: var(--green); }
+  .ship-pick { border: 0; padding: 0; margin: 4px 0 0; min-width: 0; display: grid; gap: 8px; }
+  .ship-pick legend { padding: 0; margin: 8px 0 8px; }
+  .ship-opt { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--hair); border-radius: 6px; padding: 12px; background: var(--ground); cursor: pointer; }
+  .ship-opt:has(input:checked) { border-color: var(--green); box-shadow: inset 0 0 0 1.5px var(--green); }
+  .ship-opt input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--green); flex: none; }
+  .ship-opt b { display: block; font-weight: 600; }
+  .ship-opt small { display: block; font-size: 14px; color: var(--ink-soft); }
+  .ship-addr { display: grid; gap: 10px; }
+  .addr-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.6fr) minmax(0, 0.9fr); gap: 10px; }
+  .test-badge { display: inline-block; font-size: 10px; letter-spacing: 0.1em; font-weight: 700; color: #7a4a00; background: #ffde92; border-radius: 4px; padding: 1px 6px; line-height: 1.7; }
+  .ship-to { font-size: 14.5px; color: var(--ink-soft); margin: 10px 0 4px; }
+  .ship-to b { color: var(--ink); font-weight: 600; }
+  .stripe-form { margin-top: 10px; display: grid; gap: 10px; }
+  .sf-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .sf-row { display: grid; gap: 4px; }
+  .sf-lbl { font-size: 13.5px; color: var(--ink-soft); }
+  .sf-fld { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--hair); border-radius: 6px; padding: 10px 12px; font-family: 'Space Mono', monospace; font-size: 15px; color: var(--ink); background: var(--ground-2); }
+  .sf-fld svg { color: var(--ink-soft); flex: none; }
+  .sf-foot { font-size: 13.5px; color: var(--ink-soft); }
+  .receipt { margin-top: 14px; border: 1px solid var(--hair); border-radius: 6px; background: var(--ground); padding: 14px 16px; font-size: 14.5px; }
+  .receipt .r-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+  .receipt .r-ok { color: var(--green-deep); }
+  .receipt .r-lines > div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--hair); }
+  .receipt .r-lines > div:last-child { border-bottom: 0; font-weight: 600; }
+  .receipt .r-to { margin-top: 8px; color: var(--ink-soft); }
   .bk-alt .cta-row { margin-top: 22px; }
   .reach { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .reach a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid var(--hair); border-radius: 999px;
@@ -566,6 +615,8 @@
     .trk-date { grid-column: 1 / -1; }
     .fld-row { grid-template-columns: minmax(0, 1fr); }
     .bk-card { padding: 20px 16px; }
+    .addr-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .addr-row .fld:first-child { grid-column: 1 / -1; }
     nav { gap: 0; margin-inline: -4px; }
     nav a { padding-inline: 5px; font-size: 11px; letter-spacing: 0.04em; }
     .hero-band .cta-row .btn { flex: 1 1 100%; text-align: center; }
@@ -724,7 +775,7 @@
       </div>
     </div>
     <div class="tt-wrap">
-      <svg class="tt" id="tt" viewBox="0 0 400 330" role="img" aria-label="A turntable: a record with The Record's label turns slowly, and the tonearm settles onto it">
+      <button type="button" class="tt-hit" id="tt-hit" tabindex="-1" aria-hidden="true"><svg class="tt" id="tt" viewBox="0 0 400 330" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="g-plinth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7a3d22"/><stop offset="1" stop-color="#4a2414"/></linearGradient>
           <radialGradient id="g-vinyl" cx="0.5" cy="0.5" r="0.5"><stop offset="0.3" stop-color="#1a1a1a"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient>
@@ -760,9 +811,24 @@
           <circle cx="352" cy="46" r="6" fill="#c9a24a"/>
         </g>
         <circle cx="356" cy="292" r="10" fill="#2b2b2b" stroke="#c9a24a" stroke-width="1.5"/>
-        <circle cx="326" cy="292" r="5" fill="#e8894a" opacity="0.9"/>
-      </svg>
-      <p class="now" id="now">Now spinning: <b>The Fog, Fri Oct 9</b></p>
+        <circle class="lamp" cx="326" cy="292" r="5" fill="#e8894a" opacity="0.9"/>
+      </svg></button>
+      <div class="deck" id="deck">
+        <p class="now" id="now"><span id="now-lbl">Up next</span>: <b>The Fog, Fri Oct 9</b></p>
+        <div class="deck-ctl" data-js hidden>
+          <button type="button" class="deck-prev" id="deck-prev" aria-label="Previous show">&#9664;</button>
+          <button type="button" class="deck-play" id="deck-play" aria-pressed="false">&#9654; Hear who&rsquo;s playing</button>
+          <button type="button" class="deck-next" id="deck-next">Next act &#9654;</button>
+        </div>
+        <div class="deck-card" id="deck-card">
+          <h3 id="deck-name">The Fog</h3>
+          <p class="deck-when" id="deck-when">Fri Oct 9 &middot; 6 pm &middot; free</p>
+          <p class="deck-say" id="deck-say">Every show is free. Come early on a busy night.</p>
+          <div class="deck-player" id="deck-player" hidden></div>
+        </div>
+        <p class="vh" role="status" id="deck-live"></p>
+        <p class="tier-note mock-note deck-note">Tap the record and it plays the band that&rsquo;s actually up next, from their own Bandcamp or Spotify, so they get the play. &ldquo;Next act&rdquo; moves the needle down your lineup. It changes on its own each month with the list. <span class="tag" data-go="maiden">Every build</span></p>
+      </div>
     </div>
   </div>
   <div class="wrap name-story">
@@ -986,7 +1052,7 @@
     <p class="measure soft" style="margin-top:14px">Round one: hoodies and T shirts, all organic cotton, with artwork by Studio Daniel and prints by AGW Screenworks. For the folks who love the place and live too far to stop by. Give it a try:</p>
     <div class="bk">
       <div class="bk-card" id="sh-card">
-        <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Pick</button><button type="button" data-s="2" disabled>2 Size</button><button type="button" data-s="3" disabled>3 Checkout</button></div>
+        <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Pick</button><button type="button" data-s="2" disabled>2 Size</button><button type="button" data-s="3" disabled>3 Delivery</button><button type="button" data-s="4" disabled>4 Pay</button></div>
         <div id="sh-s1"><div class="bk-grid">
           <button type="button" class="bk-opt" data-item="Hoodie" aria-pressed="false"><img src="images/merch-hoodie.webp" width="640" height="1136" alt="The back of a dark hoodie printed with The Record's green building, a moon and Point Arena, CA" loading="lazy" style="object-position:50% 55%"><b>Hoodie</b><span class="ph">your price</span></button>
           <button type="button" class="bk-opt" data-item="T shirt" aria-pressed="false"><img src="images/merch-art.webp" width="600" height="500" alt="The T shirt artwork: The Record's green building, a moon in sunglasses, a motorcycle and Bigfoot" loading="lazy"><b>T shirt</b><span class="ph">your price</span></button>
@@ -999,16 +1065,32 @@
         </div>
         <div id="sh-s3" hidden>
           <div class="bk-form">
-            <div class="fld-row"><label class="fld">Your name<input id="sh-name" autocomplete="off" value="Maya R."></label><label class="fld">Email<input id="sh-mail" type="email" autocomplete="off" value="maya@example.com"></label></div>
-            <label class="fld">Pick up or ship<select id="sh-ship"><option>Pick up at the bar</option><option>Ship it to me</option></select></label>
+            <div class="fld-row"><label class="fld">Your name<input id="sh-name" autocomplete="off" value="Maya R."></label><label class="fld">Email, for your receipt<input id="sh-mail" type="email" autocomplete="off" value="maya@example.com"></label></div>
+            <fieldset class="ship-pick"><legend class="bk-q">How it gets to you</legend>
+              <label class="ship-opt"><input type="radio" name="sh-way" value="ship" checked><span><b>Ship it to me</b><small>Mailed out from Point Arena</small></span></label>
+              <label class="ship-opt"><input type="radio" name="sh-way" value="pickup"><span><b>Pick up at the bar instead</b><small>Free, it waits behind the bar</small></span></label>
+            </fieldset>
+            <div class="ship-addr" id="sh-addr">
+              <label class="fld">Street address<input id="sh-street" autocomplete="off" value="456 Pine Street"></label>
+              <div class="addr-row"><label class="fld">City<input id="sh-city" autocomplete="off" value="Eugene"></label><label class="fld">State<input id="sh-state" autocomplete="off" maxlength="2" value="OR"></label><label class="fld">ZIP<input id="sh-zip" inputmode="numeric" autocomplete="off" maxlength="10" value="97401"></label></div>
+            </div>
           </div>
-          <div class="sheet" style="margin-top:14px">
-            <h3 class="sheet-h"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
+        </div>
+        <div id="sh-s4" hidden>
+          <div class="sheet">
+            <h3 class="sheet-h"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span> <span class="test-badge">Test mode</span></h3>
             <div class="sheet-lines">
               <div><span id="sh-line">1 hoodie, size M</span><span class="ph">your price</span></div>
+              <div><span id="sh-ship-line">Shipping to OR 97401</span><span class="ph" id="sh-ship-amt">your rate</span></div>
+              <div><span id="sh-tax-line">Sales tax, figured for your ZIP</span><span class="ph">auto</span></div>
               <div class="total"><span>Total</span><span class="ph">your price</span></div>
             </div>
-            <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
+            <p class="ship-to" id="sh-to"></p>
+            <div class="stripe-form" aria-hidden="true">
+              <div class="sf-row"><span class="sf-lbl">Card number</span><span class="sf-fld">4242 4242 4242 4242<svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="24" height="16" rx="3"/><path d="M1 6h24M4 13h6"/></svg></span></div>
+              <div class="sf-two"><div class="sf-row"><span class="sf-lbl">Expires</span><span class="sf-fld">12 / 34</span></div><div class="sf-row"><span class="sf-lbl">CVC</span><span class="sf-fld">123</span></div></div>
+              <p class="sf-foot">Card or phone wallet, in Stripe&rsquo;s secure form. This is Stripe&rsquo;s practice card, so nothing is charged.</p>
+            </div>
           </div>
         </div>
         <p class="hint" id="sh-hint" role="status"></p>
@@ -1016,7 +1098,8 @@
         <div class="bk-done fade-in" id="sh-done" hidden>
           <h3 id="sh-done-h" tabindex="-1">It&rsquo;s yours!</h3>
           <p id="sh-summary"></p>
-          <p class="demo-note">Preview only. Nothing was charged.</p>
+          <div class="receipt" id="sh-receipt"></div>
+          <p class="demo-note">Preview only. Nothing was charged, and nothing was sent.</p>
           <div class="bk-nav"><button type="button" class="bk-go ghost" id="sh-again">Try it again</button><button type="button" class="bk-go ghost" id="sh-edit">Change something</button></div>
         </div>
       </div>
@@ -1244,6 +1327,84 @@
     var now = document.querySelector('#now b'); if (now) now.textContent = window.__nextShow;
   })();
 
+  /* the turntable: tap the record to hear who's playing next, from the band's own player (nothing loads until a tap) */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var BC = function (kind, id) { return 'https://bandcamp.com/EmbeddedPlayer/' + kind + '=' + id + '/size=large/bgcol=333333/linkcol=e8894a/tracklist=false/artwork=small/transparent=true/'; };
+    var SP = function (id) { return 'https://open.spotify.com/embed/artist/' + id + '?utm_source=generator&theme=0'; };
+    var PLAYERS = {
+      '2026-10-03': { src: BC('album', '2555679599'), h: 120, from: 'their Bandcamp', page: 'https://www.duogadjo.com/', pageName: 'duogadjo.com', say: 'Isabelle and Jeff, Paris cafe swing on two guitars.' },
+      '2026-10-09': { say: 'We couldn&rsquo;t find a recording of The Fog online yet, so this one&rsquo;s a surprise. Come hear them live!' },
+      '2026-10-10': { src: BC('album', '1817308919'), h: 120, from: 'his Bandcamp', page: 'https://jarednels.bandcamp.com/', pageName: 'jarednels.bandcamp.com', say: 'Bluegrass, blues and a yodel you won&rsquo;t forget.' },
+      '2026-10-15': { say: 'A night of poems and songs from the room, hosted by Blake More. Nothing to preview here: bring a poem, or just come listen.' },
+      '2026-10-17': { src: BC('track', '2881510081'), h: 120, from: 'their Bandcamp', page: 'https://www.thenewyearseveband.com/', pageName: 'thenewyearseveband.com', say: 'Rock with a little punk edge, from Mendocino.' },
+      '2026-10-22': { src: SP('7f76v8VuqsIWRMFPKgZ1c8'), h: 152, from: 'her Spotify', page: 'https://www.kendalldeanmusic.com/', pageName: 'kendalldeanmusic.com', say: 'Voice, violin and guitar.' },
+      '2026-10-24': { src: SP('1SMb7kgeotZq8D23pblR8l'), h: 152, from: 'their Spotify', page: 'https://www.facebook.com/barjaybarmusic/', pageName: 'Bar Jay Bar on Facebook', say: 'Cowboy country, all the way from Wyoming.' },
+      '2026-10-25': { say: 'Race day on the big screen, hosted by Zen House. No band this time, but the jukebox is free.' },
+      '2026-10-29': { src: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/3879923&color=%23e8894a&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false', h: 166, from: 'Lincoln&rsquo;s own SoundCloud, his bass on other folks&rsquo; records', page: 'https://linktr.ee/lincolnandrews', pageName: 'Lincoln&rsquo;s links', say: 'Lincoln Andrews on upright bass, with sax and drums.' },
+      '2026-10-31': { say: 'A spooky DJ and costume fun. No band to preview, so come in costume and find out.' }
+    };
+    var rows = [].slice.call(document.querySelectorAll('#tracks .trk'));
+    var all = rows.map(function (r) {
+      var d = r.getAttribute('data-date'), t = r.querySelector('.trk-time');
+      return { date: d, played: r.classList.contains('played'), name: r.querySelector('h3').textContent, kind: r.querySelector('.trk-what span').textContent,
+        day: r.querySelector('.trk-date').textContent, time: t && t.firstChild ? t.firstChild.textContent.trim() : '', p: PLAYERS[d] || {} };
+    });
+    var list = all.filter(function (a) { return !a.played; }); if (!list.length) list = all;
+    var tt = $('tt'), hit = $('tt-hit'), play = $('deck-play'), live = $('deck-live'), box = $('deck-player');
+    if (!tt || !play || !list.length) return;
+    var i = 0, on = false, listening = false, drop = null;
+    function ahead() { for (var k = 1; k < list.length; k++) { var j = (i + k) % list.length; if (list[j].p.src) return j; } return -1; }
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+    function txt(h) { var d = document.createElement('div'); d.innerHTML = h; return d.textContent; }
+    function paint() {
+      var a = list[i], p = a.p;
+      $('deck-name').textContent = a.name;
+      $('deck-when').textContent = a.day + ' · ' + a.time + ' · free · ' + a.kind;
+      var html = p.say || '';
+      if (p.page) html += ' <a href="' + p.page + '" target="_blank" rel="noopener">' + p.pageName + '<span class="vh"> (opens a new tab)</span></a>';
+      $('deck-say').innerHTML = html;
+      $('now-lbl').textContent = on ? 'Now spinning' : (i === 0 && !a.played ? 'Up next' : 'Coming up');
+      document.querySelector('#now b').textContent = a.name + ', ' + a.day;
+      if (p.src) { play.removeAttribute('aria-disabled'); play.innerHTML = on ? '&#9632; Stop the record' : '&#9654; Hear who&rsquo;s playing'; }
+      else { var j = ahead(); if (j < 0) { play.setAttribute('aria-disabled', 'true'); play.innerHTML = 'No recording for this one'; } else { play.removeAttribute('aria-disabled'); play.innerHTML = '&#9654; Skip ahead to ' + esc(list[j].name); } }
+      play.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    function load() {
+      var a = list[i], p = a.p; box.innerHTML = '';
+      if (!p.src) { box.hidden = true; return false; }
+      var f = document.createElement('iframe');
+      f.src = p.src; f.height = p.h; f.title = a.name + ', music player from ' + txt(p.from);
+      f.setAttribute('allow', 'autoplay; encrypted-media; clipboard-write'); f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      box.appendChild(f);
+      var src = document.createElement('p'); src.className = 'deck-src';
+      src.innerHTML = 'From ' + p.from + '. ' + (/soundcloud/.test(p.src) ? 'If it doesn&rsquo;t start on its own, press play.' : 'Press play in the little player.');
+      box.appendChild(src); box.hidden = false; return true;
+    }
+    function needle() { clearTimeout(drop); tt.classList.remove('on'); drop = setTimeout(function () { if (on) tt.classList.add('on'); }, 450); }
+    function start() {
+      if (!list[i].p.src) { var j = ahead(); if (j < 0) { live.textContent = ''; live.textContent = list[i].name + ': ' + txt(list[i].p.say || ''); return; } i = j; }
+      on = listening = true; load(); tt.classList.add('on'); paint();
+      live.textContent = 'Playing ' + list[i].name + ', ' + list[i].day + '.';
+    }
+    function stop(quiet, keep) { on = false; if (!keep) listening = false; clearTimeout(drop); box.innerHTML = ''; box.hidden = true; tt.classList.remove('on'); paint(); if (!quiet) live.textContent = 'Stopped.'; }
+    function toggle() { if (on) stop(); else start(); }
+    function step(k) {
+      i = (i + k + list.length) % list.length;
+      var a = list[i];
+      if (listening) {
+        if (a.p.src) { on = true; load(); needle(); paint(); live.textContent = 'Now playing ' + a.name + ', ' + a.day + '.'; }
+        else { stop(true, true); live.textContent = a.name + ', ' + a.day + '. No recording to play for this one. ' + txt(a.p.say || ''); }
+      }
+      else { paint(); live.textContent = a.name + ', ' + a.day + '.'; }
+    }
+    play.addEventListener('click', toggle);
+    hit.addEventListener('click', function () { toggle(); play.focus({ preventScroll: true }); });
+    $('deck-next').addEventListener('click', function () { step(1); });
+    $('deck-prev').addEventListener('click', function () { step(-1); });
+    paint();
+  })();
+
   /* status banner */
   (function () {
     function $(id) { return document.getElementById(id); }
@@ -1300,14 +1461,9 @@
     });
   })();
 
-  /* reveals, gentle photo drift, and the turntable waking up */
+  /* reveals and gentle photo drift */
   (function () {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var tt = document.getElementById('tt');
-    if (reduce || !('IntersectionObserver' in window)) { if (tt) tt.classList.add('on'); }
-    else if (tt) {
-      new IntersectionObserver(function (es) { es.forEach(function (en) { tt.classList.toggle('on', en.isIntersecting); }); }, { threshold: 0.3 }).observe(tt);
-    }
     if (reduce) return;
     var frames = [].slice.call(document.querySelectorAll('.photo')).filter(function (f) { return !f.closest('.ig-grid, .gal, .liveshots, .plates'); });
     var ticking = false;
@@ -1335,7 +1491,34 @@
 
     /* merch stepper */
     (function () {
-      var P = 'sh', card = $('sh-card'), go = $('sh-go'), st = { s: 1, max: 1 }, s = { n: 1 }, MAX = 3;
+      var P = 'sh', card = $('sh-card'), go = $('sh-go'), st = { s: 1, max: 1 }, s = { n: 1 }, MAX = 4;
+      var ways = [].slice.call(card.querySelectorAll('input[name="sh-way"]'));
+      function way() { var w = 'ship'; ways.forEach(function (r) { if (r.checked) w = r.value; }); return w; }
+      function v(id) { return $(id).value.trim(); }
+      function addr() { return v('sh-street') + ', ' + v('sh-city') + ', ' + v('sh-state').toUpperCase() + ' ' + v('sh-zip'); }
+      function shipPaint() { $('sh-addr').hidden = way() !== 'ship'; }
+      ways.forEach(function (r) { r.addEventListener('change', shipPaint); });
+      function checkShip() {
+        var h = $('sh-hint');
+        if (!v('sh-name')) { h.textContent = 'Add your name first.'; $('sh-name').focus(); return false; }
+        if (!isEmail(v('sh-mail'))) { h.textContent = 'Add an email address, so your receipt can reach you.'; $('sh-mail').focus(); return false; }
+        if (way() === 'ship') {
+          if (!v('sh-street')) { h.textContent = 'Add the street address it ships to.'; $('sh-street').focus(); return false; }
+          if (!v('sh-city')) { h.textContent = 'Add the city.'; $('sh-city').focus(); return false; }
+          if (!/^[A-Za-z]{2}$/.test(v('sh-state'))) { h.textContent = 'Add the state, two letters, like CA.'; $('sh-state').focus(); return false; }
+          if (!/^\d{5}(-\d{4})?$/.test(v('sh-zip'))) { h.textContent = 'Add a five digit ZIP code.'; $('sh-zip').focus(); return false; }
+        }
+        h.textContent = ''; return true;
+      }
+      function sheet() {
+        var ship = way() === 'ship';
+        $('sh-ship-line').textContent = ship ? 'Shipping to ' + v('sh-state').toUpperCase() + ' ' + v('sh-zip') : 'Pick up at the bar';
+        $('sh-ship-amt').textContent = ship ? 'your rate' : 'free';
+        $('sh-tax-line').textContent = ship ? 'Sales tax, figured for ' + v('sh-zip') : 'Sales tax, Point Arena';
+        $('sh-to').innerHTML = '';
+        var b = document.createElement('b'); b.textContent = ship ? 'Ship to: ' : 'Pick up: ';
+        $('sh-to').appendChild(b); $('sh-to').appendChild(document.createTextNode(ship ? v('sh-name') + ', ' + addr() : 'behind the bar at The Record, 265 Main Street, Point Arena'));
+      }
       var opts = [].slice.call($('sh-s1').querySelectorAll('.bk-opt')), sizeBox = $('sh-sizes');
       ['S', 'M', 'L', 'XL', 'XXL'].forEach(function (z) {
         var b = document.createElement('button'); b.type = 'button'; b.className = 'bk-size'; b.textContent = z; b.setAttribute('aria-pressed', 'false');
@@ -1355,6 +1538,7 @@
         for (var n = 1; n <= MAX; n++) $(P + '-s' + n).hidden = st.s !== n;
         $(P + '-back').hidden = st.s === 1;
         go.textContent = st.s === MAX ? 'Pay (preview)' : 'Next';
+        if (st.s === MAX) sheet();
         go.disabled = !ready(st.s);
       }
       function jump(n) { st.s = n; paint(); var box = $(P + '-s' + n); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input') || go); }
@@ -1364,25 +1548,32 @@
       $('sh-minus').addEventListener('click', function () { if (s.n > 1) { s.n--; line(); } });
       $('sh-plus').addEventListener('click', function () { if (s.n < 6) { s.n++; line(); } });
       go.addEventListener('click', function () {
-        if (st.s < MAX) { jump(st.s + 1); return; }
-        var who = $('sh-name').value.trim(), mail = $('sh-mail').value.trim();
-        if (!who) { $('sh-hint').textContent = 'Add your name first.'; $('sh-name').focus(); return; }
-        if (!isEmail(mail)) { $('sh-hint').textContent = 'Add an email address, so your receipt can reach you.'; $('sh-mail').focus(); return; }
-        $('sh-hint').textContent = '';
-        var what = $('sh-line').textContent, ship = $('sh-ship').value;
+        if (st.s === 3 && !checkShip()) return;
+        if (st.s < MAX) { $('sh-hint').textContent = ''; jump(st.s + 1); return; }
+        if (!checkShip()) { jump(3); checkShip(); return; }
+        var who = v('sh-name'), mail = v('sh-mail'), ship = way() === 'ship';
+        var what = $('sh-line').textContent;
         $('sh-done-h').textContent = 'It’s yours, ' + who.split(/\s+/)[0] + '!';
-        $('sh-summary').textContent = what + '. ' + (ship === 'Ship it to me' ? 'It ships out soon, and a receipt is on its way to ' + mail + '.' : 'It’ll be waiting behind the bar. A receipt is on its way to ' + mail + '.');
-        $('sh-inbox').textContent = who + ': ' + what + ' (' + ship.toLowerCase() + ').';
+        $('sh-summary').textContent = what + '. ' + (ship ? 'It ships out soon to ' + addr() + ', and a receipt is on its way to ' + mail + '.' : 'It’ll be waiting behind the bar. A receipt is on its way to ' + mail + '.');
+        var order = 'TR-' + (1040 + Math.floor(Math.random() * 60));
+        var rc = $('sh-receipt'); rc.innerHTML = '';
+        function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+        var top = el('div', 'r-top'); top.appendChild(el('span', 'r-ok', 'Stripe · payment succeeded')); top.appendChild(el('span', null, 'Test mode · ' + order)); rc.appendChild(top);
+        var ls = el('div', 'r-lines');
+        [[what, 'your price'], [ship ? 'Shipping' : 'Pick up at the bar', ship ? 'your rate' : 'free'], ['Sales tax', 'auto'], ['Paid', 'your price']].forEach(function (x) { var d = el('div'); d.appendChild(el('span', null, x[0])); d.appendChild(el('span', 'ph', x[1])); ls.appendChild(d); });
+        rc.appendChild(ls);
+        rc.appendChild(el('p', 'r-to', ship ? 'Ship to ' + who + ', ' + addr() : 'Pick up behind the bar, 265 Main Street'));
+        $('sh-inbox').textContent = who + ' (' + order + '): ' + what + '. ' + (ship ? 'Ship to ' + addr() + '.' : 'Picking up at the bar.');
         for (var n = 1; n <= MAX; n++) $(P + '-s' + n).hidden = true;
         $(P + '-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $(P + '-done').hidden = false; quietFocus($(P + '-done-h'));
       });
       $(P + '-edit').addEventListener('click', function () { $(P + '-done').hidden = true; $(P + '-nav').hidden = false; card.querySelector('.bk-steps').hidden = false; st.s = MAX; paint(); quietFocus(go); });
       $(P + '-again').addEventListener('click', function () {
-        st = { s: 1, max: 1 }; s = { n: 1 }; opts.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); [].forEach.call(sizeBox.children, function (b) { b.setAttribute('aria-pressed', 'false'); });
+        st = { s: 1, max: 1 }; s = { n: 1 }; ways.forEach(function (r) { r.checked = r.value === 'ship'; }); shipPaint(); $('sh-hint').textContent = ''; opts.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); [].forEach.call(sizeBox.children, function (b) { b.setAttribute('aria-pressed', 'false'); });
         line(); $('sh-inbox').textContent = 'Waiting for an order… try it on the left';
         $(P + '-done').hidden = true; $(P + '-nav').hidden = false; card.querySelector('.bk-steps').hidden = false; paint(); quietFocus(opts[0]);
       });
-      line(); paint();
+      line(); shipPaint(); paint();
     })();
 
     /* simple forms */
