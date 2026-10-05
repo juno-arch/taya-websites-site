@@ -82,7 +82,7 @@
     return o;
   }
   var DEPOSIT_DAY = { mid: day(-8), launched: day(-35), care: day(-100) };
-  function agreement(signedOn) { return { file: true, signed_name: 'Rosa Linden', signed_on: signedOn, version: '2026-09-30' }; }
+  function agreement(signedOn) { return { file: true, signed_name: 'Rosa Linden', signed_on: signedOn, version: '2026-10-05' }; }
   var RECEIPT_DEPOSIT = { name: 'Deposit_receipt_k2m9x7q4ab.pdf', label: 'Deposit receipt' };
   var RECEIPT_BALANCE = { name: 'Second_half_receipt_p8d3n5w1zc.pdf', label: 'Second half receipt' };
   var RECEIPT_CARE = { name: 'Care_receipt_t6v2h9r4ye.pdf', label: 'Care receipt' };
@@ -235,7 +235,7 @@
       timeline: { current: 'getting_started', stages: stages([today()], 'getting_started'), care_since: '' },
       things: { draft: null, agreement: null, brand_sheet: false, handoff_sheet: false, receipts: [] },
       start_open: false,
-      mockup: { url: 'https://webfaery.love/peek/tera/?mark=1', done_on: doneOn },
+      mockup: { url: 'https://webfaery.love/peek/a-restful-space/?mark=1', done_on: doneOn },
       sms: { available: false, on: false, last4: '' },
       pay: [],
       care_manage_url: '',
@@ -286,13 +286,13 @@
         'Between Taya of Web Faery and Rosa Linden, Fern & Clay Pottery.', '',
         'What we are building: a Tended build. A full site with a contact form,',
         'newsletter signup and a Book now button to your booking app.', '',
-        'Price: $600, a founding price (half off), paid once.',
+        'Price: $600, a founding price (half off the build), paid once.',
         'Half to start, half at launch.', '',
         'After launch: care at $45 a month, which keeps your site running.',
         'Billing starts after 30 days of settling in. If you ever stop care,',
         'the site is still yours, with every file and login.', '',
         'Two rounds of changes by email. The site is yours.', '',
-        'Signed ' + spoken(data.things.agreement ? data.things.agreement.signed_on : today()) + ' as Rosa Linden. Version 2026-09-30.', '', SAMPLE
+        'Signed ' + spoken(data.things.agreement ? data.things.agreement.signed_on : today()) + ' as Rosa Linden. Version 2026-10-05.', '', SAMPLE
       ]);
     },
     brand_sheet: function () {

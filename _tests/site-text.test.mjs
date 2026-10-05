@@ -8,21 +8,28 @@
 //   care comes with every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the
 //     30 days of settling in; changes are the same in every tier (email anytime, as often as needed, reply within
 //     2 business days, anything broken fixed free, big new things quoted first);
-//   stop care anytime: the site is still theirs, every file and login handed over;
+//   care is required for new clients; if they ever stop it, the site is still theirs, every file and login
+//     handed over;
 //   anyone quoted before Oct 5 keeps their quote, and the new care price if it's lower for them (one quiet line
 //     on the main page).
 //
-// Fails (exit 1) if any page:
-//   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490), care as optional,
-//     pay as you go, an hourly rate, yearly care, "subscription", trades, self-editing, an offer of a call or
-//     chat (email only), or a dash
+// Fails (exit 1) if any page (or a string in its scripts, faery.js or mark.js):
+//   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490, $22 / $44 / $66,
+//     $400 / $650 / $950, $95), care as optional, pay as you go, an hourly rate, yearly care, "subscription",
+//     trades, self-editing, a retired offer (Photo Day, tending visits, Wildflower, Websites by Taya, half off
+//     care, free hosting forever), an offer of a call or chat (email only), Stripe at "about 3%", or a dash
+//     (mark.js keeps its "as sent" words on purpose: the already-emailed mockups show what they were sent)
 //   - shows a monthly price other than care's $12 / $45 / $90, or a side cost "paid by you" (email from their
 //     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026)
 //   - (the main page) leaves out the three care prices, the reply time, "quoted first", the settling-in start,
 //     the quoted-before-October-5 line, or the hand-over promise
-//   - shows the founding count ("4 left") anywhere but once, inside id="founding" on the main page
+//   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): Cal.com booking set up with Tended
+//     and In Bloom (1); a Book button to an app they already use fits any build (2); email forwarding free on
+//     Planted (3); the Instagram feed Tended and up (6); no phone field on intake.html (7); texts.html's
+//     "Replies" line kept exactly as is, since it matches the texting registration (8)
+//   - shows the founding count ("N left") anywhere but once, inside id="founding" on the main page
 //   - has JSON-LD that doesn't parse, or offers that don't match the page
-//   - lists a noindex page in sitemap.xml
+//   - lists a noindex page, a mockup (peek/) or the portal in sitemap.xml
 //   - links to a local file or #anchor that doesn't exist
 //   - (the main page) grows back the removed sections, or its questions stop being 6 to 8 closed accordions
 //   - shows a straight quote or apostrophe instead of a curly one
@@ -40,7 +47,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html'];
+const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html'];
 const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html'];
 const TIERS = { 'Planted': [600, 300, 12], 'Tended': [1200, 600, 45], 'In Bloom': [1800, 900, 90] };
 const CARE = Object.values(TIERS).map((t) => t[2]);
@@ -63,8 +70,14 @@ const plainOf = (text) => text.replace(/<[^>]+>/g, ' ').replace(/&cent;/g, '¢')
 
 const FORBIDDEN = [
   [/\bMaiden\b|\bMother\b|\bCrone\b/, 'an old tier name (Planted, Tended, In Bloom now)'],
-  [/\$69\b|\$690|\$35\b|\$350|\$49\b|\$490|\$444|\$666|\$888|\$588/, 'an old price'],
+  [/\$69\b|\$690|\$35\b|\$350|\$49\b|\$490|\$444|\$666|\$888|\$588|\$22\b|\$44\b|\$66\b|\$400\b|\$650\b|\$950\b|\$95\b/, 'an old price'],
   [/care is optional|optional care|care,? optional|skip care|with or without care|without care|no care\b/i, 'care as optional (it comes with every site now)'],
+  [/looked after if you like|care,? if you (?:like|want)|only if you want it/i, 'care as optional (it comes with every site now)'],
+  [/Photo Day|tending visit|Wildflower|Websites by Taya|half off care|free hosting forever|Message Taya/i, 'a retired name or offer'],
+  [/edit your own site|swappable photos?/i, 'self-editing (not offered)'],
+  [/\$3 a month/i, 'the old $3 a month own-address email (it comes with Tended and In Bloom)'],
+  [/\babout 3%/i, 'Stripe at "about 3%" (it’s about 2.9% + 30¢ per payment)'],
+  [/\ba year after launch\b/i, 'a yearly total (care is monthly only)'],
   [/pay(?:ing)? as you go/i, 'pay as you go'],
   [/\$\d[\d,.]* an hour|per hour|by the minute|per minute/i, 'an hourly rate'],
   [/\$25 to \$50/, 'the old "most small changes" estimate'],
@@ -75,7 +88,9 @@ const FORBIDDEN = [
   [/\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately)'],
   [/founding spots last/i, 'open-ended founding wording (show the count and the deadline)'],
   [/\bon call\b/i, '"on call"'],
-  [/\b(?:book a call|a quick call|45-minute call|want to chat|a chat|hop on a call|video call)\b/i, 'an offer of a call or chat (email only)'],
+  [/\b(?:book a call|a quick call|45-minute call|want to chat|a chat|hop on a call|video call|phone call|chat with|free chat|30-minute chat|rather talk)\b|Let’s talk/i, 'an offer of a call or chat (email only)'],
+  [/setting up booking for you is part of In Bloom|booking fully set up for you|In Bloom sets it all up/i, 'booking setup tied to In Bloom (Cal.com booking is set up with Tended and In Bloom; small rule 1)'],
+  [/Book (?:now )?button to (?:it|the (?:booking )?app you already use)[^.]{0,30}comes with Tended/i, 'a Book button to their own app tied to Tended (it’s just a link, so it fits any build; small rule 2)'],
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
 ];
 
@@ -93,6 +108,43 @@ for (const page of PAGES) {
   // every monthly price is care's ($12 / $45 / $90); no side costs (the old $3 own-address email for Planted is gone)
   for (const m of plain[page].matchAll(/\$(\d+) a month/g)) {
     if (!CARE.includes(+m[1])) fail(`${page}: shows $${m[1]} a month: "${plain[page].slice(Math.max(0, m.index - 60), m.index + 20)}"`);
+  }
+}
+
+// the words that live in scripts (each page's own scripts, Bramble in faery.js, the build picker in mark.js):
+// every '...' string, comments dropped first (a string never holds //, except web addresses)
+function literals(src) {
+  const out = [];
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/.*$/gm, '$1');
+  const re = /'((?:\\.|[^'\\\n])*)'/g;
+  let m;
+  while ((m = re.exec(code))) out.push({ s: m[1], before: code.slice(Math.max(0, m.index - 12), m.index) });
+  return out;
+}
+const scriptStrings = [];
+for (const page of PAGES) {
+  // the quiz's own logic is already read as visible text above; JSON-LD is checked below
+  for (const m of read(page).matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+    if (/id="quiz-logic"|application\/ld\+json/.test(m[1])) continue;
+    for (const l of literals(m[2])) scriptStrings.push([page, l.s]);
+  }
+}
+// Bramble's answers (her keys: are only words she listens for, never shown)
+for (const l of literals(read('faery.js'))) if (!/keys:\s*$/.test(l.before)) scriptStrings.push(['faery.js', l.s]);
+// mark.js keeps the "as sent" names, words and care line for the mockups already emailed (never change those)
+{
+  const mark = read('mark.js');
+  const AS_SENT_CARE = 'Care is optional, and every cost is written out at ';
+  if (!/const AS_SENT = \{[\s\S]*?name: 'Maiden'[\s\S]*?name: 'Mother'[\s\S]*?name: 'Crone'/.test(mark) || !mark.includes(`'${AS_SENT_CARE}'`)) {
+    fail('mark.js: the "as sent" words are gone (already-emailed mockups must keep the names, prices and care line they were sent with)');
+  }
+  const rest = mark.replace(/const AS_SENT = \{[\s\S]*?\n\s*\};/, '').replace(/const NAMES = \{[^}]*\};/, '');
+  for (const l of literals(rest)) if (l.s !== AS_SENT_CARE) scriptStrings.push(['mark.js', l.s]);
+}
+for (const [file, s] of scriptStrings) {
+  for (const [re, what] of FORBIDDEN) {
+    const m = s.match(re);
+    if (m) fail(`${file} (script): contains ${what}: "${s.slice(Math.max(0, m.index - 40), m.index + 40)}"`);
   }
 }
 
@@ -153,6 +205,7 @@ for (const m of sitemap.matchAll(/<loc>https:\/\/webfaery\.love\/([^<]*)<\/loc>/
   const file = m[1] || 'index.html';
   if (!fs.existsSync(path.join(root, file))) { fail(`sitemap.xml lists ${file}, which doesn't exist`); continue; }
   if (/<meta name="robots" content="[^"]*noindex/.test(read(file))) fail(`sitemap.xml lists ${file}, which is marked noindex`);
+  if (/^peek\/|portal/.test(file)) fail(`sitemap.xml lists ${file} (mockups and the portal stay out of search)`);
 }
 
 // local links, images and #anchors all exist
@@ -230,6 +283,30 @@ for (const page of PAGES) {
   need('intake.html', /Cal\.com account, free for one person, which I set up for you with your email/, 'doesn’t say I set up their Cal.com with their email');
   need('domain.html', /GitHub Pages[^.]*\. An In Bloom site that takes payments or runs a shop lives on Cloudflare Pages/, 'doesn’t say In Bloom sites with payments or a shop live on Cloudflare Pages');
   need('domain.html', /register it with your own email/, 'doesn’t say the web address is registered with their own email');
+}
+
+// ---- the small rules decided Oct 5 2026 (pricing-oct2026.md, Pollen: "yes to all") ----
+{
+  const need = (page, re, what) => { if (!re.test(plain[page])) fail(`${page}: ${what}`); };
+  // 1. Cal.com booking is set up for Tended and In Bloom (booking tied to In Bloom alone is caught by FORBIDDEN)
+  need('index.html', /free Cal\.com I set up for you/, 'the Tended card doesn’t offer a free Cal.com I set up (small rule 1)');
+  need('index.html', /With Tended and In Bloom, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Tended and In Bloom (small rule 1)');
+  // 2. a Book button to a booking app they already use is just a link, so it fits any build, Planted too
+  need('index.html', /just a link, so it fits any build/, 'doesn’t say a Book button to their own booking app fits any build, Planted too (small rule 2)');
+  // 3. Planted gets free email forwarding; only sending from their own address needs Tended
+  if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');
+  need('domain.html', /Sending from your own address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');
+  // 6. the Instagram feed is Tended and up: never in a Planted line or list item
+  for (const page of PAGES) {
+    for (const m of texts[page].matchAll(/<(p|li|small|td)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
+      const t = plainOf(m[2]).trim();
+      if (/^(?:🌱\s*)?Planted\b/.test(t) && /Instagram/.test(t)) fail(`${page}: a Planted line mentions the Instagram feed (Tended and up; small rule 6): "${t.slice(0, 90)}"`);
+    }
+  }
+  // 7. intake.html asks for no phone number (email only), and nothing reads or sends one
+  if (/id="f-phone"|type="tel"|autocomplete="tel"|f-phone|'Phone: '/.test(read('intake.html'))) fail('intake.html: still has a phone field, or code that reads or sends one (small rule 7: email only)');
+  // 8. texts.html's "Replies" line stays exactly as is: it matches the texting registration
+  if (!read('texts.html').includes('<li>Replies, if you text me and I answer.</li>')) fail('texts.html: the “Replies, if you text me and I answer.” line changed; it must match the texting registration (small rule 8)');
 }
 
 // ---- the main page stays simple: what do you make, what does it cost, how do I start ----

@@ -14,7 +14,7 @@
    In this browser's storage: {token}, the random key that says "signed in". The server keeps just a
    scrambled copy of it, and forgets it after 8 quiet hours (or a week at most), when Taya switches the
    portal off for someone, or at "Sign out". Never the project itself. Three small conveniences too:
-     - "I tapped Pay" / "I tapped Pick a time" notes, so a button someone already used says "Paid? Thank you!"
+     - "I tapped Pay" notes, so a pay button someone already used says "Paid? Thank you!"
        instead of glowing again (a day per key, under a short tag of their email; gone once Taya marks it,
        after 3 weeks, or at "Sign out")
      - while a code is on its way, the email it went to, for 10 minutes and this tab only, so a reload
@@ -85,21 +85,28 @@
   };
   const HOWTO = {
     // (pricing-oct2026.md, "Account setup flow": the owner adds Taya as a manager; no profile yet, Taya builds it.
-    // Newsletter and booking accounts Taya sets up herself, in the client's name, and hands over at launch.)
+    // Newsletter and booking accounts Taya sets up herself, in the client's name, and hands over at launch.
+    // Those come with Tended and In Bloom only, so `after` is picked by their build: maiden (Planted) never
+    // promises a newsletter or booking, mother covers Tended and In Bloom both, and other is for a build not
+    // picked yet.)
     accounts: {
       steps: [
         'Go to business.google.com and sign in with the Google account that owns your profile.',
         'Open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love, choose Manager, and send it. You stay the owner. (Google moves its buttons around now and then; if it looks different, stop there and we’ll do it together.)',
         'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Later, Google asks you for one quick check that it’s really your business (a short video, or a code it sends you).'
       ],
-      after: 'Anything else, like your newsletter or booking, I set up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
+      after: {
+        maiden: 'Anything I set up for you is in your name, with your email. If a confirm-your-email message comes, just click it.',
+        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, with your email, and hand you the logins at launch. Already happy with a booking app? We keep that one. If a confirm-your-email message or two comes from them, just click them.',
+        other: 'If your build has a newsletter or booking, I set those up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
+      }
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
     look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },
     build: { steps: ['Planted (one page), Tended (a full site) or In Bloom (booking, payments or a small shop). Not sure yet? We’ll pick together over email.'] },
     call: { steps: ['Nothing to book. I’ll email you a few easy questions, and you answer whenever suits you.'] }
   };
-  const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Let’s talk' };
+  const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Not this time' };
   // what each upload spot takes (the server checks again, and so does the field itself)
   const UPLOAD_TYPES = {
     photos: { ext: ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif', 'pdf'], accept: 'image/*,.heic,.heif,application/pdf', say: 'photos' },
@@ -251,7 +258,7 @@
     clear() { writeJSON(tab(), PENDING_KEY, null); }
   };
 
-  // "I tapped Pay" and "I tapped Pick a time": so a button someone already used doesn't glow at them again
+  // "I tapped Pay": so a pay button someone already used doesn't glow at them again
   // while Taya waits to see the money land. Kept per client (a short tag of their email, not the email).
   const TAPS_KEY = STORE_KEY + '-taps';
   const tagOf = (s) => { let h = 2166136261; for (const ch of String(s || '')) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; } return 't' + h.toString(36); };
@@ -261,7 +268,7 @@
       const o = me ? all[tagOf(me.client.email)] : null;
       const out = {};
       if (o && typeof o === 'object') {
-        for (const k of ['deposit', 'balance', 'care', 'call']) {
+        for (const k of ['deposit', 'balance', 'care']) {
           if (typeof o[k] === 'number' && Date.now() - o[k] < TAP_DAYS * 86400000) out[k] = o[k];
         }
       }
@@ -305,7 +312,7 @@
     const e = fail(code, status, r);
     // for files the server also says which rule they bumped into: size, type, count or too_many
     if (data && typeof data.reason === 'string') e.reason = data.reason.slice(0, 20);
-    // and for the editors under Change it yourself: which field, and which item in a list
+    // (field and at: kept for older server answers; the editors were retired Oct 5 2026)
     if (data && typeof data.field === 'string') e.field = data.field.slice(0, 20);
     if (data && Number.isInteger(data.at) && data.at >= 0 && data.at < 100) e.at = data.at;
     return e;
@@ -443,7 +450,7 @@
     if (em) h.append(make('em', null, em));
     const l = $('#hero-lede');
     l.textContent = '';
-    // their build's moon (waxing Maiden, full Mother, waning Crone) sits just before its name
+    // their build's moon (waxing Planted, full Tended, waning In Bloom) sits just before its name
     const parts = lede.split('\u0001');
     l.append(parts[0]);
     if (parts.length > 1) { if (moon) l.append(icon(moon, 'moon')); l.append(parts[1]); }
@@ -808,9 +815,8 @@
     hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
       (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_MOON[c.build], nowLine());
     $('#me-email').textContent = c.email || 'you';
-    // forget "I tapped Pay" once Taya has marked it (and "I booked" once the call has a date)
+    // forget "I tapped Pay" once Taya has marked it
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
-    if (stageDate('call') || stageIndex(me.timeline.current) >= 2) taps.drop('call');
     // the header's "Getting started" only while that page is still theirs to fill in
     $('#nav-start').hidden = !startItem();
     renderBack();
@@ -944,7 +950,7 @@
 
   function todoRow(item) {
     const t = taps.mine();
-    const tapped = (item.kind === 'pay' && t[item.pay_key]) || (item.id === 'd:call' && t.call);
+    const tapped = item.kind === 'pay' && t[item.pay_key];
     const li = make('li', 'todo' + (item.status === 'sent' || tapped ? ' sent' : '') + (item.kind === 'pay' ? ' pay' : ''));
     li.dataset.id = item.id;
     const mk = make('span', 'mk');
@@ -970,7 +976,7 @@
         if (!me.things.agreement) steps.push('Sign our agreement');
         const dep = me.pay.find((p) => p.key === 'deposit');
         if (dep && dep.state !== 'paid' && !t.deposit) steps.push('Pay your deposit');
-        // a chat is optional now (Oct 1 2026: email first), so it's never a to-do
+        // email only since Oct 5 2026: there is never a call to book, so it's never a to-do
         if (steps.length > 1) {
           const ol = make('ol', 'substeps');
           steps.forEach((x) => ol.append(make('li', null, x)));
@@ -996,7 +1002,12 @@
         const ol = make(how.steps.length > 1 ? 'ol' : 'ul');
         how.steps.forEach((x) => ol.append(make('li', null, x)));
         d.append(ol);
-        if (how.after) d.append(make('p', 'hint', how.after));
+        // a line picked by their build (Tended and In Bloom share one), or the same line for everyone
+        const b = me.client.build;
+        const after = how.after && typeof how.after === 'object'
+          ? how.after[b === 'maiden' ? 'maiden' : BUILDS[b] ? 'mother' : 'other']
+          : how.after;
+        if (after) d.append(make('p', 'hint', after));
         body.append(d);
       }
       if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
@@ -1644,7 +1655,7 @@
       const k = b.dataset.demo;
       $('#demo-menu').open = false;
       const bar = $('#demo-bar');
-      if (['new', 'mid', 'launched', 'care'].includes(k)) {
+      if (['mockup', 'waiting', 'new', 'mid', 'launched', 'care'].includes(k)) {
         D.setScenario(k);
         mark();
         signInQuietly();

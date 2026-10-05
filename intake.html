@@ -52,7 +52,7 @@
   .main { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
   .hint { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 10px; font-style: italic; line-height: 1.5; }
   .req { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 15px; font-style: italic; color: var(--ink-soft); }
-  input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+  input[type="text"], input[type="email"], textarea, select {
     width: 100%; background: var(--paper); color: var(--ink);
     border: 1px solid var(--field-edge); border-radius: 8px;
     font-family: 'Spectral', Georgia, serif; font-size: 17px; padding: 11px 13px; min-height: 46px;
@@ -209,9 +209,9 @@
             <label class="opt"><input type="radio" name="build" value="Planted"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wax"><rect width="24" height="24" fill="white"/><circle cx="8.2" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wax)"/></svg><b>Planted</b>: one beautiful page, $600
               <small>Planted, then kept healthy: who you are, what you offer, prices, how to reach you, photos. Ready in about 2 weeks.</small></span></label>
             <label class="opt"><input type="radio" name="build" value="Tended"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" fill="currentColor"/></svg><b>Tended</b>: a full site, $1,200
-              <small>A site that gets regular tending as the seasons change: about, services, FAQ, contact form, newsletter signup, downloadable forms, your latest Instagram posts on your site, and a Book now button linked to the booking app you already use (or a free one in your name). About 3 weeks.</small></span></label>
+              <small>A site that gets regular tending as the seasons change: about, services, FAQ, contact form, newsletter signup, downloadable forms, your latest Instagram posts on your site, and a Book now button linked to the booking app you already use (or a free Cal.com I set up for you, in your name). About 3 weeks.</small></span></label>
             <label class="opt"><input type="radio" name="build" value="In Bloom"> <span><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="moon-wan"><rect width="24" height="24" fill="white"/><circle cx="15.8" cy="12" r="8.6" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.6" fill="currentColor" mask="url(#moon-wan)"/></svg><b>In Bloom</b>: a full site that books, sells, or both, $1,800
-              <small>In full bloom and doing business for you: everything in Tended, plus online booking, selling, or both, set up in your own accounts (a small shop up to about 20 items; full online stores are quoted separately), and a <span class="nowrap">hand-off</span> lesson. About 4 weeks.</small></span></label>
+              <small>In full bloom and doing business for you: everything in Tended, plus booking built right into your site, selling, or both, set up in your own accounts (a small shop up to about 20 items; full online stores are quoted separately). About 4 weeks.</small></span></label>
             <label class="opt"><input type="radio" name="build" value="Not sure yet"> <span>Not sure yet, help me choose</span></label>
           </div>
           <p class="hint" style="margin-top: 10px;">I’m only taking 5 founding clients, through Dec 31, 2026, and while a spot’s open
@@ -221,14 +221,14 @@
 
         <div class="q">
           <p class="main" id="l-does">What should the site do?</p>
-          <p class="hint" id="h-does">Pick any that fit. Costs for the extras are right there, so nothing surprises you later (estimates as of October 2026).</p>
+          <p class="hint" id="h-does">Pick any that fit. Which build each one comes with, and any outside costs, are right there, so nothing surprises you later (estimates as of October 2026).</p>
           <div class="opts" role="group" aria-labelledby="l-does" aria-describedby="h-does">
             <label class="opt"><input type="checkbox" name="does" value="Tell my story + easy contact"> <span>Tell my story, and make it easy to reach me<small>The heart of every build</small></span></label>
             <label class="opt"><input type="checkbox" name="does" value="Several pages (services, about, FAQ)"> <span>Several pages: services, about, FAQ</span></label>
             <label class="opt"><input type="checkbox" name="does" value="Contact form"> <span>A contact form</span></label>
             <label class="opt"><input type="checkbox" name="does" value="Newsletter signup"> <span>Collect emails for a newsletter<small>Comes with Tended and In Bloom. Your list lives in your own free Buttondown account (it’s your list), which I set up for you with your email, and care covers the sending, up to 1,000 people</small></span></label>
             <label class="opt"><input type="checkbox" name="does" value="Downloadable forms"> <span>Forms clients can download<small>Intake forms, waivers, that kind of thing</small></span></label>
-            <label class="opt"><input type="checkbox" name="does" value="Online booking" id="wants-booking"> <span>Let people book online<small>Clients pick a time and you both get reminders. Your own Cal.com account, free for one person, which I set up for you with your email. Already use a booking app? The Book now button in Tended links to it</small></span></label>
+            <label class="opt"><input type="checkbox" name="does" value="Online booking" id="wants-booking"> <span>Let people book online<small>Comes with Tended and In Bloom. Clients pick a time and you both get reminders, in your own Cal.com account, free for one person, which I set up for you with your email. Already use a booking app? Your Book now button can link straight to it, with any build</small></span></label>
             <label class="opt"><input type="checkbox" name="does" value="Sell online (gift certificates, deposits, small shop)"> <span>Sell online: gift certificates, deposits, or a small shop<small>Part of In Bloom. A small shop is up to about 20 items; full online stores are quoted separately. It runs on your own Stripe account, which you make with my help over email, so the money goes straight to you, never through me. Stripe keeps about 2.9% + 30¢ per payment</small></span></label>
             <label class="opt"><input type="checkbox" name="does" value="Not sure yet"> <span>Not sure yet, let’s figure it out by email</span></label>
           </div>
@@ -351,11 +351,8 @@
         <legend>Reaching you</legend>
         <div class="q">
           <label class="main" for="f-email">Best email <span class="req" aria-hidden="true">(needed)</span></label>
-          <input type="email" id="f-email" required aria-required="true" autocomplete="email" maxlength="200">
-        </div>
-        <div class="q">
-          <label class="main" for="f-phone">Phone, if you like</label>
-          <input type="tel" id="f-phone" autocomplete="tel" maxlength="40">
+          <p class="hint" id="h-email">Everything happens by email, so this is where I’ll write back.</p>
+          <input type="email" id="f-email" required aria-required="true" autocomplete="email" maxlength="200" aria-describedby="h-email">
         </div>
       </fieldset>
 
@@ -469,7 +466,6 @@
       'Name: ' + val('f-name'),
       'Business: ' + (val('f-biz') || '(blank)'),
       'Email: ' + val('f-email'),
-      'Phone: ' + (val('f-phone') || '(blank)'),
       '',
       'What they do:', val('f-what'),
       '',
@@ -588,7 +584,6 @@
       body: JSON.stringify({
         name: 'Intake: ' + val('f-name'),
         email: val('f-email'),
-        phone: val('f-phone'),
         message: message
       })
     }).then(function (r) {

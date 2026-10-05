@@ -11,7 +11,8 @@
 //   - anything from before the Oct 5 2026 pricing shows up: Maiden / Mother / Crone as words people read
 //     (the lowercase keys maiden / mother / crone are fine), care at anything but $12 / $45 / $90 a month,
 //     $69 / $690 / $35 / $350 / $49 / $490, any hourly rate, "$25 to $50", pay as you go, care without care,
-//     yearly care, a founding care price, offers of a call or a chat, or do-it-yourself editing
+//     yearly care, a founding care price, offers of a call or a chat (including a "Let’s talk" status), or
+//     do-it-yourself editing
 //   - the "Change it yourself" editors come back (their section in portal.html, or their code in portal.js)
 //   - portal.html links to a local file or #anchor that doesn't exist
 //   - a getting-started step the portal links to (#s-<step>) is missing from start.html
@@ -72,7 +73,7 @@ const FORBIDDEN = [
   [/two months free|care[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}care/i, 'yearly care (care is monthly only)'],
   [/founding[^.]{0,60}\bcare\b|\bcare\b[^.]{0,60}founding/i, 'a founding care price (founding is half off the build only)'],
   [/\b(?:Maiden|Mother|Crone)\b/, 'an old build name (Planted / Tended / In Bloom now)'],
-  [/\bchat\b|a call\b|pick a time|rather talk|on the phone/i, 'an offer of a call or a chat (email only)'],
+  [/\bchat\b|a call\b|pick a time|rather talk|on the phone|phone call|let(?:’|\\')s talk/i, 'an offer of a call or a chat (email only)'],
   [/(?:change|edit|update) (?:it|these|them|this) yourself|coming soon|do it yourself/i, 'do-it-yourself editing (Taya makes every change)'],
 ];
 for (const [file, strings] of sources) {

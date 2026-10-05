@@ -1,5 +1,6 @@
-/* Change it yourself (Oct 2 2026): the little script on a client's own website that shows what they
-   changed in their portal, right away. One line on their site:
+/* The little script on a client's own website that fills in the spots Taya keeps current for them (hours,
+   banner, prices, events, photos), read from the portal server. Clients email Taya their changes; there is
+   no do-it-yourself editing (retired Oct 5 2026). One line on their site:
 
      <script src="https://webfaery.love/content.js" data-site="amber" defer></script>
 
@@ -18,7 +19,7 @@
      data-wf="events"           the events coming up, as a list ([data-wf-empty] child shows when there are none)
      data-wf="featured-event"   one big card: the flyer shown whole, then title, date, time, place, a link
      data-wf="booking"          (an <a>) the href, on every one
-     img[data-wf-photo="hero"]  a photo the client swapped (src and srcset)
+     img[data-wf-photo="hero"]  a photo Taya swapped in (src and srcset)
 
    Everything goes in as text (never as HTML), and only https links ever become links. No cookies, no
    tracking, nothing sent about the visitor. On a dev machine, data-api="http://127.0.0.1:PORT/api/webfaery/portal"

@@ -59,8 +59,8 @@
       faq: 'index.html#faq', care: 'index.html#care-includes', how: 'index.html#how', about: 'index.html#about', work: 'index.html#work',
       guestbook: 'index.html#guestbook', start: 'intake.html', quiz: 'quiz.html', domain: 'domain.html',
       email: 'mailto:taya@webfaery.love',
-      // the contact section (Taya is email-first: no booking calls with her from the site)
-      chat: 'index.html#contact'
+      // the contact section (email only: no calls, no chat)
+      contact: 'index.html#contact'
     },
     flightEvery: [45, 120],  // seconds between little flights (random)
     typeMs: 30               // how fast she types, per letter
@@ -88,8 +88,8 @@
         'I’m going to pretend you said “you’re lovely.” Anyway! [Want the prices? →](prices)'] },
     price: { ex: 'proud', keys: 'how much|price|prices|pric*|cost|costs|expensive|cheap|afford*|budget|maiden|mother|crone|planted|tended|in bloom|bloom|dollar*|$|fee|fees|charge|rates|quotes|estimate*|money|package*|tiers|included|includes|what do i get',
       say: ['(giggle) Three acorns and a moonbeam! ...Taya says that’s ‘not a real price.’ Fine. [The real ones are here →](prices)',
-        'Ooh, I know this one! Planted is $600, Tended is $1,200, In Bloom is $1,800. Paid once, then it’s yours. [What each one gets →](prices)',
-        'A one-page site is $600. A full site is $1,200. Booking or a little shop is $1,800. Very leafy names, very honest prices. [Compare them →](prices)',
+        'Ooh, I know this one! Planted is $600, Tended is $1,200, In Bloom is $1,800, paid once and yours to keep. Then care keeps it running: $12, $45 or $90 a month. [What each one gets →](prices)',
+        'A one-page site is $600. A full site is $1,200. Booking or a little shop is $1,800. Each one comes with care to keep it running, $12, $45 or $90 a month. Very leafy names, very honest prices. [Compare them →](prices)',
         '(giggle) More than a mushroom, less than a castle. $600 to $1,800 for the build, paid once, then care from $12 a month. I checked twice. Okay, once. [The list →](prices)'] },
     costs: { ex: 'proud', keys: 'other costs|other cost|any other|hidden|extra costs|extras|ongoing|monthly|monthly fee|per month|a month|every month|renew*|upkeep|catch|subscription|recurring',
       say: ['After the build, it’s just care: $12, $45 or $90 a month, matching your site. It covers hosting and your web address, so there’s nothing to renew. [Every cost, said plainly →](costs)',
@@ -134,9 +134,9 @@
         '(happy) The first 30 days after launch, tweaks are on Taya. After that, care keeps it going the same way: you email, she does it. [How care works →](care)',
         '(sleepy) Taya looks after your website so you don’t have to. More time for naps. I mean, your business 😂 [Care, explained →](care)'] },
     booking: { ex: 'proud', keys: 'book*|cal com|calcom|calendly|schedul*|appointment*|calendar|reservation*|stripe|sell|selling|shop|online store|products|ecommerce',
-      say: ['Online booking lives in your own Cal.com account, free for one person, and it can take payments through your own Stripe. [See In Bloom →](prices)',
-        '(sleepy) I book naps. Taya sets up real booking! Tended adds a Book button to the app you already use, and In Bloom sets it all up for you. [Prices →](prices)',
-        'In Bloom sets up booking, payments or a little shop for you, and keeps it all running. [In Bloom →](prices)'] },
+      say: ['Online booking lives in your own Cal.com account, free for one person, and Taya sets it up for you with Tended and In Bloom. Taking payments or deposits too? That’s In Bloom, through your own Stripe. [Prices →](prices)',
+        '(sleepy) I book naps. Taya sets up real booking! A Book button to the app you already use fits any build, Tended comes with a free Cal.com she sets up for you, and In Bloom runs booking and payments for you. [Prices →](prices)',
+        'In Bloom builds booking, payments or a little shop right into your site, and keeps it all running. Just a Book button? Tended comes with a free Cal.com, and any build can link to the app you already use. [Prices →](prices)'] },
     newsletter: { ex: 'proud', keys: 'newsletter*|mailing list|email list|subscriber*|mailchimp|buttondown|substack',
       say: ['A newsletter sign-up comes with Tended and In Bloom, and care covers the sending. [Every cost →](costs)',
         '(giggle) I’d send a newsletter, but my only reader is a snail. Yours can have real readers! [The costs, said plainly →](costs)',
@@ -148,7 +148,7 @@
     hosting: { ex: 'proud', keys: 'host|hosting|hosted|domain*|web address|url|godaddy|squarespace|wix|wordpress|server*|porkbun|namecheap|email address|own email|the domain|a domain|my domain|get email|business email',
       say: ['Your web address’s first year comes with your build, and after that care covers it, hosting too. Nothing to renew. [Every cost →](costs)',
         '(thinking) A web address is your site’s name, like webfaery.love. Mine is “the mushroom.” [The web address guide →](domain)',
-        '(happy) Your web address is in your name, so it’s yours. Email from your own address comes with Tended and In Bloom care. [How to get one →](domain)'] },
+        '(happy) Your web address is legally yours: you’re listed as its owner, and Taya keeps it renewed as part of care. Email from your own address comes with Tended and In Bloom. [How your web address works →](domain)'] },
     founding: { ex: 'proud', keys: 'founding|founder*|discount*|deal|deals|sale|half off|coupon|promo*|special|offer|spots',
       say: ['Founding clients get half off the build! There are only a few spots. [The founding deal →](founding)',
         '(giggle) Half off the build for founding clients. I asked for half off too. They said I’m not a client. [See if spots are left →](founding)',
@@ -187,7 +187,7 @@
       say: ['Taya reads every email and writes back herself: [taya@webfaery.love](email)',
         '(proud) Email is best! She writes back personally: [taya@webfaery.love](email)', 'Here’s the magic portal: [taya@webfaery.love](email) ✨'] },
     writing: { ex: 'proud', keys: 'write|writing|words|copy|content|do i have to|text for|how does it work|how does this work|how it works|process|steps',
-      say: ['Nope, you don’t have to write it! You answer a few easy questions by email (or chat with Taya, if you’d rather), and she writes your words from that. [How it works →](how)',
+      say: ['Nope, you don’t have to write it! You answer a few easy questions by email, whenever suits you, and she writes your words from that. [How it works →](how)',
         '(happy) Taya writes it for you! You answer a few questions about your work. I would answer them all with moss. [How it works →](how)',
         '(giggle) She writes, you read it and say what doesn’t sound like you, she fixes it. I just supervise. [The steps →](how)'] },
     ownart: { ex: 'proud', keys: 'own artwork|own art|my art|my artwork|bring my|artwork|art|artist|artists|drawing*|illustrat*|flash|lettering|sketch*|painting*|logo|logos|graphic*|tattoo*|my designs|own designs',
