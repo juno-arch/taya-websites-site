@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Lakeport Dance Center, home of Antoinette's School of Dance, on Soda Bay Road for over 36 years. Ballet, Pointe, Jazz, Tap, Hip Hop, Contemporary, Movement and Musical Theater for ages 2 through adult. Call (707) 263-5617.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d4468'/%3E%3Ctext x='16' y='22.5' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='14' fill='%23fbf7f2'%3ELDC%3C/text%3E%3C/svg%3E">
-<link rel="preload" as="image" href="images/hero-stage.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-studio.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Red+Hat+Text:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@600&display=swap">
@@ -123,7 +123,7 @@
   .btn.quiet { background: transparent; color: var(--navy-deep); }
   .btn.quiet:hover { background: var(--ground-2); }
 
-  /* ---------- HERO: their showcase stage, curtains closed, one light on ---------- */
+  /* ---------- HERO: a real Pre Ballet class at the barre in their studio (from their Facebook), dancers small, lots of floor for the words ---------- */
   .hero-band {
     position: relative; overflow: hidden;
     min-height: 96vh; min-height: 96svh;
@@ -132,7 +132,7 @@
   }
   .hero-band > .gutter { position: relative; z-index: 3; }
   .hero-band.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 0;
-    background: url('images/hero-stage.webp') var(--hero-pos, 50% 46%) / cover no-repeat; }
+    background: url('images/hero-studio.webp') var(--hero-pos, 50% 60%) / cover no-repeat; }
   .hero-band.has-photo::after { content: ""; position: absolute; inset: 0; z-index: 1;
     background:
       radial-gradient(60% 55% at 64% 40%, rgba(242, 196, 107, 0.16), rgba(242, 196, 107, 0) 70%),
@@ -172,7 +172,7 @@
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
   @media (max-width: 760px) {
     .hero-band { min-height: 92svh; }
-    .hero-band.has-photo::before { --hero-pos: 60% 50%; }
+    .hero-band.has-photo::before { --hero-pos: 54% 50%; }
     .hero-main { padding-block: 40px 48px; }
   }
 
@@ -235,9 +235,9 @@
   .menu-foot { margin-top: 18px; font-size: 15.5px; color: var(--ink-soft); }
   .svc-copy .photo { aspect-ratio: 463 / 820; max-width: 300px; margin-top: 30px; }
 
-  /* ---------- CURTAIN CALL (signature): on the dark stage, red velvet curtains part, a spotlight walks
-     along their own row of dancers (the silhouettes from their banner), the whole line takes a bow in
-     the light, and the curtains close again (22s). Under reduced motion: curtains open, everyone lit, still. ---------- */
+  /* ---------- CURTAIN CALL (signature): on the dark stage, red velvet curtains part over their own row of dancers
+     (the silhouettes from their banner), and the spotlight lands on what's up next in the dance year, with its date.
+     Hover or tap any date below and the light moves to it. Under reduced motion: no glide, the light just appears. ---------- */
   .band { background: var(--band); color: var(--on-band); position: relative; overflow: hidden; border-top: 0 !important; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: var(--gold); }
@@ -269,24 +269,31 @@
     background: radial-gradient(circle at 50% 0, #9a1424 62%, transparent 64%) 0 0 / 7.5% 100% repeat-x, linear-gradient(#5a0912, #8a1222);
     -webkit-mask: linear-gradient(#000 55%, rgba(0,0,0,0.98)); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); }
   .stage .valance::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 3px; background: linear-gradient(90deg, #b8893a, #f2c46b, #b8893a); opacity: 0.8; }
-  .stage.play .curtain.l { animation: cc-l 22s cubic-bezier(.45,.05,.3,1) infinite; }
-  .stage.play .curtain.r { animation: cc-r 22s cubic-bezier(.45,.05,.3,1) infinite; }
-  .stage.play .win { animation: cc-win 22s linear infinite; }
-  .stage.play .win .dancers { animation: cc-in 22s linear infinite; }
-  .stage.play .beam { animation: cc-beam 22s linear infinite; }
-  .stage.play .all { animation: cc-all 22s ease infinite; }
-  @keyframes cc-l { 0%, 5% { transform: scaleX(1); } 17%, 86% { transform: scaleX(0.11); } 96%, 100% { transform: scaleX(1); } }
-  @keyframes cc-r { 0%, 5% { transform: scaleX(1); } 17%, 86% { transform: scaleX(0.11); } 96%, 100% { transform: scaleX(1); } }
-  @keyframes cc-win { 0%, 18% { transform: translateX(-100%); opacity: 0; } 19% { opacity: 1; } 66% { transform: translateX(455%); opacity: 1; } 67%, 100% { transform: translateX(455%); opacity: 0; } }
-  @keyframes cc-in { 0%, 18% { transform: translateX(22%); } 66%, 100% { transform: translateX(-100%); } }
-  @keyframes cc-beam { 0%, 18% { transform: translateX(-100%); opacity: 0; } 21% { opacity: 1; } 64% { opacity: 1; } 66% { transform: translateX(455%); opacity: 0; } 100% { transform: translateX(455%); opacity: 0; } }
-  @keyframes cc-all { 0%, 65% { opacity: 0; } 71%, 84% { opacity: 1; } 90%, 100% { opacity: 0; } }
+  /* Since Oct 5: the curtain call has a job. The curtains open once, and the spotlight walks the dance year and
+     lands on what's up next, with its date on the stage. Tap (or hover) any date below and the light moves there. */
+  .stage .win { left: var(--win-l, 0%); transition: left 1.9s cubic-bezier(.45,.05,.3,1); }
+  .stage .win .dancers { left: var(--in-l, 0%); transition: left 1.9s cubic-bezier(.45,.05,.3,1); }
+  .stage .beam { left: var(--beam-l, 0%); transition: left 1.9s cubic-bezier(.45,.05,.3,1), opacity 0.8s ease; }
+  .stage .curtain { transform: scaleX(1); transition: transform 2.4s cubic-bezier(.45,.05,.3,1); }
+  .stage.open .curtain { transform: scaleX(0.11); }
+  .stage.lit .beam { opacity: 1; }
+  .stage .cap { position: absolute; z-index: 3; top: 17%; left: var(--cap-l, 50%); translate: -50% 0; width: max-content; max-width: 78%;
+    text-align: center; opacity: 0; transition: opacity 0.6s ease, left 1.9s cubic-bezier(.45,.05,.3,1); pointer-events: none; }
+  .stage.lit .cap { opacity: 1; }
+  .stage .cap small { display: block; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--gold); }
+  .stage .cap b { display: block; font-family: 'Rozha One', Georgia, serif; font-weight: 400; font-size: clamp(20px, 3vw, 34px); line-height: 1.1; margin-top: 4px; color: #fbf3ec; text-shadow: 0 2px 18px rgba(10, 6, 7, 0.8); }
+  .stage .cap span { display: block; margin-top: 4px; font-size: clamp(14px, 1.6vw, 17px); color: rgba(246, 238, 232, 0.85); }
+  .stage.moving .cap { opacity: 0.35; }
+  .season li[tabindex] { cursor: pointer; outline: none; }
+  .season li[tabindex]:focus-visible b { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+  .season li.on b { color: var(--gold); }
+  .season li.on::before { background: #fff1cf; box-shadow: 0 0 0 4px rgba(242, 196, 107, 0.3), 0 0 18px rgba(242, 196, 107, 0.9); }
+  .season li.past.on { opacity: 0.85; }
   @media (prefers-reduced-motion: reduce) {
-    .stage.play .curtain, .stage.play .win, .stage.play .win .dancers, .stage.play .beam, .stage.play .all { animation: none; }
+    .stage .win, .stage .win .dancers, .stage .beam, .stage .cap, .stage .curtain { transition: none; }
     .stage .curtain { transform: scaleX(0.11); }
-    .stage .all { opacity: 1; }
-    .stage .win, .stage .beam { display: none; }
   }
+  .season-hint { text-transform: none; letter-spacing: 0.02em; font-weight: 400; color: rgba(246, 238, 232, 0.7); }
   .cc-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 48px; align-items: end; }
   /* the season, as a run of show */
   .season { list-style: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin-top: 40px; counter-reset: s; }
@@ -303,8 +310,6 @@
   /* ---------- the studio ---------- */
   .about { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 52px; align-items: center; }
   .about-pics { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .about-pics .photo:nth-child(2) { aspect-ratio: 1500 / 380; }
-  .about-pics .photo:last-child { aspect-ratio: 1400 / 296; }
   .years { position: relative; overflow: hidden; display: flex; align-items: center; gap: 18px; background: var(--band); color: var(--on-band); border-radius: 6px; padding: 26px 26px 64px; }
   .years::after { content: ""; position: absolute; left: 4%; right: 4%; bottom: 8px; aspect-ratio: 2508 / 449; background: linear-gradient(#ffe1a3, #d99e3d); opacity: 0.9;
     -webkit-mask: url('images/dancers.png') center bottom / 100% auto no-repeat; mask: url('images/dancers.png') center bottom / 100% auto no-repeat; }
@@ -320,7 +325,6 @@
 
   /* ---------- showcase + Christmas show ---------- */
   .show { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 44px; align-items: start; }
-  .show-photo { aspect-ratio: 2048 / 550; margin-top: 26px; }
   .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 22px; margin-top: 24px; }
   .facts div { border-left: 2px solid var(--red); padding-left: 14px; font-size: 16.5px; }
   .facts b { display: block; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 2px; font-weight: 500; }
@@ -405,17 +409,13 @@
   .hair-note { margin-top: 14px; font-size: 15.5px; color: var(--ink-soft); }
 
   /* ---------- gallery ---------- */
-  .gal { display: grid; grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr); grid-template-rows: auto auto auto; gap: 12px; margin-top: 30px; }
+  .gal { display: grid; grid-template-columns: minmax(0, 0.87fr) minmax(0, 1fr); gap: 12px; margin-top: 30px; }
   .gal .photo { border-radius: 6px; }
-  .gal .tall { grid-row: span 3; aspect-ratio: 463 / 820; }
-  .gal .w1 { aspect-ratio: 1500 / 380; }
-  .gal .w2 { aspect-ratio: 1250 / 356; }
-  .gal .w3 { aspect-ratio: 1400 / 296; }
+  .gal .g-l { aspect-ratio: 1000 / 1080; }
+  .gal .g-r2 { aspect-ratio: 497 / 465; align-self: stretch; }
+  .about-pics .teach-photo { aspect-ratio: 1170 / 887; }
   .gal .lb-thumb { display: block; }
-  .gal-row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 12px; }
-  .gal-row2 .photo:first-child { aspect-ratio: 1536 / 235; }
-  .gal-row2 .photo:last-child { aspect-ratio: 2048 / 550; }
-  :root { --lb-veil: rgba(18, 12, 14, 0.96); --lb-ink: #f6eee8; --lb-accent: #f2c46b; --lb-caption-font: 'Red Hat Text', sans-serif; }
+  :root { --lb-veil: rgba(18, 12, 14, 0.96); --lb-ink: #f6eee8; --lb-accent: #f2c46b; --lb-caption-font: 'Red Hat Text', sans-serif; --lb-max-scale: 1; }
 
   /* ---------- reviews ---------- */
   .reviews { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 18px; margin-top: 30px; }
@@ -632,7 +632,8 @@
   .egg .stage { width: 100%; margin-top: 0; }
   .egg .stage .curtain.l, .egg .stage .curtain.r { animation: egg-open 2.2s cubic-bezier(.45,.05,.3,1) forwards; }
   .egg .stage .all { animation: hero-fade 1.2s ease 1.4s forwards; }
-  .egg .stage .win, .egg .stage .beam { display: none; }
+  .egg .stage .win, .egg .stage .beam, .egg .stage .cap { display: none; }
+  .egg .stage .curtain { transition: none; }
   @keyframes egg-open { to { transform: scaleX(0.11); } }
   .egg-say { font-family: 'Rozha One', Georgia, serif; font-size: clamp(32px, 6vw, 52px); color: var(--gold); opacity: 0; animation: hero-fade 1s ease 2.2s forwards; }
   .egg-small { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
@@ -655,8 +656,7 @@
     .stage { aspect-ratio: 16 / 11; }
     .stage .row { left: 2%; right: 2%; }
     .gal { grid-template-columns: minmax(0, 1fr); }
-    .gal .tall { grid-row: auto; aspect-ratio: 4 / 5; }
-    .gal-row2 { grid-template-columns: minmax(0, 1fr); }
+    .gal .g-r2 { align-self: auto; }
     .svc-copy .photo { max-width: none; aspect-ratio: 4 / 5; }
   }
   @media (max-width: 480px) {
@@ -735,7 +735,7 @@
     h.classList.add('wait');
     var started = false;
     var go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
-    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-stage.webp';
+    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-studio.webp';
     if (im.complete) go();
     setTimeout(go, 1500);
   })();
@@ -794,7 +794,7 @@
       <h2 class="reveal">Simple, <em>by the month</em></h2>
       <p class="soft" style="margin-top:18px">Registration is first come, first served. Once a class is full it&rsquo;s closed, and dancers who&rsquo;d like in go on a waiting list.</p>
       <p class="soft">Tuition is due the first week of each month, by check, cash, or Venmo (@AntoinetteLDC). Miss a class? Come to a make-up class at the same level, and the same goes for classes cancelled for holidays.</p>
-      <figure class="reveal photo">
+      <figure class="reveal photo" data-lightbox>
         <img src="images/studio-barre.webp" width="463" height="820" alt="Two wooden ballet barres on a pale studio wall above a honey colored wood floor" loading="lazy" style="object-position:50% 50%">
       </figure>
     </div>
@@ -847,10 +847,11 @@
         <div class="win"><div class="dancers"></div></div>
         <div class="dancers all"></div>
       </div>
+      <div class="cap"><small>Up next</small><b>&nbsp;</b><span>&nbsp;</span></div>
       <div class="curtain l"></div><div class="curtain r"></div>
       <div class="valance"></div>
     </div>
-    <p class="label" style="margin-top:44px">The 2026/27 dance year</p>
+    <p class="label" style="margin-top:44px">The 2026/27 dance year <span class="season-hint">&middot; tap a date to put it in the spotlight</span></p>
     <ol class="season" id="season-list">
       <li data-date="2026-09-08"><span class="when">September 8</span><b>Classes begin</b><small>Studios A and B, Monday through Friday afternoons.</small></li>
       <li data-date="2026-12-12"><span class="when">December</span><b>Christmas Show</b><small><span class="ph">the date and place</span></small></li>
@@ -867,8 +868,7 @@
   <div class="wrap about">
     <div class="about-pics">
       <div class="years reveal" aria-label="Over 36 years of dance in Lake County"><b aria-hidden="true">36<sup>+</sup></b><span aria-hidden="true">years of dance<br>in Lake County</span></div>
-      <figure class="reveal photo"><img src="images/g-slippers.webp" width="1500" height="380" alt="Little dancers sitting on the wood floor in pink ballet slippers, black jazz shoes and tulle, one hugging a pink balloon" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/g-balloons.webp" width="1400" height="296" alt="Two little dancers in purple and pink costumes holding pink balloons, a tiara resting on the floor beside them" loading="lazy"></figure>
+      <figure class="reveal photo teach-photo" data-lightbox><img src="images/g-teachers.webp" width="1170" height="887" alt="Two of the teachers dancing side by side in the studio, arms raised, in front of the barres" loading="lazy" style="object-position:50% 50%"></figure>
     </div>
     <div>
       <p class="label with-pill"><span>The studio</span> <span class="tag" data-go="maiden">Every build</span></p>
@@ -899,7 +899,6 @@
         <div class="reveal"><b>Costumes</b>Handed out in spring. Every dancer wears tan tights, $10 at the studio.</div>
         <div class="reveal"><b>Photos</b>Laurie Ann Martin Photography takes group and individual costume photos at the studio.</div>
       </div>
-      <figure class="reveal photo show-photo"><img src="images/g-stage.webp" width="2048" height="550" alt="Black stage curtains in soft light, waiting for the show" loading="lazy" style="object-position:50% 40%"></figure>
     </div>
 
     <div data-show="crone all" data-fold data-thing="showcase tickets sold right here">
@@ -1058,21 +1057,15 @@
 <section id="gallery" class="gutter">
   <div class="wrap">
     <p class="label with-pill"><span>At the studio</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">Slippers, tulle <em>and a few balloons</em></h2>
-    <p class="soft measure" style="margin-top:14px">From royal dance camp last July. Tap any photo to see it whole.</p>
+    <h2 class="reveal">Class nights <em>on Soda Bay Road</em></h2>
+    <p class="soft measure" style="margin-top:14px">A class from the teacher&rsquo;s side of the room, and the barre between the big windows. Tap a photo to see it whole.</p>
     <div data-lightbox>
       <div class="gal">
-        <figure class="reveal photo tall"><img src="images/studio-barre.webp" width="463" height="820" alt="The ballet barres in the studio, over a wood floor" loading="lazy"></figure>
-        <figure class="reveal photo w1"><img src="images/g-slippers.webp" width="1500" height="380" alt="Little dancers on the floor in ballet slippers and jazz shoes, a pink balloon rolling by" loading="lazy"></figure>
-        <figure class="reveal photo w2"><img src="images/g-tulle.webp" width="1250" height="356" alt="Princess costumes in sequins and snowflake tulle, dancers kneeling on the studio floor" loading="lazy"></figure>
-        <figure class="reveal photo w3"><img src="images/g-balloons.webp" width="1400" height="296" alt="Two dancers in purple and pink holding pink balloons, a tiara on the floor" loading="lazy"></figure>
-      </div>
-      <div class="gal-row2">
-        <figure class="reveal photo"><img src="images/g-skirts.webp" width="1536" height="235" alt="Purple and pink princess skirts spread out on the honey wood floor" loading="lazy"></figure>
-        <figure class="reveal photo"><img src="images/g-stage.webp" width="2048" height="550" alt="The showcase stage, curtains closed" loading="lazy"></figure>
+        <figure class="reveal photo g-l"><img src="images/g-mirror.webp" width="1000" height="1080" alt="A teacher, seen from behind, leads a full class reflected in the studio mirrors" loading="lazy" style="object-position:58% 50%"></figure>
+        <figure class="reveal photo g-r2"><img src="images/g-studio.webp" width="497" height="465" alt="A dancer at the barre seen from behind, between the navy curtains and the tall windows of the studio" loading="lazy" style="object-position:45% 50%"></figure>
       </div>
     </div>
-    <p class="tier-note mock-note wf-note" style="margin-top:22px">Every photo is yours, from your Facebook page, cropped so no child&rsquo;s face shows. On your real site, your costume photos and showcase shots go here (only of dancers whose families said yes).</p>
+    <p class="tier-note mock-note wf-note" style="margin-top:22px">Every photo is yours, from your Facebook page. I only picked ones where no child&rsquo;s face is close up: a class from across the room, dancers from behind, and your teachers. On your real site, your costume photos and showcase shots go here (only of dancers whose families said yes).</p>
   </div>
 </section>
 
@@ -1204,7 +1197,7 @@
         <figcaption>In a text from another parent</figcaption>
         <div class="sms">
           <p class="sms-bubble">Here&rsquo;s the dance studio! Pre Ballet is Monday at 3:30</p>
-          <span class="linkcard"><img src="images/hero-stage.webp" alt="" loading="lazy"><span><b>Lakeport Dance Center</b><small>lakeportdancecenter.com</small></span></span>
+          <span class="linkcard"><img src="images/g-teachers.webp" alt="" loading="lazy"><span><b>Lakeport Dance Center</b><small>lakeportdancecenter.com</small></span></span>
         </div>
       </figure>
     </div>
@@ -1344,11 +1337,63 @@
       if (!found) { found = true; li.classList.add('next'); var s = document.createElement('span'); s.className = 'up'; s.textContent = 'Up next'; li.appendChild(s); }
     });
   })();
-  /* curtain call starts when the stage scrolls into view */
+  /* curtain call: the curtains open once, then the spotlight walks the dance year and lands on what's up next.
+     Hover, tap or focus any date in the dance year and the light moves to it, with its date on the stage. */
   (function () {
-    var st = document.getElementById('stage'); if (!st) return;
-    if (!('IntersectionObserver' in window)) { st.classList.add('play'); return; }
-    new IntersectionObserver(function (es, io) { es.forEach(function (e) { if (e.isIntersecting) { st.classList.add('play'); io.disconnect(); } }); }, { threshold: 0.35 }).observe(st);
+    var st = document.getElementById('stage'), list = document.getElementById('season-list'); if (!st || !list) return;
+    var items = [].slice.call(list.children), n = items.length; if (!n) return;
+    var cap = st.querySelector('.cap'), capS = cap.querySelector('small'), capB = cap.querySelector('b'), capT = cap.querySelector('span');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nextI = items.findIndex(function (li) { return li.classList.contains('next'); }); if (nextI < 0) nextI = n - 1;
+    var pinned = nextI, shown = -1, moveT = null;
+    var ROW_L = 0.075, ROW_W = 0.85, WIN = 0.22;           /* the dancers' row and the light, as parts of the stage */
+    function place(i) {
+      var x = (i + 0.5) / n;                                /* stage x under this date's column */
+      var r = Math.min(Math.max((x - ROW_L) / ROW_W - WIN / 2, 0), 1 - WIN);   /* light window, in row widths */
+      st.style.setProperty('--win-l', (r * 100) + '%');
+      st.style.setProperty('--in-l', (-r / WIN * 100) + '%');
+      st.style.setProperty('--beam-l', ((ROW_L + r * ROW_W) * 100) + '%');
+      capX = x; placeCap();
+    }
+    var capX = 0.5;
+    function placeCap() {                                   /* keep the date on the stage, between the curtains */
+      var W = st.clientWidth, half = cap.offsetWidth / 2, pad = W * 0.07;
+      st.style.setProperty('--cap-l', Math.min(Math.max(capX * W, half + pad), W - half - pad) + 'px');
+    }
+    window.addEventListener('resize', placeCap);
+    function say(i) {
+      var li = items[i];
+      capS.textContent = i === nextI ? 'Up next' : (li.classList.contains('past') ? 'Done for this year' : 'Coming up');
+      capB.textContent = li.querySelector('b').textContent;
+      capT.textContent = li.querySelector('.when').textContent;
+      placeCap();
+      items.forEach(function (x, k) { x.classList.toggle('on', k === i); if (k === i) x.setAttribute('aria-current', 'true'); else x.removeAttribute('aria-current'); });
+    }
+    function go(i) {
+      if (i === shown) return; shown = i; place(i);
+      if (reduce) { say(i); return; }
+      st.classList.add('moving'); clearTimeout(moveT);
+      moveT = setTimeout(function () { say(i); st.classList.remove('moving'); }, 650);
+    }
+    items.forEach(function (li, i) {
+      li.tabIndex = 0;
+      li.addEventListener('mouseenter', function () { go(i); });
+      li.addEventListener('focus', function () { go(i); });
+      li.addEventListener('click', function () { pinned = i; go(i); });
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pinned = i; go(i); } });
+    });
+    list.addEventListener('mouseleave', function () { go(pinned); });
+    list.addEventListener('focusout', function (e) { if (!list.contains(e.relatedTarget)) go(pinned); });
+    function start() {
+      st.classList.add('open');
+      if (reduce) { st.classList.add('lit'); go(nextI); return; }
+      place(0); shown = 0;                                   /* the light comes on at September, then walks to up next */
+      setTimeout(function () { say(0); st.classList.add('lit'); }, 1500);
+      setTimeout(function () { go(nextI); }, 2600);
+    }
+    place(nextI); say(nextI);
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    new IntersectionObserver(function (es, io) { es.forEach(function (e) { if (e.isIntersecting) { start(); io.disconnect(); } }); }, { threshold: 0.35 }).observe(st);
   })();
   /* dress code, from their own Dress Code page */
   (function () {
@@ -1670,7 +1715,7 @@
       var open = false, back = null;
       function show() {
         if (open) return; open = true; back = document.activeElement;
-        art.innerHTML = ''; var c = src.cloneNode(true); c.removeAttribute('id'); c.classList.remove('play'); art.appendChild(c);
+        art.innerHTML = ''; var c = src.cloneNode(true); c.removeAttribute('id'); c.classList.remove('open', 'lit', 'moving'); art.appendChild(c);
         var say = egg.querySelector('.egg-say'); say.style.animation = 'none'; void say.offsetWidth; say.style.animation = '';
         egg.hidden = false; quietFocus(egg);
       }
