@@ -16,7 +16,7 @@
 <link rel="preload" as="image" href="images/hero-earrings.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Sora:wght@300;400;500;600&family=Silkscreen&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Sora:wght@300;400;500;600&family=Silkscreen&family=Pirata+One&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -195,12 +195,62 @@
   .has-memphis { position: relative; overflow: hidden; }
   .has-memphis > .wrap { position: relative; z-index: 1; }
 
-  /* ---------- hello ---------- */
-  .hello-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: end; }
-  .hello-pics .photo:first-child { aspect-ratio: 1; --off: var(--butter); }
-  .hello-pics .photo:last-child { aspect-ratio: 1; --off: var(--blue); margin-bottom: 40px; }
-  .style-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; list-style: none; }
-  .style-list li { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; padding: 6px 14px; border: 2px solid var(--line); border-radius: 999px; background: var(--c, var(--card)); color: #1a1420; }
+  /* ---------- THE SIGN: her neon, in blackletter like her logo. Pastel tubes on a black sign box that hangs
+     from two chains and sways a little. The tubes buzz on letter by letter, stutter, then settle into a soft hum.
+     It has a job: it shows her status (books open, books full, on the road, new drop) and changes with the
+     banner up top, so one email changes both. Steady and lit under reduced motion. ---------- */
+  .sign-sec { border-top: 2px solid var(--line); padding-block: 0 56px; background: var(--ground-2); }
+  .sign-wrap { display: grid; justify-items: center; }
+  .sign-hang { position: relative; padding-top: 38px; transform-origin: 50% -20px; animation: sway 9s ease-in-out infinite; }
+  @keyframes sway { 0%, 100% { rotate: -0.7deg; } 50% { rotate: 0.7deg; } }
+  .chain { position: absolute; top: 0; width: 0; height: 38px; border-left: 2px dashed var(--line); }
+  .chain.l { left: 22%; } .chain.r { right: 22%; }
+  .sign-box { position: relative; display: grid; justify-items: center; gap: 0; box-sizing: border-box; min-width: min(100%, 300px); padding: 34px 44px 26px;
+    background: #151018; border: 2px solid var(--line); border-radius: 28px; box-shadow: 8px 8px 0 var(--pink); text-align: center;
+    --tube-a: #f7e07a; --tube-b: #f6a8c8; --tube-f: #9ec5f0; }
+  .sign-box[data-state="full"] { --tube-b: #c7b3f2; --tube-f: #f6a8c8; }
+  .sign-box[data-state="road"] { --tube-b: #9ec5f0; --tube-f: #a8e3c8; }
+  .sign-box[data-state="drop"] { --tube-a: #f6a8c8; --tube-b: #a8e3c8; --tube-f: #f7e07a; }
+  .neon-frame { position: absolute; inset: 12px; border-radius: 20px; border: 2px solid var(--tube-f); pointer-events: none;
+    box-shadow: 0 0 5px var(--tube-f), 0 0 16px var(--tube-f), inset 0 0 8px var(--tube-f); }
+  .neon-line { position: relative; display: block; line-height: 1; font-family: 'Pirata One', 'Pirata', cursive; font-weight: 400; white-space: nowrap; letter-spacing: 0.04em; }
+  .neon-top { font-size: clamp(24px, 3.4vw, 34px); --tube: var(--tube-a); }
+  .neon-big { font-size: clamp(66px, 10vw, 112px); margin-top: 2px; --tube: var(--tube-b); }
+  .tube i { display: inline-block; font-style: normal; color: color-mix(in srgb, var(--tube) 22%, transparent); -webkit-text-stroke: 1.7px var(--tube);
+    filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 5px var(--tube)) drop-shadow(0 0 14px var(--tube)); }
+  .neon-sub { position: relative; margin-top: 12px; font-family: 'Silkscreen', monospace; font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #fdf3f7; text-decoration: none; min-height: 44px; display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 8px; }
+  #neon-when, .neon-sub em { white-space: nowrap; }
+  .neon-sub em { font-style: normal; color: var(--tube-b); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  .neon-sub:hover em, .neon-sub:focus-visible em { color: #fff; }
+  .neon-sub:focus-visible { outline: 2px solid #fdf3f7; outline-offset: 4px; border-radius: 6px; }
+  /* buzz on: each letter in turn, then the hum */
+  .sign-box.off .tube i, .sign-box.off .neon-frame, .sign-box.off .neon-sub { opacity: 0.08; }
+  .sign-box.lit .neon-frame { animation: tube-on 1.3s linear both; }
+  .sign-box.lit .tube i { animation: tube-on 1.1s linear both; animation-delay: calc(var(--d, 0ms) + var(--i, 0) * 95ms); }
+  .sign-box.lit .neon-big .tube i { --d: 520ms; }
+  .sign-box.lit .neon-sub { animation: hero-fade 0.9s ease both; animation-delay: 1.8s; }
+  .sign-box.lit.steady .tube i { animation: tube-hum 6.5s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -0.7s); }
+  .sign-box.lit.steady .neon-big .tube i:nth-child(2) { animation: tube-hum 6.5s ease-in-out infinite, tube-stutter 13s linear infinite; }
+  .sign-box.lit.steady .neon-frame { animation: tube-hum 9s ease-in-out infinite; }
+  @keyframes tube-on { 0% { opacity: 0.08; } 9% { opacity: 0.65; } 15% { opacity: 0.12; } 30% { opacity: 0.9; } 37% { opacity: 0.3; } 52% { opacity: 1; } 66% { opacity: 0.78; } 100% { opacity: 1; } }
+  @keyframes tube-hum { 0%, 100% { opacity: 0.86; } 50% { opacity: 1; } }
+  @keyframes tube-stutter { 0%, 95.6%, 100% { opacity: 1; } 96% { opacity: 0.35; } 96.4% { opacity: 1; } 96.9% { opacity: 0.5; } 97.3% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .sign-hang { animation: none; }
+    .sign-box .tube i, .sign-box .neon-frame, .sign-box .neon-sub, .sign-box.lit .neon-sub, .sign-box.lit .tube i, .sign-box.lit .neon-frame, .sign-box.lit.steady .tube i, .sign-box.lit.steady .neon-frame { animation: none; opacity: 1; }
+  }
+
+  /* ---------- three tiles, like her own site: Tattoo, Jewelry, Apparel with small black buttons ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 26px; }
+  .tile { position: relative; display: block; text-decoration: none; color: inherit; border-radius: 16px; }
+  .tile .photo { aspect-ratio: 4 / 5; }
+  .tile:nth-child(1) .photo { --off: var(--pink); } .tile:nth-child(2) .photo { --off: var(--butter); } .tile:nth-child(3) .photo { --off: var(--blue); }
+  .tile-btn { position: absolute; left: 16px; bottom: 16px; z-index: 2; display: inline-flex; align-items: center; min-height: 36px; padding: 0 16px; border-radius: 999px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.01em; background: #1a1420; color: #fdf3f7; border: 2px solid #fdf3f7; box-shadow: 3px 3px 0 var(--off, var(--pink)); transition: translate 0.2s ease; }
+  .tile:hover .tile-btn { translate: -1px -1px; }
+  .tile:focus-visible { outline: 2px solid var(--pink-ink); outline-offset: 4px; }
+  .tile-line { margin-top: 10px; font-family: 'Silkscreen', monospace; font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-ink); }
+  @media (prefers-reduced-motion: reduce) { .tile-btn { transition: none; } .tile:hover .tile-btn { translate: none; } }
 
   /* ---------- booking + prices ---------- */
   .price-card { position: relative; background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: clamp(22px, 4vw, 36px); box-shadow: 8px 8px 0 var(--lav); }
@@ -298,7 +348,13 @@
   .shop-tabs button { font: inherit; font-size: 15px; font-weight: 500; min-height: 44px; padding: 0 16px; border-radius: 999px; cursor: pointer; background: var(--card); color: var(--ink); border: 2px solid var(--line); }
   .shop-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
   .shop-tabs button span { font-size: 12px; opacity: 0.7; margin-left: 4px; }
-  .shop-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 20px; margin-top: 26px; }
+  /* the drop bar: one of a kinds go up as drops, on a day she picks; it reads the same status as the sign */
+  .drop-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 26px; padding: 12px 18px; border: 2px solid var(--line); border-radius: 999px; background: var(--card); box-shadow: 4px 4px 0 var(--lav); font-size: 15.5px; }
+  .drop-bar b { font-family: 'Silkscreen', monospace; font-weight: 400; font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-ink); }
+  .drop-bar b::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--mint); border: 2px solid var(--line); margin-right: 8px; vertical-align: -1px; }
+  .drop-bar[data-state="drop"] b::before { background: var(--butter); }
+  .drop-bar a { font-weight: 600; }
+  .shop-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 20px; margin-top: 22px; }
   .piece { display: flex; flex-direction: column; background: var(--card); border: 2px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 6px 6px 0 var(--off, var(--pink)); }
   .piece[data-cat="jewelry"] { --off: var(--butter); } .piece[data-cat="apparel"] { --off: var(--blue); } .piece[data-cat="bags"] { --off: var(--mint); }
   .piece[data-cat="prints"] { --off: var(--lav); } .piece[data-cat="paintings"] { --off: var(--pink); } .piece[data-cat="stickers"], .piece[data-cat="decals"] { --off: var(--mint); }
@@ -311,7 +367,9 @@
   .piece .pr { font-weight: 600; font-variant-numeric: tabular-nums; }
   .piece .pr small { font-weight: 300; color: var(--ink-soft); }
   .piece .kind { font-size: 12.5px; letter-spacing: 0.02em; color: var(--pink-ink); font-weight: 500; }
-  .piece .left { font-family: 'Silkscreen', monospace; font-size: 12px; color: var(--tag-ink); }
+  .piece .left, .piece .ships { font-family: 'Silkscreen', monospace; font-size: 12px; color: var(--tag-ink); }
+  .piece .hang { position: absolute; z-index: 2; top: 12px; right: 12px; font-family: 'Silkscreen', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #1a1420; background: var(--mint); border: 2px solid #1a1420; border-radius: 999px; padding: 4px 9px; rotate: 4deg; box-shadow: 2px 2px 0 #1a1420; }
+  .piece[data-model="aa"] .hang { background: var(--butter); }
   .piece .act { margin-top: auto; padding-top: 10px; display: grid; gap: 8px; }
   .size-pick { font: inherit; font-size: 16px; min-height: 44px; width: 100%; box-sizing: border-box; border-radius: 12px; border: 1.5px solid var(--hair); background: var(--ground); color: var(--ink); padding: 0 10px; }
   .add { width: 100%; min-height: 44px; border-radius: 999px; cursor: pointer; font: inherit; font-weight: 600; font-size: 15.5px;
@@ -539,9 +597,9 @@
   .status-panel { background: var(--ground-2); border-bottom: 1.5px dashed var(--tag-ink); padding-block: 26px 16px; }
   .status-panel-in { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
   .status-q { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; color: var(--ink-soft); }
-  .status-seg { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 0 1 360px; }
+  .status-seg { grid-template-columns: repeat(4, minmax(0, 1fr)); flex: 0 1 460px; }
   .status-note { margin: 0; font-weight: 400; font-size: 16px; color: var(--tag-ink); }
-  @media (max-width: 560px) { .status-strip a { padding: 8px 12px; } .status-strip b { font-size: 11.5px; } .status-seg { flex-basis: 100%; } }
+  @media (max-width: 560px) { .status-strip a { padding: 8px 12px; } .status-strip b { font-size: 11.5px; } .status-seg { flex-basis: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .theme-tab { display: inline-flex; align-items: stretch; min-height: 26px; box-sizing: border-box; background: var(--ground); border: 1px solid var(--tag-ink); border-top: 0; border-radius: 0 0 12px 12px; }
   .theme-tab button { display: inline-flex; align-items: center; gap: 5px; margin: 0; padding: 7px 10px 8px; cursor: pointer; -webkit-appearance: none; appearance: none;
     font-family: 'Sora', sans-serif; font-size: 11px; line-height: 1; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
@@ -649,9 +707,15 @@
     .piece-in { padding: 10px 12px 12px; }
     .piece h3 { font-size: 15.5px; }
     .piece .sold-stamp { width: 60px; height: 60px; font-size: 14px; }
+    .piece .hang { font-size: 8.5px; padding: 3px 7px; top: 8px; right: 8px; white-space: nowrap; }
     .pol { margin-top: 48px; }
     .bk-here { grid-template-columns: minmax(0, 1fr); row-gap: 36px; margin-top: 48px; }
     .faq-list { margin-top: 22px; }
+    .tiles { gap: 14px; }
+    .tile .photo { aspect-ratio: 3 / 4; }
+    .tile-btn { left: 10px; bottom: 10px; min-height: 32px; padding: 0 12px; font-size: 13.5px; }
+    .sign-sec { padding-bottom: 44px; }
+    .sign-box { padding: 28px 28px 20px; min-width: min(100%, 260px); box-shadow: 6px 6px 0 var(--pink); }
   }
   @media (max-width: 480px) {
     nav { width: calc(100% + 6px); margin-inline: -3px; justify-content: space-between; gap: 0; }
@@ -661,6 +725,7 @@
     .hero-band .cta-row .btn { flex: 1 1 100%; text-align: center; }
     .bk-card { padding: 20px 16px; }
     .mark img { width: 88px; }
+    #insta h2 { font-size: clamp(24px, 7.9vw, 32px); }
   }
   @media (max-width: 359px) { .shop-grid { grid-template-columns: minmax(0, 1fr); } }
 
@@ -694,10 +759,11 @@
       <p class="status-q"><span id="status-q">Banner demo</span> <span class="tag" data-go="maiden">Every build</span></p>
       <div class="seg status-seg" role="group" aria-labelledby="status-q">
         <button type="button" data-state="open" aria-pressed="true">Books open</button>
-        <button type="button" data-state="road" aria-pressed="false">Guest spot</button>
         <button type="button" data-state="full" aria-pressed="false">Books full</button>
+        <button type="button" data-state="road" aria-pressed="false">Guest spot</button>
+        <button type="button" data-state="drop" aria-pressed="false">New drop</button>
       </div>
-      <p class="status-note">Books opening, a guest spot, a new drop: you email me and the banner says so.</p>
+      <p class="status-note">Books open or full, a guest spot, a new drop: one email and the banner and your neon sign both change.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -729,10 +795,9 @@
       <div class="hero-copy">
         <p class="label">Tattoos &middot; gold &middot; art &middot; Las Vegas</p>
         <h1>One of a kind<span class="h1-b">retro tattoos</span></h1>
-        <p class="lede">A retro 80s take on American traditional, mixed with tribal, vintage animals and queer iconography. By appointment in a private studio in the Las Vegas Arts District, and on the road every month.</p>
+        <p class="lede">By appointment in the Las Vegas Arts District, and on the road every month.</p>
         <div class="cta-row">
-          <a class="btn" href="#book" data-show="mother crone all">Book a tattoo</a>
-          <a class="btn" href="mailto:linneatattoos@gmail.com" data-show="maiden" hidden>Email to book</a>
+          <a class="btn" href="#book">Book a tattoo</a>
           <a class="btn quiet" href="#shop">Shop Pastel</a>
         </div>
         <p class="since">Linnea Pastel, she/they &middot; tattooing since 2007</p>
@@ -757,38 +822,43 @@
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding build price, half off</p>
+      <p class="views-price">Your deal: the build is a tattoo trade, then $12 a month</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your tattoo prices and how to book by email or Instagram, your policies, gallery, aftercare, your story, and an Ask about this piece button on every piece."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book on Square button, your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your site and a real shop with checkout through your own Stripe, Sold stamps and prints that count down."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="0" data-tier-founding="0" data-tier-build="A tattoo trade, no build fee" data-tier-care="12" data-tier-what="One page: your tattoo menu with a Book on Square button, your policies, gallery, aftercare, your story, and an Ask about this piece button on every piece. For you: a tattoo trade, then $12 a month."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>tattoo trade</strong></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="0" data-tier-founding="0" data-tier-build="A tattoo trade, no build fee" data-tier-care="12" data-tier-what="A full site: everything in Planted, plus your consent form, guest spot and convention dates, drop alerts, your Instagram feed, and a See it in the shop button on every piece that opens your Squarespace shop. For you: a tattoo trade, then $12 a month."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>tattoo trade</strong></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A tattoo trade, no build fee" data-tier-care="12" data-tier-what="Everything in Tended, plus booking right on your site and your real shop: drops, made to order pieces, Sold stamps, checkout through your own Stripe. For you: a tattoo trade, then $12 a month, the Planted price for the full service."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>tattoo trade</strong></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy and current. Email me any change, from a new drop to your next guest spot, and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span><strong>$12</strong>/mo</span><span class="care-what">Your friend price: no build fee, a tattoo trade instead (we&rsquo;ll write down which tattoo and roughly what it&rsquo;s worth), then $12 a month for everything on this page, the Planted price for the full In Bloom service. A new drop, a guest spot, books opening: you message me through your magic site, or email me, and it&rsquo;s up, usually within 2 business days. I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
 </div>
 
-<section id="hello" class="gutter" style="border-top:0">
-  <div class="wrap two">
-    <div>
-      <p class="label with-pill"><span>Hi, I&rsquo;m Linnea</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <h2 class="reveal">Fun, safe, and <em>very much you</em></h2>
-      <p class="soft" style="margin-top:18px">Nearly two decades of tattooing, and every piece still starts with you: your idea, your placement, your budget. Pick from my flash, or bring an idea and I&rsquo;ll draw my take on it.</p>
-      <p class="soft">When I&rsquo;m not tattooing, I make Pastel: solid gold jewelry, apparel, prints and paintings, all from the same drawings.</p>
-      <ul class="style-list" aria-label="Her style">
-        <li style="--c:var(--pink)">Retro 80s</li>
-        <li style="--c:var(--butter)">American traditional</li>
-        <li style="--c:var(--blue)">Tribal</li>
-        <li style="--c:var(--mint)">Vintage animals</li>
-        <li style="--c:var(--lav)">Queer iconography</li>
-      </ul>
+<section id="sign" class="gutter sign-sec" aria-labelledby="sign-h">
+  <div class="wrap sign-wrap">
+    <h2 class="vh" id="sign-h">Right now</h2>
+    <div class="sign-hang">
+      <span class="chain l" aria-hidden="true"></span><span class="chain r" aria-hidden="true"></span>
+      <div class="sign-box off" id="neon" data-state="open">
+        <span class="neon-frame" aria-hidden="true"></span>
+        <span class="neon-line neon-top" aria-hidden="true"><span class="tube" id="neon-top">books</span></span>
+        <span class="neon-line neon-big" aria-hidden="true"><span class="tube" id="neon-big">open</span></span>
+        <p class="vh" id="neon-say">Books open 60 days out.</p>
+        <a class="neon-sub" id="neon-link" href="https://pastel-109491.square.site/"><span id="neon-when">60 days out</span><em><span id="neon-cta">Book a tattoo</span> <span aria-hidden="true">&rarr;</span></em></a>
+      </div>
     </div>
-    <div class="hello-pics">
-      <figure class="reveal photo flash"><img src="images/t-kiss-stars.webp" width="1000" height="1000" alt="A close-up of a fresh tattoo: a pink-haired woman kissing a blue robot, framed by big yellow stars" loading="lazy"></figure>
-      <figure class="reveal photo flash"><img src="images/t-15.webp" width="1000" height="1000" alt="A tattoo of three smiling orange and red flowers over pastel blocks of color" loading="lazy"></figure>
+  </div>
+</section>
+
+<section id="hello" class="gutter" style="border-top:0">
+  <div class="wrap">
+    <p class="label with-pill"><span>Handmade &middot; one of a kind &middot; solid 14kt gold</span> <span class="tag" data-go="maiden">Every build</span></p>
+    <div class="tiles">
+      <a class="tile reveal" href="#book"><figure class="photo flash"><img src="images/t-19.webp" width="1000" height="1000" alt="A woman in teal shutter shades with red lips and big hoop earrings, tattooed in bold color" loading="lazy"></figure><span class="tile-btn">Tattoo</span></a>
+      <a class="tile reveal" href="#shop" data-cat="jewelry"><figure class="photo flash"><img src="images/p-rainbow.webp" width="640" height="640" alt="A chunky gold charm cluster with a rainbow lattice sunstone, a smiley and a puffy flower" loading="lazy"></figure><span class="tile-btn">Jewelry</span></a>
+      <a class="tile reveal" href="#shop" data-cat="apparel"><figure class="photo flash"><img src="images/p-peach.webp" width="640" height="640" alt="A cropped hooded windbreaker in a peach and butter checkerboard of little smileys" loading="lazy"></figure><span class="tile-btn">Apparel</span></a>
     </div>
   </div>
 </section>
@@ -797,20 +867,16 @@
   <div class="wrap two" style="align-items:start">
     <div class="bk-copy">
       <p class="label with-pill"><span>Book a tattoo</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <h2 class="reveal">Flash or custom, <em>booked in a minute</em></h2>
-      <p class="soft" style="margin-top:18px"><span data-show="mother all">Booking is on Square.</span><span data-show="crone" hidden>Booking is right here on the page.</span><span data-show="maiden" hidden>To book, email me or send me a message on Instagram.</span> You&rsquo;ll choose flash (a selection of my pre-drawn designs) or custom (my interpretation of your idea).</p>
+      <h2 class="reveal">Flash <em>or custom</em></h2>
+      <p class="soft" style="margin-top:18px"><span data-show="maiden mother all">Booking is on Square.</span><span data-show="crone" hidden>Booking is right here.</span> Flash is a selection of my pre-drawn designs. Custom is my interpretation of your idea.</p>
       <ol class="steps4">
-        <li><div><b>Pick your size</b><p>From palm size to a full day. Prices are estimates and vary with size, placement, style and detail.</p></div></li>
-        <li><div><b>Tell me your idea</b><p><span data-show="mother crone all">In the appointment notes</span><span data-show="maiden" hidden>In your message</span>: your idea, the placement, and your budget. The more you share, the better.</p></div></li>
-        <li><div><b>Hold your spot</b><p>A deposit holds your date and comes off the price of your tattoo. <span class="ph">your deposit amount</span></p></div></li>
-        <li><div><b>Come get tattooed</b><p>Read <a href="#aftercare">how to prepare</a>, fill out the <a href="#consent">consent form</a>, and bring cash for the rest if you can.</p></div></li>
+        <li><div><b>Pick a size</b><p>Prices are estimates.</p></div></li>
+        <li><div><b>Tell me your idea</b><p>Placement and budget too.</p></div></li>
+        <li><div><b>Hold your spot</b><p>A deposit, which comes off your tattoo. <span class="ph">your deposit amount</span></p></div></li>
+        <li><div><b>Come get tattooed</b><p><a href="#aftercare">How to prepare</a> and the <a href="#consent">consent form</a>.</p></div></li>
       </ol>
-      <div class="cta-row" data-show="mother all" data-thing="a Book on Square button"><a class="btn" href="https://pastel-109491.square.site/" target="_blank" rel="noopener">Book on Square<span class="vh"> (opens in a new tab)</span></a> <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></div>
+      <div class="cta-row" data-show="maiden mother all" data-thing="a Book on Square button"><a class="btn" href="https://pastel-109491.square.site/" target="_blank" rel="noopener">Book on Square<span class="vh"> (opens in a new tab)</span></a> <span class="tag" data-go="maiden">Every build</span></div>
       <div class="cta-row" data-show="crone" hidden><a class="btn" href="#bk-here">Book right here</a></div>
-      <div data-show="maiden" hidden>
-        <div class="cta-row"><a class="btn" href="mailto:linneatattoos@gmail.com">Email to book</a><a class="btn quiet" href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">Message me on Instagram<span class="vh"> (opens in a new tab)</span></a></div>
-        <p class="tier-note mock-note wf-note">With Planted, people email or message you to book, and you add them in Square.</p>
-      </div>
     </div>
     <div class="price-card">
       <p class="label" style="margin-bottom:6px">Tattoos and estimates</p>
@@ -822,18 +888,18 @@
         <li class="reveal"><span class="m-name">Full day, flat rate<small>big one-shot pieces, large projects, or as many flash tattoos as you like, at a discounted rate</small></span><span class="m-price">$1,250<small>6 hrs</small></span></li>
         <li class="reveal"><span class="m-name">Consultation<small>in person, for anyone who&rsquo;d like to chat before booking. Not required</small></span><span class="m-price">$10<small>comes off your tattoo</small></span></li>
       </ul>
-      <p class="menu-foot">Booking opens 60 days out, and times need to be requested at least 24 hours ahead. Guest spots and conventions are booked by Instagram message.</p>
-      <p class="tier-note mock-note wf-note">These are your real services and estimates from your Square booking page<span data-show="mother all">, and the Book on Square button opens it</span>. And as part of your subscription, I can keep your Square Appointments menu up to date too, so your prices match everywhere.</p>
+      <p class="menu-foot">Books open 60 days out. Guest spots and conventions: message me on Instagram.</p>
+      <p class="tier-note mock-note wf-note">Your real services and estimates, from your Square booking page<span data-show="maiden mother all">; the Book on Square button opens it</span>. Change a price, and I change it here.</p>
     </div>
   </div>
   <div class="wrap bk-here" id="bk-here" tabindex="-1" data-show="crone all" data-fold data-thing="booking right on your site">
     <div>
-      <p class="label with-pill"><span>Book right here</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="label with-pill"><span>Book right here</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom</span></p>
       <h2 class="reveal">Book it <em>right here</em></h2>
-      <p class="soft measure" style="margin-top:14px">Pick your tattoo, a day and a time, and tell me your idea. A deposit holds your spot.</p>
+      <p class="soft measure" style="margin-top:14px">Your tattoo, a day and a time, your idea. A deposit holds your spot.</p>
       <div class="tier-note mock-note wf-note" style="margin-top:24px">
-        <p>With In Bloom, booking sits right on your site, no new tab. Square can show your services here, but its booking still opens in its own tab, so for booking right on the page it would be a free Cal.com page in your own name. Or keep Square, and your Book on Square button opens your Square page just like now. It&rsquo;s your choice.</p>
-        <p data-show="all" style="margin-top:10px">With Tended, this spot is your Book on Square button. With Planted, people email or message you to book.</p>
+        <p>With In Bloom, booking can sit right on your site, no new tab. Your Book button opens Square&rsquo;s page in a new tab now, so this would be a Cal.com page in your own name (no cost). Or keep Square, and your Book on Square button opens it just like now. Your choice.</p>
+        <p data-show="all" style="margin-top:10px">With Planted and Tended, this spot is your Book on Square button.</p>
       </div>
     </div>
     <div class="bk-card" id="bh-card">
@@ -880,8 +946,8 @@
   <div class="wrap pol">
     <div>
       <p class="label with-pill"><span>Policies</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <h2 class="reveal">The small print, <em>made easy</em></h2>
-      <p class="measure soft" style="margin-top:16px">Deposits hold time that could have gone to someone else, so a few kind rules keep it fair for everyone.</p>
+      <h2 class="reveal">The <em>small print</em></h2>
+      <p class="measure soft" style="margin-top:16px">A few kind rules, so it&rsquo;s fair for everyone.</p>
     </div>
     <div class="faq-list">
       <details><summary>Deposits</summary><div class="ans"><p>Deposits are required to book, and they&rsquo;re non-refundable and non-transferable. Your deposit holds all of your appointment dates and comes off your total the day your tattoo is finished. If you can pay the rest in cash, it&rsquo;s greatly appreciated.</p></div></details>
@@ -899,7 +965,7 @@
   <div class="wrap">
     <p class="label with-pill"><span>Gallery</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Fresh <em>off the table</em></h2>
-    <p class="soft measure" style="margin-top:14px">Tap any tattoo to see it whole, then flip through.</p>
+    <p class="soft measure" style="margin-top:14px">Tap one to see it whole.</p>
     <div class="gal" data-lightbox id="gal">
       <figure class="reveal photo flash"><img src="images/ig-03.webp" width="628" height="640" alt="Two clowns tattooed side by side, one with a heart-shaped face, in red, teal and yellow" loading="lazy"></figure>
       <figure class="reveal photo flash"><img src="images/t-01.webp" width="1000" height="1000" alt="A tattoo of a lavender UFO beaming down, with a little green alien hanging from it" loading="lazy"></figure>
@@ -927,7 +993,7 @@
       <figure class="reveal photo flash" data-more hidden><img src="images/t-68.webp" width="1000" height="1000" alt="A leopard climbing through purple flowers" loading="lazy"></figure>
     </div>
     <p class="gal-more"><button type="button" id="gal-more" aria-expanded="false">See 12 more tattoos</button></p>
-    <p class="tier-note mock-note wf-note">Every tattoo here is yours, from the gallery on your site and your newest Instagram posts. New work goes up whenever you send it, or straight from your Instagram with Tended or In Bloom.</p>
+    <p class="tier-note mock-note wf-note">All yours, from your gallery and your Instagram. New work goes up whenever you send it.</p>
   </div>
 </section>
 
@@ -936,7 +1002,7 @@
     <div>
       <p class="label with-pill"><span>Feeling lucky</span> <span class="tag" data-go="maiden" style="background:#241c33;color:#d4c4f7;border-color:#3d3155">Every build</span></p>
       <h2 class="reveal">Three of a kind: <em>pastel pastel pastel</em></h2>
-      <p style="margin-top:18px" class="measure">Las Vegas runs all through the work: slot machine tattoos with hearts in the reels, a solid gold charm with a cube die, a painting called Gambler Deserted. Pull the lever and the jackpot is always the same.</p>
+      <p style="margin-top:18px" class="measure">Slot machine tattoos, a gold die charm, a painting called Gambler Deserted. The jackpot is always the same.</p>
       <ul class="lucky">
         <li>Originally from Chicago, in tattoo shops since 2007</li>
         <li>Goldsmithing and apparel under the name Pastel since 2019</li>
@@ -999,9 +1065,9 @@
   <div class="wrap">
     <div class="shop-head">
       <div>
-        <p class="label with-pill"><span>Shop Pastel</span> <span class="tag" data-go="maiden">Every build</span> <span class="tag" data-go="crone" data-show="crone all">Selling right here: In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-        <h2 class="reveal">Solid gold, flocked prints <em>and one of a kinds</em></h2>
-        <p class="soft measure" style="margin-top:14px">Handmade jewelry in solid 14k gold, apparel, risograph prints and original paintings, all from the same drawings as the tattoos. When a one of a kind piece is gone, it&rsquo;s gone.</p>
+        <p class="label with-pill"><span>Shop Pastel</span> <span class="tag" data-go="maiden">Every build</span> <span class="tag" data-go="crone" data-show="crone all">Selling right here: In Bloom</span></p>
+        <h2 class="reveal">Gold, prints <em>and one of a kinds</em></h2>
+        <p class="soft measure" style="margin-top:14px">All from the same drawings as the tattoos. One of a kinds go up as drops; when they&rsquo;re gone, they&rsquo;re gone. Made to order pieces are always here.</p>
       </div>
       <button type="button" class="bag-btn" id="bag-open" data-show="crone all" data-thing="shop checkout" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Bag <b id="bag-count">0</b></button>
     </div>
@@ -1015,6 +1081,7 @@
       <button type="button" data-cat="stickers" aria-pressed="false">Stickers</button>
       <button type="button" data-cat="decals" aria-pressed="false">Nail decals</button>
     </div>
+    <p class="drop-bar" id="drop-bar" data-state="open"><b id="drop-k">This drop</b><span id="drop-t">One of a kind gold and originals, live now. Sold is sold.</span></p>
     <div class="shop-grid" id="shop-grid"></div>
     <div class="shop-care">
       <div><b>Cleaning and care</b>Soak in warm water with a little mild dish soap, a few minutes or a few hours. A soft toothbrush helps, or a small home ultrasonic. Rinse, then dry with a polishing cloth.</div>
@@ -1022,15 +1089,23 @@
       <div><b>Returns</b>All sales are final. Every piece is handmade, so small quirks make it yours, and metal and stones look different in different light. Questions before you buy? Just ask.</div>
     </div>
     <div class="shop-foot">
-      <p class="tier-note mock-note wf-note" data-show="all">These are your real pieces, photos and prices from your shop, and what&rsquo;s sold out there shows Sold here. With In Bloom, people buy right here, paid into your own Stripe account: one of a kinds stamp Sold the moment they go, and prints count down (try buying a print). With Tended, each piece gets a See it in the shop button that opens your Squarespace shop, so nothing about how you sell changes. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       <div class="tier-note mock-note wf-note" data-show="all">
-        <p><b>The honest math on your shop.</b> Your site is on Squarespace now. The Squarespace plans that sell cost $19 a month (and 2% of each sale) or $29 a month, billed yearly: <b>$228 to $348 a year</b>, every year, plus card fees.</p>
+        <p><b>Your real pieces, photos and prices</b>, and what&rsquo;s sold out on your site shows Sold here. Two kinds, like a drop shop: <b>drops</b> are your one of a kinds, and they go live on the day and minute you pick (email me the photos and prices, and that week the sign and the banner say New drop); a one of a kind stamps Sold the moment it sells. <b>Always available</b> pieces are made to order and stay up, so the shop is full even right after a drop sells out.</p>
+        <p style="margin-top:10px"><b>Your call, not my guess:</b> which pieces would you make to order? The windbreakers already are. Prints as reprints? Certain charms, like the mushroom? Tell me which, and how long they take, and I mark them Always available; everything else is a drop.</p>
+      </div>
+      <div class="tier-note mock-note wf-note" data-show="crone all">
+        <p><b>Stripe is your order list.</b> People buy right here, paid into your own Stripe. Stripe&rsquo;s checkout takes the card and the shipping address, so your site asks for nothing. For each order you get a short heads-up email (who, what, size, city and state, with the full address in your Stripe), and Stripe&rsquo;s phone app can ping you too. Sales tax is Stripe Tax: 0.5% of each order it taxes. Stripe&rsquo;s card fee is about 2.9% + 30&cent; a sale. Try buying a print: the count goes down, and a one of a kind stamps Sold.</p>
+        <p style="margin-top:10px" data-show="all">With Tended, every piece gets a See it in the shop button that opens your Squarespace shop instead, so nothing about how you sell changes. <span class="tag" data-go="mother">Tended</span></p>
+      </div>
+      <div class="tier-note mock-note wf-note" data-show="all">
+        <p><b>The honest math on your shop.</b> The Squarespace plans that sell cost $19 a month (and 2% of each sale) or $29 a month, billed yearly: <b>$228 to $348 a year</b>, plus card fees.</p>
         <table class="math">
           <tr><th scope="row">Squarespace, each year</th><td>$228 to $348 + card fees</td></tr>
-          <tr><th scope="row">Your own site, paid once</th><td>$900 founding In Bloom</td></tr>
-          <tr><th scope="row">Then your subscription, each month</th><td>$90 + Stripe&rsquo;s 2.9% + 30&cent; a sale</td></tr>
+          <tr><th scope="row">Your site, the build</th><td>A tattoo trade, no build fee</td></tr>
+          <tr><th scope="row">Then, each month</th><td>$12 + Stripe&rsquo;s 2.9% + 30&cent; a sale</td></tr>
+          <tr><th scope="row">Sales tax, if Stripe collects it</th><td>Stripe Tax, 0.5% of each taxed order</td></tr>
         </table>
-        <p style="margin-top:10px">So I&rsquo;ll be straight with you: it isn&rsquo;t the cheaper choice. That $90 a month subscription covers hosting and your domain, and it&rsquo;s me running the whole shop for you, new drops, Sold stamps and all, so you don&rsquo;t have to log in anywhere. If you ever cancel, your site is still yours and I hand you every file and login. (Tended, with a See it in the shop button on every piece, is $600 and then a $45 a month subscription.) One real catch: your windbreakers look made to order through a print service connected to Squarespace. On your own site those orders would get sent to the printer by hand (or by a little helper I&rsquo;d set up). If you&rsquo;d rather keep selling on Squarespace for now, Tended links straight to it.</p>
+        <p style="margin-top:10px">That $12 a month is hosting, your domain, and me running the whole shop for you: drops, Sold stamps, made to order pieces, so there&rsquo;s no shop admin to log into. Orders and addresses you read in your Stripe, like the note above says. If you ever cancel, your site is still yours and I hand you every file and login. One real catch: your windbreakers look made to order through a print service connected to Squarespace. On your own site those orders would go to the printer by hand, or by a little helper I&rsquo;d set up. If you&rsquo;d rather keep selling on Squarespace for now, Tended links every piece straight to it.</p>
       </div>
     </div>
   </div>
@@ -1039,7 +1114,7 @@
 <section id="aftercare" class="gutter" style="background:var(--ground-2)">
   <div class="wrap">
     <p class="label with-pill"><span>Prepare and aftercare</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">Before you come, <em>and after you go</em></h2>
+    <h2 class="reveal">Before <em>and after</em></h2>
     <div class="care-tabs" role="tablist" aria-label="Prepare and aftercare">
       <button type="button" role="tab" id="ct-1" aria-controls="cp-1" aria-selected="true">Prepare</button>
       <button type="button" role="tab" id="ct-2" aria-controls="cp-2" aria-selected="false" tabindex="-1">Aftercare</button>
@@ -1091,25 +1166,25 @@
 
 <section id="road" class="gutter" data-show="mother crone all" data-fold data-thing="guest spot and convention dates">
   <div class="wrap">
-    <p class="label with-pill"><span>On the road</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>On the road</span> <span class="tag" data-go="mother">Tended + In Bloom</span></p>
     <h2 class="reveal">Guest spots <em>and conventions</em></h2>
-    <p class="soft measure" style="margin-top:14px">I travel every month, all across the country and the world. Here&rsquo;s where I&rsquo;ll be next. To book a spot on the road, message me on Instagram.</p>
+    <p class="soft measure" style="margin-top:14px">Every month, somewhere new. To book on the road, message me on Instagram.</p>
     <div class="road">
       <article class="reveal stop"><p class="when"><span class="ph">dates</span></p><h3>Guest spot</h3><p><span class="ph">city and shop</span></p></article>
       <article class="reveal stop"><p class="when"><span class="ph">dates</span></p><h3>Convention</h3><p><span class="ph">convention name and city</span></p></article>
-      <article class="reveal stop"><p class="when">Every month</p><h3>Home in Vegas</h3><p>By appointment in the Arts District, <span data-show="mother all">booked on Square</span><span data-show="crone" hidden>booked right here</span>.</p></article>
+      <article class="reveal stop"><p class="when">Every month</p><h3>Home in Vegas</h3><p>By appointment in the Arts District.</p></article>
     </div>
-    <p class="tier-note mock-note wf-note">Right now your travel dates live only in your Instagram posts. Email me the next stop and it shows here, and the banner up top can say &ldquo;Guesting this week&rdquo; too.</p>
+    <p class="tier-note mock-note wf-note">Your travel dates live only in your Instagram posts right now. Send me the next stop and it shows here, and the sign and banner say Guest spot that week.</p>
   </div>
 </section>
 
 <section id="consent" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap consent">
     <div>
-      <p class="label with-pill"><span>Client consent form</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Client consent form</span> <span class="tag" data-go="mother">Tended + In Bloom</span></p>
       <h2 class="reveal">Sign before <em>you sit</em></h2>
-      <p class="soft measure" style="margin-top:14px">Fill this out before your appointment, so we can get right to it. Every client must be 18 or older.</p>
-      <p class="tier-note mock-note wf-note" style="margin-top:24px">This is your consent form, with your own wording. I left out the two COVID-19 questions from 2020; if you still want them, they&rsquo;re back in a second. On your real site each one lands in your inbox, filed by name and date.</p>
+      <p class="soft measure" style="margin-top:14px">Fill this out before your appointment. 18 or older.</p>
+      <p class="tier-note mock-note wf-note" style="margin-top:24px">Your consent form, your wording. I left out the two COVID-19 questions from 2020; say the word and they&rsquo;re back. Each one lands in your inbox, filed by name and date.</p>
     </div>
     <div class="bk-card" data-thing="consent form">
       <form id="cf" class="cf-form" novalidate aria-label="Consent form, preview">
@@ -1163,9 +1238,8 @@
     <div>
       <p class="label with-pill"><span>About Linnea</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">From Chicago, <em>by way of everywhere</em></h2>
-      <p class="soft" style="margin-top:18px">Originally from Chicago, Linnea started working in tattoo shops in 2007 and finished her apprenticeship in 2009. Her work is some sort of retro 80s take on American traditional, mixed with tribal, vintage animals and queer iconography.</p>
-      <p class="soft">While living in North Carolina, around 2019, she found a passion for goldsmithing and designing apparel under the name Pastel, and it became a whole new world: textiles and metals, merged with tattoo illustration.</p>
-      <p class="soft">These days Linnea lives in Las Vegas with her cats, tattoos by appointment in a private studio, and travels monthly for guest spots and conventions all over the world.</p>
+      <p class="soft" style="margin-top:18px">In tattoo shops since 2007. Some sort of retro 80s take on American traditional, mixed with tribal, vintage animals and queer iconography.</p>
+      <p class="soft">Around 2019 came goldsmithing and apparel under the name Pastel: textiles and metals, merged with tattoo illustration. These days Linnea lives in Las Vegas with her cats, tattoos by appointment, and travels monthly.</p>
       <p class="pull">Knowledge and consideration for each client lead the way.</p>
       <ul class="loves" aria-label="When not tattooing">
         <li>adventures with friends</li><li>watching a band</li><li>searching for UFOs</li><li>the next vegan food spot</li>
@@ -1194,7 +1268,7 @@
         <figcaption>@linneapastel</figcaption>
       </figure>
     </div>
-    <p class="tier-note mock-note wf-note" style="margin-top:24px">I couldn&rsquo;t find public reviews of your tattoos to quote (logged out, Google and Facebook didn&rsquo;t show any words), so these are real things said about your work. Send me a few favorite client messages or Google reviews and they go right here.</p>
+    <p class="tier-note mock-note wf-note" style="margin-top:24px">I couldn&rsquo;t find public reviews to quote, so these are real things said about your work. Send me a few favorite client messages and they go right here.</p>
   </div>
 </section>
 
@@ -1204,14 +1278,14 @@
     <div>
       <p class="label with-pill"><span>Find me</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">The Las Vegas <em>Arts District</em></h2>
-      <p class="soft measure" style="margin-top:14px">A private studio, by appointment, with free parking right out front. It&rsquo;s upstairs: if stairs are hard for you, message me first.</p>
+      <p class="soft measure" style="margin-top:14px">A private studio, by appointment. Parking out front. It&rsquo;s upstairs: if stairs are hard for you, message me first.</p>
       <div class="where">
         <div class="reveal"><b>Where</b>Las Vegas Arts District<br><span class="soft" style="font-size:15px">the address comes with your booking</span></div>
         <div class="reveal"><b>Hours</b>Mon 1 to 8 &middot; Thu to Sat 1 to 7<br>Sun 1 to 8 &middot; by appointment</div>
         <div class="reveal"><b>Email</b><a href="mailto:linneatattoos@gmail.com" style="overflow-wrap:anywhere">linneatattoos@gmail.com</a></div>
         <div class="reveal"><b>Instagram</b><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">@linneapastel<span class="vh"> (opens in a new tab)</span></a></div>
       </div>
-      <span class="reach" style="margin-top:18px"><a href="https://pastel-109491.square.site/" target="_blank" rel="noopener" data-show="mother all">Book on Square<span class="vh"> (opens in a new tab)</span></a><a href="#bk-here" data-show="crone" hidden>Book a tattoo</a><a href="mailto:linneatattoos@gmail.com" data-show="maiden" hidden>Email to book</a><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener" aria-label="Linnea on Instagram, @linneapastel (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Instagram</a></span>
+      <span class="reach" style="margin-top:18px"><a href="https://pastel-109491.square.site/" target="_blank" rel="noopener" data-show="maiden mother all">Book on Square<span class="vh"> (opens in a new tab)</span></a><a href="#bk-here" data-show="crone" hidden>Book a tattoo</a><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener" aria-label="Linnea on Instagram, @linneapastel (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Instagram</a></span>
     </div>
   </div>
 </section>
@@ -1220,7 +1294,7 @@
   <div class="wrap">
     <div class="ig-head">
       <div>
-        <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+        <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom</span></p>
         <h2 class="reveal">Fresh from <em>@linneapastel</em></h2>
       </div>
       <span class="reach"><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener" aria-label="Follow @linneapastel on Instagram (opens in a new tab)">Follow along</a></span>
@@ -1244,11 +1318,15 @@
   <div class="wrap news-wrap">
     <div>
       <p class="label">First dibs</p>
-      <h2 class="reveal">Drops and dates, <em>straight to your inbox</em></h2>
-      <p class="soft measure" style="margin-top:14px">One of a kind gold goes fast. A short letter when there&rsquo;s a new drop, books open, or Linnea&rsquo;s coming to your city.</p>
+      <h2 class="reveal">Hear about the <em>next drop</em></h2>
+      <p class="soft measure" style="margin-top:14px">One of a kind gold goes fast. A short note when a drop goes live, books open, or Linnea&rsquo;s coming to your city.</p>
+      <div class="tier-note mock-note wf-note" style="margin-top:24px">
+        <p><b>Optional.</b> I don&rsquo;t think you send a newsletter, and that&rsquo;s fine: skip this, and the sign and the banner do the telling. If you do want drop alerts, your Squarespace checkout already collects a mailing list (&ldquo;subscribers are the first to know about new designs and travel dates&rdquo;), and that list can move over.</p>
+        <p style="margin-top:10px">It would run on Buttondown, in your name. Buttondown costs nothing up to 100 people; once your list grows past that, you&rsquo;d pay Buttondown yourself (about $9 a month).</p>
+      </div>
     </div>
-    <aside class="news" aria-labelledby="nl-h" data-thing="drop and travel letters">
-      <p class="label with-pill"><span>Pastel letters</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <aside class="news" aria-labelledby="nl-h" data-thing="drop alerts by email">
+      <p class="label with-pill"><span>Drop alerts</span> <span class="tag" data-go="mother">Tended + In Bloom</span></p>
       <h3 id="nl-h">New gold, <em>first</em></h3>
       <form id="nl" novalidate aria-label="Newsletter signup, preview">
         <label class="fld" for="nl-mail">Your email</label>
@@ -1257,8 +1335,8 @@
       </form>
       <div class="nl-done fade-in" id="nl-done" hidden>
         <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
-        <p>The next drop goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
-        <p class="demo-note">Preview only: nothing was sent. On your real site, sign-ups go to your own Buttondown list.</p>
+        <p>The next drop note goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
+        <p class="demo-note">Preview only: nothing was sent. On your real site, sign-ups land in your own Buttondown list.</p>
         <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
       </div>
     </aside>
@@ -1300,7 +1378,7 @@
       <span class="foot-sub">Linnea Pastel &middot; tattoos, gold, art</span>
     </div>
     <p>A private studio in the Las Vegas Arts District &middot; <a href="mailto:linneatattoos@gmail.com">linneatattoos@gmail.com</a> &middot; <a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">@linneapastel<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding build price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which build includes each piece: <span class="tag" data-go="maiden">Planted</span> (one page), <span class="tag" data-go="mother">Tended</span> (full site), <span class="tag" data-go="crone">In Bloom</span> (booking and selling right on your site). Your deal, whichever you pick: no build fee, a tattoo trade instead, then $12 a month. The banner and the neon sign come with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1324,8 +1402,8 @@
     <div class="sheet">
       <h3 class="sheet-h"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
       <div class="sheet-lines" id="bag-lines"></div>
-      <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
-      <p class="demo-note">Preview: on a real site this opens a secure Stripe checkout, paid into your own Stripe account. Nothing is charged.</p>
+      <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card and <span id="bag-slot-addr">shipping address</span>, in Stripe&rsquo;s secure checkout</span></div>
+      <p class="demo-note">Preview: on your real site this opens Stripe&rsquo;s checkout, paid into your own Stripe. Nothing is charged.</p>
     </div>
     <div class="bk-nav"><button type="button" class="bk-go" id="bag-pay">Pay (preview)</button><button type="button" class="bk-go ghost" id="bag-back">Back</button></div>
   </div>
@@ -1333,7 +1411,8 @@
     <div class="bk-done fade-in">
       <h3 id="bag-done-h" tabindex="-1">It&rsquo;s yours!</h3>
       <p id="bag-done-text"></p>
-      <p class="demo-note">Preview only. Nothing was charged, and you get an email for every sale.</p>
+      <div class="bk-inbox" style="margin-top:14px"><p class="from">To you, from your site <span class="bk-demo">preview</span></p><p id="bag-inbox"></p></div>
+      <p class="demo-note">Preview only. Nothing was charged. The order and the full address live in your Stripe, and Stripe&rsquo;s phone app can ping you too.</p>
       <div class="bk-nav"><button type="button" class="bk-go ghost" id="bag-again">Try it again</button><button type="button" class="bk-go ghost" id="bag-edit">Change something</button></div>
     </div>
   </div>
@@ -1365,14 +1444,14 @@
 <div class="vp off" id="vp" hidden>
   <button type="button" class="vpill" id="vp-pill" aria-expanded="false" aria-controls="vp-panel">See it as <b id="vp-v">Everything</b><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 6.5 3-3 3 3"/></svg></button>
   <div class="vpanel" id="vp-panel" hidden>
-    <div class="views-head"><p class="views-q" id="vp-q">See your site as</p><p class="views-price">Your founding build price, half off</p></div>
+    <div class="views-head"><p class="views-q" id="vp-q">See your site as</p><p class="views-price">Your deal: a tattoo trade, then $12 a month</p></div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your tattoo prices and how to book by email or Instagram, your policies, gallery, aftercare, your story, and an Ask about this piece button on every piece."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book on Square button, your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your site and a real shop with checkout through your own Stripe, Sold stamps and prints that count down."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="0" data-tier-founding="0" data-tier-build="A tattoo trade, no build fee" data-tier-care="12" data-tier-what="One page: your tattoo menu with a Book on Square button, your policies, gallery, aftercare, your story, and an Ask about this piece button on every piece. For you: a tattoo trade, then $12 a month."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>tattoo trade</strong></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="0" data-tier-founding="0" data-tier-build="A tattoo trade, no build fee" data-tier-care="12" data-tier-what="A full site: everything in Planted, plus your consent form, guest spot and convention dates, drop alerts, your Instagram feed, and a See it in the shop button on every piece that opens your Squarespace shop. For you: a tattoo trade, then $12 a month."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>tattoo trade</strong></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A tattoo trade, no build fee" data-tier-care="12" data-tier-what="Everything in Tended, plus booking right on your site and your real shop: drops, made to order pieces, Sold stamps, checkout through your own Stripe. For you: a tattoo trade, then $12 a month, the Planted price for the full service."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>tattoo trade</strong></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span><strong>$12</strong>/mo</span><span class="care-what">Your friend price: no build fee, a tattoo trade instead, then $12 a month for the full In Bloom service. Message me through your magic site, or email me, and it&rsquo;s done. I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1397,10 +1476,10 @@
       { id: 'puffy', ook: 1, cat: 'jewelry', name: 'P U F F Y C A N D Y', price: 250, stock: 0, img: 'puffy', kind: 'One of a kind &middot; threadless end', alt: 'A puffy gold candy threadless end among pastel confetti' },
       { id: 'mushroom', cat: 'jewelry', name: 'Mushroom Charm', price: 250, stock: 0, img: 'mushroom', kind: 'Hand fabricated &middot; 14k rose gold', alt: 'A little rose gold mushroom charm on a hoop, against green and pink holographic film' },
       { id: 'y2000', cat: 'jewelry', name: 'The 2000&rsquo;s Yellow Gold Necklace', price: 200, from: 1, stock: 0, img: 'yellow2000', kind: 'Flower + diamond charms &middot; 20 in', alt: 'A yellow gold chain with a flower charm and a diamond charm, draped over a pink crystal pyramid' },
-      { id: 'peach', cat: 'apparel', name: 'Silly Peach Cropped Windbreaker', price: 86, made: 1, img: 'peach', kind: 'Made when you order &middot; XS to 2XL', alt: 'A cropped hooded windbreaker in a peach and butter checkerboard of little smileys' },
-      { id: 'cyberp', cat: 'apparel', name: 'Cyber Tribal Purple Cropped Windbreaker', price: 86, made: 1, img: 'cyberpurple', kind: 'Made when you order &middot; XS to 2XL', alt: 'A cropped hooded windbreaker printed with white tribal swirls on lavender' },
-      { id: 'cyberbw', cat: 'apparel', name: 'Cyber Tribal Black and White Cropped Windbreaker', price: 86, made: 1, img: 'cyberbw', kind: 'Made when you order &middot; XS to 2XL', alt: 'A cropped hooded windbreaker printed with bold black tribal shapes on white' },
-      { id: 'acab', cat: 'apparel', name: 'ACAB Cropped Windbreaker', price: 86, made: 1, img: 'acab', kind: 'Made when you order &middot; XS to 2XL', alt: 'A white cropped hooded windbreaker with a scattered pastel pattern, on a pink and purple backdrop' },
+      { id: 'peach', cat: 'apparel', name: 'Silly Peach Cropped Windbreaker', price: 86, made: 1, img: 'peach', kind: 'Made to order &middot; XS to 2XL', alt: 'A cropped hooded windbreaker in a peach and butter checkerboard of little smileys' },
+      { id: 'cyberp', cat: 'apparel', name: 'Cyber Tribal Purple Cropped Windbreaker', price: 86, made: 1, img: 'cyberpurple', kind: 'Made to order &middot; XS to 2XL', alt: 'A cropped hooded windbreaker printed with white tribal swirls on lavender' },
+      { id: 'cyberbw', cat: 'apparel', name: 'Cyber Tribal Black and White Cropped Windbreaker', price: 86, made: 1, img: 'cyberbw', kind: 'Made to order &middot; XS to 2XL', alt: 'A cropped hooded windbreaker printed with bold black tribal shapes on white' },
+      { id: 'acab', cat: 'apparel', name: 'ACAB Cropped Windbreaker', price: 86, made: 1, img: 'acab', kind: 'Made to order &middot; XS to 2XL', alt: 'A white cropped hooded windbreaker with a scattered pastel pattern, on a pink and purple backdrop' },
       { id: 'tote', cat: 'bags', name: 'Forced Feminization Tote Bag', price: 25, stock: 0, img: 'tote', kind: 'Pastel, Las Vegas NV', alt: 'A pink canvas tote printed with a pin-up drawing and PASTEL Las Vegas NV, hanging on a chain link fence' },
       { id: 'pr-future', cat: 'prints', name: 'Tribal Future Flocked Riso Print', price: 30, stock: 35, img: 'pr-future', kind: 'Riso + velvet black flocking &middot; 5.5 &times; 12.25 in', alt: 'A tall risograph print of a pastel face and black tribal shapes, with velvety black flocking' },
       { id: 'pr-glitch', cat: 'prints', name: 'Tribal Glitch Riso Print', price: 25, stock: 12, img: 'pr-glitch', kind: 'Risograph &middot; about 8 &times; 12 in', alt: 'A risograph print of a figure in cobalt blue and pink, with a glitchy double outline' },
@@ -1420,14 +1499,17 @@
     var fmt = function (n) { return '$' + (n % 1 ? n.toFixed(2) : n.toLocaleString('en-US')); };
     P.forEach(function (p) {
       var a = document.createElement('article'); a.className = 'piece reveal' + (p.soon ? ' soon' : ''); a.dataset.id = p.id; a.dataset.cat = p.cat;
+      /* two kinds, like a drop shop: one of a kinds are drops (model "drop"), made to order pieces are always available ("aa") */
+      a.dataset.model = p.ook ? 'drop' : p.made ? 'aa' : '';
       if (p.soon) {
-        a.innerHTML = '<figure class="photo"><span>' + p.soon + '</span></figure><div class="piece-in"><span class="kind">' + (p.cat === 'stickers' ? 'Stickers' : 'Nail decals') + '</span><h3><span class="ph">your first ' + (p.cat === 'stickers' ? 'sticker' : 'decal set') + '</span></h3><p class="visit-note">This page on your site is empty right now. Send me photos and prices and they drop right in.</p></div>';
+        a.innerHTML = '<figure class="photo"><span>' + p.soon + '</span></figure><div class="piece-in"><span class="kind">' + (p.cat === 'stickers' ? 'Stickers' : 'Nail decals') + '</span><h3><span class="ph">your first ' + (p.cat === 'stickers' ? 'sticker' : 'decal set') + '</span></h3><p class="visit-note">Empty on your site right now. Send me photos and prices and they drop in.</p></div>';
         grid.appendChild(a); return;
       }
       var price = '<span class="pr">' + (p.from ? '<small>from</small> ' : '') + fmt(p.price) + '</span>';
-      var left = p.stock > 1 ? '<span class="left" data-left>' + p.stock + ' left</span>' : '';
+      var left = p.stock > 1 ? '<span class="left" data-left>' + p.stock + ' left</span>' : p.made ? '<span class="ships">ships in about a week</span>' : '';
+      var hang = p.ook ? '<span class="hang">drop</span>' : p.made ? '<span class="hang">always available</span>' : '';
       var size = p.made ? '<label class="vh" for="sz-' + p.id + '">Size</label><select class="size-pick" id="sz-' + p.id + '"><option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option><option>2XL</option></select>' : '';
-      a.innerHTML = '<figure class="photo"><img src="images/p-' + p.img + '.webp" width="640" height="640" alt="' + p.alt + '" loading="lazy"></figure>' +
+      a.innerHTML = '<figure class="photo"><img src="images/p-' + p.img + '.webp" width="640" height="640" alt="' + p.alt + '" loading="lazy">' + hang + '</figure>' +
         '<div class="piece-in"><span class="kind">' + p.kind + '</span><h3>' + p.name + '</h3>' + price + left +
         '<div class="act">' +
           '<span data-show="crone all">' + size + '<button type="button" class="add" aria-pressed="false">Add to bag</button></span>' +
@@ -1445,35 +1527,80 @@
   (function () {
     function $(id) { return document.getElementById(id); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    var SQ = 'https://pastel-109491.square.site/';
+    var SQ = 'https://pastel-109491.square.site/', IG = 'https://www.instagram.com/linneapastel/';
+    /* one email changes all three: the banner up top, the neon sign (sign: small word, big word, the line under it)
+       and the drop bar in the shop */
     var STATES = {
-      open: { label: 'Books open 60 days out', cta: 'Book a tattoo', href: SQ },
-      road: { label: 'Guesting on the road this week', cta: 'See where', href: '#road' },
-      full: { label: 'Books are full for now', cta: 'Get the next opening', href: '#waitlist' }
+      open: { label: 'Books open 60 days out', cta: 'Book a tattoo', href: SQ, sign: ['books', 'open', '60 days out'], drop: ['This drop', 'One of a kind gold and originals, live now. Sold is sold.'] },
+      full: { label: 'Books are full for now', cta: 'Get the next opening', href: '#waitlist', sign: ['books', 'full', 'for now'], drop: ['This drop', 'One of a kind gold and originals, live now. Sold is sold.'] },
+      road: { label: 'Guesting on the road this week', cta: 'See where', href: '#road', sign: ['on the', 'road', 'guest spot this week'], drop: ['This drop', 'One of a kind gold and originals, live now. Sold is sold.'] },
+      drop: { label: 'New drop Friday 7 pm', cta: 'Hear about it first', href: '#letters', sign: ['new', 'drop', 'Friday 7 pm'], drop: ['Next drop', 'Friday 7 pm: new gold and originals, one of a kind. '] }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
     var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function stateFor(k) {
-      var s = STATES[k], v = viewNow();
-      if (k === 'open' && v === 'maiden') return { label: s.label, cta: 'Email to book', href: 'mailto:linneatattoos@gmail.com' };
-      if (k === 'open' && v === 'crone') return { label: s.label, cta: 'Book a tattoo', href: '#bk-here' };
-      if (k === 'road' && v === 'maiden') return { label: s.label, cta: 'Dates on Instagram', href: 'https://www.instagram.com/linneapastel/' };
-      if (k === 'full' && v === 'maiden') return { label: s.label, cta: 'Openings post on Instagram', href: 'https://www.instagram.com/linneapastel/' };
-      return s;
+      var s = STATES[k], v = viewNow(), o = { label: s.label, cta: s.cta, href: s.href, sign: s.sign, drop: s.drop };
+      if (k === 'open' && v === 'crone') o.href = '#bk-here';
+      if (k === 'road' && v === 'maiden') { o.cta = 'Dates on Instagram'; o.href = IG; }
+      if (k === 'full' && v === 'maiden') { o.cta = 'Openings post on Instagram'; o.href = IG; }
+      if (k === 'drop' && v === 'maiden') { o.cta = 'Follow along on Instagram'; o.href = IG; }
+      return o;
+    }
+    function setLink(a, href) {
+      a.setAttribute('href', href);
+      if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; } else { a.removeAttribute('target'); a.removeAttribute('rel'); }
+    }
+    /* the neon: each letter is its own tube, so they can buzz on one after another */
+    var neon = $('neon'), nTop = $('neon-top'), nBig = $('neon-big'), nSay = $('neon-say'), nLink = $('neon-link'), nWhen = $('neon-when'), nCta = $('neon-cta'), lightT = null;
+    function tubes(el, word) {
+      el.textContent = '';
+      word.split('').forEach(function (c, i) { var t = document.createElement('i'); t.textContent = c === ' ' ? ' ' : c; t.style.setProperty('--i', i); el.appendChild(t); });
+    }
+    function lightUp() {
+      if (!neon) return;
+      neon.classList.remove('off');
+      if (reduce) { neon.classList.add('lit', 'steady'); return; }
+      neon.classList.remove('lit', 'steady'); void neon.offsetWidth; neon.classList.add('lit'); clearTimeout(lightT);
+      var n = (nTop.textContent.length + nBig.textContent.length) * 95 + 1800;
+      lightT = setTimeout(function () { neon.classList.add('steady'); }, n);
+    }
+    function paintSign(s, k, relight) {
+      if (!neon) return;
+      neon.dataset.state = k; tubes(nTop, s.sign[0]); tubes(nBig, s.sign[1]);
+      nSay.textContent = s.label + '.'; nWhen.textContent = s.sign[2]; nCta.textContent = s.cta; setLink(nLink, s.href);
+      if (relight && !neon.classList.contains('off')) lightUp();
+    }
+    var dropBar = $('drop-bar'), dropK = $('drop-k'), dropT = $('drop-t');
+    function paintDrop(s, k) {
+      if (!dropBar) return;
+      dropBar.dataset.state = k; dropK.textContent = s.drop[0]; dropT.textContent = s.drop[1];
+      if (k === 'drop') { var a = document.createElement('a'); a.textContent = viewNow() === 'maiden' ? 'Follow along on Instagram' : 'Hear about it first'; setLink(a, viewNow() === 'maiden' ? IG : '#letters'); dropT.appendChild(a); }
     }
     function setState(k, announce) {
       var s = stateFor(k); if (!s) return;
+      var changed = current !== k;
       current = k; strip.dataset.state = k;
-      $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href);
-      if (/^https?:/.test(s.href)) { link.target = '_blank'; link.rel = 'noopener'; } else { link.removeAttribute('target'); link.removeAttribute('rel'); }
+      $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; setLink(link, s.href);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
-      if (announce) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
+      paintSign(s, k, changed); paintDrop(s, k);
+      if (announce) $('status-live').textContent = 'The banner and the sign now read: ' + s.label + '. ' + s.cta + '.';
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('ex:view', function () { setState(current, false); });
     setState('open', false);
+    /* the sign lights up the first time it scrolls into view (steady and lit right away under reduced motion) */
+    if (neon) {
+      if (reduce || !('IntersectionObserver' in window)) lightUp();
+      else { var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { lightUp(); io.disconnect(); } }); }, { threshold: 0.35 }); io.observe(neon); }
+    }
+    /* the sign's own link does what the banner's does (the waitlist opens as a little window) */
+    if (nLink) nLink.addEventListener('click', function (e) {
+      if (current !== 'full' || !/^#/.test(nLink.getAttribute('href'))) return;
+      e.preventDefault(); link.click();
+    });
     function openPanel(open) { panel.hidden = !open; tryBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
     tryBtn.addEventListener('click', function () { openPanel(panel.hidden); });
     panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); tryBtn.focus(); openPanel(false); } });
@@ -1664,10 +1791,13 @@
     var fmt = function (n) { return '$' + (Math.round(n * 100) % 100 ? n.toFixed(2) : Math.round(n).toLocaleString('en-US')); };
     function plain(s) { var d = document.createElement('div'); d.innerHTML = s; return d.textContent; }
     var tabs = [].slice.call(document.querySelectorAll('.shop-tabs [data-cat]'));
-    tabs.forEach(function (t) { t.addEventListener('click', function () {
-      tabs.forEach(function (x) { x.setAttribute('aria-pressed', x === t ? 'true' : 'false'); });
-      grid.querySelectorAll('.piece').forEach(function (a) { a.hidden = !(t.dataset.cat === 'all' || a.dataset.cat === t.dataset.cat); a.classList.remove('pre'); a.classList.add('in'); });
-    }); });
+    function showCat(cat) {
+      tabs.forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.cat === cat ? 'true' : 'false'); });
+      grid.querySelectorAll('.piece').forEach(function (a) { a.hidden = !(cat === 'all' || a.dataset.cat === cat); a.classList.remove('pre'); a.classList.add('in'); });
+    }
+    tabs.forEach(function (t) { t.addEventListener('click', function () { showCat(t.dataset.cat); }); });
+    /* the three tiles up top, like her own site: Jewelry and Apparel open the shop on that tab */
+    [].forEach.call(document.querySelectorAll('.tile[data-cat]'), function (t) { t.addEventListener('click', function () { showCat(t.dataset.cat); }); });
     function isSold(id) { var p = byId[id]; return !p.made && stock[id] === 0; }
     function paintCards() {
       grid.querySelectorAll('.piece').forEach(function (a) {
@@ -1685,7 +1815,7 @@
       var c = $('bag-count'); c.textContent = inBag.length; c.classList.remove('bump'); void c.offsetWidth; if (inBag.length) c.classList.add('bump');
     }
     function total() { return inBag.reduce(function (s, id) { return s + byId[id].price; }, 0); }
-    function detail(id) { var p = byId[id]; return p.made ? 'size ' + sizes[id] + ', made when you order' : p.cat === 'prints' ? 'print' : p.ook ? 'one of a kind' : 'handmade'; }
+    function detail(id) { var p = byId[id]; return p.made ? 'size ' + sizes[id] + ', made to order' : p.cat === 'prints' ? 'print' : p.ook ? 'one of a kind' : 'handmade'; }
     function paintBag() {
       var list = $('bag-list'); list.innerHTML = '';
       inBag.forEach(function (id) {
@@ -1739,8 +1869,10 @@
     $('bag-go').addEventListener('click', function () {
       var lines = $('bag-lines'); lines.innerHTML = '';
       inBag.forEach(function (id) { var d = document.createElement('div'); d.innerHTML = '<span>' + byId[id].name + (byId[id].made ? ' (' + sizes[id] + ')' : '') + '</span><span>' + fmt(byId[id].price) + '</span>'; lines.appendChild(d); });
-      var h = document.createElement('div'); h.innerHTML = how === 'ship' ? '<span>Shipping</span><span class="ph">your rate</span>' : '<span>Pick up at the studio</span><span>Free</span>'; lines.appendChild(h);
-      var t = document.createElement('div'); t.className = 'total'; t.innerHTML = '<span>Total</span><span>' + fmt(total()) + (how === 'ship' ? ' + shipping' : '') + '</span>'; lines.appendChild(t);
+      var h = document.createElement('div'); h.innerHTML = how === 'ship' ? '<span>Shipping</span><span class="ph">your rate</span>' : '<span>Pick up at the studio</span><span>$0</span>'; lines.appendChild(h);
+      var x = document.createElement('div'); x.innerHTML = '<span>Sales tax</span><span>worked out at checkout</span>'; lines.appendChild(x);
+      var t = document.createElement('div'); t.className = 'total'; t.innerHTML = '<span>Total</span><span>' + fmt(total()) + (how === 'ship' ? ' + shipping' : '') + ' + tax</span>'; lines.appendChild(t);
+      $('bag-slot-addr').textContent = how === 'ship' ? 'shipping address' : 'your name';
       setStep(2); quietFocus($('bag-pay'));
     });
     $('bag-back').addEventListener('click', function () { setStep(1); quietFocus($('bag-go')); });
@@ -1754,7 +1886,10 @@
       var made = inBag.some(function (id) { return byId[id].made; });
       $('bag-done-text').textContent = (names.length === 1 ? names[0] + ' is' : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] + ' are') + ' yours. ' +
         (how === 'ship' ? 'A receipt is on its way, and tracking follows when it ships.' : 'A receipt is on its way. Pick up at the studio by appointment.') +
-        (one ? ' One of a kind: it now shows Sold in the shop.' : '') + (print ? ' The print count just went down by one.' : '') + (made ? ' Apparel is made when you order, so it ships on its own.' : '');
+        (one ? ' One of a kind: it now shows Sold in the shop.' : '') + (print ? ' The print count just went down by one.' : '') + (made ? ' Made to order pieces ship on their own, in about a week.' : '');
+      /* the short heads-up Linnea gets for each order: who, what, size, city and state. The full address stays in her Stripe. */
+      var what = inBag.map(function (id) { return plain(byId[id].name) + (byId[id].made ? ' (' + sizes[id] + ')' : ''); }).join(', ');
+      $('bag-inbox').textContent = 'New order from Maya R.: ' + what + ', ' + fmt(total()) + '. ' + (how === 'ship' ? 'Ships to Henderson, NV. Full address in your Stripe.' : 'Picking up at the studio.');
       setStep(3); paintCards(); quietFocus($('bag-done-h'));
     });
     $('bag-edit').addEventListener('click', function () { justBought.forEach(function (id) { if (!byId[id].made && stock[id] < START[id]) stock[id]++; }); paintCards(); paintBag(); setStep(1); quietFocus($('bag-go')); });
@@ -1832,10 +1967,11 @@
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    /* her deal, not the standard prices: no build fee (a tattoo trade), then $12 a month, whichever build */
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your tattoo prices and how to book by email, your policies, gallery, aftercare, your story, and every piece with an Ask about this piece button.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with a Book on Square button, your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece that opens your Squarespace shop.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus booking right on your site and a real shop right here: a bag, Stripe checkout, one of a kinds that stamp Sold, and prints that count down. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '', what: 'one page, with your tattoo menu and a Book on Square button, your policies, gallery, aftercare, your story, the sign and the banner, and an Ask about this piece button on every piece.', next: 'mother' },
+      mother: { name: 'Tended', price: '', what: 'a full site: everything in Planted, plus your consent form, guest spot and convention dates, drop alerts, your Instagram feed, and a See it in the shop button on every piece that opens your Squarespace shop.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '', what: 'everything in Tended, plus booking right on your site and your real shop: drops, made to order pieces, Sold stamps, and checkout through your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1868,12 +2004,12 @@
     function paintNote(p) {
       var n = note(view), x = V[view]; p.textContent = 'Showing ';
       var b = document.createElement('b'); b.textContent = n.lead; p.appendChild(b); p.appendChild(document.createTextNode(n.text));
-      if (x.next) { p.appendChild(document.createTextNode(' ')); var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'views-next'; btn.setAttribute('data-view', x.next); btn.innerHTML = 'See ' + V[x.next].name + ' &middot; ' + V[x.next].price + '<span aria-hidden="true">&nbsp;&rarr;</span>'; p.appendChild(btn); }
+      if (x.next) { p.appendChild(document.createTextNode(' ')); var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'views-next'; btn.setAttribute('data-view', x.next); btn.innerHTML = 'See ' + V[x.next].name + (V[x.next].price ? ' &middot; ' + V[x.next].price : '') + '<span aria-hidden="true">&nbsp;&rarr;</span>'; p.appendChild(btn); }
     }
     function paint() {
       segBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-view') === view ? 'true' : 'false'); });
       notes.forEach(paintNote);
-      $('vp-v').textContent = view === 'all' ? 'Everything' : V[view].name + ' · ' + V[view].price;
+      $('vp-v').textContent = view === 'all' ? 'Everything' : V[view].name + (V[view].price ? ' · ' + V[view].price : '');
     }
     function say() { var n = note(view); live.textContent = 'Showing ' + n.lead + (V[view].price ? ', ' + V[view].price : '') + n.text; }
     var PROPS = ['height', 'paddingTop', 'paddingBottom', 'marginTop', 'marginBottom', 'borderTopWidth', 'borderBottomWidth'];
@@ -2070,7 +2206,7 @@
     place();
   })();
 </script>
-<script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
+<script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=5";s.defer=true;document.head.appendChild(s);}</script>
 <script src="/note-motion.js?v=1" defer></script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
 <script src="/lightbox.js?v=2" defer></script>
