@@ -58,11 +58,12 @@
 
   const BUILDS = { maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }; // keys stay; only the words changed (Oct 5 2026)
   const BUILD_MOON = { maiden: 'i-wax', mother: 'i-full', crone: 'i-wan' };
-  // what care does for each build, in the garden words of its name (the care row under Payments)
+  // what care does for each build, in the garden words of its name (the care row under Payments); one short line
+  // each, from "What care includes" in pricing-oct2026.md (the full lists are on webfaery.love's price cards)
   const CARE_SAY = {
-    maiden: 'Keeps your site healthy: hosting, your web address, backups, and your changes whenever you email me.',
-    mother: 'Tending as the seasons change: hosting, your web address, backups, and your changes whenever you email me.',
-    crone: 'Keeps you in full bloom: booking and payments kept running, hosting, backups, and your changes whenever you email me.'
+    maiden: 'Keeps your site healthy: hosting, your web address, backups, your changes whenever you email me, and a monthly check-in.',
+    mother: 'Tending as the seasons change: everything in Planted’s care, plus your Google profile kept fresh, email from your own address and a seasonal refresh.',
+    crone: 'Keeps you in full bloom: everything in Tended’s care, plus your booking, payments or shop kept running, a flyer for one event a month, and a yearly refresh.'
   };
   const STAGES = [
     ['getting_started', 'Getting started'], ['call', 'Your story'], ['draft', 'Draft'],

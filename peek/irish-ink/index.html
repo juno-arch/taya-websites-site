@@ -220,7 +220,7 @@
   .bk-steps button.on { color: var(--red); text-decoration: none; cursor: default; }
   .bk-steps button:disabled { cursor: default; text-decoration: none; opacity: 0.6; }
   .fld { font-size: 14px; font-weight: 600; color: var(--ink-soft); display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; }
-  .fld input, .fld textarea { font: inherit; font-size: 16px; font-weight: 400; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 4px; background: var(--ground); color: var(--ink); }
+  .fld input, .fld textarea, .fld select { font: inherit; font-size: 16px; font-weight: 400; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 4px; background: var(--ground); color: var(--ink); }
   .fld textarea { resize: vertical; min-height: 96px; }
   .fld-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .stack { display: grid; gap: 14px; }
@@ -595,8 +595,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your work, cover-ups, the studio, you, your reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: your own idea form with photos, your aftercare, design alerts, an FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: deposits and gift cards through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: your own idea form with photos, a Book your session button to your own free Cal.com page, your aftercare, design alerts, an FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: people pick their day and pay the deposit right on your site, and gift cards go through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month to keep it healthy and current. Email me any change and it&rsquo;s done. Hosting, your domain and backups included, and if you ever stop, your site is still yours.</span></div>
@@ -799,6 +799,13 @@
           <div class="bk-note"><b>Your questions</b>Ask whatever you need before you quote. Change the questions any time by email.</div>
         </div>
       </div>
+      <div data-show="mother" data-fold data-thing="a Book your session button to your own Cal.com page" hidden>
+        <p class="soft" style="margin-top:30px">Casey already said yes to your idea?</p>
+        <div class="cta-row" style="margin-top:12px"><button type="button" class="btn" id="rq-cal">Book your session</button></div>
+        <p class="hint" id="rq-calhint" role="status"></p>
+        <p class="mock-note wf-note" style="margin-top:18px;font-size:14.5px">With Tended, once you&rsquo;ve said yes to someone&rsquo;s idea, they tap &ldquo;Book your session&rdquo; and pick a day on your own free Cal.com page, set up in your name with your hours. You confirm each one, so nobody books a piece you haven&rsquo;t seen. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      </div>
+      <p class="mock-note wf-note" data-show="all" data-fold style="margin-top:24px;font-size:14.5px">With Planted, people call, email or message you, just like now. With Tended, a &ldquo;Book your session&rdquo; button opens your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
 
     <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
@@ -812,17 +819,18 @@
   </div>
 </section>
 
-<section id="deposit" class="gutter" data-show="crone all" data-fold data-thing="deposits and gift cards through your Stripe">
+<section id="deposit" class="gutter" data-show="crone all" data-fold data-thing="picking a day and paying the deposit right on your site, and gift cards through your Stripe">
   <div class="wrap pay">
     <div>
       <span class="rule" aria-hidden="true"><i></i></span>
       <p class="label with-pill"><span>Deposits and gift cards</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Hold your spot, <em>or give one</em></h2>
-      <p class="soft" style="margin-top:14px">Once you and Casey have a plan, pay the deposit right here. Or give someone a gift card toward their next piece.</p>
+      <p class="soft" style="margin-top:14px">Once you and Casey have a plan, pick your day and pay the deposit right here. Or give someone a gift card toward their next piece.</p>
       <div class="side mock-note wf-note" style="margin-top:24px">
         <div class="bk-note"><b>Gift cards that are really yours</b>Right now the only gift card for Irish Ink online is a Giftly listing someone else set up. This one pays you directly.</div>
         <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe account, set up in your name. Stripe keeps about 2.9% + 30&cent; per payment; I never touch the money.</div>
         <div class="bk-note"><b>Only if you want deposits</b>At the amount you choose, only for people whose idea you&rsquo;ve said yes to.</div>
+        <div class="bk-note"><b>Your days, right here</b>The days come from a free Cal.com page in your name, sitting right on your site with your hours, so only open days show. These are samples.</div>
       </div>
     </div>
     <div class="bk-card" id="pay-card">
@@ -830,7 +838,7 @@
         <div class="seg" role="group" aria-label="Choose one"><button type="button" data-mode="dep" aria-pressed="true">Pay my deposit</button><button type="button" data-mode="gift" aria-pressed="false">Gift card</button></div>
         <div id="pay-dep" class="stack" style="margin-top:18px">
           <div class="dep-box"><span>Holds your appointment, and comes off your final price</span><b><span class="ph">your deposit</span></b></div>
-          <div class="fld-row"><label class="fld">Your name<input id="pay-name" autocomplete="off" value="Jordan M."></label><label class="fld">Your appointment<input id="pay-when" autocomplete="off" value="Fri, Oct 23"></label></div>
+          <div class="fld-row"><label class="fld">Your name<input id="pay-name" autocomplete="off" value="Jordan M."></label><label class="fld">Pick your day<select id="pay-when"><option>Tue, Oct 20</option><option selected>Fri, Oct 23</option><option>Sat, Oct 24</option><option>Tue, Oct 27</option></select></label></div>
         </div>
         <div id="pay-gift" class="stack" style="margin-top:18px" hidden>
           <p class="q" id="pay-amt-q">Choose an amount</p>
@@ -999,7 +1007,7 @@
       <p class="foot-name">Irish Ink Tattoo Studio</p>
       <p>Casey Sheehan &middot; 408 SE G St, Suite A, Grants Pass, Oregon &middot; <a href="tel:+15414766654">(541) 476-6654</a></p>
       <p style="margin-top:4px"><a href="https://www.facebook.com/irishinkgp/" target="_blank" rel="noopener">Facebook</a> &middot; <a href="https://www.instagram.com/casey_sheehan_tattoos/" target="_blank" rel="noopener">@casey_sheehan_tattoos</a> &middot; <a href="mailto:csirishink@yahoo.com">csirishink@yahoo.com</a></p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (deposits and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking with deposits, and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
     </div>
   </div>
 </footer>
@@ -1012,8 +1020,8 @@
     <p class="views-q" id="vp-q">See your site as</p>
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your work, cover-ups, the studio, you, your reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: your own idea form with photos, your aftercare, design alerts, an FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: deposits and gift cards through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: your own idea form with photos, a Book your session button to your own free Cal.com page, your aftercare, design alerts, an FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: people pick their day and pay the deposit right on your site, and gift cards go through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month to keep it healthy and current. Email me any change and it&rsquo;s done. Hosting, your domain and backups included, and if you ever stop, your site is still yours.</span></div>
@@ -1126,6 +1134,8 @@
 
     /* request form, three steps */
     (function () {
+      var cal = $('rq-cal'), calHint = $('rq-calhint');
+      if (cal && calHint) cal.addEventListener('click', function () { calHint.textContent = 'Preview: on your real site, this opens your own free Cal.com page.'; });
       var card = $('rq-card'); if (!card) return;
       var st = { s: 1, max: 1, kind: 'Custom', ink: 'Black and grey', files: [] };
       var kinds = all(card, '[data-kind]'), inks = all(card, '[data-ink]'), go = $('rq-go'), hint = $('rq-hint'), list = $('rq-files');
@@ -1184,8 +1194,9 @@
         if (st.mode === 'dep') {
           var nm = $('pay-name').value.trim() || 'You';
           $('pay-item').textContent = 'Deposit'; $('pay-price').innerHTML = $('pay-total').innerHTML = '<span class="ph">your deposit</span>';
-          $('pay-sub').textContent = nm + ', ' + ($('pay-when').value.trim() || 'your appointment');
-          st.done = 'Your deposit is in, and your spot is held. A receipt is on its way to your inbox.';
+          var day = $('pay-when').value.trim() || 'your day';
+          $('pay-sub').textContent = nm + ', ' + day;
+          st.done = 'Your deposit is in, and ' + day + ' is held for you. A receipt and a calendar invite are on their way to your inbox.';
         } else {
           var n = st.amt === 'any' ? parseInt(String($('pay-any').value).replace(/[^0-9]/g, ''), 10) : +st.amt;
           if (!(n >= 10 && n <= 5000)) { hint.textContent = 'Type an amount first, like 150.'; $('pay-any').focus(); return; }
@@ -1241,8 +1252,8 @@
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one strong page, planted and kept healthy, with your black and grey and color work, cover-ups, the studio, you, your reviews, and how to reach you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with your own idea form (photos included), your aftercare, discount design alerts, an FAQ, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus deposits and gift cards through your own Stripe, in full bloom and doing business for you. That’s every piece on this page.' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with your own idea form (photos included), a Book your session button to your own free Cal.com page, your aftercare, discount design alerts, an FAQ, and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus people picking their day and paying the deposit right on your site, and gift cards through your own Stripe, in full bloom and doing business for you. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));

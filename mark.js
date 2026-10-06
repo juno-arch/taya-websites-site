@@ -294,10 +294,12 @@
     crone: { name: 'Crone', full: 1800, founding: 900, what: 'Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items), and your latest Instagram posts on your site.' },
   };
   // webfaery.love's own words for each tier, used when a repriced page doesn't give its own data-tier-what
+  // (the booking ladder, Oct 6 2026: Planted has no Book button; Tended's opens their booking page; In Bloom's
+  // booking sits right on the site)
   const WHAT_NOW = {
-    maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you.',
-    mother: 'A full site, tended as the seasons change: your pages, a contact form, a newsletter sign-up and a Book button.',
-    crone: 'Your site in full bloom, doing business for you: everything in Tended, plus booking, payments or a small shop.',
+    maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you, with a tap to call, text or email.',
+    mother: 'A full site, tended as the seasons change: your pages, a contact form, a newsletter sign-up and a Book button that opens your booking page.',
+    crone: 'Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site, payments or a small shop.',
   };
   const num = (v) => { const n = parseInt(String(v || '').replace(/[^0-9]/g, ''), 10); return n > 0 ? n : 0; };
   function readBuilds() {

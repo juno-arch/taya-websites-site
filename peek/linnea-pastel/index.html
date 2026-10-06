@@ -233,6 +233,8 @@
   .faq-list details[open] .ans { animation: fade-in 0.45s ease both; }
   @media (prefers-reduced-motion: reduce) { .faq-list details[open] .ans { animation: none; } .faq-list summary::after { transition: none; } }
   .pol { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 52px; align-items: start; margin-top: 64px; }
+  .bk-here { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 48px; align-items: start; margin-top: 64px; }
+  .bk-here .seg button:disabled { opacity: 0.45; cursor: not-allowed; }
 
   /* ---------- tattoo gallery ---------- */
   .gal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 30px; }
@@ -648,6 +650,7 @@
     .piece h3 { font-size: 15.5px; }
     .piece .sold-stamp { width: 60px; height: 60px; font-size: 14px; }
     .pol { margin-top: 48px; }
+    .bk-here { grid-template-columns: minmax(0, 1fr); row-gap: 36px; margin-top: 48px; }
     .faq-list { margin-top: 22px; }
   }
   @media (max-width: 480px) {
@@ -720,7 +723,8 @@
         <h1>One of a kind<span class="h1-b">retro tattoos</span></h1>
         <p class="lede">A retro 80s take on American traditional, mixed with tribal, vintage animals and queer iconography. By appointment in a private studio in the Las Vegas Arts District, and on the road every month.</p>
         <div class="cta-row">
-          <a class="btn" href="#book">Book a tattoo</a>
+          <a class="btn" href="#book" data-show="mother crone all">Book a tattoo</a>
+          <a class="btn" href="mailto:linneatattoos@gmail.com" data-show="maiden" hidden>Email to book</a>
           <a class="btn quiet" href="#shop">Shop Pastel</a>
         </div>
         <p class="since">Linnea Pastel, she/they &middot; tattooing since 2007</p>
@@ -748,9 +752,9 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your tattoo prices and how to book by email or Instagram, your policies, gallery, aftercare, your story, and an Ask about this piece button on every piece."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book on Square button, your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site and a real shop with checkout through your own Stripe, Sold stamps and prints that count down."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy and current. Email me any change, from a new drop to your next guest spot, and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
@@ -786,14 +790,19 @@
     <div class="bk-copy">
       <p class="label with-pill"><span>Book a tattoo</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Flash or custom, <em>booked in a minute</em></h2>
-      <p class="soft" style="margin-top:18px">Booking is on Square. You&rsquo;ll choose flash (a selection of my pre-drawn designs) or custom (my interpretation of your idea).</p>
+      <p class="soft" style="margin-top:18px"><span data-show="mother all">Booking is on Square.</span><span data-show="crone" hidden>Booking is right here on the page.</span><span data-show="maiden" hidden>To book, email me or send me a message on Instagram.</span> You&rsquo;ll choose flash (a selection of my pre-drawn designs) or custom (my interpretation of your idea).</p>
       <ol class="steps4">
         <li><div><b>Pick your size</b><p>From palm size to a full day. Prices are estimates and vary with size, placement, style and detail.</p></div></li>
-        <li><div><b>Tell me your idea</b><p>In the appointment notes: your idea, the placement, and your budget. The more you share, the better.</p></div></li>
+        <li><div><b>Tell me your idea</b><p><span data-show="mother crone all">In the appointment notes</span><span data-show="maiden" hidden>In your message</span>: your idea, the placement, and your budget. The more you share, the better.</p></div></li>
         <li><div><b>Hold your spot</b><p>A deposit holds your date and comes off the price of your tattoo. <span class="ph">your deposit amount</span></p></div></li>
         <li><div><b>Come get tattooed</b><p>Read <a href="#aftercare">how to prepare</a>, fill out the <a href="#consent">consent form</a>, and bring cash for the rest if you can.</p></div></li>
       </ol>
-      <div class="cta-row"><a class="btn" href="https://pastel-109491.square.site/" target="_blank" rel="noopener">Book on Square<span class="vh"> (opens in a new tab)</span></a></div>
+      <div class="cta-row" data-show="mother all" data-thing="a Book on Square button"><a class="btn" href="https://pastel-109491.square.site/" target="_blank" rel="noopener">Book on Square<span class="vh"> (opens in a new tab)</span></a> <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></div>
+      <div class="cta-row" data-show="crone" hidden><a class="btn" href="#bk-here">Book right here</a></div>
+      <div data-show="maiden" hidden>
+        <div class="cta-row"><a class="btn" href="mailto:linneatattoos@gmail.com">Email to book</a><a class="btn quiet" href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">Message me on Instagram<span class="vh"> (opens in a new tab)</span></a></div>
+        <p class="tier-note mock-note wf-note">With Planted, people email or message you to book, and you add them in Square.</p>
+      </div>
     </div>
     <div class="price-card">
       <p class="label" style="margin-bottom:6px">Tattoos and estimates</p>
@@ -806,7 +815,58 @@
         <li class="reveal"><span class="m-name">Consultation<small>in person, for anyone who&rsquo;d like to chat before booking. Not required</small></span><span class="m-price">$10<small>comes off your tattoo</small></span></li>
       </ul>
       <p class="menu-foot">Booking opens 60 days out, and times need to be requested at least 24 hours ahead. Guest spots and conventions are booked by Instagram message.</p>
-      <p class="tier-note mock-note wf-note">These are your real services and estimates from your Square booking page, and the button opens it. And as part of your care, I can keep your Square Appointments menu up to date too, so your prices match everywhere.</p>
+      <p class="tier-note mock-note wf-note">These are your real services and estimates from your Square booking page<span data-show="mother all">, and the Book on Square button opens it</span>. And as part of your care, I can keep your Square Appointments menu up to date too, so your prices match everywhere.</p>
+    </div>
+  </div>
+  <div class="wrap bk-here" id="bk-here" tabindex="-1" data-show="crone all" data-fold data-thing="booking right on your site">
+    <div>
+      <p class="label with-pill"><span>Book right here</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h2 class="reveal">Book it <em>right here</em></h2>
+      <p class="soft measure" style="margin-top:14px">Pick your tattoo, a day and a time, and tell me your idea. A deposit holds your spot.</p>
+      <div class="tier-note mock-note wf-note" style="margin-top:24px">
+        <p>With In Bloom, booking sits right on your site, no new tab. Square can show your services here, but its booking still opens in its own tab, so for booking right on the page it would be a free Cal.com page in your own name. Or keep Square, and your Book on Square button opens your Square page just like now. It&rsquo;s your choice.</p>
+        <p data-show="all" style="margin-top:10px">With Tended, this spot is your Book on Square button. With Planted, people email or message you to book.</p>
+      </div>
+    </div>
+    <div class="bk-card" id="bh-card">
+      <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your tattoo</button><button type="button" data-s="2" disabled>2 Day and time</button><button type="button" data-s="3" disabled>3 Your idea</button></div>
+      <div id="bh-s1">
+        <p class="bk-q" id="bh-size-q" style="margin-top:0">Size</p>
+        <div class="seg" role="group" aria-labelledby="bh-size-q" id="bh-size">
+          <button type="button" data-k="palm" aria-pressed="true">Palm to hand</button>
+          <button type="button" data-k="hand" aria-pressed="false">Hand size</button>
+          <button type="button" data-k="two" aria-pressed="false">For two</button>
+          <button type="button" data-k="nip" aria-pressed="false">Nipple</button>
+          <button type="button" data-k="day" aria-pressed="false">Full day</button>
+          <button type="button" data-k="consult" aria-pressed="false">Consultation</button>
+        </div>
+        <p class="demo-note" id="bh-size-note">$350 to $500 estimate, 2 hrs +.</p>
+        <p class="bk-q" id="bh-kind-q">Flash or custom</p>
+        <div class="seg" role="group" aria-labelledby="bh-kind-q" id="bh-kind"><button type="button" data-k="Flash" aria-pressed="true">Flash</button><button type="button" data-k="Custom" aria-pressed="false">Custom</button></div>
+      </div>
+      <div id="bh-s2" hidden>
+        <p class="bk-q" id="bh-day-q" style="margin-top:0">Day</p>
+        <div class="seg" role="group" aria-labelledby="bh-day-q" id="bh-days"></div>
+        <p class="bk-q" id="bh-time-q">Time</p>
+        <div class="seg" role="group" aria-labelledby="bh-time-q" id="bh-times"></div>
+        <p class="demo-note" id="bh-time-none">Pick a day to see the open times.</p>
+      </div>
+      <div id="bh-s3" hidden>
+        <label class="fld">Your idea, placement and budget<textarea id="bh-idea" rows="3">A smiley flower with a little star, on my forearm. Around $400.</textarea></label>
+        <div class="fld-row" style="margin-top:10px">
+          <label class="fld">Your name<input id="bh-name" autocomplete="off" value="Maya R."></label>
+          <label class="fld">Email<input id="bh-mail" type="email" autocomplete="off" value="maya@example.com"></label>
+        </div>
+        <p class="demo-note">A deposit holds your spot and comes off your tattoo. <span class="ph">your deposit amount</span></p>
+      </div>
+      <p class="hint" id="bh-hint" role="status"></p>
+      <div class="bk-nav" id="bh-nav"><button type="button" class="bk-go" id="bh-go">Next</button><button type="button" class="bk-go ghost" id="bh-back" hidden>Back</button></div>
+      <div class="bk-done fade-in" id="bh-done" hidden>
+        <h3 id="bh-done-h" tabindex="-1">You&rsquo;re booked!</h3>
+        <p id="bh-sum"></p>
+        <p class="demo-note">Booking preview: nothing was booked and nothing was charged.</p>
+        <div class="bk-nav"><button type="button" class="bk-go ghost" id="bh-edit">Change something</button><button type="button" class="bk-go ghost" id="bh-again">Try it again</button></div>
+      </div>
     </div>
   </div>
   <div class="wrap pol">
@@ -1029,7 +1089,7 @@
     <div class="road">
       <article class="reveal stop"><p class="when"><span class="ph">dates</span></p><h3>Guest spot</h3><p><span class="ph">city and shop</span></p></article>
       <article class="reveal stop"><p class="when"><span class="ph">dates</span></p><h3>Convention</h3><p><span class="ph">convention name and city</span></p></article>
-      <article class="reveal stop"><p class="when">Every month</p><h3>Home in Vegas</h3><p>By appointment in the Arts District, booked on Square.</p></article>
+      <article class="reveal stop"><p class="when">Every month</p><h3>Home in Vegas</h3><p>By appointment in the Arts District, <span data-show="mother all">booked on Square</span><span data-show="crone" hidden>booked right here</span>.</p></article>
     </div>
     <p class="tier-note mock-note wf-note">Right now your travel dates live only in your Instagram posts. Email me the next stop and it shows here, and the banner up top can say &ldquo;Guesting this week&rdquo; too.</p>
   </div>
@@ -1143,7 +1203,7 @@
         <div class="reveal"><b>Email</b><a href="mailto:linneatattoos@gmail.com" style="overflow-wrap:anywhere">linneatattoos@gmail.com</a></div>
         <div class="reveal"><b>Instagram</b><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">@linneapastel<span class="vh"> (opens in a new tab)</span></a></div>
       </div>
-      <span class="reach" style="margin-top:18px"><a href="https://pastel-109491.square.site/" target="_blank" rel="noopener">Book on Square<span class="vh"> (opens in a new tab)</span></a><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener" aria-label="Linnea on Instagram, @linneapastel (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Instagram</a></span>
+      <span class="reach" style="margin-top:18px"><a href="https://pastel-109491.square.site/" target="_blank" rel="noopener" data-show="mother all">Book on Square<span class="vh"> (opens in a new tab)</span></a><a href="#bk-here" data-show="crone" hidden>Book a tattoo</a><a href="mailto:linneatattoos@gmail.com" data-show="maiden" hidden>Email to book</a><a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener" aria-label="Linnea on Instagram, @linneapastel (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Instagram</a></span>
     </div>
   </div>
 </section>
@@ -1232,7 +1292,7 @@
       <span class="foot-sub">Linnea Pastel &middot; tattoos, gold, art</span>
     </div>
     <p>A private studio in the Las Vegas Arts District &middot; <a href="mailto:linneatattoos@gmail.com">linneatattoos@gmail.com</a> &middot; <a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">@linneapastel<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding build price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding build price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1299,9 +1359,9 @@
   <div class="vpanel" id="vp-panel" hidden>
     <div class="views-head"><p class="views-q" id="vp-q">See your site as</p><p class="views-price">Your founding build price, half off</p></div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your tattoo prices and how to book by email or Instagram, your policies, gallery, aftercare, your story, and an Ask about this piece button on every piece."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book on Square button, your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site and a real shop with checkout through your own Stripe, Sold stamps and prints that count down."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
@@ -1389,6 +1449,8 @@
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function stateFor(k) {
       var s = STATES[k], v = viewNow();
+      if (k === 'open' && v === 'maiden') return { label: s.label, cta: 'Email to book', href: 'mailto:linneatattoos@gmail.com' };
+      if (k === 'open' && v === 'crone') return { label: s.label, cta: 'Book a tattoo', href: '#bk-here' };
       if (k === 'road' && v === 'maiden') return { label: s.label, cta: 'Dates on Instagram', href: 'https://www.instagram.com/linneapastel/' };
       if (k === 'full' && v === 'maiden') return { label: s.label, cta: 'Openings post on Instagram', href: 'https://www.instagram.com/linneapastel/' };
       return s;
@@ -1427,6 +1489,83 @@
     $('wl-x').addEventListener('click', closeWl); $('wl-close').addEventListener('click', closeWl);
     dlg.addEventListener('click', function (e) { if (e.target !== dlg) return; var r = dlg.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeWl(); });
     dlg.addEventListener('close', function () { resetWl(); quietFocus(link); });
+  })();
+</script>
+
+<script>
+  /* In Bloom: booking right on the site (a preview: nothing is booked or charged) */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var card = $('bh-card'); if (!card) return;
+    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    var SIZES = {
+      palm: { name: 'Palm to hand size', est: '$350 to $500 estimate, 2 hrs +.', hrs: 2 },
+      hand: { name: 'Hand size', est: '$500 to $700 estimate, 3 hrs +.', hrs: 3 },
+      two: { name: 'Appointment for two', est: '$500 to $750 estimate, 3 hrs 30 min. Flash only, two palm size tattoos.', hrs: 3.5 },
+      nip: { name: 'Nipple tattoos', est: '$250 to $400 estimate, 1 hr 30 min +.', hrs: 1.5 },
+      day: { name: 'Full day, flat rate', est: '$1,250 flat, 6 hrs.', hrs: 6 },
+      consult: { name: 'Consultation', est: '$10, and it comes off your tattoo. About 30 min.', hrs: 0.5 }
+    };
+    /* her hours: Sun and Mon 1 to 8, Thu to Sat 1 to 7, closed Tue and Wed */
+    var CLOSE = { 0: 20, 1: 20, 4: 19, 5: 19, 6: 19 };
+    var DAYS = (function () { var out = [], d = new Date(); d.setHours(12, 0, 0, 0); while (out.length < 6) { d.setDate(d.getDate() + 1); if (CLOSE[d.getDay()]) out.push(new Date(d.getTime())); } return out; })();
+    var st, step = 1;
+    var stepBtns = [].slice.call(card.querySelectorAll('.bk-steps [data-s]')), stepBar = card.querySelector('.bk-steps');
+    var go = $('bh-go'), back = $('bh-back'), hint = $('bh-hint'), nav = $('bh-nav'), done = $('bh-done');
+    function fresh() { return { size: 'palm', kind: 'Flash', day: null, time: null }; }
+    function dayName(d) { return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+    function hr(h) { return (h > 12 ? h - 12 : h) + ':00 pm'; }
+    function times() { if (st.day === null) return []; var close = CLOSE[DAYS[st.day].getDay()], out = []; for (var h = 13; h <= 17; h++) if (h + SIZES[st.size].hrs <= close) out.push(h); return out; }
+    function press(box, val) { [].forEach.call(box.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-k') === String(val) ? 'true' : 'false'); }); }
+    function btn(k, text) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-k', k); b.textContent = text; return b; }
+    function paint() {
+      press($('bh-size'), st.size);
+      $('bh-size-note').textContent = SIZES[st.size].est;
+      var custom = $('bh-kind').querySelector('[data-k="Custom"]');
+      if (st.size === 'two') st.kind = 'Flash';
+      custom.disabled = st.size === 'two';
+      press($('bh-kind'), st.kind);
+      var days = $('bh-days'); days.textContent = '';
+      DAYS.forEach(function (d, i) { days.appendChild(btn(i, dayName(d))); });
+      press(days, st.day);
+      var list = times(); if (st.time !== null && list.indexOf(st.time) < 0) st.time = null;
+      var tb = $('bh-times'); tb.textContent = '';
+      list.forEach(function (h) { tb.appendChild(btn(h, hr(h))); });
+      press(tb, st.time);
+      tb.hidden = st.day === null; $('bh-time-none').hidden = st.day !== null;
+    }
+    function show(n) {
+      step = n;
+      [1, 2, 3].forEach(function (i) { $('bh-s' + i).hidden = i !== n; });
+      stepBtns.forEach(function (b) { var i = +b.getAttribute('data-s'); b.classList.toggle('on', i === n); if (i === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); b.disabled = i > n; });
+      back.hidden = n === 1; go.textContent = n === 3 ? 'Hold my spot' : 'Next'; hint.textContent = '';
+    }
+    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+    function finish() {
+      var name = $('bh-name').value.trim(), mail = $('bh-mail').value.trim();
+      if (!name) { hint.textContent = 'Add your name first.'; $('bh-name').focus(); return; }
+      if (!isEmail(mail)) { hint.textContent = 'Add an email address, like name@example.com, for your confirmation.'; $('bh-mail').focus(); return; }
+      [1, 2, 3].forEach(function (i) { $('bh-s' + i).hidden = true; });
+      stepBar.hidden = true; nav.hidden = true; hint.textContent = '';
+      $('bh-done-h').textContent = 'You’re booked, ' + name.split(/\s+/)[0] + '!';
+      $('bh-sum').textContent = SIZES[st.size].name + (st.size === 'consult' ? '' : ', ' + st.kind.toLowerCase()) + ', ' + dayName(DAYS[st.day]) + ' at ' + hr(st.time) + '. A confirmation is on its way to ' + mail + ', with the studio address.';
+      done.hidden = false; quietFocus($('bh-done-h'));
+    }
+    function reopen(n) { done.hidden = true; stepBar.hidden = false; nav.hidden = false; paint(); show(n); quietFocus(stepBtns[n - 1]); }
+    $('bh-size').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; st.size = b.getAttribute('data-k'); paint(); });
+    $('bh-kind').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b || b.disabled) return; st.kind = b.getAttribute('data-k'); paint(); });
+    $('bh-days').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; st.day = +b.getAttribute('data-k'); hint.textContent = ''; paint(); });
+    $('bh-times').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; st.time = +b.getAttribute('data-k'); hint.textContent = ''; paint(); });
+    stepBtns.forEach(function (b) { b.addEventListener('click', function () { var i = +b.getAttribute('data-s'); if (i < step) show(i); }); });
+    go.addEventListener('click', function () {
+      if (step === 1) { show(2); return; }
+      if (step === 2) { if (st.day === null) { hint.textContent = 'Pick a day first.'; return; } if (st.time === null) { hint.textContent = 'Pick a time too.'; return; } show(3); return; }
+      finish();
+    });
+    back.addEventListener('click', function () { if (step > 1) show(step - 1); });
+    $('bh-edit').addEventListener('click', function () { reopen(1); });
+    $('bh-again').addEventListener('click', function () { st = fresh(); ['bh-idea', 'bh-name', 'bh-mail'].forEach(function (id) { $(id).value = $(id).defaultValue; }); reopen(1); });
+    st = fresh(); paint(); show(1);
   })();
 </script>
 
@@ -1686,9 +1825,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one beautiful page, planted and kept healthy, with your tattoo prices and booking on Square, your policies, gallery, aftercare, your story, and every piece with an Ask about this piece button.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece that opens your Squarespace shop.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus a real shop right here, doing business for you: a bag, Stripe checkout, one of a kinds that stamp Sold, and prints that count down. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one beautiful page, planted and kept healthy, with your tattoo prices and how to book by email, your policies, gallery, aftercare, your story, and every piece with an Ask about this piece button.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with a Book on Square button, your consent form, guest spot and convention dates, drop letters, your Instagram feed, and a See it in the shop button on every piece that opens your Squarespace shop.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus booking right on your site and a real shop right here, doing business for you: a bag, Stripe checkout, one of a kinds that stamp Sold, and prints that count down. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };

@@ -12,9 +12,12 @@ Care is required for new clients. If they ever stop it, the site is still theirs
 Internal keys stay maiden / mother / crone. Anyone quoted before Oct 5 2026 keeps their quote as written: care stays
 optional for them, and if they choose it, they can take the new care price when it's lower.
 
-What comes with which build (the small rules, Oct 5 2026):
-- A Book button to a booking app they already use is just a link, so it fits any build, Planted too.
-- With Tended and In Bloom, Taya sets up a free Cal.com for them, in their name.
+What comes with which build (the small rules, Oct 5 2026, and the booking ladder, Oct 6 2026):
+- Planted has no Book button: people call, text or email them.
+- Tended has a Book button that opens their booking page: the app they already use, or a free Cal.com Taya sets up
+  for them, in their name.
+- In Bloom has booking right on the site: their own app, where it really offers a website booking embed, or a free
+  Cal.com if they'd rather switch. It's their choice, asked when they pick In Bloom.
 - Anything that takes payments (deposits, gift certificates, a shop, booking with payments) is In Bloom.
 - Interactive pieces that take no bookings or payments (a matcher or a planner) are Tended.
 - The Instagram feed on a site is Tended and up.

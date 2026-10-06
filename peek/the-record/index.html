@@ -703,8 +703,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: this month’s shows, your whole menu as real text, the room, the parties and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: party requests, a form for bands, an FAQ, a contact form, a lineup sign-up and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: your hoodies and T shirts sold right on the site."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: an Ask for a party date button to your own free Cal.com page, a form for bands, an FAQ, a contact form, a lineup sign-up and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: party dates picked right on your site, and your hoodies and T shirts sold right here."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month to keep it healthy and current. Email me any change and it&rsquo;s done. Hosting, your domain and backups included, and if you ever stop, your site is still yours.</span></div>
@@ -984,21 +984,21 @@
     </div>
   </div>
   <div class="wrap">
-    <div data-show="mother crone all" data-fold data-thing="party request form" style="margin-top:56px">
-      <p class="label with-pill"><span>Ask about a date</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <div data-show="crone all" data-fold data-thing="party dates picked right on your site" style="margin-top:56px">
+      <p class="label with-pill"><span>Pick a party date</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <div class="bk" style="margin-top:14px">
         <div class="bk-card">
           <form id="pr" method="dialog" novalidate aria-label="Party request, preview" style="display:grid;gap:10px">
             <div class="fld-row"><label class="fld">Your name<input id="pr-name" autocomplete="off" value="Maya R."></label><label class="fld">Email<input id="pr-mail" type="email" autocomplete="off" value="maya@example.com"></label></div>
-            <div class="fld-row"><label class="fld">The date, or a season<input id="pr-date" autocomplete="off" value="Saturday, May 15"></label><label class="fld">About how many people<input id="pr-guests" inputmode="numeric" autocomplete="off" value="25"></label></div>
+            <div class="fld-row"><label class="fld">Pick an open date<select id="pr-date"><option>Sunday, November 8</option><option>Sunday, December 6</option><option>Sunday, January 17</option><option selected>Saturday, May 15</option></select></label><label class="fld">About how many people<input id="pr-guests" inputmode="numeric" autocomplete="off" value="25"></label></div>
             <label class="fld">Tell us about it<textarea id="pr-msg" rows="3">A rehearsal dinner. Two vegans and one gluten free. Could a friend play a few songs?</textarea></label>
             <p class="hint" id="pr-hint" role="status"></p>
             <button type="submit" class="bk-go" style="justify-self:start;margin-top:4px">Send the request (preview)</button>
           </form>
           <div class="bk-done fade-in" id="pr-done" hidden>
             <h3 id="pr-thanks" tabindex="-1">Thank you!</h3>
-            <p>Your request is on its way to The Record. We&rsquo;ll write back about the date.</p>
-            <p class="demo-note">On your real site this lands in your inbox.</p>
+            <p>Your date is penciled in. We&rsquo;ll write back to confirm it and plan the menu with you.</p>
+            <p class="demo-note">On your real site this lands in your inbox and your calendar, and the date is only set once you say yes.</p>
             <div class="bk-nav"><button type="button" class="bk-go ghost" id="pr-again">Try it again</button><button type="button" class="bk-go ghost" id="pr-edit">Change something</button></div>
           </div>
         </div>
@@ -1006,12 +1006,20 @@
           <div class="bk-note"><b>What you see</b>Every request arrives with the date, the head count and the dietary needs, so you can check it against show nights before you reply.</div>
           <div class="bk-inbox"><div class="from">New party request</div><div id="pr-inbox">Waiting for a request&hellip; try it on the left</div></div>
           <div class="bk-note"><b>Your terms</b><span class="ph">minimums, deposit, what&rsquo;s included</span></div>
+          <div class="bk-note"><b>Your dates</b>These dates are samples. Only the dates you open show, and nothing is set until you say yes.</div>
+          <p style="font-size:13.5px;color:var(--ink-soft)">Preview: nothing here books a real date. On a real site this runs on a free Cal.com page in your own name, sitting right here on your site.</p>
         </div>
       </div>
+      <p class="tier-note mock-note" data-show="all" data-fold>With Planted, people email you or ask at the bar, just like now. With Tended, it&rsquo;s an &ldquo;Ask for a party date&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
-    <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden style="margin-top:44px">
+    <div class="bk-alt" data-show="maiden mother" data-fold tabindex="-1" hidden style="margin-top:44px">
       <p class="label with-pill"><span>Ask about a date</span> <span class="tag" data-go="maiden">Every build</span></p>
       <p class="measure soft">Email <a href="mailto:therecordpa@gmail.com">therecordpa@gmail.com</a> with your date and how many people, or ask at the bar.</p>
+      <div data-show="mother" data-fold data-thing="an Ask for a party date button to your own Cal.com page" hidden>
+        <div class="cta-row"><button type="button" class="btn" id="pr-cal">Ask for a party date</button></div>
+        <p class="hint" id="pr-calhint" role="status"></p>
+        <p class="tier-note mock-note" style="margin-top:22px">With Tended, this &ldquo;Ask for a party date&rdquo; button opens your own free Cal.com page, set up in your name, so people can pick an open date and tell you the head count. Nothing is set until you say yes. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      </div>
     </div>
   </div>
 </section>
@@ -1283,7 +1291,7 @@
     <span class="foot-mark"><span class="lock" data-t="THE RECORD" role="img" aria-label="The Record">THE RECORD</span></span>
     <p>265 Main Street, Point Arena, California<button type="button" class="foot-rec" id="foot-rec" aria-label="A little record"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><circle cx="16" cy="16" r="5" fill="#e8894a"/><circle cx="16" cy="16" r="1.4" fill="var(--ground)"/></svg></button></p>
     <p style="margin-top:6px">Wed to Sat, 3 to 10 pm &middot; <a class="tel" href="tel:+17074120878">(707) 412-0878</a> &middot; <a href="https://www.instagram.com/therecord_pub/" target="_blank" rel="noopener">@therecord_pub</a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling your merch). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (party dates and merch, right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1295,8 +1303,8 @@
     <div class="views-head"><p class="views-q" id="vp-q">See your site as</p><p class="views-price">Your founding price, half off the build</p></div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: this month’s shows, your whole menu as real text, the room, the parties and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: party requests, a form for bands, an FAQ, a contact form, a lineup sign-up and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: your hoodies and T shirts sold right on the site."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: an Ask for a party date button to your own free Cal.com page, a form for bands, an FAQ, a contact form, a lineup sign-up and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, in full bloom and doing business for you: party dates picked right on your site, and your hoodies and T shirts sold right here."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month to keep it healthy and current. Email me any change and it&rsquo;s done. Hosting, your domain and backups included, and if you ever stop, your site is still yours.</span></div>
@@ -1576,6 +1584,10 @@
       line(); shipPaint(); paint();
     })();
 
+    /* Tended: the Ask for a party date button (preview) */
+    var prCal = $('pr-cal'), prCalHint = $('pr-calhint');
+    if (prCal && prCalHint) prCal.addEventListener('click', function () { prCalHint.textContent = 'Preview: on your real site, this opens your own free Cal.com page.'; });
+
     /* simple forms */
     function simpleForm(id, doneId, check, onOk, againId, editId, focusEdit) {
       var form = $(id), done = $(doneId);
@@ -1636,8 +1648,8 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with this month’s shows typed out, your whole menu as real text, the room, the parties, reviews and how to find you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with a party request form, a form for bands to send their music, an FAQ, a contact form, a monthly lineup email sign-up that works, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus your hoodies and T shirts sold right on the site, in full bloom and doing business for you. That’s every piece on this page.' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with an Ask for a party date button to your own free Cal.com page, a form for bands to send their music, an FAQ, a contact form, a monthly lineup email sign-up that works, and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus party dates picked right on your site and your hoodies and T shirts sold right here, in full bloom and doing business for you. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };

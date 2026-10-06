@@ -5,14 +5,14 @@
 //
 // Pricing as of Oct 5 2026 (web-faery-kit/pricing-oct2026.md): care comes with every site and matches the build.
 // The BUILD comes from what the site needs to do (questions 1 to 3), plus email and a newsletter (question 4),
-// following the sheet's "Small rules decided Oct 5 2026":
+// following the sheet's "Small rules decided Oct 5 2026" and its booking ladder (rule 1, Oct 6 2026):
 //   In Bloom if anything takes payments: booking with payments or deposits, or selling (rule 5)
-//   Tended   if they'd like booking set up for them (a free Cal.com in their name, which Taya sets up with
-//            Tended and In Bloom; rule 1), or have "Quite a bit" to say, or want the site to gather something
-//            (forms and other pieces that take no bookings or payments are Tended; rule 4), or want email from
-//            their own address or a newsletter (both come with Tended and In Bloom; no side add-ons for Planted)
-//   Planted  otherwise, including someone who already uses a booking app: a Book button to it is just a
-//            link, so it fits any build, even Planted (rule 2)
+//   Tended   if they'd like a Book button: to the booking app they already use, or to a free Cal.com in their
+//            name, which Taya sets up with Tended and In Bloom (rule 1: a Planted page has no Book button), or
+//            have "Quite a bit" to say, or want the site to gather something (forms and other pieces that take
+//            no bookings or payments are Tended; rule 4), or want email from their own address or a newsletter
+//            (both come with Tended and In Bloom; no side add-ons for Planted)
+//   Planted  otherwise: people call, text or email them
 // The booking question's answers are sorted by their words, not their order, so splitting or rewording one
 // doesn't break this test: "already use" is their own app; payments, deposits, selling, a shop, gift
 // certificates or orders take payments; any other booking answer is booking set up for them.
@@ -120,7 +120,7 @@ for (const k of ['own', 'setup', 'pay']) {
 const expectBuild = (p) => {
   const b = BOOK[p[Q_BOOK]], m = MAIL[p[Q_MAIL]];
   if (b.kind === 'pay') return 'In Bloom';
-  if (b.kind === 'setup' || SAY[p[Q_SAY]].lots || GATHER[p[Q_GATHER]].yes || m.own || m.news) return 'Tended';
+  if (b.kind === 'own' || b.kind === 'setup' || SAY[p[Q_SAY]].lots || GATHER[p[Q_GATHER]].yes || m.own || m.news) return 'Tended';
   return 'Planted';
 };
 // a sentence that sends booking to In Bloom without any payment in it (simple booking is Tended now; rule 1)
@@ -200,7 +200,7 @@ combos.forEach((picks, n) => {
   const text = ['r-build-what', 'r-build-founding', 'r-build-ready', 'r-build-because', 'r-build-points', 'r-build-also',
     'r-care-name', 'r-care-because', 'r-care-points', 'r-care-also', 'r-costs', 'r-start'].map((id) => $(id).textContent).join(' | ');
   for (const re of FORBIDDEN) if (re.test(text)) failures.push(`${tag}: result text contains ${re}`);
-  // rule 2: someone who keeps their own booking app hears that their Book button links straight to it
+  // rule 1 (the booking ladder): someone who keeps their own booking app hears that their Book button opens it
   if (book.kind === 'own' && !/Book (?:now )?button[^.|]*(?:booking )?app you already use/.test(text)) failures.push(`${tag}: doesn't say their Book button links to the booking app they already use`);
   // rule 1: simple booking comes with Tended, so no line sends booking (with no payments in it) to In Bloom
   for (const s of text.split(/(?<=[.!?])\s+|\s\|\s/)) {
@@ -208,6 +208,9 @@ combos.forEach((picks, n) => {
   }
   // rule 6: the Instagram feed is Tended and up
   if (build === 'Planted' && /Instagram/.test(text)) failures.push(`${tag}: Planted mentions the Instagram feed (Tended and up)`);
+  // rule 1 (the booking ladder): a Planted page has no Book button, so people call, text or email
+  if (build === 'Planted' && !/call, text or email/.test($('r-build-points').textContent)) failures.push(`${tag}: Planted doesn't say people call, text or email`);
+  if (build === 'Planted' && /Book (?:now )?button[^.|]*(?:links|opens|goes)/i.test(text)) failures.push(`${tag}: Planted promises a Book button (the booking ladder: Tended and up)`);
 
   const href = $('r-start').href;
   if (href !== `intake.html?plan=${encodeURIComponent(build)}`) failures.push(`${tag}: start link is ${href}`);

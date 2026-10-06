@@ -211,7 +211,7 @@
   .bk-steps button.on { color: var(--red); text-decoration: none; cursor: default; }
   .bk-steps button:disabled { cursor: default; text-decoration: none; opacity: 0.6; }
   .fld { font-size: 15px; font-weight: 600; color: var(--ink-soft); display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; }
-  .fld input, .fld textarea { font: inherit; font-size: 17px; font-weight: 420; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 4px; background: var(--ground); color: var(--ink); }
+  .fld input, .fld textarea, .fld select { font: inherit; font-size: 17px; font-weight: 420; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 4px; background: var(--ground); color: var(--ink); }
   .fld textarea { resize: vertical; min-height: 96px; }
   .fld-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .stack { display: grid; gap: 14px; }
@@ -801,7 +801,7 @@
           <li id="ex-women"><b>The Women&rsquo;s Wall</b><span>An entire wall of portraits of tattooed women, from different cultures and eras.</span></li>
           <li class="hush"><b>Tattoos without consent</b><span>A quiet room about marks that were forced on people, so they&rsquo;re never forgotten.</span></li>
         </ul>
-        <p class="soft" style="margin-top:16px;font-size:17px">Please no photos or video in the museum, and children come with a grown-up. School and personal tours are given on request: <span data-show="maiden" hidden>call ahead.</span><span data-show="mother crone all">call ahead, or <a href="#request">ask here</a>.</span></p>
+        <p class="soft" style="margin-top:16px;font-size:17px">Please no photos or video in the museum, and children come with a grown-up. School and personal tours are given on request: <span data-show="maiden" hidden>call ahead.</span><span data-show="mother crone all">call ahead, or <a href="#request">book one here</a>.</span></p>
       </div>
     </div>
     <blockquote class="gold reveal">&ldquo;Visiting Triangle Tattoo was like panning for gold, and finding it.&rdquo;<small>Gregory M. Vogel, segment producer, &ldquo;Tattoo!&rdquo; ABC / Kane Productions</small></blockquote>
@@ -919,6 +919,11 @@
       <p class="label with-pill"><span>Sign our guestbook</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Sign <em>the guestbook</em></h2>
       <p class="measure soft" style="margin-top:14px">Walk-ins are always welcome. Sign here to say hi from the road, to ask for an appointment with Mr. G or a bigger custom piece, or to plan a school or group tour of the museum.</p>
+      <div data-show="mother" data-fold data-thing="a Book a tour button to your own Cal.com page" hidden>
+        <div class="cta-row" style="margin-top:20px"><button type="button" class="btn" id="rq-cal">Book a tour</button></div>
+        <p class="hint" id="rq-calhint" role="status"></p>
+        <p class="mock-note wf-note" style="margin-top:18px;font-size:16px">With Tended, this &ldquo;Book a tour&rdquo; button opens your own free Cal.com page, set up in your name with the days you give tours, so a teacher can pick a day without phone tag. The guestbook below still takes tattoo requests and hellos. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      </div>
       <div class="req">
         <div class="bk-card" id="rq-card">
           <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 What</button><button type="button" data-s="2" disabled>2 Details</button><button type="button" data-s="3" disabled>3 About you</button></div>
@@ -943,7 +948,8 @@
             </div>
             <div id="rq-tour" class="stack" hidden>
               <div class="fld-row">
-                <label class="fld">Which day?<input id="rq-day" autocomplete="off" value="Thursday, Nov 12"></label>
+                <label class="fld" data-show="mother" hidden>Which day?<input id="rq-day" autocomplete="off" value="Thursday, Nov 12"></label>
+                <label class="fld" data-show="crone all">Pick an open day<select id="rq-tday"><option>Thursday, Nov 12</option><option>Friday, Nov 13</option><option>Thursday, Nov 19</option><option>Tuesday, Dec 1</option></select></label>
                 <label class="fld">How many people?<input id="rq-size" inputmode="numeric" autocomplete="off" value="18"></label>
               </div>
               <label class="fld">Who&rsquo;s coming?<input id="rq-group" autocomplete="off" value="A high school art class, with two teachers"></label>
@@ -981,6 +987,8 @@
         <p class="gb-h px"><b style="font-weight:400">&#9733; Guestbook &#9733;</b> <span id="gb-count">no signatures yet</span></p>
         <ol class="gb-list" id="gb-list" aria-live="polite"><li class="gb-empty">Nobody has signed this preview yet. Pick &ldquo;Just saying hi&rdquo; above and be the first.</li></ol>
       </div>
+      <p class="mock-note wf-note" data-show="crone all" data-fold data-thing="museum tours booked right on your site" style="margin-top:28px;font-size:16px">With In Bloom, picking &ldquo;A tour&rdquo; books one of your open days right here. It runs on a free Cal.com page in your name, sitting right on your site, and only the days you give tours show. The guestbook stays just as it is. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="mock-note wf-note" data-show="all" data-fold style="margin-top:14px;font-size:16px">With Planted, people call the shop for an appointment or a tour, just like now. With Tended, there&rsquo;s a &ldquo;Book a tour&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
 
     <div data-show="maiden" hidden>
@@ -1326,7 +1334,7 @@
       <p class="foot-name">Triangle Tattoo &amp; Museum</p>
       <p>356 B North Main Street, Fort Bragg &middot; <a href="tel:+17079648814">(707) 964-8814</a> &middot; since 1986</p>
       <p style="margin-top:4px"><a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">@triangletattoomuseum</a> &middot; <a href="mailto:g@triangletattoo.com">g@triangletattoo.com</a></p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (tour booking, selling and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
       <div class="foot-y2k">
         <p class="counter"><span class="px counter-lbl" id="odo-lbl">You are visitor #</span><button type="button" class="odo" id="odo" aria-label="You are visitor number 1. Tap to roll the counter again."><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">1</span></span></button></p>
         <button type="button" class="px-btn" id="sparkle-tog" aria-pressed="true" hidden>&#10022; Sparkles: on</button>
@@ -1467,6 +1475,11 @@
       var card = $('rq-card'); if (!card) return;
       var st, kinds = all(card, '[data-kind]'), whos = all(card, '[data-who]'), go = $('rq-go'), hint = $('rq-hint'), list = $('rq-files');
       var REFS = [['images/w-mushroom.jpg', 'mushroom-idea.jpg'], ['images/w-moth.jpg', 'moth-ref.jpg'], ['images/w-fern.jpg', 'placement.jpg']];
+      var cal = $('rq-cal'), calHint = $('rq-calhint');
+      if (cal && calHint) cal.addEventListener('click', function () { calHint.textContent = 'Preview: on your real site, this opens your own free Cal.com page.'; });
+      /* In Bloom (and Everything) books a tour on an open day; Tended asks for one */
+      function booksTours() { var v = document.documentElement.getAttribute('data-view'); return v !== 'mother' && v !== 'maiden'; }
+      function tourDay() { return booksTours() ? $('rq-tday').value : $('rq-day').value.trim(); }
       function fresh() { st = { s: 1, max: 1, kind: 'tattoo', who: "Whoever's free", files: [] }; }
       function paint() {
         all(card, '.bk-steps [data-s]').forEach(function (sp) { var n = +sp.dataset.s, on = n === st.s; sp.classList.toggle('on', on); if (on) sp.setAttribute('aria-current', 'step'); else sp.removeAttribute('aria-current'); sp.disabled = !on && n > st.max; });
@@ -1485,12 +1498,12 @@
       kinds.forEach(function (b) { b.addEventListener('click', function () { st.kind = b.dataset.kind; paint(); }); });
       whos.forEach(function (b) { b.addEventListener('click', function () { st.who = b.dataset.who; paint(); }); });
       $('rq-drop').addEventListener('click', function () { if (st.files.length < REFS.length) st.files.push(REFS[st.files.length]); paint(); hint.textContent = st.files.length >= REFS.length ? 'That’s all the sample photos for the preview.' : ''; });
-      function jump(n) { st.s = n; st.max = Math.max(st.max, n); hint.textContent = ''; paint(); quietFocus(all($('rq-s' + n), '[aria-pressed="true"], input, textarea, button').filter(function (el) { return el.getClientRects().length; })[0]); }
+      function jump(n) { st.s = n; st.max = Math.max(st.max, n); hint.textContent = ''; paint(); quietFocus(all($('rq-s' + n), '[aria-pressed="true"], input, select, textarea, button').filter(function (el) { return el.getClientRects().length; })[0]); }
       all(card, '.bk-steps [data-s]').forEach(function (sp) { sp.addEventListener('click', function () { var n = +sp.dataset.s; if (n !== st.s && n <= st.max) jump(n); }); });
       $('rq-back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
       go.addEventListener('click', function () {
         if (st.s === 2 && st.kind === 'tattoo' && !$('rq-idea').value.trim()) { hint.textContent = 'Add a few words about your idea first.'; $('rq-idea').focus(); return; }
-        if (st.s === 2 && st.kind === 'tour' && !$('rq-day').value.trim()) { hint.textContent = 'Say which day you’d like to come.'; $('rq-day').focus(); return; }
+        if (st.s === 2 && st.kind === 'tour' && !tourDay()) { hint.textContent = 'Say which day you’d like to come.'; $('rq-day').focus(); return; }
         if (st.s === 2 && st.kind === 'hi' && !$('rq-note').value.trim()) { hint.textContent = 'Write a little note for the guestbook first.'; $('rq-note').focus(); return; }
         if (st.s < 3) { jump(st.s + 1); return; }
         var name = $('rq-name').value.trim(), mail = $('rq-mail').value.trim();
@@ -1507,11 +1520,12 @@
           inbox = name + (from ? ' from ' + from : '') + ' signed the guestbook: “' + msg.slice(0, 80) + (msg.length > 80 ? '…' : '') + '”';
           signBook(name, from, msg);
         } else {
-          rows = [['For', 'A museum tour'], ['Day', $('rq-day').value.trim()], ['People', $('rq-size').value.trim()], ['Who', $('rq-group').value.trim()]];
-          inbox = name + ' would like a tour on ' + $('rq-day').value.trim() + ' for ' + $('rq-size').value.trim() + ': ' + $('rq-group').value.trim().toLowerCase() + '.';
+          rows = [['For', 'A museum tour'], ['Day', tourDay()], ['People', $('rq-size').value.trim()], ['Who', $('rq-group').value.trim()]];
+          inbox = name + (booksTours() ? ' booked a tour on ' : ' would like a tour on ') + tourDay() + ' for ' + $('rq-size').value.trim() + ': ' + $('rq-group').value.trim().toLowerCase() + '.';
         }
-        $('rq-done-h').textContent = (st.kind === 'hi' ? 'Signed, ' : 'Sent, ') + first + '!';
-        $('rq-done-t').textContent = st.kind === 'hi' ? 'Your note is up in the guestbook, just below.' : 'The shop will write back to ' + mail + '. Requests stay private, so this one isn’t in the guestbook.';
+        var booked = st.kind === 'tour' && booksTours();
+        $('rq-done-h').textContent = (st.kind === 'hi' ? 'Signed, ' : booked ? 'Booked, ' : 'Sent, ') + first + '!';
+        $('rq-done-t').textContent = st.kind === 'hi' ? 'Your note is up in the guestbook, just below.' : booked ? 'Your tour is on the calendar, and a confirmation is on its way to ' + mail + '. Bookings stay private, so this one isn’t in the guestbook.' : 'The shop will write back to ' + mail + '. Requests stay private, so this one isn’t in the guestbook.';
         $('rq-sum').innerHTML = ''; rows.forEach(function (r) { var dv = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = r[0]; dd.textContent = r[1]; dv.appendChild(dt); dv.appendChild(dd); $('rq-sum').appendChild(dv); });
         $('rq-inbox').textContent = inbox;
         [1, 2, 3].forEach(function (n) { $('rq-s' + n).hidden = true; }); $('rq-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('rq-done').hidden = false; quietFocus($('rq-done-h'));
@@ -1692,8 +1706,8 @@
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with the museum, your artists and their work, your story, reviews, and how to visit.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with a guestbook that takes tattoo and museum tour requests (photos included), the spin the wheel, a filter for each artist’s work, an FAQ, every link and curiosity from your old site, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus Madame Chinchilla’s signed books and gift cards through your own Stripe, so your site does business for you. That’s every piece on this page.' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with a guestbook that takes tattoo and museum tour requests (photos included), a Book a tour button to your own free Cal.com page, the spin the wheel, a filter for each artist’s work, an FAQ, every link and curiosity from your old site, and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus museum tours booked right on your site, and Madame Chinchilla’s signed books and gift cards through your own Stripe, so your site does business for you. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));

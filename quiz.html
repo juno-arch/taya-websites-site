@@ -227,9 +227,9 @@
   // Questions 1 to 3 pick the BUILD (what the site does). Question 4 asks about email from your own address and a
   // newsletter: either one means at least Tended, since both come with Tended and In Bloom care
   // (Oct 5 2026: a Planted client who wants email from their own address moves up to Tended; no side add-ons).
-  // Booking (pricing-oct2026.md, small rules 1 and 2, Oct 5 2026): a Book button to an app they already use is just a
-  // link, so it fits any build; a free Cal.com I set up for them comes with Tended and In Bloom; booking built
-  // right into the site, with payments or deposits, and selling are In Bloom.
+  // Booking (pricing-oct2026.md, the booking ladder, Oct 6 2026): a Planted page has no Book button (people call, text
+  // or email); a Book button that opens their booking page, the app they already use or a free Cal.com I set up for
+  // them, is Tended; booking built right into the site, with payments or deposits, and selling are In Bloom.
   // Care comes with every site and matches the build (Oct 5 2026): Planted $12, Tended $45, In Bloom $90 a month.
   // _tests/quiz-paths.test.mjs clicks through every path and checks the rules below.
   var QUESTIONS = [
@@ -284,6 +284,7 @@
       because: 'Everything a new client needs fits on one lovely page, and nothing needs gathering. Simple is a strength here.',
       points: [
         'One page: who you are, what you offer, prices, how to reach you, photos',
+        'People reach you with a tap to call, text or email (a Book button comes with Tended)',
         'Google-ready: clear titles and descriptions, business details Google can read, a photo preview when someone texts your link',
         'The words written for you, from a few easy questions by email'
       ],
@@ -304,7 +305,7 @@
       points: [
         'About, services, FAQ and a contact form',
         'A newsletter sign-up and downloadable forms, if you need them',
-        'A Book button linked to the booking app you use (or a free Cal.com I set up for you, in your name)'
+        'A Book button that opens your booking page: the app you already use, or a free Cal.com I set up for you, in your name'
       ],
       also: 'If you ever want booking with payments, or selling, what you paid counts toward In Bloom.',
       careLead: 'Tended care keeps your site fresh as the seasons change, and your Google profile and newsletter going.',
@@ -322,7 +323,8 @@
       because: 'People could book a time or pay you right on the site, so it becomes a working part of your business, not just a brochure.',
       points: [
         'Everything in Tended',
-        'Online booking, payments, or a small shop (gift certificates, deposits, up to about 20 items), set up in your own accounts and running on my server',
+        'Booking right on your site: the app you use now, if it can sit on a website, or a free Cal.com if you’d rather switch. Your choice',
+        'Payments or a small shop (gift certificates, deposits, up to about 20 items), set up in your own accounts and running on my server',
         'The money goes straight to you, never through me'
       ],
       also: 'We test it all with pretend clients before anything goes public.',
@@ -352,8 +354,8 @@
   // The build comes from what the site needs to do, and either extra (own-address email or a newsletter) needs at least Tended.
   function recommendBuild(p) {
     if (p[2] >= 4) return 'In Bloom';                // "Yes, booking with payments or deposits" or "Yes, selling"
-    if (p[2] === 3) return 'Tended';                 // "Yes, set up simple booking for me": a free Cal.com, set up for them
-    // (an app they already use, p[2] === 2, is just a Book button link, so it fits any build: small rule 2)
+    if (p[2] === 2 || p[2] === 3) return 'Tended';   // a Book button: to the app they already use, or a free Cal.com I set
+                                                     // up for them (a Planted page has no Book button: the booking ladder)
     if (p[0] === 1 || p[1] === 1) return 'Tended';   // lots to say, or something to gather
     if (p[3] >= 1) return 'Tended';                  // own-address email or a newsletter: both come with Tended
     return 'Planted';
@@ -402,7 +404,7 @@
       ['Care', money(b.care) + ' a month, starting after your 30 days of settling in. It pays for hosting, backups and your web address (its first year comes with your build), so there’s nothing to renew.' + CARE_ALSO_PAYS[build]]
     ];
     if (build !== 'In Bloom' && p[2] === 2) {
-      // a Book button to the app they already use (any build); a free Cal.com instead comes with Tended
+      // a Book button to the app they already use (Tended); a free Cal.com instead comes with it too
       lines.push(['Booking', 'The booking app you already use stays on your own account, at whatever it costs you now.'
         + (build === 'Tended' ? ' Cal.com is free for one person, if you’d like a free one.' : '')]);
     }
@@ -412,7 +414,7 @@
     }
     if (build === 'In Bloom') {
       // booking with payments: their own Cal.com (the accounts line says I make it with their email); selling: booking if they'd like it
-      lines.push(['Booking', p[2] === 4 ? 'Your own Cal.com account, free for one person (paid upgrades optional).'
+      lines.push(['Booking', p[2] === 4 ? 'Your own Cal.com account, free for one person (paid upgrades optional). If you already use a booking app that can sit on a website, we can keep it instead: your choice.'
         : 'If you’d like booking too, Cal.com is free for one person (paid upgrades optional), and I set it up for you, in your name.']);
       lines.push(['Card payments', 'Stripe keeps about 2.9% + 30¢ per payment, taken from your own sales.']);
     }
@@ -483,12 +485,12 @@
     el('r-build-because').textContent = b.because;
     fillList('r-build-points', b.points.concat(EVERY_BUILD));
     var also = b.also;
-    if (picks[2] === 1 && build === 'Planted') also = 'When you’re ready for booking, what you paid counts toward Tended, which comes with a free Cal.com I set up for you.';
+    if (picks[2] === 1 && build === 'Planted') also = 'When you’re ready for booking, what you paid counts toward Tended: a Book button to your booking app, or a free Cal.com I set up for you.';
     if (picks[2] === 1 && build === 'Tended') also = 'When you’re ready for booking, a free Cal.com I set up for you comes with Tended. Just say the word.';
-    if (picks[2] === 2) also = 'Your Book button links straight to the booking app you already use. If you’d ever like booking with payments built right into your site, what you paid counts toward In Bloom.';
+    if (picks[2] === 2) also = 'Your Book button opens the booking app you already use. If you’d ever like booking right on your site, or payments with it, what you paid counts toward In Bloom.';
     if (picks[2] === 3) also = 'Your Book button goes straight to your own Cal.com. If you’d ever like payments or deposits with your bookings, what you paid counts toward In Bloom.';
     if (picks[2] === 5) also = 'Need a full online store (catalog, inventory, shipping)? That’s quoted separately, before anything starts. ' + also;
-    if (build === 'Tended' && picks[3] >= 1 && picks[0] === 0 && picks[1] !== 1 && picks[2] <= 2) also = 'One page would hold everything, but ' + [
+    if (build === 'Tended' && picks[3] >= 1 && picks[0] === 0 && picks[1] !== 1 && picks[2] <= 1) also = 'One page would hold everything, but ' + [
       '', 'email from your own address comes with Tended, covered by care. ',
       'a newsletter lives in Tended: the sign-up on your site, and its sending covered by care. ',
       'a newsletter and email from your own address live in Tended: the sign-up on your site, its sending and your own address, all covered by care. '

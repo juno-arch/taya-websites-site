@@ -23,8 +23,11 @@
 //     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026)
 //   - (the main page) leaves out the three care prices, the reply time, "quoted first", the settling-in start,
 //     the quoted-before-October-5 line, or the hand-over promise
-//   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): Cal.com booking set up with Tended
-//     and In Bloom (1); a Book button to an app they already use fits any build (2); email forwarding free on
+//   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): the booking ladder (1, Oct 6 2026, which
+//     replaced the Oct 5 rule 2 that let any build link to an app they already use): Planted has no Book button
+//     (people call, text or email), Tended's Book button opens their booking page (the app they already use, or a
+//     free Cal.com set up for them), In Bloom puts booking right on the site (their own app if it can sit on a
+//     website, or Cal.com: their choice); email forwarding free on
 //     Planted (3); the Instagram feed Tended and up (6); no phone field on intake.html (7); texts.html's
 //     "Replies" line kept exactly as is, since it matches the texting registration (8)
 //   - shows the founding count ("N left") anywhere but once, inside id="founding" on the main page
@@ -90,7 +93,7 @@ const FORBIDDEN = [
   [/\bon call\b/i, '"on call"'],
   [/\b(?:book a call|a quick call|45-minute call|want to chat|a chat|hop on a call|video call|phone call|chat with|free chat|30-minute chat|rather talk)\b|Let’s talk/i, 'an offer of a call or chat (email only)'],
   [/setting up booking for you is part of In Bloom|booking fully set up for you|In Bloom sets it all up/i, 'booking setup tied to In Bloom (Cal.com booking is set up with Tended and In Bloom; small rule 1)'],
-  [/Book (?:now )?button to (?:it|the (?:booking )?app you already use)[^.]{0,30}comes with Tended/i, 'a Book button to their own app tied to Tended (it’s just a link, so it fits any build; small rule 2)'],
+  [/(?:Book (?:now )?button|just a link)[^.]{0,80}(?:any build|even (?:a one-page )?Planted)|any build can link|fits any build/i, 'a Book button for any build, Planted too (the booking ladder, Oct 6 2026: a Planted page has no Book button; people call, text or email)'],
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
 ];
 
@@ -288,11 +291,29 @@ for (const page of PAGES) {
 // ---- the small rules decided Oct 5 2026 (pricing-oct2026.md, Pollen: "yes to all") ----
 {
   const need = (page, re, what) => { if (!re.test(plain[page])) fail(`${page}: ${what}`); };
-  // 1. Cal.com booking is set up for Tended and In Bloom (booking tied to In Bloom alone is caught by FORBIDDEN)
+  // 1. the booking ladder (Oct 6 2026): Cal.com booking is set up for Tended and In Bloom (booking tied to In Bloom
+  // alone is caught by FORBIDDEN); Planted has no Book button; Tended's opens the app they already use; In Bloom
+  // puts booking right on the site, their own app or Cal.com, their choice
   need('index.html', /free Cal\.com I set up for you/, 'the Tended card doesn’t offer a free Cal.com I set up (small rule 1)');
   need('index.html', /With Tended and In Bloom, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Tended and In Bloom (small rule 1)');
-  // 2. a Book button to a booking app they already use is just a link, so it fits any build, Planted too
-  need('index.html', /just a link, so it fits any build/, 'doesn’t say a Book button to their own booking app fits any build, Planted too (small rule 2)');
+  need('index.html', /no Book button: people call, text or email/, 'doesn’t say a Planted page has no Book button, so people call, text or email (the booking ladder)');
+  need('index.html', /With Tended, your Book button opens the booking app you already use/, 'doesn’t say Tended’s Book button opens the booking app they already use (the booking ladder)');
+  need('index.html', /With In Bloom, booking sits right on your site[^.]*Cal\.com[^.]*\. That’s your choice/, 'doesn’t say In Bloom puts booking right on the site, their own app or Cal.com, their choice (the booking ladder)');
+  // 2. (folded into 1 on Oct 6 2026)
+  // every tier card on the main page lists everything its care includes (pricing-oct2026.md, "What care includes")
+  {
+    const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
+    const INCLUDES = {
+      maiden: [/Hosting, your web address, security and backups/, /Email me anytime and I make your changes/, /magic link/, /your changes are up/, /monthly check-in/, /New reviews/, /heads-up before holidays/],
+      mother: [/Everything in Planted/, /Google profile kept fresh/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
+      crone: [/Everything in Tended/, /booking, payments or shop kept running/i, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
+    };
+    if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
+    for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[k]} card doesn’t list ${re}`);
+    const planted = (cards.find((c) => c[0] === 'maiden') || [])[1] || '';
+    if (/Book (?:now )?button|Cal\.com/.test(planted)) fail('index.html: the Planted card mentions a Book button or Cal.com (the booking ladder: a Planted page has none)');
+    if (!/call, text or email/.test(planted)) fail('index.html: the Planted card doesn’t say people call, text or email');
+  }
   // 3. Planted gets free email forwarding; only sending from their own address needs Tended
   if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');
   need('domain.html', /Sending from your own address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');

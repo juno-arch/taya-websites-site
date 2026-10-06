@@ -208,6 +208,24 @@
   .ig-link { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 6px; font-size: 14px; text-decoration: none; color: var(--sage-deep); }
   .ig-link svg { flex: none; }
   .crew-note { margin-top: 26px; }
+  /* In Bloom: her booking, opened right on her card (one shared panel that moves to the card you tap) */
+  .person .ib-slot { grid-column: 1 / -1; }
+  .person .ib-slot:not(.on) { display: none; }
+  .ib-card { background: var(--ground); padding: 20px; scroll-margin-top: 24px; }
+  .crew:has(.ib-slot.on) { align-items: start; }
+  .ib-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .ib-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 8px 0 16px; }
+  .ib-h { font-size: 26px; line-height: 1.1; min-width: 0; }
+  .ib-h:focus { outline: none; }
+  .ib-h:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+  .ib-x { font: inherit; font-size: 13.5px; color: var(--sage-deep); background: none; border: 0; padding: 0 4px; min-height: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+  .ib-samp { text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .ib-card .fld-row { margin-top: 2px; }
+  .ib-card .bk-done h3 { font-size: 26px; }
+  .ib-note { margin-top: 16px; font-size: 13.5px; color: var(--ink-soft); }
+  .match .ib-open { font: inherit; font-size: 13.5px; font-weight: 500; color: var(--sage-deep); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  html[data-view="mother"] .match .ib-open { display: none; }
+  html:not([data-view="mother"]) .match .vg { display: none; }
 
   /* SERVICES */
   .svc-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; margin-top: 36px; align-items: start; }
@@ -660,9 +678,9 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One beautiful page, planted and kept healthy: all four stylists with their Book buttons, your services and price estimates, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the stylist matcher that pairs each new client with the right stylist, the FAQ, a Careers page, a contact form, a newsletter and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus Haven gift certificates sold right on your site, paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One beautiful page, planted and kept healthy: all four stylists (people text to book), your services and price estimates, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: every stylist&rsquo;s own Book button to her Vagaro page, the stylist matcher that pairs each new client with the right stylist, the FAQ, a Careers page, a contact form, a newsletter and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus each stylist&rsquo;s booking right on her card, and Haven gift certificates sold right on your site, paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change and it&rsquo;s done: a new stylist, new hours, a stylist&rsquo;s new booking link. Hosting, your domain and backups included.</span></div>
@@ -680,7 +698,7 @@
         <h2 class="reveal">Four stylists, <em>one calm room</em></h2>
       </div>
       <div>
-        <p class="soft">Haven is a collective of independent stylists. Each one runs her own schedule, services and pricing, so to book, connect directly with the stylist you&rsquo;d like. What they share: a passion for personalized hair and even better service.</p>
+        <p class="soft">Haven is a collective of independent stylists. Each one runs her own schedule, services and pricing<span data-show="mother crone all">, so to book, connect directly with the stylist you&rsquo;d like</span><span data-show="maiden" hidden>, so to book, text the salon and we&rsquo;ll get you to the right stylist (Kiersten takes her own texts)</span>. What they share: a passion for personalized hair and even better service.</p>
         <p class="today" id="today" hidden><b id="today-h">In the salon today</b> <span id="today-who"></span></p>
       </div>
     </div>
@@ -703,8 +721,42 @@
           <img src="images/w-face-frame.webp" width="1000" height="1332" alt="Smoky brunette with bright face framing pieces and curtain bangs, by Justine" loading="lazy">
         </div>
         <div class="acts">
-          <a class="btn" href="https://www.vagaro.com/manesbyjustine" target="_blank" rel="noopener">Book with Justine<span class="vh"> on Vagaro (opens in a new tab)</span></a>
+          <a class="btn" href="https://www.vagaro.com/manesbyjustine" target="_blank" rel="noopener" data-show="mother" hidden>Book with Justine<span class="vh"> on Vagaro (opens in a new tab)</span></a>
+          <button type="button" class="btn" data-ib="justine" data-show="crone all" aria-expanded="false" aria-controls="ib-card">Book with Justine<span class="vh">, right here on her card</span></button>
+          <a class="btn" href="sms:+17075324661" data-show="maiden" hidden>Text the salon to book<span class="vh"> at (707) 532-4661</span></a>
           <a class="ig-link" href="https://www.instagram.com/manesby_justine" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></svg>@manesby_justine<span class="vh"> on Instagram (opens in a new tab)</span></a>
+        </div>
+        <div class="ib-slot" data-show="crone all" data-ib-slot="justine">
+          <div class="bk-card ib-card" id="ib-card" role="region" aria-labelledby="ib-h">
+            <div class="ib-head"><p class="ib-h serif" id="ib-h" tabindex="-1">Book with <em id="ib-who">Justine</em></p><button type="button" class="ib-x" id="ib-x">Close<span class="vh"> the booking</span></button></div>
+            <p class="ib-tags"><span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+            <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Service</button><button type="button" data-s="2" disabled>2 Day and time</button><button type="button" data-s="3" disabled>3 You</button></div>
+            <div id="ib-s1">
+              <p class="bk-q" id="ib-q1">What are you coming in for?</p>
+              <div class="chips" role="group" aria-labelledby="ib-q1" id="ib-svc"></div>
+            </div>
+            <div id="ib-s2" hidden>
+              <p class="bk-q" id="ib-q2">Which day?</p>
+              <div class="chips" role="group" aria-labelledby="ib-q2" id="ib-days"></div>
+              <p class="bk-q" id="ib-q3">What time? <span class="ib-samp">(sample times)</span></p>
+              <div class="chips" role="group" aria-labelledby="ib-q3" id="ib-times"></div>
+            </div>
+            <div id="ib-s3" hidden>
+              <div class="fld-row">
+                <label class="fld">Your name<input id="ib-name" autocomplete="off" value="Maya R."></label>
+                <label class="fld">Email<input id="ib-mail" type="email" autocomplete="off" value="maya@example.com"></label>
+              </div>
+            </div>
+            <p class="hint" id="ib-hint" role="status"></p>
+            <div class="bk-nav" id="ib-nav"><button type="button" class="bk-go" id="ib-go" disabled>Next</button><button type="button" class="bk-go ghost" id="ib-back" hidden>Back</button></div>
+            <div class="bk-done fade-in" id="ib-done" hidden>
+              <h3 id="ib-done-h" tabindex="-1">You&rsquo;re booked <em id="ib-done-who">with Justine</em></h3>
+              <p class="soft" id="ib-sum" style="font-size:15px"></p>
+              <p class="demo-note">Preview only: nothing was booked. On your real site it goes straight into her own calendar.</p>
+              <div class="bk-nav"><button type="button" class="bk-go ghost" id="ib-edit">Change something</button><button type="button" class="bk-go ghost" id="ib-again">Try it again</button></div>
+            </div>
+            <p class="ib-note mock-note wf-note">Her own booking, sitting right on her card: her Vagaro, or a free Cal.com page if she&rsquo;d rather switch. Her choice. The services come from her card; the times are samples.</p>
+          </div>
         </div>
       </article>
 
@@ -726,9 +778,12 @@
           <img src="images/w-glossy-brunette.webp" width="1000" height="1334" alt="Glossy chestnut brunette, by Jamie" loading="lazy">
         </div>
         <div class="acts">
-          <a class="btn" href="https://www.vagaro.com/jamiekelleyhair" target="_blank" rel="noopener">Book with Jamie<span class="vh"> on Vagaro (opens in a new tab)</span></a>
+          <a class="btn" href="https://www.vagaro.com/jamiekelleyhair" target="_blank" rel="noopener" data-show="mother" hidden>Book with Jamie<span class="vh"> on Vagaro (opens in a new tab)</span></a>
+          <button type="button" class="btn" data-ib="jamie" data-show="crone all" aria-expanded="false" aria-controls="ib-card">Book with Jamie<span class="vh">, right here on her card</span></button>
+          <a class="btn" href="sms:+17075324661" data-show="maiden" hidden>Text the salon to book<span class="vh"> at (707) 532-4661</span></a>
           <a class="ig-link" href="https://www.instagram.com/jamie_kelley_hair" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></svg>@jamie_kelley_hair<span class="vh"> on Instagram (opens in a new tab)</span></a>
         </div>
+        <div class="ib-slot" data-show="crone all" data-ib-slot="jamie"></div>
       </article>
 
       <article class="person reveal" aria-labelledby="p-lisa">
@@ -749,9 +804,12 @@
           <img src="images/w-bronde-waves.webp" width="1000" height="1333" alt="Soft bronde waves, by Lisa" loading="lazy">
         </div>
         <div class="acts">
-          <a class="btn" href="https://www.vagaro.com/hairbylisaatkins" target="_blank" rel="noopener">Book with Lisa<span class="vh"> on Vagaro (opens in a new tab)</span></a>
+          <a class="btn" href="https://www.vagaro.com/hairbylisaatkins" target="_blank" rel="noopener" data-show="mother" hidden>Book with Lisa<span class="vh"> on Vagaro (opens in a new tab)</span></a>
+          <button type="button" class="btn" data-ib="lisa" data-show="crone all" aria-expanded="false" aria-controls="ib-card">Book with Lisa<span class="vh">, right here on her card</span></button>
+          <a class="btn" href="sms:+17075324661" data-show="maiden" hidden>Text the salon to book<span class="vh"> at (707) 532-4661</span></a>
           <a class="ig-link" href="https://www.instagram.com/hairbylisaatkins" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></svg>@hairbylisaatkins<span class="vh"> on Instagram (opens in a new tab)</span></a>
         </div>
+        <div class="ib-slot" data-show="crone all" data-ib-slot="lisa"></div>
       </article>
 
       <article class="person reveal" aria-labelledby="p-kiersten">
@@ -777,7 +835,7 @@
         </div>
       </article>
     </div>
-    <p class="crew-note mock-note wf-note">Each stylist gets her own card and her own Book button, straight to her own Vagaro page (Kiersten&rsquo;s texts her, the way she books now). When someone joins the salon, changes her hours or moves her booking, you email me and I update her card. The &ldquo;in the salon today&rdquo; line reads everyone&rsquo;s hours on its own. <span class="tag" data-go="maiden">Every build</span></p>
+    <p class="crew-note mock-note wf-note">Each stylist gets her own card. <span data-show="maiden" hidden>With Planted, people text the salon to book (Kiersten&rsquo;s texts her, the way she books now). With Tended, each card gets her own Book button, straight to her own Vagaro page.</span><span data-show="mother" hidden data-thing="each stylist&rsquo;s own Book button to her Vagaro page">Her Book button goes straight to her own Vagaro page (Kiersten&rsquo;s texts her, the way she books now).</span><span data-show="crone all">With In Bloom, her booking sits right on her card (on her Vagaro, or a free Cal.com page if she&rsquo;d rather switch), so nobody leaves your site to book. Kiersten&rsquo;s still texts her, the way she books now. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></span><span data-show="all"> With Tended, each Book button goes to her own Vagaro page instead. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></span> When someone joins the salon, changes her hours or moves her booking, you email me and I update her card. The &ldquo;in the salon today&rdquo; line reads everyone&rsquo;s hours on its own. <span class="tag" data-go="maiden">Every build</span></p>
   </div>
 </section>
 
@@ -1002,10 +1060,10 @@
           <div class="bk-note"><b>Built from your real details</b>The matches come from your own services page (who offers what) and each stylist&rsquo;s hours. Jamie&rsquo;s fine texture focus moves her up for thin hair.</div>
           <div class="bk-inbox" id="pr-inbox"><div class="from">New client, for Lisa&rsquo;s inbox</div><div id="pr-inboxtext">Waiting for a match&hellip; try it on the left</div></div>
           <div class="bk-note"><b>Still personal</b>Their answers land in your inbox too, so you can text for hair photos the way you do now. Nobody falls through the cracks.</div>
-          <p style="font-size:12px;color:var(--ink-soft)">Preview: nothing is sent and nothing is booked. Each Book button opens that stylist&rsquo;s own Vagaro page.</p>
+          <p style="font-size:12px;color:var(--ink-soft)">Preview: nothing is sent and nothing is booked. <span data-show="mother" hidden>Each Book button opens that stylist&rsquo;s own Vagaro page.</span><span data-show="crone all">With In Bloom, each Book button opens her booking right on her card.</span></p>
         </div>
       </div>
-      <p class="tier-note mock-note wf-note" data-show="crone all" data-fold data-thing="gift certificates through your own Stripe">Happy on Vagaro? Keep it: every Book button goes straight to each stylist&rsquo;s own page, and that&rsquo;s all most salons need. In Bloom is for the day you&rsquo;d like to sell Haven gift certificates right on your site, good with any stylist and paid straight into your own Stripe. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="tier-note mock-note wf-note" data-show="crone all" data-fold data-thing="gift certificates through your own Stripe">Happy on Vagaro? Keep it: with Tended, every Book button goes straight to each stylist&rsquo;s own page, and that&rsquo;s all most salons need. In Bloom is for the day you&rsquo;d like more: <span data-thing="booking right on each stylist&rsquo;s card">each stylist&rsquo;s booking sitting right on her card, so nobody leaves your site (Vagaro lets each stylist put her own booking on a website, or a free Cal.com page for anyone who&rsquo;d rather switch, each stylist&rsquo;s choice; tap Book on any card above to try it)</span>, and Haven gift certificates sold right on your site, good with any stylist and paid straight into your own Stripe. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     </div>
 
     <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
@@ -1060,7 +1118,7 @@
       <h2 class="reveal">Good to know <em>before you come</em></h2>
     </div>
     <div class="faq-list" data-thing="FAQ">
-      <details><summary>How do I book an appointment?</summary><div class="ans"><p>Each stylist manages her own booking. Find her card above: most have a Book button that goes straight to their booking page. Not sure who to see? <a href="#pair">Get paired</a> and we&rsquo;ll help.</p></div></details>
+      <details><summary>How do I book an appointment?</summary><div class="ans"><p>Each stylist manages her own booking. Find her card above: most have a Book button<span data-show="mother" hidden> that goes straight to their booking page</span><span data-show="crone all"> that opens her booking right there on her card</span>. Not sure who to see? <a href="#pair">Get paired</a> and we&rsquo;ll help.</p></div></details>
       <details><summary>Do you take walk ins?</summary><div class="ans"><p>Haven is by appointment only.</p></div></details>
       <details><summary>How far ahead should I book color?</summary><div class="ans"><p>It depends on the week and the stylist. Usually look about a week ahead, but once in a while there&rsquo;s a cancellation and you can come in the next day.</p></div></details>
       <details><summary>Should I wash my hair before color?</summary><div class="ans"><p>Yes! Clean hair means a smoother application and an even color. Please arrive with your hair mostly dry, so we don&rsquo;t need to adjust your timing and price.</p></div></details>
@@ -1186,7 +1244,7 @@
   <div class="wrap"><img class="foot-logo" id="foot-logo" src="images/haven-logo.png" width="760" height="297" alt="Haven Salon: their logo, with two fern fronds for the V" loading="lazy">
     <span class="nw">Haven Salon &middot; Where hair meets self care</span> <span aria-hidden="true">&middot;</span> <span class="nw">311 E Street, Eureka, California</span>
     <p class="foot-reach">Call or text <a class="tel" href="tel:+17075324661">(707) 532-4661</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/havensaloneureka" target="_blank" rel="noopener">@havensaloneureka<span class="vh"> on Instagram (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (gift certificates). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site, Book buttons to each Vagaro page), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking on each card, gift certificates). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1222,9 +1280,9 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One beautiful page, planted and kept healthy: all four stylists with their Book buttons, your services and price estimates, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the stylist matcher that pairs each new client with the right stylist, the FAQ, a Careers page, a contact form, a newsletter and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus Haven gift certificates sold right on your site, paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One beautiful page, planted and kept healthy: all four stylists (people text to book), your services and price estimates, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: every stylist&rsquo;s own Book button to her Vagaro page, the stylist matcher that pairs each new client with the right stylist, the FAQ, a Careers page, a contact form, a newsletter and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus each stylist&rsquo;s booking right on her card, and Haven gift certificates sold right on your site, paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
@@ -1263,6 +1321,7 @@
     function stateFor(k) {
       var s = STATES[k];
       if (k === 'full' && viewNow() === 'maiden') return { label: s.label, cta: 'Call or text to join the waitlist', href: '#visit' };
+      if (k === 'away' && viewNow() === 'maiden') return { label: s.label, cta: 'Text to book ahead', href: '#stylists' };
       return s;
     }
     function setState(k, announce) {
@@ -1432,8 +1491,9 @@
       }
       list.forEach(function (m, i) {
         var row = document.createElement('div'); row.className = 'match' + (i === 0 && list.length > 1 ? ' best' : '');
+        var web = m.p.book.indexOf('http') === 0;
         var why = m.k === 'jamie' && st.thick === 'thin' ? 'Fine texture hair is her focus. ' : (m.p.lead[st.svc] ? 'This is her specialty. ' : '');
-        row.innerHTML = '<img src="' + m.p.img + '" alt="" style="object-position:' + m.p.pos + '"><div><b>' + m.p.name + '</b><small>' + why + 'In on ' + m.shared.map(function (d) { return DAYN[d]; }).join(', ') + ' (' + m.p.hrs + ')</small><a class="mini" href="' + m.p.book + '"' + (m.p.book.indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') + '>' + m.p.how + ' with ' + m.p.name + '<span aria-hidden="true">&nbsp;&rarr;</span></a></div>';
+        row.innerHTML = '<img src="' + m.p.img + '" alt="" style="object-position:' + m.p.pos + '"><div><b>' + m.p.name + '</b><small>' + why + 'In on ' + m.shared.map(function (d) { return DAYN[d]; }).join(', ') + ' (' + m.p.hrs + ')</small><a class="mini' + (web ? ' vg' : '') + '" href="' + m.p.book + '"' + (web ? ' target="_blank" rel="noopener"' : '') + '>' + m.p.how + ' with ' + m.p.name + (web ? '<span class="vh"> (opens in a new tab)</span>' : '') + '<span aria-hidden="true">&nbsp;&rarr;</span></a>' + (web ? '<button type="button" class="mini ib-open" data-ib="' + m.k + '">Book with ' + m.p.name + '<span class="vh">, right on her card</span><span aria-hidden="true">&nbsp;&rarr;</span></button>' : '') + '</div>';
         out.appendChild(row);
       });
       $('box').hidden = st.box !== 'yes';
@@ -1443,6 +1503,101 @@
     $('edit').addEventListener('click', function () { show(false); st.s = 3; paint(); quietFocus(go); });
     $('again').addEventListener('click', function () { reset(); show(false); $('inboxtext').textContent = 'Waiting for a match… try it on the left'; paint(); quietFocus(card.querySelector('[data-svc]')); });
     reset(); paint();
+  })();
+</script>
+
+<script>
+  /* In Bloom booking right on each stylist's card (key crone): one panel that opens on the card you tap, from her card or the matcher */
+  (function () {
+    function $(id) { return document.getElementById('ib-' + id); }
+    var card = $('card'); if (!card) return;
+    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+    var P = {
+      justine: { name: 'Justine', svc: ['Lived-in blonding', 'Dimensional color', 'Grey blending', 'A gloss', 'A haircut and style'], days: [1, 2, 3, 4, 5], times: ['9:30 am', '10:30 am', '11:30 am'] },
+      jamie: { name: 'Jamie', svc: ['Dimensional color', 'A precision cut', 'Grey blending', 'Full grey coverage'], days: [2, 3, 4, 5, 6], times: ['12:30 pm', '2:00 pm', '3:30 pm'] },
+      lisa: { name: 'Lisa', svc: ['Low maintenance blonding', 'A haircut', 'A solid color', 'A root touch up', 'Dimensional color'], days: [1, 2, 3, 4], times: ['9:30 am', '11:00 am', '1:30 pm'] }
+    };
+    var DAYN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var cur = null, st, go = $('go');
+    var cardBtns = [].slice.call(document.querySelectorAll('.person button[data-ib]'));
+    function chips(box, list, key) {
+      box.innerHTML = '';
+      list.forEach(function (v) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('data-' + key, v); b.setAttribute('aria-pressed', 'false'); b.textContent = key === 'day' ? DAYN[v] : v; box.appendChild(b); });
+    }
+    function reset() { st = { s: 1, max: 1, svc: null, day: null, time: null }; $('hint').textContent = ''; }
+    function canGo(n) { return n === 1 || (n === 2 ? !!st.svc && st.max >= 2 : !!(st.svc && st.day !== null && st.time) && st.max >= 3); }
+    function paint() {
+      st.max = Math.max(st.max, st.s);
+      card.querySelectorAll('.bk-steps [data-s]').forEach(function (b) {
+        var n = +b.dataset.s, on = n === st.s; b.classList.toggle('on', on);
+        if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+        b.disabled = !on && !canGo(n);
+      });
+      [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
+      $('back').hidden = st.s === 1;
+      go.textContent = st.s === 3 ? 'Book it (preview)' : 'Next';
+      go.disabled = st.s === 1 ? !st.svc : st.s === 2 ? !(st.day !== null && st.time) : false;
+      card.querySelectorAll('[data-svc]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-svc') === st.svc ? 'true' : 'false'); });
+      card.querySelectorAll('[data-day]').forEach(function (b) { b.setAttribute('aria-pressed', +b.getAttribute('data-day') === st.day ? 'true' : 'false'); });
+      card.querySelectorAll('[data-time]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-time') === st.time ? 'true' : 'false'); });
+    }
+    function show(done) { [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; }); $('nav').hidden = done; card.querySelector('.bk-steps').hidden = done; $('done').hidden = !done; if (done) $('hint').textContent = ''; }
+    function jump(n) { st.s = n; paint(); var box = $('s' + n); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input')); }
+    card.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b || !card.contains(b)) return;
+      if (b.hasAttribute('data-svc')) { st.svc = b.getAttribute('data-svc'); paint(); }
+      else if (b.hasAttribute('data-day')) { st.day = +b.getAttribute('data-day'); paint(); }
+      else if (b.hasAttribute('data-time')) { st.time = b.getAttribute('data-time'); paint(); }
+      else if (b.hasAttribute('data-s')) { var n = +b.dataset.s; if (n !== st.s && canGo(n)) jump(n); }
+    });
+    $('back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
+    go.addEventListener('click', function () {
+      if (st.s < 3) { st.s++; paint(); var box = $('s' + st.s); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input')); return; }
+      var name = $('name').value.trim(), mail = $('mail').value.trim();
+      if (!name) { $('hint').textContent = 'Add your name first.'; $('name').focus(); return; }
+      if (!isEmail(mail)) { $('hint').textContent = 'Add an email address, like name@example.com, for your confirmation.'; $('mail').focus(); return; }
+      var p = P[cur];
+      $('sum').textContent = st.svc + ' with ' + p.name + ', ' + DAYN[st.day] + ' at ' + st.time + '. A confirmation is on its way to ' + mail + ', and ' + p.name + ' sees it right away.';
+      show(true); quietFocus($('done-h'));
+    });
+    $('edit').addEventListener('click', function () { show(false); st.s = 3; paint(); quietFocus($('name')); });
+    $('again').addEventListener('click', function () { reset(); show(false); paint(); quietFocus(card.querySelector('[data-svc]')); });
+    function setFor(k) {
+      var p = P[k]; cur = k;
+      $('who').textContent = p.name; $('done-who').textContent = 'with ' + p.name;
+      chips($('svc'), p.svc, 'svc'); chips($('days'), p.days, 'day'); chips($('times'), p.times, 'time');
+      reset(); show(false); paint();
+    }
+    function close(back) {
+      var slot = card.parentElement; if (slot) slot.classList.remove('on');
+      cardBtns.forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+      if (back) { var b = cardBtns.filter(function (x) { return x.getAttribute('data-ib') === cur; })[0]; quietFocus(b); }
+    }
+    function open(k, from) {
+      var slot = document.querySelector('.ib-slot[data-ib-slot="' + k + '"]'); if (!slot || !P[k]) return;
+      var isOpen = card.parentElement === slot && slot.classList.contains('on');
+      if (isOpen && from === 'card') { close(true); return; }
+      if (!isOpen) {
+        document.querySelectorAll('.ib-slot.on').forEach(function (x) { x.classList.remove('on'); });
+        if (card.parentElement !== slot) slot.appendChild(card);
+        slot.classList.add('on'); setFor(k);
+      }
+      cardBtns.forEach(function (b) { b.setAttribute('aria-expanded', b.getAttribute('data-ib') === k ? 'true' : 'false'); });
+      var r = card.getBoundingClientRect();
+      if (from !== 'card' || r.bottom > window.innerHeight || r.top < 0) {
+        try { card.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: from === 'card' ? 'nearest' : 'start' }); } catch (e) { card.scrollIntoView(); }
+      }
+      quietFocus($('h'));
+    }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-ib]'); if (!b) return;
+      open(b.getAttribute('data-ib'), b.closest('.person') ? 'card' : 'matcher');
+    });
+    $('x').addEventListener('click', function () { close(true); });
+    card.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); close(true); } });
+    setFor('justine');
   })();
 </script>
 
@@ -1519,9 +1674,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one beautiful page, planted and kept healthy, with all four stylists and their Book buttons, your price estimates and services, the salon, your work, kind words, and how to find you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus the stylist matcher that pairs new clients by goal, hair and days, the FAQ, a Careers page for booth rental, a contact form, a newsletter signup and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus Haven gift certificates sold right on your site, good with any stylist and paid straight into your own Stripe. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one beautiful page, planted and kept healthy, with all four stylists (people text to book), your price estimates and services, the salon, your work, kind words, and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus every stylist’s own Book button to her Vagaro page, the stylist matcher that pairs new clients by goal, hair and days, the FAQ, a Careers page for booth rental, a contact form, a newsletter signup and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus each stylist’s booking right on her card (on Vagaro, or a free Cal.com page, each stylist’s choice) and Haven gift certificates sold right on your site, good with any stylist and paid straight into your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };

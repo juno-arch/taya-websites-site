@@ -328,6 +328,19 @@
   .reco { border-top: 2px solid var(--gold); padding-top: 12px; }
   .reco h4 { font-family: 'Hedvig Letters Serif', serif; font-weight: 400; font-size: 24px; margin: 0 0 4px; }
 
+  /* ---------- IN BLOOM: save your spot right on the page ---------- */
+  .signup { margin-top: 46px; padding-top: 30px; border-top: 1px solid var(--hair); scroll-margin-top: 16px; }
+  .signup-h { font-size: clamp(28px, 3.6vw, 38px); line-height: 1.12; }
+  .signup .finder { margin-top: 24px; }
+  .seg.six { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .seg.six button { padding-inline: 4px; }
+  .sg-picked { font-size: 16.5px; }
+  .sg-picked b { font-weight: 400; color: var(--gold-ink); }
+  .slot.tap { cursor: pointer; transition: box-shadow 0.2s ease, background-color 0.2s ease; }
+  .slot.tap:hover, .slot.tap.picked { box-shadow: inset 0 0 0 1.5px var(--gold); background: var(--tag-bg); }
+  .slot.tap:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  @media (max-width: 420px) { .seg.six { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
   /* ---------- TAMRA + TEACHERS ---------- */
   .about { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); gap: 64px; align-items: start; }
   .portrait .photo { aspect-ratio: 2 / 3; }
@@ -603,8 +616,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your week of classes and prices, the apparatus lab, Tamra and your teachers, photos, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: the Where do I start? class finder, your WeMovewell online page, a studio news list and an FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus gift cards paid through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: Book on Mindbody buttons, the Where do I start? class finder, your WeMovewell online page, a studio news list and an FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus class booking right on your site and gift cards paid through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change, your Mindbody schedule too, and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
@@ -621,7 +634,7 @@
         <p class="label"><span class="no">01</span><span>Classes &middot; October</span> <span class="tag" data-go="maiden">Every build</span></p>
         <h2 class="reveal">This week <em>at Movewell</em></h2>
       </div>
-      <p class="soft">Small groups, so your teacher can really see you. Book any class on Mindbody, the same as always. New to the machines? Start with Movewell Mat or a private session.</p>
+      <p class="soft">Small groups, so your teacher can really see you. <span data-show="mother" hidden>Book any class on Mindbody, the same as always.</span><span data-show="crone all">Tap any class to save your spot, right here on the page.</span><span data-show="maiden" hidden>Email or call the studio to save your spot, and ask about the new client special.</span> New to the machines? Start with Movewell Mat or a private session.</p>
     </div>
 
     <div class="sheet" aria-label="The weekly schedule">
@@ -633,10 +646,55 @@
       <div class="day-row rest reveal"><h3>Saturday</h3><p>No classes. Go play outside.</p></div>
       <div class="day-row reveal"><h3>Sunday</h3><div class="slots"><div class="slot c"><time>10:00</time><b>The Pilates Circuit</b><span>with Tamra</span></div><div class="slot c"><time>11:00</time><b>The Pilates Circuit</b><span>with Tamra</span></div><div class="slot c"><time>4:00 pm</time><b>The Pilates Circuit</b><span>with Tamra</span></div></div></div>
     </div>
-    <div class="cta-row">
-      <a class="btn" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book on Mindbody <span class="arrow" aria-hidden="true">&rarr;</span></a>
-      <a class="btn quiet" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=41&amp;sTG=102&amp;prodId=1988" target="_blank" rel="noopener">New client special</a>
+    <div class="cta-row" data-show="mother" data-fold data-thing="Book on Mindbody buttons" hidden>
+      <a class="btn" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book on Mindbody <span class="arrow" aria-hidden="true">&rarr;</span><span class="vh"> (opens your Mindbody schedule in a new tab)</span></a>
+      <a class="btn quiet" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=41&amp;sTG=102&amp;prodId=1988" target="_blank" rel="noopener">New client special<span class="vh"> (opens Mindbody in a new tab)</span></a>
     </div>
+    <div class="cta-row" data-show="maiden" hidden>
+      <a class="btn" href="mailto:movewellarcata@gmail.com">Email to save a spot</a>
+      <a class="btn quiet" href="tel:+17075992321">Call the studio</a>
+    </div>
+
+    <div class="signup" id="book" data-show="crone all" data-fold data-thing="class booking right on your site" tabindex="-1">
+      <p class="label"><span>Save your spot</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h3 class="signup-h">Pick a class, <em>you&rsquo;re in</em></h3>
+      <div class="finder">
+        <div>
+          <div class="bk-card" id="sg-card">
+            <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your class</button><button type="button" data-s="2" disabled>2 Your details</button></div>
+            <div id="sg-s1" class="stack">
+              <p class="q" id="sg-day-q">Pick a day</p>
+              <div class="seg six" role="group" aria-labelledby="sg-day-q" id="sg-days">
+                <button type="button" data-day="Sun" aria-pressed="false">Sun</button><button type="button" data-day="Mon" aria-pressed="false">Mon</button><button type="button" data-day="Tue" aria-pressed="true">Tue</button><button type="button" data-day="Wed" aria-pressed="false">Wed</button><button type="button" data-day="Thu" aria-pressed="false">Thu</button><button type="button" data-day="Fri" aria-pressed="false">Fri</button>
+              </div>
+              <p class="q" id="sg-cls-q">Then a class</p>
+              <div class="pick" role="group" aria-labelledby="sg-cls-q" id="sg-classes"></div>
+            </div>
+            <div id="sg-s2" class="stack" hidden>
+              <p class="sg-picked" id="sg-picked" tabindex="-1"></p>
+              <div class="fld-row"><label class="fld">Your name<input id="sg-name" autocomplete="off" value="Jordan M."></label><label class="fld">Your email<input id="sg-mail" type="email" autocomplete="off" value="jordan@example.com"></label></div>
+            </div>
+            <p class="hint" id="sg-hint" role="status"></p>
+            <div class="bk-nav" id="sg-nav"><button type="button" class="bk-go" id="sg-go">Next</button><button type="button" class="bk-go ghost" id="sg-back" hidden>Back</button></div>
+            <div class="bk-done fade-in" id="sg-done" hidden>
+              <h3 id="sg-done-h" tabindex="-1">You&rsquo;re signed up!</h3>
+              <dl class="sum" id="sg-sum"></dl>
+              <p class="soft" style="margin-top:12px;font-size:15px">A confirmation is on its way. Can&rsquo;t make it? Cancel at least 24 hours ahead.</p>
+              <p class="demo-note">Preview only: nothing was booked.</p>
+              <div class="bk-nav"><button type="button" class="bk-go ghost" id="sg-change">Change something</button><button type="button" class="bk-go ghost" id="sg-again">Try it again</button></div>
+            </div>
+          </div>
+          <div class="cta-row" style="margin-top:22px"><a class="btn quiet" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=41&amp;sTG=102&amp;prodId=1988" target="_blank" rel="noopener">New client special<span class="vh"> (opens Mindbody in a new tab)</span></a></div>
+        </div>
+        <div class="side mock-note wf-note">
+          <div class="bk-note"><b>Mindbody or Cal.com, your choice</b>This can be your own Mindbody schedule, sitting right here on the page (Mindbody lets you put class booking on your own site), so your packs, waitlists and memberships stay just as they are. Or a free Cal.com page in your own name, if you&rsquo;d ever rather switch. Whichever feels easier to you.</div>
+          <div class="bk-note"><b>Tap the week</b>Every class in the week above opens right here, already picked, so nobody leaves your site to save a spot.</div>
+          <div class="bk-note"><b>Your real week</b>The days and times are your October classes, so nobody signs up for a class that isn&rsquo;t running.</div>
+          <p style="font-size:13.5px;color:var(--ink-soft)">Booking preview: nothing here books a real class.</p>
+        </div>
+      </div>
+    </div>
+    <p class="mock-note wf-note" data-show="all" data-fold style="margin-top:24px;font-size:14.5px;max-width:760px">With Planted, this spot is your email and phone, so people get in touch to save a spot. With Tended, it&rsquo;s a Book on Mindbody button that opens your schedule there, just like now. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     <p class="mock-note wf-note" style="margin-top:34px;font-size:14.5px;max-width:760px">These are your real October classes, straight from Mindbody (mornings are a.m.). Right now your site only says &ldquo;Schedule&rdquo; and sends people off to Mindbody, and its Find a Class link still opens on April 7, 2025. Here the week is right on the page, and when you change your schedule, I change it here too: that&rsquo;s part of care.</p>
 
     <div class="classes">
@@ -802,15 +860,22 @@
           <h3 id="fd-done-h" tabindex="-1">Start here</h3>
           <div class="reco"><h4 id="fd-reco"></h4><p id="fd-why" class="soft"></p></div>
           <dl class="sum" id="fd-sum"></dl>
-          <div class="bk-nav"><a class="bk-go" style="text-decoration:none;display:inline-flex;align-items:center" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book it on Mindbody</a></div>
-          <p class="demo-note">Preview: nothing was booked. The button opens your real Mindbody schedule.</p>
+          <div data-show="mother" hidden>
+            <div class="bk-nav"><a class="bk-go" style="text-decoration:none;display:inline-flex;align-items:center" href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book it on Mindbody<span class="vh"> (opens your Mindbody schedule in a new tab)</span></a></div>
+            <p class="demo-note">Preview: nothing was booked. The button opens your real Mindbody schedule.</p>
+          </div>
+          <div data-show="crone all">
+            <div class="bk-nav"><a class="bk-go" style="text-decoration:none;display:inline-flex;align-items:center" id="fd-book" href="#book">Save my spot here</a></div>
+            <p class="demo-note" id="fd-book-note">Preview: nothing was booked. The button opens the sign-up on your week, with this class already picked.</p>
+          </div>
           <div class="bk-nav"><button type="button" class="bk-go ghost" id="fd-change">Change something</button><button type="button" class="bk-go ghost" id="fd-again">Try it again</button></div>
         </div>
       </div>
       <div class="side mock-note wf-note">
         <div class="bk-note"><b>Your own advice</b>The Circuit says some Pilates experience, or a private first, is highly recommended. So anyone brand new who picks the machines gets pointed to a private session first.</div>
         <div class="bk-note"><b>Your real times</b>It only suggests classes that actually run on the days they pick, from your October Mindbody schedule.</div>
-        <div class="bk-note"><b>Booking stays on Mindbody</b>Nothing changes for you. This just gets nervous first timers to the right class.</div>
+        <div class="bk-note" data-show="mother" hidden><b>Booking stays on Mindbody</b>Nothing changes for you. This just gets nervous first timers to the right class.</div>
+        <div class="bk-note" data-show="crone all"><b>Straight to their spot</b>With In Bloom, the class it picks is waiting in the sign-up on your week, so a nervous first timer goes from &ldquo;where do I start?&rdquo; to signed up without leaving your site.</div>
       </div>
     </div>
   </div>
@@ -1050,9 +1115,9 @@
     <div>
       <p class="foot-name">Movewell</p>
       <p>Pilates &middot; 789 I Street, Arcata, CA 95521 &middot; <a href="mailto:movewellarcata@gmail.com">movewellarcata@gmail.com</a> &middot; <a href="tel:+17075992321">(707) 599-2321</a></p>
-      <p style="margin-top:4px"><a href="https://www.instagram.com/movewellarcata/" target="_blank" rel="noopener">Instagram</a> &middot; <a href="https://www.facebook.com/movewellarcata/" target="_blank" rel="noopener">Facebook</a> &middot; <a href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book on Mindbody</a></p>
+      <p style="margin-top:4px"><a href="https://www.instagram.com/movewellarcata/" target="_blank" rel="noopener">Instagram</a> &middot; <a href="https://www.facebook.com/movewellarcata/" target="_blank" rel="noopener">Facebook</a><span data-show="mother" hidden> &middot; <a href="https://clients.mindbodyonline.com/classic/ws?studioid=22515&amp;stype=-7&amp;sView=week&amp;sLoc=0" target="_blank" rel="noopener">Book on Mindbody</a></span><span data-show="crone all"> &middot; <a href="#book">Save your spot</a></span></p>
       <p style="margin-top:10px;opacity:.85">&ldquo;We don&rsquo;t stop playing because we grow old, we grow old because we stop playing.&rdquo; George Bernard Shaw</p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking on your site and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
     </div>
   </div>
 </footer>
@@ -1065,8 +1130,8 @@
     <p class="views-q" id="vp-q">See your site as</p>
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One strong page, planted and kept healthy: your week of classes and prices, the apparatus lab, Tamra and your teachers, photos, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: the Where do I start? class finder, your WeMovewell online page, a studio news list and an FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus gift cards paid through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: Book on Mindbody buttons, the Where do I start? class finder, your WeMovewell online page, a studio news list and an FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus class booking right on your site and gift cards paid through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. Email me any change, your Mindbody schedule too, and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
@@ -1107,11 +1172,13 @@
     var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
     function setState(k, say) {
       var s = STATES[k]; current = k; strip.dataset.state = k;
+      if (k === 'event' && document.documentElement.getAttribute('data-view') === 'maiden') s = { label: s.label, cta: 'Email to save a spot', href: 'mailto:movewellarcata@gmail.com' };
       $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
       if (say) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
+    document.addEventListener('ex:view', function () { setState(current, false); });
     tryBtn.addEventListener('click', function () { var o = panel.hidden; panel.hidden = !o; tryBtn.setAttribute('aria-expanded', o ? 'true' : 'false'); });
   })();
 
@@ -1145,6 +1212,111 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     function press(list, key, val) { list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset[key] === val ? 'true' : 'false'); }); }
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+    /* In Bloom: save your spot right on the page, from their real October week. Tapping a class in the week opens it here. */
+    var signup = null;
+    (function () {
+      var card = $('sg-card'); if (!card) return;
+      var root = document.documentElement, calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var LEN = { circuit: '55 min', mat: '55 min', chair: '45 min', core: '55 min' };
+      var WEEK = {
+        Sun: [['circuit', 'The Pilates Circuit', '10:00 am'], ['circuit', 'The Pilates Circuit', '11:00 am'], ['circuit', 'The Pilates Circuit', '4:00 pm']],
+        Mon: [['circuit', 'The Pilates Circuit', '10:00 am']],
+        Tue: [['circuit', 'The Pilates Circuit', '9:00 am'], ['mat', 'Movewell Mat', '10:00 am'], ['chair', 'Seated Chair Pilates', '11:15 am']],
+        Wed: [['circuit', 'The Pilates Circuit', '10:00 am']],
+        Thu: [['circuit', 'The Pilates Circuit', '9:00 am'], ['mat', 'Movewell Mat', '10:00 am'], ['chair', 'Seated Chair Pilates', '11:15 am']],
+        Fri: [['core', 'Restorative Core', '10:00 am']]
+      };
+      var ORDER = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+      var DAYNAME = { Sun: 'Sunday', Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday' };
+      var DAYKEY = { Sunday: 'Sun', Monday: 'Mon', Tuesday: 'Tue', Wednesday: 'Wed', Thursday: 'Thu', Friday: 'Fri' };
+      var dayBtns = all(card, '[data-day]'), list = $('sg-classes'), go = $('sg-go'), hint = $('sg-hint');
+      var NAME0 = $('sg-name').value, MAIL0 = $('sg-mail').value, st;
+      function reset() { st = { s: 1, max: 1, day: 'Tue', i: -1 }; $('sg-name').value = NAME0; $('sg-mail').value = MAIL0; }
+      function cls() { return st.i > -1 ? WEEK[st.day][st.i] : null; }
+      function drawClasses() {
+        list.innerHTML = '';
+        WEEK[st.day].forEach(function (c, i) {
+          var b = document.createElement('button'), n = document.createElement('b'), s = document.createElement('span');
+          b.type = 'button'; b.className = 'opt'; n.textContent = c[1]; s.textContent = c[2] + ' \u00b7 ' + LEN[c[0]] + ' \u00b7 with Tamra';
+          b.appendChild(n); b.appendChild(s);
+          b.addEventListener('click', function () { st.i = i; st.max = Math.max(st.max, 2); hint.textContent = ''; paint(); });
+          list.appendChild(b);
+        });
+      }
+      /* the classes in the week above: tappable in In Bloom (and Everything), plain in Planted and Tended */
+      var slots = [];
+      all(document, '#week .sheet .day-row').forEach(function (row) {
+        var h = row.querySelector('h3'), d = h && DAYKEY[h.textContent.trim()]; if (!d) return;
+        var i = 0;
+        all(row, '.slot').forEach(function (s) {
+          if (s.classList.contains('p')) return;
+          var c = WEEK[d][i], b = s.querySelector('b');
+          if (c && b && b.textContent.trim() === c[1]) { s.dataset.day = d; s.dataset.i = i; slots.push(s); }
+          i++;
+        });
+      });
+      function tapOn() { var v = root.getAttribute('data-view') || 'all'; return v === 'crone' || v === 'all'; }
+      function markSlots() { var on = tapOn(); slots.forEach(function (s) { s.classList.toggle('picked', on && s.dataset.day === st.day && +s.dataset.i === st.i); }); }
+      function wire() {
+        var on = tapOn();
+        slots.forEach(function (s) {
+          var c = WEEK[s.dataset.day][+s.dataset.i];
+          s.classList.toggle('tap', on);
+          if (on) { s.setAttribute('role', 'button'); s.tabIndex = 0; s.setAttribute('aria-label', 'Save a spot in ' + c[1] + ', ' + DAYNAME[s.dataset.day] + ' at ' + c[2]); }
+          else { s.removeAttribute('role'); s.removeAttribute('tabindex'); s.removeAttribute('aria-label'); }
+        });
+        markSlots();
+      }
+      function paint() {
+        all(card, '.bk-steps [data-s]').forEach(function (sp) { var n = +sp.dataset.s, on = n === st.s; sp.classList.toggle('on', on); if (on) sp.setAttribute('aria-current', 'step'); else sp.removeAttribute('aria-current'); sp.disabled = !on && n > st.max; });
+        $('sg-s1').hidden = st.s !== 1; $('sg-s2').hidden = st.s !== 2;
+        $('sg-back').hidden = st.s === 1; go.textContent = st.s === 2 ? 'Save my spot' : 'Next';
+        press(dayBtns, 'day', st.day);
+        all(list, '.opt').forEach(function (b, i) { b.setAttribute('aria-pressed', i === st.i ? 'true' : 'false'); });
+        var c = cls(), pk = $('sg-picked'); pk.textContent = '';
+        if (c) { var b = document.createElement('b'); b.textContent = c[1]; pk.appendChild(b); pk.appendChild(document.createTextNode(', ' + DAYNAME[st.day] + ' at ' + c[2] + ', with Tamra')); }
+        markSlots();
+      }
+      function jump(n) { st.s = n; st.max = Math.max(st.max, n); hint.textContent = ''; paint(); quietFocus(n === 1 ? (list.querySelector('[aria-pressed="true"]') || card.querySelector('#sg-days [aria-pressed="true"]')) : $('sg-name')); }
+      function shown() { $('sg-done').hidden = true; $('sg-nav').hidden = false; card.querySelector('.bk-steps').hidden = false; }
+      function openAt(d, i, step) {
+        st.day = d; st.i = i; st.max = 2; st.s = step; hint.textContent = '';
+        drawClasses(); shown(); paint();
+        $('book').scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+        quietFocus(step === 2 ? $('sg-picked') : list.querySelector('[aria-pressed="true"]'));
+      }
+      dayBtns.forEach(function (b) { b.addEventListener('click', function () { if (st.day === b.dataset.day) return; st.day = b.dataset.day; st.i = -1; st.max = 1; hint.textContent = ''; drawClasses(); paint(); }); });
+      all(card, '.bk-steps [data-s]').forEach(function (sp) { sp.addEventListener('click', function () { var n = +sp.dataset.s; if (n !== st.s && n <= st.max) jump(n); }); });
+      $('sg-back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
+      go.addEventListener('click', function () {
+        if (st.s === 1) { if (!cls()) { hint.textContent = 'Pick a class first.'; return; } jump(2); return; }
+        var name = $('sg-name').value.trim(), mail = $('sg-mail').value.trim();
+        if (!name) { hint.textContent = 'Add your name first.'; $('sg-name').focus(); return; }
+        if (!isEmail(mail)) { hint.textContent = 'Add an email address first, like name@example.com.'; $('sg-mail').focus(); return; }
+        hint.textContent = '';
+        var c = cls(), rows = [['Class', c[1]], ['When', DAYNAME[st.day] + ', ' + c[2] + ', ' + LEN[c[0]]], ['With', 'Tamra'], ['For', name]];
+        $('sg-sum').innerHTML = '';
+        rows.forEach(function (r) { var dv = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = r[0]; dd.textContent = r[1]; dv.appendChild(dt); dv.appendChild(dd); $('sg-sum').appendChild(dv); });
+        $('sg-s1').hidden = true; $('sg-s2').hidden = true; $('sg-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('sg-done').hidden = false; quietFocus($('sg-done-h'));
+      });
+      $('sg-change').addEventListener('click', function () { shown(); jump(1); });
+      $('sg-again').addEventListener('click', function () { reset(); drawClasses(); shown(); jump(1); });
+      slots.forEach(function (s) {
+        s.addEventListener('click', function () { if (tapOn()) openAt(s.dataset.day, +s.dataset.i, 2); });
+        s.addEventListener('keydown', function (e) { if (tapOn() && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openAt(s.dataset.day, +s.dataset.i, 2); } });
+      });
+      document.addEventListener('ex:view', wire);
+      /* the class finder hands its pick over: the first of their days that has it (or the class's first day) */
+      signup = {
+        open: function (key, days) {
+          var hit = null;
+          [days, null].forEach(function (want) { ORDER.forEach(function (d) { if (hit || (want && !want[d])) return; WEEK[d].forEach(function (c, i) { if (!hit && c[0] === key) hit = [d, i]; }); }); });
+          if (hit) openAt(hit[0], hit[1], 1);
+        }
+      };
+      reset(); drawClasses(); paint(); wire();
+    })();
 
     /* where do I start? three steps, using their real October schedule */
     (function () {
@@ -1201,11 +1373,17 @@
           rows.push(['Price', c.price]);
         }
         $('fd-why').textContent = p.why;
+        var fb = $('fd-book');
+        if (fb) {
+          if (p.key === 'private') { fb.textContent = 'Email Tamra about a private'; fb.setAttribute('href', 'mailto:movewellarcata@gmail.com'); fb.dataset.key = ''; $('fd-book-note').textContent = 'Preview: nothing was booked. For a private, the button opens an email to the studio.'; }
+          else { fb.textContent = 'Save my spot here'; fb.setAttribute('href', '#book'); fb.dataset.key = p.key; $('fd-book-note').textContent = 'Preview: nothing was booked. The button opens the sign-up on your week, with this class already picked.'; }
+        }
         rows.push(['New here?', 'ask about the new client special']);
         $('fd-sum').innerHTML = ''; rows.forEach(function (r) { var dv = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = r[0]; dd.textContent = r[1]; dv.appendChild(dt); dv.appendChild(dd); $('fd-sum').appendChild(dv); });
         [1, 2, 3].forEach(function (n) { $('fd-s' + n).hidden = true; }); $('fd-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('fd-done').hidden = false; quietFocus($('fd-done-h'));
       });
       function back(toStep) { $('fd-done').hidden = true; $('fd-nav').hidden = false; card.querySelector('.bk-steps').hidden = false; jump(toStep); }
+      if ($('fd-book')) $('fd-book').addEventListener('click', function (e) { var k = this.dataset.key; if (!k || !signup) return; e.preventDefault(); signup.open(k, st.days); });
       $('fd-change').addEventListener('click', function () { back(1); });
       $('fd-again').addEventListener('click', function () { reset(); back(1); });
       paint();
@@ -1285,9 +1463,9 @@
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one strong page, planted and kept healthy, with your week of classes and prices, the apparatus lab, Tamra and your teachers, your photos, your reviews and how to find you. Booking stays on Mindbody.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with the Where do I start? class finder, your WeMovewell online page, a studio news list, and an FAQ.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus gift cards through your own Stripe. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one strong page, planted and kept healthy, with your week of classes and prices, the apparatus lab, Tamra and your teachers, your photos, your reviews and how to find you, with an easy way to email or call to save a spot.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with Book on Mindbody buttons just like now, the Where do I start? class finder, your WeMovewell online page, a studio news list, and an FAQ.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus class booking right on your site (your own Mindbody, or Cal.com if you’d rather switch) and gift cards through your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));
