@@ -353,7 +353,7 @@
   @media (prefers-reduced-motion: reduce) { .feed img { transition: none; } .feed a:hover img { scale: 1; } }
 
   /* prep + aftercare + waiver */
-  .care { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 34px; }
+  #care .care { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 34px; } /* scoped to its section, so the picker card's own .care line keeps its shape */
   .care-card { background: var(--ground); border: 1px solid var(--hair); border-radius: 6px; padding: 24px 22px; display: flex; flex-direction: column; gap: 10px; }
   .care-card h3 { font-size: 22px; line-height: 1.2; }
   .care-card ul { list-style: none; display: grid; gap: 8px; font-size: 15px; color: var(--ink-soft); }
@@ -573,7 +573,7 @@
     .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .flash { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .artists { grid-template-columns: minmax(0, 1fr); }
-    .care { grid-template-columns: minmax(0, 1fr); }
+    #care .care { grid-template-columns: minmax(0, 1fr); }
     .feed { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 760px) {
@@ -700,7 +700,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy and current. Email me any change, from open books to a new guest spot, and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month, to keep yours healthy and current. Email me any change, from open books to a new guest spot, and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -1195,7 +1195,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>

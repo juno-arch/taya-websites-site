@@ -5,23 +5,25 @@
 // The pricing model (Oct 5 2026, per Pollen; the source of truth is web-faery-kit/pricing-oct2026.md):
 //   builds Planted $600 / Tended $1,200 / In Bloom $1,800, paid once (founding $300 / $600 / $900, half off the
 //     build only, 5 spots through Dec 31, 2026), half to start, half at launch;
-//   care comes with every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the
-//     30 days of settling in; changes are the same in every tier (email anytime, as often as needed, reply within
-//     2 business days, anything broken fixed free, big new things quoted first);
-//   care is required for new clients; if they ever stop it, the site is still theirs, every file and login
-//     handed over;
-//   anyone quoted before Oct 5 keeps their quote, and the new care price if it's lower for them (one quiet line
-//     on the main page).
+//   a subscription comes with every site (called "care" until Oct 6 2026, when Pollen switched the word), monthly
+//     only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in; changes are the
+//     same in every tier (email anytime, as often as needed, reply within 2 business days, anything broken fixed
+//     free, big new things quoted first);
+//   the subscription is part of every new site; if they ever cancel it, the site is still theirs, every file and
+//     login handed over;
+//   anyone quoted before Oct 5 keeps their quote, and the new subscription price if it's lower for them (one quiet
+//     line on the main page).
 //
 // Fails (exit 1) if any page (or a string in its scripts, faery.js or mark.js):
 //   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490, $22 / $44 / $66,
-//     $400 / $650 / $950, $95), care as optional, pay as you go, an hourly rate, yearly care, "subscription",
+//     $400 / $650 / $950, $95), the subscription as optional, pay as you go, an hourly rate, a yearly subscription,
+//     the old name "care" for the subscription ("Tended care", "then care", "care comes with every site"...),
 //     trades, self-editing, a retired offer (Photo Day, tending visits, Wildflower, Websites by Taya, half off
 //     care, free hosting forever), an offer of a call or chat (email only), Stripe at "about 3%", or a dash
 //     (mark.js keeps its "as sent" words on purpose: the already-emailed mockups show what they were sent)
-//   - shows a monthly price other than care's $12 / $45 / $90, or a side cost "paid by you" (email from their
+//   - shows a monthly price other than the subscription's $12 / $45 / $90, or a side cost "paid by you" (email from their
 //     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026)
-//   - (the main page) leaves out the three care prices, the reply time, "quoted first", the settling-in start,
+//   - (the main page) leaves out the three subscription prices, the reply time, "quoted first", the settling-in start,
 //     the quoted-before-October-5 line, or the hand-over promise
 //   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): the booking ladder (1, Oct 6 2026, which
 //     replaced the Oct 5 rule 2 that let any build link to an app they already use): Planted has no Book button
@@ -74,8 +76,8 @@ const plainOf = (text) => text.replace(/<[^>]+>/g, ' ').replace(/&cent;/g, '¢')
 const FORBIDDEN = [
   [/\bMaiden\b|\bMother\b|\bCrone\b/, 'an old tier name (Planted, Tended, In Bloom now)'],
   [/\$69\b|\$690|\$35\b|\$350|\$49\b|\$490|\$444|\$666|\$888|\$588|\$22\b|\$44\b|\$66\b|\$400\b|\$650\b|\$950\b|\$95\b/, 'an old price'],
-  [/care is optional|optional care|care,? optional|skip care|with or without care|without care|no care\b/i, 'care as optional (it comes with every site now)'],
-  [/looked after if you like|care,? if you (?:like|want)|only if you want it/i, 'care as optional (it comes with every site now)'],
+  [/care is optional|optional care|care,? optional|skip care|with or without care|without care|no care\b|subscription is optional|optional subscription|subscription,? optional|skip (?:the |your )?subscription|with or without a subscription|no subscription\b/i, 'the subscription as optional (it comes with every site now)'],
+  [/looked after if you like|care,? if you (?:like|want)|subscription,? if you (?:like|want)|only if you want it/i, 'the subscription as optional (it comes with every site now)'],
   [/Photo Day|tending visit|Wildflower|Websites by Taya|half off care|free hosting forever|Message Taya/i, 'a retired name or offer'],
   [/edit your own site|swappable photos?/i, 'self-editing (not offered)'],
   [/\$3 a month/i, 'the old $3 a month own-address email (it comes with Tended and In Bloom)'],
@@ -84,9 +86,12 @@ const FORBIDDEN = [
   [/pay(?:ing)? as you go/i, 'pay as you go'],
   [/\$\d[\d,.]* an hour|per hour|by the minute|per minute/i, 'an hourly rate'],
   [/\$25 to \$50/, 'the old "most small changes" estimate'],
-  [/two months free|paid yearly|yearly care|care[^.]{0,30}a year\b/i, 'yearly care (monthly only now)'],
+  [/two months free|paid yearly|yearly care|care[^.]{0,30}a year\b|yearly subscription|subscription[^.]{0,30}a year\b/i, 'a yearly subscription (monthly only now)'],
   [/quick change|update session|change it yourself|change these yourself|coming soon/i, 'self-editing (not offered)'],
-  [/subscription/i, 'the word "subscription"'],
+  // the monthly part is a "subscription" since Oct 6 2026 (Pollen: "subscription makes more sense to people"), so the
+  // old rule against that word is retired, and "care" as the plan's name is what can't come back. Ordinary care
+  // (skin care, aftercare, "I take care of it", the Garden care eyebrow) is fine.
+  [/\b(?:Planted|Tended|In Bloom)(?:’s)? care\b|\bcare (?:comes with|is part of) every site|\bthen care\b|\bmonthly care\b|\bcare plan\b|What does care include|What (?:each )?care includes|\bstop care\b/i, 'the old name "care" for the subscription (it’s "subscription" since Oct 6 2026)'],
   [/paid by you/i, 'a side cost "paid by you" (no add-ons: own-address email comes with Tended and In Bloom)'],
   [/\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately)'],
   [/founding spots last/i, 'open-ended founding wording (show the count and the deadline)'],
@@ -134,7 +139,7 @@ for (const page of PAGES) {
 }
 // Bramble's answers (her keys: are only words she listens for, never shown)
 for (const l of literals(read('faery.js'))) if (!/keys:\s*$/.test(l.before)) scriptStrings.push(['faery.js', l.s]);
-// mark.js keeps the "as sent" names, words and care line for the mockups already emailed (never change those)
+// mark.js keeps the "as sent" names, words and old "Care is optional" line for the mockups already emailed (never change those)
 {
   const mark = read('mark.js');
   const AS_SENT_CARE = 'Care is optional, and every cost is written out at ';
@@ -154,18 +159,19 @@ for (const [file, s] of scriptStrings) {
 // the main page says the model plainly
 {
   const t = plain['index.html'];
-  for (const n of CARE) if (!t.includes(`$${n} a month`)) fail(`index.html: never shows care at $${n} a month`);
+  for (const n of CARE) if (!t.includes(`$${n} a month`)) fail(`index.html: never shows the subscription at $${n} a month`);
   if (!/2 business days/.test(t)) fail('index.html: doesn’t give the reply time (2 business days)');
   if (!/as often as you need/.test(t)) fail('index.html: doesn’t say changes come as often as you need');
   if (!/big[^.]{0,60}quote/i.test(t)) fail('index.html: doesn’t say big new things are quoted first');
   if (!/half off the build/i.test(t)) fail('index.html: doesn’t say founding clients get half off the build');
-  if (!/every file and login/.test(t)) fail('index.html: doesn’t say stopping care means every file and login handed over');
-  if (!t.includes('Quoted before October 5? Your quote stands, just as I wrote it, and if the new care price is lower for you, it’s yours 💛')) fail('index.html: lacks the quoted-before-October-5 line (with the lower-care-price offer)');
+  if (!/every file and login/.test(t)) fail('index.html: doesn’t say cancelling the subscription means every file and login handed over');
+  if (!/If you ever cancel your subscription, your site is still yours/.test(t)) fail('index.html: doesn’t say the site is still theirs if they ever cancel the subscription');
+  if (!t.includes('Quoted before October 5? Your quote stands, just as I wrote it, and if the new subscription price is lower for you, it’s yours 💛')) fail('index.html: lacks the quoted-before-October-5 line (with the lower-subscription-price offer)');
   for (const name of Object.keys(TIERS)) if (!t.includes(name)) fail(`index.html: never names ${name}`);
 }
-// care starts after the settling-in days, wherever care is priced
+// the subscription starts after the settling-in days, wherever it is priced
 for (const page of ['index.html', 'quiz.html', 'start.html']) {
-  if (!/starts? after (?:your|the) 30 days of settling in|starting after your 30 days of settling in/i.test(plain[page])) fail(`${page}: doesn’t say care starts after the 30 days of settling in`);
+  if (!/starts? after (?:your|the) 30 days of settling in|starting after your 30 days of settling in/i.test(plain[page])) fail(`${page}: doesn’t say the subscription starts after the 30 days of settling in`);
 }
 
 // the founding count lives in exactly one place: inside id="founding" on the main page
@@ -195,10 +201,10 @@ for (const page of PAGES) {
     for (const [name, [full, , care]] of Object.entries(TIERS)) {
       const o = offers.find((x) => x.name.startsWith(name + ':'));
       if (!o || +o.price !== full) fail(`${page}: JSON-LD ${name} offer isn't $${full}`);
-      const c = offers.find((x) => x.name === name + ' care');
-      if (!c || +c.price !== care || !c.priceSpecification || +c.priceSpecification.price !== care || c.priceSpecification.unitText !== 'MONTH') fail(`${page}: JSON-LD ${name} care offer isn't $${care} a month`);
+      const c = offers.find((x) => x.name === name + ' subscription');
+      if (!c || +c.price !== care || !c.priceSpecification || +c.priceSpecification.price !== care || c.priceSpecification.unitText !== 'MONTH') fail(`${page}: JSON-LD ${name} subscription offer isn't $${care} a month`);
     }
-    if (offers.some((o) => o.priceSpecification && o.priceSpecification.unitText !== 'MONTH')) fail(`${page}: JSON-LD has a non-monthly price (care is monthly only)`);
+    if (offers.some((o) => o.priceSpecification && o.priceSpecification.unitText !== 'MONTH')) fail(`${page}: JSON-LD has a non-monthly price (the subscription is monthly only)`);
   }
 }
 
@@ -300,12 +306,13 @@ for (const page of PAGES) {
   need('index.html', /With Tended, your Book button opens the booking app you already use/, 'doesn’t say Tended’s Book button opens the booking app they already use (the booking ladder)');
   need('index.html', /With In Bloom, booking sits right on your site[^.]*Cal\.com[^.]*\. That’s your choice/, 'doesn’t say In Bloom puts booking right on the site, their own app or Cal.com, their choice (the booking ladder)');
   // 2. (folded into 1 on Oct 6 2026)
-  // every tier card on the main page lists everything its care includes (pricing-oct2026.md, "What care includes")
+  // every tier card on the main page lists everything its subscription includes (pricing-oct2026.md; Tended's
+  // "Post once, show up everywhere" replaced "Your Google profile kept fresh" on Oct 6 2026)
   {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Email me anytime and I make your changes/, /magic link/, /your changes are up/, /monthly check-in/, /New reviews/, /heads-up before holidays/],
-      mother: [/Everything in Planted/, /Google profile kept fresh/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
+      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I never post anything you didn’t make/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
       crone: [/Everything in Tended/, /booking, payments or shop kept running/i, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
@@ -345,7 +352,7 @@ for (const page of PAGES) {
   if (details.length < 6 || details.length > 8) fail(`index.html: has ${details.length} question accordions; want 6 to 8`);
   if (details.some((d) => /\bopen\b/.test(d[1]))) fail('index.html: a question accordion starts open; they start closed');
   if ([...html.matchAll(/<details\b[^>]*>(?!\s*<summary)/g)].length) fail('index.html: a <details> without a <summary> first');
-  for (const [re, what] of [[/other costs/i, '"Any other costs?"'], [/care include/i, '"What does care include?"'],
+  for (const [re, what] of [[/other costs/i, '"Any other costs?"'], [/subscription include/i, '"What does your subscription include?"'],
     [/want to leave/i, '"What if I want to leave?"'], [/Google/, 'the Google (SEO) question']]) {
     const summaries = [...html.matchAll(/<summary\b[^>]*>([\s\S]*?)<\/summary>/g)].map((m) => plainOf(m[1])).join(' | ');
     if (!re.test(summaries)) fail(`index.html: the questions lack ${what}`);

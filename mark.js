@@ -280,10 +280,11 @@
   //     data-tier-name="Planted"   the visible name
   //     data-tier-price="600"      full build price, digits only
   //     data-tier-founding="300"   founding build price, digits only
-  //     data-tier-care="12"        care a month, digits only
+  //     data-tier-care="12"        the subscription a month, digits only
   //     data-tier-what="..."       optional one sentence for the card (else the webfaery.love words below)
-  //   A page with data-tier-name on its buttons shows those names and prices, plus the care line for the
-  //   new pricing. A page without them ("as sent") takes each name from the button's own <b> text and keeps
+  //   A page with data-tier-name on its buttons shows those names and prices, plus the subscription line for
+  //   the new pricing (the monthly part is called a "subscription" since Oct 6 2026). A page without them
+  //   ("as sent") takes each name from the button's own <b> text and keeps
   //   the old prices, words and "Care is optional" line it was sent with. Keys (data-view, data-go, the saved
   //   pick, the server's mockup_pick) stay maiden / mother / crone / all either way.
   const KEYS = ['maiden', 'mother', 'crone'];
@@ -356,14 +357,14 @@
       } else {
         price.append(document.createTextNode(usd(bd.full)), el('span', 'once', ' paid once'));
       }
-      if (PRICED && bd.care) price.append(el('span', 'once care-mo', 'then ' + usd(bd.care) + ' a month for care'));
+      if (PRICED && bd.care) price.append(el('span', 'once care-mo', 'then a ' + usd(bd.care) + ' a month subscription'));
       btn.append(el('span', 'nm', bd.name), price, el('span', 'what', bd.what));
       btn.setAttribute('aria-pressed', myPick === bd.key ? 'true' : 'false');
       btn.addEventListener('click', () => choose(bd.key));
       grid.append(btn);
     });
     box.append(grid);
-    const care = el('p', 'care', PRICED ? 'Care is part of every site: it keeps yours healthy and current. Every cost is written out at '
+    const care = el('p', 'care', PRICED ? 'Every site comes with a subscription: it keeps yours healthy and current. If you ever cancel, your site is still yours and I hand you every file and login. Every cost is written out at '
       : 'Care is optional, and every cost is written out at ');
     const a = el('a', '', 'webfaery.love'); a.href = 'https://webfaery.love/'; a.target = '_blank'; a.rel = 'noopener';
     care.append(a, document.createTextNode('.'));

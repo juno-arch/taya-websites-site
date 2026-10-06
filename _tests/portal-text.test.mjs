@@ -6,12 +6,14 @@
 // portal.html's visible text AND every quoted string in portal.js and portal-demo.js.
 //
 // Fails (exit 1) if:
-//   - any of it has a dash (em or en), the word "subscription", trades, "on call", an old price or rule,
+//   - any of it has a dash (em or en), "care" as the old name for the subscription (Oct 6 2026), trades, "on call",
+//     an old price or rule,
 //     or a straight apostrophe or quote in words people read (use ’ “ ”)
 //   - anything from before the Oct 5 2026 pricing shows up: Maiden / Mother / Crone as words people read
-//     (the lowercase keys maiden / mother / crone are fine), care at anything but $12 / $45 / $90 a month,
-//     $69 / $690 / $35 / $350 / $49 / $490, any hourly rate, "$25 to $50", pay as you go, care without care,
-//     yearly care, a founding care price, offers of a call or a chat (including a "Let’s talk" status), or
+//     (the lowercase keys maiden / mother / crone are fine), a subscription at anything but $12 / $45 / $90 a month,
+//     $69 / $690 / $35 / $350 / $49 / $490, any hourly rate, "$25 to $50", pay as you go, the subscription as
+//     optional, a yearly subscription, a founding subscription price, offers of a call or a chat (including a
+//     "Let’s talk" status), or
 //     do-it-yourself editing
 //   - the "Change it yourself" editors come back (their section in portal.html, or their code in portal.js)
 //   - portal.html links to a local file or #anchor that doesn't exist
@@ -63,15 +65,17 @@ const sources = [
 
 const FORBIDDEN = [
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
-  [/subscription/i, 'the word "subscription"'],
+  // "subscription" is the word since Oct 6 2026; "care" as its name is what can't come back (keys like 'care',
+  // care_active and #change-care are code, and "Live, and in my care" is the ordinary phrase)
+  [/\bStart (?:my|their) care\b|\bcare (?:begins|picks up)\b|Care receipt|card or care|Stripe care page|\bstop care\b|\bin care\b/i, 'the old name "care" for the subscription'],
   [/\btrad(?:e|es|ed|ing)\b/i, 'trades'],
   [/\bon call\b/i, '"on call" (care is a reply within 2 business days)'],
   [/\$444|\$666|\$888|\$588|\$25\b|\$69\b|\$690\b|\$35\b|\$350\b|\$49\b|\$490\b/, 'an old price'],
   [/quick change|update session|an hour a month|\broll(?:s|ed)? over/i, 'an old care rule'],
   [/\$\d[\d,.]* an hour|per hour|by the minute|hourly/i, 'an hourly rate (gone since Oct 5 2026: anything big is quoted first)'],
-  [/pay(?:ing)? as you go|without care|optional care|care is optional|skip (?:it|care)|only if you want it/i, 'care as optional (care comes with every site now)'],
-  [/two months free|care[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}care/i, 'yearly care (care is monthly only)'],
-  [/founding[^.]{0,60}\bcare\b|\bcare\b[^.]{0,60}founding/i, 'a founding care price (founding is half off the build only)'],
+  [/pay(?:ing)? as you go|without care|optional care|care is optional|skip (?:it|care)|only if you want it|optional subscription|subscription is optional|skip (?:the |your )?subscription/i, 'the subscription as optional (it comes with every site now)'],
+  [/two months free|care[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}care|subscription[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}subscription/i, 'a yearly subscription (it is monthly only)'],
+  [/founding[^.]{0,60}\b(?:care|subscription)\b|\b(?:care|subscription)\b[^.]{0,60}founding/i, 'a founding subscription price (founding is half off the build only)'],
   [/\b(?:Maiden|Mother|Crone)\b/, 'an old build name (Planted / Tended / In Bloom now)'],
   [/\bchat\b|a call\b|pick a time|rather talk|on the phone|phone call|let(?:’|\\')s talk/i, 'an offer of a call or a chat (email only)'],
   [/(?:change|edit|update) (?:it|these|them|this) yourself|coming soon|do it yourself/i, 'do-it-yourself editing (Taya makes every change)'],
@@ -82,17 +86,18 @@ for (const [file, strings] of sources) {
       const m = s.match(re);
       if (m) fail(`${file}: ${what}: "${s.slice(Math.max(0, m.index - 40), m.index + 40)}"`);
     }
-    for (const m of s.matchAll(/\bcare(?: is| at)? \$(\d+)/gi)) {
-      if (![12, 45, 90].includes(+m[1])) fail(`${file}: care shown at $${m[1]}: "${m[0]}"`);
+    for (const m of s.matchAll(/\b(?:care|subscription)(?: is| at)? \$(\d+)|\$(\d+) a month subscription/gi)) {
+      const n = +(m[1] || m[2]);
+      if (![12, 45, 90].includes(n)) fail(`${file}: the subscription shown at $${n}: "${m[0]}"`);
     }
   }
 }
-// the sample client's care amounts are numbers, not words, so check those too (care is $12 / $45 / $90 a month)
+// the sample client's subscription amounts are numbers, not words (its key is still 'care'), so check those too ($12 / $45 / $90 a month)
 for (const m of demo.matchAll(/key: 'care', amount: (\d+), period: '(\w*)'/g)) {
-  if (![12, 45, 90].includes(+m[1]) || m[2] !== 'month') fail(`portal-demo.js: the sample's care is $${m[1]} a ${m[2]} (care is $12 / $45 / $90 a month)`);
+  if (![12, 45, 90].includes(+m[1]) || m[2] !== 'month') fail(`portal-demo.js: the sample's subscription is $${m[1]} a ${m[2]} (it is $12 / $45 / $90 a month)`);
 }
-// the care row never offers a founding care price (founding is half off the build only)
-if (/half off for as long as you keep care/i.test(js)) fail('portal.js: the care row still offers founding care at half off');
+// the subscription row never offers a founding subscription price (founding is half off the build only)
+if (/half off for as long as you keep (?:care|(?:your |the )?subscription)/i.test(js)) fail('portal.js: the subscription row still offers a founding price at half off');
 
 // ---- no do-it-yourself editing (Oct 5 2026): the editors can never show ----
 if (/id="sec-quick"|id="quick-list"|Change it yourself/i.test(html)) fail('portal.html: the "Change it yourself" section is back');

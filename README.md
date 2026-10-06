@@ -1,16 +1,19 @@
 # Web Faery
 
-The website for Web Faery: hand-built websites for small local businesses, paid once,
-with care that keeps them running. Live at https://webfaery.love
+The website for Web Faery: hand-built websites for small local businesses, paid once and theirs to keep,
+with a monthly subscription that keeps them running. Live at https://webfaery.love
 
-The pricing (Oct 5 2026; source of truth: web-faery-kit/pricing-oct2026.md), said the same way on every page:
+The pricing (Oct 5 2026; source of truth: web-faery-kit/pricing-oct2026.md), said the same way on every page.
+Since Oct 6 2026 the monthly part is called a "subscription" everywhere people read it (it used to be "care",
+which reads less clearly). Code keys stay as they were (care_monthly, data-tier-care, #care...):
 Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payments or a small shop) $1,800, paid once.
-Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. Care comes with every
-site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
+Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. A subscription comes with
+every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
 are the same in every tier: email anytime, as often as needed, anything broken fixed free, big new things quoted first.
-Care is required for new clients. If they ever stop it, the site is still theirs, with every file and login handed over.
-Internal keys stay maiden / mother / crone. Anyone quoted before Oct 5 2026 keeps their quote as written: care stays
-optional for them, and if they choose it, they can take the new care price when it's lower.
+The subscription is part of every new site. If they ever cancel it, the site is still theirs, with every file and login
+handed over (say that close by wherever the subscription is explained, so it never sounds like renting).
+Internal keys stay maiden / mother / crone. Anyone quoted before Oct 5 2026 keeps their quote as written: the
+subscription stays optional for them, and if they choose it, they can take the new price when it's lower.
 
 What comes with which build (the small rules, Oct 5 2026, and the booking ladder, Oct 6 2026):
 - Planted has no Book button: people call, text or email them.
@@ -26,15 +29,15 @@ What comes with which build (the small rules, Oct 5 2026, and the booking ladder
 Accounts are all in the client's name. Taya sets up their newsletter (Buttondown) and booking (Cal.com) with their
 email during the build and hands over the logins at launch, each with its own password they change. Their Google
 profile and Stripe are theirs too, with Taya added as a helper. Their web address lists them as the legal owner, and
-Taya holds it and renews it as part of care. Sites live on GitHub Pages; an In Bloom site that takes payments or runs
+Taya holds it and renews it as part of their subscription. Sites live on GitHub Pages; an In Bloom site that takes payments or runs
 a shop lives on Cloudflare Pages.
 
 | File | What it is |
 |---|---|
 | `index.html` | Home page |
-| `quiz.html` | Which-build quiz (which build fits, the care that comes with it, and every cost) |
+| `quiz.html` | Which-build quiz (which build fits, the subscription that comes with it, and every cost) |
 | `welcome.html` | What happens after you reach out |
-| `domain.html` | How your web address works: held for you, legally yours, renewed by care; pointing or moving one you already have |
+| `domain.html` | How your web address works: held for you, legally yours, renewed by the subscription; pointing or moving one you already have |
 | `intake.html` | Getting-started questionnaire (email only, so it asks for no phone number) |
 | `start.html` | The getting-started page for someone who said yes: the agreement, the deposit and their accounts (not in search) |
 | `texts.html` | Texts from Web Faery: what's sent, how often, how to stop. Its wording matches the texting registration, so keep it as is |

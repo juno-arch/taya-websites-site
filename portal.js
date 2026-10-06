@@ -30,7 +30,7 @@
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
    ---- WORDS ----
-   Warm but plain, few words, curly quotes, no dashes, never "subscription", nothing about trades.
+   Warm but plain, few words, curly quotes, no dashes, the monthly part is a "subscription" (Oct 6 2026), nothing about trades.
    _tests/portal-text.test.mjs checks every string in this file.
    ===================================================================================================== */
 (() => {
@@ -62,8 +62,8 @@
   // each, from "What care includes" in pricing-oct2026.md (the full lists are on webfaery.love's price cards)
   const CARE_SAY = {
     maiden: 'Keeps your site healthy: hosting, your web address, backups, your changes whenever you email me, and a monthly check-in.',
-    mother: 'Tending as the seasons change: everything in Planted’s care, plus your Google profile kept fresh, email from your own address and a seasonal refresh.',
-    crone: 'Keeps you in full bloom: everything in Tended’s care, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
+    mother: 'Tending as the seasons change: everything in the Planted subscription, plus your posts showing up everywhere, email from your own address and a seasonal refresh.',
+    crone: 'Keeps you in full bloom: everything in the Tended subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STAGES = [
     ['getting_started', 'Getting started'], ['call', 'Your story'], ['draft', 'Draft'],
@@ -383,7 +383,7 @@
       return 'Let’s take a little breather. Try again in ' + when + '.';
     }
     if (c === 'not_found') return 'That’s not here anymore. Try refreshing the page.';
-    if (c === 'no_care') return 'Asks open once your care begins. Until then, just email me.';
+    if (c === 'no_care') return 'Asks open once your subscription begins. Until then, just email me.';
     if (c === 'too_big') return 'That’s a bit big to send in one go. Try fewer at a time.';
     if (c === 'input' && err.reason === 'size') return 'One of those is too big to send. Photos up to 15 MB work, and pictures for a change up to 10 MB.';
     if (c === 'input' && err.reason === 'full') return 'Your project’s file space is full. Email me and I’ll make room.';
@@ -1429,11 +1429,11 @@
       if (p.key === 'deposit') { name = 'Deposit'; sub = 'Half the build. It holds your spot.'; amt = money(p.amount); payLabel = 'Pay the deposit'; }
       else if (p.key === 'balance') { name = 'Second half'; sub = 'The other half of the build, due at launch.'; amt = money(p.amount); payLabel = 'Pay the second half'; }
       else {
-        name = 'Care';
+        name = 'Subscription';
         amt = money(p.amount) + (p.period === 'year' ? ' a year' : ' a month');
         sub = (CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes whenever you email me.') +
-          (p.state === 'due' && starts ? ' Care begins ' + starts + ', right where settling in leaves off.' : '');
-        payLabel = 'Start my care';
+          (p.state === 'due' && starts ? ' Your subscription begins ' + starts + ', right where settling in leaves off.' : '');
+        payLabel = 'Start my subscription';
         thanks = 'Set up? Thank you! It shows here once it’s running. No need to do it again.';
       }
       if (c.founding && p.key !== 'care') sub += ' Founding price.';
@@ -1447,7 +1447,7 @@
         const s = make('span', 'p-paid');
         s.append(icon('i-check'), make('span', null, 'Active' + (p.paid_on ? ' since ' + shortDate(p.paid_on) : '')));
         st.append(s);
-        if (me.care_manage_url) st.append(outLink(me.care_manage_url, 'Update your card or care', 'later', 'your Stripe care page'));
+        if (me.care_manage_url) st.append(outLink(me.care_manage_url, 'Update your card or subscription', 'later', 'your Stripe subscription page'));
       } else if (p.state === 'due' && p.url && tapped) {
         // they already tapped it: a thank-you, and only a small way to pay again
         const s = make('p', 'p-thanks');

@@ -3,7 +3,8 @@
 //
 //   node _tests/quiz-paths.test.mjs
 //
-// Pricing as of Oct 5 2026 (web-faery-kit/pricing-oct2026.md): care comes with every site and matches the build.
+// Pricing as of Oct 5 2026 (web-faery-kit/pricing-oct2026.md): a subscription comes with every site and matches the
+// build (called "care" until Oct 6 2026).
 // The BUILD comes from what the site needs to do (questions 1 to 3), plus email and a newsletter (question 4),
 // following the sheet's "Small rules decided Oct 5 2026" and its booking ladder (rule 1, Oct 6 2026):
 //   In Bloom if anything takes payments: booking with payments or deposits, or selling (rule 5)
@@ -18,10 +19,11 @@
 // certificates or orders take payments; any other booking answer is booking set up for them.
 // Also: no line ties booking (without payments) to In Bloom (rule 1), and Planted never shows the Instagram
 // feed (Tended and up; rule 6).
-// Care is always the build's own: Planted $12, Tended $45, In Bloom $90 a month.
+// The subscription is always the build's own: Planted $12, Tended $45, In Bloom $90 a month.
 // Also fails (exit 1) if focus doesn't land on the new question / the result, if a price is wrong,
 // if the intake link loses the build, or if an old name, price or rule (Maiden / Mother / Crone, $69, $35,
-// pay as you go, $100 an hour, yearly care, optional care), "subscription", a trade or a dash sneaks in,
+// pay as you go, $100 an hour, a yearly or optional subscription), the old name "care" for the subscription
+// ("Tended care", "then care"), a trade or a dash sneaks in,
 // or a side cost "paid by you" (like the old $3 a month for own-address email on Planted).
 // (Folders starting with "_" are not published by GitHub Pages.)
 
@@ -126,11 +128,13 @@ const expectBuild = (p) => {
 // a sentence that sends booking to In Bloom without any payment in it (simple booking is Tended now; rule 1)
 const BOOKING_TO_BLOOM = (sentence) => /\bbooking\b/i.test(sentence) && /In Bloom/.test(sentence) && !/pay|deposit|sell|shop/i.test(sentence);
 
-// words that must never appear: old names, prices and rules, the word Pollen dislikes, trades, dashes
+// words that must never appear: old names, prices and rules, "care" as the subscription's old name (the word
+// "subscription" itself is welcome since Oct 6 2026), trades, dashes
 const FORBIDDEN = [/\bMaiden\b/, /\bMother\b/, /\bCrone\b/, /\$69\b/, /\$690/, /\$35\b/, /\$350/, /\$49\b/, /\$490/,
   /pay(?:ing)? as you go/i, /without care/i, /an hour/i, /per hour/i, /\$25 to \$50/, /quick change/i, /update session/i,
   /a year\b[^.]{0,20}care/i, /two months free/i, /care is optional/i, /optional care/i, /skip (?:it|care)/i,
-  /subscription/i, /\btrad(?:e|es|ed|ing)\b/i, /\bon call\b/i, /\bchat\b/i, /—/, /–/, /&mdash;/, /&ndash;/, /\$-/, /NaN|undefined/,
+  /subscription is optional/i, /optional subscription/i, /skip (?:the |your )?subscription/i,
+  /\b(?:Planted|Tended|In Bloom) care\b/i, /\bcare comes with every site/i, /\bthen care\b/i, /\bstop care\b/i, /\btrad(?:e|es|ed|ing)\b/i, /\bon call\b/i, /\bchat\b/i, /—/, /–/, /&mdash;/, /&ndash;/, /\$-/, /NaN|undefined/,
   /paid by you/i, /\$3 a month/i, /looked after if you like/i, /Let’s talk/, /booking fully set up for you/i];
 const visible = html
   .replace(/<script[\s\S]*?<\/script>/g, (m) => (m.includes('quiz-logic') ? m.replace(/\/\/.*$/gm, '') : ''))
@@ -172,17 +176,17 @@ combos.forEach((picks, n) => {
   if ($('r-build-price').textContent !== usd(full)) failures.push(`${tag}: build price shows ${$('r-build-price').textContent}`);
   if (!$('r-build-founding').textContent.includes(usd(founding))) failures.push(`${tag}: founding price missing`);
   const careName = $('r-care-name').textContent;
-  if (!careName.endsWith(`${build} care, ${usd(care)} a month`)) failures.push(`${tag}: care heading is "${careName}"`);
+  if (!careName.endsWith(`${build} subscription, ${usd(care)} a month`)) failures.push(`${tag}: subscription heading is "${careName}"`);
   const costs = $('r-costs').textContent;
   const because = $('r-care-because').textContent;
   const careAlso = $('r-care-also').textContent;
   if (!costs.includes(usd(full) + ' once')) failures.push(`${tag}: cost list lacks the build price`);
   if (!/Half to start, which holds your spot, and half at launch/.test(costs)) failures.push(`${tag}: cost list lacks how paying works`);
-  if (!costs.includes(`Care: ${usd(care)} a month, starting after your 30 days of settling in`)) failures.push(`${tag}: cost list lacks the care price`);
-  if (!/Care comes with every site/.test(because)) failures.push(`${tag}: doesn't say care comes with every site`);
+  if (!costs.includes(`Subscription: ${usd(care)} a month, starting after your 30 days of settling in`)) failures.push(`${tag}: cost list lacks the subscription price`);
+  if (!/Every site comes with a subscription/.test(because)) failures.push(`${tag}: doesn't say every site comes with a subscription`);
   if (!/as often as you need, usually within 2 business days/.test(careAlso)) failures.push(`${tag}: changes or the reply time missing`);
   if (!/Big new things, like a new page, I quote first/.test(careAlso)) failures.push(`${tag}: big things aren't quoted first`);
-  if (!/I hand you every file and login/.test(careAlso)) failures.push(`${tag}: the hand-over promise is missing`);
+  if (!/If you ever cancel your subscription, your site is still yours, and I hand you every file and login/.test(careAlso)) failures.push(`${tag}: the hand-over promise is missing`);
   if (book.kind === 'own' && !/booking app you already use/.test(costs)) failures.push(`${tag}: booking-app cost line missing`);
   if (build === 'In Bloom' && !/about 2\.9% \+ 30¢ per payment/.test(costs)) failures.push(`${tag}: In Bloom cost list lacks the payment fee`);
   // the newsletter list lives in their own Buttondown account, with no helper (Oct 5 2026)

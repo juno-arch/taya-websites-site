@@ -85,7 +85,7 @@
   function agreement(signedOn) { return { file: true, signed_name: 'Rosa Linden', signed_on: signedOn, version: '2026-10-05' }; }
   var RECEIPT_DEPOSIT = { name: 'Deposit_receipt_k2m9x7q4ab.pdf', label: 'Deposit receipt' };
   var RECEIPT_BALANCE = { name: 'Second_half_receipt_p8d3n5w1zc.pdf', label: 'Second half receipt' };
-  var RECEIPT_CARE = { name: 'Care_receipt_t6v2h9r4ye.pdf', label: 'Care receipt' };
+  var RECEIPT_CARE = { name: 'Subscription_receipt_t6v2h9r4ye.pdf', label: 'Subscription receipt' };
   var receiptDays = {};
 
   var SCENES = {
@@ -156,7 +156,7 @@
       return {
         ok: true,
         client: Object.assign({}, CLIENT, { site_url: 'https://fernandclay.com' }),
-        note: { text: 'You’re live! 🎉 Take a slow look this week. Anything feel off, big or small? Ask for a change, further down. Settling-in tweaks are on me, and your care picks up right after, the same easy way.', date: today() },
+        note: { text: 'You’re live! 🎉 Take a slow look this week. Anything feel off, big or small? Ask for a change, further down. Settling-in tweaks are on me, and your subscription picks up right after, the same easy way.', date: today() },
         list: {
           open: [
             item('d:balance', 'Pay the second half', 'Due at launch.', 'pay', { pay_key: 'balance' })
@@ -288,8 +288,8 @@
         'newsletter signup and a Book now button to your booking app.', '',
         'Price: $600, a founding price (half off the build), paid once.',
         'Half to start, half at launch.', '',
-        'After launch: care at $45 a month, which keeps your site running.',
-        'Billing starts after 30 days of settling in. If you ever stop care,',
+        'After launch: a $45 a month subscription, which keeps your site running.',
+        'Billing starts after 30 days of settling in. If you ever cancel it,',
         'the site is still yours, with every file and login.', '',
         'Two rounds of changes by email. The site is yours.', '',
         'Signed ' + spoken(data.things.agreement ? data.things.agreement.signed_on : today()) + ' as Rosa Linden. Version 2026-10-05.', '', SAMPLE
@@ -318,7 +318,7 @@
       if (!r) return null;
       var lines = r === RECEIPT_DEPOSIT ? ['Deposit for a Tended build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.deposit || today()) + ' by card']
         : r === RECEIPT_BALANCE ? ['Second half of a Tended build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.balance || today()) + ' by card']
-          : ['Care, one month', 'Amount: $45.00', 'Paid ' + spoken(receiptDays.care || today()) + ' by card'];
+          : ['Subscription, one month', 'Amount: $45.00', 'Paid ' + spoken(receiptDays.care || today()) + ' by card'];
       return pdf('Web Faery receipt (sample)', lines.concat(['', 'Thank you, Rosa!', '', SAMPLE]));
     }
   };

@@ -410,12 +410,12 @@
   .faq-list .ans { padding: 0 30px 18px 2px; color: var(--ink-soft); }
 
   /* ---------- AFTERCARE + SHOP ---------- */
-  .care { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 40px; border-top: 1px solid var(--ink); }
-  .care li { list-style: none; padding: 20px 20px 22px 0; }
-  .care li + li { padding-left: 20px; border-left: 1px solid var(--hair); }
-  .care b { display: block; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
-  .care h3 { font-size: 26px; margin: 4px 0 8px; }
-  .care p { font-size: 15px; color: var(--ink-soft); }
+  ol.care { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 40px; border-top: 1px solid var(--ink); }
+  ol.care li { list-style: none; padding: 20px 20px 22px 0; }
+  ol.care li + li { padding-left: 20px; border-left: 1px solid var(--hair); }
+  ol.care b { display: block; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+  ol.care h3 { font-size: 26px; margin: 4px 0 8px; }
+  ol.care p { font-size: 15px; color: var(--ink-soft); }
   .avoid { margin-top: 26px; font-size: 15px; color: var(--ink-soft); }
   .avoid b { color: var(--ink); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 12px; margin-right: 8px; }
   .shop { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 40px; align-items: start; margin-top: 34px; }
@@ -528,8 +528,8 @@
   /* ---------- layout breakpoints ---------- */
   @media (max-width: 960px) {
     .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .care { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .care li:nth-child(3) { padding-left: 0; border-left: 0; }
+    ol.care { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    ol.care li:nth-child(3) { padding-left: 0; border-left: 0; }
     .policy { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 860px) {
@@ -561,8 +561,8 @@
     nav a { padding-inline: 4px; font-size: 11.5px; letter-spacing: 0.12em; }
     .hero-band .cta-row .btn { flex: 1 1 100%; }
     nav a.nq { display: none; }
-    .where, .steps, .care, .policy { grid-template-columns: minmax(0, 1fr); }
-    .where div + div, .care li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--hair); }
+    .where, .steps, ol.care, .policy { grid-template-columns: minmax(0, 1fr); }
+    .where div + div, ol.care li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--hair); }
     .prod { grid-template-columns: minmax(0, 1fr) auto; }
     .prod .qty { grid-column: 1 / -1; justify-self: start; }
   }
@@ -657,7 +657,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus a little aftercare shop through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Comes with every site and keeps it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Comes with every site and keeps it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -686,7 +686,7 @@
       <span class="live-dot" data-show="mother crone all" data-thing="Instagram feed that fills itself">Updates on its own, every time you post</span><span data-show="maiden" hidden>Kept fresh by email: send me a new piece and I swap it in</span>
       <a class="btn quiet" href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener">Follow @jaidentattoo</a>
     </div>
-    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">With Tended or In Bloom, this grid fills itself from your Instagram: post a piece and it shows up here, in black and grey, no logging in to anything. It runs on <b>Behold</b> (behold.so), one of the few feed services still working with Instagram&rsquo;s current rules. Their free plan shows your newest 6 posts, refreshes once a day, and covers about 1,200 page views a month. You&rsquo;d connect it once from your Instagram (Instagram only allows this for Creator or Business accounts, a free switch in your settings if you&rsquo;re not one already). Care covers it, even if your site ever gets busy enough to need Behold&rsquo;s paid plan. With Planted, I keep these six fresh by hand: email me a new piece and I swap it in. Tap any photo to see it whole.</p>
+    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">With Tended or In Bloom, this grid fills itself from your Instagram: post a piece and it shows up here, in black and grey, no logging in to anything. It runs on <b>Behold</b> (behold.so), one of the few feed services still working with Instagram&rsquo;s current rules. Their free plan shows your newest 6 posts, refreshes once a day, and covers about 1,200 page views a month. You&rsquo;d connect it once from your Instagram (Instagram only allows this for Creator or Business accounts, a free switch in your settings if you&rsquo;re not one already). Your subscription covers it, even if your site ever gets busy enough to need Behold&rsquo;s paid plan. With Planted, I keep these six fresh by hand: email me a new piece and I swap it in. Tap any photo to see it whole.</p>
   </div>
 </section>
 
@@ -957,7 +957,7 @@
         <p class="demo-note">Preview only: nothing was sent, and no list was joined. On your real site, sign-ups go to your own Buttondown list.</p>
         <div class="bk-nav"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
       </div>
-      <p class="mock-note wf-note" style="margin-top:26px;font-size:14px">Sign-ups go straight into your own Buttondown list, free until 100 readers, and past that care covers it, up to 1,000. You write the monthly letter there, and it lands in everyone&rsquo;s inbox looking like this site.</p>
+      <p class="mock-note wf-note" style="margin-top:26px;font-size:14px">Sign-ups go straight into your own Buttondown list, free until 100 readers, and past that your subscription covers it, up to 1,000. You write the monthly letter there, and it lands in everyone&rsquo;s inbox looking like this site.</p>
     </div>
   </div>
 </section>
@@ -1108,7 +1108,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus a little aftercare shop through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Comes with every site and keeps it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Comes with every site and keeps it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
