@@ -293,7 +293,7 @@
       careLead: 'The Planted subscription keeps your page healthy and current, with me looking after it.',
       carePoints: [
         'Hosting, your web address, security and backups',
-        'Your own magic link, yours for good: whenever something small needs changing, tap it right on your site and type me a note',
+        'Your magic site, yours for good: whenever something small needs changing, you just message me through it',
         'A “your changes are up” email the moment it’s live',
         'A monthly check-in about your business, so you don’t have to think about what to update',
         'New reviews added as they come in'
@@ -310,7 +310,7 @@
       also: 'If you ever want booking with payments, or selling, what you paid counts toward In Bloom.',
       careLead: 'The Tended subscription keeps your site fresh as the seasons change, with your posts showing up everywhere and your newsletter going.',
       carePoints: [
-        'Everything in the Planted subscription: hosting, your web address, backups, your magic link, a monthly check-in and new reviews',
+        'Everything in the Planted subscription: hosting, your web address, backups, your magic site, a monthly check-in and new reviews',
         'Post once, show up everywhere: keep posting where you already post, and it lands on your Facebook, your Google profile and your website too. I only post what you’ve made or said yes to.',
         // (\u2011, a no-break hyphen, keeps sign-up and sold-out from breaking across two lines on a phone)
         'Your contact form and newsletter sign\u2011up, with sending covered',
@@ -326,7 +326,7 @@
         'Everything in Tended',
         'Booking right on your site: the app you use now, if it can sit on a website, or a free Cal.com if you’d rather switch. Your choice',
         'Payments or a small shop (gift certificates, deposits, up to about 20 items), set up in your own accounts and running on my server',
-        'The money goes straight to you, not through me'
+        'The money goes straight to you, not through me: orders and any shipping addresses live in your own Stripe, with a short heads-up email for each'
       ],
       also: 'We test it all with pretend clients before anything goes public.',
       careLead: 'The In Bloom subscription keeps everything in full bloom: your booking, payments or shop running and doing business for you.',
@@ -352,12 +352,11 @@
   var EVERY_PLAN = [
     'Email me anytime and I make your changes',
     'Changes usually within 2 business days',
-    'Anything broken, I fix free',
-    'I keep an eye on your site, and if it goes down, I know before you do',
+    'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
     'Holiday heads-ups, with your hours updated on your site and your Google profile',
     'If a host changes its rules, moving your site is on me'
   ];
-  // changes are the same in every plan (the reply time and free fixes are in the list above)
+  // changes are the same in every plan (the reply time and the watching-over line are in the list above)
   var CHANGES = 'Changes are the same in every plan: hours, prices, photos, wording, as often as you need. Big new things, like a new page, I quote first.';
 
   function money(n) { return '$' + n.toLocaleString('en-US'); }
@@ -436,7 +435,7 @@
     var nc = notCovered.length > 2 ? notCovered.slice(0, -1).join(', ') + ', or ' + notCovered[notCovered.length - 1] : notCovered.join(' or ');
     lines.push(['Your subscription doesn’t pay for', nc.charAt(0).toUpperCase() + nc.slice(1) + '.']);
     lines.push(['Your accounts', accountsLine(p, build)]);
-    lines.push(['Fixes', 'Anything broken, always free.']);
+    lines.push(['Fixes', 'If anything breaks, I fix it, as part of your subscription.']);
     return lines;
   }
 

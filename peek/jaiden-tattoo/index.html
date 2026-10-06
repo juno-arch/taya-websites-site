@@ -38,6 +38,8 @@
     --tag-bg: #f1efea; --tag-ink: #2b2a28; --tag-line: #cfccc5;
     --slat: rgba(17, 17, 17, 0.045);
     --grain-o: 0.05;
+    /* Y2K window chrome, in her greys */
+    --win: #e7e4de; --win-hi: #ffffff; --win-lo: #8f8c86; --win-edge: #55534f; --g-rim: rgba(0,0,0,0);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
@@ -45,6 +47,7 @@
       --ground: #0c0c0c; --ground-2: #161616; --ink: #eeece8; --ink-soft: #aeaaa3; --ash: #6f6c67;
       --btn: #eeece8; --btn-ink: #0c0c0c; --night: #000; --on-night: #eeece8;
       --hair: #2b2a28; --tag-bg: #1c1c1b; --tag-ink: #dedad3; --tag-line: #3a3936; --slat: rgba(238, 236, 232, 0.05); --grain-o: 0.07;
+      --win: #1c1c1b; --win-hi: #3a3936; --win-lo: #000; --win-edge: #000; --g-rim: #3a3936;
       color-scheme: dark;
     }
   }
@@ -52,6 +55,7 @@
     --ground: #0c0c0c; --ground-2: #161616; --ink: #eeece8; --ink-soft: #aeaaa3; --ash: #6f6c67;
     --btn: #eeece8; --btn-ink: #0c0c0c; --night: #000; --on-night: #eeece8;
     --hair: #2b2a28; --tag-bg: #1c1c1b; --tag-ink: #dedad3; --tag-line: #3a3936; --slat: rgba(238, 236, 232, 0.05); --grain-o: 0.07;
+    --win: #1c1c1b; --win-hi: #3a3936; --win-lo: #000; --win-edge: #000; --g-rim: #3a3936;
     color-scheme: dark;
   }
 
@@ -314,32 +318,136 @@
   .film-meta blockquote p { font-family: 'Libre Caslon Display', serif; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.35; color: #fff; }
   .film-meta blockquote footer { margin-top: 12px; font-size: 12.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(238,236,232,0.7); background: none; padding: 0; overflow: visible; }
 
-  /* ---------- SIGNATURE: fresh, then healed ---------- */
+  /* ---------- SIGNATURE: fresh, then healed, as healing.exe ----------
+     A little Y2K window in her greys: a chunky progress bar fills block by block (day one, two weeks, a month,
+     one year) while the healed photo develops in, then it resets. 16s; full and still under reduced motion; paused offscreen. */
   .healed-in { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); gap: 56px; align-items: center; }
   .settle { margin: 0; }
-  .settle-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .settle .photo { aspect-ratio: 3 / 4; }
-  .settle .photo span { position: absolute; left: 10px; top: 10px; z-index: 1; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #fff; background: rgba(0,0,0,0.55); padding: 4px 9px; }
+  .win { font-family: Verdana, Tahoma, Geneva, sans-serif; background: var(--win); padding: 3px; border: 1px solid var(--win-edge);
+    box-shadow: inset 1px 1px 0 var(--win-hi), inset -1px -1px 0 var(--win-lo), 7px 7px 0 rgba(0, 0, 0, 0.14); }
+  .win-bar { display: flex; align-items: center; gap: 3px; height: 24px; padding: 0 3px 0 7px; color: #fff; font-size: 12px; font-weight: 700;
+    background: linear-gradient(90deg, #0a0a0a, #8f8c86); }
+  .win-bar b { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.02em; }
+  .win-bar i { flex: none; width: 16px; height: 14px; box-sizing: border-box; display: grid; place-items: center; font-style: normal; font-size: 10px; line-height: 1; font-weight: 700;
+    color: #111; background: #e7e4de; box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #55534f; }
+  .win-bar i + i:last-child { margin-left: 2px; }
+  .win-body { padding: 10px 10px 12px; }
+  .settle-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .settle .photo { aspect-ratio: 3 / 4; border: 2px solid; border-color: var(--win-lo) var(--win-hi) var(--win-hi) var(--win-lo); }
+  .settle .photo span { position: absolute; left: 6px; top: 6px; z-index: 1; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: #fff; background: rgba(0,0,0,0.6); padding: 3px 7px; }
   .settle .healed img { opacity: 0; scale: 1.035; animation: develop 16s ease-in-out infinite; }
   .settle .healed { background: #f4f2ee; }
-  .timeline { position: relative; margin: 26px 6px 0; height: 40px; }
-  .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 1px; background: var(--ink); opacity: 0.35; }
-  .timeline .needle { position: absolute; left: 0; top: 4px; width: 9px; height: 9px; margin-left: -4px; border-radius: 50%; background: var(--ink); animation: travel 16s ease-in-out infinite; }
-  .timeline .needle::after { content: ""; position: absolute; left: 4px; top: -3px; width: 1px; height: 15px; background: var(--ink); }
-  .timeline ol { list-style: none; display: flex; justify-content: space-between; padding-top: 18px; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
-  .timeline-track { position: absolute; left: 0; right: 0; top: 0; height: 20px; }
-  @keyframes develop { 0%, 46% { opacity: 0; scale: 1.035; } 64%, 90% { opacity: 1; scale: 1; } 100% { opacity: 0; scale: 1.035; } }
-  @keyframes travel { 0%, 8% { left: 0%; } 62% { left: 100%; } 90% { left: 100%; opacity: 1; } 96% { opacity: 0; left: 100%; } 97% { left: 0%; opacity: 0; } 100% { left: 0%; opacity: 1; } }
+  .heal-prog { margin-top: 12px; }
+  .heal-lbl { display: grid; margin: 0 0 6px; font-size: 12px; line-height: 1.3; color: var(--ink); }
+  .heal-lbl span { grid-area: 1 / 1; opacity: 0; }
+  .heal-lbl span:nth-child(1) { animation: hl1 16s infinite step-end; }
+  .heal-lbl span:nth-child(2) { animation: hl2 16s infinite step-end; }
+  .heal-lbl span:nth-child(3) { animation: hl3 16s infinite step-end; }
+  .heal-lbl span:nth-child(4) { animation: hl4 16s infinite step-end; }
+  .heal-bar { height: 22px; box-sizing: border-box; padding: 3px; background: var(--ground); border: 1px solid; border-color: var(--win-lo) var(--win-hi) var(--win-hi) var(--win-lo); }
+  .heal-bar i { display: block; height: 100%; background: repeating-linear-gradient(90deg, var(--ink) 0 calc(5% - 2px), rgba(0,0,0,0) 0 5%); clip-path: inset(0 100% 0 0); animation: heal-fill 16s infinite; }
+  @keyframes develop { 0%, 46% { opacity: 0; scale: 1.035; } 64%, 92% { opacity: 1; scale: 1; } 98%, 100% { opacity: 0; scale: 1.035; } }
+  @keyframes heal-fill { 0%, 8% { clip-path: inset(0 100% 0 0); animation-timing-function: steps(20, end); } 62%, 97% { clip-path: inset(0 0 0 0); animation-timing-function: step-end; } 98%, 100% { clip-path: inset(0 100% 0 0); } }
+  @keyframes hl1 { 0% { opacity: 1; } 26% { opacity: 0; } 98%, 100% { opacity: 1; } }
+  @keyframes hl2 { 0% { opacity: 0; } 26% { opacity: 1; } 44%, 100% { opacity: 0; } }
+  @keyframes hl3 { 0% { opacity: 0; } 44% { opacity: 1; } 62%, 100% { opacity: 0; } }
+  @keyframes hl4 { 0% { opacity: 0; } 62% { opacity: 1; } 98%, 100% { opacity: 0; } }
   .settle.off * { animation-play-state: paused !important; }
   .settle.still .healed img { animation: none; opacity: 1; scale: 1; }
-  .settle.still .needle { animation: none; left: 100%; }
-  @media (prefers-reduced-motion: reduce) { .settle .healed img { animation: none; opacity: 1; scale: 1; } .timeline .needle { animation: none; left: 100%; } }
-  .settle figcaption { margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); }
+  .settle.still .heal-bar i { animation: none; clip-path: none; }
+  .settle.still .heal-lbl span { animation: none !important; } .settle.still .heal-lbl span:last-child { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .settle .healed img { animation: none; opacity: 1; scale: 1; }
+    .heal-bar i { animation: none; clip-path: none; }
+    .heal-lbl span { animation: none !important; } .heal-lbl span:last-child { opacity: 1; }
+  }
+  .settle figcaption { margin-top: 14px; font-size: 13.5px; color: var(--ink-soft); }
   .pair-pick { margin-top: 26px; max-width: 320px; }
   .her-words { margin-top: 24px; font-family: 'Libre Caslon Display', serif; font-style: italic; font-size: clamp(22px, 2.6vw, 27px); line-height: 1.35; border-left: 1px solid var(--ink); padding-left: 18px; }
   .her-words small { display: block; margin-top: 8px; font-family: 'Geist', sans-serif; font-style: normal; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
 
   /* ---------- BOOKING ---------- */
+  .book-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 30px 56px; align-items: end; }
+  .book-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 40px; }
+  .book-row .q { margin: 0; }
+  .book-row .hint { flex-basis: 100%; margin: 0; }
+
+  /* the jackalope pet: a Y2K keychain pet after her jackalope logo. It reads the banner:
+     books open (it hops back and forth), designs up (a heart blinks over it), books closed (it sleeps). Tap it and it jumps,
+     or wakes up for a second. Steps only, so it's pixel-y and light; still under reduced motion; paused offscreen. */
+  .gotchi { margin: 0; display: grid; justify-items: center; gap: 12px; }
+  .g-shell { position: relative; width: 224px; box-sizing: border-box; padding: 24px 22px 26px; display: grid; justify-items: center; gap: 12px;
+    border-radius: 48% 48% 44% 44% / 36% 36% 42% 42%;
+    background: radial-gradient(120% 90% at 30% 16%, #3d3c39 0, #141414 44%, #050505 100%);
+    box-shadow: 0 0 0 1px var(--g-rim), inset 0 2px 0 rgba(255,255,255,0.16), inset 0 -8px 16px rgba(0,0,0,0.75), 0 16px 28px -16px rgba(0,0,0,0.6); }
+  .g-shell::before { content: ""; position: absolute; top: -15px; left: 50%; width: 20px; height: 20px; margin-left: -13px; border: 3px solid #8f8c86; border-radius: 50%; }
+  .g-brand { margin: 0; font: 700 9px/1 Verdana, Tahoma, Geneva, sans-serif; letter-spacing: 0.3em; text-transform: uppercase; color: #8f8c86; }
+  .g-screen { position: relative; width: 150px; height: 120px; box-sizing: border-box; border-radius: 5px; color: #151515; overflow: hidden;
+    background-color: #c9c6bd;
+    background-image: linear-gradient(rgba(0,0,0,0.04) 1px, rgba(0,0,0,0) 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, rgba(0,0,0,0) 1px); background-size: 3px 3px;
+    box-shadow: inset 0 0 0 3px #a19e96, inset 0 4px 9px rgba(0,0,0,0.32), 0 0 0 5px #222120; }
+  .g-pet { position: absolute; left: 10px; right: 10px; top: 12px; height: 62px; margin: 0; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; container-type: inline-size; -webkit-tap-highlight-color: rgba(0,0,0,0); }
+  .g-pet:focus-visible { outline: 2px dotted #151515; outline-offset: 2px; }
+  .g-walk { position: absolute; left: 0; bottom: 0; width: 64px; height: 52px; animation: g-walk 8s infinite step-end; }
+  .g-walk svg { display: block; width: 64px; height: 52px; fill: currentColor; shape-rendering: crispEdges; overflow: visible; }
+  .g-walk .f-hop, .g-walk .f-sleep, .g-walk .f-heart { opacity: 0; }
+  .g-walk .f-sit { animation: g-sit 8s infinite step-end; }
+  .g-walk .f-hop { animation: g-hopf 8s infinite step-end; }
+  .g-z { position: absolute; left: calc(50% - 50px); top: 8px; font: 700 12px/1 Verdana, Tahoma, sans-serif; opacity: 0; pointer-events: none; }
+  .g-z i { font-style: normal; display: inline-block; font-size: 15px; margin-left: 2px; translate: 0 -8px; }
+  .g-lcd { position: absolute; left: 6px; right: 6px; bottom: 9px; margin: 0; text-align: center; font: 700 11px/1.2 Verdana, Tahoma, Geneva, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
+  .g-lcd small { display: block; font-size: 9.5px; font-weight: 400; letter-spacing: 0.04em; text-transform: none; }
+  .g-btns { display: flex; gap: 2px; margin: 0; }
+  .g-btns button { display: grid; justify-items: center; gap: 5px; width: 52px; min-height: 48px; margin: 0; padding: 2px 0 0; border: 0; background: none; cursor: pointer;
+    font: 400 8.5px/1 Verdana, Tahoma, Geneva, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: #bdbab3; -webkit-tap-highlight-color: rgba(0,0,0,0); }
+  .g-btns button::before { content: ""; width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle at 36% 30%, #f6f4ef, #bdbab3 58%, #8f8c86); box-shadow: 0 2px 0 #000, inset 0 -2px 3px rgba(0,0,0,0.25); }
+  .g-btns button[aria-pressed="true"] { color: #fff; }
+  .g-btns button[aria-pressed="true"]::before { translate: 0 2px; box-shadow: 0 0 0 #000, inset 0 2px 3px rgba(0,0,0,0.4); }
+  .g-btns button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+  .gotchi figcaption { font-size: 13.5px; color: var(--ink-soft); text-align: center; }
+  /* designs up: a heart blinks over it */
+  .g-screen[data-state="event"] .f-heart { animation: g-blink 1.2s infinite step-end; }
+  /* books closed: it sleeps in the middle, z's float up */
+  .g-screen[data-state="closed"] .g-walk { animation: none; translate: calc(50cqw - 32px) 0; }
+  .g-screen[data-state="closed"] .f-sit, .g-screen[data-state="closed"] .f-hop { animation: none; opacity: 0; }
+  .g-screen[data-state="closed"] .f-sleep { opacity: 1; }
+  .g-screen[data-state="closed"] .g-z { animation: g-z 2.4s infinite step-end; }
+  /* a tap: it jumps, or wakes for a second */
+  .g-pet.boing svg { animation: g-boing 0.6s step-end; }
+  .g-screen[data-state="closed"] .g-pet.boing .f-sleep { opacity: 0; }
+  .g-screen[data-state="closed"] .g-pet.boing .f-sit { opacity: 1; }
+  .g-screen[data-state="closed"] .g-pet.boing .g-z { animation: none; opacity: 0; }
+  @keyframes g-walk {
+    0% { translate: calc(100cqw - 64px) 0; scale: 1 1; }
+    12% { translate: calc((100cqw - 64px) * 0.83) -5px; scale: 1 1; }
+    16% { translate: calc((100cqw - 64px) * 0.67) 0; scale: 1 1; }
+    28% { translate: calc((100cqw - 64px) * 0.5) -5px; scale: 1 1; }
+    32% { translate: calc((100cqw - 64px) * 0.33) 0; scale: 1 1; }
+    44% { translate: calc((100cqw - 64px) * 0.17) -5px; scale: 1 1; }
+    48% { translate: 0 0; scale: 1 1; }
+    56% { translate: 0 0; scale: -1 1; }
+    62% { translate: calc((100cqw - 64px) * 0.17) -5px; scale: -1 1; }
+    66% { translate: calc((100cqw - 64px) * 0.33) 0; scale: -1 1; }
+    74% { translate: calc((100cqw - 64px) * 0.5) -5px; scale: -1 1; }
+    78% { translate: calc((100cqw - 64px) * 0.67) 0; scale: -1 1; }
+    86% { translate: calc((100cqw - 64px) * 0.83) -5px; scale: -1 1; }
+    90% { translate: calc(100cqw - 64px) 0; scale: -1 1; }
+    98%, 100% { translate: calc(100cqw - 64px) 0; scale: 1 1; }
+  }
+  @keyframes g-sit { 0% { opacity: 1; } 12% { opacity: 0; } 16% { opacity: 1; } 28% { opacity: 0; } 32% { opacity: 1; } 44% { opacity: 0; } 48% { opacity: 1; } 62% { opacity: 0; } 66% { opacity: 1; } 74% { opacity: 0; } 78% { opacity: 1; } 86% { opacity: 0; } 90%, 100% { opacity: 1; } }
+  @keyframes g-hopf { 0% { opacity: 0; } 12% { opacity: 1; } 16% { opacity: 0; } 28% { opacity: 1; } 32% { opacity: 0; } 44% { opacity: 1; } 48% { opacity: 0; } 62% { opacity: 1; } 66% { opacity: 0; } 74% { opacity: 1; } 78% { opacity: 0; } 86% { opacity: 1; } 90%, 100% { opacity: 0; } }
+  @keyframes g-blink { 0% { opacity: 1; } 60%, 100% { opacity: 0; } }
+  @keyframes g-z { 0% { opacity: 1; translate: 0 6px; } 33% { translate: 0 2px; } 66% { translate: 0 -2px; } 90%, 100% { opacity: 0; translate: 0 -2px; } }
+  @keyframes g-boing { 0% { translate: 0 -8px; } 30% { translate: 0 0; } 50% { translate: 0 -5px; } 80%, 100% { translate: 0 0; } }
+  .gotchi.off * { animation-play-state: paused !important; }
+  @media (prefers-reduced-motion: reduce) {
+    .g-walk, .g-walk .f-sit, .g-walk .f-hop, .g-screen .f-heart, .g-screen .g-z, .g-pet.boing svg { animation: none !important; }
+    .g-walk { translate: calc(50cqw - 32px) 0; }
+    .g-walk .f-sit { opacity: 1; } .g-walk .f-hop { opacity: 0; }
+    .g-screen[data-state="event"] .f-heart { opacity: 1; }
+    .g-screen[data-state="closed"] .g-z { opacity: 1; }
+  }
+
   .sessions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin-top: 40px; border: 1px solid var(--ink); }
   .session { padding: 30px 30px 28px; }
   .session + .session { border-left: 1px solid var(--ink); }
@@ -540,7 +648,8 @@
   @media (max-width: 760px) {
     section { padding-block: 72px; }
     .film-sec { padding-block: 0 72px; }
-    .welcome, .healed-in, .req, .shop, .faq, .alerts, .found, .reviews, .included, .film-meta { grid-template-columns: minmax(0, 1fr); }
+    .welcome, .healed-in, .req, .shop, .faq, .alerts, .found, .reviews, .included, .film-meta, .book-head { grid-template-columns: minmax(0, 1fr); }
+    .gotchi { justify-self: center; margin-top: 14px; }
     .welcome, .healed-in, .included { gap: 36px; }
     .portrait .photo { max-width: 360px; }
     .ig-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
@@ -595,7 +704,7 @@
         <button type="button" data-state="event" aria-pressed="false">Designs</button>
         <button type="button" data-state="closed" aria-pressed="false">Books closed</button>
       </div>
-      <p class="status-note">Books opening, closing, a few discounted designs up for grabs: you email me and it&rsquo;s switched.</p>
+      <p class="status-note">Email me and it&rsquo;s switched, jackalope included.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden><div class="wrap status-panel-in"><p class="status-note">Your site follows each visitor&rsquo;s phone setting.</p><button type="button" class="seg" id="theme-auto" style="display:inline-block;padding:8px 14px;cursor:pointer">Back to auto</button></div></div>
@@ -652,12 +761,12 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your latest work, your portfolio, your film, fresh and healed, your sessions and policies, kind words, and how to reach you by email."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your latest work, your portfolio, your film, fresh and healed, your sessions and policies, a Book button to the booking app you already use, kind words, and how to reach you by email."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus your Instagram feed filling itself in as you post, your own inquiry form with photos, a monthly newsletter sign-up, your aftercare guide and your FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus a little aftercare shop through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Comes with every site and keeps it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -686,7 +795,7 @@
       <span class="live-dot" data-show="mother crone all" data-thing="Instagram feed that fills itself">Updates on its own, every time you post</span><span data-show="maiden" hidden>Kept fresh by email: send me a new piece and I swap it in</span>
       <a class="btn quiet" href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener">Follow @jaidentattoo</a>
     </div>
-    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">With Tended or In Bloom, this grid fills itself from your Instagram: post a piece and it shows up here, in black and grey, no logging in to anything. It runs on <b>Behold</b> (behold.so), one of the few feed services still working with Instagram&rsquo;s current rules. Their free plan shows your newest 6 posts, refreshes once a day, and covers about 1,200 page views a month. You&rsquo;d connect it once from your Instagram (Instagram only allows this for Creator or Business accounts, a free switch in your settings if you&rsquo;re not one already). Your subscription covers it, even if your site ever gets busy enough to need Behold&rsquo;s paid plan. With Planted, I keep these six fresh by hand: email me a new piece and I swap it in. Tap any photo to see it whole.</p>
+    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">With Tended or In Bloom, this fills itself from your Instagram through <b>Behold</b>: free for your newest 6 posts, and your subscription covers more.</p>
   </div>
 </section>
 
@@ -777,8 +886,8 @@
       </blockquote>
       <div>
         <p class="label with-pill"><span>The film</span> <span class="tag" data-go="maiden">Every build</span></p>
-        <p class="soft">It plays here quietly, in black and grey, and stays silent until you tap. Videography by <a href="https://www.instagram.com/jordy.kourupes/" target="_blank" rel="noopener">Jordan Kourupes</a>.</p>
-        <p class="mock-note wf-note" style="margin-top:22px;font-size:14px">This is your own film, from your pinned post. I squeezed it down to 7.5 MB so it starts fast, even on slow country internet. The quiet loop is just the backstage part (you drawing, then tattooing). Tapping plays the whole film from the start, in full color and with sound, and anyone who turns off motion on their phone sees a still frame with a play button instead.</p>
+        <p class="soft">Silent until you tap. Videography by <a href="https://www.instagram.com/jordy.kourupes/" target="_blank" rel="noopener">Jordan Kourupes</a>.</p>
+        <p class="mock-note wf-note" style="margin-top:22px;font-size:14px">Your pinned film, squeezed to 7.5 MB. The loop is just the backstage part; a tap plays it all, in color, with sound.</p>
       </div>
     </div>
   </div>
@@ -791,26 +900,56 @@
       <p class="label with-pill"><span>Fresh, then healed</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">The art you&rsquo;ll <em>live with</em></h2>
       <p class="her-words">&ldquo;Your fresh tattoo is not an accurate representation of the art you&rsquo;ll be living with forever.&rdquo;<small>Jaiden, on Instagram</small></p>
-      <p class="soft" style="margin-top:22px">A year in, the redness is gone and the shading has settled into the skin. Watch the same piece go from the day it was made to a year later.</p>
+      <p class="soft" style="margin-top:22px">A year in, the redness is gone and the shading has settled. Same piece, day one to one year.</p>
       <div class="seg pair-pick" role="group" aria-label="Choose a tattoo"><button type="button" data-pair="frog" aria-pressed="true">The frog</button><button type="button" data-pair="books" aria-pressed="false">The books</button></div>
     </div>
     <figure class="settle reveal" id="settle">
-      <div class="settle-pair">
-        <div class="photo fresh"><span>Day one</span><img id="fresh-img" src="images/pf-frog.jpg" width="1050" height="1400" alt="Fresh: a tree frog on a toadstool, the day it was tattooed" loading="lazy"></div>
-        <div class="photo healed"><span>One year</span><img id="healed-img" src="images/healed-frog.jpg" width="1161" height="1300" alt="Healed: the same frog a year later, soft and settled into the skin" loading="lazy"></div>
+      <div class="win">
+        <div class="win-bar" aria-hidden="true"><b>healing.exe</b><i>_</i><i>&#9633;</i><i>&times;</i></div>
+        <div class="win-body">
+          <div class="settle-pair">
+            <div class="photo fresh"><span>Day one</span><img id="fresh-img" src="images/pf-frog.jpg" width="1050" height="1400" alt="Fresh: a tree frog on a toadstool, the day it was tattooed" loading="lazy"></div>
+            <div class="photo healed"><span>One year</span><img id="healed-img" src="images/healed-frog.jpg" width="1161" height="1300" alt="Healed: the same frog a year later, soft and settled into the skin" loading="lazy"></div>
+          </div>
+          <div class="heal-prog" aria-hidden="true">
+            <p class="heal-lbl"><span>Healing: day one</span><span>Healing: two weeks</span><span>Healing: a month</span><span>Healed: one year</span></p>
+            <div class="heal-bar"><i></i></div>
+          </div>
+        </div>
       </div>
-      <div class="timeline" aria-hidden="true"><span class="needle"></span><ol><li>Day one</li><li>Two weeks</li><li>A month</li><li>One year</li></ol></div>
-      <figcaption id="settle-cap">The frog on a toadstool, fresh, then healed a year later. Both photos are from Jaiden&rsquo;s own posts.</figcaption>
+      <figcaption id="settle-cap">The frog on a toadstool, fresh, then a year healed. Both photos are from Jaiden&rsquo;s own posts.</figcaption>
     </figure>
   </div>
 </section>
 
 <section id="booking" class="gutter" style="background:var(--ground-2)">
   <div class="wrap">
-    <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
-    <p class="label with-pill"><span>How booking works</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">One client a day, <em>and the day is yours</em></h2>
-    <p class="measure soft" style="margin-top:16px">I don&rsquo;t stack clients. Each project is priced on its size, detail, placement and time, and your acceptance email tells you which session to book.</p>
+    <div class="book-head">
+      <div>
+        <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
+        <p class="label with-pill"><span>How booking works</span> <span class="tag" data-go="maiden">Every build</span></p>
+        <h2 class="reveal">One client a day, <em>and the day is yours</em></h2>
+        <p class="measure soft" style="margin-top:16px">I don&rsquo;t stack clients. Each project is priced on its size, detail, placement and time, and your acceptance email tells you which session to book.</p>
+      </div>
+      <figure class="gotchi" id="gotchi">
+        <div class="g-shell">
+          <p class="g-brand" aria-hidden="true">jackalope</p>
+          <div class="g-screen" id="g-screen" data-state="open">
+            <button type="button" class="g-pet" id="g-pet" aria-label="Poke the jackalope">
+              <span class="g-walk"><svg viewBox="0 0 32 26" aria-hidden="true" focusable="false"><path class="f-sit" d="M7 3h1v1h-1zM11 3h1v1h-1zM4 4h1v1h-1zM7 4h1v1h-1zM10 4h1v1h-1zM5 5h1v1h-1zM7 5h1v1h-1zM9 5h1v1h-1zM12 5h1v1h-1zM6 6h3v1h-3zM11 6h1v1h-1zM7 7h5v1h-5zM21 7h4v1h-4zM8 8h3v1h-3zM16 8h8v1h-8zM8 9h3v1h-3zM12 9h9v1h-9zM6 10h10v1h-10zM4 11h10v1h-10zM3 12h3v1h-3zM7 12h8v1h-8zM20 12h7v1h-7zM2 13h4v1h-4zM7 13h22v1h-22zM1 14h29v1h-29zM1 15h30v1h-30zM3 16h28v1h-28zM6 17h24v1h-24zM7 18h23v1h-23zM7 19h22v1h-22zM7 20h4v1h-4zM14 20h15v1h-15zM7 21h4v1h-4zM17 21h12v1h-12zM7 22h4v1h-4zM19 22h10v1h-10zM6 23h5v1h-5zM16 23h13v1h-13zM5 24h6v1h-6zM12 24h16v1h-16z"/><path class="f-hop" d="M7 1h1v1h-1zM11 1h1v1h-1zM4 2h1v1h-1zM7 2h1v1h-1zM10 2h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM9 3h1v1h-1zM12 3h1v1h-1zM6 4h3v1h-3zM11 4h1v1h-1zM7 5h5v1h-5zM21 5h4v1h-4zM8 6h3v1h-3zM16 6h8v1h-8zM8 7h3v1h-3zM12 7h9v1h-9zM6 8h10v1h-10zM4 9h10v1h-10zM3 10h3v1h-3zM7 10h8v1h-8zM20 10h7v1h-7zM2 11h4v1h-4zM7 11h22v1h-22zM1 12h29v1h-29zM1 13h30v1h-30zM3 14h28v1h-28zM6 15h24v1h-24zM7 16h23v1h-23zM7 17h22v1h-22zM6 18h5v1h-5zM19 18h11v1h-11zM4 19h5v1h-5zM22 19h10v1h-10zM3 20h4v1h-4zM25 20h7v1h-7zM2 21h3v1h-3zM28 21h4v1h-4z"/><path class="f-sleep" d="M7 11h1v1h-1zM11 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM10 12h1v1h-1zM5 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM12 13h1v1h-1zM6 14h3v1h-3zM11 14h1v1h-1zM7 15h5v1h-5zM18 15h6v1h-6zM8 16h3v1h-3zM13 16h9v1h-9zM8 17h9v1h-9zM6 18h6v1h-6zM17 18h11v1h-11zM4 19h10v1h-10zM15 19h15v1h-15zM3 20h28v1h-28zM2 21h3v1h-3zM7 21h24v1h-24zM1 22h30v1h-30zM1 23h30v1h-30zM2 24h29v1h-29zM3 25h28v1h-28z"/><path class="f-heart" d="M26 0h2v1h-2zM29 0h2v1h-2zM25 1h7v1h-7zM25 2h7v1h-7zM26 3h5v1h-5zM27 4h3v1h-3zM28 5h1v1h-1z"/></svg></span>
+              <span class="g-z" aria-hidden="true">z<i>Z</i></span>
+            </button>
+            <p class="g-lcd"><span id="g-l1">Books open</span><small id="g-l2">for 2026</small></p>
+          </div>
+          <div class="g-btns" role="group" aria-label="Try the banner">
+            <button type="button" data-g="open" aria-pressed="true" aria-label="Books open">open</button>
+            <button type="button" data-g="event" aria-pressed="false" aria-label="Designs available">designs</button>
+            <button type="button" data-g="closed" aria-pressed="false" aria-label="Books closed">closed</button>
+          </div>
+        </div>
+        <figcaption>It reads your banner. Try the buttons.</figcaption>
+      </figure>
+    </div>
     <div class="sessions">
       <div class="session reveal">
         <p class="label" style="margin-bottom:8px">Most projects</p>
@@ -833,6 +972,11 @@
       <li class="reveal"><h3>Your acceptance email</h3><p>With your quote and how to book. You schedule your own sessions and pay your $200 deposit.</p></li>
       <li class="reveal"><h3>Your day</h3><p>We design together, often freehand right on the skin. No consultation needed: planning time is part of your session.</p></li>
     </ol>
+    <div class="book-row">
+      <p class="q">Already accepted?</p>
+      <button type="button" class="btn quiet" id="pl-book">Book your session</button>
+      <p class="hint" id="pl-book-hint" role="status"></p>
+    </div>
     <div class="included">
       <div>
         <p class="label">What&rsquo;s included</p>
@@ -850,7 +994,7 @@
       <div class="reveal"><b>Come solo</b><p>Unless we&rsquo;ve arranged it ahead, to keep the room calm and focused.</p></div>
       <div class="reveal"><b>Right now</b><p>I&rsquo;m not taking color or cover-up projects.</p></div>
     </div>
-    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">These are your real prices and policies, from your FAQ page. One thing I noticed: the terms at the bottom of your inquiry form still say $200 an hour, while your FAQ says $225. On this site both read from the same place, so they always agree.</p>
+    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">Your real prices and policies, from your FAQ. The Book button opens your booking app (<span class="ph">which one?</span>). Tiny thing: your form&rsquo;s terms say $200 an hour, your FAQ says $225. Here they read from one place.</p>
   </div>
 </section>
 
@@ -860,7 +1004,7 @@
       <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
       <p class="label with-pill"><span>Inquire</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Tell me about <em>your project</em></h2>
-      <p class="measure soft" style="margin-top:16px">My books open and close, but you&rsquo;re welcome to send an inquiry any time. I&rsquo;ll reply by email when they&rsquo;re open. Give it a try:</p>
+      <p class="measure soft" style="margin-top:16px">Send an inquiry any time. I reply by email when books are open.</p>
       <div class="req">
         <div class="bk-card" id="rq-card">
           <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your idea</button><button type="button" data-s="2" disabled>2 Placement &amp; photos</button><button type="button" data-s="3" disabled>3 About you</button></div>
@@ -902,10 +1046,9 @@
           </div>
         </div>
         <div class="side mock-note wf-note">
-          <div class="bk-note"><b>What you see</b>Each inquiry lands in your email with the photos attached and the answers in the same order every time.</div>
+          <div class="bk-note"><b>What you see</b>Each inquiry lands in your email, photos attached.</div>
           <div class="bk-inbox"><div class="from">New inquiry</div><div id="rq-inbox">Waiting for an inquiry&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>Gently sorted</b>If someone picks a cover-up, it tells them kindly, right then, that you&rsquo;re not taking those right now, before they spend time on the rest.</div>
-          <div class="bk-note"><b>Your words</b>The fields are the ones on your current form, and the policies are pulled from your FAQ, so the prices always match.</div>
+          <div class="bk-note"><b>Gently sorted</b>Pick cover-up and it kindly says not right now, before they fill in the rest.</div>
         </div>
       </div>
     </div>
@@ -916,7 +1059,7 @@
       <h2>Email me <em>your idea</em></h2>
       <p class="measure soft" style="margin-top:16px">Tell me what you&rsquo;re dreaming up, the size and placement, and include a photo of the spot and your reference board. I reply when books are open.</p>
       <span class="reach"><a href="mailto:jaidentattoo@gmail.com">Email jaidentattoo@gmail.com</a></span>
-      <p class="demo-note">With Planted, people reach you by email or Instagram DM.</p>
+      <p class="demo-note">With Planted, people reach you by email or Instagram DM, and accepted clients tap Book.</p>
     </div>
   </div>
 </section>
@@ -934,7 +1077,7 @@
     </div>
     <p class="press"><span style="font-family:'Geist',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-soft)">Featured in</span> <a href="https://www.allure.com/gallery/collarbone-tattoo-ideas" target="_blank" rel="noopener">Allure</a> <a href="https://canvasrebel.com/meet-jaiden-sky-2/" target="_blank" rel="noopener">CanvasRebel</a> <a href="https://open.spotify.com/episode/2hmQs9D0EZvIftkD75EYLd" target="_blank" rel="noopener">a podcast interview</a></p>
     <p class="nominee">Club Adorned was nominated for Best of Southern Oregon 2026.</p>
-    <p class="mock-note wf-note" style="margin-top:26px;font-size:14.5px">These are the reviews about you on the Club Adorned site, word for word (Ashley&rsquo;s and Haley&rsquo;s are trimmed a little). New Google reviews can go right here as they come in.</p>
+    <p class="mock-note wf-note" style="margin-top:26px;font-size:14.5px">Word for word from the Club Adorned site (two trimmed a little). New Google reviews can go here too.</p>
   </div>
 </section>
 
@@ -954,10 +1097,10 @@
       <div class="fade-in" id="nl-done" hidden>
         <h3 id="nl-done-h" tabindex="-1" style="font-size:34px">You&rsquo;re in!</h3>
         <p>The next letter goes to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
-        <p class="demo-note">Preview only: nothing was sent, and no list was joined. On your real site, sign-ups go to your own Buttondown list.</p>
+        <p class="demo-note">Preview only: nothing was sent.</p>
         <div class="bk-nav"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
       </div>
-      <p class="mock-note wf-note" style="margin-top:26px;font-size:14px">Sign-ups go straight into your own Buttondown list, free until 100 readers, and past that your subscription covers it, up to 1,000. You write the monthly letter there, and it lands in everyone&rsquo;s inbox looking like this site.</p>
+      <p class="mock-note wf-note" style="margin-top:26px;font-size:14px">Sign-ups go to your own Buttondown list: free up to 100 readers, then your subscription covers it up to 1,000.</p>
     </div>
   </div>
 </section>
@@ -1001,7 +1144,7 @@
         <div class="sheet fade-in" id="shop-sheet" hidden>
           <h3 class="sheet-h" id="shop-sheet-h" tabindex="-1">Secure checkout <span class="bk-demo">preview</span></h3>
           <div class="sheet-lines" id="shop-lines"></div>
-          <div class="sheet-slot" aria-hidden="true">Card or phone wallet, in your own Stripe checkout</div>
+          <div class="sheet-slot" id="shop-slot" aria-hidden="true">Card or phone wallet, in Stripe&rsquo;s secure form</div>
           <p class="demo-note">Preview: on your real site this opens your own Stripe checkout. Nothing is charged.</p>
           <div class="bk-nav"><button type="button" class="bk-go" id="shop-complete">Complete (preview)</button><button type="button" class="bk-go ghost" id="shop-back">Back</button></div>
         </div>
@@ -1013,8 +1156,9 @@
         </div>
       </div>
       <div class="side mock-note wf-note">
-        <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe account. Stripe keeps about 2.9% + 30&cent; an order, and the money doesn&rsquo;t pass through me.</div>
-        <div class="bk-note"><b>Right now</b>Your care page says the products are sold in store only. This lets someone order the night before and grab it on the way out.</div>
+        <div class="bk-note"><b>Your order list</b>Orders live in your own Stripe, and if one ships, Stripe&rsquo;s checkout takes the address with the card. You get a short heads-up email, and Stripe&rsquo;s phone app can ping you too.</div>
+        <div class="bk-inbox"><div class="from">New order</div><div id="shop-inbox">Waiting for an order&hellip; try it on the left</div></div>
+        <div class="bk-note"><b>Paid straight to you</b>Stripe keeps about 2.9% + 30&cent; an order. The money doesn&rsquo;t pass through me.</div>
         <div class="bk-note"><b>Shipping</b><span class="ph">only if you want to ship</span>; otherwise it&rsquo;s pick up only.</div>
       </div>
     </div>
@@ -1058,16 +1202,16 @@
       <div class="reveal"><b>Hours</b>By appointment<br>Sessions start at 1:00 pm</div>
     </div>
     <span class="reach" style="margin-top:24px"><a href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@jaidentattoo" target="_blank" rel="noopener">TikTok</a><a href="https://www.clubadorned.com/" target="_blank" rel="noopener">Club Adorned</a></span>
-    <p class="scam"><b>Beware of scammers, especially on TikTok.</b> I will never reach out to you there first. Inquiries only come through this site or my Instagram DMs.</p>
+    <p class="scam"><b>Beware of scammers, especially on TikTok.</b> I don&rsquo;t reach out to anyone there first. Inquiries only come through this site or my Instagram DMs.</p>
   </div>
 </section>
 
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="not-site"><span class="bk-demo">Google and text views</span> Every build: how your site looks in Google and in a text.</p>
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Found <em>again</em></h2>
-    <p class="measure soft" style="margin-top:12px">When someone searches for a black and grey artist in Southern Oregon, or a friend texts them your link, this is what they see.</p>
+    <p class="measure soft" style="margin-top:12px">A search for black and grey in Southern Oregon, or a friend texting your link.</p>
     <div class="found">
       <figure class="found-card"><figcaption>In a search</figcaption>
         <div class="serp"><div class="serp-q">black and grey tattoo artist Grants Pass</div>
@@ -1091,7 +1235,7 @@
       <p class="foot-word">Jaiden Sky<small>Art &amp; Tattoo</small></p>
       <p style="margin-top:10px">Club Adorned, 321 SE 6th St, Suite 203, Grants Pass, Oregon &middot; tattooing since 2018</p>
       <p style="margin-top:4px"><a href="mailto:jaidentattoo@gmail.com">jaidentattoo@gmail.com</a> &middot; <a href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener">Instagram</a> &middot; <a href="https://www.tiktok.com/@jaidentattoo" target="_blank" rel="noopener">TikTok</a></p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.</p>
     </div>
   </div>
 </footer>
@@ -1103,12 +1247,12 @@
   <div class="vpanel" id="vp-panel" hidden>
     <p class="views-q" id="vp-q">See your site as</p>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your latest work, your portfolio, your film, fresh and healed, your sessions and policies, kind words, and how to reach you by email."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your latest work, your portfolio, your film, fresh and healed, your sessions and policies, a Book button to the booking app you already use, kind words, and how to reach you by email."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus your Instagram feed filling itself in as you post, your own inquiry form with photos, a monthly newsletter sign-up, your aftercare guide and your FAQ."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus a little aftercare shop through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Comes with every site and keeps it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1169,7 +1313,7 @@
     if (conn.saveData || /2g/.test(conn.effectiveType || '')) fig.classList.add('still');
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { fig.classList.toggle('off', !e.isIntersecting); }); }).observe(fig);
     var P = {
-      frog: { f: ['images/pf-frog.jpg', 1050, 1400, 'Fresh: a tree frog on a toadstool, the day it was tattooed'], h: ['images/healed-frog.jpg', 1161, 1300, 'Healed: the same frog a year later, soft and settled into the skin'], cap: 'The frog on a toadstool, fresh, then healed a year later. Both photos are from Jaiden’s own posts.' },
+      frog: { f: ['images/pf-frog.jpg', 1050, 1400, 'Fresh: a tree frog on a toadstool, the day it was tattooed'], h: ['images/healed-frog.jpg', 1161, 1300, 'Healed: the same frog a year later, soft and settled into the skin'], cap: 'The frog on a toadstool, fresh, then a year healed. Both photos are from Jaiden’s own posts.' },
       books: { f: ['images/fresh-books.jpg', 975, 1300, 'Fresh: a stack of old books and an open book with script, the day it was tattooed'], h: ['images/healed-books.jpg', 1186, 1300, 'Healed: the same books a year later, out in the wild'], cap: 'The stack of books, all done with a 3RL, fresh, then a year healed. Both photos are from Jaiden’s own posts.' }
     };
     var btns = [].slice.call(document.querySelectorAll('[data-pair]'));
@@ -1179,7 +1323,7 @@
       hi.src = p.h[0]; hi.width = p.h[1]; hi.height = p.h[2]; hi.alt = p.h[3];
       document.getElementById('settle-cap').textContent = p.cap;
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-pair') === k ? 'true' : 'false'); });
-      [hi, fig.querySelector('.needle')].forEach(function (el) { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
+      [hi, fig.querySelector('.heal-bar i')].concat([].slice.call(fig.querySelectorAll('.heal-lbl span'))).forEach(function (el) { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-pair')); }); });
   })();
@@ -1204,7 +1348,7 @@
     function $(id) { return document.getElementById(id); }
     var STATES = {
       open: { label: 'Books are open for 2026', cta: 'Send your inquiry', href: '#inquire' },
-      event: { label: 'Discounted designs available', cta: 'Ask to see them before they go', href: '#visit' },
+      event: { label: 'Discounted designs available', cta: 'Ask to see them', href: '#visit' },
       closed: { label: 'Books are closed for now', cta: 'Hear first when they open', href: '#letters' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
@@ -1221,10 +1365,37 @@
       $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
       if (say) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
+      try { document.dispatchEvent(new CustomEvent('ex:books', { detail: { state: k } })); } catch (e) {}
     }
+    document.addEventListener('ex:books-set', function (e) { if (e.detail && STATES[e.detail.state]) setState(e.detail.state, true); });
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('ex:view', function () { setState(current, false); });
     tryBtn.addEventListener('click', function () { var o = panel.hidden; panel.hidden = !o; tryBtn.setAttribute('aria-expanded', o ? 'true' : 'false'); });
+  })();
+
+  /* the jackalope pet reads the banner: open, it hops back and forth; designs, a heart blinks; closed, it sleeps. Poke it and it jumps (or wakes for a second). */
+  (function () {
+    var fig = document.getElementById('gotchi'), scr = document.getElementById('g-screen'), pet = document.getElementById('g-pet'); if (!fig || !scr || !pet) return;
+    var TEXT = { open: ['Books open', 'for 2026'], event: ['Designs', 'up for grabs'], closed: ['Books closed', 'back soon'] };
+    var btns = [].slice.call(fig.querySelectorAll('[data-g]')), l1 = document.getElementById('g-l1'), l2 = document.getElementById('g-l2');
+    function paint(k) {
+      if (!TEXT[k]) return; scr.setAttribute('data-state', k); l1.textContent = TEXT[k][0]; l2.textContent = TEXT[k][1];
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-g') === k ? 'true' : 'false'); });
+    }
+    document.addEventListener('ex:books', function (e) { paint(e.detail && e.detail.state); });
+    btns.forEach(function (b) { b.addEventListener('click', function () { try { document.dispatchEvent(new CustomEvent('ex:books-set', { detail: { state: b.getAttribute('data-g') } })); } catch (e) {} }); });
+    var t = null;
+    pet.addEventListener('click', function () {
+      pet.classList.remove('boing'); void pet.offsetWidth; pet.classList.add('boing'); clearTimeout(t);
+      t = setTimeout(function () { pet.classList.remove('boing'); }, scr.getAttribute('data-state') === 'closed' ? 1600 : 650);
+    });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { fig.classList.toggle('off', !e.isIntersecting); }); }).observe(fig);
+  })();
+
+  /* the Book button (every build): opens the booking app she already uses */
+  (function () {
+    var b = document.getElementById('pl-book'), h = document.getElementById('pl-book-hint'); if (!b || !h) return;
+    b.addEventListener('click', function () { h.textContent = 'Preview: on your real site, this opens your booking app.'; });
   })();
 
   /* light / dark for this preview */
@@ -1323,15 +1494,18 @@
         if (!any) { hint.textContent = 'Add something to your order first.'; quietFocus(card.querySelector('.qty button[data-d="1"]')); return; }
         var w = document.createElement('div'); w.innerHTML = '<span></span><span></span>'; w.children[0].textContent = how === 'pickup' ? 'Pick up at Club Adorned' : 'Shipping'; w.children[1].textContent = how === 'pickup' ? 'Free' : 'at checkout'; lines.appendChild(w);
         var tt = document.createElement('div'); tt.className = 'total'; tt.innerHTML = '<span>Total</span><span></span>'; tt.children[1].textContent = '$' + total; lines.appendChild(tt);
+        $('shop-slot').textContent = how === 'ship' ? 'Shipping address and card, in Stripe’s secure form' : 'Card or phone wallet, in Stripe’s secure form';
         $('shop-list').hidden = true; $('shop-sheet').hidden = false; quietFocus($('shop-sheet-h'));
       });
       $('shop-back').addEventListener('click', function () { $('shop-sheet').hidden = true; $('shop-list').hidden = false; quietFocus($('shop-go')); });
       $('shop-complete').addEventListener('click', function () {
         $('shop-done-t').textContent = how === 'pickup' ? 'Your care kit will be waiting at the studio. A receipt is on its way to your inbox.' : 'Your order is in, and it ships soon. A receipt is on its way to your inbox.';
+        var what = outs.filter(function (o) { return qty(o); }).map(function (o) { return qty(o) + ' ' + NAME[o.dataset.p]; }).join(', ');
+        $('shop-inbox').textContent = 'Sam Rivers: ' + what + '. ' + (how === 'pickup' ? 'Picking up at Club Adorned.' : 'Ships to Medford, OR. Full address in your Stripe.');
         $('shop-sheet').hidden = true; $('shop-done').hidden = false; quietFocus($('shop-done-h'));
       });
       $('shop-change').addEventListener('click', function () { $('shop-done').hidden = true; $('shop-list').hidden = false; quietFocus($('shop-go')); });
-      $('shop-again').addEventListener('click', function () { outs.forEach(function (o) { var n = o.dataset.p === 'trio' ? 1 : 0; o.textContent = n; o.value = n; }); how = 'pickup'; press(hows, 'how', how); $('shop-done').hidden = true; $('shop-list').hidden = false; quietFocus($('shop-go')); });
+      $('shop-again').addEventListener('click', function () { outs.forEach(function (o) { var n = o.dataset.p === 'trio' ? 1 : 0; o.textContent = n; o.value = n; }); how = 'pickup'; press(hows, 'how', how); $('shop-inbox').textContent = 'Waiting for an order… try it on the left'; $('shop-done').hidden = true; $('shop-list').hidden = false; quietFocus($('shop-go')); });
     })();
 
     /* newsletter */
@@ -1374,7 +1548,7 @@
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your latest work (kept fresh by email), your portfolio, your film, fresh and healed, your sessions and policies, kind words, and how to reach you.', next: 'mother' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your latest work (kept fresh by email), your portfolio, your film, fresh and healed, your sessions and policies, a Book button to the booking app you already use, kind words, and how to reach you.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with your Instagram feed filling itself in as you post, your own inquiry form (photos and policies included), a monthly newsletter sign-up, your aftercare guide and your FAQ.', next: 'crone' },
       crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus a little aftercare shop through your own Stripe, so your site is doing business for you. That’s every piece on this page.' },
       all: { name: 'Everything' }

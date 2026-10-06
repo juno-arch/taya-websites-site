@@ -372,7 +372,8 @@
   .bag-lines li.empty { color: var(--ink-soft); font-style: italic; }
   .sheet { background: var(--ground); border: 1px solid var(--hair); border-radius: 8px; padding: 18px 20px 20px; box-shadow: 0 22px 40px -28px rgba(30, 20, 20, 0.6); }
   .sheet-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Crimson Pro', serif; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
-  .sheet-slot { display: flex; align-items: center; gap: 12px; border: 1.5px dashed var(--hair); border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 15px; color: var(--ink-soft); }
+  .sheet-slot { display: grid; gap: 4px; border: 1.5px dashed var(--hair); border-radius: 6px; padding: 12px 14px; margin-top: 6px; font-size: 15px; color: var(--ink-soft); overflow-wrap: anywhere; }
+  .sf-head { margin-top: 14px; font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
 
   /* ---------- REVIEWS ---------- */
   .scores { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 16px; }
@@ -642,6 +643,29 @@
   .spk.hot { color: #ff3d5e; font-size: 11px; text-shadow: 0 0 6px rgba(255, 61, 94, 0.7); }
   @keyframes spk { from { opacity: 1; transform: translate(-50%, -50%) scale(1); } to { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + 22px)) scale(0.4) rotate(50deg); } }
   @media print { .spk, .marq-pause { display: none; } }
+
+  /* MR. G'S SCOOTER (from his old Scooter Page): while you scroll, a pixel chopper rides a little road along the top to show how far down the page you are; it faces the way you're going, puffs exhaust, pops a wheelie at the bottom, and tucks away when you stop. Tap it to ride back to the top. Off under reduced motion. */
+  .ride { position: fixed; z-index: 25; left: 0; top: 0; display: block; width: 100%; height: 38px; margin: 0; padding: 0; border: 0; border-bottom: 2px solid var(--hot); border-radius: 0; background: #0d0a0f; cursor: pointer; overflow: hidden; -webkit-appearance: none; appearance: none;
+    transform: translateY(-110%); visibility: hidden; transition: transform 0.28s ease, visibility 0s linear 0.28s; }
+  .ride.on { transform: none; visibility: visible; transition: transform 0.28s ease; }
+  .ride:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+  .ride-top { position: absolute; left: 10px; top: 8px; font-family: var(--px); font-size: 19px; line-height: 1; color: var(--hot-soft); text-transform: uppercase; }
+  .ride-road, .ride-done { position: absolute; bottom: 3px; height: 2px; background: repeating-linear-gradient(90deg, #3a2f3c 0 8px, transparent 8px 14px); }
+  .ride-road { left: 56px; right: 12px; }
+  .ride-done { left: 0; width: 0; background-image: repeating-linear-gradient(90deg, var(--brass) 0 8px, transparent 8px 14px); }
+  .ride-bike { position: absolute; left: 0; bottom: 5px; width: 54px; height: 28px; will-change: transform; }
+  .ride-face, .ride-lift { display: block; width: 54px; height: 28px; }
+  .ride-face.back { transform: scaleX(-1); }
+  .ride-lift { transform-origin: 9px 26px; }
+  .ride-lift.up { animation: wheelie 1.1s cubic-bezier(.3,.7,.4,1) both; }
+  .ride-bike svg { display: block; }
+  .ride.moving .ride-bike svg { animation: rumble 0.16s steps(2) infinite; }
+  @keyframes rumble { 50% { transform: translateY(-1px); } }
+  @keyframes wheelie { 0% { transform: none; } 30%, 62% { transform: rotate(-18deg); } 100% { transform: none; } }
+  .puff { position: absolute; bottom: 14px; width: 4px; height: 4px; background: #c9bcc2; pointer-events: none; animation: puff 0.7s ease-out forwards; }
+  @keyframes puff { from { opacity: 0.85; transform: none; } to { opacity: 0; transform: translate(var(--px-dx, -14px), -7px) scale(1.9); } }
+  @media (prefers-reduced-motion: reduce) { .ride { display: none !important; } }
+  @media print { .ride { display: none !important; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -661,7 +685,7 @@
         <button type="button" data-state="out" aria-pressed="false">Back at 3</button>
         <button type="button" data-state="closed" aria-pressed="false">Closed today</button>
       </div>
-      <p class="status-note">Stepping out for a bit, or closed for the day? Email me and the banner says so, so nobody finds a locked door.</p>
+      <p class="status-note">Stepping out, or closed today? Email me and the banner says so.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden><div class="wrap status-panel-in"><p class="status-note">Your site follows each visitor&rsquo;s phone setting.</p><button type="button" class="seg" id="theme-auto" style="display:inline-block;padding:8px 14px;cursor:pointer">Back to auto</button></div></div>
@@ -692,7 +716,7 @@
         <h1>Triangle Tattoo <em>&amp; Museum</em></h1>
         <div class="lede-wrap">
           <span class="tagline">Art with a pulse.</span>
-          <p class="lede">A working tattoo shop and a free tattoo history museum, in one of Fort Bragg&rsquo;s original Victorian storefronts. Walk-ins welcome, all ages welcome.</p>
+          <p class="lede">A working tattoo shop and a free tattoo history museum. Walk-ins welcome.</p>
         </div>
         <div class="cta-row">
           <a class="btn" href="#visit">Plan your visit</a>
@@ -724,7 +748,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus museum tours booked right on your site, and Madame Chinchilla’s signed books and gift cards through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one to keep it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -758,7 +782,6 @@
         <p class="label with-pill"><span>The museum</span> <span class="tag" data-go="maiden">Every build</span></p>
         <h2 class="reveal">One of only a few <em>in the world</em></h2>
         <p style="margin-top:18px">Triangle Tattoo &amp; Museum is one of only a few public museums anywhere dedicated to the display of tattoo artifacts. Bring a cup of coffee and prepare to be bombarded with tattoo images that will dazzle your senses for hours.</p>
-        <p>And unlike most museums, it&rsquo;s also an old style, working tattoo parlor, so the collection grows with every person who walks out wearing a new one.</p>
         <ul class="free" aria-label="Good to know">
           <li>Free admission</li><li>All ages</li><li>Tours on request</li>
         </ul>
@@ -799,7 +822,7 @@
           <li id="ex-japan"><b>Japanese tattoo</b><span>Antique hand tattooing instruments, portraits of the masters, and examples of their work.</span></li>
           <li id="ex-sideshow"><b>The circus sideshow</b><span>Designs, photographs, and the retired costumes of Captain Don Leslie, one of the last of the living sideshow sword swallowers.</span></li>
           <li id="ex-women"><b>The Women&rsquo;s Wall</b><span>An entire wall of portraits of tattooed women, from different cultures and eras.</span></li>
-          <li class="hush"><b>Tattoos without consent</b><span>A quiet room about marks that were forced on people, so they&rsquo;re never forgotten.</span></li>
+          <li class="hush"><b>Tattoos without consent</b><span>A quiet room about marks that were forced on people, so they&rsquo;re remembered.</span></li>
         </ul>
         <p class="soft" style="margin-top:16px;font-size:17px">Please no photos or video in the museum, and children come with a grown-up. School and personal tours are given on request: <span data-show="maiden" hidden>call ahead.</span><span data-show="mother crone all">call ahead, or <a href="#request">book one here</a>.</span></p>
       </div>
@@ -813,7 +836,7 @@
     <span class="tris" aria-hidden="true"></span>
     <p class="label with-pill"><span>Fresh off the table</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Tattooed <em>right here</em></h2>
-    <p class="measure soft" style="margin-top:14px">Bees and barbed wire hearts, bull kelp and boletes, a dad bod merman and a T. rex on an excavator. Tap any photo to see it whole.</p>
+    <p class="measure soft" style="margin-top:14px">Bees and boletes, bull kelp, a dad bod merman and a T. rex on an excavator.</p>
     <div class="seg three afilter" role="group" aria-label="Show work by" data-show="mother crone all">
       <button type="button" data-by="all" aria-pressed="true">Everyone</button><button type="button" data-by="Niki" aria-pressed="false">Niki</button><button type="button" data-by="Nicola" aria-pressed="false">Nicola</button>
     </div>
@@ -845,13 +868,13 @@
       <article class="artist reveal">
         <figure class="photo" data-lightbox><img src="images/mrg-work.jpg" width="640" height="426" alt="Mr. G at work under the lamp, tattoo machine in hand" loading="lazy" style="object-position:62% 50%"></figure>
         <div class="abody"><p class="role">Co-founder &middot; 1986</p><h3>Mr. G</h3>
-          <p>Apprenticed under Bert Rodriguez in Santa Rosa, then opened Triangle with Madame Chinchilla. He&rsquo;s written columns for Skin &amp; Ink, and still tattoos at the shop.</p>
+          <p>Apprenticed under Bert Rodriguez in Santa Rosa. Columns in Skin &amp; Ink. Still tattooing.</p>
           <p class="how">By appointment</p></div>
       </article>
       <article class="artist reveal">
         <figure class="photo bw" data-lightbox><img src="images/chinchilla.jpg" width="900" height="1164" alt="Madame Chinchilla in a black and white portrait, her tattooed arms folded, smiling" loading="lazy" style="object-position:50% 25%"></figure>
         <div class="abody"><p class="role">Co-founder &middot; 1986</p><h3>Madame Chinchilla</h3>
-          <p>Tattooist, documentarian and author of the books on tattoo history in the shop. Keeper of the collection, and the best tour guide in town.</p>
+          <p>Tattooist, documentarian and author, and keeper of the collection.</p>
           <p class="how">Ask for her when you visit</p></div>
       </article>
       <article class="artist reveal">
@@ -863,11 +886,11 @@
       <article class="artist reveal">
         <figure class="photo" data-lightbox><img src="images/w-owl.jpg" width="1100" height="1467" alt="Nicola's owl on a harmonica tattoo" loading="lazy"></figure>
         <div class="abody"><p class="role">Tattoo artist &amp; muralist</p><h3>Nicola</h3>
-          <p>Custom pieces and her own predrawn flash, from manta rays to dragon hands, with a sense of humor.</p>
+          <p>Custom pieces and her own flash, from manta rays to dragon hands.</p>
           <p class="how"><a href="https://www.instagram.com/loch_nic_monster/" target="_blank" rel="noopener">@loch_nic_monster</a></p></div>
       </article>
     </div>
-    <p class="mock-note wf-note" style="margin-top:28px;font-size:16px">I couldn&rsquo;t find recent photos of Niki or Nicola, so their own tattoos stand in. When an artist joins, leaves, or guests for a week, you email me and this row changes.</p>
+    <p class="mock-note wf-note" style="margin-top:28px;font-size:16px">Their tattoos stand in for photos of Niki and Nicola. New artist or a guest week? Email me.</p>
   </div>
 </section>
 
@@ -881,14 +904,14 @@
       <span class="tris" aria-hidden="true"></span>
       <p class="label with-pill"><span>Our story</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Two tattooists, <em>one collection</em></h2>
-      <p style="margin-top:18px">Mr. G and Madame Chinchilla met in Albion in the 1980s, and within a couple of months they were tattooists together, working out of a 1953 Airstream at bike runs and festivals. They&rsquo;ve been collecting stories, photos, artifacts and original hand drawn flash ever since.</p>
+      <p style="margin-top:18px">Mr. G and Madame Chinchilla met in Albion in the 1980s and were soon tattooing out of a 1953 Airstream at bike runs and festivals. They&rsquo;ve been collecting stories, artifacts and hand drawn flash ever since.</p>
       <p>&ldquo;Ours isn&rsquo;t the biggest collection,&rdquo; Mr. G says, &ldquo;but we share with others what we&rsquo;ve learned, and what we have.&rdquo;</p>
       <ol class="timeline">
         <li><b>1986</b>Triangle Tattoo opens on Laurel Street.</li>
-        <li><b>1991</b>The move to Main Street, into one of the town&rsquo;s original Victorian storefronts, across from the Guest House Museum.</li>
+        <li><b>1991</b>Onto Main Street, in one of the town&rsquo;s original Victorian storefronts.</li>
         <li><b>1998</b>The Discovery Channel films eleven segments of &ldquo;Tattoo! Beauty, Art &amp; Pain&rdquo; here.</li>
         <li><b>2011</b>The New York Times includes Triangle in &ldquo;36 Hours on the Mendocino Coast.&rdquo;</li>
-        <li><b>Along the way</b>Four books by Madame Chinchilla, columns by Mr. G, consulting for HBO&rsquo;s Carniv&agrave;le, the National Tattoo Association&rsquo;s Nicest Studio Award, and No. 17 together on a list of the 101 most influential people in tattoo.</li>
+        <li><b>Along the way</b>Four books, Mr. G&rsquo;s columns, consulting on HBO&rsquo;s Carniv&agrave;le, the National Tattoo Association&rsquo;s Nicest Studio Award, and No. 17 on a list of the 101 most influential people in tattoo.</li>
       </ol>
       <span class="forty">Forty years in 2026.</span>
     </div>
@@ -904,10 +927,10 @@
       <span class="tris" aria-hidden="true"></span>
       <p class="label with-pill"><span>Spin the wheel</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Let fate <em>pick your flash</em></h2>
-      <p class="soft" style="margin-top:14px">Spin it, and whatever it lands on is your next little tattoo. Feeling brave?</p>
+      <p class="soft" style="margin-top:14px">Whatever it lands on is your next little tattoo. Feeling brave?</p>
       <div class="cta-row" style="margin-top:20px"><button type="button" class="btn" id="spin-go">Spin the wheel</button></div>
       <p class="landed" id="landed" role="status" aria-live="polite"></p>
-      <p class="mock-note wf-note" style="margin-top:10px;font-size:16px">A Yelp reviewer, Shelah, spun your wheel and it landed on the Venus flytrap she&rsquo;d been eyeing. This puts the wheel online too. The designs here are pieces your artists have tattooed lately; tell me the real ones on your wheel and the price: <span class="ph">your spin price</span></p>
+      <p class="mock-note wf-note" style="margin-top:10px;font-size:16px">Stand-in designs from your artists&rsquo; recent work. Send me your real wheel and the price: <span class="ph">your spin price</span></p>
     </div>
   </div>
 </section>
@@ -918,11 +941,11 @@
       <span class="tris" aria-hidden="true"></span>
       <p class="label with-pill"><span>Sign our guestbook</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Sign <em>the guestbook</em></h2>
-      <p class="measure soft" style="margin-top:14px">Walk-ins are always welcome. Sign here to say hi from the road, to ask for an appointment with Mr. G or a bigger custom piece, or to plan a school or group tour of the museum.</p>
+      <p class="measure soft" style="margin-top:14px">Walk-ins always welcome. Sign here to say hi from the road, ask for Mr. G or a big custom piece, or plan a group tour.</p>
       <div data-show="mother" data-fold data-thing="a Book a tour button to your own Cal.com page" hidden>
         <div class="cta-row" style="margin-top:20px"><button type="button" class="btn" id="rq-cal">Book a tour</button></div>
         <p class="hint" id="rq-calhint" role="status"></p>
-        <p class="mock-note wf-note" style="margin-top:18px;font-size:16px">With Tended, this &ldquo;Book a tour&rdquo; button opens your own free Cal.com page, set up in your name with the days you give tours, so a teacher can pick a day without phone tag. The guestbook below still takes tattoo requests and hellos. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+        <p class="mock-note wf-note" style="margin-top:18px;font-size:16px">With Tended, &ldquo;Book a tour&rdquo; opens your own free Cal.com page, with just the days you give tours. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
       <div class="req">
         <div class="bk-card" id="rq-card">
@@ -977,18 +1000,17 @@
           </div>
         </div>
         <div class="side mock-note wf-note">
-          <div class="bk-note"><b>What you see</b>Each request lands in your email, photos attached, ready to answer when you have a minute.</div>
+          <div class="bk-note"><b>What you see</b>Each request lands in your email, photos attached.</div>
           <div class="bk-inbox"><div class="from">New request</div><div id="rq-inbox">Waiting for one&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>A guestbook, like the old days</b>&ldquo;Just saying hi&rdquo; notes go up in the guestbook for everyone to read, and any of them comes down the moment you email me. Tattoo and tour requests stay private and only come to you.</div>
-          <div class="bk-note"><b>The phone still works</b>People can still call or walk in. This just catches the ones who&rsquo;d rather write, and the teachers planning a field trip.</div>
+          <div class="bk-note"><b>A guestbook, like the old days</b>Hellos go up for all to read. Requests stay private.</div>
         </div>
       </div>
       <div class="gbook" id="gbook">
         <p class="gb-h px"><b style="font-weight:400">&#9733; Guestbook &#9733;</b> <span id="gb-count">no signatures yet</span></p>
-        <ol class="gb-list" id="gb-list" aria-live="polite"><li class="gb-empty">Nobody has signed this preview yet. Pick &ldquo;Just saying hi&rdquo; above and be the first.</li></ol>
+        <ol class="gb-list" id="gb-list" aria-live="polite"><li class="gb-empty">No signatures yet. Pick &ldquo;Just saying hi&rdquo; and be the first.</li></ol>
       </div>
-      <p class="mock-note wf-note" data-show="crone all" data-fold data-thing="museum tours booked right on your site" style="margin-top:28px;font-size:16px">With In Bloom, picking &ldquo;A tour&rdquo; books one of your open days right here. It runs on a free Cal.com page in your name, sitting right on your site, and only the days you give tours show. The guestbook stays just as it is. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <p class="mock-note wf-note" data-show="all" data-fold style="margin-top:14px;font-size:16px">With Planted, people call the shop for an appointment or a tour, just like now. With Tended, there&rsquo;s a &ldquo;Book a tour&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      <p class="mock-note wf-note" data-show="crone all" data-fold data-thing="museum tours booked right on your site" style="margin-top:28px;font-size:16px">With In Bloom, &ldquo;A tour&rdquo; books one of your open days right here, on a free Cal.com page in your name. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="mock-note wf-note" data-show="all" data-fold style="margin-top:14px;font-size:16px">With Planted, people call, like now. With Tended, &ldquo;Book a tour&rdquo; opens your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
 
     <div data-show="maiden" hidden>
@@ -1033,8 +1055,9 @@
         <div class="sheet fade-in" id="bag-sheet" hidden>
           <h3 class="sheet-h" id="bag-sheet-h" tabindex="-1">Secure checkout <span class="bk-demo">preview</span></h3>
           <ul class="bag-lines" id="bag-sum"></ul>
-          <div class="sheet-slot" aria-hidden="true">Card or phone wallet, in your own Stripe checkout</div>
-          <p class="demo-note">Preview: on your real site this opens your own Stripe checkout. Nothing is charged.</p>
+          <p class="sf-head" id="bag-sf-head">Shipping address and card, in Stripe&rsquo;s secure form</p>
+          <div class="sheet-slot" aria-hidden="true"><span id="bag-sf-addr">Sam L. &middot; 456 Pine Street, Eugene, OR 97401</span><span>4242 4242 4242 4242 &middot; 12 / 34</span></div>
+          <p class="demo-note">Preview: that&rsquo;s Stripe&rsquo;s practice card, so nothing is charged.</p>
           <div class="bk-nav"><button type="button" class="bk-go" id="bag-pay">Complete (preview)</button><button type="button" class="bk-go ghost" id="bag-back">Back</button></div>
         </div>
         <div class="bk-done fade-in" id="bag-done" hidden>
@@ -1044,9 +1067,11 @@
           <div class="bk-nav"><button type="button" class="bk-go ghost" id="bag-change">Change something</button><button type="button" class="bk-go ghost" id="bag-again">Try it again</button></div>
         </div>
         <div class="side mock-note wf-note" id="bag-notes">
-          <div class="bk-note"><b>Signed, like before</b>Your old site had an &ldquo;Autograph book to&rdquo; box on every book. It&rsquo;s here too, so each order tells you who to sign it to.</div>
-          <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe account, in your name. Stripe keeps about 2.9% + 30&cent; a sale, and the rest goes to you, not through me.</div>
-          <div class="bk-note"><b>Hoodies too</b>A Google reviewer rode home to North Carolina in Triangle hoodies. If you want to sell those here, tell me sizes and price: <span class="ph">hoodie price</span></div>
+          <div class="bk-note"><b>What you see</b>Every order is in your own Stripe, with who to sign it to and where it ships. You get a short heads-up email, and Stripe&rsquo;s phone app can ping you for each one.</div>
+          <div class="bk-inbox"><div class="from">New order</div><div id="bag-inbox">Waiting for one&hellip; try it on the left</div></div>
+          <div class="bk-note"><b>Signed, like before</b>Your old site&rsquo;s &ldquo;Autograph book to&rdquo; box, on every book.</div>
+          <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe. Stripe keeps about 2.9% + 30&cent; a sale.</div>
+          <div class="bk-note"><b>Hoodies too?</b>Send me sizes and price: <span class="ph">hoodie price</span></div>
         </div>
       </div>
     </div>
@@ -1104,7 +1129,7 @@
       <div class="reveal"><b>Hours</b><div class="hours" id="hours"><span>Sun</span><span>noon to 7</span><span>Mon to Thu</span><span>noon to 6</span><span>Fri &amp; Sat</span><span>noon to 8</span></div></div>
       <div class="reveal"><b>Follow</b><span class="reach" style="margin-top:2px"><a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/p/Triangle-Tattoo-Museum-100058046571765/" target="_blank" rel="noopener">Facebook</a></span></div>
     </div>
-    <p class="mock-note wf-note" style="margin-top:30px;font-size:16px">These are your hours from Google. Your old site says noon to six, seven days, and Yelp has a third set, so tell me which is right and I&rsquo;ll make every one of them match.</p>
+    <p class="mock-note wf-note" style="margin-top:30px;font-size:16px">Hours from Google. Your old site and Yelp disagree, so tell me which is right and I&rsquo;ll match them everywhere.</p>
   </div>
 </section>
 
@@ -1120,7 +1145,7 @@
       <figure class="photo"><img src="images/w-eye.jpg" alt="" loading="lazy"></figure>
       <figure class="photo"><img src="images/w-owl.jpg" alt="" loading="lazy"></figure>
     </div>
-    <p class="demo-note">With Tended or In Bloom, your newest posts show up here on their own as you post.</p>
+    <p class="demo-note">Your newest posts show up here on their own.</p>
   </div>
 </section>
 
@@ -1129,7 +1154,7 @@
     <span class="tris" aria-hidden="true"></span>
     <p class="label with-pill"><span>Links &amp; curiosities</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Every room <em>of the old site</em></h2>
-    <p class="measure soft" style="margin-top:14px">Black pages, hot pink links, and years of friends, heroes, motorcycles and books. All of it came along: every link from triangletattoo.com is here, and the ones that still work still go somewhere.</p>
+    <p class="measure soft" style="margin-top:14px">Black pages, hot pink links, and years of friends, heroes, motorcycles and books. Every link from triangletattoo.com came along.</p>
     <blockquote class="curio-q">&ldquo;We become walking, talking, pulsing, indelible art statements&hellip; &lsquo;Art with a pulse.&rsquo;&rdquo;<small>Madame Chinchilla, from About the Shop</small></blockquote>
 
     <p class="px curio-h">&#9654; Rooms of the old site</p>
@@ -1167,7 +1192,7 @@
         <p>The rooms you could visit from anywhere.</p>
         <ul class="clist">
           <li><a class="ext" href="http://www.triangletattoo.com/flash.html" target="_blank" rel="noopener">Flash from the Past</a>: Lone Wolf, London, and Ole, Copenhagen, both 1950s; a ship design from the early 1900s; a Terry Pope pin-up.</li>
-          <li><a class="ext" href="http://www.triangletattoo.com/machines.htm" target="_blank" rel="noopener">The Machine Exhibit</a>: from Edison&rsquo;s 1876 electric autograph machine, made into a tattoo machine in the 1920s, to a Percy Waters kit from the late 1930s that was never used.</li>
+          <li><a class="ext" href="http://www.triangletattoo.com/machines.htm" target="_blank" rel="noopener">The Machine Exhibit</a>: from Edison&rsquo;s 1876 electric autograph machine, made into a tattoo machine in the 1920s, to a Percy Waters kit from the late 1930s, still unused.</li>
           <li class="hush"><a class="ext" href="http://www.triangletattoo.com/old__tattooed_skin.htm" target="_blank" rel="noopener">Old Tattooed Skin</a>: two very old tattoos a reader wrote in about, and Mr. G&rsquo;s answer. Not for the squeamish.</li>
           <li><span class="k">Video</span><a class="ext" href="https://www.youtube.com/watch?v=lvTSqS0Th0k" target="_blank" rel="noopener">&ldquo;The Way It Was: Monkeys, Blood and Guns,&rdquo; part 1</a>, from The Vanishing Tattoo</li>
         </ul>
@@ -1301,16 +1326,16 @@
       </article>
     </div>
 
-    <p class="mock-note wf-note">I went through every page of triangletattoo.com, all 24 of them, and kept every link. The ones that still work go where they always did, the ones that moved go to their new address, and the ones that are gone say so. The old videos needed Flash, so they open on YouTube now. On your real site, each of these rooms can be its own page again.</p>
+    <p class="mock-note wf-note">Every link from all 24 pages, kept, and the old Flash videos open on YouTube.</p>
   </div>
 </section>
 
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="not-site"><span class="bk-demo">Google and text views</span> How your site shows up in a search and in a text.</p>
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Ready for <em>Google</em></h2>
-    <p class="measure soft" style="margin-top:12px">Your current site still says &ldquo;last updated 11/18/14&rdquo; at the bottom, and it isn&rsquo;t secure, so some phones warn people before it opens. When someone searches for the tattoo museum, or a friend texts them your link, this is what they see.</p>
+    <p class="measure soft" style="margin-top:12px">Your site now says &ldquo;last updated 11/18/14&rdquo; and isn&rsquo;t secure, so some phones warn people before it opens.</p>
     <div class="found">
       <figure class="found-card"><figcaption>In a search</figcaption>
         <div class="serp"><div class="serp-q">tattoo museum Fort Bragg</div>
@@ -1334,18 +1359,20 @@
       <p class="foot-name">Triangle Tattoo &amp; Museum</p>
       <p>356 B North Main Street, Fort Bragg &middot; <a href="tel:+17079648814">(707) 964-8814</a> &middot; since 1986</p>
       <p style="margin-top:4px"><a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">@triangletattoomuseum</a> &middot; <a href="mailto:g@triangletattoo.com">g@triangletattoo.com</a></p>
-      <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (tour booking, selling and gift cards). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.</p>
+      <p class="legend">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.</p>
       <div class="foot-y2k">
         <p class="counter"><span class="px counter-lbl" id="odo-lbl">You are visitor #</span><button type="button" class="odo" id="odo" aria-label="You are visitor number 1. Tap to roll the counter again."><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">0</span></span><span class="odo-d"><span class="odo-s">1</span></span></button></p>
         <button type="button" class="px-btn" id="sparkle-tog" aria-pressed="true" hidden>&#10022; Sparkles: on</button>
         <span class="best">Best viewed with your eyes open &#9650;</span>
       </div>
-      <p class="mock-note wf-note">On your real site this counts your actual visitors. On this preview it counts your own visits from this device, so come back and watch it tick over. On a computer, the sparkles turn into little red triangles over anything you can click, and anyone can switch them off.</p>
+      <p class="mock-note wf-note">Here it counts your own visits. On your real site, everyone&rsquo;s. Scroll, and Mr. G&rsquo;s scooter rides along the top. Tap it to ride back up.</p>
     </div>
   </div>
 </footer>
 
 <span class="ribbon">A mockup from Web Faery</span>
+
+<button type="button" class="ride" id="ride" aria-label="Ride back to the top" hidden><span class="ride-top" aria-hidden="true">&#9650; Top</span><span class="ride-road" aria-hidden="true"><span class="ride-done" id="ride-done"></span></span><span class="ride-bike" id="ride-bike" aria-hidden="true"><span class="ride-face" id="ride-face"><span class="ride-lift" id="ride-lift"><svg viewBox="0 0 27 14" width="54" height="28" shape-rendering="crispEdges" focusable="false"><path fill="#ffc1e8" d="M8 0h3v1h-3zM7 1h4v1h-4zM14 6h1v1h-1z"/><path fill="#120a10" d="M11 1h1v1h-1zM16 2h1v1h-1zM10 8h1v1h-1zM14 8h2v1h-2z"/><path fill="#d9b36c" d="M3 2h1v1h-1zM3 3h1v1h-1zM16 3h1v1h-1zM3 4h1v1h-1zM16 4h1v1h-1zM3 5h1v1h-1zM16 5h1v1h-1zM3 6h1v1h-1zM17 6h1v1h-1zM9 7h4v1h-4zM18 7h1v1h-1zM9 8h1v1h-1zM11 8h2v1h-2zM19 8h2v1h-2zM0 9h13v1h-13zM21 9h2v1h-2zM3 10h3v1h-3zM21 10h3v1h-3zM4 11h1v1h-1zM22 11h1v1h-1z"/><path fill="#ff3d5e" d="M7 2h9v1h-9zM7 3h4v1h-4zM8 4h3v1h-3z"/><path fill="#fff3e6" d="M17 4h1v1h-1zM17 5h1v1h-1z"/><path fill="#7a6a74" d="M7 5h5v1h-5zM4 6h9v1h-9zM13 7h1v1h-1zM13 9h3v1h-3zM8 10h6v1h-6z"/><path fill="#ff00ff" d="M12 5h4v1h-4zM13 6h1v1h-1zM15 6h2v1h-2z"/><path fill="#c9bcc2" d="M3 7h3v1h-3zM21 7h3v1h-3zM2 8h1v1h-1zM6 8h1v1h-1zM24 8h1v1h-1zM19 9h1v1h-1zM25 9h1v1h-1zM1 10h1v1h-1zM7 10h1v1h-1zM19 10h1v1h-1zM25 10h1v1h-1zM1 11h1v1h-1zM7 11h1v1h-1zM19 11h1v1h-1zM25 11h1v1h-1zM2 12h1v1h-1zM6 12h1v1h-1zM20 12h1v1h-1zM24 12h1v1h-1zM3 13h3v1h-3zM21 13h3v1h-3z"/></svg></span></span></span></button>
 
 <div class="vp off" id="vp" hidden>
   <button type="button" class="vpill" id="vp-pill" aria-expanded="false" aria-controls="vp-panel">See it as <b id="vp-v">Everything</b></button>
@@ -1357,7 +1384,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus museum tours booked right on your site, and Madame Chinchilla’s signed books and gift cards through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one to keep it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1569,16 +1596,21 @@
         if (!lines().length) { hint.textContent = 'Add a book or a gift card first.'; return; }
         draw($('bag-sum'));
         if (st.items.length) { var li = document.createElement('li'); li.innerHTML = '<span>Signed to</span>'; var s = document.createElement('span'); s.textContent = '“' + ($('bag-sign').value.trim() || 'no name, just signed') + '”'; li.appendChild(s); $('bag-sum').appendChild(li); }
+        var ships = st.items.length > 0;
+        $('bag-sf-head').textContent = ships ? 'Shipping address and card, in Stripe’s secure form' : 'Card or phone wallet, in Stripe’s secure form';
+        $('bag-sf-addr').hidden = !ships;
         $('bag-notes').hidden = true; $('bag-done').hidden = true; $('bag-sheet').hidden = false; quietFocus($('bag-sheet-h'));
       });
       $('bag-back').addEventListener('click', function () { $('bag-sheet').hidden = true; $('bag-notes').hidden = false; quietFocus($('bag-go')); });
       $('bag-pay').addEventListener('click', function () {
         var n = st.items.length, g = st.gift !== '0';
-        $('bag-done-t').textContent = (n ? (n === 1 ? 'Your signed book is' : 'Your ' + n + ' signed books are') + ' on the way' : '') + (n && g ? ', and your' : (g ? 'Your' : '')) + (g ? ' $' + st.gift + ' gift card is in your inbox' : '') + '. A receipt is on its way too.';
-        $('bag-sheet').hidden = true; $('bag-done').hidden = false; quietFocus($('bag-done-h'));
+        $('bag-done-t').textContent = (n ? (n === 1 ? 'Your signed book is' : 'Your ' + n + ' signed books are') + ' on the way to Eugene, OR' : '') + (n && g ? ', and your' : (g ? 'Your' : '')) + (g ? ' $' + st.gift + ' gift card is in your inbox' : '') + '. A receipt is on its way too.';
+        var sign = $('bag-sign').value.trim();
+        $('bag-inbox').textContent = 'Sam L.: ' + (n ? st.items.join(' + ') + (sign ? ', signed “' + sign + '”' : ', just signed') : '') + (n && g ? ', and ' : '') + (g ? 'a $' + st.gift + ' gift card, emailed to Sam' : '') + '.' + (n ? ' Ships to Eugene, OR. Full address in your Stripe.' : '');
+        $('bag-sheet').hidden = true; $('bag-done').hidden = false; $('bag-notes').hidden = false; quietFocus($('bag-done-h'));
       });
       $('bag-change').addEventListener('click', function () { $('bag-done').hidden = true; $('bag-notes').hidden = false; quietFocus($('bag-go')); });
-      $('bag-again').addEventListener('click', function () { fresh(); paint(); $('bag-done').hidden = true; $('bag-notes').hidden = false; quietFocus(adds[0]); });
+      $('bag-again').addEventListener('click', function () { fresh(); paint(); $('bag-inbox').textContent = 'Waiting for one… try it on the left'; $('bag-done').hidden = true; $('bag-notes').hidden = false; quietFocus(adds[0]); });
       fresh(); paint();
     })();
 
@@ -1655,6 +1687,47 @@
       }
     })();
 
+    /* Mr. G's scooter: shows how far down the page you are while you scroll; tap it to ride back to the top */
+    (function () {
+      var ride = $('ride'); if (!ride || reduce) return;
+      var bike = $('ride-bike'), face = $('ride-face'), lift = $('ride-lift'), done = $('ride-done'), hero = document.querySelector('.hero-band');
+      var lastY = window.scrollY, dir = 1, raf = 0, hideT = 0, moveT = 0, hold = false, alive = 0, lastPuff = 0, popped = false, x = 56;
+      ride.hidden = false;
+      function hideSoon() { clearTimeout(hideT); hideT = setTimeout(function () { if (!hold) ride.classList.remove('on'); }, 1800); }
+      function puff() {
+        var now = Date.now(); if (alive > 3 || now - lastPuff < 110) return; lastPuff = now;
+        var s = document.createElement('span'); s.className = 'puff';
+        s.style.left = (dir > 0 ? x - 4 : x + 54) + 'px'; s.style.setProperty('--px-dx', (dir > 0 ? -14 : 14) + 'px');
+        alive++; ride.appendChild(s);
+        var gone = function () { if (s.parentNode) { s.parentNode.removeChild(s); alive--; } };
+        s.addEventListener('animationend', gone); setTimeout(gone, 900);
+      }
+      function paint() {
+        raf = 0;
+        var y = window.scrollY, max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight), pr = Math.min(1, Math.max(0, y / max)), dy = y - lastY;
+        lastY = y;
+        if (hero && hero.getBoundingClientRect().bottom > 0) { clearTimeout(hideT); ride.classList.remove('on', 'moving'); return; }
+        if (Math.abs(dy) > 0.5) dir = dy > 0 ? 1 : -1;
+        var w = ride.clientWidth, x0 = 56, x1 = Math.max(x0, w - 12 - 54);
+        x = x0 + (x1 - x0) * pr;
+        bike.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+        done.style.width = (pr * 100).toFixed(2) + '%';
+        face.classList.toggle('back', dir < 0);
+        ride.classList.add('on', 'moving'); clearTimeout(moveT); moveT = setTimeout(function () { ride.classList.remove('moving'); }, 200);
+        if (Math.abs(dy) > 0.5) puff();
+        if (pr > 0.995 && !popped) { popped = true; lift.classList.remove('up'); void lift.offsetWidth; lift.classList.add('up'); }
+        if (pr < 0.9) popped = false;
+        hideSoon();
+      }
+      window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(paint); }, { passive: true });
+      lift.addEventListener('animationend', function () { lift.classList.remove('up'); });
+      ride.addEventListener('mouseenter', function () { hold = true; clearTimeout(hideT); });
+      ride.addEventListener('mouseleave', function () { hold = false; hideSoon(); });
+      ride.addEventListener('focus', function () { hold = true; clearTimeout(hideT); });
+      ride.addEventListener('blur', function () { hold = false; hideSoon(); });
+      ride.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    })();
+
     /* friends ring: Prev / Random / Next walk through the links that still work */
     (function () {
       var ring = $('ring'); if (!ring) return;
@@ -1705,9 +1778,9 @@
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !('IntersectionObserver' in window)) return;
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with the museum, your artists and their work, your story, reviews, and how to visit.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with a guestbook that takes tattoo and museum tour requests (photos included), a Book a tour button to your own free Cal.com page, the spin the wheel, a filter for each artist’s work, an FAQ, every link and curiosity from your old site, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus museum tours booked right on your site, and Madame Chinchilla’s signed books and gift cards through your own Stripe. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page with the museum, your artists and their work, your story, reviews and how to visit.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site: the guestbook for tattoo and tour requests, a Book a tour button to your own free Cal.com page, the spin the wheel, an artist filter, an FAQ, every link from your old site, and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus tours booked right on your site, and signed books and gift cards through your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));
@@ -1716,7 +1789,7 @@
     function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
     function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
     function note(v) {
-      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
+      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with its build. Tap any tag to see just that build.' };
       var rest = '';
       if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
       if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';

@@ -18,7 +18,7 @@
 <link rel="preload" as="image" href="images/hero-chickadee.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@600&family=Doto:wght@800&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -107,6 +107,8 @@
   .btn:hover { background: var(--teal-deep); border-color: var(--teal-deep); }
   .btn.quiet { background: transparent; color: var(--teal-deep); }
   .btn.quiet:hover { background: var(--ground-2); }
+  /* Y2K, est. 2007: a little gel shine on the solid buttons, like the web the year the shop opened */
+  .btn:not(.quiet), .bk-go:not(.ghost) { background-image: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 48%, rgba(255,255,255,0) 52%, rgba(0,0,0,0.05) 100%) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
 
   /* ---------- hero: three of their own pieces, edge to edge ---------- */
   .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: var(--band); color: var(--on-band); isolation: isolate; }
@@ -269,6 +271,57 @@
   .event li { padding-left: 18px; position: relative; }
   .event li::before { content: "\2726"; position: absolute; left: 0; top: 0; font-size: 10px; color: var(--brass); }
   .event p { color: var(--ink-soft); margin-top: 8px; }
+
+  /* Y2K, est. 2007: the shop pager. See-through teal plastic (their sign teal), a dot LCD with the shop's real news.
+     It pages itself while on screen; a new page makes it buzz, lights the backlight and blinks the light. Tap Next to page.
+     Still, with no buzz and no paging on its own, under reduced motion. */
+  .flash-side { display: grid; gap: 34px; align-content: start; min-width: 0; }
+  .pager { position: relative; width: min(calc(100% - 44px), 330px); margin-left: 22px; rotate: 1.2deg; }
+  .pg-body { position: relative; padding: 11px 14px 11px; border-radius: 20px 20px 26px 26px; color: #f3ecda;
+    background:
+      radial-gradient(110% 60% at 18% 0%, rgba(255,255,255,0.34), rgba(255,255,255,0) 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 40' fill='none' stroke='%23e3c67d' stroke-opacity='.4' stroke-width='1.2'%3E%3Cpath d='M2 30h30l8-8h26M66 22V10h20M86 10h30l6 6h26M40 38v-4h50l6-6h18'/%3E%3Ccircle cx='66' cy='22' r='2.2'/%3E%3Ccircle cx='122' cy='16' r='2.2'/%3E%3Crect x='92' y='20' width='18' height='9' rx='1.5'/%3E%3C/svg%3E") left 54px bottom 4px / 150px 40px no-repeat,
+      linear-gradient(165deg, rgba(76,168,163,0.95), rgba(29,97,99,0.97) 46%, rgba(15,60,62,0.99));
+    border: 1px solid rgba(8,30,31,0.75);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -8px 16px rgba(0,0,0,0.28), 0 22px 34px -20px rgba(0,0,0,0.7); }
+  .pg-top { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
+  .pg-brand { font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 15px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: #e3c67d; text-shadow: 1px 1px 0 #5e1813; }
+  .pg-brand b { font-weight: 800; color: #f3ecda; text-shadow: none; }
+  .pg-led { width: 9px; height: 9px; border-radius: 50%; background: #4a1712; box-shadow: inset 0 1px 1px rgba(0,0,0,0.5), 0 0 0 2px rgba(0,0,0,0.22); }
+  .pg-screen { margin-top: 8px; display: grid; padding: 8px 11px 7px; border-radius: 6px; overflow: hidden;
+    background-color: #b7c8b2; background-image: radial-gradient(rgba(20,40,30,0.1) 0.9px, rgba(0,0,0,0) 1.15px), linear-gradient(180deg, rgba(255,255,255,0.2), rgba(0,0,0,0.06));
+    background-size: 3px 3px, 100% 100%;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.38), 0 0 0 3px #0c2c2d, 0 0 0 4px rgba(255,255,255,0.16);
+    color: #15251d; font-family: 'Doto', ui-monospace, Menlo, monospace; font-weight: 800; font-size: 17px; line-height: 1.25; text-transform: uppercase; white-space: nowrap; transition: background-color 0.35s ease; }
+  .pg-l { display: block; overflow: hidden; }
+  .pg-l.roll { animation: pg-roll 0.3s steps(3, end) both; }
+  .pg-l + .pg-l.roll { animation-delay: 0.08s; }
+  @keyframes pg-roll { from { transform: translateY(70%); opacity: 0; } to { transform: none; opacity: 1; } }
+  .pg-foot { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; padding: 0 2px 0 4px; }
+  .pg-n { font-family: 'Doto', ui-monospace, Menlo, monospace; font-weight: 800; font-size: 14px; color: rgba(243,236,218,0.85); }
+  .pg-btn { min-height: 36px; padding: 6px 15px 6px 17px; margin: 0; border-radius: 999px; cursor: pointer; -webkit-appearance: none; appearance: none;
+    font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 12px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: #141b1c;
+    background: linear-gradient(180deg, #f2dc98 0%, #dcbb6b 48%, #c8a24f 52%, #b88f3c 100%); border: 1px solid #6e531c; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 0 #4f3a12; }
+  .pg-btn:hover { background: linear-gradient(180deg, #f7e6b0 0%, #e6c97d 48%, #d1ad5a 52%, #c19a45 100%); }
+  .pg-btn:active { translate: 0 2px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 0 0 #4f3a12; }
+  .pg-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+  .pg-z { position: absolute; top: 50%; width: 14px; height: 46px; margin-top: -23px; color: var(--teal); opacity: 0; pointer-events: none; }
+  .pg-z.l { left: -21px; } .pg-z.r { right: -21px; transform: scaleX(-1); }
+  .pager.buzz .pg-body { animation: pg-buzz 1.1s linear both; }
+  .pager.buzz .pg-z { animation: pg-z 1.1s linear both; }
+  .pager.lit .pg-screen { background-color: #a3e2d3; }
+  .pager.lit .pg-led { animation: pg-led 0.5s linear 4; }
+  @keyframes pg-buzz {
+    0%, 40%, 58%, 100% { transform: none; }
+    4%, 12%, 20%, 28%, 36%, 62%, 70%, 78%, 86%, 94% { transform: translateX(-2px) rotate(-1deg); }
+    8%, 16%, 24%, 32%, 66%, 74%, 82%, 90%, 98% { transform: translateX(2px) rotate(1deg); }
+  }
+  @keyframes pg-z { 0%, 100% { opacity: 0; } 6%, 36% { opacity: 1; } 42%, 58% { opacity: 0; } 64%, 94% { opacity: 1; } }
+  @keyframes pg-led { 0%, 49% { background: #ff5d3f; box-shadow: 0 0 8px 2px rgba(255,93,63,0.75); } 50%, 100% { background: #4a1712; } }
+  @media (prefers-reduced-motion: reduce) {
+    .pager.buzz .pg-body, .pager.buzz .pg-z, .pg-l.roll, .pager.lit .pg-led { animation: none; }
+    .pg-screen { transition: none; }
+  }
 
   /* forms + demo pieces (shared) */
   .bk [hidden] { display: none !important; }
@@ -593,7 +646,7 @@
         <button type="button" data-state="flash" aria-pressed="false">Flash day</button>
         <button type="button" data-state="guest" aria-pressed="false">Guest spot</button>
       </div>
-      <p class="status-note">Walk-ins, full books, a flash day: you email me and the banner says so.</p>
+      <p class="status-note">Email me, and the banner (and the pager) says so.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -634,7 +687,7 @@
           <h1><span class="gild">Nor Cal<span class="glint" aria-hidden="true">Nor Cal</span></span><span class="banner">Tattoo <span aria-label="and">&amp;</span> Piercing</span></h1>
           <button type="button" class="est" id="est" aria-label="Established 2007">&middot; Est. 2007 &middot;</button>
         </div>
-        <p class="lede">Six artists, three piercers, and one family shop on G Street. Bring your idea, and we&rsquo;ll help you find the right artist for it.</p>
+        <p class="lede">Six artists, three piercers, one family shop on G Street. Bring us your idea.</p>
         <div class="cta-row">
           <a class="btn" href="#book">How to book</a>
           <a class="btn quiet" href="#artists">Meet the artists</a>
@@ -664,12 +717,12 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your story, your artists, how to book, flash days and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: a Request button for each artist, a request form with photos, piercing, aftercare, consent forms and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits and gift cards paid straight to your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: your story, artists, how to book, flash days and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: Request buttons, a request form with photos, piercing, aftercare, consent forms and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus deposits and gift cards paid straight to your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month, to keep yours healthy. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -682,8 +735,8 @@
       <p class="label with-pill"><span>The shop</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Family owned and <em>operated</em></h2>
       <div class="fact reveal"><b>2007</b><span>open since, in North Town Arcata</span></div>
-      <p style="margin-top:18px">Ted and Amy Marks opened Nor Cal Tattoo in 2007, and it&rsquo;s still a family shop: six artists and three piercers working out of 1618 G Street. Come check out our work.</p>
-      <p class="soft">A lot of the people who walk through our doors are getting their very first tattoo. It can feel like a lot the first time, so we do our best to be welcoming and make it a memorable experience for everyone.</p>
+      <p style="margin-top:18px">Ted and Amy Marks opened Nor Cal Tattoo in 2007, and it&rsquo;s still a family shop. Come check out our work.</p>
+      <p class="soft">Sometimes it&rsquo;s overwhelming walking through those doors the first time. We do our best to make you feel welcome.</p>
       <div class="chips reveal" aria-label="At the shop">
         <span class="lead">Walk-ins welcome</span><span>Custom work</span><span>Flash</span><span>Piercing</span><span>$150 minimum</span>
       </div>
@@ -701,14 +754,14 @@
     <p class="label with-pill"><span>Our most asked question</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">How do I <em>book a tattoo?</em></h2>
     <ol class="steps">
-      <li class="reveal"><span class="n">01</span><b>Find your artist</b><p>Tell us your design idea, and we&rsquo;ll help you find the right artist for it.</p></li>
-      <li class="reveal"><span class="n">02</span><b>Quick consult</b><p>We connect you with your artist for a quick consultation. It&rsquo;s always free, and some designs don&rsquo;t need one.</p></li>
-      <li class="reveal"><span class="n">03</span><b>Hold your date</b><p>A nonrefundable deposit sets your date. It holds your spot, covers prep time, and shows you&rsquo;re committed, just like we are.</p></li>
-      <li class="reveal"><span class="n">04</span><b>Get tattooed</b><p>Show up, settle in, and leave with new work. Or skip the line entirely and walk in.</p></li>
+      <li class="reveal"><span class="n">01</span><b>Find your artist</b><p>Tell us your idea, and we&rsquo;ll match you with the right artist.</p></li>
+      <li class="reveal"><span class="n">02</span><b>Quick consult</b><p>Always free, and some designs don&rsquo;t need one.</p></li>
+      <li class="reveal"><span class="n">03</span><b>Hold your date</b><p>A nonrefundable deposit holds your spot and covers prep time.</p></li>
+      <li class="reveal"><span class="n">04</span><b>Get tattooed</b><p>Show up, settle in, leave with new work. Or just walk in.</p></li>
     </ol>
     <div class="book-foot">
-      <p class="their-words reveal">No-shows and last minute cancellations cost the artist time and money. Your deposit protects both you and your artist&rsquo;s schedule. If you no-show, the deposit is forfeited, and another will have to be paid to rebook. Thank you for respecting our time and art.<small>From the shop</small></p>
-      <div class="min-box reveal"><b>$150</b><p>Shop minimum for tattoos. Flash days can run their own prices, like Halloween below.</p></div>
+      <p class="their-words reveal">If you no-show, the deposit is forfeited, and another will have to be paid to rebook. Thank you for respecting our time and art.<small>From the shop</small></p>
+      <div class="min-box reveal"><b>$150</b><p>Shop minimum. Flash days run their own prices.</p></div>
     </div>
   </div>
 </section>
@@ -717,14 +770,14 @@
   <div class="wrap">
     <p class="label with-pill"><span>The artists</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Six artists. <em>One shop.</em></h2>
-    <p class="measure soft" style="margin-top:16px">Not sure who&rsquo;s right for your idea? That&rsquo;s our job. <span data-show="mother crone all">Send it to the shop below, or request your artist directly.</span><span data-show="maiden" hidden>Message the shop, or stop by.</span></p>
+    <p class="measure soft" style="margin-top:16px">Not sure who&rsquo;s right for your idea? That&rsquo;s our job. <span data-show="mother crone all">Send it below, or request your artist.</span><span data-show="maiden" hidden>Message the shop, or stop by.</span></p>
     <div class="artists">
       <article class="a-card reveal">
         <div class="a-pic"><div class="a-mono"><b>TM</b><small>work photos from your Instagram</small></div></div>
         <div class="a-body">
           <h3>Ted Marks</h3>
           <p class="a-role">Owner &middot; Tattoo artist</p>
-          <p>Known around Humboldt for portraits, people and pets alike. Ted also hosts the Inked Hearts Tattoo Expo every year.</p>
+          <p>Portraits, people and pets. Ted hosts the Inked Hearts Tattoo Expo.</p>
           <div class="a-links">
             <a class="ig" href="https://www.instagram.com/ted_marks707/" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></svg>@ted_marks707</a>
             <span data-show="mother crone all" data-fold data-thing="artist request buttons"><button type="button" class="bk-go a-req" data-artist="Ted">Request Ted</button></span>
@@ -736,7 +789,7 @@
         <div class="a-body">
           <h3>James Kerr</h3>
           <p class="a-role">Tattoo artist &middot; 20 years</p>
-          <p>Dimensional color work, science fiction and spacescapes. James handles his own booking requests through his site.</p>
+          <p>Dimensional color, sci-fi and spacescapes. Books through his own site.</p>
           <div class="a-links">
             <a class="ig" href="https://www.instagram.com/captainkerr707/" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></svg>@captainkerr707</a>
             <span data-show="mother crone all" data-fold><a class="bk-go a-req" href="https://www.captainkerrart.com/contact" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Request James</a></span>
@@ -784,7 +837,7 @@
         <div class="a-body">
           <h3>Chair six</h3>
           <p class="a-role"><span class="ph">your sixth artist</span></p>
-          <p>When a new artist joins, or a guest artist is in for the week, their card goes up here.</p>
+          <p>New artist, or a guest in for the week? Their card goes here.</p>
         </div>
       </article>
     </div>
@@ -792,7 +845,7 @@
       <div>
         <p class="label">Piercing</p>
         <h3>Three piercers</h3>
-        <p class="soft" style="margin-top:10px">Piercing by Amy and the team, with walk-ins welcome.</p>
+        <p class="soft" style="margin-top:10px">Piercing by Amy and the team. Walk-ins welcome.</p>
       </div>
       <ul>
         <li><b>Amy Marks</b><span>Co-owner &middot; Piercer</span></li>
@@ -819,7 +872,20 @@
     <p class="label with-pill"><span>Flash days &amp; events</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Flash, specials &amp; <em>expo weekends</em></h2>
     <div class="flash-grid" style="margin-top:36px">
-      <figure class="poster reveal"><img src="images/flash-halloween.jpg" alt="Poster: Nor Cal Tattoo Halloween Flash Day, Oct 31st, 12 to 6pm. Tattoo flash $75 to $150, piercing specials, trick or treat prize bags" width="360" height="420" loading="lazy"><figcaption>From the shop</figcaption></figure>
+      <div class="flash-side">
+        <figure class="poster reveal"><img src="images/flash-halloween.jpg" alt="Poster: Nor Cal Tattoo Halloween Flash Day, Oct 31st, 12 to 6pm. Tattoo flash $75 to $150, piercing specials, trick or treat prize bags" width="360" height="420" loading="lazy"><figcaption>From the shop</figcaption></figure>
+        <div class="pager" id="pager" role="group" aria-labelledby="pg-name">
+          <svg class="pg-z l" viewBox="0 0 14 46" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5c-5 5-5 31 0 36"/><path d="M4 12c-3 5-3 17 0 22"/></svg>
+          <svg class="pg-z r" viewBox="0 0 14 46" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5c-5 5-5 31 0 36"/><path d="M4 12c-3 5-3 17 0 22"/></svg>
+          <div class="pg-body">
+            <div class="pg-top"><span class="pg-brand" id="pg-name">Nor Cal <b>707</b><span class="vh"> pager</span></span><span class="pg-led" aria-hidden="true"></span></div>
+            <div class="pg-screen" aria-hidden="true"><span class="pg-l" id="pg-l1">Halloween flash day</span><span class="pg-l" id="pg-l2">Sat 10/31 12 to 6</span></div>
+            <p class="vh">Halloween Flash Day, Saturday October 31, 12 to 6. Walk-ins welcome. $150 minimum, consults always free. Six artists, three piercers. 1618 G St, Arcata, est. 2007.</p>
+            <div class="pg-foot"><span class="pg-n" id="pg-n" aria-hidden="true">1/5</span><button type="button" class="pg-btn" id="pg-next" hidden>Next<span class="vh"> page</span> <span aria-hidden="true">&#9656;</span></button></div>
+          </div>
+          <p class="vh" role="status" id="pg-live"></p>
+        </div>
+      </div>
       <div>
         <div class="event reveal">
           <div class="date"><small>Oct</small><b>31</b><i>Sat</i></div>
@@ -839,7 +905,7 @@
           <div class="date"><small>Expo</small><b>IH</b><i>Blue Lake</i></div>
           <div>
             <h3>Inked Hearts <em>Tattoo Expo</em></h3>
-            <p>Hosted by Nor Cal Tattoo every year at Blue Lake Casino Hotel: three days of tattoo artists from across the country, plus the Nor Cal piercing team. Next one: <span class="ph">dates</span>.</p>
+            <p>Hosted by Nor Cal every year at Blue Lake Casino Hotel: three days, artists from across the country. Next one: <span class="ph">dates</span>.</p>
           </div>
         </div>
         <aside class="card" style="margin-top:12px" data-show="mother crone all" data-fold data-thing="flash day alerts">
@@ -862,7 +928,7 @@
       <p class="label with-pill"><span>Piercing</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Piercing by <em>Amy</em> &amp; the team</h2>
       <p style="margin-top:16px">Three piercers, walk-ins welcome. <span class="ph">(what&rsquo;s included in the price, like jewelry)</span></p>
-      <p class="demo-note">With Tended, your whole piercing menu lives here, and you email me when a price changes.</p>
+      <p class="demo-note">Email me a new price, and it&rsquo;s up.</p>
     </div>
     <table class="menu reveal">
       <thead><tr><th>Piercing</th><th>Price</th></tr></thead>
@@ -883,7 +949,7 @@
     <div data-show="mother crone all" data-fold data-thing="shop request form">
       <p class="label with-pill"><span>Tell us your idea</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Send the shop <em>your idea</em></h2>
-      <p class="measure soft" style="margin-top:14px">No more explaining it in a DM thread. Pick an artist, or let us match you. Try it:</p>
+      <p class="measure soft" style="margin-top:14px">Pick an artist, or let us match you. Try it:</p>
       <div class="req bk">
         <div class="card" id="rq-card">
           <form id="rq" method="dialog" novalidate aria-label="Tattoo request, preview" class="stack">
@@ -917,18 +983,17 @@
           </div>
         </div>
         <div class="req-side wf-note">
-          <div class="bk-note"><b>What you see</b>Every request lands in your inbox with the photos attached, sorted by artist.</div>
+          <div class="bk-note"><b>What you see</b>Each request lands in your inbox, photos attached, sorted by artist.</div>
           <div class="bk-inbox"><div class="from">New request</div><div id="rq-inbox">Waiting for a request&hellip; try it</div></div>
-          <div class="bk-note"><b>Your rules up front</b>The $150 minimum and the deposit policy show before anyone hits send, so fewer surprises at the consult.</div>
-          <div class="bk-note"><b>James keeps his own form</b>His Request button goes straight to his booking page, the way he likes it.</div>
+          <div class="bk-note"><b>James keeps his own form</b>His button goes straight to his booking page.</div>
         </div>
       </div>
     </div>
     <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
       <p class="label with-pill"><span>To book</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2>Message us, <em>or walk in</em></h2>
-      <p class="measure soft" style="margin-top:14px">DM <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener">@norcaltattoo707</a> with your idea, or come by 1618 G Street. We&rsquo;ll help you find the right artist.</p>
-      <p class="demo-note">With Planted, people reach you on Instagram, by phone, or by walking in.</p>
+      <p class="measure soft" style="margin-top:14px">DM <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener">@norcaltattoo707</a> with your idea, or come by 1618 G Street.</p>
+      <p class="demo-note">With Planted, people reach you on Instagram, by phone, or in person.</p>
     </div>
   </div>
 </section>
@@ -950,7 +1015,7 @@
       </div>
       <div class="card reveal" data-thing="digital consent form">
         <h3>Consent forms <span class="bk-demo">preview</span></h3>
-        <p>Filled in and signed on their phone while they wait, saved for you. No clipboards.</p>
+        <p>Signed on their phone while they wait. No clipboards.</p>
         <div class="consent" role="img" aria-label="A one-page consent form with name, date of birth, ID, artist, placement, health questions and a signature">
           <span class="t">Tattoo consent</span><span class="s">Nor Cal Tattoo &amp; Piercing</span>
           <span class="pair"><span class="l">Name</span><span class="l">Date of birth</span></span>
@@ -959,7 +1024,7 @@
           <span class="l">Health questions</span>
           <span class="l">Signature</span>
         </div>
-        <p class="demo-note">With Tended, this is your own form, your wording, ready on any phone.</p>
+        <p class="demo-note">Your form, your wording.</p>
       </div>
     </div>
   </div>
@@ -970,7 +1035,7 @@
     <div class="pay-intro">
       <p class="label with-pill"><span>Deposits &amp; gift cards</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Hold your date, <em>right here</em></h2>
-      <p class="soft" style="margin-top:14px">After the consult, your artist sends a link, and the deposit is paid on your site, with your policy right above the button. Gift cards too. Try it:</p>
+      <p class="soft" style="margin-top:14px">After the consult, your artist sends a link and the deposit is paid here. Gift cards too. Try it:</p>
     </div>
     <div class="pay-card card">
       <form id="dp" method="dialog" novalidate aria-label="Deposit or gift card, preview" class="stack">
@@ -1022,9 +1087,9 @@
       </div>
     </div>
     <div class="pay-notes wf-note">
-      <div class="bk-note"><b>Paid straight to you</b>Deposits and gift cards go into the shop&rsquo;s own Stripe account, set up in your name.</div>
-      <div class="bk-note"><b>The policy, before the button</b>Your deposit rules show right above Pay, in your words, so nobody can say they didn&rsquo;t see them.</div>
-      <div class="bk-note"><b>Gift cards send themselves</b>The buyer gets a card by email, ready to print or forward, and it&rsquo;s yours, not a third party&rsquo;s.</div>
+      <div class="bk-note"><b>Your Stripe is the list</b>Every deposit and gift card is in your own Stripe. You get a short heads-up email, and Stripe&rsquo;s phone app can ping you for each one.</div>
+      <div class="bk-inbox"><div class="from">Heads-up email</div><div id="dp-inbox">Waiting&hellip; try it</div></div>
+      <div class="bk-note"><b>Gift cards send themselves</b>From you, not a third party.</div>
     </div>
   </div>
 </section>
@@ -1046,7 +1111,7 @@
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-kestrel.jpg" alt="A kestrel diving in color" width="600" height="750" loading="lazy"></a>
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-lilies.jpg" alt="Pink lilies on a forearm" width="600" height="750" loading="lazy"></a>
     </div>
-    <p class="demo-note" style="color:rgba(237,231,216,0.75)">With Tended or In Bloom, your newest posts show up here on their own, as you post.</p>
+    <p class="demo-note" style="color:rgba(237,231,216,0.75)">Your newest posts show up here on their own.</p>
   </div>
 </section>
 
@@ -1094,10 +1159,9 @@
 
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="not-site"><span class="bk-demo">Google and text views</span> Not on your site: how it looks in Google and in a text.</p>
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
-    <p class="measure soft" style="margin-top:14px">None of this appears on your site. It&rsquo;s how people find it: when someone nearby searches for a tattoo shop, or a friend texts them your link, this is what they see.</p>
     <div class="found">
       <figure class="found-card reveal">
         <figcaption>In a search</figcaption>
@@ -1116,7 +1180,7 @@
         </div>
       </figure>
     </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile gets a real website to point to (that lives on Google, not on your site), with your hours matching everywhere.</span></p>
+    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google profile gets a real website to point to, with hours that match everywhere.</span></p>
   </div>
 </section>
 
@@ -1125,7 +1189,7 @@
     <span class="gild" aria-hidden="true" id="foot-gild">Nor Cal<span class="glint" aria-hidden="true">Nor Cal</span></span>
     <p style="margin-top:14px"><span class="nw">Nor Cal Tattoo &amp; Piercing &middot;</span> <span class="nw">Family owned since 2007 &middot;</span> <span class="nw">1618 G St, Arcata</span></p>
     <p class="foot-reach"><a class="tel" href="tel:+17074967034">(707) 496-7034</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener">@norcaltattoo707</a></p>
-    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (deposits and gift cards). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span> All the work photos are James Kerr&rsquo;s, from his own site; the other artists&rsquo; work goes in their cards.</p>
+    <p class="legend wf-note">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.<span data-js hidden> Tap a tag to see just that build.</span></p>
   </div>
 </footer>
 
@@ -1169,12 +1233,12 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your story, your artists, how to book, flash days and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: a Request button for each artist, a request form with photos, piercing, aftercare, consent forms and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits and gift cards paid straight to your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: your story, artists, how to book, flash days and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: Request buttons, a request form with photos, piercing, aftercare, consent forms and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus deposits and gift cards paid straight to your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month, to keep yours healthy. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1205,6 +1269,7 @@
       $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
       if (announce) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
+      try { document.dispatchEvent(new CustomEvent('nc:status', { detail: { state: k, user: !!announce } })); } catch (e) {}
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('nc:view', function () { setState(current, false); });
@@ -1360,18 +1425,20 @@
           $('dp-price').innerHTML = $('dp-total').innerHTML = '<span class="ph">your deposit</span>';
           $('dp-sub').textContent = 'Nonrefundable, holds your date';
           st.doneText = 'Your date with ' + st.a + ' is held. A receipt is on its way to your inbox.';
+          st.inbox = 'New deposit for ' + st.a + '. Who paid, and for what: in your Stripe.';
         } else {
           var to = $('dp-to').value.trim() || 'someone special', from = $('dp-from').value.trim() || 'you';
           $('dp-item').textContent = 'Gift card';
           $('dp-price').textContent = $('dp-total').textContent = '$' + st.amt;
           $('dp-sub').textContent = 'For ' + to + ', from ' + from;
           st.doneText = 'A $' + st.amt + ' Nor Cal gift card for ' + to + ' is on its way to your inbox, ready to print or forward.';
+          st.inbox = 'New $' + st.amt + ' gift card for ' + to + ', from ' + from.replace(/\.+$/, '') + '. It’s in your Stripe.';
         }
         $('dp-hint').textContent = ''; form.hidden = true; $('dp-sheet').hidden = false; quietFocus($('dp-sheet-h'));
       });
       $('dp-back').addEventListener('click', function () { $('dp-sheet').hidden = true; form.hidden = false; quietFocus($('dp-go')); });
-      $('dp-pay').addEventListener('click', function () { $('dp-done-t').textContent = st.doneText; $('dp-sheet').hidden = true; $('dp-done').hidden = false; quietFocus($('dp-done-h')); });
-      $('dp-again').addEventListener('click', function () { form.reset(); st = { mode: 'dep', a: 'Alex', amt: '150' }; paint(); $('dp-hint').textContent = ''; $('dp-done').hidden = true; form.hidden = false; quietFocus(modes[0]); });
+      $('dp-pay').addEventListener('click', function () { $('dp-done-t').textContent = st.doneText; if ($('dp-inbox')) $('dp-inbox').textContent = st.inbox; $('dp-sheet').hidden = true; $('dp-done').hidden = false; quietFocus($('dp-done-h')); });
+      $('dp-again').addEventListener('click', function () { form.reset(); st = { mode: 'dep', a: 'Alex', amt: '150' }; paint(); $('dp-hint').textContent = ''; if ($('dp-inbox')) $('dp-inbox').textContent = 'Waiting… try it'; $('dp-done').hidden = true; form.hidden = false; quietFocus(modes[0]); });
       $('dp-change').addEventListener('click', function () { $('dp-done').hidden = true; $('dp-sheet').hidden = false; quietFocus($('dp-sheet-h')); });
       paint();
     })();
@@ -1398,6 +1465,75 @@
 </script>
 
 <script>
+  /* the shop pager: real shop news, a live countdown to Halloween Flash Day, and it buzzes when the banner changes */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var pg = $('pager'), l1 = $('pg-l1'), l2 = $('pg-l2'), num = $('pg-n'), next = $('pg-next'), live = $('pg-live');
+    if (!pg || !l1 || !l2 || !num || !next || !live) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var START = Date.parse('2026-10-31T12:00:00-07:00'), END = Date.parse('2026-10-31T18:00:00-07:00');
+    var BANNER = {
+      open: ['Walk-ins welcome', 'Today at 1618 G St', 'Walk-ins welcome today.'],
+      full: ['Books full for Nov', 'Dec list is open', 'Books are full for November. The December list is open.'],
+      flash: ['Flash day Sat 10/31', '$75 to $150, 12 to 6', 'Halloween Flash Day, Saturday October 31, 12 to 6. Flash $75 to $150.'],
+      guest: ['Guest artist in', 'This week only', 'A guest artist is in this week.']
+    };
+    var banner = 'open';
+    function two(x) { return (x < 10 ? '0' : '') + x; }
+    function flashDay() {
+      var now = Date.now();
+      if (now < START) {
+        var s = Math.floor((START - now) / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+        var t = (d ? d + 'd ' : '') + (reduce ? two(h) + 'h ' + two(m) + 'm' : two(h) + ':' + two(m) + ':' + two(s % 60));
+        return ['Halloween flash day', 'In ' + t, 'Halloween Flash Day, Saturday October 31, 12 to 6. It starts in ' + (d ? d + (d === 1 ? ' day, ' : ' days, ') : '') + h + (h === 1 ? ' hour.' : ' hours.')];
+      }
+      if (now < END) return ['Flash day is on', 'Till 6pm at G St', 'Halloween Flash Day is on now, until 6pm.'];
+      return ['Flash Fridays', '@norcaltattoo707', 'Flash Fridays: see @norcaltattoo707.'];
+    }
+    var PAGES = [
+      flashDay,
+      function () { return BANNER[banner] || BANNER.open; },
+      function () { return ['$150 minimum', 'Consults always free', 'Tattoos have a $150 minimum, and consults are always free.']; },
+      function () { return ['6 artists', '3 piercers', 'Six artists, three piercers.']; },
+      function () { return ['1618 G St Arcata', 'Family owned, 2007', '1618 G St, Arcata. Family owned since 2007.']; }
+    ];
+    var idx = 0, seen = false, onScreen = false, news = false, intro = null, auto = null, tick = null, t1 = null, t2 = null;
+    function paint(lines, roll) {
+      l1.textContent = lines[0]; l2.textContent = lines[1];
+      if (roll && !reduce) [l1, l2].forEach(function (l) { l.classList.remove('roll'); void l.offsetWidth; l.classList.add('roll'); });
+    }
+    function show(i, roll) { clearTimeout(intro); intro = null; idx = (i + PAGES.length) % PAGES.length; num.textContent = (idx + 1) + '/' + PAGES.length; paint(PAGES[idx](), roll); }
+    function buzz() {
+      if (reduce) return;
+      pg.classList.remove('buzz', 'lit'); void pg.offsetWidth; pg.classList.add('buzz', 'lit');
+      clearTimeout(t1); t1 = setTimeout(function () { pg.classList.remove('buzz'); }, 1150);
+      clearTimeout(t2); t2 = setTimeout(function () { pg.classList.remove('lit'); }, 2300);
+    }
+    function stopAuto() { clearInterval(auto); auto = null; }
+    function startAuto() { stopAuto(); if (!reduce && onScreen) auto = setInterval(function () { show(idx + 1, true); }, 6500); }
+    function startTick() { clearInterval(tick); tick = onScreen ? setInterval(function () { if (idx === 0 && !intro) paint(flashDay(), false); }, reduce ? 30000 : 1000) : null; }
+    next.hidden = false;
+    show(0, false);
+    next.addEventListener('click', function () { show(idx + 1, true); buzz(); live.textContent = PAGES[idx]()[2]; startAuto(); });
+    document.addEventListener('nc:status', function (e) {
+      var d = e.detail || {}; if (!BANNER[d.state]) return;
+      banner = d.state;
+      if (d.user && onScreen) { show(1, true); buzz(); startAuto(); } else if (d.user) { news = true; show(1, false); } else if (idx === 1) show(1, false);
+    });
+    if (!('IntersectionObserver' in window)) { onScreen = true; startTick(); return; }
+    new IntersectionObserver(function (es) {
+      onScreen = es[es.length - 1].isIntersecting;
+      if (!onScreen) { stopAuto(); clearInterval(tick); tick = null; return; }
+      startTick();
+      var first = !seen; seen = true;
+      if (first && !reduce) { var to = news ? 1 : 0; news = false; paint(['1 new page', 'from Nor Cal 707'], true); num.textContent = 'NEW'; buzz(); stopAuto(); intro = setTimeout(function () { show(to, true); startAuto(); }, 2400); return; }
+      if (news) { news = false; show(1, true); buzz(); }
+      startAuto();
+    }, { threshold: 0.5 }).observe(pg);
+  })();
+</script>
+
+<script>
   /* See your site as: build views (Planted / Tended / In Bloom; keys maiden, mother, crone, all) */
   (function () {
     var root = document.documentElement, body = document.body;
@@ -1406,9 +1542,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your story, artists, how to book, flash days and how to find you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with a Request button for each artist, a request form with photos, your piercing menu, aftercare, consent forms, FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus deposits and gift cards paid straight to your own Stripe. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page with your story, artists, how to book, flash days and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site with Request buttons, a request form with photos, piercing, aftercare, consent forms, FAQ and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus deposits and gift cards paid straight to your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1420,7 +1556,7 @@
     function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
     function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
     function note(v) {
-      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
+      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with its build. Tap a build or any tag to see just that.' };
       var rest = '';
       if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
       if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';

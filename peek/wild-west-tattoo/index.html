@@ -17,7 +17,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rye&family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rye&family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Caveat:wght@600&family=Jersey+10&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -114,6 +114,22 @@
   .btn.quiet:hover { background: var(--ground-2); }
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; align-items: center; }
 
+  /* little pixel batwing doors on "Send your idea": they swing open when you point at the way in (hover, focus or tap),
+     and once on their own when the button first shows up, so phones see it too. Still under reduced motion. */
+  .doors { display: inline-flex; gap: 2px; margin-left: 11px; vertical-align: -3px; perspective: 70px; pointer-events: none; }
+  .doors i { display: block; width: 10px; height: 16px; background: currentColor; transform-origin: 0 50%;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 8'%3E%3Cpath d='M0 0h2v1H0zM0 1h4v1H0zM0 2h5v1H0zM0 3h1v2H0zM2 3h1v2H2zM4 3h1v2H4zM0 5h5v1H0zM0 6h4v1H0zM0 7h2v1H0z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 8'%3E%3Cpath d='M0 0h2v1H0zM0 1h4v1H0zM0 2h5v1H0zM0 3h1v2H0zM2 3h1v2H2zM4 3h1v2H4zM0 5h5v1H0zM0 6h4v1H0zM0 7h2v1H0z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; }
+  .doors i + i { transform-origin: 100% 50%;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 8'%3E%3Cpath d='M3 0h2v1H3zM1 1h4v1H1zM0 2h5v1H0zM0 3h1v2H0zM2 3h1v2H2zM4 3h1v2H4zM0 5h5v1H0zM1 6h4v1H1zM3 7h2v1H3z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 8'%3E%3Cpath d='M3 0h2v1H3zM1 1h4v1H1zM0 2h5v1H0zM0 3h1v2H0zM2 3h1v2H2zM4 3h1v2H4zM0 5h5v1H0zM1 6h4v1H1zM3 7h2v1H3z'/%3E%3C/svg%3E"); }
+  .doors.swing i { animation: door-l 1.6s cubic-bezier(.3, .6, .4, 1) both; }
+  .doors.swing i + i { animation-name: door-r; }
+  @media (hover: hover) { .btn:hover .doors i, .btn:focus-visible .doors i { animation: door-l 1.6s cubic-bezier(.3, .6, .4, 1) both; } .btn:hover .doors i + i, .btn:focus-visible .doors i + i { animation-name: door-r; } }
+  @keyframes door-l { 0% { transform: rotateY(0); } 14% { transform: rotateY(-80deg); } 32% { transform: rotateY(50deg); } 50% { transform: rotateY(-28deg); } 67% { transform: rotateY(13deg); } 83% { transform: rotateY(-5deg); } 100% { transform: rotateY(0); } }
+  @keyframes door-r { 0% { transform: rotateY(0); } 14% { transform: rotateY(80deg); } 32% { transform: rotateY(-50deg); } 50% { transform: rotateY(28deg); } 67% { transform: rotateY(-13deg); } 83% { transform: rotateY(5deg); } 100% { transform: rotateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .doors.swing i, .btn:hover .doors i, .btn:focus-visible .doors i { animation: none !important; } }
+
   /* ---------- hero ---------- */
   .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #0b0a09; color: var(--on-band); }
   .hero-band > .gutter { position: relative; z-index: 2; }
@@ -133,6 +149,10 @@
   .hero-band .eyebrow { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--chrome); margin-bottom: 18px; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7); }
   .hero-band h1 { font-size: clamp(44px, 8vw, 94px); line-height: 0.98; color: #f3ebdc; text-shadow: 0 3px 30px rgba(0, 0, 0, 0.55); }
   .hero-band h1 .ww { display: block; color: var(--orange); font-size: 0.62em; letter-spacing: 0.06em; margin-bottom: 6px; }
+  /* Y2K chrome lettering, after the chrome TATTOO SALOON letters in their logo (still; no motion) */
+  .hero-band h1 .chrome { display: block; color: #f3ebdc; text-shadow: none; padding-bottom: 0.06em;
+    background: linear-gradient(180deg, #fdfdfd 0%, #e4e7ea 34%, #a6acb2 47%, #3a3f45 50%, #5c636a 56%, #c3c8cd 70%, #f6f7f8 86%, #b4bac0 100%) 0 0 / 100% 0.98em repeat-y;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.6)); }
   .plate { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 7px 18px; position: relative;
     border: 1.5px solid var(--orange); color: var(--orange); font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 700; background: rgba(10, 9, 8, 0.55); }
   .plate::before, .plate::after { content: ""; position: absolute; top: 50%; width: 10px; height: 10px; translate: 0 -50%; rotate: 45deg; background: #0b0a09; border: 1.5px solid var(--orange); }
@@ -344,6 +364,35 @@
   .card-body .bk-go { margin-top: auto; justify-self: start; padding: 10px 14px; font-size: 12.5px; }
   .card-body .bk-go[aria-pressed="true"] { background: transparent; color: var(--orange); box-shadow: inset 0 0 0 1.5px var(--orange); }
   .claimed { position: absolute; top: 14px; right: -34px; z-index: 3; rotate: 35deg; background: var(--orange); color: #15120f; font-size: 11px; letter-spacing: 0.18em; font-weight: 700; text-transform: uppercase; padding: 4px 40px; }
+
+  /* "Deal me one": a saloon deal for the undecided (after Sean's flaming cards and Damen's playing card king).
+     The cards flip face down, trade places like a dealt hand, flip back up, and one gets a pixel "Your card" sticker.
+     Y2K chrome button, pixel lettering. Under reduced motion the pick just gets its sticker, nothing moves. */
+  .deal-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 22px; }
+  .y2k-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; margin: 0; padding: 8px 16px 9px; cursor: pointer;
+    font-family: 'Jersey 10', 'Libre Franklin', sans-serif; font-weight: 400; font-size: 22px; line-height: 1; letter-spacing: 0.03em; color: #15120f;
+    background: linear-gradient(180deg, #ffffff 0%, #e2e5e8 42%, #a9afb5 52%, #d9dde0 78%, #f3f4f5 100%);
+    border: 2px solid; border-color: #ffffff #5a6067 #5a6067 #ffffff; border-radius: 3px; box-shadow: 0 0 0 1px #000, 0 6px 16px -8px rgba(0, 0, 0, 0.7); }
+  .y2k-btn:hover { background: linear-gradient(180deg, #ffffff 0%, #f0e2cc 42%, #d9a35a 52%, #f2d3a4 78%, #fff6e8 100%); }
+  .y2k-btn:active { border-color: #5a6067 #ffffff #ffffff #5a6067; translate: 0 1px; }
+  .y2k-btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+  .deal-ico { flex: none; width: 12px; height: 16px; border-radius: 2px; background: #15120f; box-shadow: inset 0 0 0 1.5px #de8e1d; position: relative; }
+  .deal-ico::after { content: ""; position: absolute; inset: 4px 3px; background: #de8e1d; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+  .deal-say { margin: 0; font-family: 'Jersey 10', 'Libre Franklin', sans-serif; font-weight: 400; font-size: 22px; line-height: 1.15; letter-spacing: 0.02em; color: #f6c37a; }
+  .deal-say:empty { display: none; }
+  .card { position: relative; }
+  .card-back { position: absolute; inset: 0; z-index: 4; opacity: 0; pointer-events: none; border-radius: inherit;
+    background: repeating-linear-gradient(45deg, rgba(222, 142, 29, 0.5) 0 1.5px, rgba(0, 0, 0, 0) 1.5px 13px), repeating-linear-gradient(-45deg, rgba(222, 142, 29, 0.5) 0 1.5px, rgba(0, 0, 0, 0) 1.5px 13px), #15120f;
+    box-shadow: inset 0 0 0 8px #15120f, inset 0 0 0 10px #de8e1d, inset 0 0 0 13px #15120f, inset 0 0 0 14px rgba(201, 205, 210, 0.7); }
+  .card-back::after { content: ""; position: absolute; left: 50%; top: 50%; width: 64px; height: 62px; translate: -50% -50%;
+    background: linear-gradient(180deg, #ffffff 0%, #dfe3e6 40%, #7d848b 50%, #3a3f45 54%, #c6cbd0 74%, #ffffff 100%);
+    clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+  .card.dealt { outline: 2px solid var(--orange); outline-offset: 3px; box-shadow: 0 0 26px rgba(222, 142, 29, 0.42); }
+  .dealt-tag { position: absolute; left: 10px; bottom: 12px; z-index: 3; pointer-events: none; rotate: -7deg;
+    font-family: 'Jersey 10', 'Libre Franklin', sans-serif; font-weight: 400; font-size: 21px; line-height: 1; letter-spacing: 0.02em; color: #15120f;
+    background: #f6c37a; border: 2px solid #15120f; box-shadow: 3px 3px 0 #15120f; padding: 5px 8px 6px; animation: tag-slap 0.45s cubic-bezier(.3, 1.6, .5, 1) both; }
+  @keyframes tag-slap { from { scale: 1.8; opacity: 0; } to { scale: 1; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .dealt-tag { animation: none; } .y2k-btn:active { translate: none; } }
 
   /* instagram feed */
   .feed { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin-top: 30px; }
@@ -631,7 +680,7 @@
         <button type="button" data-state="full" aria-pressed="false">Books full</button>
         <button type="button" data-state="guest" aria-pressed="false">Guest spot</button>
       </div>
-      <p class="status-note">The neon sign below changes with it. Email me the change, and it&rsquo;s done.</p>
+      <p class="status-note">The neon sign changes with it. Email me, and it&rsquo;s done.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -663,11 +712,11 @@
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
         <p class="eyebrow">Sean Grimes&rsquo;</p>
-        <h1><span class="ww">Wild West</span>Tattoo Saloon</h1>
+        <h1><span class="ww">Wild West</span><span class="chrome">Tattoo Saloon</span></h1>
         <p class="plate"><span>On Central Ave since 2018</span></p>
-        <p class="lede"><span class="tagline">Humboldt County&rsquo;s finest.</span>Custom tattoos by Sean Grimes, B.F.A., and Damen Tesch: black and gray, color, traditional and cover-ups, with over 50 years at the chair between them.</p>
+        <p class="lede"><span class="tagline">Humboldt County&rsquo;s finest.</span>Custom tattoos by Sean Grimes, B.F.A., and Damen Tesch. Black and gray, color, traditional, cover-ups.</p>
         <div class="cta-row">
-          <a class="btn" href="#request">Send your idea</a>
+          <a class="btn" href="#request">Send your idea<span class="doors" aria-hidden="true"><i></i><i></i></span></a>
           <a class="btn quiet" href="#work">See the work</a>
         </div>
       </div>
@@ -695,12 +744,12 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: the books banner, your work, both artists, how to get started, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: your own request form (photos included, no more Jotform), Request buttons for each artist, a guest spot card, your waiver, aftercare, FAQ, books alerts and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits and gift cards through your own Stripe, and pre-drawn designs people can claim."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: the books banner, your work, both artists, how to get started, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: your own request form with photos, a Request button for each artist, a guest spot card, waiver, aftercare, FAQ, books alerts and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus deposits and gift cards through your own Stripe, and designs people can claim."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month, to keep yours healthy and current. Email me any change, from open books to a new guest spot, and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -713,13 +762,13 @@
       <span class="rope" aria-hidden="true"></span>
       <p class="label with-pill"><span>The books</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal" id="books-h">Sean books <em>by the month.</em></h2>
-      <p class="soft">When a month opens, it goes here first: what&rsquo;s open, who&rsquo;s in, and how to get a spot. Send your idea with a few reference photos and where it goes on your body, and we&rsquo;ll take it from there.</p>
+      <p class="soft">When a month opens, it goes here first. Send your idea, a few reference photos and where it goes, and we&rsquo;ll take it from there.</p>
       <dl class="window">
         <div><dt>This month</dt><dd id="books-now">A few spots left in <span data-month>October</span></dd></div>
         <div><dt>Next month</dt><dd><span class="ph">opens on your date</span></dd></div>
         <div><dt>Free consults</dt><dd><span class="ph">your consult days</span></dd></div>
       </dl>
-      <div class="cta-row"><a class="btn" href="#request">Send your idea</a></div>
+      <div class="cta-row"><a class="btn" href="#request">Send your idea<span class="doors" aria-hidden="true"><i></i><i></i></span></a></div>
     </div>
     <div class="neon-wrap" aria-hidden="true">
       <div class="neon" id="neon" data-state="open">
@@ -740,7 +789,7 @@
         <span class="rope" aria-hidden="true"></span>
         <p class="label with-pill"><span>The work</span> <span class="tag" data-go="maiden">Every build</span></p>
         <h2 class="reveal">Ever notice how other places have <em>small trees?</em></h2>
-        <p class="soft measure" style="margin-top:14px">Ours are better. Redwoods, wildlife, eagles, ships, movie characters and flowers, in black and gray or full color.</p>
+        <p class="soft measure" style="margin-top:14px">Pretty dumb, right? Anyway, ours are better.</p>
       </div>
       <div class="chips" role="group" aria-label="Show work by style">
         <button type="button" class="chip" data-f="all" aria-pressed="true">All</button>
@@ -765,7 +814,7 @@
       <figure class="reveal photo" data-f="color"><img src="images/work-cards.jpg" width="900" height="900" alt="A color tattoo of a jack and king of hearts with flames rising off the cards" loading="lazy"><figcaption><b>Sean &middot; Color</b>Jack and king, on fire</figcaption></figure>
       <figure class="reveal photo" data-f="bg"><img src="images/work-blossoms.jpg" width="900" height="900" alt="A fine black and gray branch of dogwood blossoms along a forearm" loading="lazy"><figcaption><b>From the shop &middot; Black and gray</b>Dogwood blossoms</figcaption></figure>
     </div>
-    <div class="wf-note work-note"><div class="bk-note"><b>All your own work</b>Every photo on this page is yours or Damen&rsquo;s, pulled from your Instagram posts (and captions). On your real site, new pieces can come straight from Instagram, or you email me your favorites.</div></div>
+    <div class="wf-note work-note"><div class="bk-note"><b>All your own work</b>Every photo here is yours or Damen&rsquo;s, from your Instagram.</div></div>
   </div>
 </section>
 
@@ -781,7 +830,7 @@
         <div class="artist-body">
           <p class="role">Owner &middot; Bachelor of Fine Arts</p>
           <h3>Sean Grimes</h3>
-          <p>Sean opened the saloon on Central Ave in 2018. He draws your design before your first session and gives clear direction on how it will wear. He won&rsquo;t copy another artist&rsquo;s tattoo, and he&rsquo;d love to do more stylized movie characters.</p>
+          <p>Opened the saloon on Central Ave in 2018. Draws your design before your first session, won&rsquo;t copy another artist&rsquo;s tattoo, and would love to do more stylized movie characters.</p>
           <div class="styles"><span>Black and gray</span><span>Color</span><span>Traditional</span><span>Characters</span><span>Cover-ups</span></div>
           <dl class="artist-facts">
             <div><dt>Hourly</dt><dd><span class="ph">your rate</span></dd></div>
@@ -798,7 +847,7 @@
         <div class="artist-body">
           <p class="role">Resident artist &middot; 28 years</p>
           <h3>Damen Tesch</h3>
-          <p>Damen has been tattooing for 28 years and is resident at Wild West. He draws on paper, with a pencil: koi, Hanya masks, thunderbirds and samurai frogs, ready for someone to wear them. He can bring your wildest ideas to life.</p>
+          <p>Tattooing for 28 years, resident at Wild West. Draws on paper, with a pencil: koi, Hanya masks, thunderbirds, samurai frogs. Bring him your wildest ideas.</p>
           <div class="styles"><span>Japanese</span><span>Traditional</span><span>Color</span><span>Black and gray</span></div>
           <dl class="artist-facts">
             <div><dt>Hourly</dt><dd><span class="ph">his rate</span></dd></div>
@@ -816,7 +865,7 @@
       <div>
         <p class="label with-pill" style="margin-bottom:6px"><span>Guest spot</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
         <h3><span class="ph">Guest artist</span> is in <em>for the week</em></h3>
-        <p>In the chair <span class="ph">your dates</span>. Flash and small pieces, first come, first served. Want to guest spot here, or join the shop? <span class="ph">how to reach you</span>.</p>
+        <p>In the chair <span class="ph">your dates</span>. Flash and small pieces, first come, first served. Want to guest spot here? <span class="ph">how to reach you</span>.</p>
       </div>
       <a class="btn quiet" href="#request">Ask about a spot</a>
     </div>
@@ -835,7 +884,7 @@
       <div class="reveal"><b>Deposit</b><p>A <strong>$100 deposit</strong> holds your dates and comes off your final session. It&rsquo;s non-refundable. Need to move? Give 7 days&rsquo; notice, and you can reschedule once.</p></div>
       <div class="reveal"><b>Your session</b><p>Sessions usually start at noon and average about 4 hours. The shop minimum is <strong>$150</strong>, which covers up to an hour. Payment is due at the end of each session.</p></div>
     </div>
-    <div class="wf-note" style="margin-top:34px"><div class="bk-note"><b>Your words, from your old site</b>These four steps are rewritten from your own &ldquo;Get started&rdquo; page as it was in September 2024. Two numbers to check: your old site and your Jotform say $150 an hour, and Sean&rsquo;s Instagram says $200, so I left the hourly rate blank. Tell me what&rsquo;s current and I&rsquo;ll fix it everywhere.</div></div>
+    <div class="wf-note" style="margin-top:34px"><div class="bk-note"><b>Your words, from your old site</b>From your &ldquo;Get started&rdquo; page, September 2024. Your Jotform says $150 an hour and Sean&rsquo;s Instagram says $200, so the hourly rate is blank. Tell me which is current.</div></div>
   </div>
 </section>
 
@@ -846,7 +895,7 @@
       <span class="rope" aria-hidden="true"></span>
       <p class="label with-pill"><span>Send your idea</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Tell us <em>what you&rsquo;re after</em></h2>
-      <p class="soft measure" style="margin-top:14px">The same questions your request form asks now, right on your own site, with room for reference photos. Give it a try:</p>
+      <p class="soft measure" style="margin-top:14px">Your Jotform&rsquo;s questions, with room for photos. Give it a try:</p>
       <div class="req">
         <div class="bk-card" id="rq-card">
           <form id="rq" method="dialog" novalidate aria-label="Tattoo request, preview">
@@ -878,10 +927,9 @@
           </div>
         </div>
         <div class="side wf-note">
-          <div class="bk-note"><b>What you see</b>Each request lands in your inbox with the photos attached, ready to answer.</div>
-          <div class="bk-inbox"><div class="from">New request</div><div id="rq-inbox">Waiting for a request&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>No more Jotform</b>Right now Sean&rsquo;s Instagram links to a free Jotform. This does the same job on your own site, in your colors, and it can go to Sean or Damen.</div>
-          <div class="bk-note"><b>DMs still welcome</b>People can still message you on Instagram. This just gives everyone else a door.</div>
+          <div class="bk-note"><b>What you see</b>Each request lands in your inbox, photos attached.</div>
+          <div class="bk-inbox"><div class="from">New request</div><div id="rq-inbox">Waiting for a request&hellip; try the form</div></div>
+          <div class="bk-note"><b>No more Jotform</b>Same job, on your own site, to Sean or Damen. DMs still work too.</div>
         </div>
       </div>
     </div>
@@ -905,8 +953,9 @@
       <h2 class="reveal">Hold your dates <em>in a minute</em></h2>
       <p class="soft" style="margin-top:14px">Once your design is a match, pay your deposit right here. Or give someone a gift card toward their next piece.</p>
       <div class="pay-notes wf-note">
-        <div class="bk-note"><b>Paid straight to you</b>Through your own Stripe account, set up in your name. Stripe keeps about 2.9% + 30&cent; a payment, and the rest goes to you, not through me.</div>
-        <div class="bk-note"><b>You decide who pays</b>The deposit link only goes to people you&rsquo;ve said yes to, so nobody books a design you haven&rsquo;t seen.</div>
+        <div class="bk-note"><b>Your Stripe is the list</b>Every deposit and gift card is in your own Stripe: who, what, which artist. You get a short heads-up email, and Stripe&rsquo;s phone app can ping you for each one.</div>
+        <div class="bk-inbox"><div class="from" id="pay-in-from">New deposit</div><div id="pay-inbox">Waiting for one&hellip; try the checkout</div></div>
+        <div class="bk-note"><b>Paid straight to you</b>Stripe keeps about 2.9% + 30&cent; a payment. The rest is yours, not through me. Only people you&rsquo;ve said yes to get the deposit link.</div>
       </div>
     </div>
     <div class="bk-card" id="pay-card">
@@ -968,6 +1017,7 @@
     <p class="label with-pill"><span>Pre-drawn designs</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Drawn by hand, <em>ready to wear</em></h2>
     <p class="soft measure" style="margin-top:14px">Get one on you before someone else does. Claim a design with your deposit, and it&rsquo;s yours.</p>
+    <div class="deal-row" id="deal-row" hidden><button type="button" class="y2k-btn" id="deal"><span class="deal-ico" aria-hidden="true"></span>Can&rsquo;t pick? Deal me one</button><p class="deal-say" id="deal-say" role="status"></p></div>
     <div class="flash" data-lightbox>
       <article class="card reveal"><figure class="photo"><img src="images/flash-koi.jpg" width="600" height="750" alt="A red pencil sketch of a koi swimming up through waves and peonies" loading="lazy"></figure><div class="card-body"><h3>Koi</h3><p>Damen &middot; would look sweet on the side of a leg</p><p><span class="ph">your price</span></p><button type="button" class="bk-go claim" aria-pressed="false">Claim it</button></div></article>
       <article class="card reveal"><figure class="photo"><img src="images/flash-thunder.jpg" width="600" height="750" alt="A red pencil sketch of a thunderbird with lightning in its talons" loading="lazy"></figure><div class="card-body"><h3>Thunder chicken</h3><p>Damen &middot; on paper, with a pencil</p><p><span class="ph">your price</span></p><button type="button" class="bk-go claim" aria-pressed="false">Claim it</button></div></article>
@@ -975,7 +1025,7 @@
       <article class="card reveal"><figure class="photo"><img src="images/flash-frog.jpg" width="600" height="750" alt="A pencil sketch of a frog in samurai armor raising a sword" loading="lazy"></figure><div class="card-body"><h3>Samurai bullfrog</h3><p>Damen &middot; by repeated request</p><p><span class="ph">your price</span></p><button type="button" class="bk-go claim" aria-pressed="false">Claim it</button></div></article>
     </div>
     <p class="hint" id="claim-hint" role="status"></p>
-    <p class="demo-note">With In Bloom, claiming takes the deposit through your Stripe and marks the design as taken, so nobody else can grab it. These four are Damen&rsquo;s recent sketches from his Instagram; prices are yours to set.</p>
+    <p class="demo-note">Claiming takes the deposit and marks the design taken. Prices are yours to set.</p>
   </div>
 </section>
 
@@ -1022,7 +1072,7 @@
           <li><span class="ph">what to wash with, and how often</span></li>
           <li><span class="ph">what to skip while it heals</span></li>
         </ul>
-        <p class="demo-note">With Tended, aftercare gets its own page. Your old site had tattoo, body piercing and oral piercing aftercare; send me what you hand people now and it goes here, word for word.</p>
+        <p class="demo-note">Send me the aftercare you hand people now, and it goes here word for word.</p>
       </div>
       <div class="care-card reveal" data-thing="waiver on your phone">
         <h3>Your waiver, <em>on your phone</em></h3>
@@ -1035,7 +1085,7 @@
           <span class="wv-c"><i></i>I&rsquo;m 18 or older and I consent to this tattoo</span>
           <span class="wv-l">Signature</span>
         </div>
-        <p class="demo-note">With Tended, your waiver is a simple form on your site. It arrives in your inbox, signed.</p>
+        <p class="demo-note">It arrives in your inbox, signed.</p>
       </div>
     </div>
   </div>
@@ -1124,7 +1174,7 @@
       <span class="rope" aria-hidden="true"></span>
       <p class="label with-pill"><span>Questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Asked and <em>answered</em></h2>
-      <p class="soft" style="margin-top:14px">The things people DM about before they book, answered once.</p>
+      <p class="soft" style="margin-top:14px">What people DM about before they book, answered once.</p>
     </div>
     <div class="faq-list" data-thing="FAQ">
       <details><summary>Do you do cover-ups?</summary><div class="ans"><p>Yes. Bad tattoo? Outgrown tattoo? You don&rsquo;t have to be the highlight of someone&rsquo;s blooper reel. Send a photo of what&rsquo;s there now, and let&rsquo;s level it up.</p></div></details>
@@ -1140,10 +1190,10 @@
 <!-- READY FOR GOOGLE -->
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="not-site"><span class="bk-demo">Google and text views</span> How your site looks on Google and in a text.</p>
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
-    <p class="soft measure" style="margin-top:14px">None of this appears on your site. It&rsquo;s how people find it. Right now your old web address, the one still in your Instagram, Yelp and Facebook, sends people to a lottery site instead of you. Your new site fixes that.</p>
+    <p class="soft measure" style="margin-top:14px">Right now your old web address sends people to a lottery site. Your new site fixes that.</p>
     <div class="found">
       <figure class="reveal found-card">
         <figcaption>In a search</figcaption>
@@ -1162,7 +1212,7 @@
         </div>
       </figure>
     </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile is set up too (that lives on Google, not on your site): your pin on the map, your hours, and reviews from real clients. Right now the shop doesn&rsquo;t show up on Google Maps.</span></p>
+    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile too: your pin on the map, hours and reviews. Right now the shop isn&rsquo;t on Google Maps.</span></p>
   </div>
 </section>
 
@@ -1176,7 +1226,7 @@
         <p style="margin-top:4px">Text <span class="nw">707-630-5048</span> &middot; <a href="https://www.instagram.com/wildwesttattoosaloon/" target="_blank" rel="noopener">@wildwesttattoosaloon</a> &middot; <a href="https://www.instagram.com/seangrimestattoo/" target="_blank" rel="noopener">@seangrimestattoo</a> &middot; <a href="https://www.instagram.com/damenteschtattoos/" target="_blank" rel="noopener">@damenteschtattoos</a></p>
       </div>
     </div>
-    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding build price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (taking payments). The books banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend wf-note">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.<span data-js hidden> Tap a tag to see just that build.</span></p>
   </div>
 </footer>
 
@@ -1190,12 +1240,12 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: the books banner, your work, both artists, how to get started, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: your own request form (photos included, no more Jotform), Request buttons for each artist, a guest spot card, your waiver, aftercare, FAQ, books alerts and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits and gift cards through your own Stripe, and pre-drawn designs people can claim."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: the books banner, your work, both artists, how to get started, reviews and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: your own request form with photos, a Request button for each artist, a guest spot card, waiver, aftercare, FAQ, books alerts and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus deposits and gift cards through your own Stripe, and designs people can claim."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">$12, $45 or $90 a month, matching your build: hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1355,7 +1405,7 @@
         $('rq-inbox').textContent = name + ' (' + mail + ') wants ' + (artist === 'Either' ? 'either artist' : artist) + ': ' + $('rq-place').value.trim() + ', ' + $('rq-size').value.trim() + ' in, budget ' + $('rq-budget').value.trim() + '. ' + (pics ? pics + ' photos attached.' : 'No photos yet.');
         form.hidden = true; done.hidden = false; quietFocus($('rq-done-h'));
       });
-      $('rq-again').addEventListener('click', function () { form.reset(); setWho('Sean'); if (pics) drop.click(); hint.textContent = ''; done.hidden = true; form.hidden = false; $('rq-inbox').textContent = 'Waiting for a request… try it on the left'; quietFocus(form.querySelector('[type="submit"]')); });
+      $('rq-again').addEventListener('click', function () { form.reset(); setWho('Sean'); if (pics) drop.click(); hint.textContent = ''; done.hidden = true; form.hidden = false; $('rq-inbox').textContent = 'Waiting for a request… try the form'; quietFocus(form.querySelector('[type="submit"]')); });
       $('rq-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; $('rq-inbox').textContent = 'Editing the request… send it again to see it land here'; quietFocus($('rq-idea')); });
     })();
 
@@ -1365,7 +1415,8 @@
       var sheet = $('pay-sheet'), done = $('pay-done'), hint = $('pay-hint'), any = $('pay-any');
       var modes = all(form, '[data-mode]'), amts = all(form, '[data-amt]'), st;
       function paint() { pressOnly(modes, 'mode', st.mode); $('pay-dep').hidden = st.mode !== 'dep'; $('pay-gift').hidden = st.mode !== 'gift'; pressOnly(amts, 'amt', st.amt); $('pay-any-wrap').hidden = st.amt !== 'any'; }
-      function reset() { st = { mode: 'dep', amt: '100' }; form.reset(); hint.textContent = ''; form.hidden = false; sheet.hidden = true; done.hidden = true; paint(); }
+      function reset() { st = { mode: 'dep', amt: '100' }; form.reset(); hint.textContent = ''; form.hidden = false; sheet.hidden = true; done.hidden = true; paint();
+        if ($('pay-inbox')) { $('pay-in-from').textContent = 'New deposit'; $('pay-inbox').textContent = 'Waiting for one… try the checkout'; } }
       modes.forEach(function (b) { b.addEventListener('click', function () { st.mode = b.dataset.mode; hint.textContent = ''; paint(); }); });
       amts.forEach(function (b) { b.addEventListener('click', function () { st.amt = b.dataset.amt; paint(); if (st.amt === 'any') any.focus(); }); });
       form.addEventListener('submit', function (e) {
@@ -1375,6 +1426,7 @@
           $('pay-item').textContent = 'Tattoo deposit'; $('pay-price').textContent = $('pay-total').textContent = '$100';
           $('pay-sub').textContent = nm + ', with ' + ar;
           st.doneText = 'Your $100 deposit is in, and your dates with ' + ar + ' are held. A receipt is on its way to your inbox.';
+          st.inbox = nm + ': $100 deposit, with ' + ar + '. Details in your Stripe.';
         } else {
           var n = st.amt === 'any' ? parseInt(String(any.value).replace(/[^0-9]/g, ''), 10) : +st.amt;
           if (!(n >= 5 && n <= 5000)) { hint.textContent = 'Type an amount first, like 150.'; any.focus(); return; }
@@ -1382,12 +1434,16 @@
           $('pay-item').textContent = 'Gift card'; $('pay-price').textContent = $('pay-total').textContent = '$' + n;
           $('pay-sub').textContent = 'For ' + to + ', from ' + from;
           st.doneText = 'A $' + n + ' gift card for ' + to + ' is on its way to your inbox, ready to print or forward.';
+          st.inbox = from + ': $' + n + ' gift card for ' + to + '. Details in your Stripe.';
         }
         hint.textContent = ''; form.hidden = true; sheet.hidden = false; quietFocus($('pay-sheet-h'));
       });
       $('pay-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
       $('pay-change').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('pay-sheet-h')); });
-      $('pay-complete').addEventListener('click', function () { $('pay-done-t').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('pay-done-h')); });
+      $('pay-complete').addEventListener('click', function () {
+        $('pay-done-t').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('pay-done-h'));
+        if ($('pay-inbox')) { $('pay-in-from').textContent = st.mode === 'dep' ? 'New deposit' : 'New gift card'; $('pay-inbox').textContent = st.inbox; }
+      });
       $('pay-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
       reset();
     })();
@@ -1401,6 +1457,57 @@
       if (!on && tagEl) tagEl.remove();
       $('claim-hint').textContent = on ? card.querySelector('h3').textContent + ' is claimed. On your real site, this takes the deposit first.' : '';
     }); });
+
+    /* deal me one: flip the designs face down, deal them into a new order, flip back up; the first card dealt is yours */
+    (function () {
+      var btn = $('deal'), row = $('deal-row'), say = $('deal-say'), grid = document.querySelector('#drawn .flash');
+      if (!btn || !row || !say || !grid) return;
+      var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+      var busy = false, prev = null;
+      all(grid, '.card').forEach(function (c) { var b = document.createElement('span'); b.className = 'card-back'; b.setAttribute('aria-hidden', 'true'); c.appendChild(b); });
+      function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+      function T(x, y, s, r) { return 'translate(' + x.toFixed(1) + 'px, ' + y.toFixed(1) + 'px) rotate(' + (r || 0) + 'deg) scaleX(' + s + ')'; }
+      btn.addEventListener('click', function () {
+        if (busy) return;
+        var cs = all(grid, '.card');
+        var open = cs.filter(function (c) { var k = c.querySelector('.claim'); return !k || k.getAttribute('aria-pressed') !== 'true'; });
+        cs.forEach(function (c) { c.classList.remove('dealt'); var t = c.querySelector('.dealt-tag'); if (t) t.remove(); });
+        if (!open.length) { say.textContent = 'All four are claimed (preview).'; return; }
+        var choices = open.length > 1 ? open.filter(function (c) { return c !== prev; }) : open;
+        var pick = choices[Math.floor(Math.random() * choices.length)]; prev = pick;
+        function land() {
+          busy = false; pick.classList.add('dealt');
+          var t = document.createElement('span'); t.className = 'dealt-tag'; t.textContent = 'Your card'; pick.querySelector('.photo').appendChild(t);
+          say.textContent = 'Your card: ' + pick.querySelector('h3').textContent + '.';
+        }
+        if (mq.matches || typeof pick.animate !== 'function') { land(); return; } /* reduced motion: nothing moves, the pick just gets its sticker */
+        var order = [pick].concat(shuffle(cs.filter(function (c) { return c !== pick; })));
+        var first = cs.map(function (c) { return c.getBoundingClientRect(); });
+        order.forEach(function (c) { c.classList.remove('pre'); c.classList.add('in'); grid.appendChild(c); });
+        busy = true; say.textContent = 'Shuffling…';
+        var DUR = 1150, end = 0;
+        cs.forEach(function (c, i) {
+          var r = c.getBoundingClientRect(), dx = first[i].left - r.left, dy = first[i].top - r.top;
+          var tilt = +(Math.random() * 8 - 4).toFixed(1), delay = order.indexOf(c) * 120;
+          c.animate([
+            { transform: T(dx, dy, 1), offset: 0 },
+            { transform: T(dx, dy, 0), offset: 0.16 },
+            { transform: T(dx, dy, 1), offset: 0.3 },
+            { transform: T(dx * 0.08, dy * 0.08 - 12, 1, tilt), offset: 0.62 },
+            { transform: T(0, 0, 1, tilt * 0.3), offset: 0.74 },
+            { transform: T(0, 0, 0), offset: 0.86 },
+            { transform: T(0, 0, 1), offset: 1 }
+          ], { duration: DUR, delay: delay, easing: 'ease-in-out', fill: 'backwards' });
+          c.querySelector('.card-back').animate([
+            { opacity: 0, offset: 0 }, { opacity: 0, offset: 0.159 }, { opacity: 1, offset: 0.16 },
+            { opacity: 1, offset: 0.859 }, { opacity: 0, offset: 0.86 }, { opacity: 0, offset: 1 }
+          ], { duration: DUR, delay: delay, easing: 'linear', fill: 'backwards' });
+          end = Math.max(end, DUR + delay);
+        });
+        setTimeout(land, end + 40);
+      });
+      row.hidden = false;
+    })();
 
     /* alerts */
     (function () {
@@ -1418,6 +1525,26 @@
 </script>
 
 <script>
+  /* the batwing doors on "Send your idea" swing once when each button first shows up (after the hero fades in), and on a tap */
+  (function () {
+    var doors = [].slice.call(document.querySelectorAll('.doors'));
+    if (!doors.length || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    function swing(d) { d.classList.remove('swing'); void d.offsetWidth; d.classList.add('swing'); clearTimeout(d._t); d._t = setTimeout(function () { d.classList.remove('swing'); }, 1700); }
+    doors.forEach(function (d) { var b = d.parentNode; b.addEventListener('touchstart', function () { swing(d); }, { passive: true }); });
+    if (!('IntersectionObserver' in window)) return;
+    var hero = document.querySelector('.hero-band');
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return; io.unobserve(e.target);
+        var wait = hero && hero.contains(e.target) && (hero.classList.contains('go') || hero.classList.contains('wait')) ? 5800 : 450;
+        setTimeout(function () { swing(e.target); }, wait);
+      });
+    }, { threshold: 1 });
+    doors.forEach(function (d) { io.observe(d); });
+  })();
+</script>
+
+<script>
   /* see your site as: Planted / Tended / In Bloom / Everything (keys maiden / mother / crone / all) */
   (function () {
     var root = document.documentElement, body = document.body;
@@ -1426,9 +1553,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with the books banner, your work, both artists, how to get started, reviews and how to find you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with your own request form (photos included, no more Jotform), Request buttons for each artist, a guest spot card, your waiver, aftercare, FAQ, books alerts and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus deposits and gift cards through your own Stripe, and pre-drawn designs people can claim. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page: the books banner, your work, both artists, how to get started, reviews and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site: your own request form with photos, a Request button for each artist, a guest spot card, waiver, aftercare, FAQ, books alerts and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus deposits and gift cards through your own Stripe, and designs people can claim. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1440,7 +1567,7 @@
     function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
     function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
     function note(v) {
-      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
+      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with its build. Tap a build or any tag to see just that.' };
       var rest = '';
       if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
       if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';

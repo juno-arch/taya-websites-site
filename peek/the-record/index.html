@@ -627,6 +627,37 @@
     .stack .photo, .stack .photo:first-child { aspect-ratio: 3 / 2; }
   }
   @media (orientation: landscape) and (max-height: 500px) { .hero-main { padding-block: 24px 40px; } .masthead .lock { font-size: 64px; } }
+
+  /* the turntable's readout, as a little LCD */
+  .band .now { padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(201, 162, 74, 0.7); color: #ffc08f; text-shadow: 0 0 6px rgba(255, 140, 70, 0.45);
+    background: #07130f repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, rgba(0, 0, 0, 0) 1px 3px); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6); }
+  .band .now b { color: #ffe0c4; }
+
+  /* Y2K 1: a record store price tag on the lineup. Tap it (or click) and it flips over for the fine print */
+  .free-row { display: flex; align-items: center; gap: 22px; }
+  .free-row .soft { margin: 0; }
+  .ptag { position: relative; flex: none; width: 148px; height: 96px; padding: 0; margin: 6px 0 0 2px; border: 0; background: none; color: #1b120b; font: inherit; cursor: pointer;
+    perspective: 700px; rotate: -6deg; -webkit-tap-highlight-color: transparent; border-radius: 10px; transition: rotate 0.35s ease; }
+  .ptag:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
+  .ptag-in { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.75s cubic-bezier(.3, 1.35, .5, 1); }
+  .ptag[aria-pressed="true"] .ptag-in, .ptag.tease .ptag-in { transform: rotateY(180deg); }
+  .ptag-face { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 3px; border-radius: 10px; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .ptag-front { background: #e8894a; box-shadow: inset 0 0 0 4px #e8894a, inset 0 0 0 5.5px rgba(255, 246, 232, 0.92), 0 10px 18px -10px rgba(20, 20, 10, 0.6); }
+  .ptag-front::after { content: ""; position: absolute; top: 0; right: 0; width: 18px; height: 18px; border-radius: 0 10px 0 5px; background: linear-gradient(to bottom left, var(--ground) 50%, #ffe7cf 50%); box-shadow: -2px 2px 3px rgba(0, 0, 0, 0.16); transition: width 0.3s ease, height 0.3s ease; }
+  .pt-s { font-family: 'Space Mono', monospace; font-size: 10px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; }
+  .ptag-front b { font-family: 'Righteous', sans-serif; font-weight: 400; font-size: 36px; line-height: 0.95; letter-spacing: 0.01em; }
+  .pt-bar { display: block; width: 74px; height: 9px; margin-top: 3px; background: repeating-linear-gradient(90deg, #1b120b 0 1px, rgba(0, 0, 0, 0) 1px 3px, #1b120b 3px 5px, rgba(0, 0, 0, 0) 5px 6px, #1b120b 6px 7px, rgba(0, 0, 0, 0) 7px 10px); }
+  .ptag-back { transform: rotateY(180deg); background: #fbf3e4 repeating-linear-gradient(45deg, rgba(27, 34, 30, 0.035) 0 6px, rgba(0, 0, 0, 0) 6px 12px); color: #1b221e; border: 1.5px dashed #c9b99a; box-sizing: border-box;
+    font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.25; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; box-shadow: 0 10px 18px -10px rgba(20, 20, 10, 0.6); }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) { .ptag:hover { rotate: -2deg; } .ptag:hover .ptag-front::after { width: 30px; height: 30px; } }
+  @media (prefers-reduced-motion: reduce) { .ptag, .ptag-in, .ptag-front::after { transition: none; } }
+  @media (max-width: 560px) { .free-row { gap: 18px; } .ptag { width: 124px; height: 84px; } .ptag-front b { font-size: 30px; } .ptag-back { font-size: 10px; } .pt-bar { width: 62px; } }
+
+  /* Y2K 2 (still): a sale burst on the merch, their own "Round one" */
+  .burst { display: inline-grid; place-items: center; width: 84px; height: 84px; margin-left: 6px; vertical-align: middle; rotate: 10deg; background: var(--pumpkin); color: #1b120b;
+    font-family: 'Righteous', sans-serif; font-size: 16px; line-height: 1.02; text-align: center; letter-spacing: 0.02em;
+    clip-path: polygon(50.0% 0.0%, 59.1% 10.0%, 71.7% 5.0%, 75.6% 17.9%, 89.1% 18.8%, 86.9% 32.2%, 98.7% 38.9%, 91.0% 50.0%, 98.7% 61.1%, 86.9% 67.8%, 89.1% 81.2%, 75.6% 82.1%, 71.7% 95.0%, 59.1% 90.0%, 50.0% 100.0%, 40.9% 90.0%, 28.3% 95.0%, 24.4% 82.1%, 10.9% 81.2%, 13.1% 67.8%, 1.3% 61.1%, 9.0% 50.0%, 1.3% 38.9%, 13.1% 32.2%, 10.9% 18.8%, 24.4% 17.9%, 28.3% 5.0%, 40.9% 10.0%); }
+  @media (max-width: 560px) { .burst { width: 72px; height: 72px; font-size: 14px; } }
 </style>
 </head>
 <body>
@@ -674,7 +705,7 @@
     <div class="wrap" style="width:100%;display:flex;justify-content:inherit">
       <div class="hero-copy">
         <h1>A pub that <em>plays the hits</em></h1>
-        <p class="lede">Beer, wine and n/a drinks, food from local farmers, and free live music on Main Street, in a historic building with a cozy room and a patio.</p>
+        <p class="lede">Beer, wine, n/a drinks, food from local farmers and free live music, in a historic building on Main Street.</p>
         <div class="cta-row">
           <a class="btn" href="#shows">This month&rsquo;s shows</a>
           <a class="btn quiet" href="#menu">See the menu</a>
@@ -708,7 +739,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus party dates picked right on your site, and your hoodies and T shirts sold right here."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month to keep it healthy and current. Email me any change and it&rsquo;s done. Hosting, your domain and backups included, and if you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, matching its build: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -722,9 +753,14 @@
         <p class="label">This month on Main Street</p>
         <h2 class="reveal">October <em>at The Record</em></h2>
       </div>
-      <div>
-        <p class="free"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Every show is free</p>
-        <p class="soft" style="margin-top:12px">Old and new friends on the little stage, or out on the patio. No reservations: come early on a busy night.</p>
+      <div class="free-row">
+        <button type="button" class="ptag" id="ptag" aria-pressed="false" aria-label="Every show is free: no cover, no tickets, no reservations. Flip the price tag" title="Flip it">
+          <span class="ptag-in" aria-hidden="true">
+            <span class="ptag-face ptag-front"><span class="pt-s">Every show</span><b>$0.00</b><span class="pt-bar"></span></span>
+            <span class="ptag-face ptag-back"><span>No cover</span><span>No tickets</span><span>No reservations</span></span>
+          </span>
+        </button>
+        <p class="soft">On the little stage or out on the patio. Come early on a busy night.</p>
       </div>
     </div>
     <div class="side">
@@ -742,7 +778,7 @@
         <li class="trk" data-date="2026-10-31"><span class="trk-date">Sat Oct 31</span><div class="trk-what"><h3>Halloween</h3><span>Spooky DJ and costume fun</span></div><span class="trk-time">4 pm<small>Free</small></span></li>
       </ol>
     </div>
-    <p class="tier-note mock-note">These are your real October shows, typed out from your poster so Google and phones can read them. Shows that already happened fade on their own, and the next one gets marked &ldquo;Up next&rdquo;. Each month, you send me the poster and the new list goes up. <span class="tag" data-go="maiden">Every build</span></p>
+    <p class="tier-note mock-note">Your real October poster, typed out. Played shows fade, and the next one says Up next. Send me each new poster. <span class="tag" data-go="maiden">Every build</span></p>
 
     <div class="played-sec">
       <p class="label">Recently on the stage</p>
@@ -767,7 +803,7 @@
     <div>
       <p class="label">The room</p>
       <h2 class="reveal">Good food, <em>local pours</em>, and the music&rsquo;s on us</h2>
-      <p class="measure" style="margin-top:18px">A casual pub that plays the hits. Beer, wine and n/a drinks from close to home, fresh food from local farmers, and free shows Wednesday to Saturday, in a room of redwood, bottle green walls and afternoon sun.</p>
+      <p class="measure" style="margin-top:18px">A casual pub that plays the hits, in a room of redwood, bottle green walls and afternoon sun.</p>
       <div class="facts">
         <div class="reveal"><b>Free</b><span>live music, every show</span></div>
         <div class="reveal"><b>Free</b><span>jukebox, pick a song</span></div>
@@ -828,7 +864,7 @@
           <div class="deck-player" id="deck-player" hidden></div>
         </div>
         <p class="vh" role="status" id="deck-live"></p>
-        <p class="tier-note mock-note deck-note">Tap the record and it plays the band that&rsquo;s actually up next, from their own Bandcamp or Spotify, so they get the play. &ldquo;Next act&rdquo; moves the needle down your lineup. It changes on its own each month with the list. <span class="tag" data-go="maiden">Every build</span></p>
+        <p class="tier-note mock-note deck-note">Tap the record to hear who&rsquo;s up next, from the band&rsquo;s own Bandcamp or Spotify, so they get the play. <span class="tag" data-go="maiden">Every build</span></p>
       </div>
     </div>
   </div>
@@ -836,7 +872,7 @@
     <figure class="reveal photo"><img src="images/etched-window.webp" width="1600" height="1067" alt="The front window, etched with vines and the words Point Arena Record, looking out on Main Street, a flag and the trees" loading="lazy"></figure>
     <div>
       <h3>The name is <em>in the window</em></h3>
-      <p>Look up from your pint: &ldquo;Point Arena Record&rdquo; is still etched in the front glass, after the town&rsquo;s weekly paper, first printed in 1888. The Record opened in 2025 in this historic building, and the name stuck.</p>
+      <p>Look up from your pint: &ldquo;Point Arena Record&rdquo; is etched in the front glass, after the town&rsquo;s weekly paper from 1888. The Record opened here in 2025.</p>
       <p class="ph" style="display:block;margin-top:14px">(a line or two about the building&rsquo;s story, in your words)</p>
     </div>
   </div>
@@ -956,7 +992,7 @@
       </div>
       <p class="surcharge">To help offset processing fees, a 3% surcharge is added to credit and debit card payments. It doesn&rsquo;t exceed our costs. Cash is exempt.</p>
     </div>
-    <p class="tier-note mock-note">Right now your menu is two pictures, so phones have to pinch and zoom, and Google can&rsquo;t read a word of it. Here it&rsquo;s real text: big on a phone, and findable when someone searches &ldquo;wings Point Arena&rdquo;. New wine? Email me and it&rsquo;s changed. <span class="tag" data-go="maiden">Every build</span></p>
+    <p class="tier-note mock-note">Your menu is two pictures now. Here it&rsquo;s real text, so a search for &ldquo;wings Point Arena&rdquo; finds it. New wine? Email me. <span class="tag" data-go="maiden">Every build</span></p>
     <div class="plates" data-lightbox>
       <figure class="reveal photo"><img src="images/focaccia-pinot.webp" width="1600" height="1066" alt="Focaccia with a bowl of beet hummus, a glass of pinot noir and a bottle of Drew Mendocino pinot noir on a wood table" loading="lazy" style="object-position:60% 50%"></figure>
       <figure class="reveal photo"><img src="images/pint-pretzels.webp" width="1600" height="1067" alt="A hand holding a pint of golden beer beside a green glass bowl of pretzel sticks and nuts" loading="lazy" style="object-position:62% 50%"></figure>
@@ -971,7 +1007,7 @@
     <div>
       <p class="label">Private dinners and parties</p>
       <h2 class="reveal">Have your party <em>at The Record</em></h2>
-      <p class="soft" style="margin-top:16px">A rehearsal dinner, a birthday, a small wedding reception: the kitchen will plan a meal around your people, dietary needs and all.</p>
+      <p class="soft" style="margin-top:16px">Rehearsal dinners, birthdays, small weddings: the kitchen plans the meal around your people, dietary needs and all.</p>
       <div class="quote-big">
         <p>&ldquo;My daughter had her wedding dinner here and many guests stated it was the best food they have ever had at a wedding. Kim paid so much attention to detail, came up with a creative and beautifully presented meal, accommodated many dietary restrictions&hellip;&rdquo;</p>
         <small>M C., on Yelp, a reception for 25</small>
@@ -999,19 +1035,18 @@
           <div class="bk-done fade-in" id="pr-done" hidden>
             <h3 id="pr-thanks" tabindex="-1">Thank you!</h3>
             <p>Your date is penciled in. We&rsquo;ll write back to confirm it and plan the menu with you.</p>
-            <p class="demo-note">On your real site this lands in your inbox and your calendar, and the date is only set once you say yes.</p>
+            <p class="demo-note">On your real site it lands in your inbox and calendar, set only once you say yes.</p>
             <div class="bk-nav"><button type="button" class="bk-go ghost" id="pr-again">Try it again</button><button type="button" class="bk-go ghost" id="pr-edit">Change something</button></div>
           </div>
         </div>
         <div class="bk-side mock-note">
-          <div class="bk-note"><b>What you see</b>Every request arrives with the date, the head count and the dietary needs, so you can check it against show nights before you reply.</div>
+          <div class="bk-note"><b>What you see</b>The date, the head count and the dietary needs, in one note.</div>
           <div class="bk-inbox"><div class="from">New party request</div><div id="pr-inbox">Waiting for a request&hellip; try it on the left</div></div>
           <div class="bk-note"><b>Your terms</b><span class="ph">minimums, deposit, what&rsquo;s included</span></div>
-          <div class="bk-note"><b>Your dates</b>These dates are samples. Only the dates you open show, and nothing is set until you say yes.</div>
-          <p style="font-size:13.5px;color:var(--ink-soft)">Preview: nothing here books a real date. On a real site this runs on a free Cal.com page in your own name, sitting right here on your site.</p>
+          <div class="bk-note"><b>Your dates</b>Sample dates. Only the ones you open show, and nothing&rsquo;s set until you say yes.</div>
         </div>
       </div>
-      <p class="tier-note mock-note" data-show="all" data-fold>With Planted, people email you or ask at the bar, just like now. With Tended, it&rsquo;s an &ldquo;Ask for a party date&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      <p class="tier-note mock-note" data-show="all" data-fold>Planted: people email you or ask at the bar, like now. Tended: an &ldquo;Ask for a party date&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
     <div class="bk-alt" data-show="maiden mother" data-fold tabindex="-1" hidden style="margin-top:44px">
       <p class="label with-pill"><span>Ask about a date</span> <span class="tag" data-go="maiden">Every build</span></p>
@@ -1019,7 +1054,7 @@
       <div data-show="mother" data-fold data-thing="an Ask for a party date button to your own Cal.com page" hidden>
         <div class="cta-row"><button type="button" class="btn" id="pr-cal">Ask for a party date</button></div>
         <p class="hint" id="pr-calhint" role="status"></p>
-        <p class="tier-note mock-note" style="margin-top:22px">With Tended, this &ldquo;Ask for a party date&rdquo; button opens your own free Cal.com page, set up in your name, so people can pick an open date and tell you the head count. Nothing is set until you say yes. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+        <p class="tier-note mock-note" style="margin-top:22px">This opens your own free Cal.com page, set up in your name. Nothing&rsquo;s set until you say yes. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
     </div>
   </div>
@@ -1046,7 +1081,7 @@
         <div class="bk-done fade-in" id="bd-done" hidden>
           <h3 id="bd-thanks" tabindex="-1">Got it!</h3>
           <p>Your music is on its way to the booking inbox, with a link to listen.</p>
-          <p class="demo-note">On your real site this lands in therecordpresents@gmail.com, all in the same shape, so they&rsquo;re easy to sort.</p>
+          <p class="demo-note">On your real site it lands in therecordpresents@gmail.com.</p>
           <div class="bk-nav"><button type="button" class="bk-go ghost" id="bd-again">Try it again</button><button type="button" class="bk-go ghost" id="bd-edit">Change something</button></div>
         </div>
       </div>
@@ -1057,8 +1092,8 @@
 <section id="merch" class="gutter" data-show="crone all" data-fold data-thing="merch shop">
   <div class="wrap">
     <p class="label with-pill"><span>Merch</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-    <h2 class="reveal">Wear <em>The Record</em> home</h2>
-    <p class="measure soft" style="margin-top:14px">Round one: hoodies and T shirts, all organic cotton, with artwork by Studio Daniel and prints by AGW Screenworks. For the folks who love the place and live too far to stop by. Give it a try:</p>
+    <h2 class="reveal">Wear <em>The Record</em> home <span class="burst" aria-hidden="true">Round<br>one!</span></h2>
+    <p class="measure soft" style="margin-top:14px">Hoodies and T shirts, all organic cotton. Art by Studio Daniel, prints by AGW Screenworks.</p>
     <div class="bk">
       <div class="bk-card" id="sh-card">
         <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Pick</button><button type="button" data-s="2" disabled>2 Size</button><button type="button" data-s="3" disabled>3 Delivery</button><button type="button" data-s="4" disabled>4 Pay</button></div>
@@ -1120,9 +1155,9 @@
         </div>
       </div>
       <div class="bk-side mock-note">
-        <div class="bk-note"><b>What you see</b>Every order is in your own Stripe, with what they bought, the size and where it ships, so nothing gets lost in a busy inbox. You also get a short heads-up email, and Stripe&rsquo;s phone app can ping you for each new order.</div>
+        <div class="bk-note"><b>What you see</b>Every order lives in your own Stripe. You get a short heads-up email, and Stripe&rsquo;s phone app can ping you too.</div>
         <div class="bk-inbox"><div class="from">New merch order</div><div id="sh-inbox">Waiting for an order&hellip; try it on the left</div></div>
-        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account. Sales tax is figured by Stripe Tax, which costs 0.5% of each order it taxes. Sold out of a size? The shop says so, on its own.</div>
+        <div class="bk-note"><b>Paid straight to you</b>Into your own Stripe. Sales tax is Stripe Tax: 0.5% of each order it taxes.</div>
       </div>
     </div>
   </div>
@@ -1168,7 +1203,6 @@
     <div>
       <p class="label with-pill"><span>Good to know</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Before <em>you come in</em></h2>
-      <p class="measure soft" style="margin-top:16px">The things people ask, answered once, so the phone can ring a little less.</p>
     </div>
     <div class="faq-list" data-thing="FAQ">
       <details><summary>Do you take reservations?</summary><div class="ans"><p>No reservations. On a busy show night, come a little early for a table.</p></div></details>
@@ -1207,7 +1241,7 @@
     <aside class="news" aria-labelledby="nl-h" data-thing="newsletter signup">
       <p class="label with-pill"><span>The monthly lineup</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h3 id="nl-h">Get the lineup <em>in your inbox</em></h3>
-      <p style="margin-top:10px">One email at the start of each month with every show. Stay tuned, the easy way.</p>
+      <p style="margin-top:10px">Every show, in one email a month. Stay tuned.</p>
       <form id="nl" method="dialog" novalidate aria-label="Newsletter signup, preview">
         <label class="fld" for="nl-mail">Your email</label>
         <div class="nl-row"><input id="nl-mail" type="email" autocomplete="off" value="maya@example.com"><button type="submit" class="bk-go">Sign me up</button></div>
@@ -1241,8 +1275,8 @@
       <figure class="photo"><img src="images/live-la-gente.webp" alt="" loading="lazy"></figure>
     </div>
     <div class="ig-foot mock-note">
-      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts are pulled in on their own: the month&rsquo;s lineup, a band shout out, new merch.</div>
-      <div class="bk-note"><b>What you see</b>These are photos from your Instagram, standing in for your live feed.</div>
+      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts come in on their own.</div>
+      <div class="bk-note"><b>What you see</b>Your own photos, standing in for the live feed.</div>
     </div>
   </div>
 </section>
@@ -1267,10 +1301,10 @@
 
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="not-site"><span class="bk-demo">Google and text views</span> Not on your site: how it shows up on Google and in a text.</p>
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
-    <p class="measure soft" style="margin-top:14px">None of this appears on your site. It&rsquo;s how people find it: when someone on Highway 1 searches for dinner and live music, or a friend texts them your link.</p>
+    <p class="measure soft" style="margin-top:14px">When someone on Highway 1 searches for live music, or a friend texts your link.</p>
     <div class="found">
       <figure class="reveal found-card">
         <figcaption>In a search</figcaption>
@@ -1289,7 +1323,7 @@
         </div>
       </figure>
     </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile is set up too (that lives on Google, not on your site): your pin on the map, your hours, and your reviews.</span></p>
+    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile gets set up too: your map pin, hours and reviews.</span></p>
   </div>
 </section>
 </main>
@@ -1299,7 +1333,7 @@
     <span class="foot-mark"><span class="lock" data-t="THE RECORD" role="img" aria-label="The Record">THE RECORD</span></span>
     <p>265 Main Street, Point Arena, California<button type="button" class="foot-rec" id="foot-rec" aria-label="A little record"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="currentColor"/><circle cx="16" cy="16" r="5" fill="#e8894a"/><circle cx="16" cy="16" r="1.4" fill="var(--ground)"/></svg></button></p>
     <p style="margin-top:6px">Wed to Sat, 3 to 10 pm &middot; <a class="tel" href="tel:+17074120878">(707) 412-0878</a> &middot; <a href="https://www.instagram.com/therecord_pub/" target="_blank" rel="noopener">@therecord_pub</a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (party dates and merch, right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.<span data-js hidden> Tap one to see that build.</span></p>
   </div>
 </footer>
 
@@ -1315,7 +1349,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus party dates picked right on your site, and your hoodies and T shirts sold right here."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month to keep it healthy and current. Email me any change and it&rsquo;s done. Hosting, your domain and backups included, and if you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, matching its build: $12, $45 or $90 a month. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1645,6 +1679,27 @@
 </script>
 
 <script>
+  /* Y2K: the flip-over price tag on the lineup */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /* the price tag: tap or click to flip it over; it flips once by itself the first time it comes into view */
+    var tag = $('ptag');
+    if (tag) {
+      var touched = false;
+      tag.addEventListener('click', function () { touched = true; tag.classList.remove('tease'); tag.setAttribute('aria-pressed', tag.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); });
+      if (!reduce && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) {
+          if (!es[0].isIntersecting) return; io.disconnect(); if (touched) return;
+          setTimeout(function () { if (touched) return; tag.classList.add('tease'); setTimeout(function () { tag.classList.remove('tease'); }, 1900); }, 700);
+        }, { threshold: 0.9 });
+        io.observe(tag);
+      }
+    }
+  })();
+</script>
+
+<script>
   /* views bar (Planted, Tended, In Bloom, Everything; keys stay maiden / mother / crone): Web Faery kit */
   (function () {
     var root = document.documentElement, body = document.body;
@@ -1653,9 +1708,9 @@
     if (!bar || !vp || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with this month’s shows typed out, your whole menu as real text, the room, the parties, reviews and how to find you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with an Ask for a party date button to your own free Cal.com page, a form for bands to send their music, an FAQ, a contact form, a monthly lineup email sign-up that works, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus party dates picked right on your site and your hoodies and T shirts sold right here. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page with this month’s shows, your whole menu as real text, the room, parties, reviews and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site with an Ask for a party date button to your own free Cal.com page, a form for bands, an FAQ, a contact form, a monthly lineup email and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus party dates picked right on your site and your merch sold right here.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1665,7 +1720,7 @@
     function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
     function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
     function note(v) {
-      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
+      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with its build. Tap a build or any tag to see just that one.' };
       var rest = '';
       if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
       if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';

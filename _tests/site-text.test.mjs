@@ -7,8 +7,8 @@
 //     build only, 5 spots through Dec 31, 2026), half to start, half at launch;
 //   a subscription comes with every site (called "care" until Oct 6 2026, when Pollen switched the word), monthly
 //     only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in; changes are the
-//     same in every tier (email anytime, as often as needed, reply within 2 business days, anything broken fixed
-//     free, big new things quoted first);
+//     same in every tier (email anytime, as often as needed, reply within 2 business days, "I watch over your site:
+//     if it goes down, I know before you do, and if anything breaks, I fix it", big new things quoted first);
 //   the subscription is part of every new site; if they ever cancel it, the site is still theirs, every file and
 //     login handed over;
 //   anyone quoted before Oct 5 keeps their quote, and the new subscription price if it's lower for them (one quiet
@@ -106,6 +106,12 @@ const FORBIDDEN = [
   [/no Book (?:now )?button|skips the Book (?:now )?button|Book (?:now )?button (?:comes with|is part of) Tended|Book (?:now )?button is part of Tended and In Bloom/i, 'the old “no Book button on Planted” rule (since Oct 6 2026 afternoon, every build’s Book button opens the booking app they already use)'],
   // the holiday line every plan includes since Oct 6 2026 ("Holiday heads-ups, with your hours updated on your site
   // and your Google profile") replaced the old "a heads-up before holidays so your hours stay right"
+  // the two every-plan lines "Anything broken, I fix free" and "I keep an eye on your site, and if it goes down, I know
+  // before you do" became one line on Oct 6 2026, with no "free": "I watch over your site: if it goes down, I know before
+  // you do, and if anything breaks, I fix it"; and the magic link is "your magic site" in anything people read
+  [/Anything broken, I fix free|I keep an eye on your site|your own magic link|tap it right on your site and type me a note/i, 'an old every-plan or magic link line (since Oct 6 2026: “I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it” and “Your magic site, yours for good”)'],
+  // and the fixes promise lost its "free" everywhere too (start.html's terms and summary, welcome.html; Oct 6 2026)
+  [/fix(?:ed|es)?[^.]{0,40}\bfree\b|always free/i, 'fixes called free (since Oct 6 2026: “if anything breaks, I fix it”, no “free”)'],
   [/heads-up before holidays|before holidays,? so your hours stay right/i, 'the old holiday line (it’s “Holiday heads-ups, with your hours updated on your site and your Google profile” since Oct 6 2026)'],
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
 ];
@@ -325,7 +331,7 @@ for (const page of PAGES) {
   {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
-      maiden: [/Hosting, your web address, security and backups/, /magic link/, /your changes are up/, /monthly check-in/, /New reviews/],
+      maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
       mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
       crone: [/Everything in Tended/, /booking, payments or shop kept running/i, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
     };
@@ -336,8 +342,8 @@ for (const page of PAGES) {
     if (!/call, text or email/.test(planted)) fail('index.html: the Planted card doesn’t say people call, text or email');
     if (!/Book button to the booking app you already use, if you have one/.test(planted)) fail('index.html: the Planted card doesn’t offer a Book button to the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
     // what every plan's subscription also includes: once, right under the three cards, word for word
-    const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days', 'Anything broken, I fix free',
-      'I keep an eye on your site, and if it goes down, I know before you do',
+    const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days',
+      'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
       'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
     const html = read('index.html').replace(/<!--[\s\S]*?-->/g, '');
     const every = html.match(/<\/article>\s*<\/div>\s*<div class="every-plan\b[^>]*>([\s\S]*?)<\/div>\s*<div class="panel\b/);

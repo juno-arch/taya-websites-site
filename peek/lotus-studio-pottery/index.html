@@ -896,7 +896,7 @@
     </div>
     <div class="shop-grid" id="shop-grid"></div>
     <div class="shop-foot">
-      <p class="tier-note mock-note wf-note" data-show="all">With Tended, each piece has a &ldquo;See it in the shop&rdquo; button that opens your Art Storefronts shop, so nothing about how you sell changes. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> Once your site is In Bloom, people buy right here, paid into your own Stripe account, and a piece shows Sold the moment it goes. Try it: add something to your bag.</p>
+      <p class="tier-note mock-note wf-note" data-show="all">With Tended, each piece has a &ldquo;See it in the shop&rdquo; button that opens your Art Storefronts shop, so nothing about how you sell changes. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> Once your site is In Bloom, people buy right here, paid into your own Stripe account, and a piece shows Sold the moment it goes. Every order is listed in your Stripe, with where it ships, and you get a short heads-up email. Try it: add something to your bag.</p>
       <p class="tier-note mock-note wf-note" data-show="all">These are your real pieces and prices from your shop. On your real site, just email me a photo and a price for each new piece and it&rsquo;s in.</p>
     </div>
   </div>
@@ -1171,7 +1171,7 @@
     <div class="bag-how" id="bag-how-wrap">
       <p class="bk-q" id="bag-how-q" style="margin-top:0">How you&rsquo;ll get it</p>
       <div class="seg" role="group" aria-labelledby="bag-how-q"><button type="button" data-how="pickup" aria-pressed="true">Pick up in Old Town</button><button type="button" data-how="ship" aria-pressed="false">Ship it</button></div>
-      <p class="demo-note" id="bag-ship-note" hidden>Shipping: <span class="ph">your shipping rate</span>.</p>
+      <p class="demo-note" id="bag-ship-note" hidden>Shipping: <span class="ph">your shipping rate</span>. You add the shipping address on the next step, in Stripe&rsquo;s secure form, along with your card.</p>
     </div>
     <div class="bag-total"><span>Total</span><span id="bag-total">$0</span></div>
     <button type="button" class="bk-go" id="bag-go" style="width:100%" disabled>Checkout</button>
@@ -1180,7 +1180,7 @@
     <div class="sheet">
       <h3 class="sheet-h"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
       <div class="sheet-lines" id="bag-lines"></div>
-      <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
+      <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span id="bag-slot">Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
       <p class="demo-note">Preview: on a real site this opens a secure Stripe checkout, paid into your own Stripe account. Nothing is charged.</p>
     </div>
     <div class="bk-nav"><button type="button" class="bk-go" id="bag-pay">Pay (preview)</button><button type="button" class="bk-go ghost" id="bag-back">Back</button></div>
@@ -1189,7 +1189,8 @@
     <div class="bk-done fade-in">
       <h3 id="bag-done-h" tabindex="-1">It&rsquo;s yours!</h3>
       <p id="bag-done-text"></p>
-      <p class="demo-note">Preview only. Nothing was charged, and you get an email for every sale.</p>
+      <div class="bk-inbox" style="margin-top:14px"><div class="from">Your heads-up email, a sample</div><div id="bag-inbox"></div></div>
+      <p class="demo-note">Preview only. Nothing was charged. On a real site every order is listed in your own Stripe, with where it ships, and Stripe&rsquo;s phone app can ping you for each new one.</p>
       <div class="bk-nav"><button type="button" class="bk-go ghost" id="bag-again">Try it again</button><button type="button" class="bk-go ghost" id="bag-edit">Change something</button></div>
     </div>
   </div>
@@ -1572,6 +1573,7 @@
       inBag.forEach(function (id) { var d = document.createElement('div'); d.innerHTML = '<span>' + byId[id].name + '</span><span>' + fmt(priceOf(id)) + '</span>'; lines.appendChild(d); });
       var h = document.createElement('div'); h.innerHTML = how === 'ship' ? '<span>Shipping</span><span class="ph">your rate</span>' : '<span>Pick up in Old Town</span><span>Free</span>'; lines.appendChild(h);
       var t = document.createElement('div'); t.className = 'total'; t.innerHTML = '<span>Total</span><span>' + fmt(total()) + (how === 'ship' ? ' + shipping' : '') + '</span>'; lines.appendChild(t);
+      $('bag-slot').textContent = how === 'ship' ? 'Shipping address and card, in Stripe’s secure form' : 'Card or phone wallet, in Stripe’s secure form';
       setStep(2); quietFocus($('bag-pay'));
     });
     $('bag-back').addEventListener('click', function () { setStep(1); quietFocus($('bag-go')); });
@@ -1582,6 +1584,7 @@
       $('bag-done-text').textContent = (names.length === 1 ? names[0] + ' is' : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] + ' are') + ' yours. ' +
         (how === 'ship' ? 'A receipt is on its way, and tracking follows when it ships.' : 'A receipt is on its way. Pick up at the studio on 2nd Street.') +
         (inBag.some(function (id) { return byId[id].cat === 'pots'; }) ? ' Once sold, it’s sold: the piece now shows Sold in the shop.' : '');
+      $('bag-inbox').textContent = 'Maya R.: ' + names.join(', ') + '. ' + (how === 'ship' ? 'Ships to Arcata, CA. Full address in your Stripe.' : 'Picking up at the studio.');
       setStep(3); paintCards(); quietFocus($('bag-done-h'));
     });
     $('bag-edit').addEventListener('click', function () { inBag.forEach(function (id) { delete sold[id]; }); paintCards(); paintBag(); setStep(1); quietFocus($('bag-go')); });

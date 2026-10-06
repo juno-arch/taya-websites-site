@@ -280,6 +280,9 @@
   //     data-tier-name="Planted"   the visible name
   //     data-tier-price="600"      full build price, digits only
   //     data-tier-founding="300"   founding build price, digits only
+  //     data-tier-price="0"        a written 0 is a real price, not an unset attribute: no build fee (a trade or a
+  //                                gift); the founding strikeout is skipped. First used on Linnea's page, Oct 6 2026
+  //     data-tier-build="..."      the words shown in place of a 0 build price (else "No build fee")
   //     data-tier-care="12"        the subscription a month, digits only
   //     data-tier-what="..."       optional one sentence for the card (else the webfaery.love words below)
   //   A page with data-tier-name on its buttons shows those names and prices, plus the subscription line for
@@ -299,19 +302,21 @@
   // Planted's too; Tended's can open a free Cal.com set up for them; In Bloom's booking sits right on the site.
   // Planted's line below doesn't name the Book button, so it stays true either way; the mockups' own words come later)
   const WHAT_NOW = {
-    maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you, with a tap to call, text or email.',
+    maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you, with a tap to call, text or email, or a Book button to the booking app you already use.',
     mother: 'A full site, tended as the seasons change: your pages, a contact form, a newsletter sign-up and a Book button that opens your booking page.',
     crone: 'Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site, payments or a small shop.',
   };
   const num = (v) => { const n = parseInt(String(v || '').replace(/[^0-9]/g, ''), 10); return n > 0 ? n : 0; };
+  const zero = (v) => v !== undefined && /^\s*0+\s*$/.test(String(v)); // a written "0", not a missing attribute
   function readBuilds() {
     const btnFor = (k) => document.querySelector('.vseg [data-view="' + k + '"][data-tier-name]');
     if (KEYS.some(btnFor)) {
       return { priced: true, list: KEYS.map((k) => {
         const b = btnFor(k), o = AS_SENT[k];
         if (!b) return Object.assign({ key: k }, o);
-        const full = num(b.dataset.tierPrice) || o.full;
-        return { key: k, name: b.dataset.tierName.trim() || o.name, full: full, founding: num(b.dataset.tierFounding) || Math.round(full / 2),
+        const full = zero(b.dataset.tierPrice) ? 0 : (num(b.dataset.tierPrice) || o.full);
+        const found = full === 0 || zero(b.dataset.tierFounding) ? 0 : (num(b.dataset.tierFounding) || Math.round(full / 2));
+        return { key: k, name: b.dataset.tierName.trim() || o.name, full: full, founding: found, build: (b.dataset.tierBuild || '').trim(),
           care: num(b.dataset.tierCare), what: (b.dataset.tierWhat || '').trim() || WHAT_NOW[k] };
       }) };
     }
@@ -351,7 +356,10 @@
     BUILDS.forEach((bd) => {
       const btn = el('button', 'wfm-build' + (myPick === bd.key ? ' on' : '')); btn.type = 'button';
       const price = el('span', 'price');
-      if (founding) {
+      if (bd.full === 0) {
+        // no build price (data-tier-price="0"): the page's own words, e.g. a trade, and no founding strikeout
+        price.append(document.createTextNode(bd.build || 'No build fee'));
+      } else if (founding) {
         price.append(document.createTextNode(usd(bd.founding)));
         const s = el('s', '', usd(bd.full)); s.setAttribute('aria-label', 'regular price ' + usd(bd.full));
         price.append(s, el('span', 'once', ' paid once, founding price'));

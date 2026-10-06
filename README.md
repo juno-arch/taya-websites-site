@@ -9,10 +9,11 @@ which reads less clearly). Code keys stay as they were (care_monthly, data-tier-
 Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payments or a small shop) $1,800, paid once.
 Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. A subscription comes with
 every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
-are the same in every tier: email anytime, as often as needed, anything broken fixed free, big new things quoted first.
+are the same in every tier: email anytime, as often as needed, anything that breaks fixed, big new things quoted first.
 Every plan's subscription also includes (Oct 6 2026, shown once under the plan cards as "Every plan's subscription also
 includes", and in the same words in the questions, the quiz and start.html): changes usually within 2 business days,
-anything broken fixed free, Taya keeping an eye on the site (if it goes down, she knows first), holiday heads-ups with
+Taya watching over the site ("I watch over your site: if it goes down, I know before you do, and if anything breaks,
+I fix it": one line since Oct 6 2026, no "free"), holiday heads-ups with
 the hours updated on their site and Google profile, and a move on her if a host changes its rules.
 The subscription is part of every new site. If they ever cancel it, the site is still theirs, with every file and login
 handed over (say that close by wherever the subscription is explained, so it doesn't sound like renting).

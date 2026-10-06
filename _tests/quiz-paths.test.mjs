@@ -79,8 +79,8 @@ const $ = (id) => document.getElementById(id);
 const PRICES = { 'Planted': [600, 300, 12], 'Tended': [1200, 600, 45], 'In Bloom': [1800, 900, 90] };
 const usd = (n) => '$' + n.toLocaleString('en-US');
 // what every plan's subscription also includes (Pollen, Oct 6 2026; pricing-oct2026.md), word for word as on the main page
-const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days', 'Anything broken, I fix free',
-  'I keep an eye on your site, and if it goes down, I know before you do',
+const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days',
+  'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
   'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
 const failures = [];
 
@@ -192,7 +192,7 @@ combos.forEach((picks, n) => {
   if (!costs.includes(`Subscription: ${usd(care)} a month, starting after your 30 days of settling in`)) failures.push(`${tag}: cost list lacks the subscription price`);
   if (!/Every site comes with a subscription/.test(because)) failures.push(`${tag}: doesn't say every site comes with a subscription`);
   if (!/as often as you need/.test(careAlso)) failures.push(`${tag}: changes as often as they need missing`);
-  // what every plan's subscription also includes (Oct 6 2026): the reply time and free fixes live in this list now
+  // what every plan's subscription also includes (Oct 6 2026): the reply time and the watching-over line live in this list now
   const carePoints = $('r-care-points').children.map((li) => li.textContent);
   for (const line of EVERY_PLAN) if (!carePoints.includes(line)) failures.push(`${tag}: the subscription list lacks "${line}"`);
   if (!/Big new things, like a new page, I quote first/.test(careAlso)) failures.push(`${tag}: big things aren't quoted first`);
@@ -209,7 +209,9 @@ combos.forEach((picks, n) => {
   if ((mail.news || calcom) && !/I set (?:both )?up with your email and hand you(?: the logins)? at launch|which I set up with your email and hand you at launch/.test(costs)) failures.push(`${tag}: doesn't say I set up their Buttondown or Cal.com with their email and hand it over at launch`);
   if (calcom && !/booking lives in your own Cal\.com account/.test(costs)) failures.push(`${tag}: booking set up for them doesn't say their booking lives in their own Cal.com account`);
   if (book.kind === 'own' && /I set (?:it|both) up|I set up[^.]{0,30}booking/i.test(costs.replace(/newsletter list[^.]*\./g, ''))) failures.push(`${tag}: says I set up booking for someone who keeps their own app`);
-  if (!/Fixes: Anything broken, always free/.test(costs)) failures.push(`${tag}: cost list lacks free fixes`);
+  // fixes are part of the subscription, said without "free" (Oct 6 2026)
+  if (!/Fixes: If anything breaks, I fix it, as part of your subscription\./.test(costs)) failures.push(`${tag}: cost list lacks the fixes line`);
+  if (/Fixes:[^|]*\bfree\b/i.test(costs.split('Fixes:').slice(1).map((s) => 'Fixes:' + s).join('|'))) failures.push(`${tag}: the fixes line says "free"`);
 
   const text = ['r-build-what', 'r-build-founding', 'r-build-ready', 'r-build-because', 'r-build-points', 'r-build-also',
     'r-care-name', 'r-care-because', 'r-care-points', 'r-care-also', 'r-costs', 'r-start'].map((id) => $(id).textContent).join(' | ');

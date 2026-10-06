@@ -18,7 +18,7 @@
 <link rel="preload" as="image" href="images/steeple-dusk.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@600&family=Handjet:wght@600;700&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -196,6 +196,62 @@
   .played p.label { margin-bottom: 10px; }
   .played ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 0; font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5; color: var(--ink); }
   .played li:not(:last-child)::after { content: "\2726"; font-family: 'Jost', sans-serif; font-size: 10px; color: var(--amber); margin: 0 12px; vertical-align: 4px; }
+
+  /* THE PLAYER: "Live from The Old Steeple", a Y2K media player for the next show. It counts down to showtime,
+     flips between the upcoming shows, scrolls the bill like an old LCD, and its EQ bars are the window's glass colors.
+     A pixel barn owl from the bell tower blinks in the corner; tap it for a hoot of history. Paused off screen,
+     still under reduced motion. LCD face: Handjet (used nowhere else; Nor Cal's pager has Doto). */
+  .amp { flex: 0 1 410px; min-width: 0; max-width: 100%; box-sizing: border-box; color: #f5ead8; padding: 0 0 10px;
+    background: linear-gradient(#3b2a21, #1c1411 62%); border: 2px solid; border-color: #7a5236 #0e0a08 #0e0a08 #7a5236; border-radius: 3px;
+    box-shadow: 0 0 0 1px #0e0a08, 0 18px 34px -22px rgba(40, 20, 10, 0.75); }
+  .amp-bar { display: flex; align-items: center; gap: 8px; padding: 5px 8px; background: linear-gradient(90deg, #8f1d16, #b5231a 48%, #c97a1f);
+    font-size: 10.5px; line-height: 1.2; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #fff1e0; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35); }
+  .amp-bar > span:nth-child(2) { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .amp-dots { display: inline-flex; gap: 3px; flex: none; }
+  .amp-dots i { width: 7px; height: 7px; border-radius: 50%; box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.3); }
+  .amp-dots i:nth-child(1) { background: #5fb0aa; } .amp-dots i:nth-child(2) { background: #f6c766; } .amp-dots i:nth-child(3) { background: #a77ac0; }
+  .amp-trk { flex: none; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; }
+  .amp-face { padding: 10px 10px 0; display: grid; gap: 8px; }
+  .amp-lcd, .amp-marq { background: #0b0807; border: 2px solid; border-color: #0e0a08 #6b4a33 #6b4a33 #0e0a08; color: #f0b85a; }
+  .amp-lcd { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px; min-height: 62px; box-sizing: border-box; }
+  .amp-time { margin: 0; display: grid; gap: 5px; line-height: 1; min-width: 0; }
+  .amp-time b { font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: clamp(23px, 6.6vw, 29px); white-space: nowrap; text-shadow: 0 0 8px rgba(240, 184, 90, 0.55); }
+  .amp-time small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; color: rgba(240, 184, 90, 0.75); }
+  .amp-eq { display: flex; align-items: flex-end; gap: 3px; height: 36px; flex: none; }
+  .amp-eq i { width: 5px; height: 100%; background: var(--c); box-shadow: 0 0 6px -1px var(--c); transform-origin: 50% 100%; transform: scaleY(var(--still, 0.4));
+    animation: amp-eq var(--d, 1.2s) ease-in-out var(--o, 0s) infinite alternate; }
+  .amp-eq i:nth-child(1) { --c: #d9493a; --d: 0.9s; --o: -0.2s; --still: 0.55; } .amp-eq i:nth-child(2) { --c: #f6c766; --d: 1.3s; --o: -0.7s; --still: 0.8; }
+  .amp-eq i:nth-child(3) { --c: #5fb0aa; --d: 1.05s; --o: -0.4s; --still: 0.65; } .amp-eq i:nth-child(4) { --c: #a77ac0; --d: 1.5s; --o: -1.1s; --still: 0.9; }
+  .amp-eq i:nth-child(5) { --c: #9cc272; --d: 0.8s; --o: -0.3s; --still: 0.7; } .amp-eq i:nth-child(6) { --c: #fbe08f; --d: 1.2s; --o: -0.9s; --still: 0.5; }
+  .amp-eq i:nth-child(7) { --c: #d9493a; --d: 1.4s; --o: -0.5s; --still: 0.4; } .amp-eq i:nth-child(8) { --c: #5fb0aa; --d: 1s; --o: -0.8s; --still: 0.3; }
+  .amp-eq i:nth-child(9) { --c: #f6c766; --d: 1.6s; --o: -0.1s; --still: 0.22; }
+  @keyframes amp-eq { 0% { transform: scaleY(0.18); } 30% { transform: scaleY(0.95); } 55% { transform: scaleY(0.4); } 80% { transform: scaleY(0.75); } 100% { transform: scaleY(0.25); } }
+  .amp-marq { overflow: hidden; white-space: nowrap; padding: 7px 0 6px; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 17px; line-height: 1.2; text-shadow: 0 0 6px rgba(240, 184, 90, 0.5); }
+  .amp-run { display: inline-flex; animation: amp-scroll var(--dur, 18s) linear infinite; }
+  .amp-run span { white-space: pre; }
+  @keyframes amp-scroll { to { transform: translateX(-50%); } }
+  .amp-ctl { display: flex; align-items: center; gap: 6px; }
+  .amp-b { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 46px; min-height: 42px; padding: 0 12px; box-sizing: border-box; margin: 0;
+    font: 600 12px/1 'Jost', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 2px;
+    color: #2a1d17; background: linear-gradient(#fff6ea, #e3d3b8); border: 2px solid; border-color: #fffaf2 #8a6a4a #8a6a4a #fffaf2; }
+  .amp-b:active { border-color: #8a6a4a #fffaf2 #fffaf2 #8a6a4a; background: #e3d3b8; }
+  .amp-play { flex: 1 1 auto; color: #fff6ea; background: linear-gradient(#d9493a, #b5231a); border-color: #f08a7d #6e130d #6e130d #f08a7d; }
+  .amp-play:active { border-color: #6e130d #f08a7d #f08a7d #6e130d; background: #a61f17; }
+  .amp-b:focus-visible, .amp-owl:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; }
+  .amp-owl { flex: none; width: 46px; height: 46px; margin: -2px -4px -2px 2px; padding: 0; display: grid; place-items: center; background: none; border: 0; border-radius: 4px; cursor: pointer; }
+  .amp-owl svg { width: 32px; height: 32px; display: block; shape-rendering: crispEdges; transform-origin: 50% 85%; }
+  .amp-owl .eyes { transform-box: fill-box; transform-origin: center; animation: amp-blink 6.5s 2s infinite; }
+  @keyframes amp-blink { 0%, 94%, 100% { transform: none; } 96%, 98% { transform: scaleY(0.12); } }
+  .amp-owl.hoot svg { animation: amp-hoot 1s cubic-bezier(.3, .7, .3, 1); }
+  @keyframes amp-hoot { 0% { transform: none; } 25% { transform: rotate(-16deg) translateY(-3px); } 55% { transform: rotate(12deg) translateY(-2px); } 80% { transform: rotate(-4deg); } 100% { transform: none; } }
+  .amp.flip .amp-lcd > * { animation: amp-flip 0.36s steps(3) both; }
+  @keyframes amp-flip { 0% { opacity: 0.15; transform: translateX(-4px); } 50% { opacity: 1; transform: translateX(3px); } 100% { opacity: 1; transform: none; } }
+  .amp:not(.on) .amp-eq i, .amp:not(.on) .amp-run, .amp:not(.on) .amp-owl .eyes { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .amp-eq i, .amp-run, .amp-owl .eyes, .amp-owl.hoot svg, .amp.flip .amp-lcd > * { animation: none; }
+    .amp-marq { white-space: normal; padding-inline: 10px; }
+    .amp-run { display: inline; } .amp-run span { white-space: normal; }
+  }
 
   /* THE HALL, at night: the glowing window (signature) */
   .band { background: var(--band); color: var(--on-band); border-top: none; position: relative; overflow: hidden; }
@@ -636,7 +692,7 @@
       <div class="hero-copy">
         <p class="presents">Ferndale Music Company presents</p>
         <h1>The Old Steeple</h1>
-        <p class="lede"><span class="tagline">Humboldt County&rsquo;s new old venue: intimate, cozy, beautiful.</span>Concerts, music lessons and weddings in a former Methodist church in Ferndale&rsquo;s Victorian Village. Stained glass, 225 seats and professional sound.</p>
+        <p class="lede"><span class="tagline">Humboldt County&rsquo;s new old venue: intimate, cozy, beautiful.</span>Concerts, music lessons and weddings in a former Methodist church in Ferndale&rsquo;s Victorian Village.</p>
         <div class="cta-row">
           <a class="btn" href="#shows">Upcoming shows</a>
           <a class="btn quiet" href="#lessons">Music lessons</a>
@@ -665,12 +721,12 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room, reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, a newsletter sign-up, an FAQ, a tour request form for weddings, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus tickets and gift certificates sold right on your site, and first lessons booked there too."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room with a Book button to your Airbnb, reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: everything in Planted, plus a contact form, a newsletter sign-up, an FAQ, a wedding tour form, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus tickets and gift certificates sold on your site, and first lessons booked there too."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one to keep it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site has one: $12, $45 or $90 a month, matching your build. Hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -684,10 +740,26 @@
         <p class="label">On stage</p>
         <h2 class="reveal">Upcoming <em>shows</em></h2>
       </div>
-      <p class="soft" style="max-width:40ch">All ages, 7:30 pm, in the hall at 246 Berding Street.</p>
+      <div class="amp" id="amp" role="group" aria-labelledby="amp-h">
+        <div class="amp-bar"><span class="amp-dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="amp-h">Live from The Old Steeple</span><span class="amp-trk" id="amp-trk" aria-hidden="true">1/2</span></div>
+        <div class="amp-face">
+          <div class="amp-lcd">
+            <p class="amp-time"><b id="amp-clock">SUN OCT 18</b><small id="amp-unit">7:30 pm &middot; all ages</small></p>
+            <div class="amp-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="amp-marq"><span class="amp-run" id="amp-run"><span>LED KAAPANA &#10022; SUN OCT 18 &#10022; 7:30 PM &#10022; $31.50 &#10022; ALL AGES &#10022; 246 BERDING ST &#10022; </span></span></div>
+          <p class="vh" role="status" id="amp-now"></p>
+          <div class="amp-ctl">
+            <button type="button" class="amp-b" id="amp-prev" aria-label="Previous show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M2 1h2v10H2zM15 1v10L9 6zM9 1v10L3 6z"/></svg></button>
+            <a class="amp-b amp-play" id="amp-play" href="#show-led"><svg width="11" height="12" viewBox="0 0 11 12" aria-hidden="true" fill="currentColor"><path d="M1 0l10 6-10 6z"/></svg>Tickets<span class="vh" id="amp-for"> for Led Kaapana</span></a>
+            <button type="button" class="amp-b" id="amp-next" aria-label="Next show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M1 1v10l6-5zM7 1v10l6-5zM12 1h2v10h-2z"/></svg></button>
+            <button type="button" class="amp-owl" id="amp-owl" aria-label="The owl from the bell tower" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d6952a" d="M5 1h6v1h-6zM3 2h10v1h-10zM2 3h2v1h-2zM7 3h2v1h-2zM12 3h2v1h-2zM2 4h1v1h-1zM13 4h1v1h-1zM2 5h1v1h-1zM13 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1zM2 7h1v1h-1zM13 7h1v1h-1zM3 8h1v1h-1zM12 8h1v1h-1zM3 9h2v1h-2zM11 9h2v1h-2zM2 10h4v1h-4zM10 10h4v1h-4zM2 11h3v1h-3zM11 11h3v1h-3zM2 12h3v1h-3zM11 12h3v1h-3zM3 13h2v1h-2zM11 13h2v1h-2zM4 14h8v1h-8z"/><path fill="#fff1e0" d="M4 3h3v1h-3zM9 3h3v1h-3zM3 4h10v1h-10zM3 5h10v2h-10zM3 7h4v1h-4zM9 7h4v1h-4zM4 8h4v1h-4zM9 8h3v1h-3zM5 9h6v1h-6zM6 10h4v1h-4zM5 11h2v1h-2zM8 11h3v1h-3zM5 12h5v1h-5zM5 13h1v1h-1zM7 13h4v1h-4z"/><path fill="#8a5a10" d="M7 11h1v1h-1zM10 12h1v1h-1zM6 13h1v1h-1z"/><path fill="#e8a07a" d="M7 7h2v1h-2zM8 8h1v1h-1zM5 15h2v1h-2zM9 15h2v1h-2z"/><path class="eyes" fill="#1c1411" d="M4 5h2v2h-2zM10 5h2v2h-2z"/></svg></button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="bills">
-      <article class="bill reveal">
+      <article class="bill reveal" id="show-led">
         <figure class="photo"><img src="images/led-kaapana.webp" width="960" height="1139" alt="Led Kaapana in a straw hat and an aloha shirt, smiling, holding his guitar" loading="lazy" style="object-position:50% 22%"></figure>
         <div class="bill-body">
           <p class="bill-date"><b>18</b> Sunday &middot; Oct</p>
@@ -699,7 +771,7 @@
             <a class="btn" href="tel:+17077867030" data-show="maiden" hidden>Call for tickets</a></div>
         </div>
       </article>
-      <article class="bill reveal">
+      <article class="bill reveal" id="show-chris">
         <figure class="photo"><img src="images/chris-pierce.webp" width="1400" height="935" alt="Chris Pierce in a dark hat and jacket, playing an acoustic guitar on a city sidewalk" loading="lazy" style="object-position:40% 40%"></figure>
         <div class="bill-body">
           <p class="bill-date"><b>24</b> Saturday &middot; Oct</p>
@@ -713,14 +785,14 @@
         </div>
       </article>
     </div>
-    <p class="willcall"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4Z"/><path d="M9 6v12" stroke-dasharray="2 2.5"/></svg><span>Tickets are paperless. Every ticket goes on the Will Call list at the door, and your confirmation arrives by email. Questions about tickets? Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a>.</span></p>
+    <p class="willcall"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4Z"/><path d="M9 6v12" stroke-dasharray="2 2.5"/></svg><span>Tickets are paperless: your name goes on the Will Call list at the door, and your confirmation comes by email. Questions? Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a>.</span></p>
     <div class="played reveal">
       <p class="label">Recently on this stage</p>
       <ul>
         <li>Natalie and Brittany Haas</li><li>Alash</li><li>The Sadies</li><li>Tim O&rsquo;Brien and Jan Fabricius</li><li>Huckleberry Flint</li><li>Nellie McKay</li><li>Iris DeMent</li><li>Particle Kid</li>
       </ul>
     </div>
-    <p class="tier-note mock-note">Email me a new show and it appears here with its photo, date and ticket button, then moves to &ldquo;Recently on this stage&rdquo; when it&rsquo;s over. That&rsquo;s all part of your subscription. <span class="tag" data-go="maiden">Every build</span></p>
+    <p class="tier-note mock-note">Email me a new show and it&rsquo;s up. Played shows move to &ldquo;Recently on this stage&rdquo; on their own. <span class="tag" data-go="maiden">Every build</span></p>
   </div>
 </section>
 
@@ -729,8 +801,8 @@
     <div>
       <p class="label">The hall</p>
       <h2 class="reveal">Concerts under <em>stained glass</em></h2>
-      <p class="measure" style="margin-top:18px">The Old Steeple is Ferndale&rsquo;s majestic 115+ year old former Methodist church, next to the town cemetery on Berding Street. Ferndale Music Company moved in and opened it to the public in 2015, and the first show sold out that November.</p>
-      <p class="measure">Inside: intricate stained glass memorial windows, rich redwood details, 24 foot Italian tin ceilings that make the room sound like nowhere else, and a barrel wood stove for winter shows.</p>
+      <p class="measure" style="margin-top:18px">Ferndale&rsquo;s majestic 115+ year old former Methodist church, next to the town cemetery. Ferndale Music Company opened it to the public in 2015, and the first show sold out.</p>
+      <p class="measure">Inside: stained glass memorial windows, rich redwood details, 24 foot Italian tin ceilings and a barrel wood stove for winter shows.</p>
       <div class="facts">
         <div class="reveal"><b>225</b><span>seats, and professional sound</span></div>
         <div class="reveal"><b>1901</b><span>the year of the big remodel</span></div>
@@ -768,7 +840,7 @@
       <figure class="photo"><img src="images/owl-face.webp" width="797" height="442" alt="A barn owl looking straight into the Owl Cam in the bell tower, in black and white infrared" loading="lazy"></figure>
       <div>
         <h3>Upstairs, the owls</h3>
-        <p>Generations of barn owls have called the bell tower home since it was built in 1902. The Owl Cam is getting new hardware, with a new feed coming <span class="ph">this fall</span>.</p>
+        <p>Barn owls have nested in the bell tower since it was built in 1902. The Owl Cam&rsquo;s new feed comes <span class="ph">this fall</span>.</p>
       </div>
     </div>
   </div>
@@ -780,7 +852,7 @@
     <div>
       <p class="pbs-badge">As seen on PBS</p>
       <h2 class="reveal">Live from <em>The Old Steeple</em></h2>
-      <p class="soft" style="margin-top:16px">Produced by the North Coast&rsquo;s KEET-TV with Ferndale Music Company, the series brings national musicians into this room for the whole country to see. Season 1 has aired on PBS stations in 33 states, and Season 2 opens with Ben Sollee.</p>
+      <p class="soft" style="margin-top:16px">Made with the North Coast&rsquo;s KEET-TV, the series brings national musicians into this room. Season 1 has aired on PBS stations in 33 states, and Season 2 opens with Ben Sollee.</p>
       <div class="cta-row"><a class="btn quiet" href="https://video.keet.org/show/live-old-steeple/" target="_blank" rel="noopener">Watch the episodes<span class="vh"> (opens KEET in a new tab)</span></a></div>
     </div>
   </div>
@@ -812,13 +884,13 @@
     <div data-show="crone all" data-fold data-thing="first-lesson booking" style="margin-top:56px">
       <p class="label with-pill"><span>Book a first lesson</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h3 style="font-size:clamp(26px,3.4vw,34px)">Pick an instrument, <em>pick a Friday</em></h3>
-      <p class="measure soft" style="margin-top:10px">Right now lessons start with a phone call. This lets families book a first lesson any time of day. Try it:</p>
+      <p class="measure soft" style="margin-top:10px">Families book a first lesson any time. Try it:</p>
       <div class="bk">
         <div class="bk-card" id="ls-card">
           <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Instrument</button><button type="button" data-s="2" disabled>2 Teacher</button><button type="button" data-s="3" disabled>3 Friday</button><button type="button" data-s="4" disabled>4 Your details</button></div>
           <div id="ls-s1"><div class="bk-grid three" id="ls-inst"></div></div>
           <div id="ls-s2" hidden><div class="bk-grid" id="ls-teach"></div></div>
-          <div id="ls-s3" hidden><div class="bk-days" id="ls-days"></div><div class="bk-times" id="ls-times"></div><p class="demo-note">Sample times. Yours come from each teacher&rsquo;s real schedule.</p></div>
+          <div id="ls-s3" hidden><div class="bk-days" id="ls-days"></div><div class="bk-times" id="ls-times"></div><p class="demo-note">Sample times.</p></div>
           <div id="ls-s4" hidden><div class="bk-form">
             <label class="fld">Student&rsquo;s name<input id="ls-name" autocomplete="off" value="Juniper"></label>
             <div class="fld-row"><label class="fld">Age<input id="ls-age" inputmode="numeric" autocomplete="off" value="9"></label><label class="fld">Parent&rsquo;s email<input id="ls-mail" type="email" autocomplete="off" value="maya@example.com"></label></div>
@@ -828,24 +900,22 @@
           <div class="bk-done fade-in" id="ls-done" hidden>
             <h3 id="ls-done-h" tabindex="-1">See you Friday!</h3>
             <p id="ls-summary"></p>
-            <p class="demo-note">A confirmation and a reminder the day before go out on their own. Preview only: nothing was booked.</p>
+            <p class="demo-note">Preview only: nothing was booked.</p>
             <div class="bk-nav"><button type="button" class="bk-go ghost" id="ls-again">Try it again</button><button type="button" class="bk-go ghost" id="ls-edit">Change something</button></div>
           </div>
         </div>
         <div class="bk-side mock-note">
           <div class="bk-note"><b>What you see</b>Every first lesson lands in your inbox and on the teacher&rsquo;s calendar.</div>
           <div class="bk-inbox"><div class="from">New lesson</div><div id="ls-inbox">Waiting for a booking&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>Each teacher, their own hours</b>Britt, Vicky and Jennifer each open only the Friday times they want. Runs on Cal.com, free, in your name.</div>
-          <div class="bk-note"><b>Phone still works</b>Plenty of families will still call, and that&rsquo;s great. This is for the ones who&rsquo;d rather tap at 10 pm.</div>
+          <div class="bk-note"><b>Each teacher, their own hours</b>Britt, Vicky and Jennifer each open their own Friday times, on Cal.com.</div>
         </div>
       </div>
-      <p class="tier-note mock-note" data-show="all" data-fold>With Tended, this spot is a &ldquo;Book a first lesson&rdquo; button that opens your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      <p class="tier-note mock-note" data-show="all" data-fold>With Tended, it&rsquo;s a &ldquo;Book a first lesson&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     </div>
     <div class="bk-alt" data-show="mother" data-fold data-thing="a Book a first lesson button to your own Cal.com page" tabindex="-1" hidden style="margin-top:48px">
       <p class="label with-pill"><span>Start lessons</span> <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
-      <p class="measure soft">Book a first lesson online any time, or call <a class="tel" href="tel:+17077867030">(707) 786-7030</a> to schedule. Questions first? Send a note with the instrument and the student&rsquo;s age.</p>
+      <p class="measure soft">Book a first lesson online, or call <a class="tel" href="tel:+17077867030">(707) 786-7030</a>. Questions? Send a note.</p>
       <div class="cta-row"><a class="btn" href="https://cal.com/" target="_blank" rel="noopener">Book a first lesson<span class="vh"> (opens Cal.com in a new tab)</span></a><a class="btn quiet" href="#contact">Send a note about lessons</a></div>
-      <p class="tier-note mock-note">With Tended, this &ldquo;Book a first lesson&rdquo; button opens your own free Cal.com page, set up in your name with your Friday lesson times, so families can pick a time without waiting on a call back.</p>
     </div>
     <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden style="margin-top:48px">
       <p class="label with-pill"><span>Start lessons</span> <span class="tag" data-go="maiden">Every build</span></p>
@@ -859,7 +929,7 @@
   <div class="wrap">
     <p class="label with-pill"><span>Tickets</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Tickets, <em>straight to Will Call</em></h2>
-    <p class="measure soft" style="margin-top:14px">Buy tickets or a gift certificate right here. Every ticket lands on the Will Call list for the door, just like now. Give it a try:</p>
+    <p class="measure soft" style="margin-top:14px">Tickets and gift certificates, right here. Try it:</p>
     <div class="bk">
       <div class="bk-card" id="tk-card">
         <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Show</button><button type="button" data-s="2" disabled>2 How many</button><button type="button" data-s="3" disabled>3 Checkout</button></div>
@@ -896,10 +966,10 @@
         </div>
       </div>
       <div class="bk-side mock-note">
-        <div class="bk-note"><b>Your Will Call list, made for you</b>Every sale adds a name to the door list, and you can print it the afternoon of the show.</div>
+        <div class="bk-note"><b>Your orders live in your Stripe</b>Every ticket and gift certificate lives in your own Stripe, paid straight to you. You get a short heads-up email, and Stripe&rsquo;s phone app can ping you for each new order.</div>
         <div class="bk-inbox"><div class="from">New ticket order</div><div id="tk-inbox">Waiting for an order&hellip; try it on the left</div></div>
-        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, in your name. No ticketing company in the middle.</div>
-        <div class="bk-note"><b>Sold out? It says so</b>When a show fills, its button turns to &ldquo;Sold out&rdquo; and a waitlist, on its own.</div>
+        <div class="bk-note"><b>Will Call, made for you</b>Every sale adds a name to the door list.</div>
+        <div class="bk-note"><b>Sold out?</b>It says so, with a waitlist.</div>
       </div>
     </div>
   </div>
@@ -942,7 +1012,7 @@
           </div>
         </div>
         <div class="bk-side mock-note">
-          <div class="bk-note"><b>What you see</b>Every request arrives with the date and guest count, so you can check the calendar against show nights before you reply.</div>
+          <div class="bk-note"><b>What you see</b>The date and guest count, in one note.</div>
           <div class="bk-inbox"><div class="from">New tour request</div><div id="tr-inbox">Waiting for a request&hellip; try it on the left</div></div>
           <div class="bk-note"><b>Your rates, your way</b><span class="ph">your rental rates and what&rsquo;s included</span></div>
         </div>
@@ -960,7 +1030,7 @@
     <div>
       <p class="label">Stay the night</p>
       <h2 class="reveal">The Green Room <em>at The Old Steeple</em></h2>
-      <p class="soft" style="margin-top:16px">Once only for musicians playing the hall, the Green Room is a private suite inside the church: a vintage kitchen and dining room with a gas fireplace, a high ceilinged parlor, a bedroom and a bath. Up to 3 guests, with music memorabilia, instruments on the walls, and Main Street a few blocks away.</p>
+      <p class="soft" style="margin-top:16px">Once only for musicians playing the hall, the Green Room is a private suite inside the church: a vintage kitchen and dining room with a gas fireplace, a high ceilinged parlor, a bedroom and a bath, with instruments on the walls. Up to 3 guests, a few blocks from Main Street.</p>
       <p class="stars"><b>4.98</b><i aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</i><span>from 58 reviews on Airbnb &middot; Cheri is a Superhost</span></p>
       <div class="guest">
         <p>&ldquo;It truly felt like staying in a piece of history.&rdquo;</p>
@@ -970,8 +1040,8 @@
         <p>&ldquo;Paul gave us a tour of the music hall and we spent a lot of time shooting videos for my wife&rsquo;s musical recording. The grandeur and beauty of the hall is simply indescribable.&rdquo;</p>
         <small>Arif, Livermore, on Airbnb</small>
       </div>
-      <div class="cta-row" data-show="mother crone all"><a class="btn" href="https://airbnb.com/h/ferndale-green-room-at-the-old-steeple" target="_blank" rel="noopener">See dates on Airbnb<span class="vh"> (opens in a new tab)</span></a></div>
-      <p class="soft" data-show="maiden" hidden style="margin-top:22px">To ask about a stay, call <a class="tel" href="tel:+17077867030">(707) 786-7030</a> or email <a href="mailto:ferndalemusic@yahoo.com">ferndalemusic@yahoo.com</a>.</p>
+      <div class="cta-row"><a class="btn" href="https://airbnb.com/h/ferndale-green-room-at-the-old-steeple" target="_blank" rel="noopener">Book on Airbnb<span class="vh"> (opens in a new tab)</span></a></div>
+      <p class="tier-note mock-note">A plain Book button to the Airbnb you already use. <span class="tag" data-go="maiden">Every build</span></p>
     </div>
     <div class="stay-grid" data-lightbox>
       <figure class="reveal photo"><img src="images/green-room-kitchen.webp" width="1400" height="1050" alt="The Green Room's vintage kitchen and dining room: green walls, a wooden table on a red rug, glass cabinets and tall windows" loading="lazy"></figure>
@@ -1018,7 +1088,6 @@
     <div>
       <p class="label with-pill"><span>Good to know</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Before <em>the show</em></h2>
-      <p class="measure soft" style="margin-top:16px">The things people ask before they drive out to Ferndale.</p>
     </div>
     <div class="faq-list" data-thing="FAQ">
       <details><summary>Where are my tickets?</summary><div class="ans"><p>Tickets are paperless. Your name goes on the Will Call list at the door, and you&rsquo;ll get an email confirmation within 24 hours of buying online. Need help? Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a> or email <a href="mailto:ferndalemusic@yahoo.com">ferndalemusic@yahoo.com</a>.</p></div></details>
@@ -1066,7 +1135,7 @@
       <div class="nl-done fade-in" id="nl-done" hidden>
         <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
         <p>The next show announcement will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
-        <p class="demo-note">Preview only: nothing was sent. On your real site, sign-ups go to your own Buttondown list, and you write the letters there.</p>
+        <p class="demo-note">Preview only: nothing was sent. Sign-ups go to your own Buttondown list.</p>
         <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
       </div>
     </aside>
@@ -1091,8 +1160,8 @@
       <figure class="photo"><img src="images/sweetheart-table.webp" alt="" loading="lazy"></figure>
     </div>
     <div class="ig-foot mock-note">
-      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts are pulled in on their own: a new show, a sound check, the owls.</div>
-      <div class="bk-note"><b>What you see</b>These are your own photos from your site, standing in for your posts.</div>
+      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts, pulled in on their own.</div>
+      <div class="bk-note"><b>What you see</b>Your own photos, standing in for your posts.</div>
     </div>
   </div>
 </section>
@@ -1117,10 +1186,9 @@
 
 <section id="found" class="gutter found-sec">
   <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
+    <p class="not-site"><span class="bk-demo">Google and text views</span> How your site looks on Google and in a text.</p>
     <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
-    <p class="measure soft" style="margin-top:14px">None of this appears on your site. It&rsquo;s how people find it: when someone searches for concerts near Ferndale, or a friend texts them your link.</p>
     <div class="found">
       <figure class="reveal found-card">
         <figcaption>In a search</figcaption>
@@ -1139,7 +1207,7 @@
         </div>
       </figure>
     </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile is set up too (that lives on Google, not on your site): your pin on the map, your hours, and your reviews.</span></p>
+    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile is set up too: your map pin, hours and reviews.</span></p>
   </div>
 </section>
 </main>
@@ -1149,7 +1217,7 @@
     <span class="foot-mark" id="foot-mark"><span class="fmc" aria-hidden="true"></span><small>Music Company</small><span class="vh">Ferndale Music Company</span></span>
     <p>The Old Steeple &middot; <span class="nw">246 Berding Street, Ferndale, California</span><button type="button" class="foot-steeple" id="foot-steeple" aria-label="The bell tower"><svg width="16" height="22" viewBox="0 0 16 22" aria-hidden="true" fill="currentColor"><path d="M8 0l3 7h-6Z"/><path d="M5 7h6v15H5Z" opacity=".75"/><circle cx="8" cy="11" r="1.4" fill="var(--ground)"/></svg></button></p>
     <p style="margin-top:6px">Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/theoldsteeple/" target="_blank" rel="noopener">@theoldsteeple</a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.<span data-js hidden> Tap one to see that build.</span></p>
   </div>
 </footer>
 
@@ -1181,12 +1249,12 @@
   <div class="vpanel" id="vp-panel" hidden>
     <div class="views-head"><p class="views-q" id="vp-q">See your site as</p><p class="views-price">Your founding price, half off the build</p></div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room, reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, a newsletter sign-up, an FAQ, a tour request form for weddings, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus tickets and gift certificates sold right on your site, and first lessons booked there too."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room with a Book button to your Airbnb, reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: everything in Planted, plus a contact form, a newsletter sign-up, an FAQ, a wedding tour form, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus tickets and gift certificates sold on your site, and first lessons booked there too."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one to keep it healthy: $12, $45 or $90 a month, matching your build. Email me any change and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site has one: $12, $45 or $90 a month, matching your build. Hosting, your domain, backups, and any change you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1287,6 +1355,72 @@
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); } });
+  })();
+
+  /* the player: counts down to the next show, flips between shows, and the owl hoots a bit of history */
+  (function () {
+    var amp = document.getElementById('amp'); if (!amp) return;
+    function $(id) { return document.getElementById(id); }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var STAR = ' ✦ ';
+    var SHOWS = [ /* 7:30 pm Pacific (PDT) */
+      { name: 'Led Kaapana', when: 'SUN OCT 18', say: 'Sunday, October 18', at: Date.UTC(2026, 9, 19, 2, 30), price: '$31.50', href: '#show-led' },
+      { name: 'Chris Pierce', when: 'SAT OCT 24', say: 'Saturday, October 24', at: Date.UTC(2026, 9, 25, 2, 30), price: '$26.50', href: '#show-chris' }
+    ];
+    var up = SHOWS.filter(function (s) { return Date.now() < s.at + 3 * 3600e3; });
+    var i = 0, timer = null, owlT = null;
+    var clock = $('amp-clock'), unit = $('amp-unit'), run = $('amp-run'), now = $('amp-now'), play = $('amp-play'), owl = $('amp-owl');
+    function marquee(text) {
+      run.textContent = '';
+      for (var k = 0; k < (reduce ? 1 : 2); k++) { var sp = document.createElement('span'); sp.textContent = text; run.appendChild(sp); }
+      run.style.setProperty('--dur', Math.max(9, text.length * 0.21).toFixed(1) + 's');
+      run.style.animation = 'none'; void run.offsetWidth; run.style.animation = '';
+    }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function tick() {
+      var s = up[i]; if (!s) return;
+      var ms = s.at - Date.now();
+      if (ms <= 0) { clock.textContent = 'ON STAGE'; unit.textContent = 'right now'; return; }
+      var t = Math.floor(ms / 1000), d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600), m = Math.floor(t % 3600 / 60);
+      clock.textContent = (d ? d + 'd ' : '') + pad(h) + ':' + pad(m) + (reduce ? '' : ':' + pad(t % 60));
+      unit.textContent = 'till showtime';
+    }
+    function bill(s) { return s.name.toUpperCase() + STAR + s.when + STAR + '7:30 PM' + STAR + s.price + STAR + 'ALL AGES' + STAR + '246 BERDING ST' + STAR; }
+    function load(k, announce) {
+      clearTimeout(owlT); owl.classList.remove('hoot');
+      i = (k + up.length) % up.length; var s = up[i];
+      $('amp-trk').textContent = (i + 1) + '/' + up.length;
+      play.setAttribute('href', s.href); $('amp-for').textContent = ' for ' + s.name;
+      marquee(bill(s)); tick();
+      if (announce) now.textContent = 'Show ' + (i + 1) + ' of ' + up.length + ': ' + s.name + ', ' + s.say + ', 7:30 pm, ' + s.price + '.';
+      amp.classList.remove('flip'); if (announce && !reduce) { void amp.offsetWidth; amp.classList.add('flip'); }
+    }
+    if (up.length) {
+      load(0, false);
+      if (up.length > 1) {
+        $('amp-prev').hidden = false; $('amp-next').hidden = false;
+        $('amp-prev').addEventListener('click', function () { load(i - 1, true); });
+        $('amp-next').addEventListener('click', function () { load(i + 1, true); });
+      }
+    } else {
+      clock.textContent = 'SOON'; unit.textContent = 'new shows coming'; $('amp-trk').textContent = '0/0';
+      play.setAttribute('href', '#shows'); $('amp-for').textContent = ''; marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2));
+    }
+    owl.hidden = false;
+    owl.addEventListener('click', function () {
+      marquee('HOO’S THERE?' + STAR + 'BARN OWLS HAVE NESTED IN THE BELL TOWER SINCE 1902' + STAR);
+      now.textContent = 'Hoo’s there? Barn owls have nested in the bell tower since 1902.';
+      owl.classList.remove('hoot'); void owl.offsetWidth; owl.classList.add('hoot');
+      clearTimeout(owlT);
+      owlT = setTimeout(function () { owl.classList.remove('hoot'); if (up.length) load(i, false); else marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2)); }, 11000);
+    });
+    /* only tick and move while it's on screen */
+    function start() { if (!timer) { tick(); timer = setInterval(tick, reduce ? 30000 : 1000); } }
+    function stop() { clearInterval(timer); timer = null; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (e) { amp.classList.toggle('on', e.isIntersecting); if (e.isIntersecting && !document.hidden) start(); else stop(); }); }).observe(amp);
+      document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else if (amp.classList.contains('on')) start(); });
+    } else { amp.classList.add('on'); start(); }
   })();
 
 
@@ -1481,9 +1615,9 @@
     if (!bar || !vp || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room, reviews and how to reach you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons: a contact form, a newsletter signup that works, an FAQ, a tour request form for weddings, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom: everything in Tended, plus tickets and gift certificates sold right on your site, and first lessons booked there too. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room with a Book button to your Airbnb, reviews and how to reach you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site: a contact form, a newsletter signup that works, an FAQ, a wedding tour form, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus tickets and gift certificates sold on your site, and first lessons booked there too.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1493,7 +1627,7 @@
     function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
     function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
     function note(v) {
-      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
+      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with its build. Tap a build, or any tag, to see just that build.' };
       var rest = '';
       if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
       if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
