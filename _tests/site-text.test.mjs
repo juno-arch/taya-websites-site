@@ -24,12 +24,15 @@
 //   - shows a monthly price other than the subscription's $12 / $45 / $90, or a side cost "paid by you" (email from their
 //     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026)
 //   - (the main page) leaves out the three subscription prices, the reply time, "quoted first", the settling-in start,
-//     the quoted-before-October-5 line, or the hand-over promise
-//   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): the booking ladder (1, Oct 6 2026, which
-//     replaced the Oct 5 rule 2 that let any build link to an app they already use): Planted has no Book button
-//     (people call, text or email), Tended's Book button opens their booking page (the app they already use, or a
-//     free Cal.com set up for them), In Bloom puts booking right on the site (their own app if it can sit on a
-//     website, or Cal.com: their choice); email forwarding free on
+//     the quoted-before-October-5 line, or the hand-over promise; or the plan cards, the "Every plan's subscription
+//     also includes" card under them (Oct 6 2026) and the "What does your subscription include?" answer stop listing
+//     the same lines in the same words, or a card's list stops pointing down to that card; or any page brings back
+//     the old holiday line ("a heads-up before holidays so your hours stay right")
+//   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): the booking ladder (1, Oct 6 2026
+//     afternoon, Pollen: "yes add the booking link to planted", which reversed that morning's "no Book button on
+//     Planted"): every build's Book button opens the booking app they already use, Planted too (with no app, people
+//     call, text or email); a free Cal.com set up for them is Tended and In Bloom; In Bloom puts booking right on the
+//     site (their own app if it can sit on a website, or Cal.com: their choice); email forwarding free on
 //     Planted (3); the Instagram feed Tended and up (6); no phone field on intake.html (7); texts.html's
 //     "Replies" line kept exactly as is, since it matches the texting registration (8)
 //   - shows the founding count ("N left") anywhere but once, inside id="founding" on the main page
@@ -98,7 +101,12 @@ const FORBIDDEN = [
   [/\bon call\b/i, '"on call"'],
   [/\b(?:book a call|a quick call|45-minute call|want to chat|a chat|hop on a call|video call|phone call|chat with|free chat|30-minute chat|rather talk)\b|Let’s talk/i, 'an offer of a call or chat (email only)'],
   [/setting up booking for you is part of In Bloom|booking fully set up for you|In Bloom sets it all up/i, 'booking setup tied to In Bloom (Cal.com booking is set up with Tended and In Bloom; small rule 1)'],
-  [/(?:Book (?:now )?button|just a link)[^.]{0,80}(?:any build|even (?:a one-page )?Planted)|any build can link|fits any build/i, 'a Book button for any build, Planted too (the booking ladder, Oct 6 2026: a Planted page has no Book button; people call, text or email)'],
+  // the booking ladder's Oct 6 morning version (no Book button on Planted) was reversed that afternoon (Pollen: "yes add
+  // the booking link to planted"): every build's Book button opens the booking app they already use
+  [/no Book (?:now )?button|skips the Book (?:now )?button|Book (?:now )?button (?:comes with|is part of) Tended|Book (?:now )?button is part of Tended and In Bloom/i, 'the old “no Book button on Planted” rule (since Oct 6 2026 afternoon, every build’s Book button opens the booking app they already use)'],
+  // the holiday line every plan includes since Oct 6 2026 ("Holiday heads-ups, with your hours updated on your site
+  // and your Google profile") replaced the old "a heads-up before holidays so your hours stay right"
+  [/heads-up before holidays|before holidays,? so your hours stay right/i, 'the old holiday line (it’s “Holiday heads-ups, with your hours updated on your site and your Google profile” since Oct 6 2026)'],
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
 ];
 
@@ -297,29 +305,68 @@ for (const page of PAGES) {
 // ---- the small rules decided Oct 5 2026 (pricing-oct2026.md, Pollen: "yes to all") ----
 {
   const need = (page, re, what) => { if (!re.test(plain[page])) fail(`${page}: ${what}`); };
-  // 1. the booking ladder (Oct 6 2026): Cal.com booking is set up for Tended and In Bloom (booking tied to In Bloom
-  // alone is caught by FORBIDDEN); Planted has no Book button; Tended's opens the app they already use; In Bloom
-  // puts booking right on the site, their own app or Cal.com, their choice
+  // 1. the booking ladder (Oct 6 2026 afternoon): Cal.com booking is set up for Tended and In Bloom (booking tied to
+  // In Bloom alone is caught by FORBIDDEN); every build's Book button, Planted's too, opens the app they already use;
+  // with no app, a Planted page says call, text or email; In Bloom puts booking right on the site, their own app or
+  // Cal.com, their choice
   need('index.html', /free Cal\.com I set up for you/, 'the Tended card doesn’t offer a free Cal.com I set up (small rule 1)');
   need('index.html', /With Tended and In Bloom, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Tended and In Bloom (small rule 1)');
-  need('index.html', /no Book button: people call, text or email/, 'doesn’t say a Planted page has no Book button, so people call, text or email (the booking ladder)');
-  need('index.html', /With Tended, your Book button opens the booking app you already use/, 'doesn’t say Tended’s Book button opens the booking app they already use (the booking ladder)');
+  need('index.html', /Whichever build you pick, your Book button opens the booking app you already use/, 'doesn’t say every build’s Book button opens the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
+  need('index.html', /keep it simple with Planted: people call, text or email you/, 'doesn’t say a Planted page with no booking app has people call, text or email (the booking ladder)');
+  need('intake.html', /Whichever build you pick, your Book now button opens it/, 'doesn’t say every build’s Book now button opens the booking app they already use (the booking ladder)');
+  need('start.html', /Whichever build you pick, your Book now button opens it/, 'doesn’t say every build’s Book now button opens the booking app they already use (the booking ladder)');
   need('index.html', /With In Bloom, booking sits right on your site[^.]*Cal\.com[^.]*\. That’s your choice/, 'doesn’t say In Bloom puts booking right on the site, their own app or Cal.com, their choice (the booking ladder)');
   // 2. (folded into 1 on Oct 6 2026)
   // every tier card on the main page lists everything its subscription includes (pricing-oct2026.md; Tended's
-  // "Post once, show up everywhere" replaced "Your Google profile kept fresh" on Oct 6 2026)
+  // "Post once, show up everywhere" replaced "Your Google profile kept fresh" on Oct 6 2026), and what every plan's
+  // subscription also includes (Oct 6 2026) is said once, in its own card right under the three, so the cards don't
+  // crowd ("Email me anytime and I make your changes" moved there from the Planted card, and "Holiday heads-ups"
+  // replaced Planted's "A heads-up before holidays")
   {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
-      maiden: [/Hosting, your web address, security and backups/, /Email me anytime and I make your changes/, /magic link/, /your changes are up/, /monthly check-in/, /New reviews/, /heads-up before holidays/],
+      maiden: [/Hosting, your web address, security and backups/, /magic link/, /your changes are up/, /monthly check-in/, /New reviews/],
       mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
       crone: [/Everything in Tended/, /booking, payments or shop kept running/i, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
     for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[k]} card doesn’t list ${re}`);
     const planted = (cards.find((c) => c[0] === 'maiden') || [])[1] || '';
-    if (/Book (?:now )?button|Cal\.com/.test(planted)) fail('index.html: the Planted card mentions a Book button or Cal.com (the booking ladder: a Planted page has none)');
+    if (/Cal\.com/.test(planted)) fail('index.html: the Planted card mentions Cal.com (setting one up is Tended and In Bloom; the booking ladder)');
     if (!/call, text or email/.test(planted)) fail('index.html: the Planted card doesn’t say people call, text or email');
+    if (!/Book button to the booking app you already use, if you have one/.test(planted)) fail('index.html: the Planted card doesn’t offer a Book button to the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
+    // what every plan's subscription also includes: once, right under the three cards, word for word
+    const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days', 'Anything broken, I fix free',
+      'I keep an eye on your site, and if it goes down, I know before you do',
+      'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
+    const html = read('index.html').replace(/<!--[\s\S]*?-->/g, '');
+    const every = html.match(/<\/article>\s*<\/div>\s*<div class="every-plan\b[^>]*>([\s\S]*?)<\/div>\s*<div class="panel\b/);
+    if (!every) fail('index.html: no "Every plan’s subscription also includes" card right under the three plan cards');
+    const lisOf = (chunk) => [...chunk.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => plainOf(m[1]).trim());
+    if (every) {
+      if (!/Every plan’s subscription also includes/.test(plainOf(every[1]))) fail('index.html: the every-plan card lacks its label, “Every plan’s subscription also includes”');
+      const got = lisOf(every[1]);
+      if (got.join('|') !== EVERY_PLAN.join('|')) fail(`index.html: the every-plan card lists ${JSON.stringify(got)}; want ${JSON.stringify(EVERY_PLAN)}`);
+    }
+    for (const [, t] of cards) for (const line of EVERY_PLAN) if (t.includes(line)) fail(`index.html: a plan card repeats “${line}” (it’s said once, under the cards)`);
+    // each card's list ends with a small pointer down to that card, so on a phone, where it comes after all three
+    // moons, the shared lines still read as part of every plan
+    for (const m of html.matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)) {
+      if (!/<\/ul>\s*<p class="gets-more">[^<]*every plan[^<]*<\/p>/i.test(m[0])) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[m[1]]} card’s list doesn’t end with the pointer to what every plan includes (class="gets-more")`);
+    }
+    // the "What does your subscription include?" answer: bullets, plan by plan, the same lines in the same words as
+    // the cards and the every-plan card (the costs and accounts lines stay plain text after them)
+    const answer = html.match(/<details id="care-includes">([\s\S]*?)<\/details>/);
+    if (!answer) fail('index.html: no “What does your subscription include?” answer (id="care-includes")');
+    else {
+      const faqLis = lisOf(answer[1]);
+      const cardLis = [...html.matchAll(/<article class="tier (?:maiden|mother|crone)\b[\s\S]*?<\/article>/g)].flatMap((m) => lisOf(m[0]));
+      const want = cardLis.concat(every ? lisOf(every[1]) : []);
+      if (faqLis.join('|') !== want.join('|')) fail('index.html: the “What does your subscription include?” bullets don’t match the plan cards and the every-plan card, line for line');
+      for (const name of ['🌱 Planted, $12 a month', '🌿 Tended, $45 a month', '🌸 In Bloom, $90 a month', 'Every plan’s subscription also includes']) {
+        if (!plainOf(answer[1]).includes(name)) fail(`index.html: the “What does your subscription include?” answer lacks “${name}”`);
+      }
+    }
   }
   // 3. Planted gets free email forwarding; only sending from their own address needs Tended
   if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');

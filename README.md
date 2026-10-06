@@ -10,13 +10,19 @@ Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payment
 Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. A subscription comes with
 every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
 are the same in every tier: email anytime, as often as needed, anything broken fixed free, big new things quoted first.
+Every plan's subscription also includes (Oct 6 2026, shown once under the plan cards as "Every plan's subscription also
+includes", and in the same words in the questions, the quiz and start.html): changes usually within 2 business days,
+anything broken fixed free, Taya keeping an eye on the site (if it goes down, she knows first), holiday heads-ups with
+the hours updated on their site and Google profile, and a move on her if a host changes its rules.
 The subscription is part of every new site. If they ever cancel it, the site is still theirs, with every file and login
 handed over (say that close by wherever the subscription is explained, so it doesn't sound like renting).
 Internal keys stay maiden / mother / crone. Anyone quoted before Oct 5 2026 keeps their quote as written: the
 subscription stays optional for them, and if they choose it, they can take the new price when it's lower.
 
-What comes with which build (the small rules, Oct 5 2026, and the booking ladder, Oct 6 2026):
-- Planted has no Book button: people call, text or email them.
+What comes with which build (the small rules, Oct 5 2026, and the booking ladder, Oct 6 2026 afternoon, Pollen: "yes add
+the booking link to planted"):
+- Planted has a plain Book button that opens the booking app they already use (Vagaro, Square, Fresha, Mindbody,
+  Booksy and the like), if they have one. No app? People call, text or email them. Setting up a free Cal.com is Tended.
 - Tended has a Book button that opens their booking page: the app they already use, or a free Cal.com Taya sets up
   for them, in their name.
 - In Bloom has booking right on the site: their own app, where it really offers a website booking embed, or a free

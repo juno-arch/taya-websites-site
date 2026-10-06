@@ -295,8 +295,9 @@
     crone: { name: 'Crone', full: 1800, founding: 900, what: 'Everything in Mother, plus booking, selling or both, set up for you (a small shop, up to about 20 items), and your latest Instagram posts on your site.' },
   };
   // webfaery.love's own words for each tier, used when a repriced page doesn't give its own data-tier-what
-  // (the booking ladder, Oct 6 2026: Planted has no Book button; Tended's opens their booking page; In Bloom's
-  // booking sits right on the site)
+  // (the booking ladder, Oct 6 2026 afternoon: every build's Book button opens the booking app they already use,
+  // Planted's too; Tended's can open a free Cal.com set up for them; In Bloom's booking sits right on the site.
+  // Planted's line below doesn't name the Book button, so it stays true either way; the mockups' own words come later)
   const WHAT_NOW = {
     maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you, with a tap to call, text or email.',
     mother: 'A full site, tended as the seasons change: your pages, a contact form, a newsletter sign-up and a Book button that opens your booking page.',

@@ -227,9 +227,10 @@
   // Questions 1 to 3 pick the BUILD (what the site does). Question 4 asks about email from your own address and a
   // newsletter: either one means at least Tended, since both come with the Tended and In Bloom subscriptions
   // (Oct 5 2026: a Planted client who wants email from their own address moves up to Tended; no side add-ons).
-  // Booking (pricing-oct2026.md, the booking ladder, Oct 6 2026): a Planted page has no Book button (people call, text
-  // or email); a Book button that opens their booking page, the app they already use or a free Cal.com I set up for
-  // them, is Tended; booking built right into the site, with payments or deposits, and selling are In Bloom.
+  // Booking (pricing-oct2026.md, the booking ladder, Oct 6 2026 afternoon, Pollen: "yes add the booking link to
+  // planted"): a Book button that opens the booking app they already use comes with every build, Planted too, so
+  // that answer alone doesn't lift the build; a free Cal.com I set up for them is Tended; booking built right into
+  // the site, with payments or deposits, and selling are In Bloom. With no booking app, people call, text or email.
   // A subscription comes with every site and matches the build (Oct 5 2026; called "subscription" since Oct 6): Planted $12, Tended $45, In Bloom $90 a month.
   // _tests/quiz-paths.test.mjs clicks through every path and checks the rules below.
   var QUESTIONS = [
@@ -284,19 +285,18 @@
       because: 'Everything a new client needs fits on one lovely page, and nothing needs gathering. Simple is a strength here.',
       points: [
         'One page: who you are, what you offer, prices, how to reach you, photos',
-        'People reach you with a tap to call, text or email (a Book button comes with Tended)',
+        'People reach you with a tap to call, text or email',
         'Google-ready: clear titles and descriptions, business details Google can read, a photo preview when someone texts your link',
         'The words written for you, from a few easy questions by email'
       ],
-      also: 'Want more pages or booking later? What you paid counts toward the bigger build.',
+      also: 'Want more pages, or booking set up for you, later? What you paid counts toward the bigger build.',
       careLead: 'The Planted subscription keeps your page healthy and current, with me looking after it.',
       carePoints: [
         'Hosting, your web address, security and backups',
         'Your own magic link, yours for good: whenever something small needs changing, tap it right on your site and type me a note',
         'A “your changes are up” email the moment it’s live',
         'A monthly check-in about your business, so you don’t have to think about what to update',
-        'New reviews added as they come in',
-        'A heads-up before holidays, so your hours stay right'
+        'New reviews added as they come in'
       ]
     },
     'Tended': {
@@ -310,9 +310,10 @@
       also: 'If you ever want booking with payments, or selling, what you paid counts toward In Bloom.',
       careLead: 'The Tended subscription keeps your site fresh as the seasons change, with your posts showing up everywhere and your newsletter going.',
       carePoints: [
-        'Everything in the Planted subscription: hosting, your web address, backups, your magic link, a monthly check-in, new reviews and holiday heads-ups',
+        'Everything in the Planted subscription: hosting, your web address, backups, your magic link, a monthly check-in and new reviews',
         'Post once, show up everywhere: keep posting where you already post, and it lands on your Facebook, your Google profile and your website too. I only post what you’ve made or said yes to.',
-        'Your contact form and newsletter sign-up, with sending covered',
+        // (\u2011, a no-break hyphen, keeps sign-up and sold-out from breaking across two lines on a phone)
+        'Your contact form and newsletter sign\u2011up, with sending covered',
         'Your Instagram feed on your site, filling itself in as you post',
         'Email from your own address (you@yourbusiness.com), covered',
         'A seasonal refresh: new photos and wording as the year turns'
@@ -331,7 +332,7 @@
       careLead: 'The In Bloom subscription keeps everything in full bloom: your booking, payments or shop running and doing business for you.',
       carePoints: [
         'Everything in the Tended subscription, from posting once and showing up everywhere to your own email address and a seasonal refresh',
-        'Your booking, payments or shop kept running (Stripe, sold-out stamps)',
+        'Your booking, payments or shop kept running (Stripe, sold\u2011out stamps)',
         'For food businesses: online ordering right on your site (DoorDash’s free ordering)',
         'A flyer for one event a month, made and posted for you',
         'Private visitor counts, no tracking',
@@ -346,16 +347,27 @@
     'A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer or print shop',
     'A slim banner across the top of your site for news like “Now booking” or “Away until Nov 3”'
   ];
-  // changes are the same in every tier
-  var CHANGES = 'Email me anytime and I make your changes (hours, prices, photos, wording), as often as you need, usually within 2 business days. Anything broken, I fix free. Big new things, like a new page, I quote first.';
+  // what every plan's subscription also includes (Pollen, Oct 6 2026; the same lines, in the same words, as the
+  // "Every plan’s subscription also includes" card under the plans on webfaery.love), shown under each build's own
+  var EVERY_PLAN = [
+    'Email me anytime and I make your changes',
+    'Changes usually within 2 business days',
+    'Anything broken, I fix free',
+    'I keep an eye on your site, and if it goes down, I know before you do',
+    'Holiday heads-ups, with your hours updated on your site and your Google profile',
+    'If a host changes its rules, moving your site is on me'
+  ];
+  // changes are the same in every plan (the reply time and free fixes are in the list above)
+  var CHANGES = 'Changes are the same in every plan: hours, prices, photos, wording, as often as you need. Big new things, like a new page, I quote first.';
 
   function money(n) { return '$' + n.toLocaleString('en-US'); }
 
   // The build comes from what the site needs to do, and either extra (own-address email or a newsletter) needs at least Tended.
   function recommendBuild(p) {
     if (p[2] >= 4) return 'In Bloom';                // "Yes, booking with payments or deposits" or "Yes, selling"
-    if (p[2] === 2 || p[2] === 3) return 'Tended';   // a Book button: to the app they already use, or a free Cal.com I set
-                                                     // up for them (a Planted page has no Book button: the booking ladder)
+    if (p[2] === 3) return 'Tended';                 // "Yes, set up simple booking for me": a free Cal.com I set up for them
+                                                     // (a Book button to the app they already use comes with every build,
+                                                     // Planted too: the booking ladder, Oct 6 2026 afternoon)
     if (p[0] === 1 || p[1] === 1) return 'Tended';   // lots to say, or something to gather
     if (p[3] >= 1) return 'Tended';                  // own-address email or a newsletter: both come with Tended
     return 'Planted';
@@ -369,7 +381,7 @@
     return {
       name: b.emoji + ' ' + build + ' subscription, ' + money(b.care) + ' a month',
       because: because,
-      points: b.carePoints,
+      points: b.carePoints.concat(EVERY_PLAN),
       also: also
     };
   }
@@ -404,7 +416,7 @@
       ['Subscription', money(b.care) + ' a month, starting after your 30 days of settling in. It pays for hosting, backups and your web address (its first year comes with your build), so there’s nothing to renew.' + CARE_ALSO_PAYS[build]]
     ];
     if (build !== 'In Bloom' && p[2] === 2) {
-      // a Book button to the app they already use (Tended); a free Cal.com instead comes with it too
+      // a Book button to the app they already use (Planted or Tended); with Tended, a free Cal.com instead comes with it too
       lines.push(['Booking', 'The booking app you already use stays on your own account, at whatever it costs you now.'
         + (build === 'Tended' ? ' Cal.com is free for one person, if you’d like a free one.' : '')]);
     }
@@ -483,14 +495,18 @@
     el('r-build-founding').textContent = 'Founding clients ' + money(b.founding) + ' (5 founding spots, through Dec 31, 2026)';
     el('r-build-ready').textContent = 'Ready in ' + b.ready + ', counted from the day all your content is in.';
     el('r-build-because').textContent = b.because;
-    fillList('r-build-points', b.points.concat(EVERY_BUILD));
+    var points = b.points.slice();
+    // a Book button that opens the booking app they already use comes with every build (the booking ladder, Oct 6 2026
+    // afternoon); Tended's and In Bloom's own points already say how booking works for them
+    if (build === 'Planted' && picks[2] === 2) points.splice(2, 0, 'A Book button that opens the booking app you already use');
+    fillList('r-build-points', points.concat(EVERY_BUILD));
     var also = b.also;
-    if (picks[2] === 1 && build === 'Planted') also = 'When you’re ready for booking, what you paid counts toward Tended: a Book button to your booking app, or a free Cal.com I set up for you.';
+    if (picks[2] === 1 && build === 'Planted') also = 'When you’re ready for booking, a Book button can open the booking app you use, right on your Planted page. Or I set you up with a free Cal.com, which comes with Tended, and what you paid counts toward it.';
     if (picks[2] === 1 && build === 'Tended') also = 'When you’re ready for booking, a free Cal.com I set up for you comes with Tended. Just say the word.';
     if (picks[2] === 2) also = 'Your Book button opens the booking app you already use. If you’d ever like booking right on your site, or payments with it, what you paid counts toward In Bloom.';
     if (picks[2] === 3) also = 'Your Book button goes straight to your own Cal.com. If you’d ever like payments or deposits with your bookings, what you paid counts toward In Bloom.';
     if (picks[2] === 5) also = 'Need a full online store (catalog, inventory, shipping)? That’s quoted separately, before anything starts. ' + also;
-    if (build === 'Tended' && picks[3] >= 1 && picks[0] === 0 && picks[1] !== 1 && picks[2] <= 1) also = 'One page would hold everything, but ' + [
+    if (build === 'Tended' && picks[3] >= 1 && picks[0] === 0 && picks[1] !== 1 && picks[2] <= 2) also = 'One page would hold everything, but ' + [
       '', 'email from your own address comes with Tended, covered by your subscription. ',
       'a newsletter lives in Tended: the sign-up on your site, and its sending covered by your subscription. ',
       'a newsletter and email from your own address live in Tended: the sign-up on your site, its sending and your own address, all covered by your subscription. '

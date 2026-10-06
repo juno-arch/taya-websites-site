@@ -87,9 +87,9 @@
   const HOWTO = {
     // (pricing-oct2026.md, "Account setup flow": the owner adds Taya as a manager; no profile yet, Taya builds it.
     // Newsletter and booking accounts Taya sets up herself, in the client's name, and hands over at launch.
-    // Those come with Tended and In Bloom only, so `after` is picked by their build: maiden (Planted) never
-    // promises a newsletter or booking, mother covers Tended and In Bloom both, and other is for a build not
-    // picked yet.)
+    // Those come with Tended and In Bloom only, so `after` is picked by their build: maiden (Planted) promises no
+    // newsletter or Cal.com, only the Book now button to a booking app they already use (the booking ladder, Oct 6
+    // 2026 afternoon), mother covers Tended and In Bloom both, and other is for a build not picked yet.)
     accounts: {
       steps: [
         'Go to business.google.com and sign in with the Google account that owns your profile.',
@@ -97,7 +97,7 @@
         'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Later, Google asks you for one quick check that it’s really your business (a short video, or a code it sends you).'
       ],
       after: {
-        maiden: 'Anything I set up for you is in your name, with your email. If a confirm-your-email message comes, just click it.',
+        maiden: 'Anything I set up for you is in your name, with your email. If a confirm-your-email message comes, just click it. Already use a booking app? Send me your booking link, and your Book now button opens it.',
         mother: 'I set up your newsletter, and your booking if you’d like it, in your name, with your email, and hand you the logins at launch. Already happy with a booking app? We keep that one. If a confirm-your-email message or two comes from them, just click them.',
         other: 'If your build has a newsletter or booking, I set those up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
       }

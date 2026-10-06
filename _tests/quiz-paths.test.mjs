@@ -6,19 +6,21 @@
 // Pricing as of Oct 5 2026 (web-faery-kit/pricing-oct2026.md): a subscription comes with every site and matches the
 // build (called "care" until Oct 6 2026).
 // The BUILD comes from what the site needs to do (questions 1 to 3), plus email and a newsletter (question 4),
-// following the sheet's "Small rules decided Oct 5 2026" and its booking ladder (rule 1, Oct 6 2026):
+// following the sheet's "Small rules decided Oct 5 2026" and its booking ladder (rule 1, Oct 6 2026 afternoon,
+// Pollen: "yes add the booking link to planted"):
 //   In Bloom if anything takes payments: booking with payments or deposits, or selling (rule 5)
-//   Tended   if they'd like a Book button: to the booking app they already use, or to a free Cal.com in their
-//            name, which Taya sets up with Tended and In Bloom (rule 1: a Planted page has no Book button), or
-//            have "Quite a bit" to say, or want the site to gather something (forms and other pieces that take
-//            no bookings or payments are Tended; rule 4), or want email from their own address or a newsletter
-//            (both come with Tended and In Bloom; no side add-ons for Planted)
-//   Planted  otherwise: people call, text or email them
+//   Tended   if they'd like simple booking set up for them: a free Cal.com in their name, which Taya sets up with
+//            Tended and In Bloom (rule 1), or have "Quite a bit" to say, or want the site to gather something
+//            (forms and other pieces that take no bookings or payments are Tended; rule 4), or want email from
+//            their own address or a newsletter (both come with Tended and In Bloom; no side add-ons for Planted)
+//   Planted  otherwise: people call, text or email them, and a Book button opens the booking app they already
+//            use, if they have one (rule 1: that comes with every build, so it doesn't lift the build on its own)
 // The booking question's answers are sorted by their words, not their order, so splitting or rewording one
 // doesn't break this test: "already use" is their own app; payments, deposits, selling, a shop, gift
 // certificates or orders take payments; any other booking answer is booking set up for them.
 // Also: no line ties booking (without payments) to In Bloom (rule 1), and Planted never shows the Instagram
-// feed (Tended and up; rule 6).
+// feed (Tended and up; rule 6). Every build's subscription list ends with the lines every plan includes (Pollen,
+// Oct 6 2026), in the same words as the "Every plan" card on webfaery.love.
 // The subscription is always the build's own: Planted $12, Tended $45, In Bloom $90 a month.
 // Also fails (exit 1) if focus doesn't land on the new question / the result, if a price is wrong,
 // if the intake link loses the build, or if an old name, price or rule (Maiden / Mother / Crone, $69, $35,
@@ -76,6 +78,10 @@ const $ = (id) => document.getElementById(id);
 // ---- the rules, written out independently of the page ----
 const PRICES = { 'Planted': [600, 300, 12], 'Tended': [1200, 600, 45], 'In Bloom': [1800, 900, 90] };
 const usd = (n) => '$' + n.toLocaleString('en-US');
+// what every plan's subscription also includes (Pollen, Oct 6 2026; pricing-oct2026.md), word for word as on the main page
+const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days', 'Anything broken, I fix free',
+  'I keep an eye on your site, and if it goes down, I know before you do',
+  'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
 const failures = [];
 
 // find each question by its words, and sort its answers by their words
@@ -122,7 +128,8 @@ for (const k of ['own', 'setup', 'pay']) {
 const expectBuild = (p) => {
   const b = BOOK[p[Q_BOOK]], m = MAIL[p[Q_MAIL]];
   if (b.kind === 'pay') return 'In Bloom';
-  if (b.kind === 'own' || b.kind === 'setup' || SAY[p[Q_SAY]].lots || GATHER[p[Q_GATHER]].yes || m.own || m.news) return 'Tended';
+  // (Oct 6 2026 afternoon: 'own', a booking app they already use, no longer lifts the build to Tended on its own)
+  if (b.kind === 'setup' || SAY[p[Q_SAY]].lots || GATHER[p[Q_GATHER]].yes || m.own || m.news) return 'Tended';
   return 'Planted';
 };
 // a sentence that sends booking to In Bloom without any payment in it (simple booking is Tended now; rule 1)
@@ -184,7 +191,10 @@ combos.forEach((picks, n) => {
   if (!/Half to start, which holds your spot, and half at launch/.test(costs)) failures.push(`${tag}: cost list lacks how paying works`);
   if (!costs.includes(`Subscription: ${usd(care)} a month, starting after your 30 days of settling in`)) failures.push(`${tag}: cost list lacks the subscription price`);
   if (!/Every site comes with a subscription/.test(because)) failures.push(`${tag}: doesn't say every site comes with a subscription`);
-  if (!/as often as you need, usually within 2 business days/.test(careAlso)) failures.push(`${tag}: changes or the reply time missing`);
+  if (!/as often as you need/.test(careAlso)) failures.push(`${tag}: changes as often as they need missing`);
+  // what every plan's subscription also includes (Oct 6 2026): the reply time and free fixes live in this list now
+  const carePoints = $('r-care-points').children.map((li) => li.textContent);
+  for (const line of EVERY_PLAN) if (!carePoints.includes(line)) failures.push(`${tag}: the subscription list lacks "${line}"`);
   if (!/Big new things, like a new page, I quote first/.test(careAlso)) failures.push(`${tag}: big things aren't quoted first`);
   if (!/If you ever cancel your subscription, your site is still yours, and I hand you every file and login/.test(careAlso)) failures.push(`${tag}: the hand-over promise is missing`);
   if (book.kind === 'own' && !/booking app you already use/.test(costs)) failures.push(`${tag}: booking-app cost line missing`);
@@ -212,9 +222,13 @@ combos.forEach((picks, n) => {
   }
   // rule 6: the Instagram feed is Tended and up
   if (build === 'Planted' && /Instagram/.test(text)) failures.push(`${tag}: Planted mentions the Instagram feed (Tended and up)`);
-  // rule 1 (the booking ladder): a Planted page has no Book button, so people call, text or email
-  if (build === 'Planted' && !/call, text or email/.test($('r-build-points').textContent)) failures.push(`${tag}: Planted doesn't say people call, text or email`);
-  if (build === 'Planted' && /Book (?:now )?button[^.|]*(?:links|opens|goes)/i.test(text)) failures.push(`${tag}: Planted promises a Book button (the booking ladder: Tended and up)`);
+  // rule 1 (the booking ladder, Oct 6 2026 afternoon): a Planted page says people call, text or email, and its
+  // Book button opens the booking app they already use, only when they have one (Cal.com set up for them is Tended)
+  const planted = $('r-build-points').textContent;
+  if (build === 'Planted' && !/call, text or email/.test(planted)) failures.push(`${tag}: Planted doesn't say people call, text or email`);
+  if (build === 'Planted' && book.kind === 'own' && !/A Book button that opens the booking app you already use/.test(planted)) failures.push(`${tag}: Planted with their own booking app doesn't list the Book button that opens it`);
+  if (build === 'Planted' && book.kind !== 'own' && /Book (?:now )?button/i.test(planted)) failures.push(`${tag}: Planted lists a Book button for someone with no booking app`);
+  if (build === 'Planted' && /Cal\.com[^.|]*(?:Planted|comes with your)/i.test(text)) failures.push(`${tag}: Planted ties a Cal.com set up for them to Planted (it comes with Tended and In Bloom)`);
 
   const href = $('r-start').href;
   if (href !== `intake.html?plan=${encodeURIComponent(build)}`) failures.push(`${tag}: start link is ${href}`);

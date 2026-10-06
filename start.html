@@ -43,7 +43,7 @@
     4. Your accounts: only the bits that have to be them (pricing-oct2026.md, "Account setup flow"):
        their Google profile (already have one: add taya@webfaery.love as a manager, 2 minutes; none yet:
        tick "I don't have one" and Taya builds it, they do Google's one quick check later); the link to a
-       booking app they already use (Tended and In Bloom: a Planted page has no Book button, Oct 6 2026); and,
+       booking app they already use (every build: its Book button opens it, Oct 6 2026 afternoon); and,
        for In Bloom with payments, Stripe in their own name with Taya as
        a Developer (together over email). Buttondown and Cal.com aren't to-dos any more: Taya makes them in
        the client's name with the client's email during the build and hands over the logins at launch, so the
@@ -1011,7 +1011,7 @@
               <span class="b-sky" aria-hidden="true"><svg><use href="#i-wax"/></svg></span>
               <span class="b-body">
                 <span class="b-name">Planted</span>
-                <span class="b-does">One page with who you are, what you offer and how to reach you (a tap to call, text or email), planted and kept healthy.</span>
+                <span class="b-does">One page with who you are, what you offer and how to reach you (a tap to call, text or email, and a Book now button to the booking app you already use, if you have one), planted and kept healthy.</span>
                 <span class="b-ready">Ready in about 2 weeks</span>
                 <span class="b-price" data-price="maiden"><strong>$600</strong></span>
                 <span class="b-care">Then a $12 a month subscription</span>
@@ -1060,7 +1060,7 @@
             <li>A slim banner across the top for news like “Now booking” or “Away until Nov 3” (email me to switch it, anytime)</li>
             <li>Your web address’s first year (then your subscription looks after it, so there’s nothing to renew)</li>
             <li>30 days of settling-in tweaks after launch</li>
-            <li>A one-page “Your site” hand-off sheet</li>
+            <li>A one-page “Your site” <span class="nowrap">hand-off</span> sheet</li>
           </ul>
         </details>
 
@@ -1098,7 +1098,7 @@
             <legend class="main sub-legend" style="margin-top: 0">Online booking</legend>
             <div class="opts">
               <label class="opt"><input type="radio" name="x_booking" value="none"><span>No online booking, thanks</span></label>
-              <label class="opt"><input type="radio" name="x_booking" value="current"><span><b>Keep the booking app I already use</b><small>With Tended, your Book now button opens it. With In Bloom, it sits right on your site, if your app offers that. Whatever you pay for it now stays the same. <span class="x-cost" data-x="app">Part of Tended and In Bloom.</span></small></span></label>
+              <label class="opt"><input type="radio" name="x_booking" value="current"><span><b>Keep the booking app I already use</b><small>Whichever build you pick, your Book now button opens it. With In Bloom, it can sit right on your site instead, if your app offers that. Whatever you pay for it now stays the same. <span class="x-cost" data-x="app">Part of every build.</span></small></span></label>
               <label class="opt"><input type="radio" name="x_booking" value="calcom"><span><b>Set me up with Cal.com</b><small>Free for one person, in your own name. A team? Each person can have their own free account. Clients pick a time, and you both get reminders. <span class="x-cost" data-x="cal">Part of Tended and In Bloom.</span></small></span></label>
             </div>
           </fieldset>
@@ -1437,7 +1437,7 @@
          Taya sets up everything else in the client's name, with the client's email, during the build, and hands
          over the logins at launch (each with its own strong password from Proton Pass, changed on first login).
          Here: Google (every build: add Taya as a manager, or "I don't have one yet" and Taya builds it), the link
-         to a booking app they already use (Tended and In Bloom), and Stripe in their own name with Taya as a Developer
+         to a booking app they already use (every build), and Stripe in their own name with Taya as a Developer
          (In Bloom, together over email). Buttondown and Cal.com are a note plus one question: which email to use.
          (Before a build is picked, everything they asked for shows.) Anything easier together is marked
          "Together over email" and isn't counted in the list's time. -->
@@ -1489,9 +1489,10 @@
           <p class="soft-note" data-if="g-no">No problem, it’s skipped. You can add one anytime, just say the word.</p>
         </div>
 
-        <!-- booking they already have: only when they keep their own app (Tended: the Book button opens it; In Bloom: it sits
-             right on their site where the app allows it; a Planted page has no Book button, Oct 6 2026). Its link is a 2-minute
-             to-do. (A new Cal.com is no longer a card: Taya makes it for them, in #acct-made just below.) -->
+        <!-- booking they already have: only when they keep their own app (Planted and Tended: the Book button opens it;
+             In Bloom: it sits right on their site where the app allows it; the booking ladder, Oct 6 2026 afternoon, Pollen:
+             "yes add the booking link to planted"). Its link is a 2-minute to-do. (A new Cal.com is no longer a card: Taya
+             makes it for them, Tended and In Bloom, in #acct-made just below.) -->
         <div class="acct" id="acct-booking" hidden>
           <div class="acct-top">
             <span class="acct-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
@@ -1785,7 +1786,7 @@
      agreed            bool
      agreement_name    text, max 120   (their typed signature)
      agreement_date    date            (when they sent it)
-     agreement_version text, max 40    ("2026-10-06")
+     agreement_version text, max 40    ("2026-10-06b")
      show_in_work      bool
      summary_text      text, max 20000 (everything above as one readable message)
      photos            file, multiple, max 40 files, 15 MB each: image/jpeg, image/png, image/webp, image/heic, image/heif, image/gif, application/pdf
@@ -1816,32 +1817,39 @@
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
     collection: 'webfaery_intake',
-    agreementVersion: '2026-10-06',   // the agreement's words changed with the Oct 5 pricing, and each build's words with the Oct 6 booking ladder
+    agreementVersion: '2026-10-06b',  // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
+                                      // ladder, and Planted's again that afternoon (its Book now button to the app they already use).
+                                      // The server keeps it as plain text (agreement_version, max 40) and only shows it back
     maxUploadMB: 30                              // a little under the server's limit
   };
 
   /* ================= prices: the same numbers as the main page (web-faery-kit/pricing-oct2026.md) =================
      The keys stay maiden / mother / crone (links, Stripe, saved answers, the server); only the names show. */
   const BUILDS = {
-    maiden: { name: 'Planted', price: 600, weeks: 2, does: 'one page with who you are, what you offer and how to reach you (a tap to call, text or email), planted and kept healthy.' },
+    maiden: { name: 'Planted', price: 600, weeks: 2, does: 'one page with who you are, what you offer and how to reach you (a tap to call, text or email, and a Book now button to the booking app you already use, if you have one), planted and kept healthy.' },
     mother: { name: 'Tended', price: 1200, weeks: 3, does: 'a full site with a contact form, newsletter sign-up and a Book now button that opens your booking page (the app you use now, or a free Cal.com), tended as the seasons change.' },
     crone:  { name: 'In Bloom', price: 1800, weeks: 4, does: 'everything in Tended, plus booking right on your site, payments or a small shop (up to about 20 items) in your own accounts: your site in full bloom, doing business for you.' }
   };
   // care: part of every site, monthly only, always full price (founding is half off the build only)
   const CARE = { maiden: 12, mother: 45, crone: 90 };
-  // what care covers, tier by tier (each one adds to the one before)
+  // what the subscription covers, tier by tier (each one adds to the one before; \u2011 is a no-break hyphen, so
+  // sign-up and sold-out don't break across two lines on a phone)
   const CARE_INCL = {
-    maiden: ['Hosting, your web address, security and backups', 'Email me anytime and I make your changes',
+    maiden: ['Hosting, your web address, security and backups',
       'Your own magic link, yours for good: whenever something small needs changing, tap it right on your site and type me a note', 'A “your changes are up” email the moment it’s live',
-      'A monthly check-in about your business, so you don’t have to think about what to update', 'New reviews added as they come in',
-      'A heads-up before holidays, so your hours stay right'],
-    mother: ['Post once, show up everywhere: keep posting where you already post, and it lands on your Facebook, your Google profile and your website too. I only post what you’ve made or said yes to.', 'Contact form and newsletter sign-up, with sending covered',
+      'A monthly check-in about your business, so you don’t have to think about what to update', 'New reviews added as they come in'],
+    mother: ['Post once, show up everywhere: keep posting where you already post, and it lands on your Facebook, your Google profile and your website too. I only post what you’ve made or said yes to.', 'Contact form and newsletter sign\u2011up, with sending covered',
       'Your Instagram feed on your site, filling itself in as you post', 'Email from your own address (you@yourbusiness.com), covered',
       'A seasonal refresh: new photos and wording as the year turns'],
-    crone: ['Booking, payments or your shop kept running (Stripe, sold-out stamps)', 'Order direct for food businesses (DoorDash’s free online ordering on your site)',
+    crone: ['Booking, payments or your shop kept running (Stripe, sold\u2011out stamps)', 'Order direct for food businesses (DoorDash’s free online ordering on your site)',
       'A flyer for one event a month, made and posted for you', 'Private visitor counts, no tracking',
       'A yearly refresh: new photos from your year, your story updated, every page checked on phones']
   };
+  // what every plan's subscription also includes, shown once after the tiers (Pollen, Oct 6 2026; the same lines, in
+  // the same words, as the "Every plan’s subscription also includes" card under the plans on webfaery.love)
+  const CARE_EVERY = ['Email me anytime and I make your changes', 'Changes usually within 2 business days', 'Anything broken, I fix free',
+    'I keep an eye on your site, and if it goes down, I know before you do',
+    'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
   // how each care reads as a whole (gently in the garden's words: planted and kept healthy, tended as the seasons
   // change, in full bloom doing business for you)
   const CARE_HEAD = {
@@ -1883,7 +1891,7 @@
     { id: 'booking', q: 'A booking app you use now?',
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
       said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
-      reply: { has: 'Lovely. With Tended, your Book now button opens it, and with In Bloom it can sit right on your site, if your app offers that. A Planted page skips the Book button: people call, text or email you.', want: 'Lovely. I’ll set you up with Cal.com, free and in your name, and your Book now button goes straight to it. That comes with Tended and In Bloom.' } },
+      reply: { has: 'Lovely. Whichever build you pick, your Book now button opens it, so nothing changes for you or your clients. With In Bloom, it can sit right on your site instead, if your app offers that.', want: 'Lovely. I’ll set you up with Cal.com, free and in your name, and your Book now button goes straight to it. That comes with Tended and In Bloom.' } },
     { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true, sub: true,
       a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
       said: Object.assign({}, APPS, { other: 'your booking app' }) },
@@ -1912,9 +1920,9 @@
     const why = [];
     if (have.booking === 'want') why.push('booking set up for you with Cal.com');
     if (have.sell === 'yes') why.push('selling on your site');
-    // the booking ladder: a Book now button out to their app is Tended; In Bloom puts booking right on the site
-    // (their own app only if it offers that, so say so)
-    if (have.booking === 'has') why.push(fitsBuild() === 'crone' ? 'your booking app built right in (if it offers that)' : 'a Book now button to your booking app');
+    // the booking ladder (Oct 6 2026 afternoon): a Book now button out to their app comes with every build, so it's
+    // only a reason for In Bloom, which puts booking right on the site (their own app only if it offers that, so say so)
+    if (have.booking === 'has' && fitsBuild() === 'crone') why.push('your booking app built right in (if it offers that)');
     if (have.news === 'yes') why.push('a newsletter sign-up');
     return why;
   }
@@ -1930,18 +1938,19 @@
     document.getElementById('fit-name').textContent = name;
     document.getElementById('fit-why').textContent = why.length
       ? 'Because you’d like ' + listOf(why) + '. You can still pick any build.'
-      : 'One page is all you need right now. You can still pick any build, and grow later.';
+      : 'One page is all you need right now' + (have.booking === 'has' ? ', with a Book now button to your booking app' : '') + '. You can still pick any build, and grow later.';
     // pick it for them if they haven't chosen yet (they can change it)
     const picked = form.querySelector('input[name="build"]:checked');
     const mine = form.querySelector('input[name="build"][value="' + b + '"]');
     if (!picked && mine && !mine.closest('[hidden]')) { mine.checked = true; mine.dispatchEvent(new Event('change', { bubbles: true })); }
   }
-  // booking (pricing-oct2026.md, the booking ladder, Oct 6 2026): a Planted page has no Book button (people call,
-  // text or email); a Book now button, to the app they already use or a Cal.com I set up for them, is Tended; booking
+  // booking (pricing-oct2026.md, the booking ladder, Oct 6 2026 afternoon, Pollen: "yes add the booking link to
+  // planted"): a Book now button to the app they already use comes with every build, Planted too, so 'has' alone
+  // doesn't lift the build (with no app, people call, text or email); a Cal.com I set up for them is Tended; booking
   // right on the site, and selling, are In Bloom
   function fitsBuild() {
     if (have.sell === 'yes') return 'crone';
-    if (have.booking === 'want' || have.booking === 'has' || have.news === 'yes') return 'mother';
+    if (have.booking === 'want' || have.news === 'yes') return 'mother';
     if (have.booking || have.sell || have.news) return 'maiden';
     return '';
   }
@@ -2174,26 +2183,27 @@
       CARE_INCL[k].forEach((t) => ul.append(make('li', null, t)));
       incl.append(make('h4', null, head), ul);
     });
-    incl.append(make('p', 'care-same', 'Changes are the same in every build: email me anytime, as often as you need, and I usually reply within 2 business days. Anything broken is fixed free, and big new things, like a new page or a new feature, I quote first. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.'));
+    const every = make('ul', 'checks');
+    CARE_EVERY.forEach((t) => every.append(make('li', null, t)));
+    incl.append(make('h4', null, 'Every plan’s subscription also includes'), every);
+    incl.append(make('p', 'care-same', 'Changes are the same in every build: hours, prices, photos, wording, as often as you need. Big new things, like a new page or a new feature, I quote first. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.'));
     // email from your own address and the newsletter: what they come with, for the build they picked
     const big = c.build === 'mother' || c.build === 'crone';
     $('[data-x="email"]').textContent = big ? 'Covered by your subscription.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
       : 'Part of Tended and In Bloom, covered by your subscription.';
     $('[data-x="news"]').textContent = big ? 'Sending is covered by your subscription.' : 'Part of Tended and In Bloom, with sending covered by your subscription.';
-    // a Book now button, to a Cal.com I set up for them or to the app they already use, comes with Tended and In Bloom
-    // (the booking ladder, Oct 6 2026: a Planted page has no Book button)
+    // the booking ladder (Oct 6 2026 afternoon): a Cal.com I set up for them comes with Tended and In Bloom; a Book now
+    // button to the app they already use comes with every build, Planted too
     $('[data-x="cal"]').textContent = big ? 'It comes with your build.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
       : 'Part of Tended and In Bloom.';
-    $('[data-x="app"]').textContent = big ? 'It comes with your build.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
-      : 'Part of Tended and In Bloom.';
+    $('[data-x="app"]').textContent = b ? 'It comes with your build.' : 'Part of every build.';
     // anything they'd like that a bigger build brings (payments: In Bloom; a newsletter, email from their own address
-    // or a Book now button, to their own app or a Cal.com I set up for them: Tended)
+    // or a Cal.com I set up for them: Tended; a Book now button to their own app comes with every build)
     const bloom = [], tended = [];
     if (c.sell) bloom.push('taking payments online');
     if (c.news) tended.push('a newsletter');
     if (c.email) tended.push('email from your own address');
     if (c.booking === 'calcom') tended.push('booking set up for you with Cal.com');
-    if (c.booking === 'current') tended.push('a Book now button to your booking app');
     let say = '';
     if (b && c.build !== 'crone' && bloom.length) say = cap(listOf(bloom)) + (bloom.length > 1 ? ' are' : ' is') + ' part of In Bloom.';
     else if (c.build === 'maiden' && tended.length) say = cap(listOf(tended)) + (tended.length > 1 ? ' are' : ' is') + ' part of Tended and In Bloom.';
@@ -2285,14 +2295,14 @@
   // hidden because it doesn't apply to them (not just a closed step)
   const planHidden = (el) => !!el.closest('[data-if][hidden], .step[hidden], #kit-box[hidden], .acct[hidden]');
   const shown = () => steps.filter((s) => !s.hidden);
-  // The accounts their build needs (pricing-oct2026.md): a Google profile for every build; the link to a booking app
-  // they already use, Cal.com and a Buttondown list with Tended and In Bloom (the booking ladder, Oct 6 2026); Stripe
-  // with In Bloom. Each only when they'd like it, and before a build is picked (or "not sure yet"), everything they
-  // asked for shows.
+  // The accounts their build needs (pricing-oct2026.md): a Google profile and the link to a booking app they already
+  // use for every build (the booking ladder, Oct 6 2026 afternoon: Planted's Book now button opens it too); Cal.com and
+  // a Buttondown list with Tended and In Bloom; Stripe with In Bloom. Each only when they'd like it, and before a
+  // build is picked (or "not sure yet"), everything they asked for shows.
   function acctNeeds(c) {
     const tier = BUILDS[c.build] ? Object.keys(BUILDS).indexOf(c.build) : 2; // 0 Planted, 1 Tended, 2 In Bloom
     return {
-      booking: tier >= 1 && (c.booking === 'current' || c.booking === 'calcom'),
+      booking: c.booking === 'current' || (tier >= 1 && c.booking === 'calcom'),
       news: tier >= 1 && c.news,
       pay: tier >= 2 && c.sell
     };
@@ -2795,8 +2805,8 @@
       ['Accounts', rows([
         ['Google profile', !r.accounts.google_wanted ? 'No thanks' : r.accounts.google_none_yet ? 'I don’t have one yet, so Taya builds it'
           : r.accounts.google_manager_added ? 'I have one, and I’ve added Taya as a manager' : ''],
-        ['Booking', r.extras.booking === 'current' ? (acctNeeds(c).booking ? [r.accounts.booking_app, r.accounts.booking_link || 'Keeping my app'].filter(Boolean).join(': ')
-            : 'Keeping my app. A Book button is part of Tended and In Bloom, so we’ll talk it over by email')
+        // (a Book now button to the app they keep comes with every build, so its link is always on their list)
+        ['Booking', r.extras.booking === 'current' ? [r.accounts.booking_app, r.accounts.booking_link || 'Keeping my app'].filter(Boolean).join(': ')
           : r.extras.booking === 'calcom' ? (acctNeeds(c).booking ? 'Cal.com, set up by Taya in my name' : 'Part of Tended and In Bloom, so we’ll talk it over by email') : 'No online booking'],
         onList('f-acctemail') && ['Email for my accounts', r.accounts.accounts_email ? r.accounts.accounts_email + (r.accounts.accounts_email_is_contact ? ' (my contact email)' : '') : 'My contact email'],
         ['Web address', have.domain === 'yes' ? 'Already mine: we point it, or it moves in with Taya’s and my subscription renews it' + (r.accounts.domain_done ? ' (I can sign in where it lives)' : '')
