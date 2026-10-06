@@ -372,8 +372,7 @@
   .ship-opt input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--green); flex: none; }
   .ship-opt b { display: block; font-weight: 600; }
   .ship-opt small { display: block; font-size: 14px; color: var(--ink-soft); }
-  .ship-addr { display: grid; gap: 10px; }
-  .addr-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.6fr) minmax(0, 0.9fr); gap: 10px; }
+  .ship-note { font-size: 14px; color: var(--ink-soft); margin: 0; text-wrap: pretty; }
   .test-badge { display: inline-block; font-size: 10px; letter-spacing: 0.1em; font-weight: 700; color: #7a4a00; background: #ffde92; border-radius: 4px; padding: 1px 6px; line-height: 1.7; }
   .ship-to { font-size: 14.5px; color: var(--ink-soft); margin: 10px 0 4px; }
   .ship-to b { color: var(--ink); font-weight: 600; }
@@ -384,6 +383,10 @@
   .sf-fld { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--hair); border-radius: 6px; padding: 10px 12px; font-family: 'Space Mono', monospace; font-size: 15px; color: var(--ink); background: var(--ground-2); }
   .sf-fld svg { color: var(--ink-soft); flex: none; }
   .sf-foot { font-size: 13.5px; color: var(--ink-soft); }
+  .sf-head { font-size: 14.5px; font-weight: 600; color: var(--ink); margin: 14px 0 0; text-wrap: pretty; }
+  .sf-fields, .sf-addr { display: grid; gap: 10px; }
+  .sf-sub { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); margin-top: 2px; }
+  .sf-three { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.7fr) minmax(0, 1fr); gap: 10px; }
   .receipt { margin-top: 14px; border: 1px solid var(--hair); border-radius: 6px; background: var(--ground); padding: 14px 16px; font-size: 14.5px; }
   .receipt .r-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
   .receipt .r-ok { color: var(--green-deep); }
@@ -615,8 +618,6 @@
     .trk-date { grid-column: 1 / -1; }
     .fld-row { grid-template-columns: minmax(0, 1fr); }
     .bk-card { padding: 20px 16px; }
-    .addr-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-    .addr-row .fld:first-child { grid-column: 1 / -1; }
     nav { gap: 0; margin-inline: -4px; }
     nav a { padding-inline: 5px; font-size: 11px; letter-spacing: 0.04em; }
     .hero-band .cta-row .btn { flex: 1 1 100%; text-align: center; }
@@ -1078,10 +1079,7 @@
               <label class="ship-opt"><input type="radio" name="sh-way" value="ship" checked><span><b>Ship it to me</b><small>Mailed out from Point Arena</small></span></label>
               <label class="ship-opt"><input type="radio" name="sh-way" value="pickup"><span><b>Pick up at the bar instead</b><small>Free, it waits behind the bar</small></span></label>
             </fieldset>
-            <div class="ship-addr" id="sh-addr">
-              <label class="fld">Street address<input id="sh-street" autocomplete="off" value="456 Pine Street"></label>
-              <div class="addr-row"><label class="fld">City<input id="sh-city" autocomplete="off" value="Eugene"></label><label class="fld">State<input id="sh-state" autocomplete="off" maxlength="2" value="OR"></label><label class="fld">ZIP<input id="sh-zip" inputmode="numeric" autocomplete="off" maxlength="10" value="97401"></label></div>
-            </div>
+            <p class="ship-note" id="sh-addr-note">You add the shipping address on the next step, in Stripe&rsquo;s secure form, along with your card.</p>
           </div>
         </div>
         <div id="sh-s4" hidden>
@@ -1089,15 +1087,25 @@
             <h3 class="sheet-h"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span> <span class="test-badge">Test mode</span></h3>
             <div class="sheet-lines">
               <div><span id="sh-line">1 hoodie, size M</span><span class="ph">your price</span></div>
-              <div><span id="sh-ship-line">Shipping to OR 97401</span><span class="ph" id="sh-ship-amt">your rate</span></div>
-              <div><span id="sh-tax-line">Sales tax, figured for your ZIP</span><span class="ph">auto</span></div>
+              <div><span id="sh-ship-line">Shipping</span><span class="ph" id="sh-ship-amt">your rate</span></div>
+              <div><span id="sh-tax-line">Sales tax, for your address</span><span class="ph">auto</span></div>
               <div class="total"><span>Total</span><span class="ph">your price</span></div>
             </div>
             <p class="ship-to" id="sh-to"></p>
-            <div class="stripe-form" aria-hidden="true">
-              <div class="sf-row"><span class="sf-lbl">Card number</span><span class="sf-fld">4242 4242 4242 4242<svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="24" height="16" rx="3"/><path d="M1 6h24M4 13h6"/></svg></span></div>
-              <div class="sf-two"><div class="sf-row"><span class="sf-lbl">Expires</span><span class="sf-fld">12 / 34</span></div><div class="sf-row"><span class="sf-lbl">CVC</span><span class="sf-fld">123</span></div></div>
-              <p class="sf-foot">Card or phone wallet, in Stripe&rsquo;s secure form. This is Stripe&rsquo;s practice card, so nothing is charged.</p>
+            <p class="sf-head" id="sh-sf-head">Shipping address and card, in Stripe&rsquo;s secure form</p>
+            <div class="stripe-form">
+              <div class="sf-fields" aria-hidden="true">
+                <div class="sf-addr" id="sh-sf-addr">
+                  <span class="sf-sub">Shipping address</span>
+                  <div class="sf-row"><span class="sf-lbl">Full name</span><span class="sf-fld" id="sh-sf-name">Maya R.</span></div>
+                  <div class="sf-row"><span class="sf-lbl">Address</span><span class="sf-fld" id="sh-sf-street">456 Pine Street</span></div>
+                  <div class="sf-three"><div class="sf-row"><span class="sf-lbl">City</span><span class="sf-fld" id="sh-sf-city">Eugene</span></div><div class="sf-row"><span class="sf-lbl">State</span><span class="sf-fld" id="sh-sf-state">OR</span></div><div class="sf-row"><span class="sf-lbl">ZIP</span><span class="sf-fld" id="sh-sf-zip">97401</span></div></div>
+                  <span class="sf-sub">Card</span>
+                </div>
+                <div class="sf-row"><span class="sf-lbl">Card number</span><span class="sf-fld">4242 4242 4242 4242<svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="24" height="16" rx="3"/><path d="M1 6h24M4 13h6"/></svg></span></div>
+                <div class="sf-two"><div class="sf-row"><span class="sf-lbl">Expires</span><span class="sf-fld">12 / 34</span></div><div class="sf-row"><span class="sf-lbl">CVC</span><span class="sf-fld">123</span></div></div>
+              </div>
+              <p class="sf-foot">Card or phone wallet. This is Stripe&rsquo;s practice card, so nothing is charged.</p>
             </div>
           </div>
         </div>
@@ -1112,9 +1120,9 @@
         </div>
       </div>
       <div class="bk-side mock-note">
-        <div class="bk-note"><b>What you see</b>Each order lands in your inbox with the size, so you can set it behind the bar or ship it.</div>
+        <div class="bk-note"><b>What you see</b>Every order is in your own Stripe, with what they bought, the size and where it ships, so nothing gets lost in a busy inbox. You also get a short heads-up email, and Stripe&rsquo;s phone app can ping you for each new order.</div>
         <div class="bk-inbox"><div class="from">New merch order</div><div id="sh-inbox">Waiting for an order&hellip; try it on the left</div></div>
-        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account. Sold out of a size? It says so, on its own.</div>
+        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account. Sales tax is figured by Stripe Tax, which costs 0.5% of each order it taxes. Sold out of a size? The shop says so, on its own.</div>
       </div>
     </div>
   </div>
@@ -1503,29 +1511,27 @@
       var ways = [].slice.call(card.querySelectorAll('input[name="sh-way"]'));
       function way() { var w = 'ship'; ways.forEach(function (r) { if (r.checked) w = r.value; }); return w; }
       function v(id) { return $(id).value.trim(); }
-      function addr() { return v('sh-street') + ', ' + v('sh-city') + ', ' + v('sh-state').toUpperCase() + ' ' + v('sh-zip'); }
-      function shipPaint() { $('sh-addr').hidden = way() !== 'ship'; }
+      /* the shipping address lives in Stripe's form (step 4), not on the site's own form */
+      function sf(id) { return $('sh-sf-' + id).textContent; }
+      function town() { return sf('city') + ', ' + sf('state'); }
+      function addr() { return sf('street') + ', ' + town() + ' ' + sf('zip'); }
+      function shipPaint() { $('sh-addr-note').hidden = way() !== 'ship'; }
       ways.forEach(function (r) { r.addEventListener('change', shipPaint); });
       function checkShip() {
         var h = $('sh-hint');
         if (!v('sh-name')) { h.textContent = 'Add your name first.'; $('sh-name').focus(); return false; }
         if (!isEmail(v('sh-mail'))) { h.textContent = 'Add an email address, so your receipt can reach you.'; $('sh-mail').focus(); return false; }
-        if (way() === 'ship') {
-          if (!v('sh-street')) { h.textContent = 'Add the street address it ships to.'; $('sh-street').focus(); return false; }
-          if (!v('sh-city')) { h.textContent = 'Add the city.'; $('sh-city').focus(); return false; }
-          if (!/^[A-Za-z]{2}$/.test(v('sh-state'))) { h.textContent = 'Add the state, two letters, like CA.'; $('sh-state').focus(); return false; }
-          if (!/^\d{5}(-\d{4})?$/.test(v('sh-zip'))) { h.textContent = 'Add a five digit ZIP code.'; $('sh-zip').focus(); return false; }
-        }
         h.textContent = ''; return true;
       }
       function sheet() {
         var ship = way() === 'ship';
-        $('sh-ship-line').textContent = ship ? 'Shipping to ' + v('sh-state').toUpperCase() + ' ' + v('sh-zip') : 'Pick up at the bar';
+        $('sh-ship-line').textContent = ship ? 'Shipping' : 'Pick up at the bar';
         $('sh-ship-amt').textContent = ship ? 'your rate' : 'free';
-        $('sh-tax-line').textContent = ship ? 'Sales tax, figured for ' + v('sh-zip') : 'Sales tax, Point Arena';
-        $('sh-to').innerHTML = '';
-        var b = document.createElement('b'); b.textContent = ship ? 'Ship to: ' : 'Pick up: ';
-        $('sh-to').appendChild(b); $('sh-to').appendChild(document.createTextNode(ship ? v('sh-name') + ', ' + addr() : 'behind the bar at The Record, 265 Main Street, Point Arena'));
+        $('sh-tax-line').textContent = ship ? 'Sales tax, for your address' : 'Sales tax, Point Arena';
+        $('sh-to').innerHTML = ''; $('sh-to').hidden = ship;
+        if (!ship) { var b = document.createElement('b'); b.textContent = 'Pick up: '; $('sh-to').appendChild(b); $('sh-to').appendChild(document.createTextNode('behind the bar at The Record, 265 Main Street, Point Arena')); }
+        $('sh-sf-head').textContent = ship ? 'Shipping address and card, in Stripe’s secure form' : 'Your card, in Stripe’s secure form';
+        $('sh-sf-addr').hidden = !ship; $('sh-sf-name').textContent = v('sh-name');
       }
       var opts = [].slice.call($('sh-s1').querySelectorAll('.bk-opt')), sizeBox = $('sh-sizes');
       ['S', 'M', 'L', 'XL', 'XXL'].forEach(function (z) {
@@ -1562,7 +1568,7 @@
         var who = v('sh-name'), mail = v('sh-mail'), ship = way() === 'ship';
         var what = $('sh-line').textContent;
         $('sh-done-h').textContent = 'It’s yours, ' + who.split(/\s+/)[0] + '!';
-        $('sh-summary').textContent = what + '. ' + (ship ? 'It ships out soon to ' + addr() + ', and a receipt is on its way to ' + mail + '.' : 'It’ll be waiting behind the bar. A receipt is on its way to ' + mail + '.');
+        $('sh-summary').textContent = what + '. ' + (ship ? 'It ships out soon to ' + town() + ', and a receipt is on its way to ' + mail + '.' : 'It’ll be waiting behind the bar. A receipt is on its way to ' + mail + '.');
         var order = 'TR-' + (1040 + Math.floor(Math.random() * 60));
         var rc = $('sh-receipt'); rc.innerHTML = '';
         function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
@@ -1571,7 +1577,7 @@
         [[what, 'your price'], [ship ? 'Shipping' : 'Pick up at the bar', ship ? 'your rate' : 'free'], ['Sales tax', 'auto'], ['Paid', 'your price']].forEach(function (x) { var d = el('div'); d.appendChild(el('span', null, x[0])); d.appendChild(el('span', 'ph', x[1])); ls.appendChild(d); });
         rc.appendChild(ls);
         rc.appendChild(el('p', 'r-to', ship ? 'Ship to ' + who + ', ' + addr() : 'Pick up behind the bar, 265 Main Street'));
-        $('sh-inbox').textContent = who + ' (' + order + '): ' + what + '. ' + (ship ? 'Ship to ' + addr() + '.' : 'Picking up at the bar.');
+        $('sh-inbox').textContent = who + ': ' + what + '. ' + (ship ? 'Ships to ' + town() + '. Full address in your Stripe.' : 'Picking up at the bar.');
         for (var n = 1; n <= MAX; n++) $(P + '-s' + n).hidden = true;
         $(P + '-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $(P + '-done').hidden = false; quietFocus($(P + '-done-h'));
       });
