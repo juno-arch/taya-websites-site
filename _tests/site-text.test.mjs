@@ -280,13 +280,13 @@ for (const page of PAGES) {
   need('index.html', /in your name and with your email, then hand you the logins at launch/, 'doesn’t say I set up their accounts with their email and hand over the logins at launch');
   need('index.html', /confirm-your-email/, 'doesn’t tell them to expect a confirm-your-email message or two');
   need('index.html', /at launch I make you its owner/, 'doesn’t say a Google profile I build becomes theirs at launch');
-  need('start.html', /never ask for a password you already use/, 'doesn’t promise I’ll never ask for a password they already use');
+  need('start.html', /won’t ask for a password you already use/, 'doesn’t promise I won’t ask for a password they already use');
   need('start.html', /its own strong password/, 'doesn’t say every account I set up gets its own strong password');
   need('start.html', /hand you the logins/, 'doesn’t say I hand over the logins at launch');
   need('start.html', /ID, tax number and bank account/, 'doesn’t say why Stripe has to be them (their own ID, tax number and bank account)');
   need('start.html', /Developer/, 'doesn’t ask them to add me to Stripe as a Developer');
   need('start.html', /GitHub Pages[^.]*Cloudflare Pages/, 'the agreement doesn’t say where sites are hosted (GitHub Pages; Cloudflare Pages for In Bloom with payments or a shop)');
-  need('welcome.html', /never ask for a password you already use/, 'doesn’t promise I’ll never ask for a password they already use');
+  need('welcome.html', /won’t ask for a password you already use/, 'doesn’t promise I won’t ask for a password they already use');
   need('welcome.html', /logins to the accounts I set up for you/, 'doesn’t say the logins come at launch');
   need('intake.html', /Buttondown account \(it’s your list\), which I set up for you with your email/, 'doesn’t say I set up their Buttondown with their email');
   need('intake.html', /Cal\.com account, free for one person, which I set up for you with your email/, 'doesn’t say I set up their Cal.com with their email');
@@ -312,7 +312,7 @@ for (const page of PAGES) {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Email me anytime and I make your changes/, /magic link/, /your changes are up/, /monthly check-in/, /New reviews/, /heads-up before holidays/],
-      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I never post anything you didn’t make/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
+      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
       crone: [/Everything in Tended/, /booking, payments or shop kept running/i, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);

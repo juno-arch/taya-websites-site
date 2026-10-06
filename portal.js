@@ -1112,7 +1112,7 @@
     send.append(make('span', null, 'Send'));
     row.append(send);
     if (editing) {
-      const cancel = make('button', 'later', 'Never mind');
+      const cancel = make('button', 'later', 'Keep what I sent');
       cancel.type = 'button';
       cancel.addEventListener('click', () => { openAnswers.delete(item.id); drafts.set('ans:' + item.id, ''); replaceRow(item); });
       row.append(cancel);

@@ -11,7 +11,7 @@ Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $
 every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
 are the same in every tier: email anytime, as often as needed, anything broken fixed free, big new things quoted first.
 The subscription is part of every new site. If they ever cancel it, the site is still theirs, with every file and login
-handed over (say that close by wherever the subscription is explained, so it never sounds like renting).
+handed over (say that close by wherever the subscription is explained, so it doesn't sound like renting).
 Internal keys stay maiden / mother / crone. Anyone quoted before Oct 5 2026 keeps their quote as written: the
 subscription stays optional for them, and if they choose it, they can take the new price when it's lower.
 
