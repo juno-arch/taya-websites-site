@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found · Web Faery</title>
+<meta name="robots" content="noindex">
+<!-- GitHub Pages shows this page for any address that isn't on the site, at that address, so every link and file
+     here starts with "/" (a relative one would point inside the missing folder). A mockup address (/peek/...) gets
+     its own words below: usually a mockup that hasn't been pushed yet. No trackers, and no open count here. -->
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261001f">
+<link rel="stylesheet" href="/soil.css?v=20261001f">
+<link rel="stylesheet" href="/pages.css?v=20261001f">
+<style>
+  .card p { font-size: 17px; }
+  .card .go { margin-top: 18px; }
+  @media (max-width: 420px) { .card { padding: 22px 20px 24px; } }
+</style>
+</head>
+<body>
+<!-- the soil behind everything (soil.css): decoration only; the still mycelium, so nothing is fetched from this address -->
+<div class="soil" aria-hidden="true"></div>
+<header class="page-hero short">
+  <picture><source type="image/webp" srcset="/images/forest-800.webp 800w, /images/forest-1200.webp 1200w, /images/forest.webp 1600w" sizes="100vw"><img class="photo" src="/images/forest.jpg" srcset="/images/forest-1200.jpg 1200w, /images/forest.jpg 1600w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></picture>
+  <div class="bar">
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <nav aria-label="Site"><a href="/#prices">Prices</a><a href="/">Home</a></nav>
+  </div>
+  <div class="words">
+    <span class="eyebrow" id="nf-eyebrow">Not found</span>
+    <h1 id="nf-title">This page isn’t <em>here</em></h1>
+    <p class="lede" id="nf-lede">It may have moved, or the address has a small typo.</p>
+  </div>
+</header>
+
+<main class="gutter"><div class="wrap">
+  <section class="card" aria-label="Where to go">
+    <p id="nf-more">The main page has it all: what I make, what it costs, and how to start.</p>
+    <p class="go"><a class="btn" href="/">Go to Web Faery</a></p>
+  </section>
+</div></main>
+
+<footer class="site-foot">
+  <div class="foot-in">
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <ul>
+      <li><a href="/quiz.html">Which build?</a></li>
+      <li><a href="/intake.html">Getting started</a></li>
+      <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
+    </ul>
+    <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
+  </div>
+</footer>
+
+<script>
+  // a mockup address (/peek/...) that isn't on the site yet, almost always one that hasn't been pushed. Taya's own
+  // notes link (#pre= from her studio) gets its key taken out of the address bar and a line that's just for her.
+  (function () {
+    var path = location.pathname;
+    if (!/^\/peek\/[^/]+/.test(path)) return;
+    var hers = /(^#|&)pre=/.test(location.hash);
+    if (hers) { try { history.replaceState(history.state, '', path + location.search); } catch (e) {} }
+    var set = function (id, text) { var n = document.getElementById(id); if (n) n.textContent = text; };
+    set('nf-eyebrow', hers ? 'Your notes' : 'Mockup');
+    set('nf-title', hers ? 'This mockup isn’t live yet' : 'This mockup isn’t here yet');
+    set('nf-lede', hers ? 'Once it’s pushed, tap Leave notes again.' : 'It may still be on its way. Try the link again in a little while.');
+    set('nf-more', hers ? 'Your notes link stays the same, so nothing is lost.' : 'If it still doesn’t open, email me at taya@webfaery.love and I’ll send it again.');
+    document.title = hers ? 'Not live yet · Web Faery' : 'Mockup not here yet · Web Faery';
+  })();
+</script>
+</body>
+</html>

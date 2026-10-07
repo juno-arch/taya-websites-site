@@ -55,7 +55,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html'];
+// 404.html (Oct 7 2026): what GitHub Pages shows at any address that isn't on the site, a mockup not pushed yet too
+const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html', '404.html'];
 const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html'];
 const TIERS = { 'Planted': [600, 300, 12], 'Tended': [1200, 600, 45], 'In Bloom': [1800, 900, 90] };
 const CARE = Object.values(TIERS).map((t) => t[2]);
@@ -162,6 +163,14 @@ for (const l of literals(read('faery.js'))) if (!/keys:\s*$/.test(l.before)) scr
   }
   const rest = mark.replace(/const AS_SENT = \{[\s\S]*?\n\s*\};/, '').replace(/const NAMES = \{[^}]*\};/, '');
   for (const l of literals(rest)) if (l.s !== AS_SENT_CARE) scriptStrings.push(['mark.js', l.s]);
+  // mark.js is public (Oct 7 2026, with "Your notes", Taya's own notes on a mockup before it goes out): no helper's or
+  // tool's name anywhere in it, comments too, no dashes in its comments either, and her notes key stays in one tab only
+  const who = mark.match(/\b(Moss|Claude|Anthropic)\b/);
+  if (who) fail(`mark.js: names ${who[1]} (a public file: keep it out, comments too)`);
+  if (/[—–]|&mdash;|&ndash;/.test(mark)) fail('mark.js: has an em or en dash (comments too)');
+  if (!/const STORE = 'wf-pre-v1:' \+ PAGE;/.test(mark) || /localStorage\.(?:setItem|getItem|removeItem)\(STORE[,)]/.test(mark)) {
+    fail('mark.js: her notes key (wf-pre-v1:/peek/SLUG/) must stay in sessionStorage, this tab only');
+  }
 }
 for (const [file, s] of scriptStrings) {
   for (const [re, what] of FORBIDDEN) {
@@ -434,6 +443,24 @@ for (const page of PAGES) {
     const t = inner.trim();
     if (/<(?!svg|\/svg)/.test(t) && (/^[^<]*[^<\s][^<]*</.test(t) || />[^<>]*[^<>\s][^<>]*$/.test(t))) fail(`${page}: a flex link mixes bare words with a tag, so the spaces vanish; wrap it in one <span>: "${t.slice(0, 80)}"`);
   }
+}
+
+// 404.html is shown at the missing address itself (/peek/slug/ for a mockup not pushed yet), so every link and file in
+// it starts with "/"; on a mockup address it says so (and, on Taya's own notes link, to tap Leave notes again once it's
+// pushed), takes her #pre= key out of the address bar, and stays out of search
+{
+  const nf = read('404.html').replace(/<!--[\s\S]*?-->/g, '');
+  for (const m of nf.matchAll(/\s(?:href|src|srcset)="([^"]+)"/g)) {
+    for (const part of m[1].split(',')) {
+      const ref = part.trim().split(/\s+/)[0];
+      if (!/^(\/|https:|mailto:)/.test(ref)) fail(`404.html: ${ref} doesn't start with "/", so it breaks at a missing address like /peek/slug/`);
+    }
+  }
+  if (!/<meta name="robots" content="noindex">/.test(nf)) fail('404.html: not marked noindex');
+  if (!nf.includes("'This mockup isn’t live yet'") || !nf.includes("'Once it’s pushed, tap Leave notes again.'") || !/history\.replaceState\(history\.state, '', path \+ location\.search\)/.test(nf)) {
+    fail('404.html: on a mockup address it must say the mockup isn’t live yet (Taya’s notes link: tap Leave notes again once it’s pushed) and take her #pre= key out of the address');
+  }
+  if (/mycelium\.js|faery\.js|peek-open|beacon/.test(nf)) fail('404.html: loads a script that fetches from the missing address or counts an open');
 }
 
 // the shared stylesheet: no dashes in anything it could put on screen
