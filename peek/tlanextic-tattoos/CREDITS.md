@@ -21,3 +21,11 @@ Every photo is Roxanne Andrade's own, from her public Instagram @tlanextic.tatto
 | logo.png | her sun badge, keyed from her aftercare card (DPQiX48DiQs slide 2) |
 
 Her words (bio, aftercare in English and Spanish) are from the same "Meet the artist" and aftercare cards.
+
+## Oct 7 2026: photo-first rework ("so filled with their own creations")
+
+- Every photo now loads as a .webp made from the same files above (same sources; the .jpg originals stay in the folder). hero.webp (her drawing beside the painting) moved to About; the hero is now her own tattoos (butterflies, hummingbird, cempasuchil, eye hand).
+- images/art/stk-*.webp: die-cut stickers cut from her own hand poke flash sheets (f-handpoke-suns: flower sun, round sun, hook spiral, butterfly, lizard; f-handpoke-maize: star, maize, stepped spiral; f-handpoke-salmon is not used for stickers), recolored in her card colors.
+- images/art/pat-flash.webp: a seamless pattern tile built from her hand poke designs (stepped spiral, star, flower sun, maize, butterfly, hook spiral, lizard).
+- images/art/frieze.webp: a divider of four of her hand poke designs, colored with her four-stripe rainbow.
+- No new downloads: Instagram was not loaded again; everything comes from the Oct 3 captures.

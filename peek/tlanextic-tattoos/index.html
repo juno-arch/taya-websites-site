@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Tlanextic Tattoos: custom, flash and hand poke tattoos by Roxanne Andrade in a private studio in Arcata. Nature and critters, fine line, dot work, neo traditional and Native designs. By appointment.">
 <link rel="icon" href="images/logo.png">
-<link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="images/w-butterflies.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dosis:wght@500..800&family=Urbanist:ital,wght@0,400..700;1,400..500&family=Caveat:wght@600&family=DotGothic16&display=swap">
@@ -125,14 +125,31 @@
   nav a { color: var(--on-band); text-decoration: none; padding: 10px 6px; line-height: 24px; font-weight: 600; text-shadow: 0 1px 3px rgba(20, 14, 6, 0.6), 0 0 14px rgba(20, 14, 6, 0.5); }
   nav a:hover { color: #ffe3a6; }
 
+  /* HERO: her own tattoos, big, and each new one goes in dot by dot, like a hand poke. Words sit on dark paper printed with her flash */
   .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #2a2014; color: var(--on-band); }
   .hero-band > .gutter { position: relative; z-index: 3; }
-  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: url('images/hero.jpg') var(--hero-pos, 50% 40%) / cover no-repeat; }
-  .hero-band::after { content: ""; position: absolute; inset: 0; z-index: 1; background:
-      linear-gradient(rgba(26, 18, 8, 0.55) 0, rgba(26, 18, 8, 0) 150px),
-      linear-gradient(20deg, rgba(26, 18, 8, 0.9) 0%, rgba(26, 18, 8, 0.72) 30%, rgba(26, 18, 8, 0.2) 56%, rgba(26, 18, 8, 0) 72%); }
+  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: rgba(240, 184, 74, 0.085);
+    -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 300px 300px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 300px 300px repeat; }
+  .hero-art { position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: 54%; margin: 0; background: #1d160c; }
+  .hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); opacity: 0; }
+  .hero-art img.on { opacity: 1; }
+  @property --dot { syntax: '<length>'; inherits: false; initial-value: 0px; }
+  .hero-art img.poke { z-index: 1; -webkit-mask: radial-gradient(circle, #000 var(--dot), transparent calc(var(--dot) + 0.6px)) 50% 50% / 14px 14px; mask: radial-gradient(circle, #000 var(--dot), transparent calc(var(--dot) + 0.6px)) 50% 50% / 14px 14px; animation: poke-in 1.9s cubic-bezier(.5,0,.3,1) both; }
+  @keyframes poke-in { from { --dot: 0px; } to { --dot: 11px; } }
+  .hero-pick { position: absolute; z-index: 2; right: 14px; bottom: 14px; display: flex; gap: 2px; padding: 3px 4px; border-radius: 999px; background: rgba(26, 18, 8, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-pick button { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; margin: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; color: #fbf5e9; }
+  .hero-pick button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid currentColor; box-sizing: border-box; }
+  .hero-pick button[aria-pressed="true"]::before { background: #e2a72f; border-color: #e2a72f; }
+  .hero-pick .hp-pause::before { display: none; }
+  .hero-pick button:focus-visible { outline: 2px solid #fbf5e9; outline-offset: -2px; }
+  .hero-band::after { content: ""; position: absolute; inset: 0 0 auto; height: 150px; z-index: 2; pointer-events: none; background: linear-gradient(rgba(26, 18, 8, 0.62), rgba(26, 18, 8, 0)); }
   .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 40px 84px; }
   .hero-copy { max-width: 600px; }
+  @media (min-width: 761px) {
+    .hero-main { width: 46%; box-sizing: border-box; padding-left: max(20px, calc((100% - 1040px) / 2)); padding-right: 34px; }
+    .hero-main > .wrap { margin: 0; }
+    .hero-band .hero-copy h1 { font-size: clamp(46px, 5.6vw, 84px); }
+  }
   .hero-band .label { color: rgba(251, 245, 233, 0.92); }
   .hero-band h1 { font-size: clamp(54px, 9vw, 112px); line-height: 0.92; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; text-shadow: 0 2px 30px rgba(20, 14, 6, 0.4); }
   .hero-band h1 em { font-style: normal; display: block; color: var(--s4); font-size: 0.5em; letter-spacing: 0.24em; margin-top: 8px; }
@@ -145,9 +162,9 @@
   .hero-band a:focus-visible { outline-color: #fbf5e9; }
 
   /* the slow fade-in: photo first, then the words */
-  .hero-band.wait::before, .hero-band.wait::after, .hero-band.wait .label, .hero-band.wait h1, .hero-band.wait .lede-wrap, .hero-band.wait .cta-row { opacity: 0; }
-  .hero-band.go::before { animation: hero-photo 3.6s cubic-bezier(.22,1,.36,1) both; }
-  .hero-band.go::after { animation: hero-fade 2.4s ease 0.8s both; }
+  .hero-band.wait .hero-art, .hero-band.wait::before, .hero-band.wait .label, .hero-band.wait h1, .hero-band.wait .lede-wrap, .hero-band.wait .cta-row { opacity: 0; }
+  .hero-band.go .hero-art { animation: hero-photo 3.6s cubic-bezier(.22,1,.36,1) both; }
+  .hero-band.go::before { animation: hero-fade 2.4s ease 0.8s both; }
   .hero-band.go .label { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.5s both; }
   .hero-band.go h1 { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 1.8s both; }
   .hero-band.go .lede-wrap { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 2.6s both; }
@@ -159,12 +176,13 @@
 
   @media (max-width: 760px) {
     .hero-band { min-height: 0; }
-    .hero-band::before { bottom: auto; height: min(70svh, 600px); --hero-pos: 55% 30%; }
-    .hero-band::after { background:
-      linear-gradient(rgba(26, 18, 8, 0.58) 0, rgba(26, 18, 8, 0) 130px),
-      linear-gradient(rgba(42, 32, 20, 0) 0, rgba(42, 32, 20, 0) calc(min(70svh, 600px) - 200px), #2a2014 min(70svh, 600px)); }
-    .hero-main { padding-block: calc(min(70svh, 600px) - 150px) 52px; }
+    .hero-art { position: relative; order: -1; left: auto; right: auto; width: 100%; bottom: auto; height: min(100vw, 66svh); flex: none; }
+    .hero-band > .gutter:first-of-type { position: absolute; top: 0; left: 0; right: 0; }
+    .hero-band::after { height: 200px; background: linear-gradient(rgba(26, 18, 8, 0.72), rgba(26, 18, 8, 0.38) 60%, rgba(26, 18, 8, 0)); }
+    .hero-main { padding-block: 30px 52px; }
   }
+  .hero-art { overflow: hidden; }
+  .hero-band.go .hero-art { transform-origin: 50% 50%; }
 
   /* ---------- STATUS STRIP (books open / closed / fundraiser) ---------- */
   .status { position: relative; z-index: 5; }
@@ -252,8 +270,8 @@
   .styles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; list-style: none; }
   .styles li { font-family: 'Dosis', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 13px; border-radius: 999px; border: 1.5px solid var(--c, var(--teal)); color: var(--ink); }
   .styles li:nth-child(4n+1) { --c: var(--s1); } .styles li:nth-child(4n+2) { --c: var(--s2); } .styles li:nth-child(4n+3) { --c: var(--s3); } .styles li:nth-child(4n+4) { --c: var(--s4); }
-  .work-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 32px; }
-  .work-grid .photo { aspect-ratio: 1; }
+  .work-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-flow: dense; gap: 8px; max-width: 1400px; margin: 34px auto 0; }
+  .work-grid .photo { aspect-ratio: 1; border-radius: 8px; }
   .work-grid .photo.big { grid-column: span 2; grid-row: span 2; }
   .work-grid figure img { transition: scale 0.7s cubic-bezier(.2,.7,.3,1); }
   .work-grid .lb-thumb:hover img { scale: 1.06; }
@@ -264,7 +282,7 @@
   .band { background: var(--green); color: var(--on-band); overflow: hidden; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: #ffe0a0; }
-  .band .label { color: rgba(251, 245, 233, 0.86); }
+  .band .label { color: #fbf5e9; }
   .band a { color: #fff1d0; }
   .band .ph { color: #fff1d0; text-decoration-color: #ffe0a0; }
   .poke { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
@@ -327,8 +345,9 @@
   .portrait .photo { aspect-ratio: 474 / 523; max-width: 360px; border-radius: 16px; }
   .portrait::before { content: ""; position: absolute; left: -14px; bottom: -14px; width: 120px; height: 120px; border-radius: 0 0 0 120px; z-index: -1;
     background: radial-gradient(circle at 100% 0, transparent 54px, var(--s4) 54px 60px, transparent 60px 66px, var(--s3) 66px 72px, transparent 72px 78px, var(--s2) 78px 84px, transparent 84px 90px, var(--s1) 90px 96px, transparent 96px); }
-  .painting { margin-top: 26px; display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; font-size: 15px; color: var(--ink-soft); }
+  .painting { margin-top: 18px; max-width: 360px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 15px; color: var(--ink-soft); }
   .painting .photo { aspect-ratio: 1; border-radius: 10px; }
+  .painting p { grid-column: 1 / -1; }
   .lang { display: inline-grid; grid-template-columns: 1fr 1fr; margin-top: 4px; }
   .lang button { padding-inline: 16px; }
   .bio p { font-size: 18.5px; }
@@ -393,7 +412,7 @@
   .nl-row input { flex: 999 1 200px; font: inherit; font-size: 16px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(251, 245, 233, 0.45); background: rgba(251, 245, 233, 0.08); color: var(--on-band); min-width: 0; }
   .band .bk-go { background: var(--on-band); border-color: var(--on-band); color: #2c3a0e; }
   .band .bk-go.ghost { background: transparent; color: var(--on-band); border-color: rgba(251, 245, 233, 0.6); }
-  .band .fld { color: rgba(251, 245, 233, 0.9); }
+  .band .fld { color: #fbf5e9; }
   .band .hint { color: #ffe0a0; }
   .band .demo-note { color: rgba(251, 245, 233, 0.82); }
   .band .mock-note { border-color: rgba(251, 245, 233, 0.6); }
@@ -515,6 +534,31 @@
   .sunrise small { display: block; margin-top: 14px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
   @media (prefers-reduced-motion: reduce) { .sunrise .sun, .sunrise .words { transition: none; } }
 
+  /* ---------- HER FLASH, woven through: stickers cut from her hand poke sheets, a frieze, and her flash printed as a pattern ----------
+     Words always sit on a solid ground; the pattern lives on the hero's dark paper, the flash mat and the footer. */
+  .stk { position: absolute; z-index: 2; width: var(--w, 88px); height: auto; pointer-events: none; rotate: var(--r, -6deg); filter: drop-shadow(2px 4px 3px rgba(30, 20, 10, 0.28)); }
+  @media (prefers-reduced-motion: no-preference) {
+    .stk.pre { opacity: 0; scale: 1.35; translate: 0 -10px; }
+    .stk.in { transition: opacity 0.35s ease, scale 0.55s cubic-bezier(.3,1.6,.5,1), translate 0.55s cubic-bezier(.3,1.6,.5,1); }
+  }
+  @media (max-width: 760px) { .stk { width: var(--wp, 64px); } }
+  .frieze-row { padding-block: 26px; }
+  .frieze { height: 40px; max-width: 1400px; margin: 0 auto;
+    background: linear-gradient(90deg, var(--s1) 0 25%, var(--s2) 25% 50%, var(--s3) 50% 75%, var(--s4) 75%) 50% 0 / 200px 40px repeat-x;
+    -webkit-mask: url('images/art/frieze.webp') 50% 50% / 200px 40px repeat-x; mask: url('images/art/frieze.webp') 50% 50% / 200px 40px repeat-x; }
+  .flash-mat { position: relative; margin-top: 30px; padding: 22px; border-radius: 22px; background: var(--kraft); }
+  .flash-mat::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--kraft-ink);
+    -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 260px 260px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 260px 260px repeat; }
+  .flash-mat .flash { position: relative; margin-top: 0; }
+  .flash-mat .fcard { background: var(--ground); }
+  :root { --kraft: #e8d3ad; --kraft-ink: rgba(122, 82, 30, 0.2); }
+  :root[data-theme="dark"] { --kraft: #2a2317; --kraft-ink: rgba(240, 184, 74, 0.1); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --kraft: #2a2317; --kraft-ink: rgba(240, 184, 74, 0.1); } }
+  footer::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: rgba(251, 245, 233, 0.07);
+    -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 280px 280px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 280px 280px repeat; }
+  footer .foot-in { position: relative; z-index: 1; }
+  @media (max-width: 520px) { .flash-mat { padding: 12px; margin-inline: -8px; } }
+
   /* ---------- reveal ---------- */
   .reveal.pre { opacity: 0; transform: translateY(24px); }
   .reveal.in { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1); }
@@ -522,7 +566,6 @@
 
   /* ---------- layout breakpoints ---------- */
   @media (max-width: 860px) {
-    .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .flash { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .where { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
@@ -531,7 +574,7 @@
     .poke, .about, .req, .pay, .faq, .alerts, #aftercare .care, .found, .event, .reviews { grid-template-columns: minmax(0, 1fr); }
     .poke { gap: 26px; }
     .about { gap: 34px; }
-    .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
     .event-pics { order: -1; }
     .ig-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .foot-in { grid-template-columns: minmax(0, 1fr); }
@@ -574,6 +617,16 @@
 </div>
 
 <div class="hero-band">
+  <figure class="hero-art" id="hero-art" aria-label="Tattoos by Roxanne">
+    <img class="on" src="images/w-butterflies.webp" width="1100" height="1100" alt="Two butterflies with small flowers in fine line and pepper shading, down a calf" fetchpriority="high">
+    <img data-src="images/w-hummingbird.webp" width="1074" height="1075" alt="A hummingbird, huitzil, with spread wings under leaves, in black and gray">
+    <img data-src="images/w-cempasuchil.webp" width="1100" height="1098" alt="A cempasuchil held by a skeleton hand, her favorite flower, in black and gray">
+    <img data-src="images/w-eye-hand.webp" width="1100" height="825" alt="A custom hand tattoo with an eye on the back of the hand" style="--pos:50% 40%">
+    <div class="hero-pick" role="group" aria-label="Choose a tattoo">
+      <button type="button" aria-pressed="true" aria-label="Butterflies"></button><button type="button" aria-pressed="false" aria-label="Hummingbird"></button><button type="button" aria-pressed="false" aria-label="Cempasuchil"></button><button type="button" aria-pressed="false" aria-label="Eye hand"></button>
+      <button type="button" class="hp-pause" aria-label="Pause the photos" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><rect class="ic-pause" x="2" y="1.5" width="2.8" height="9" rx="0.8"/><rect class="ic-pause" x="7.2" y="1.5" width="2.8" height="9" rx="0.8"/><path class="ic-play" d="M3 1.5v9l7.5-4.5z" style="display:none"/></svg></button>
+    </div>
+  </figure>
   <div class="gutter">
     <div class="wrap">
       <header class="top">
@@ -614,7 +667,38 @@
     if (!h || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     h.classList.add('wait');
     var started = false, go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
-    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero.jpg'; if (im.complete) go(); setTimeout(go, 1500);
+    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/w-butterflies.webp'; if (im.complete) go(); setTimeout(go, 1500);
+  })();
+
+  /* the hero's tattoos: every 6 seconds the next one goes in dot by dot. Tap a dot to choose one, or pause.
+     Still for people who turn off motion (the dots still switch photos), and only runs while the hero is on screen. */
+  (function () {
+    var art = document.getElementById('hero-art'); if (!art) return;
+    var imgs = [].slice.call(art.querySelectorAll('img')), pick = [].slice.call(art.querySelectorAll('.hero-pick button:not(.hp-pause)')), pause = art.querySelector('.hp-pause');
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, i = 0, paused = still, onScreen = true, t = null;
+    function load() { imgs.forEach(function (im) { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } }); }
+    if (document.readyState === 'complete') setTimeout(load, 600); else window.addEventListener('load', function () { setTimeout(load, 600); });
+    function show(n) {
+      if (n === i) return; var prev = imgs[i], next = imgs[n];
+      if (next.dataset.src) load();
+      i = n; pick.forEach(function (b, k) { b.setAttribute('aria-pressed', k === n ? 'true' : 'false'); });
+      imgs.forEach(function (im) { im.classList.remove('poke'); if (im !== prev) im.classList.remove('on'); });
+      next.classList.add('on');
+      if (still) { prev.classList.remove('on'); return; }
+      void next.offsetWidth; next.classList.add('poke');
+      next.addEventListener('animationend', function done() { next.removeEventListener('animationend', done); if (imgs[i] === next) { prev.classList.remove('on'); next.classList.remove('poke'); } });
+    }
+    function tick() { if (paused || !onScreen || document.hidden) return; var n = (i + 1) % imgs.length; if (imgs[n].complete && imgs[n].naturalWidth) show(n); }
+    function start() { clearInterval(t); if (!paused) t = setInterval(tick, 6000); }
+    pick.forEach(function (b, k) { b.addEventListener('click', function () { show(k); start(); }); });
+    function paintPause() {
+      pause.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pause.querySelector('.ic-play').style.display = paused ? '' : 'none'; [].forEach.call(pause.querySelectorAll('.ic-pause'), function (r) { r.style.display = paused ? 'none' : ''; });
+    }
+    if (still) pause.hidden = true;
+    pause.addEventListener('click', function () { paused = !paused; paintPause(); start(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; }).observe(art);
+    paintPause(); start();
   })();
 </script>
 
@@ -638,46 +722,48 @@
 
 <main>
 <section id="work" class="gutter">
-  <div class="wrap">
+  <div class="wrap" style="position:relative">
+    <img class="stk" src="images/art/stk-star.webp" width="254" height="244" alt="" aria-hidden="true" style="top:-6px;right:0;--r:10deg;--w:96px;--wp:66px">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label with-pill"><span>Fresh work</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Nature, critters <em>and meaning</em></h2>
-    <p class="measure soft" style="margin-top:14px">Customs, flash, and add-ons to pieces you already wear. Tap a photo to see it whole.</p>
     <ul class="styles" aria-label="Styles Roxanne loves doing">
       <li>Native designs</li><li>Nature, animals, insects</li><li>Traditional, neo traditional</li><li>Anime and characters</li><li>Dot work, pepper shading</li><li>Fine line</li>
     </ul>
-    <div class="work-grid" data-lightbox>
-      <figure class="reveal photo big"><img src="images/w-butterflies.jpg" width="1200" height="1200" alt="Two butterfly flash designs with small flowers, tattooed together down a calf in fine black line and pepper shading" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-cempasuchil.jpg" width="1200" height="1198" alt="A cempasuchil, a marigold, held by a skeleton hand, in black and gray on the back of an arm. Her own design and her favorite flower" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-yarrow.jpg" width="1200" height="1200" alt="A flowering yarrow plant in fine line on a forearm, one of her available flash designs" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-hummingbird.jpg" width="1074" height="1075" alt="A hummingbird, huitzil, with spread wings under leaves, in black and gray on a thigh" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-monarch.jpg" width="1200" height="1200" alt="A monarch butterfly added beside a large peony piece on an upper arm" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-eye-hand.jpg" width="1200" height="900" alt="A custom hand tattoo with an eye on the back of the hand and bold lines down the fingers, joining eye tattoos up the arm" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-vine.jpg" width="1200" height="1200" alt="A leafy vine in fine line climbing over the shoulder blade, added onto a vine that started on the forearm" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-jaguar.jpg" width="1074" height="1075" alt="A prowling jaguar with heart shaped spots, down the side of a hip" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-moon.jpg" width="1074" height="1075" alt="A crescent moon in swirling clouds above California poppies and a jellyfish, on an upper arm" loading="lazy"></figure>
-      <figure class="reveal photo"><img src="images/w-bat.jpg" width="1074" height="1074" alt="A bat face with ears up and fangs out, in black and gray" loading="lazy"></figure>
-    </div>
-    <div class="work-foot">
-      <p class="soft" style="font-size:15px">All work by Roxanne, from <a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a>.</p>
-    </div>
+  </div>
+  <div class="work-grid" data-lightbox>
+    <figure class="reveal photo big"><img src="images/w-butterflies.webp" width="1100" height="1100" alt="Two butterfly flash designs with small flowers, tattooed together down a calf in fine black line and pepper shading" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-cempasuchil.webp" width="1100" height="1098" alt="A cempasuchil, a marigold, held by a skeleton hand, in black and gray on the back of an arm. Her own design and her favorite flower" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-yarrow.webp" width="1100" height="1100" alt="A flowering yarrow plant in fine line on a forearm, one of her available flash designs" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-monarch.webp" width="1100" height="1100" alt="A monarch butterfly added beside a large peony piece on an upper arm" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-eye-hand.webp" width="1100" height="825" alt="A custom hand tattoo with an eye on the back of the hand and bold lines down the fingers, joining eye tattoos up the arm" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-jaguar.webp" width="1074" height="1075" alt="A prowling jaguar with heart shaped spots, down the side of a hip" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-vine.webp" width="1100" height="1100" alt="A leafy vine in fine line climbing over the shoulder blade, added onto a vine that started on the forearm" loading="lazy"></figure>
+    <figure class="reveal photo big"><img src="images/w-hummingbird.webp" width="1074" height="1075" alt="A hummingbird, huitzil, with spread wings under leaves, in black and gray on a thigh" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-moon.webp" width="1074" height="1075" alt="A crescent moon in swirling clouds above California poppies and a jellyfish, on an upper arm" loading="lazy"></figure>
+    <figure class="reveal photo"><img src="images/w-bat.webp" width="1074" height="1074" alt="A bat face with ears up and fangs out, in black and gray" loading="lazy"></figure>
+  </div>
+  <div class="wrap work-foot">
+    <p class="soft" style="font-size:15px">All work by Roxanne, from <a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a>.</p>
   </div>
 </section>
 
+<div class="frieze-row gutter" aria-hidden="true"><div class="frieze"></div></div>
+
 <section id="handpoke" class="band gutter">
-  <div class="wrap poke">
+  <div class="wrap poke" style="position:relative">
+    <img class="stk" src="images/art/stk-butterfly.webp" width="254" height="228" alt="" aria-hidden="true" style="top:-40px;right:0;--r:-9deg;--w:92px;--wp:64px">
     <div>
       <p class="label with-pill"><span>New: hand poke</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Dot by dot, <em>by hand</em></h2>
       <p style="margin-top:16px">No machine, just one needle, placed one dot at a time.</p>
-      <p>Her hand poke flash, any of her flash in this style, or your own idea.</p>
       <dl class="poke-facts">
         <div><dt>Hand poke</dt><dd>$175 to $200</dd></div>
         <div><dt>Designs</dt><dd>her flash, or custom</dd></div>
         <div><dt>To book</dt><dd>DM or email</dd></div>
       </dl>
       <div class="poke-photo">
-        <figure class="photo"><img src="images/w-handpoke-back.jpg" width="1200" height="1600" alt="A hand poke flower sun in dot work on the back of the neck" loading="lazy"></figure>
+        <figure class="photo"><img src="images/w-handpoke-back.webp" width="800" height="1067" alt="A hand poke flower sun in dot work on the back of the neck" loading="lazy"></figure>
         <p style="font-size:15px;opacity:0.9">A hand poke sun, dot by dot.</p>
       </div>
     </div>
@@ -694,28 +780,29 @@
 </section>
 
 <section id="flash" class="gutter">
-  <div class="wrap">
+  <div class="wrap" style="position:relative">
+    <img class="stk" src="images/art/stk-maize.webp" width="211" height="254" alt="" aria-hidden="true" style="top:-10px;right:4px;--r:8deg;--w:84px;--wp:58px">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label with-pill"><span>Flash</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Drawn, <em>ready to wear</em></h2>
     <p class="measure soft" style="margin-top:14px">Designs she&rsquo;d love to tattoo. <span data-show="crone all">Claim one with your deposit.</span><span data-show="maiden mother" hidden>Message her with the one you want.</span></p>
-    <div class="flash" data-lightbox>
+    <div class="flash-mat"><div class="flash" data-lightbox>
       <article class="fcard reveal">
-        <figure class="photo"><img src="images/f-handpoke-suns.jpg" width="1080" height="1440" alt="Hand poke flash sheet: suns and flowers, a step fret butterfly, a frog, a lizard, a spiral sun and a long bird, in dot work on paper" loading="lazy"></figure>
+        <figure class="photo"><img src="images/f-handpoke-suns.webp" width="800" height="1067" alt="Hand poke flash sheet: suns and flowers, a step fret butterfly, a frog, a lizard, a spiral sun and a long bird, in dot work on paper" loading="lazy"></figure>
         <div class="fbody"><h3>Hand poke sheet one</h3><p>Suns, flowers, butterfly, frog, lizard</p><p class="price">$175 to $200</p>
           <div data-show="crone all"><button type="button" class="bk-go claim" aria-pressed="false">Claim a design</button></div></div>
       </article>
       <article class="fcard reveal">
-        <figure class="photo"><img src="images/f-handpoke-maize.jpg" width="1080" height="1440" alt="Hand poke flash sheet: a stepped spiral, a four point star, an ear of maize, crossed bands, a flower and a fret pattern" loading="lazy"></figure>
+        <figure class="photo"><img src="images/f-handpoke-maize.webp" width="800" height="1067" alt="Hand poke flash sheet: a stepped spiral, a four point star, an ear of maize, crossed bands, a flower and a fret pattern" loading="lazy"></figure>
         <div class="fbody"><h3>Hand poke sheet two</h3><p>Spiral, star, maize, flower, fret</p><p class="price">$175 to $200</p>
           <div data-show="crone all"><button type="button" class="bk-go claim" aria-pressed="false">Claim a design</button></div></div>
       </article>
       <article class="fcard reveal">
-        <figure class="photo"><img src="images/f-handpoke-salmon.jpg" width="1080" height="1440" alt="Hand poke flash sheet: two patterned butterflies, a salmon with a diamond pattern, a frog and a lizard" loading="lazy"></figure>
+        <figure class="photo"><img src="images/f-handpoke-salmon.webp" width="800" height="1067" alt="Hand poke flash sheet: two patterned butterflies, a salmon with a diamond pattern, a frog and a lizard" loading="lazy"></figure>
         <div class="fbody"><h3>Hand poke sheet three</h3><p>Butterflies, salmon, frog, lizard</p><p class="price">$175 to $200</p>
           <div data-show="crone all"><button type="button" class="bk-go claim" aria-pressed="false">Claim a design</button></div></div>
       </article>
-    </div>
+    </div></div>
     <p class="claim-note" id="claim-note" role="status"></p>
 
     <div class="event reveal" id="fundraiser">
@@ -734,24 +821,28 @@
         </dl>
       </div>
       <div class="event-pics" data-lightbox>
-        <figure class="photo"><img src="images/f-fundraiser-jaguar.jpg" width="1400" height="1348" alt="Fundraiser flash sheet: a climbing jaguar, a black sun, a lotus, a dandelion and a spiky sea flower" loading="lazy" style="object-fit:contain"></figure>
-        <figure class="photo"><img src="images/f-fundraiser-axolotl.jpg" width="1400" height="1400" alt="Fundraiser flash sheet: frogs, an axolotl, a dragonfly, a butterfly and a beetle with flames" loading="lazy" style="object-fit:contain"></figure>
+        <figure class="photo"><img src="images/f-fundraiser-jaguar.webp" width="1000" height="963" alt="Fundraiser flash sheet: a climbing jaguar, a black sun, a lotus, a dandelion and a spiky sea flower" loading="lazy" style="object-fit:contain"></figure>
+        <figure class="photo"><img src="images/f-fundraiser-axolotl.webp" width="1000" height="1000" alt="Fundraiser flash sheet: frogs, an axolotl, a dragonfly, a butterfly and a beetle with flames" loading="lazy" style="object-fit:contain"></figure>
       </div>
     </div>
     <p class="mock-note wf-note" style="margin-top:28px;font-size:14.5px">Flash days get a card here.<span data-show="crone all"> With In Bloom, spots are claimed with a deposit.</span></p>
   </div>
 </section>
 
+<div class="frieze-row gutter" aria-hidden="true"><div class="frieze"></div></div>
+
 <section id="about" class="gutter" style="background:var(--ground-2)">
   <div class="wrap about">
     <div class="portrait">
-      <figure class="photo reveal"><img src="images/roxanne.jpg" width="474" height="523" alt="Roxanne Andrade outdoors among green leaves, wearing a Tlanextic Tattoos shirt and blue feather earrings" loading="lazy"></figure>
-      <div class="painting">
-        <figure class="photo" data-lightbox><img src="images/tlaltecuhtli.jpg" width="1200" height="1223" alt="Her painting of Tlaltecuhtli, spirit of the earth, in yellow, red and turquoise" loading="lazy"></figure>
-        <p>Her painting of Tlaltecuhtli, the spirit of the earth. She also makes prints and works with clay.</p>
+      <img class="stk" src="images/art/stk-frog.webp" width="211" height="254" alt="" aria-hidden="true" style="top:-26px;left:min(calc(100% - 52px), 318px);--r:9deg;--w:80px;--wp:62px">
+      <figure class="photo reveal"><img src="images/roxanne.webp" width="474" height="523" alt="Roxanne Andrade outdoors among green leaves, wearing a Tlanextic Tattoos shirt and blue feather earrings" loading="lazy"></figure>
+      <div class="painting" data-lightbox>
+        <figure class="photo"><img src="images/tlaltecuhtli.webp" width="900" height="917" alt="Her painting of Tlaltecuhtli, spirit of the earth, in yellow, red and turquoise" loading="lazy"></figure>
+        <figure class="photo"><img src="images/hero.webp" width="900" height="1200" alt="Roxanne drawing in her sketchbook beside her Tlaltecuhtli painting" loading="lazy" style="object-position:50% 70%"></figure>
+        <p>Her painting of Tlaltecuhtli, the spirit of the earth.</p>
       </div>
     </div>
-    <div class="bio">
+    <div class="bio" style="position:relative">
       <span class="stripes" aria-hidden="true"></span>
       <p class="label with-pill"><span>Meet the artist</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Roxanne <em>Andrade</em></h2>
@@ -766,11 +857,6 @@
         <p>Cuando no estoy tatuando, disfruto creando otras formas de arte como la pintura, el grabado o el trabajo con arcilla. Tambi&eacute;n practico Danza Azteca/Mexica, una danza tradicional ind&iacute;gena.</p>
         <p>Creo en hacer del tatuaje una experiencia divertida, segura y significativa para todos. Donde la creatividad y la comodidad se unen.</p>
       </div>
-      <ul class="creds">
-        <li>Tattooing for 6 years, now in her own private studio</li>
-        <li>Customs, flash, add-ons, and new life for older tattoos</li>
-        <li>By appointment only</li>
-      </ul>
       <p class="mock-note wf-note" data-show="mother crone all" style="margin-top:24px;font-size:14.5px">Your own words from your &ldquo;Meet the artist&rdquo; post, in both languages.</p>
     </div>
   </div>
@@ -782,7 +868,7 @@
       <span class="stripes" aria-hidden="true"></span>
       <p class="label with-pill"><span>Send your idea</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Tell her <em>what you&rsquo;re dreaming up</em></h2>
-      <p class="measure soft" style="margin-top:14px">Every request in one shape, photos attached, so nothing gets lost in a thread. Try it:</p>
+      <p class="measure soft" style="margin-top:14px">Photos attached, nothing lost in a thread. Try it:</p>
       <div class="req">
         <div class="bk-card" id="rq-card">
           <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your idea</button><button type="button" data-s="2" disabled>2 Placement &amp; photos</button><button type="button" data-s="3" disabled>3 About you</button></div>
@@ -889,7 +975,8 @@
 </section>
 
 <section id="aftercare" class="gutter" data-show="mother crone all" data-fold data-thing="aftercare page, in English and Spanish">
-  <div class="wrap">
+  <div class="wrap" style="position:relative">
+    <img class="stk" src="images/art/stk-hook-spiral.webp" width="254" height="228" alt="" aria-hidden="true" style="top:-52px;left:96px;--r:-8deg;--w:80px;--wp:56px">
     <div class="care-head">
       <div>
         <span class="stripes" aria-hidden="true"></span>
@@ -956,7 +1043,8 @@
 </section>
 
 <section id="words" class="gutter" style="background:var(--ground-2)">
-  <div class="wrap">
+  <div class="wrap" style="position:relative">
+    <img class="stk" src="images/art/stk-flower-sun.webp" width="223" height="254" alt="" aria-hidden="true" style="top:-8px;right:0;--r:-6deg;--w:88px;--wp:60px">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label with-pill"><span>Kind words</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">From people <em>who wear her work</em></h2>
@@ -993,7 +1081,8 @@
 </section>
 
 <section id="faq" class="gutter" data-show="mother crone all" data-fold>
-  <div class="wrap faq">
+  <div class="wrap faq" style="position:relative">
+    <img class="stk" src="images/art/stk-round-sun.webp" width="247" height="254" alt="" aria-hidden="true" style="top:-50px;left:110px;--r:12deg;--w:78px;--wp:56px">
     <div>
       <span class="stripes" aria-hidden="true"></span>
       <p class="label with-pill"><span>Questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
@@ -1011,7 +1100,8 @@
 </section>
 
 <section id="visit" class="gutter" style="background:var(--ground-2)">
-  <div class="wrap">
+  <div class="wrap" style="position:relative">
+    <img class="stk" src="images/art/stk-lizard.webp" width="254" height="241" alt="" aria-hidden="true" style="top:-12px;right:0;--r:-14deg;--w:92px;--wp:62px">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label">Find the studio</p>
     <h2 class="reveal">By appointment, <em>in Arcata</em></h2>
@@ -1030,12 +1120,12 @@
     <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Fresh from <em>@tlanextic.tattoos</em></h2>
     <div class="ig-grid" role="img" aria-label="Recent Instagram posts">
-      <figure class="photo"><img src="images/w-vine.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-monarch.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-yarrow.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-butterflies.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-cempasuchil.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-eye-hand.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/w-vine.webp" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/w-monarch.webp" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/w-yarrow.webp" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/w-butterflies.webp" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/w-cempasuchil.webp" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/w-eye-hand.webp" alt="" loading="lazy"></figure>
     </div>
     <p class="demo-note">Your newest posts show up here on their own.</p>
   </div>
@@ -1056,11 +1146,12 @@
       </figure>
       <figure class="found-card"><figcaption>In a text from a friend</figcaption>
         <div class="sms"><p class="sms-bubble">She did my butterflies!! Books are open</p>
-          <span class="linkcard"><img src="images/w-butterflies.jpg" alt="" loading="lazy"><span>Tlanextic Tattoos<small>yourname.com</small></span></span></div>
+          <span class="linkcard"><img src="images/w-butterflies.webp" alt="" loading="lazy"><span>Tlanextic Tattoos<small>yourname.com</small></span></span></div>
       </figure>
     </div>
   </div>
 </section>
+<div class="frieze-row gutter" aria-hidden="true"><div class="frieze"></div></div>
 </main>
 
 <footer class="gutter">
@@ -1218,6 +1309,9 @@
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); } });
+    /* her flash stickers press on as they scroll in, like slapping one onto a sketchbook */
+    var so = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { var s = en.target; s.classList.add('in'); requestAnimationFrame(function () { s.classList.remove('pre'); }); so.unobserve(s); } }); }, { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('.stk').forEach(function (s) { if (s.getBoundingClientRect().top > window.innerHeight * 0.9) { s.classList.add('pre'); so.observe(s); } });
   })();
 </script>
 
@@ -1257,7 +1351,7 @@
       var card = $('rq-card'); if (!card) return;
       var st = { s: 1, max: 1, kind: 'Custom', ink: 'Black and gray', files: [] };
       var kinds = all(card, '[data-kind]'), inks = all(card, '[data-ink]'), go = $('rq-go'), hint = $('rq-hint'), list = $('rq-files');
-      var REFS = [['images/w-cempasuchil.jpg', 'marigold-idea.jpg'], ['images/w-monarch.jpg', 'monarch-ref.jpg'], ['images/w-vine.jpg', 'placement.jpg']];
+      var REFS = [['images/w-cempasuchil.webp', 'marigold-idea.jpg'], ['images/w-monarch.webp', 'monarch-ref.jpg'], ['images/w-vine.webp', 'placement.jpg']];
       function paint() {
         all(card, '.bk-steps [data-s]').forEach(function (sp) { var n = +sp.dataset.s, on = n === st.s; sp.classList.toggle('on', on); if (on) sp.setAttribute('aria-current', 'step'); else sp.removeAttribute('aria-current'); sp.disabled = !on && n > st.max; });
         [1, 2, 3].forEach(function (n) { $('rq-s' + n).hidden = st.s !== n; });
