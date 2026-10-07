@@ -534,26 +534,45 @@
   .sunrise small { display: block; margin-top: 14px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
   @media (prefers-reduced-motion: reduce) { .sunrise .sun, .sunrise .words { transition: none; } }
 
-  /* ---------- HER FLASH, woven through: stickers cut from her hand poke sheets, a frieze, and her flash printed as a pattern ----------
+  /* ---------- HER FLASH, woven through: a frieze, and her hand poke flash printed as a pattern ----------
      Words always sit on a solid ground; the pattern lives on the hero's dark paper, the flash mat and the footer. */
-  .stk { position: absolute; z-index: 2; width: var(--w, 88px); height: auto; pointer-events: none; rotate: var(--r, -6deg); filter: drop-shadow(2px 4px 3px rgba(30, 20, 10, 0.28)); }
-  @media (prefers-reduced-motion: no-preference) {
-    .stk.pre { opacity: 0; scale: 1.35; translate: 0 -10px; }
-    .stk.in { transition: opacity 0.35s ease, scale 0.55s cubic-bezier(.3,1.6,.5,1), translate 0.55s cubic-bezier(.3,1.6,.5,1); }
-  }
-  @media (max-width: 760px) { .stk { width: var(--wp, 64px); } }
   .frieze-row { padding-block: 26px; }
   .frieze { height: 40px; max-width: 1400px; margin: 0 auto;
     background: linear-gradient(90deg, var(--s1) 0 25%, var(--s2) 25% 50%, var(--s3) 50% 75%, var(--s4) 75%) 50% 0 / 200px 40px repeat-x;
     -webkit-mask: url('images/art/frieze.webp') 50% 50% / 200px 40px repeat-x; mask: url('images/art/frieze.webp') 50% 50% / 200px 40px repeat-x; }
-  .flash-mat { position: relative; margin-top: 30px; padding: 22px; border-radius: 22px; background: var(--kraft); }
-  .flash-mat::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--kraft-ink);
-    -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 260px 260px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 260px 260px repeat; }
+  .flash-mat { position: relative; margin-top: 30px; padding: 22px; border-radius: 22px; background: var(--kraft); border: 1px solid var(--hair); }
   .flash-mat .flash { position: relative; margin-top: 0; }
   .flash-mat .fcard { background: var(--ground); }
   :root { --kraft: #e8d3ad; --kraft-ink: rgba(122, 82, 30, 0.2); }
   :root[data-theme="dark"] { --kraft: #2a2317; --kraft-ink: rgba(240, 184, 74, 0.1); }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --kraft: #2a2317; --kraft-ink: rgba(240, 184, 74, 0.1); } }
+  /* her hand poke flash as full-bleed grounds, like wallpaper on the studio wall. The tiles (images/art/gr-*.webp) are ink masks
+     cut from her own three hand poke sheets, so every dot is hers; CSS colors them. Words always sit on a solid plate or card,
+     the pattern only shows around them. Nothing here moves. */
+  :root { --gr-kraft: #e8d3ad; --gr-kraft-ink: rgba(92, 58, 18, 0.15); --gr-green-ink: rgba(93, 115, 34, 0.16); --gr-teal-ink: rgba(28, 111, 119, 0.12); --gr-rb: 0.2; }
+  :root[data-theme="dark"] { --gr-kraft: #231d12; --gr-kraft-ink: rgba(240, 184, 74, 0.085); --gr-green-ink: rgba(170, 196, 98, 0.08); --gr-teal-ink: rgba(108, 195, 196, 0.08); --gr-rb: 0.13; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --gr-kraft: #231d12; --gr-kraft-ink: rgba(240, 184, 74, 0.085); --gr-green-ink: rgba(170, 196, 98, 0.08); --gr-teal-ink: rgba(108, 195, 196, 0.08); --gr-rb: 0.13; } }
+  .gr { position: relative; isolation: isolate; overflow-x: clip; background: var(--gr-bg, var(--ground)); --gr-w: 640px; --gr-h: 320px; }
+  .gr::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--gr-ink);
+    -webkit-mask: var(--gr-tile) 50% 0 / var(--gr-w) var(--gr-h) repeat; mask: var(--gr-tile) 50% 0 / var(--gr-w) var(--gr-h) repeat; }
+  .gr-xl { --gr-w: 1120px; --gr-h: 560px; }
+  .gr-kraft { --gr-bg: var(--gr-kraft); --gr-ink: var(--gr-kraft-ink); }
+  .gr-paper { --gr-bg: var(--ground); --gr-ink: var(--gr-green-ink); }
+  .gr-paper2 { --gr-bg: var(--ground-2); --gr-ink: var(--gr-teal-ink); }
+  .gr-suns { --gr-tile: url('images/art/gr-suns.webp'); }
+  .gr-milpa { --gr-tile: url('images/art/gr-milpa.webp'); }
+  .gr-creatures { --gr-tile: url('images/art/gr-creatures.webp'); }
+  /* her four-stripe rainbow, one stripe color per column of designs */
+  .gr-rainbow::before { opacity: var(--gr-rb); background: linear-gradient(90deg, var(--s1) 0 25%, var(--s2) 25% 50%, var(--s3) 50% 75%, var(--s4) 75%) 50% 0 / var(--gr-w) var(--gr-h) repeat; }
+  @media (max-width: 760px) { .gr { --gr-w: 480px; --gr-h: 240px; } .gr-xl { --gr-w: 820px; --gr-h: 410px; } }
+  .plate { position: relative; box-sizing: border-box; max-width: 100%; background: var(--ground); border: 1px solid var(--hair); border-radius: 18px; padding: 24px 28px 26px; box-shadow: 0 20px 40px -32px rgba(30, 20, 10, 0.6); }
+  .plate.fit { width: fit-content; }
+  @media (max-width: 520px) { .plate { padding: 20px 18px 22px; } }
+  .gr .mock-note { background-color: var(--ground); }
+  .gr .claim-note:not(:empty) { display: inline-block; margin-top: 12px; background: var(--ground); padding: 6px 12px; border-radius: 10px; }
+  .gr .work-foot p, .gr .painting p { background: var(--ground); padding: 8px 14px; border-radius: 10px; border: 1px solid var(--hair); }
+  .gr .where div { background: var(--ground); border-radius: 0 14px 14px 0; padding: 14px 16px; }
+  @media (min-width: 861px) { .gr .where { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; } }
   footer::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: rgba(251, 245, 233, 0.07);
     -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 280px 280px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 280px 280px repeat; }
   footer .foot-in { position: relative; z-index: 1; }
@@ -721,15 +740,16 @@
 </div>
 
 <main>
-<section id="work" class="gutter">
+<section id="work" class="gutter gr gr-kraft gr-suns gr-xl">
   <div class="wrap" style="position:relative">
-    <img class="stk" src="images/art/stk-star.webp" width="254" height="244" alt="" aria-hidden="true" style="top:-6px;right:0;--r:10deg;--w:96px;--wp:66px">
+    <div class="plate fit">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label with-pill"><span>Fresh work</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Nature, critters <em>and meaning</em></h2>
     <ul class="styles" aria-label="Styles Roxanne loves doing">
       <li>Native designs</li><li>Nature, animals, insects</li><li>Traditional, neo traditional</li><li>Anime and characters</li><li>Dot work, pepper shading</li><li>Fine line</li>
     </ul>
+    </div>
   </div>
   <div class="work-grid" data-lightbox>
     <figure class="reveal photo big"><img src="images/w-butterflies.webp" width="1100" height="1100" alt="Two butterfly flash designs with small flowers, tattooed together down a calf in fine black line and pepper shading" loading="lazy"></figure>
@@ -752,7 +772,6 @@
 
 <section id="handpoke" class="band gutter">
   <div class="wrap poke" style="position:relative">
-    <img class="stk" src="images/art/stk-butterfly.webp" width="254" height="228" alt="" aria-hidden="true" style="top:-40px;right:0;--r:-9deg;--w:92px;--wp:64px">
     <div>
       <p class="label with-pill"><span>New: hand poke</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Dot by dot, <em>by hand</em></h2>
@@ -779,13 +798,14 @@
   </div>
 </section>
 
-<section id="flash" class="gutter">
+<section id="flash" class="gutter gr gr-paper gr-milpa">
   <div class="wrap" style="position:relative">
-    <img class="stk" src="images/art/stk-maize.webp" width="211" height="254" alt="" aria-hidden="true" style="top:-10px;right:4px;--r:8deg;--w:84px;--wp:58px">
+    <div class="plate fit">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label with-pill"><span>Flash</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Drawn, <em>ready to wear</em></h2>
     <p class="measure soft" style="margin-top:14px">Designs she&rsquo;d love to tattoo. <span data-show="crone all">Claim one with your deposit.</span><span data-show="maiden mother" hidden>Message her with the one you want.</span></p>
+    </div>
     <div class="flash-mat"><div class="flash" data-lightbox>
       <article class="fcard reveal">
         <figure class="photo"><img src="images/f-handpoke-suns.webp" width="800" height="1067" alt="Hand poke flash sheet: suns and flowers, a step fret butterfly, a frog, a lizard, a spiral sun and a long bird, in dot work on paper" loading="lazy"></figure>
@@ -831,10 +851,9 @@
 
 <div class="frieze-row gutter" aria-hidden="true"><div class="frieze"></div></div>
 
-<section id="about" class="gutter" style="background:var(--ground-2)">
+<section id="about" class="gutter gr gr-paper2 gr-creatures gr-xl">
   <div class="wrap about">
     <div class="portrait">
-      <img class="stk" src="images/art/stk-frog.webp" width="211" height="254" alt="" aria-hidden="true" style="top:-26px;left:min(calc(100% - 52px), 318px);--r:9deg;--w:80px;--wp:62px">
       <figure class="photo reveal"><img src="images/roxanne.webp" width="474" height="523" alt="Roxanne Andrade outdoors among green leaves, wearing a Tlanextic Tattoos shirt and blue feather earrings" loading="lazy"></figure>
       <div class="painting" data-lightbox>
         <figure class="photo"><img src="images/tlaltecuhtli.webp" width="900" height="917" alt="Her painting of Tlaltecuhtli, spirit of the earth, in yellow, red and turquoise" loading="lazy"></figure>
@@ -842,7 +861,7 @@
         <p>Her painting of Tlaltecuhtli, the spirit of the earth.</p>
       </div>
     </div>
-    <div class="bio" style="position:relative">
+    <div class="bio plate">
       <span class="stripes" aria-hidden="true"></span>
       <p class="label with-pill"><span>Meet the artist</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Roxanne <em>Andrade</em></h2>
@@ -976,7 +995,6 @@
 
 <section id="aftercare" class="gutter" data-show="mother crone all" data-fold data-thing="aftercare page, in English and Spanish">
   <div class="wrap" style="position:relative">
-    <img class="stk" src="images/art/stk-hook-spiral.webp" width="254" height="228" alt="" aria-hidden="true" style="top:-52px;left:96px;--r:-8deg;--w:80px;--wp:56px">
     <div class="care-head">
       <div>
         <span class="stripes" aria-hidden="true"></span>
@@ -1042,13 +1060,14 @@
   </div>
 </section>
 
-<section id="words" class="gutter" style="background:var(--ground-2)">
+<section id="words" class="gutter gr gr-paper2 gr-suns gr-rainbow">
   <div class="wrap" style="position:relative">
-    <img class="stk" src="images/art/stk-flower-sun.webp" width="223" height="254" alt="" aria-hidden="true" style="top:-8px;right:0;--r:-6deg;--w:88px;--wp:60px">
+    <div class="plate fit">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label with-pill"><span>Kind words</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">From people <em>who wear her work</em></h2>
     <p class="stars" style="margin-top:14px"><span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>5.0 on Google</p>
+    </div>
     <div class="reviews mock-note wf-note">
       <div class="review"><p>Your clients&rsquo; reviews go here.</p><small>From Google</small></div>
       <div class="review"><p>Quoted as they wrote them.</p><small>From Google</small></div>
@@ -1082,7 +1101,6 @@
 
 <section id="faq" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap faq" style="position:relative">
-    <img class="stk" src="images/art/stk-round-sun.webp" width="247" height="254" alt="" aria-hidden="true" style="top:-50px;left:110px;--r:12deg;--w:78px;--wp:56px">
     <div>
       <span class="stripes" aria-hidden="true"></span>
       <p class="label with-pill"><span>Questions</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
@@ -1099,13 +1117,14 @@
   </div>
 </section>
 
-<section id="visit" class="gutter" style="background:var(--ground-2)">
+<section id="visit" class="gutter gr gr-kraft gr-milpa gr-xl">
   <div class="wrap" style="position:relative">
-    <img class="stk" src="images/art/stk-lizard.webp" width="254" height="241" alt="" aria-hidden="true" style="top:-12px;right:0;--r:-14deg;--w:92px;--wp:62px">
+    <div class="plate fit">
     <span class="stripes" aria-hidden="true"></span>
     <p class="label">Find the studio</p>
     <h2 class="reveal">By appointment, <em>in Arcata</em></h2>
     <p class="measure soft" style="margin-top:14px">A private studio on 11th Street. <span data-show="mother crone all">Send your idea, or</span> DM <a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a> or email to book.</p>
+    </div>
     <div class="where">
       <div class="reveal"><b>Studio</b>1433 11th St, Suite G<br>Arcata, CA 95521</div>
       <div class="reveal"><b>Email</b><a href="mailto:Sweetflowersan@gmail.com">Sweetflowersan@gmail.com</a></div>
@@ -1309,9 +1328,6 @@
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); } });
-    /* her flash stickers press on as they scroll in, like slapping one onto a sketchbook */
-    var so = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { var s = en.target; s.classList.add('in'); requestAnimationFrame(function () { s.classList.remove('pre'); }); so.unobserve(s); } }); }, { rootMargin: '0px 0px -12% 0px' });
-    document.querySelectorAll('.stk').forEach(function (s) { if (s.getBoundingClientRect().top > window.innerHeight * 0.9) { s.classList.add('pre'); so.observe(s); } });
   })();
 </script>
 

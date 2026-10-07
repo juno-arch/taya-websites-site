@@ -29,3 +29,11 @@ Her words (bio, aftercare in English and Spanish) are from the same "Meet the ar
 - images/art/pat-flash.webp: a seamless pattern tile built from her hand poke designs (stepped spiral, star, flower sun, maize, butterfly, hook spiral, lizard).
 - images/art/frieze.webp: a divider of four of her hand poke designs, colored with her four-stripe rainbow.
 - No new downloads: Instagram was not loaded again; everything comes from the Oct 3 captures.
+
+## Oct 7 2026 (later): her flash as the backgrounds ("less cutesy sticker")
+
+- The die-cut stickers came off the page (images/art/stk-*.webp stay in the folder, unused).
+- images/art/gr-suns.webp, gr-milpa.webp, gr-creatures.webp: seamless wallpaper tiles, ink masks cut straight from her three hand poke sheets (her own dots, nothing redrawn), colored by the page in her kraft brown, card green, teal and four-stripe rainbow.
+  - gr-suns: flower sun, star, spiral sun, butterfly sun, stepped spiral, antenna sun, hook spiral (sheets one and two)
+  - gr-milpa: maize, fret, star, crossed bands, stepped spiral, flower, spiral sun (sheet two, plus the spiral sun from sheet one)
+  - gr-creatures: butterfly, frog and lizard from sheet one; both patterned butterflies, the frog and the lizard from sheet three
