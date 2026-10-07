@@ -556,7 +556,7 @@
   }
   @media (prefers-reduced-motion: reduce) and (max-width: 620px) { .marq-in { flex-direction: column; } .marq-lbl { padding: 8px 12px 7px; } .marq-list li::after { padding: 0 10px; } }
   @media (max-width: 520px) { .marq-lbl { font-size: 19px; padding: 0 10px 0 12px; } .marq-list a { font-size: 22px; } .marq-pause { margin: 0 6px; } }
-  .ex-list li { scroll-margin-top: 110px; margin-inline: -10px; padding-inline: 10px; }
+  .ex-list li { scroll-margin-top: 8px; margin-inline: -10px; padding-inline: 10px; }
   .ex-list li.lit { animation: lit 2.6s ease both; }
   @keyframes lit { 0%, 45% { background: rgba(255, 0, 255, 0.16); box-shadow: inset 3px 0 0 var(--hot); } 100% { background: rgba(255, 0, 255, 0); box-shadow: inset 3px 0 0 rgba(255, 0, 255, 0); } }
   @media (prefers-reduced-motion: reduce) { .ex-list li.lit { animation: none; background: rgba(255, 0, 255, 0.16); box-shadow: inset 3px 0 0 var(--hot); } }
@@ -668,6 +668,100 @@
   @media print { .ride { display: none !important; } }
 </style>
 
+<style id="tt-art">
+  /* ---------- THEIR OWN WORK EVERYWHERE (Oct 7 2026) ----------
+     The three tiles in images/art/ are drawn in the linework of the shop: fine botanical line like Niki's fern, fig and bolete,
+     bolder traditional flash like Nicola's lantern and the shop's wall (dagger heart, anchor, rose, swallow, eye in the triangle),
+     and a salon wall of frames like the museum. They are masks, colored here, low contrast, and every word sits on a solid plate.
+     Nothing in this block moves. */
+  :root { --gr-a: rgba(165, 36, 111, 0.2); --gr-b: rgba(168, 16, 42, 0.17); --gr-c: rgba(87, 75, 80, 0.22); --gr-n: rgba(240, 138, 198, 0.15);
+    --plate-sh: rgba(168, 16, 42, 0.2); --gr-w: 520px; }
+  :root[data-theme="dark"] { --gr-a: rgba(240, 138, 198, 0.13); --gr-b: rgba(255, 107, 125, 0.12); --gr-c: rgba(185, 173, 179, 0.1); --gr-n: rgba(240, 138, 198, 0.13); --plate-sh: rgba(255, 107, 125, 0.18); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --gr-a: rgba(240, 138, 198, 0.13); --gr-b: rgba(255, 107, 125, 0.12); --gr-c: rgba(185, 173, 179, 0.1); --gr-n: rgba(240, 138, 198, 0.13); --plate-sh: rgba(255, 107, 125, 0.18); } }
+  .gr { position: relative; isolation: isolate; overflow-x: clip; background: var(--gr-bg, var(--ground)); }
+  .gr::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--gr-ink);
+    -webkit-mask: var(--gr-tile) 50% 0 / var(--gr-w) var(--gr-w) repeat; mask: var(--gr-tile) 50% 0 / var(--gr-w) var(--gr-w) repeat; }
+  .gr-p1 { --gr-bg: var(--ground); } .gr-p2 { --gr-bg: var(--ground-2); } .gr-night { --gr-bg: var(--night); --gr-ink: var(--gr-n); }
+  .gr-botanic { --gr-tile: url('images/art/gr-botanic.svg'); --gr-ink: var(--gr-a); }
+  .gr-trad { --gr-tile: url('images/art/gr-trad.svg'); --gr-ink: var(--gr-b); }
+  .gr-frames { --gr-tile: url('images/art/gr-frames.svg'); --gr-ink: var(--gr-c); }
+  .gr-frames.gr-night { --gr-ink: var(--gr-n); }
+  @media (max-width: 760px) { :root { --gr-w: 400px; } }
+  .plate { position: relative; box-sizing: border-box; max-width: 100%; background: var(--ground); border: 1px solid var(--hair); border-radius: 3px; padding: 24px 28px 26px; box-shadow: 7px 7px 0 var(--plate-sh); }
+  .plate.fit { width: fit-content; }
+  .plate > :last-child { margin-bottom: 0; }
+  .night .plate { background: var(--night); border-color: rgba(240, 138, 198, 0.34); box-shadow: 7px 7px 0 rgba(255, 90, 114, 0.18); }
+  @media (max-width: 520px) { .plate { padding: 20px 18px 22px; box-shadow: 5px 5px 0 var(--plate-sh); } }
+  .gr .mock-note { background-color: var(--ground); }
+  .night.gr .mock-note { background-color: var(--night); }
+  .gr .work-foot, .gr .demo-note, .gr .story-cap { display: block; width: fit-content; max-width: 100%; box-sizing: border-box; background: var(--ground); border: 1px solid var(--hair); padding: 8px 14px; }
+  .gr .where > div { background: var(--ground); border-left-width: 4px; padding: 14px 16px; border-top: 1px solid var(--hair); border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+
+  /* the wall: the shop's own tattoos, edge to edge, right under the hero */
+  .wall { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 3px; background: var(--night); border-block: 3px solid var(--night); }
+  .wall .photo { aspect-ratio: 1; border-radius: 0; background: #221a24; }
+  .wall .photo img { transition: scale 0.7s cubic-bezier(.2,.7,.3,1); }
+  .wall .lb-thumb:hover img { scale: 1.06; }
+  @media (max-width: 900px) { .wall { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .wall .photo:nth-child(n+13) { display: none; } }
+
+  /* a dense gallery per artist: square cells on a hard grid, a few big, a few wide, no holes */
+  .agal { margin-top: 34px; }
+  .agal-head { margin-bottom: 14px; }
+  .agal-head h3 { font-size: clamp(30px, 4vw, 40px); line-height: 1.05; }
+  .agal-head p { margin-top: 6px; font-size: 18px; }
+  .agal-head .how { font-weight: 700; font-size: 16px; }
+  .gwrap { container-type: inline-size; }
+  .work-grid { --cols: 6; --gap: 6px; display: grid; grid-auto-flow: dense; gap: var(--gap); margin-top: 0;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    grid-auto-rows: calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols)); }
+  .work-grid .photo { aspect-ratio: auto; height: 100%; min-height: 0; border-radius: 2px; }
+  .work-grid .photo.big { grid-column: span 2; grid-row: span 2; }
+  .work-grid .photo.wide { grid-column: span 2; }
+  .work-grid figure[data-by]::after { display: none; }
+  @media (max-width: 900px) { .work-grid { --cols: 4; } }
+  @media (max-width: 560px) { .work-grid { --cols: 3; --gap: 4px; } }
+  .ex-photos { grid-template-columns: 1fr 1fr; }
+  .ex-photos .photo.tall { grid-row: auto; aspect-ratio: 3 / 4; }
+  .ig-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+</style>
+
+<style id="tt-snav">
+  /* ---------- STICKY NAV (Oct 7 2026): stays at the top while you scroll; a slim bar with a Menu button on phones; tucks away on the way down and returns on the way up ---------- */
+  :root { --nh: 58px; }
+  html { scroll-padding-top: calc(var(--nh) + 14px); }
+  .snav { position: sticky; top: 0; z-index: 30; box-sizing: border-box; height: var(--nh); margin-top: 30px;
+    background: rgba(16, 10, 16, 0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(240, 138, 198, 0.32); transition: transform 0.3s ease; }
+  .snav.tuck { transform: translateY(-101%); }
+  .snav-in { height: 100%; max-width: 1100px; margin: 0 auto; padding-inline: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-sizing: border-box; }
+  .snav .mark svg { width: 34px; height: 31px; }
+  .snav .mark span { font-size: 21px; }
+  .snav .mark small { font-size: 10px; margin-top: 3px; letter-spacing: 0.26em; }
+  .snav nav { margin: 0; gap: 0 4px; flex-wrap: nowrap; }
+  .snav nav a { padding: 12px 9px; text-shadow: none; font-size: 17px; border-bottom: 2px solid transparent; }
+  .snav nav a:hover { color: #ffc1d9; border-bottom-color: var(--hot); }
+  .snav nav a:focus-visible { outline: 2px solid #f1e9de; outline-offset: -2px; }
+  .snav-btn { display: none; min-height: 40px; }
+  .hero-band { margin-top: calc(-1 * (var(--nh) + 30px)); }
+  .hero-main { padding-top: calc(var(--nh) + 30px + 40px); }
+  .ride { top: var(--nh); transition: transform 0.28s ease, visibility 0s linear 0.28s, top 0.28s ease; }
+  .ride.on { transition: transform 0.28s ease, top 0.28s ease; }
+  body.nav-tuck .ride { top: 0; }
+  @media (max-width: 880px) {
+    :root { --nh: 50px; }
+    .snav .mark svg { width: 30px; height: 27px; }
+    .snav .mark span { font-size: 18px; }
+    .snav .mark small { font-size: 9px; }
+    .snav-btn { display: inline-flex; }
+    .snav nav { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-wrap: wrap; width: auto; margin: 0; padding: 10px 16px 14px; gap: 2px 10px; background: #151017; border-bottom: 2px solid var(--hot); box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.6); }
+    .snav nav.open { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .snav nav a { display: block; padding: 13px 8px; font-size: 21px; border-bottom: 1px solid rgba(240, 138, 198, 0.2); }
+  }
+  @media (max-width: 760px) { .hero-main { padding-block: calc(min(62svh, 560px) - 140px + var(--nh) + 30px - 40px) 52px; } }
+  @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } .ride { transition: none; } }
+  @media print { .snav { position: static; } }
+</style>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="tri" viewBox="0 0 100 90"><path d="M50 6 94 84H6Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M28 60q22-20 44 0-22 18-44 0Z" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="50" cy="60" r="6.5" fill="currentColor"/></symbol>
 </svg>
@@ -693,22 +787,22 @@
   <p class="vh" role="status" id="status-live"></p>
 </div>
 
-<div class="hero-band">
-  <div class="gutter">
-    <div class="wrap">
-      <header class="top">
-        <a class="mark" href="#museum" aria-label="Triangle Tattoo and Museum"><svg aria-hidden="true"><use href="#tri" style="color:#ff5a72"/></svg><span>Triangle Tattoo<small>&amp; Museum &middot; 1986</small></span></a>
-        <nav aria-label="Sections">
-          <a href="#museum">Museum</a>
-          <a href="#work">Work</a>
-          <a href="#artists">Artists</a>
-          <a href="#shop" data-show="crone all">Books</a>
-          <a href="#visit">Visit</a>
-          <a href="#curiosities" data-show="mother crone all">Links</a>
-        </nav>
-      </header>
-    </div>
+<header class="snav" id="snav">
+  <div class="snav-in">
+    <a class="mark" href="#museum" aria-label="Triangle Tattoo and Museum"><svg aria-hidden="true"><use href="#tri" style="color:#ff5a72"/></svg><span>Triangle Tattoo<small>&amp; Museum &middot; 1986</small></span></a>
+    <button type="button" class="px-btn snav-btn" id="snav-btn" aria-expanded="false" aria-controls="snav-links">Menu</button>
+    <nav aria-label="Sections" id="snav-links">
+      <a href="#museum">Museum</a>
+      <a href="#work">Work</a>
+      <a href="#artists">Artists</a>
+      <a href="#shop" data-show="crone all">Books</a>
+      <a href="#visit">Visit</a>
+      <a href="#curiosities" data-show="mother crone all">Links</a>
+    </nav>
   </div>
+</header>
+
+<div class="hero-band">
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
@@ -735,6 +829,25 @@
     var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero.jpg'; if (im.complete) go(); setTimeout(go, 1500);
   })();
 </script>
+
+<div class="wall" data-lightbox role="group" aria-label="Recent tattoos from the shop">
+  <figure class="photo"><img src="images/t/w-kelp.jpg" data-full="images/w-kelp.jpg" width="360" height="360" alt="Bull kelp down an arm" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-snake.jpg" data-full="images/w-snake.jpg" width="360" height="360" alt="A spring snake, shedding and blooming" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-owl.jpg" data-full="images/w-owl.jpg" width="360" height="360" alt="An owl on a harmonica" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-heart.jpg" data-full="images/w-heart.jpg" width="360" height="360" alt="A barbed wire heart" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-wolf.jpg" data-full="images/w-wolf.jpg" width="360" height="360" alt="A healed Sailor Jerry wolf" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-lilies.jpg" data-full="images/w-lilies.jpg" width="360" height="360" alt="Flowing lilies" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-trex.jpg" data-full="images/w-trex.jpg" width="360" height="360" alt="A T. rex on an excavator" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-fig.jpg" data-full="images/w-fig.jpg" width="360" height="360" alt="A fig, cut open" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-stararms.jpg" data-full="images/w-stararms.jpg" width="360" height="360" alt="Two eight pointed stars" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-merman.jpg" data-full="images/w-merman.jpg" width="360" height="360" alt="A dad bod merman" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-mushroom.jpg" data-full="images/w-mushroom.jpg" width="360" height="360" alt="A bolete with a moth" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-dragons.jpg" data-full="images/w-dragons.jpg" width="360" height="360" alt="Two dragon hands" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-beetle.jpg" data-full="images/w-beetle.jpg" width="360" height="360" alt="A beetle with one wing open" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-lantern.jpg" data-full="images/w-lantern.jpg" width="360" height="360" alt="A sundial lantern" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-bee.jpg" data-full="images/w-bee.jpg" width="360" height="360" alt="A tiny ghost bee" loading="lazy"></figure>
+  <figure class="photo"><img src="images/t/w-starleg.jpg" data-full="images/w-starleg.jpg" width="360" height="360" alt="A line of stars down a leg" loading="lazy"></figure>
+</div>
 
 <div class="views gutter" id="views" hidden>
   <div class="wrap views-card">
@@ -774,10 +887,10 @@
     <button type="button" class="px-btn marq-pause" id="marq-pause" aria-pressed="false">Pause</button>
   </div>
 </div>
-<section id="museum" class="night gutter">
+<section id="museum" class="night gutter gr gr-frames gr-night">
   <div class="wrap">
     <div class="museum">
-      <div>
+      <div class="plate">
         <span class="tris" aria-hidden="true"></span>
         <p class="label with-pill"><span>The museum</span> <span class="tag" data-go="maiden">Every build</span></p>
         <h2 class="reveal">One of only a few <em>in the world</em></h2>
@@ -786,7 +899,7 @@
           <li>Free admission</li><li>All ages</li><li>Tours on request</li>
         </ul>
       </div>
-      <figure class="pulsefig" id="pulsefig" aria-label="A triangle draws itself in fine line, an eye opens inside it, and a heartbeat runs underneath: art with a pulse">
+      <figure class="pulsefig plate" id="pulsefig" aria-label="A triangle draws itself in fine line, an eye opens inside it, and a heartbeat runs underneath: art with a pulse">
         <svg viewBox="0 0 320 310" role="img" aria-hidden="true" focusable="false">
           <g class="pf-rays">
             <line x1="160" y1="6" x2="160" y2="-14"/><line x1="122" y1="22" x2="110" y2="6"/><line x1="198" y1="22" x2="210" y2="6"/><line x1="94" y1="56" x2="76" y2="46"/><line x1="226" y1="56" x2="244" y2="46"/>
@@ -808,11 +921,12 @@
 
     <div class="exhibits">
       <div class="ex-photos" data-lightbox>
-        <figure class="photo tall reveal"><img src="images/m-stairs.jpg" width="1200" height="1600" alt="The narrow staircase up to the museum, painted bright red, every wall covered floor to ceiling with framed tattoo flash, photos and signs" loading="lazy"></figure>
+        <figure class="photo reveal"><img src="images/m-stairs.jpg" width="1200" height="1600" alt="The narrow staircase up to the museum, painted bright red, every wall covered floor to ceiling with framed tattoo flash, photos and signs" loading="lazy"></figure>
+        <figure class="photo reveal"><img src="images/m-guardians.jpg" width="880" height="1100" alt="Two little long haired chihuahuas watching from the top of the red stairs, which glow with red lights and spell out the shop&rsquo;s years" loading="lazy"></figure>
         <figure class="photo reveal"><img src="images/m-mirror.jpg" width="1080" height="1350" alt="A museum corner with a gilded mirror, glass cases of small treasures, and walls of framed tattoo portraits" loading="lazy"></figure>
         <figure class="photo reveal"><img src="images/m-room.jpg" width="1080" height="1350" alt="A museum room with dark wood floors, glass display cases, a leather couch, and framed history on every wall" loading="lazy"></figure>
       </div>
-      <div>
+      <div class="plate">
         <p class="label">What&rsquo;s on the walls</p>
         <ul class="ex-list">
           <li id="ex-moko"><b>Ta moko</b><span>Portraits of Maori in New Zealand with traditional moko, from the 1800s to the present.</span></li>
@@ -827,43 +941,68 @@
         <p class="soft" style="margin-top:16px;font-size:17px">Please no photos or video in the museum, and children come with a grown-up. School and personal tours are given on request: <span data-show="maiden" hidden>call ahead.</span><span data-show="mother crone all">call ahead, or <a href="#request">book one here</a>.</span></p>
       </div>
     </div>
-    <blockquote class="gold reveal">&ldquo;Visiting Triangle Tattoo was like panning for gold, and finding it.&rdquo;<small>Gregory M. Vogel, segment producer, &ldquo;Tattoo!&rdquo; ABC / Kane Productions</small></blockquote>
+    <blockquote class="gold plate fit reveal">&ldquo;Visiting Triangle Tattoo was like panning for gold, and finding it.&rdquo;<small>Gregory M. Vogel, segment producer, &ldquo;Tattoo!&rdquo; ABC / Kane Productions</small></blockquote>
   </div>
 </section>
 
-<section id="work" class="gutter">
+<section id="work" class="gutter gr gr-botanic gr-p2">
   <div class="wrap">
-    <span class="tris" aria-hidden="true"></span>
-    <p class="label with-pill"><span>Fresh off the table</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">Tattooed <em>right here</em></h2>
-    <p class="measure soft" style="margin-top:14px">Bees and boletes, bull kelp, a dad bod merman and a T. rex on an excavator.</p>
-    <div class="seg three afilter" role="group" aria-label="Show work by" data-show="mother crone all">
-      <button type="button" data-by="all" aria-pressed="true">Everyone</button><button type="button" data-by="Niki" aria-pressed="false">Niki</button><button type="button" data-by="Nicola" aria-pressed="false">Nicola</button>
+    <div class="plate fit">
+      <span class="tris" aria-hidden="true"></span>
+      <p class="label with-pill"><span>Fresh off the table</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <h2 class="reveal">Tattooed <em>right here</em></h2>
+      <div class="seg three afilter" role="group" aria-label="Show work by" data-show="mother crone all">
+        <button type="button" data-by="all" aria-pressed="true">Everyone</button><button type="button" data-by="Niki" aria-pressed="false">Niki</button><button type="button" data-by="Nicola" aria-pressed="false">Nicola</button>
+      </div>
     </div>
-    <div class="work-grid" data-lightbox id="work-grid">
-      <figure class="reveal photo big" data-by="Niki" data-k="Niki"><img src="images/w-kelp.jpg" width="1100" height="1100" alt="Bull kelp drawn freehand down an arm, with an octopus, a jellyfish and a harbor seal tucked in, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-bee.jpg" width="1100" height="1100" alt="A tiny ghost bee in a hexagon of a honeycomb travel tattoo, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Nicola" data-k="Nicola"><img src="images/w-owl.jpg" width="1100" height="1467" alt="An owl standing on a harmonica, a first tattoo for a harmonica player, by Nicola" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-heart.jpg" width="1100" height="1100" alt="A barbed wire heart in fine black line on a shoulder blade, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-mushroom.jpg" width="1100" height="1100" alt="A bolete mushroom with a moth and a ring of stars on a thigh, in black and gray, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Nicola" data-k="Nicola"><img src="images/w-merman.jpg" width="1100" height="1323" alt="A dad bod merman with a red beard and a green scaled tail, a first tattoo, by Nicola" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-fig.jpg" width="1100" height="1100" alt="A ripe fig cut open, labeled fig. 1 like an old botanical plate, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Nicola" data-k="Nicola"><img src="images/w-lantern.jpg" width="1100" height="1467" alt="A sundial lantern among fine line flowers, added to a sleeve, by Nicola" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-lilies.jpg" width="1100" height="1467" alt="Flowing purple lilies climbing an upper arm, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Nicola" data-k="Nicola"><img src="images/w-trex.jpg" width="1100" height="1115" alt="A green T. rex in a hard hat riding an orange excavator, by Nicola" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-fern.jpg" width="1100" height="1100" alt="A freehand fern frond in fine line over the shoulder, by Niki Needles" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Nicola" data-k="Nicola"><img src="images/w-dragons.jpg" width="1100" height="1100" alt="Two dragons, one blue and one red, on the backs of both hands, by Nicola" loading="lazy"></figure>
-      <figure class="reveal photo" data-by="Niki" data-k="Niki"><img src="images/w-luna.jpg" width="1100" height="1100" alt="A portrait of Luna, a Jack Russell, with poppies, on an upper arm, by Niki Needles" loading="lazy"></figure>
+    <div class="agal" data-artist="Niki">
+      <div class="agal-head plate fit"><h3>Niki <em>Needles</em></h3><p class="soft">From marker to skin.</p><p class="how"><a href="https://www.instagram.com/northcoastnikineedles/" target="_blank" rel="noopener">@northcoastnikineedles</a></p></div>
+      <div class="gwrap"><div class="work-grid" data-lightbox>
+        <figure class="photo big"><img src="images/s/w-kelp.jpg" data-full="images/w-kelp.jpg" width="640" height="640" alt="Bull kelp drawn freehand down an arm, with an octopus, a jellyfish and a harbor seal tucked in, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-bee.jpg" data-full="images/w-bee.jpg" width="640" height="640" alt="A tiny ghost bee in a hexagon of a honeycomb travel tattoo, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo wide"><img src="images/s/w-heart.jpg" data-full="images/w-heart.jpg" width="640" height="640" alt="A barbed wire heart in fine black line on a shoulder blade, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-fig.jpg" data-full="images/w-fig.jpg" width="640" height="640" alt="A ripe fig cut open, labeled fig. 1 like an old botanical plate, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo wide"><img src="images/s/w-stararms.jpg" data-full="images/w-stararms.jpg" width="640" height="640" alt="Two eight pointed stars, one on each forearm, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo big"><img src="images/s/w-mushroom.jpg" data-full="images/w-mushroom.jpg" width="640" height="640" alt="A bolete mushroom with a moth and a ring of stars on a thigh, in black and gray, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-lilies.jpg" data-full="images/w-lilies.jpg" width="480" height="640" alt="Flowing purple lilies climbing an upper arm, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-fern.jpg" data-full="images/w-fern.jpg" width="640" height="640" alt="A freehand fern frond in fine line over the shoulder, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-luna.jpg" data-full="images/w-luna.jpg" width="640" height="640" alt="A portrait of Luna, a Jack Russell, with poppies, on an upper arm, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-wolf.jpg" data-full="images/w-wolf.jpg" width="480" height="640" alt="A healed Sailor Jerry style wolf in black and gray on the ribs, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-beetle.jpg" data-full="images/w-beetle.jpg" width="640" height="640" alt="A beetle with one wing open, in fine black and gray line, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-starleg.jpg" data-full="images/w-starleg.jpg" width="640" height="640" alt="A column of eight pointed stars running down a leg, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-snake.jpg" data-full="images/w-snake.jpg" width="640" height="640" alt="A spring snake shedding and blooming in teal and orange, based on an original design by @katiekatiescott, tattooed by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-grapes.jpg" data-full="images/w-grapes.jpg" width="480" height="640" alt="A flowing grapevine with a cluster of grapes along a forearm, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-moth.jpg" data-full="images/w-moth.jpg" width="640" height="640" alt="A moth on the back of a hand, in black line, by Niki Needles" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-eye.jpg" data-full="images/w-eye.jpg" width="640" height="640" alt="A winged eyeball in bright color, with a taco and a speed lettering, by Niki Needles" loading="lazy"></figure>
+      </div></div>
     </div>
-    <p class="work-foot soft">From <a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">@triangletattoomuseum</a>, <a href="https://www.instagram.com/northcoastnikineedles/" target="_blank" rel="noopener">@northcoastnikineedles</a> and <a href="https://www.instagram.com/loch_nic_monster/" target="_blank" rel="noopener">@loch_nic_monster</a>.</p>
   </div>
 </section>
 
-<section id="artists" class="gutter" style="background:var(--ground-2)">
+<section id="nicola" class="gutter gr gr-trad gr-p1" data-artist="Nicola">
   <div class="wrap">
+    <div class="agal" style="margin-top:0">
+      <div class="agal-head plate fit"><h3>Nic<em>ola</em></h3><p class="soft">Custom pieces and her own flash.</p><p class="how"><a href="https://www.instagram.com/loch_nic_monster/" target="_blank" rel="noopener">@loch_nic_monster</a></p></div>
+      <div class="gwrap"><div class="work-grid" data-lightbox>
+        <figure class="photo big"><img src="images/s/w-owl.jpg" data-full="images/w-owl.jpg" width="480" height="640" alt="An owl standing on a harmonica, a first tattoo for a harmonica player, by Nicola" loading="lazy"></figure>
+        <figure class="photo big"><img src="images/s/w-trex.jpg" data-full="images/w-trex.jpg" width="631" height="640" alt="A green T. rex in a hard hat riding an orange excavator, by Nicola" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-merman.jpg" data-full="images/w-merman.jpg" width="532" height="640" alt="A dad bod merman with a red beard and a green scaled tail, a first tattoo, by Nicola" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-lantern.jpg" data-full="images/w-lantern.jpg" width="480" height="640" alt="A sundial lantern among fine line flowers, added to a sleeve, by Nicola" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-antlers.jpg" data-full="images/w-antlers.jpg" width="560" height="640" alt="A shed antler with blackberries and flowers across a collarbone, by Nicola" loading="lazy"></figure>
+        <figure class="photo"><img src="images/s/w-dragons.jpg" data-full="images/w-dragons.jpg" width="640" height="640" alt="Two dragons, one blue and one red, on the backs of both hands, by Nicola" loading="lazy"></figure>
+      </div></div>
+    </div>
+    <p class="work-foot soft" style="margin-top:22px">From <a href="https://www.instagram.com/triangletattoomuseum/" target="_blank" rel="noopener">@triangletattoomuseum</a>, <a href="https://www.instagram.com/northcoastnikineedles/" target="_blank" rel="noopener">@northcoastnikineedles</a> and <a href="https://www.instagram.com/loch_nic_monster/" target="_blank" rel="noopener">@loch_nic_monster</a>.</p>
+  </div>
+</section>
+
+<section id="artists" class="gutter gr gr-frames gr-p2">
+  <div class="wrap">
+    <div class="plate fit">
     <span class="tris" aria-hidden="true"></span>
     <p class="label with-pill"><span>Who&rsquo;s at the shop</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">The artists <em>of Triangle</em></h2>
+    </div>
     <div class="artists">
       <article class="artist reveal">
         <figure class="photo" data-lightbox><img src="images/mrg-work.jpg" width="640" height="426" alt="Mr. G at work under the lamp, tattoo machine in hand" loading="lazy" style="object-position:62% 50%"></figure>
@@ -894,13 +1033,13 @@
   </div>
 </section>
 
-<section id="story" class="gutter">
+<section id="story" class="gutter gr gr-trad gr-p1">
   <div class="wrap story">
     <div>
       <figure class="photo reveal" data-lightbox><img src="images/founders.jpg" width="1080" height="1350" alt="Mr. G and Madame Chinchilla side by side at the shop, smiling, with their little long haired chihuahua and a framed picture of the two of them" loading="lazy"></figure>
       <p class="story-cap">Mr. G and Madame Chinchilla at the shop, on Mr. G&rsquo;s 76th birthday.</p>
     </div>
-    <div class="story-text">
+    <div class="story-text plate">
       <span class="tris" aria-hidden="true"></span>
       <p class="label with-pill"><span>Our story</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Two tattooists, <em>one collection</em></h2>
@@ -1117,12 +1256,14 @@
   </div>
 </section>
 
-<section id="visit" class="gutter">
+<section id="visit" class="gutter gr gr-botanic gr-p1">
   <div class="wrap">
+    <div class="plate fit">
     <span class="tris" aria-hidden="true"></span>
     <p class="label with-pill"><span>Visit</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">On Main Street, <em>across from the Guest House</em></h2>
     <p class="measure soft" style="margin-top:14px">In one of Fort Bragg&rsquo;s original Victorian storefronts, right downtown. Inside, follow the red stairs.</p>
+    </div>
     <div class="where">
       <div class="reveal"><b>Shop &amp; museum</b>356 B North Main Street<br>Fort Bragg, CA 95437</div>
       <div class="reveal"><b>Call</b><a href="tel:+17079648814">(707) 964-8814</a><br><a href="mailto:g@triangletattoo.com">g@triangletattoo.com</a></div>
@@ -1133,17 +1274,25 @@
   </div>
 </section>
 
-<section id="insta" class="gutter" style="background:var(--ground-2)" data-show="mother crone all" data-fold data-thing="Instagram feed">
+<section id="insta" class="gutter gr gr-frames gr-p2" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
+    <div class="plate fit">
     <p class="label with-pill"><span>On Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Fresh from <em>@triangletattoomuseum</em></h2>
+    </div>
     <div class="ig-grid" role="img" aria-label="Recent Instagram posts">
-      <figure class="photo"><img src="images/w-bee.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-lilies.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-heart.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-bee.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-lilies.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-heart.jpg" alt="" loading="lazy"></figure>
       <figure class="photo"><img src="images/founders.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-eye.jpg" alt="" loading="lazy"></figure>
-      <figure class="photo"><img src="images/w-owl.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-beetle.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-owl.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-snake.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-starleg.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-fig.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-wolf.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-stararms.jpg" alt="" loading="lazy"></figure>
+      <figure class="photo"><img src="images/t/w-grapes.jpg" alt="" loading="lazy"></figure>
     </div>
     <p class="demo-note">Your newest posts show up here on their own.</p>
   </div>
@@ -1460,14 +1609,12 @@
     function press(list, key, val) { list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset[key] === val ? 'true' : 'false'); }); }
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-    /* work filter */
+    /* work filter: each artist has a gallery of their own */
     (function () {
-      var btns = all(document, '.afilter [data-by]'), figs = all($('work-grid'), 'figure');
-      btns.forEach(function (b) { b.addEventListener('click', function () {
-        var k = b.dataset.by; press(btns, 'by', k);
-        figs.forEach(function (f) { f.hidden = !(k === 'all' || (' ' + f.dataset.k + ' ').indexOf(' ' + k + ' ') > -1); f.classList.remove('pre'); f.classList.add('in'); });
-      }); });
-      document.addEventListener('ex:view', function (e) { if (e.detail && e.detail.view === 'maiden') { press(btns, 'by', 'all'); figs.forEach(function (f) { f.hidden = false; }); } });
+      var btns = all(document, '.afilter [data-by]'), groups = all(document, '[data-artist]');
+      function show(k) { groups.forEach(function (g) { g.hidden = !(k === 'all' || g.dataset.artist === k); }); }
+      btns.forEach(function (b) { b.addEventListener('click', function () { var k = b.dataset.by; press(btns, 'by', k); show(k); }); });
+      document.addEventListener('ex:view', function (e) { if (e.detail && e.detail.view === 'maiden') { press(btns, 'by', 'all'); show('all'); } });
     })();
 
     /* spin the wheel */
@@ -1833,6 +1980,33 @@
     [bar, panel].forEach(function (c) { c.addEventListener('click', function (e) { var b = e.target.closest('[data-view]'); if (!b || !c.contains(b)) return; setView(b.getAttribute('data-view'), b); if (c === panel) setOpen(false); }); });
     document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('button.tag[data-go]'); if (t) setView(t.getAttribute('data-go'), t); });
     root.setAttribute('data-view', view); bar.hidden = false; vp.hidden = false; paint();
+  })();
+</script>
+
+<script>
+  /* sticky nav: Menu button on phones, tucks away when you scroll down and comes back when you scroll up (no tucking with reduced motion) */
+  (function () {
+    var bar = document.getElementById('snav'), btn = document.getElementById('snav-btn'), links = document.getElementById('snav-links');
+    if (!bar || !btn || !links) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, last = window.scrollY, open = false, tucked = false, raf = 0;
+    function setOpen(o) { open = o; links.classList.toggle('open', o); btn.setAttribute('aria-expanded', o ? 'true' : 'false'); btn.textContent = o ? 'Close' : 'Menu'; if (o) tuck(false); }
+    function tuck(t) { if (t === tucked) return; tucked = t; bar.classList.toggle('tuck', t); document.body.classList.toggle('nav-tuck', t); }
+    btn.addEventListener('click', function () { setOpen(!open); });
+    links.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { setOpen(false); btn.focus(); } });
+    document.addEventListener('click', function (e) { if (open && !bar.contains(e.target)) setOpen(false); });
+    bar.addEventListener('focusin', function () { tuck(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 880 && open) setOpen(false); });
+    if (reduce) return;
+    window.addEventListener('scroll', function () {
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0; var y = window.scrollY, d = y - last;
+        if (open) { last = y; return; }
+        if (y < 260 || d < -6) tuck(false); else if (d > 6) tuck(true);
+        if (Math.abs(d) > 6) last = y;
+      });
+    }, { passive: true });
   })();
 </script>
 
