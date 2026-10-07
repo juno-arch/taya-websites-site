@@ -21,14 +21,22 @@
 /* Your notes (Oct 7 2026): Taya's own notes on a mockup before it goes out. Her studio's "Leave notes" opens
    webfaery.love/peek/SLUG/?mark=1#pre=KEY. The key comes out of the address bar at once (the ?mark=1 stays, so
    the page's open count skips this visit), is kept for this tab only (sessionStorage, wf-pre-v1:/peek/SLUG/,
-   gone when the tab closes, never mixed with a client's wf-magic-v1 key), and opens two things on the server,
+   gone when the tab closes, kept apart from a client's wf-magic-v1 key), and opens two things on the server,
    for this one page only: save a note, read her notes back. Nothing else: no client sign-in or magic link, no
    build picker, no Done, no files. The page looks exactly as the business would see it, and its own "See it as"
    buttons keep working (each note keeps the build it was left on, and a short CSS path to the spot). After the
    first good answer this device is marked as hers (wf-me, the same flag webfaery.love/peek/me/ sets), so her
-   later looks never count as the business opening it. Without a #pre= key (or one kept in this tab) this part
+   later looks do not count as the business opening it. Without a #pre= key (or one kept in this tab) this part
    does nothing at all and the magic mockup below runs exactly as before. Her bar and her list say only she sees
-   them, and wear a solid gold border, so they never look like the dashed, mockup-only pieces the business sees. */
+   them, and wear a solid gold border, so they do not look like the dashed, mockup-only pieces the business sees.
+   Light and dark (Oct 7 2026): her bar carries a small Light / Dark / Auto switch, so she can see the mockup both
+   ways while she edits. It sets data-theme on <html> the way the page's own Light / Dark pill does, keeps that
+   pill's pressed state in step (and the buttons of a pill panel, on a mockup that has one), and keeps her choice
+   for this tab (sessionStorage, wf-pre-theme-v1:/peek/SLUG/), so a reload keeps the look. It works on a mockup with
+   no pill at all. Each note is saved with the look it was made in ("dark mode: " or "light mode: " in front of the
+   spot, going by the device setting when she has not picked one), and shows as a small dark or light chip on its pin
+   and in My notes. The pill and its panel count as controls (a tap on them is not a note), sit above the bar and the
+   note box, and move up above the bar (and the list) when they would sit under it. */
 (function () {
   'use strict';
   if (window.__wfMark) return;
@@ -58,7 +66,7 @@
   const VIEWS = ['maiden', 'mother', 'crone', 'all'];
   const css = `
   .wfm, .wfm * { box-sizing: border-box; font-family: 'Spectral', Georgia, serif; }
-  .wfm-bar { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 2147483000;
+  .wfm-bar { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 2147483002;
     display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 14px; width: max-content; max-width: calc(100vw - 20px);
     padding: 10px 14px; border-radius: 16px; background: #1b1a17; color: #efe6d4; border: 1.5px solid rgba(240, 184, 103, 0.7);
     box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.6); font-size: 15px; line-height: 1.35; }
@@ -101,6 +109,23 @@
   .wfm-panel .x { flex: none; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; margin: 0; border-radius: 50%; border: 1.5px solid rgba(240, 184, 103, 0.6); background: transparent;
     color: #efe6d4; font: 400 26px/1 Georgia, serif; cursor: pointer; }
   .wfm-panel .x:hover, .wfm-panel .x:focus-visible { background: rgba(240, 184, 103, 0.18); outline: none; }
+  .wfm-seg { display: inline-flex; border: 1px solid rgba(239, 230, 212, 0.4); border-radius: 999px; overflow: hidden; }
+  .wfm-seg button { appearance: none; border: 0; margin: 0; border-radius: 0; background: transparent; color: #efe6d4; cursor: pointer; padding: 8px 13px;
+    font: 600 14px 'Spectral', Georgia, serif; line-height: 1.35; }
+  .wfm-seg button + button { border-left: 1px solid rgba(239, 230, 212, 0.25); }
+  .wfm-seg button[aria-pressed="true"] { background: #f0b867; color: #1c1209; }
+  .wfm-seg button:focus-visible { outline: 2px solid #f2c77c; outline-offset: -3px; }
+  .wfm-look { display: inline-block; margin-left: 8px; padding: 0 8px; border-radius: 999px; font: 600 11px/1.6 'Spectral', Georgia, serif;
+    vertical-align: 1px; background: #0d0c0a; color: #efe6d4; border: 1px solid rgba(239, 230, 212, 0.45); }
+  .wfm-look.light { background: #f6efe0; color: #1c1209; border-color: rgba(240, 184, 103, 0.9); }
+  .wfm-pin[data-look]::after { content: attr(data-look); position: absolute; left: 50%; top: 100%; margin-top: 4px; translate: -50% 0; padding: 0 6px;
+    border-radius: 999px; font: 600 10.5px/1.6 'Spectral', Georgia, serif; white-space: nowrap; pointer-events: none;
+    background: #0d0c0a; color: #efe6d4; border: 1px solid rgba(239, 230, 212, 0.45); }
+  .wfm-pin[data-look="light"]::after { background: #f6efe0; color: #1c1209; border-color: rgba(240, 184, 103, 0.9); }
+  /* the page's own Light / Dark pill: above the bar and the note box, and lifted clear of the bar when it would sit under it */
+  #theme-tab, #theme-panel { z-index: 2147483002 !important; }
+  html.wfm-lift #theme-tab { bottom: var(--wfm-lift) !important; }
+  html.wfm-lift #theme-panel { bottom: calc(var(--wfm-lift) + 40px) !important; }
   @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
   const sty = document.createElement('style'); sty.textContent = css; document.head.appendChild(sty);
 
@@ -141,9 +166,68 @@
     clearHover(); closePop();
   });
 
+  /* ---------------- light or dark: the page both ways while she edits ---------------- */
+  const root = document.documentElement;
+  const LOOK_STORE = 'wf-pre-theme-v1:' + PAGE; // her last choice in this tab: light, dark or auto
+  const PILL_BTNS = '#theme-tab [data-theme], #theme-panel [data-theme], .theme-tab [data-theme], .theme-panel [data-theme]';
+  const pageLook = () => { const v = root.getAttribute('data-theme'); return v === 'light' || v === 'dark' ? v : ''; };
+  const modeNow = () => pageLook() || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const lookBox = el('div', 'wfm-seg'); lookBox.setAttribute('role', 'group'); lookBox.setAttribute('aria-label', 'Light or dark look');
+  const lookBtns = [['light', 'Light', 'See the page in light mode'], ['dark', 'Dark', 'See the page in dark mode'], ['auto', 'Auto', 'Follow this device’s setting']].map((x) => {
+    const b = el('button', '', x[1]); b.type = 'button'; b.dataset.look = x[0]; b.title = x[2]; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => setLook(x[0]));
+    lookBox.append(b); return b;
+  });
+  let popChip = null; // the small dark or light chip in the open note box
+  function paintLook() {
+    const cur = pageLook() || 'auto';
+    lookBtns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.look === cur ? 'true' : 'false'));
+    // the page's own pill (and the buttons of a pill panel) show the same state
+    document.querySelectorAll(PILL_BTNS).forEach((b) => b.setAttribute('aria-pressed', b.getAttribute('data-theme') === cur ? 'true' : 'false'));
+    if (popChip) { const m = modeNow(); popChip.className = 'wfm-look ' + m; popChip.textContent = m; }
+  }
+  const keepLook = () => { try { sessionStorage.setItem(LOOK_STORE, pageLook() || 'auto'); } catch (e) {} };
+  function setLook(v) {
+    if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v); else root.removeAttribute('data-theme');
+    keepLook(); paintLook();
+  }
+  function startLook() {
+    let saved = ''; try { saved = sessionStorage.getItem(LOOK_STORE) || ''; } catch (e) {}
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+    paintLook();
+    // the page's own pill changes the same attribute: follow it, and keep that choice too
+    if (window.MutationObserver) new MutationObserver(() => { keepLook(); paintLook(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+  // each note says which look it was made in, in front of its spot ("dark mode: ..."), and shows it as a small chip
+  const LOOK_RE = /^(dark|light) mode: /;
+  const lookOf = (s) => { const m = LOOK_RE.exec(String(s || '')); return m ? m[1] : ''; };
+  const bareSpot = (s) => String(s || '').replace(LOOK_RE, '');
+  const withLook = (spot, look) => { // the server keeps a spot to 150 characters: the spot is trimmed to fit
+    const pre = look + ' mode: ', room = 150 - pre.length;
+    if (spot.length <= room) return pre + spot;
+    return pre + (/”$/.test(spot) ? spot.slice(0, room - 2) + '…”' : spot.slice(0, room - 1) + '…');
+  };
+  // The pill sits at the bottom left (or bottom right), where the bar covers it on a phone: then it moves up above
+  // the bar, and above the list when that is open. Where the bar does not reach it, it stays where the page puts it.
+  function dock() {
+    const tab = document.getElementById('theme-tab'); if (!tab) return;
+    root.classList.remove('wfm-lift');
+    if (!tab.getClientRects().length || !bar.getClientRects().length) return;
+    const a = tab.getBoundingClientRect();
+    const boxes = [bar, panel].filter((n) => !n.hidden && n.getClientRects().length).map((n) => n.getBoundingClientRect())
+      .filter((b) => a.left < b.right - 6 && b.left + 6 < a.right); // (a few pixels of rounded corner touching is fine)
+    if (!boxes.some((b) => a.top < b.bottom && b.top < a.bottom)) return;
+    const h = root.clientHeight, top = Math.min.apply(null, boxes.map((b) => b.top));
+    root.style.setProperty('--wfm-lift', Math.max(0, Math.min(h - top + 8, h - a.height - 8)) + 'px');
+    root.classList.add('wfm-lift');
+  }
+  let dq = 0;
+  const dockSoon = () => { if (!dq) dq = requestAnimationFrame(() => { dq = 0; dock(); }); };
+
   /* ---------------- choosing a spot (the same rules as the magic mockup) ---------------- */
   const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article';
-  const CONTROL = 'summary, select, option, button[aria-expanded], button[aria-pressed], [role="tab"], button[data-view], a[data-view], button[data-go], .tag[data-go], .build[data-go], a[data-go]';
+  const CONTROL = 'summary, select, option, button[aria-expanded], button[aria-pressed], [role="tab"], button[data-view], a[data-view], button[data-go], .tag[data-go], .build[data-go], a[data-go], '
+    + '.theme-tab, .theme-panel, #theme-tab, #theme-panel, button[data-theme], a[data-theme]'; // (the Light / Dark pill and its panel; not <html data-theme>)
   const isControl = (t) => { const c = t.closest && t.closest(CONTROL); return !!(c && !ours(c)); };
   const pickOf = (t) => {
     if (isControl(t)) return null;
@@ -206,10 +290,10 @@
 
   /* ---------------- the note ---------------- */
   let pop = null, popOpen = false, picked = null;
-  function closePop() { if (pop) pop.remove(); pop = null; popOpen = false; if (picked) picked.classList.remove('wfm-pick'); picked = null; }
+  function closePop() { if (pop) pop.remove(); pop = null; popOpen = false; popChip = null; if (picked) picked.classList.remove('wfm-pick'); picked = null; }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closePop(); panel.hidden = true; } });
   function openPop(n) {
-    closePop(); clearHover(); panel.hidden = true; // one thing open at a time: the list never sits under a note box
+    closePop(); clearHover(); panel.hidden = true; // one thing open at a time: the list does not sit under a note box
     picked = n; n.classList.add('wfm-pick'); popOpen = true;
     const spot = spotOf(n), path = cssPath(n), view = viewNow();
     pop = el('div', 'wfm wfm-pop'); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Your note');
@@ -218,12 +302,22 @@
     const row = el('div', 'row');
     const cancel = el('button', 'wfm-btn ghost', 'Cancel'); cancel.type = 'button';
     const send = el('button', 'wfm-btn', 'Save note'); send.type = 'button';
-    row.append(cancel, send); pop.append(el('p', '', spot), ta, err, row);
+    const head = el('p', '', spot); popChip = el('span', 'wfm-look'); popChip.title = 'Saved with the note: the look this page is in';
+    head.append(popChip); paintLook();
+    row.append(cancel, send); pop.append(head, ta, err, row);
     document.body.appendChild(pop);
     const r = n.getBoundingClientRect();
-    const top = window.scrollY + Math.min(r.bottom + 10, window.innerHeight - 260);
-    const left = window.scrollX + Math.max(10, Math.min(r.left, window.innerWidth - pop.offsetWidth - 10));
-    pop.style.top = Math.max(window.scrollY + 10, top) + 'px'; pop.style.left = left + 'px';
+    dock();
+    const pw = pop.offsetWidth, ph = pop.offsetHeight;
+    const left = Math.max(10, Math.min(r.left, window.innerWidth - pw - 10));
+    let vtop = Math.min(r.bottom + 10, window.innerHeight - 260);
+    // keep the box clear of the bar and the Light / Dark pill
+    for (const x of [bar, document.getElementById('theme-tab')]) {
+      if (!x || !x.getClientRects().length) continue;
+      const b = x.getBoundingClientRect();
+      if (left < b.right && b.left < left + pw) vtop = Math.min(vtop, b.top - 10 - ph);
+    }
+    pop.style.top = (window.scrollY + Math.max(10, vtop)) + 'px'; pop.style.left = (window.scrollX + left) + 'px';
     ta.focus({ preventScroll: true });
     cancel.addEventListener('click', closePop);
     const nonce = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)).replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
@@ -232,10 +326,11 @@
       if (what.length < 3) { err.hidden = false; err.textContent = 'Just a few words is plenty.'; ta.focus(); return; }
       send.disabled = true; send.textContent = 'Saving…'; err.hidden = true;
       try {
-        const res = await call('/mark', { page: PAGE, what, spot, spot_path: path, view, nonce }); // a retry reuses the nonce
-        if (!notes.some((x) => x.id === res.id)) notes.push({ id: res.id, what, spot, spot_path: path, view, status: 'new', reply: '', el: n });
+        const look = modeNow(), spotOut = withLook(spot, look);
+        const res = await call('/mark', { page: PAGE, what, spot: spotOut, spot_path: path, view, nonce }); // a retry reuses the nonce
+        if (!notes.some((x) => x.id === res.id)) notes.push({ id: res.id, what, spot: spotOut, spot_path: path, view, status: 'new', reply: '', el: n });
         closePop(); renderPins(); renderPanel();
-        say.lastChild.textContent = 'saved. Tap anything else, or see My notes.';
+        say.lastChild.textContent = 'saved in ' + look + ' mode. Tap anything else, or see My notes.';
       } catch (x) {
         if (x.code === 'bad_link') { replaced(); return; }
         send.disabled = false; send.textContent = 'Save note'; err.hidden = false;
@@ -279,8 +374,10 @@
       if (!n || !n.getClientRects().length) return;
       const r = n.getBoundingClientRect();
       const pin = el('button', 'wfm-pin' + (note.status === 'done' ? ' done' : note.status === 'declined' ? ' skip' : ''), String(i + 1));
-      pin.type = 'button'; pin.setAttribute('aria-label', 'Note ' + (i + 1) + ', ' + (STATUS[note.status] || 'Waiting') + ': ' + note.what);
-      pin.style.top = (window.scrollY + r.top + 4) + 'px'; pin.style.left = (window.scrollX + r.right - 4) + 'px';
+      const lk = lookOf(note.spot); if (lk) pin.dataset.look = lk;
+      pin.type = 'button'; pin.setAttribute('aria-label', 'Note ' + (i + 1) + (lk ? ', ' + lk + ' mode' : '') + ', ' + (STATUS[note.status] || 'Waiting') + ': ' + note.what);
+      // a pin on an edge to edge photo or section would stick out past the screen (and its light or dark chip with it): it is kept on screen
+      pin.style.top = (window.scrollY + r.top + 4) + 'px'; pin.style.left = Math.min(window.scrollX + r.right - 4, window.scrollX + root.clientWidth - 22) + 'px';
       pin.addEventListener('click', () => { panel.hidden = false; renderPanel(i); });
       document.body.appendChild(pin); pinLayer.push(pin);
     });
@@ -296,8 +393,10 @@
       const ol = el('ol');
       notes.forEach((n, i) => {
         const li = el('li');
-        const vn = viewName(n.view);
-        li.append(el('div', 'where', (i + 1) + '. ' + n.spot + (vn ? '  ·  ' + vn : '')), el('div', '', n.what),
+        const vn = viewName(n.view), lk = lookOf(n.spot);
+        const where = el('div', 'where', (i + 1) + '. ' + bareSpot(n.spot) + (vn ? '  ·  ' + vn : ''));
+        if (lk) where.append(el('span', 'wfm-look ' + lk, lk));
+        li.append(where, el('div', '', n.what),
           el('span', 'st ' + (n.status || 'new'), STATUS[n.status] || 'Waiting'));
         if (n.reply) li.append(el('div', 'reply', n.reply));
         ol.append(li);
@@ -309,15 +408,22 @@
   }
   listBtn.addEventListener('click', () => { panel.hidden = !panel.hidden; if (!panel.hidden) renderPanel(); });
 
+  // the Light / Dark pill keeps clear of the bar and the list, whatever the bar is saying
+  if (window.ResizeObserver) { const ro = new ResizeObserver(dockSoon); ro.observe(bar); ro.observe(panel); }
+  window.addEventListener('load', dockSoon);
+  window.addEventListener('resize', dockSoon);
+  window.addEventListener('scroll', () => { if (!root.classList.contains('wfm-lift')) dockSoon(); }, { passive: true });
+  dockSoon();
   if (!pk) { replaced(); return; } // a link with a broken key
-  bar.append(say, listBtn, pauseBtn, closeLink());
+  bar.append(say, lookBox, listBtn, pauseBtn, closeLink());
+  startLook();
   let t = 0;
   window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { renderPins(); placePanel(); }, 120); });
   window.addEventListener('hashchange', () => setTimeout(renderPins, 350));
   document.addEventListener('click', (e) => { if (!ours(e.target)) setTimeout(renderPins, 450); });
 
   call('/marks', { page: PAGE }).then((d) => {
-    try { localStorage.setItem('wf-me', '1'); } catch (e) {} // this device is hers: her looks are never counted as an open
+    try { localStorage.setItem('wf-me', '1'); } catch (e) {} // this device is hers: her looks are not counted as an open
     notes = (Array.isArray(d.marks) ? d.marks : []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, spot_path: x.spot_path || '', view: x.view || '', status: x.status, reply: x.reply || '' }));
     renderPins(); renderPanel();
   }).catch((x) => {

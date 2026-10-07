@@ -191,6 +191,9 @@ for (const l of literals(read('faery.js'))) if (!/keys:\s*$/.test(l.before)) scr
     fail('mark.js: a note must go to the server as "dark mode: " or "light mode: " in front of its spot, trimmed to the 150 characters the server keeps');
   }
   if (!/data-look/.test(hers) || !/wfm-look/.test(hers)) fail('mark.js: a note’s look must show as a small chip on its pin and in My notes');
+  if (!/pin\.style\.left = Math\.min\(window\.scrollX \+ r\.right - 4, window\.scrollX \+ root\.clientWidth - 22\)/.test(hers)) {
+    fail('mark.js: a pin on an edge to edge photo or section (and its light or dark chip) must be kept on screen, so it does not push the page sideways');
+  }
   const control = (hers.match(/const CONTROL = '[^;]*;/) || [''])[0];
   if (!/#theme-tab/.test(control) || !/\.theme-panel/.test(control) || !/button\[data-theme\]/.test(control)) fail('mark.js: the Light / Dark pill and its panel must count as controls in her part (a tap on them is not a note)');
   if (/(?:^|[',]\s*)\[data-theme\]/.test(control.replace(/(?:button|a)\[data-theme\]/g, ''))) fail('mark.js: a bare [data-theme] among her controls would match <html data-theme> and turn the whole page into a control');
