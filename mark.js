@@ -36,7 +36,11 @@
    no pill at all. Each note is saved with the look it was made in ("dark mode: " or "light mode: " in front of the
    spot, going by the device setting when she has not picked one), and shows as a small dark or light chip on its pin
    and in My notes. The pill and its panel count as controls (a tap on them is not a note), sit above the bar and the
-   note box, and move up above the bar (and the list) when they would sit under it. */
+   note box, and move up above the bar (and the list) when they would sit under it.
+   Edits done (Oct 7 2026): once her notes are all in, she taps "Edits done" on her bar (next to Close). That tells
+   the studio the edits can start (the same key, this page only: /ready). The button then waits ("Waiting on edits")
+   until the edits are done, and the bar says a note will be in her Studio. A second tap while waiting changes
+   nothing. It shows only once the server answers with where her edits stand, so this file can go up first. */
 (function () {
   'use strict';
   if (window.__wfMark) return;
@@ -74,6 +78,8 @@
   .wfm-btn { appearance: none; border: 0; border-radius: 999px; padding: 8px 14px; font: 600 14px 'Spectral', Georgia, serif; cursor: pointer;
     background: #f0b867; color: #1c1209; text-decoration: none; display: inline-block; }
   .wfm-btn.ghost { background: transparent; color: #efe6d4; border: 1px solid rgba(239, 230, 212, 0.4); }
+  .wfm-btn.wfm-edits.wait { background: transparent; color: #f2c77c; border: 1px solid rgba(240, 184, 103, 0.7); cursor: default; }
+  .wfm-btn.wfm-edits[disabled] { opacity: 0.6; cursor: default; }
   .wfm-hover { outline: 2px dashed #f0b867 !important; outline-offset: 3px !important; cursor: crosshair !important; }
   .wfm-pick { outline: 3px solid #f0b867 !important; outline-offset: 3px !important; }
   .wfm-pop { position: absolute; z-index: 2147483001; width: min(340px, calc(100vw - 20px)); padding: 14px; border-radius: 14px;
@@ -164,6 +170,33 @@
     marking = !marking; pauseBtn.textContent = marking ? 'Pause' : 'Keep marking';
     say.lastChild.textContent = marking ? HINT : 'paused, so the page works as usual.';
     clearHover(); closePop();
+  });
+
+  /* ---------------- Edits done: her go ahead for the edits ---------------- */
+  const editsBtn = el('button', 'wfm-btn wfm-edits', 'Edits done'); editsBtn.type = 'button'; editsBtn.hidden = true;
+  let edits = null, editsSending = false;
+  const SENT_SAY = 'sent for edits. You’ll get a note in your Studio when they’re done.';
+  function paintEdits() {
+    editsBtn.hidden = !edits; // only once the server says where her edits stand
+    const w = !!edits && edits.state === 'waiting';
+    editsBtn.classList.toggle('wait', w);
+    editsBtn.textContent = w ? 'Waiting on edits' : 'Edits done';
+    editsBtn.setAttribute('aria-disabled', w ? 'true' : 'false');
+    editsBtn.title = w ? 'Sent. You’ll get a note in your Studio when the edits are done.' : 'Tap once your notes are all in, and the edits start';
+  }
+  editsBtn.addEventListener('click', async () => {
+    if (!pk || editsSending || !edits) return;
+    if (edits.state === 'waiting') { say.lastChild.textContent = SENT_SAY; return; } // already sent: nothing changes
+    editsSending = true; editsBtn.disabled = true; editsBtn.textContent = 'Sending…';
+    try {
+      const res = await call('/ready', { page: PAGE });
+      if (res.edits) edits = res.edits;
+      say.lastChild.textContent = SENT_SAY;
+    } catch (x) {
+      if (x.code === 'bad_link') { editsSending = false; replaced(); return; }
+      say.lastChild.textContent = 'that didn’t send. Check your connection and tap Edits done again.';
+    }
+    editsSending = false; editsBtn.disabled = false; paintEdits();
   });
 
   /* ---------------- light or dark: the page both ways while she edits ---------------- */
@@ -415,20 +448,27 @@
   window.addEventListener('scroll', () => { if (!root.classList.contains('wfm-lift')) dockSoon(); }, { passive: true });
   dockSoon();
   if (!pk) { replaced(); return; } // a link with a broken key
-  bar.append(say, lookBox, listBtn, pauseBtn, closeLink());
+  bar.append(say, lookBox, listBtn, pauseBtn, editsBtn, closeLink());
   startLook();
   let t = 0;
   window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { renderPins(); placePanel(); }, 120); });
   window.addEventListener('hashchange', () => setTimeout(renderPins, 350));
   document.addEventListener('click', (e) => { if (!ours(e.target)) setTimeout(renderPins, 450); });
 
-  call('/marks', { page: PAGE }).then((d) => {
+  const load = () => call('/marks', { page: PAGE }).then((d) => {
     try { localStorage.setItem('wf-me', '1'); } catch (e) {} // this device is hers: her looks are not counted as an open
     notes = (Array.isArray(d.marks) ? d.marks : []).map((x) => ({ id: x.id, what: x.what, spot: x.spot, spot_path: x.spot_path || '', view: x.view || '', status: x.status, reply: x.reply || '' }));
-    renderPins(); renderPanel();
-  }).catch((x) => {
+    edits = d.edits && typeof d.edits === 'object' ? d.edits : null;
+    paintEdits(); renderPins(); renderPanel();
+  });
+  load().catch((x) => {
     if (x.code === 'bad_link') { replaced(); return; }
     say.lastChild.textContent = 'the server can’t be reached just now, so notes may not save. Try reloading in a minute.';
+  });
+  // back on this tab while the edits are being made: check again, so the button and her notes catch up
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || !pk || !edits || edits.state !== 'waiting' || popOpen) return;
+    load().catch((x) => { if (x.code === 'bad_link') replaced(); });
   });
 })();
 
