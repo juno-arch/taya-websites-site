@@ -96,6 +96,11 @@
   .wfm-panel .reply { margin-top: 6px; padding-left: 10px; border-left: 2px solid rgba(240, 184, 103, 0.5); color: #e6dccb; }
   .wfm-panel .none { color: #c9bfac; font-size: 14.5px; }
   .wfm-panel .mine { margin: -4px 0 12px; font-size: 14px; color: #c9bfac; }
+  .wfm-panel .ph { display: flex; align-items: center; justify-content: space-between; gap: 10px; position: sticky; top: -14px; z-index: 1; margin: -14px -14px 8px; padding: 10px 10px 6px 14px; background: #1b1a17; }
+  .wfm-panel .ph h2 { margin: 0; }
+  .wfm-panel .x { flex: none; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; margin: 0; border-radius: 50%; border: 1.5px solid rgba(240, 184, 103, 0.6); background: transparent;
+    color: #efe6d4; font: 400 26px/1 Georgia, serif; cursor: pointer; }
+  .wfm-panel .x:hover, .wfm-panel .x:focus-visible { background: rgba(240, 184, 103, 0.18); outline: none; }
   @media (prefers-reduced-motion: no-preference) { .wfm-pin { transition: transform 0.2s ease; } .wfm-pin:hover { transform: scale(1.12); } }`;
   const sty = document.createElement('style'); sty.textContent = css; document.head.appendChild(sty);
 
@@ -109,6 +114,12 @@
   const closeLink = () => { const a = el('a', 'wfm-btn ghost', 'Close'); a.href = exitUrl; return a; };
   const panel = el('section', 'wfm wfm-panel'); panel.hidden = true; panel.setAttribute('aria-label', 'Your notes');
   document.body.appendChild(panel);
+  // the title row, with a little X so the list can always be put away
+  const panelHead = () => {
+    const h = el('div', 'ph'); const x = el('button', 'x', '\u00d7'); x.type = 'button'; x.setAttribute('aria-label', 'Close my notes');
+    x.addEventListener('click', () => { panel.hidden = true; });
+    h.append(el('h2', '', 'Your notes'), x); return h;
+  };
   let marking = !!pk, notes = [], pinLayer = [];
 
   // the link's key no longer opens anything (a fresh one was made, or the mockup moved)
@@ -196,9 +207,9 @@
   /* ---------------- the note ---------------- */
   let pop = null, popOpen = false, picked = null;
   function closePop() { if (pop) pop.remove(); pop = null; popOpen = false; if (picked) picked.classList.remove('wfm-pick'); picked = null; }
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePop(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closePop(); panel.hidden = true; } });
   function openPop(n) {
-    closePop(); clearHover();
+    closePop(); clearHover(); panel.hidden = true; // one thing open at a time: the list never sits under a note box
     picked = n; n.classList.add('wfm-pick'); popOpen = true;
     const spot = spotOf(n), path = cssPath(n), view = viewNow();
     pop = el('div', 'wfm wfm-pop'); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Your note');
@@ -279,7 +290,7 @@
   function renderPanel(focusIndex) {
     panel.textContent = '';
     placePanel();
-    panel.append(el('h2', '', 'Your notes'), el('p', 'mine', 'Only you see these notes.'));
+    panel.append(panelHead(), el('p', 'mine', 'Only you see these notes.'));
     if (!notes.length) panel.append(el('p', 'none', 'Nothing yet. Tap anything on the page to leave a note.'));
     else {
       const ol = el('ol');
@@ -387,6 +398,11 @@
   .wfm-panel .reply { margin-top: 6px; padding-left: 10px; border-left: 2px solid rgba(240, 184, 103, 0.5); color: #e6dccb; }
   .wfm-panel .none { color: #c9bfac; font-size: 14.5px; }
   .wfm-panel .mypick { margin: -4px 0 12px; font-size: 14px; color: #c9bfac; }
+  .wfm-panel .ph { display: flex; align-items: center; justify-content: space-between; gap: 10px; position: sticky; top: -14px; z-index: 1; margin: -14px -14px 8px; padding: 10px 10px 6px 14px; background: #1b1a17; }
+  .wfm-panel .ph h2 { margin: 0; }
+  .wfm-panel .x { flex: none; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; margin: 0; border-radius: 50%; border: 1.5px solid rgba(240, 184, 103, 0.6); background: transparent;
+    color: #efe6d4; font: 400 26px/1 Georgia, serif; cursor: pointer; }
+  .wfm-panel .x:hover, .wfm-panel .x:focus-visible { background: rgba(240, 184, 103, 0.18); outline: none; }
   .wfm-link { appearance: none; background: none; border: 0; padding: 0; color: #f2c77c; font: inherit; text-decoration: underline; cursor: pointer; }
   .wfm-scrim { position: fixed; inset: 0; z-index: 2147483002; background: rgba(12, 11, 10, 0.72); display: grid; place-items: center;
     padding: 16px; overflow-y: auto; }
@@ -530,9 +546,9 @@
   /* ---------------- the note ---------------- */
   let pop = null, popOpen = false, picked = null;
   const closePop = () => { if (pop) pop.remove(); pop = null; popOpen = false; if (picked) picked.classList.remove('wfm-pick'); picked = null; };
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePop(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closePop(); panel.hidden = true; } });
   function openPop(n) {
-    closePop(); clearHover();
+    closePop(); clearHover(); panel.hidden = true; // one thing open at a time: the list never sits under a note box
     picked = n; n.classList.add('wfm-pick'); popOpen = true;
     const spot = spotOf(n);
     pop = el('div', 'wfm wfm-pop'); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Your note');
@@ -958,9 +974,15 @@
   }
   const panel = el('section', 'wfm wfm-panel'); panel.hidden = true; panel.setAttribute('aria-label', 'Your notes');
   document.body.appendChild(panel);
+  // the title row, with a little X so the list can always be put away
+  const panelHead = () => {
+    const h = el('div', 'ph'); const x = el('button', 'x', '\u00d7'); x.type = 'button'; x.setAttribute('aria-label', 'Close my notes');
+    x.addEventListener('click', () => { panel.hidden = true; });
+    h.append(el('h2', '', 'Your notes'), x); return h;
+  };
   function renderPanel(focusIndex) {
     panel.textContent = '';
-    panel.append(el('h2', '', 'Your notes'));
+    panel.append(panelHead());
     if (pickReady) {
       const mp = el('p', 'mypick', canMark() && myPick ? 'Your pick: ' + NAMES[myPick] + '. ' : 'No build picked yet. ');
       const ch = el('button', 'wfm-link', canMark() && myPick ? 'Change my pick' : 'Pick one'); ch.type = 'button';
