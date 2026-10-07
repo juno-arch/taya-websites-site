@@ -17,6 +17,14 @@ Every photo on this page is the studio's own. No stock photos are used. Captured
 ## From their Instagram, @lotus_studio_pottery (harvested by the main session, prospects/batch4/lotus-studio-pottery/ig/)
 - ig-cat-moon-bowl.webp: l01, a pale blue bowl being painted with a cat on a crescent moon. Black side bars cropped off, and the top 11% cropped to remove a jar label.
 
+## Oct 7 2026 rework (more of her own work; no new downloads)
+No new photos were fetched: no extra Instagram or website load was needed. Everything below is made from photos already saved above.
+- d-*.webp: detail crops of her own photos (d-lotus-cup, d-lotus-bowl, d-terracotta from g-terracotta-roses, d-purple-spoon, d-green-bowl, d-flower-mug, d-switch-plate, d-tumbler from p-tumbler, d-teapot-door from p-cottage-teapot, d-leaves, d-horse-cup, d-moon from the Instagram bowl).
+- g-terracotta-roses.webp, previously saved but unused, is now in the gallery.
+- ig-pitcher-wheel.webp: the Instagram turquoise pitcher on the wheel (l02, 640 x 367, the small one saved in prospects/batch4/lotus-studio-pottery/ig/).
+- The full gallery now shows all of her saved gallery photos, her Instagram bowl and pitcher, and her three photography prints.
+- Background patterns, drawn here (not photos), from her own colors and shapes: t-glaze-teal, t-glaze-violet, t-glaze-clay, t-glaze-berry (+ -dk dark twins; soft pooled glaze and speckle in the colors of her teal and turquoise bowls, violet speckled spoon rest, terracotta and her wine red tumbler), t-lotus (+ -dk, -band; her lotus outline), t-rings (+ -dk; the throwing rings of a thrown plate), t-drips (+ -dk; the drips on her tumbler). All low contrast, and words always sit on solid panels.
+
 ## Not used
 - Their old GoDaddy site's other images are GoDaddy stock (isteam/stock), and their new site (lotusstudiopottery.com) uses only Getty/GoDaddy stock, so none of those are here.
 - g-tiny-cup (raffle ticket lettering) and g-love-tumbler ("Love" and "SOUP" lettering) were cut for having words in the photo.
