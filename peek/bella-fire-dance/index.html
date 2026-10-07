@@ -377,19 +377,34 @@
   .why { margin-top: 26px; padding: 22px 24px; border-radius: 4px 22px 4px 22px; border: 1px solid rgba(243, 238, 246, 0.18); background: rgba(243, 238, 246, 0.04); }
   .why p { font-family: 'Yeseva One', Georgia, serif; font-size: clamp(19px, 2.2vw, 22px); line-height: 1.45; color: var(--on-band); }
   .why small { display: block; margin-top: 12px; font-size: 12.5px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(243, 238, 246, 0.75); }
-  /* Pollen's note Oct 7: the quote card is on fire. Flames lick up from its bottom edge, behind the words */
-  .why { position: relative; overflow: hidden; padding-bottom: 70px; isolation: isolate; }
+  /* Pollen's note Oct 7: the quote card is on fire, like a campfire: a wide bed of big overlapping flames with embers rising */
+  .why { position: relative; overflow: hidden; padding-bottom: 118px; isolation: isolate; }
   .why > * { position: relative; z-index: 1; }
-  .why > .why-fire { position: absolute; left: 0; right: 0; bottom: 0; height: 78px; z-index: 0; pointer-events: none; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 6px;
-    background: linear-gradient(to top, rgba(232, 120, 42, 0.38), rgba(232, 120, 42, 0)); }
-  .why-fire i { display: block; width: 26px; height: 54px; border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
-    background: radial-gradient(ellipse at 50% 85%, #fff2c2 0 18%, #f6bd62 34%, #e8782a 62%, rgba(232, 120, 42, 0) 74%);
-    transform-origin: 50% 100%; opacity: 0.9; filter: blur(0.6px); animation: why-flick 1.1s ease-in-out infinite alternate; }
-  .why-fire i:nth-child(2n) { height: 40px; width: 20px; animation-duration: 0.85s; animation-delay: -0.3s; }
-  .why-fire i:nth-child(3n) { height: 64px; animation-duration: 1.3s; animation-delay: -0.6s; }
-  .why-fire i:nth-child(5n) { height: 46px; animation-delay: -0.15s; }
-  @keyframes why-flick { 0% { transform: scale(1, 1) skewX(-3deg); opacity: 0.8; } 50% { transform: scale(0.92, 1.12) skewX(4deg); opacity: 1; } 100% { transform: scale(1.06, 0.9) skewX(-2deg); opacity: 0.85; } }
-  @media (prefers-reduced-motion: reduce) { .why-fire i { animation: none; } }
+  .why > .why-fire { position: absolute; left: -10px; right: -10px; bottom: -6px; height: 128px; z-index: 0; pointer-events: none; display: flex; align-items: flex-end; justify-content: center; }
+  .why-fire::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 100%;
+    background: radial-gradient(ellipse 70% 90% at 50% 100%, rgba(255, 120, 30, 0.55), rgba(200, 50, 20, 0.25) 45%, rgba(200, 50, 20, 0) 75%);
+    animation: why-glow 2.4s ease-in-out infinite alternate; }
+  .why-fire i { position: relative; display: block; flex: 0 0 auto; width: 58px; height: 96px; margin: 0 -14px;
+    border-radius: 50% 50% 40% 40% / 70% 70% 30% 30%;
+    background: radial-gradient(ellipse 60% 75% at 50% 82%, #fff4c9 0 12%, #ffd36b 26%, #ff9a2e 48%, #e2461c 70%, rgba(170, 30, 15, 0) 82%);
+    transform-origin: 50% 100%; mix-blend-mode: screen; filter: blur(1.4px);
+    animation: why-lick 0.9s ease-in-out infinite alternate; }
+  .why-fire i:nth-child(odd) { width: 72px; height: 118px; animation-duration: 1.15s; animation-delay: -0.4s; }
+  .why-fire i:nth-child(3n) { width: 46px; height: 78px; animation-duration: 0.7s; animation-delay: -0.2s; }
+  .why-fire i:nth-child(4n) { height: 104px; animation-name: why-lick-b; animation-duration: 1.3s; }
+  .why-fire i:nth-child(5n) { width: 64px; height: 88px; animation-delay: -0.65s; }
+  .why-fire b { position: absolute; bottom: 30px; width: 4px; height: 4px; border-radius: 50%; background: #ffcf6a; box-shadow: 0 0 6px 2px rgba(255, 140, 40, 0.8);
+    opacity: 0; animation: why-ember 2.6s ease-out infinite; }
+  .why-fire b:nth-of-type(1) { left: 22%; animation-delay: 0s; }
+  .why-fire b:nth-of-type(2) { left: 41%; animation-delay: -0.9s; animation-duration: 3.1s; }
+  .why-fire b:nth-of-type(3) { left: 58%; animation-delay: -1.7s; }
+  .why-fire b:nth-of-type(4) { left: 74%; animation-delay: -0.4s; animation-duration: 2.2s; }
+  .why-fire b:nth-of-type(5) { left: 33%; animation-delay: -2.1s; animation-duration: 3.4s; }
+  @keyframes why-lick { 0% { transform: scale(1, 0.92) skewX(-6deg); } 40% { transform: scale(0.88, 1.12) skewX(5deg); } 100% { transform: scale(1.08, 0.98) skewX(-3deg); } }
+  @keyframes why-lick-b { 0% { transform: scale(0.95, 1.05) skewX(7deg); } 50% { transform: scale(1.1, 0.88) skewX(-5deg); } 100% { transform: scale(0.9, 1.15) skewX(3deg); } }
+  @keyframes why-glow { from { opacity: 0.75; } to { opacity: 1; } }
+  @keyframes why-ember { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: 1; } 100% { opacity: 0; transform: translate(18px, -120px); } }
+  @media (prefers-reduced-motion: reduce) { .why-fire i, .why-fire::before { animation: none; } .why-fire b { display: none; } }
   .purpose { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-top: 22px; }
   .purpose li { font-size: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(244, 177, 74, 0.12); border: 1px solid rgba(244, 177, 74, 0.35); color: #fbe3bd; }
 
@@ -1017,7 +1032,7 @@
       <div class="why">
         <p>&ldquo;Through the experience of walking upon hot coals I found within me the courage and the determination to take each intentional step with precise focus.&rdquo;</p>
         <small>Bella, on why she walks</small>
-        <span class="why-fire" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="why-fire" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><b></b><b></b><b></b><b></b><b></b></span>
       </div>
       <div class="cta-row"><a class="btn" href="#booking" style="background:#f7c98a;border-color:#f7c98a;color:#2a1407">Book a free discovery call</a></div>
     </div>
