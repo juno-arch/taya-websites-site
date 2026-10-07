@@ -739,23 +739,64 @@
   <p class="vh" role="status" id="status-live"></p>
 </div>
 
-<div class="hero-band" id="hero">
-  <img class="hero-img" src="images/hero.jpg" width="2048" height="1365" alt="The Humboldt Fire Dragons in a line on the beach at nightfall, six dancers in white holding lit fire fans and a fire staff above their heads" fetchpriority="high">
-  <span class="hero-veil" aria-hidden="true"></span>
-  <div class="gutter">
-    <div class="wrap">
-      <header class="top">
-        <a class="mark" href="#flow" aria-label="Bella Fire Dance"><span class="script">Bella Fire Dance</span></a>
-        <nav aria-label="Sections">
+<style id="wf-snav">
+  /* ---------- STICKY NAV (Oct 7 2026): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; styled from this page's own colors and fonts ---------- */
+  :root { --sn-h: 60px; --sn-bg: #120f24; --sn-fg: #f3eef6; }
+  [id] { scroll-margin-top: calc(var(--sn-h) + 16px); }
+  #top, .snav-gap { scroll-margin-top: 0; }
+  .snav-wrap { position: sticky; top: 0; height: 0; z-index: 26; }
+  .snav { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; transition: transform 0.35s cubic-bezier(.3,.8,.3,1), background-color 0.25s ease, box-shadow 0.25s ease; }
+  .snav-gap { height: 78px; }
+  .snav-in { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; max-width: 1220px; margin: 0 auto; padding: 40px 20px 0; }
+  .snav .mark, .snav .wordmark, .snav-btn, .snav-links { pointer-events: auto; }
+  .snav .mark, .snav .wordmark { white-space: nowrap; min-width: 0; }
+  .snav-links { position: relative; }
+  .snav-btn { display: none; align-items: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-weight: 500; font-size: 15px; line-height: 1; letter-spacing: 0.02em; text-transform: none; color: var(--sn-fg); background: rgba(0, 0, 0, 0.3); border: 1px solid currentColor; border-radius: 999px; -webkit-appearance: none; appearance: none; }
+  .snav .mark { color: var(--on-band); }
+  .snav .mark .mk-sub { color: #f7c98a; }
+  .snav nav a { color: var(--on-band); text-shadow: 0 1px 2px rgba(8, 6, 18, 0.6), 0 0 12px rgba(8, 6, 18, 0.6); }
+  .snav nav a:hover, .snav nav a:focus-visible { color: #f7c98a; }
+  .snav.solid, .snav.open { background: color-mix(in srgb, var(--sn-bg) 94%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 10px 26px -18px rgba(0, 0, 0, 0.7); pointer-events: auto; }
+  .snav.solid .snav-in, .snav.open .snav-in { padding-top: 0; min-height: var(--sn-h); }
+  .snav.solid .snav-btn, .snav.open .snav-btn { background: transparent; }
+  .snav.solid .mark img { width: auto; height: 42px; }
+  .snav.tuck { transform: translateY(-110%); }
+  .snav a:focus-visible, .snav button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  @media (min-width: 761px) { .coach-grid > div:first-child { top: calc(var(--sn-h) + 24px); } }
+  @media (max-width: 760px) {
+    :root { --sn-h: 52px; }
+    .snav-gap { height: 98px; }
+    .snav-in { gap: 10px; }
+    .snav-btn { display: inline-flex; }
+    .snav .mark img { width: auto; height: 38px; }
+    .snav-js .snav-links { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; flex-wrap: nowrap; align-items: stretch; justify-content: flex-start; gap: 0; width: auto; margin: 0; padding: 6px 20px 12px; background: var(--sn-bg); box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.7); }
+    .snav-js.snav-open .snav-links, .snav.open .snav-links { display: flex; }
+    html:not(.snav-js) .snav-links { width: 100%; flex-wrap: wrap; }
+    .snav .snav-links a:not([hidden]) { display: block; padding: 13px 4px; font-size: 18px; line-height: 24px; text-align: left; text-shadow: none; border-bottom: 1px solid rgba(128, 128, 128, 0.28); }
+    .snav .snav-links a:last-of-type { border-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } .secbar { transition: none; } }
+  @media print { .snav-wrap { position: static; } .snav { position: static; } .snav-btn { display: none; } }
+</style>
+<div class="snav-wrap" id="snav-wrap">
+<header class="snav" id="snav">
+  <div class="snav-in">
+    <a class="mark" href="#flow" aria-label="Bella Fire Dance"><span class="script">Bella Fire Dance</span></a>
+    <button type="button" class="snav-btn" id="snav-btn" aria-expanded="false" aria-controls="snav-links"><span>Menu</span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4h10M2 7h10M2 10h10"/></svg></button>
+    <nav class="snav-links" id="snav-links" aria-label="Sections">
           <a href="#shows">Shows</a>
           <a href="#classes">Classes</a>
           <a href="#firewalk">Fire walking</a>
           <a href="#coaching">Coaching</a>
           <a href="#booking">Book</a>
         </nav>
-      </header>
-    </div>
   </div>
+</header>
+</div>
+<div class="hero-band" id="hero">
+  <img class="hero-img" src="images/hero.jpg" width="2048" height="1365" alt="The Humboldt Fire Dragons in a line on the beach at nightfall, six dancers in white holding lit fire fans and a fire staff above their heads" fetchpriority="high">
+  <span class="hero-veil" aria-hidden="true"></span>
+<div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-main gutter">
     <div class="wrap">
       <div class="hero-copy">
@@ -1957,6 +1998,33 @@
     [].forEach.call(document.querySelectorAll('[data-js]'), function (el) { el.hidden = false; });
     bar.hidden = false; vp.hidden = false;
     paint();
+  })();
+</script>
+<script>
+  /* sticky nav: stays at the top; Menu button on phones; tucks up while scrolling down and returns on scroll up (no tucking with reduced motion) */
+  (function () {
+    var bar = document.getElementById('snav'), wrap = document.getElementById('snav-wrap'), btn = document.getElementById('snav-btn'), links = document.getElementById('snav-links');
+    if (!bar || !wrap || !btn || !links) return;
+    document.documentElement.classList.add('snav-js');
+    var mq = window.matchMedia('(max-width: 760px)'), rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var last = window.pageYOffset || 0, open = false, tucked = false, raf = 0;
+    function tuck(t) { if (t === tucked) return; tucked = t; bar.classList.toggle('tuck', t); document.body.classList.toggle('nav-tuck', t); }
+    function setOpen(o) { open = o; bar.classList.toggle('open', o); btn.setAttribute('aria-expanded', o ? 'true' : 'false'); if (o) tuck(false); }
+    function update() {
+      raf = 0; var y = window.pageYOffset || 0;
+      bar.classList.toggle('solid', wrap.getBoundingClientRect().top <= 1);
+      if (!rm.matches && !open && y > 360 && y > last + 6 && !bar.contains(document.activeElement)) tuck(true);
+      else if (y < last - 6 || y <= 360 || open) tuck(false);
+      if (Math.abs(y - last) > 6 || y <= 360) last = y;
+    }
+    btn.addEventListener('click', function () { setOpen(!open); });
+    links.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { setOpen(false); btn.focus(); } });
+    document.addEventListener('click', function (e) { if (open && !bar.contains(e.target)) setOpen(false); });
+    bar.addEventListener('focusin', function () { tuck(false); });
+    window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+    window.addEventListener('resize', function () { if (!mq.matches && open) setOpen(false); update(); });
+    update();
   })();
 </script>
 </html>
