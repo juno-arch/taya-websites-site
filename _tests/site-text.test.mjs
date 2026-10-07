@@ -7,7 +7,7 @@
 //     build only, 5 spots through Dec 31, 2026), half to start, half at launch;
 //   a subscription comes with every site (called "care" until Oct 6 2026, when Pollen switched the word), monthly
 //     only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in; changes are the
-//     same in every tier (email anytime, as often as needed, reply within 2 business days, "I watch over your site:
+//     same in every tier (socials first, or email, as often as needed, reply within 2 business days, "I watch over your site:
 //     if it goes down, I know before you do, and if anything breaks, I fix it", big new things quoted first);
 //   the subscription is part of every new site; if they ever cancel it, the site is still theirs, every file and
 //     login handed over;
@@ -171,6 +171,30 @@ for (const l of literals(read('faery.js'))) if (!/keys:\s*$/.test(l.before)) scr
   if (!/const STORE = 'wf-pre-v1:' \+ PAGE;/.test(mark) || /localStorage\.(?:setItem|getItem|removeItem)\(STORE[,)]/.test(mark)) {
     fail('mark.js: her notes key (wf-pre-v1:/peek/SLUG/) must stay in sessionStorage, this tab only');
   }
+  // Light and dark in her notes bar (Oct 7 2026, Pollen: "I want to be able to see the site in dark and light mode when
+  // editing"): a Light / Dark / Auto switch in her part only, the Light / Dark pill on each mockup kept reachable, and each
+  // note saved with the look it was made in. (The hub's own rehearsal lists the bar's .wfm-btn buttons as "My notes, Pause,
+  // Close" and reads a pin's text as its number, so the switch is not a .wfm-btn and the chip on a pin is not text.)
+  const cut = mark.indexOf('if (window.__wfMark) return; window.__wfMark = true;');
+  const hers = cut > 0 ? mark.slice(0, cut) : mark, clients = cut > 0 ? mark.slice(cut) : '';
+  if (cut < 0) fail('mark.js: can not tell her part from the client part (the second part starts with window.__wfMark = true)');
+  if (!/const LOOK_STORE = 'wf-pre-theme-v1:' \+ PAGE;/.test(hers) || /localStorage\.(?:setItem|getItem|removeItem)\(LOOK_STORE[,)]/.test(hers)) {
+    fail('mark.js: her light or dark choice (wf-pre-theme-v1:/peek/SLUG/) must stay in sessionStorage, this tab only');
+  }
+  for (const w of ['Light', 'Dark', 'Auto']) if (!new RegExp(`\\['${w.toLowerCase()}', '${w}', '[^']+'\\]`).test(hers)) fail(`mark.js: her bar has no "${w}" button in the light or dark switch`);
+  if (!/lookBox = el\('div', 'wfm-seg'\)/.test(hers) || !/el\('button', '', x\[1\]\)/.test(hers) || !/role', 'group'/.test(hers) || !/aria-pressed/.test(hers)) {
+    fail('mark.js: her light or dark switch is a group of plain buttons (not .wfm-btn) with aria-pressed');
+  }
+  if (!/root\.setAttribute\('data-theme', v\)/.test(hers) || !/root\.removeAttribute\('data-theme'\)/.test(hers)) fail('mark.js: her switch must set data-theme on <html> (and take it off for Auto), like the pill on each mockup');
+  if (!/#theme-tab \[data-theme\], #theme-panel \[data-theme\]/.test(hers)) fail('mark.js: her switch must keep the pill’s (and a pill panel’s) aria-pressed in step');
+  if (!/withLook\(spot, look\)/.test(hers) || !/const pre = look \+ ' mode: ', room = 150 - pre\.length;/.test(hers) || !/const LOOK_RE = \/\^\(dark\|light\) mode: \/;/.test(hers)) {
+    fail('mark.js: a note must go to the server as "dark mode: " or "light mode: " in front of its spot, trimmed to the 150 characters the server keeps');
+  }
+  if (!/data-look/.test(hers) || !/wfm-look/.test(hers)) fail('mark.js: a note’s look must show as a small chip on its pin and in My notes');
+  const control = (hers.match(/const CONTROL = '[^;]*;/) || [''])[0];
+  if (!/#theme-tab/.test(control) || !/\.theme-panel/.test(control) || !/button\[data-theme\]/.test(control)) fail('mark.js: the Light / Dark pill and its panel must count as controls in her part (a tap on them is not a note)');
+  if (/(?:^|[',]\s*)\[data-theme\]/.test(control.replace(/(?:button|a)\[data-theme\]/g, ''))) fail('mark.js: a bare [data-theme] among her controls would match <html data-theme> and turn the whole page into a control');
+  for (const word of ['wfm-seg', 'wfm-look', 'wfm-lift', 'wf-pre-theme-v1', 'LOOK_STORE']) if (clients.includes(word)) fail(`mark.js: "${word}" belongs to her part only (the clients’ magic mockup stays as it was)`);
 }
 for (const [file, s] of scriptStrings) {
   for (const [re, what] of FORBIDDEN) {
@@ -335,7 +359,7 @@ for (const page of PAGES) {
   // every tier card on the main page lists everything its subscription includes (pricing-oct2026.md; Tended's
   // "Post once, show up everywhere" replaced "Your Google profile kept fresh" on Oct 6 2026), and what every plan's
   // subscription also includes (Oct 6 2026) is said once, in its own card right under the three, so the cards don't
-  // crowd ("Email me anytime and I make your changes" moved there from the Planted card, and "Holiday heads-ups"
+  // crowd ("I follow your socials and update your site as you post, or you email me" (Oct 7 2026; it was "Email me anytime and I make your changes") moved there from the Planted card, and "Holiday heads-ups"
   // replaced Planted's "A heads-up before holidays")
   {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
@@ -351,7 +375,7 @@ for (const page of PAGES) {
     if (!/call, text or email/.test(planted)) fail('index.html: the Planted card doesn’t say people call, text or email');
     if (!/Book button to the booking app you already use, if you have one/.test(planted)) fail('index.html: the Planted card doesn’t offer a Book button to the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
     // what every plan's subscription also includes: once, right under the three cards, word for word
-    const EVERY_PLAN = ['Email me anytime and I make your changes', 'Changes usually within 2 business days',
+    const EVERY_PLAN = ['I follow your socials and update your site as you post, or you email me', 'Changes usually within 2 business days',
       'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
       'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
     const html = read('index.html').replace(/<!--[\s\S]*?-->/g, '');
@@ -382,6 +406,13 @@ for (const page of PAGES) {
         if (!plainOf(answer[1]).includes(name)) fail(`index.html: the “What does your subscription include?” answer lacks “${name}”`);
       }
     }
+    // Oct 7 2026 (Pollen: "media first then email just cause it's one less thing they need to do"): the same plan line
+    // is in start.html's list and in the main page's JSON-LD, so the three places can't drift apart
+    const startEvery = (read('start.html').match(/const CARE_EVERY = \[([\s\S]*?)\];/) || [])[1];
+    if (!startEvery) fail('start.html: no CARE_EVERY list (what every plan’s subscription includes)');
+    else if ([...startEvery.matchAll(/'([^']*)'/g)].map((m) => m[1]).join('|') !== EVERY_PLAN.join('|')) fail('start.html: CARE_EVERY doesn’t match the every-plan card on the main page, line for line');
+    const ld = (read('index.html').match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1] || '';
+    if (!ld.includes('Every plan’s subscription also includes: ' + EVERY_PLAN[0])) fail('index.html: the Planted subscription JSON-LD doesn’t carry the every-plan card’s first line (socials first, then email)');
   }
   // 3. Planted gets free email forwarding; only sending from their own address needs Tended
   if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');

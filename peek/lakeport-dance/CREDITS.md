@@ -9,7 +9,8 @@ This is a kids' dance studio. Rule: no child's face close up, and no cropping ki
 - g-teachers.webp: two of the teachers dancing side by side at the barre (fbid 1206961301235741, a video still, 1170 x 887). The printed words on one T-shirt are painted out to plain shirt. Studio section.
 - g-mirror.webp: a teacher from behind leading a full class, seen in the mirror wall (fbid 1206961067902431). Right part of the photo, 1000 x 1080; the class in the mirror is small. Gallery.
 - g-studio.webp: a dancer at the barre seen from behind, between the navy curtains and the windows (fbid 1245176464080891). Middle of the photo, 497 x 465. Gallery.
-- studio-barre.webp: their studio barres and wood floor, from the right edge of a July 21 2026 royal dance camp photo (fbid 1493909592540909). The empty wall; 463 x 820. Tuition section.
+- class-tuition.webp: two little dancers seen from behind in a black leotard and a magenta tutu, a teacher beside them, from the right foreground of their Sep 15 2025 Pre Ballet class photo (fbid 1245176464080891, 2048 px original; the same photo g-studio.webp is cut from, a different part of it). Native crop, 615 x 1090, no resizing, gentle sharpen. Tuition section (Oct 7 2026, replaced studio-barre.webp at Pollen's note "Switch photo").
+- studio-barre.webp: RETIRED Oct 7 2026, no longer on the page. Was their studio barres and wood floor, from the right edge of a July 21 2026 royal dance camp photo (fbid 1493909592540909). The empty wall; 463 x 820.
 - Gentle sharpen (UnsharpMask 1.2, 60, 2), no upscaling.
 
 ## Their artwork (used as masks, so it can be colored)

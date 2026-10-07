@@ -61,7 +61,7 @@
   // what care does for each build, in the garden words of its name (the care row under Payments); one short line
   // each, from "What care includes" in pricing-oct2026.md (the full lists are on webfaery.love's price cards)
   const CARE_SAY = {
-    maiden: 'Keeps your site healthy: hosting, your web address, backups, your changes whenever you email me, and a monthly check-in.',
+    maiden: 'Keeps your site healthy: hosting, your web address, backups, your changes as I follow your socials or whenever you email me, and a monthly check-in.',
     mother: 'Tending as the seasons change: everything in the Planted subscription, plus your posts showing up everywhere, email from your own address and a seasonal refresh.',
     crone: 'Keeps you in full bloom: everything in the Tended subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
@@ -937,6 +937,30 @@
     $('#list-empty-text').textContent = cur === 'care' || cur === 'resting'
       ? 'Nothing on your list. Your site is in good hands.'
       : 'Nothing on your list right now. Rest easy, I’ve got the next bit.';
+    // once the list is empty, say what is happening now and what comes after, so nobody wonders
+    const nx = $('#list-next');
+    nx.replaceChildren();
+    if (!open.length) {
+      const ci = stageIndex(cur);
+      const here = STAGES[ci];
+      const after = STAGES[ci + 1];
+      const lines = [];
+      if (cur === 'care') {
+        lines.push(['Next', 'I check in by email about once a month. Anything you want changed, just email me.']);
+      } else if (here) {
+        if (cur !== 'getting_started' && STAGE_SAY[here[0]]) lines.push(['Right now', STAGE_SAY[here[0]]]);
+        if (after && STAGE_SAY[after[0]]) {
+          const st = me.timeline.stages.find((x) => x.key === after[0]) || {};
+          const d = shortDate(st.date);
+          lines.push(['Next', (st.label || after[1]) + '. ' + STAGE_SAY[after[0]] + (d && !isPast(st.date) ? ' About ' + d + '.' : '')]);
+        }
+      }
+      nx.append(...lines.map(([k, t]) => {
+        const row = make('span');
+        row.append(make('b', null, k + ': '), document.createTextNode(t));
+        return row;
+      }));
+    }
     const fold = $('#done-fold');
     fold.hidden = !done.length;
     $('#done-sum').textContent = 'Done (' + done.length + ')';
@@ -1431,7 +1455,7 @@
       else {
         name = 'Subscription';
         amt = money(p.amount) + (p.period === 'year' ? ' a year' : ' a month');
-        sub = (CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes whenever you email me.') +
+        sub = (CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes as I follow your socials or whenever you email me.') +
           (p.state === 'due' && starts ? ' Your subscription begins ' + starts + ', right where settling in leaves off.' : '');
         payLabel = 'Start my subscription';
         thanks = 'Set up? Thank you! It shows here once it’s running. No need to do it again.';

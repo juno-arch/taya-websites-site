@@ -771,6 +771,165 @@
   .charm-trail .ct-ch { filter: drop-shadow(2px 2px 0 var(--ct-sh, #f6a8c8)); }
   @media print { .charm-trail { display: none; } }
 </style>
+<style id="lp-art">
+  /* ---------- ART: her merch prints, used like stickers on a flash sheet ----------
+     The peach checkerboard, the memphis cars and the two tribal prints come off her windbreakers (images/pat-*, stk-*).
+     House rule for all of it: words sit on a solid pastel ground or on a panel. Patterns only live behind panels,
+     in bands and ribbons, and around photos. Nothing here moves. Dark mode swaps in deep tinted twins. */
+  :root {
+    --g-pink: #fbcfe2; --g-butter: #fdef9f; --g-blue: #cfe3fa; --g-mint: #c9eedc; --g-lav: #e0d2fa;
+    --pat-lilac: #c9a7f2; --pat-white: #fdf9ff; --night-a: #2a1d4a; --night-b: #46337a;
+    --bw-base: #ffffff; --bw-ink: #1a1420;
+    --checker: url('images/pat-peach-checker.svg'); --checker-lg: url('images/pat-peach-checker-lg.svg'); --checker-sm: url('images/pat-peach-checker-sm.svg');
+    --memphis: url('images/pat-memphis.webp'); --memphis-blend: multiply;
+    --die: #ffffff; --sticker-sh: rgba(26, 20, 32, 0.3);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --g-pink: #331c2c; --g-butter: #2e2316; --g-blue: #1a2840; --g-mint: #14332c; --g-lav: #2a1f45;
+      --pat-lilac: #2a1f45; --pat-white: #43326f; --night-a: #1d1432; --night-b: #33265a;
+      --bw-base: #1b1420; --bw-ink: #e9dff0;
+      --checker: url('images/pat-peach-checker-dk.svg'); --checker-lg: url('images/pat-peach-checker-lg-dk.svg'); --checker-sm: url('images/pat-peach-checker-sm-dk.svg');
+      --memphis: url('images/pat-memphis-dk.svg'); --memphis-blend: normal;
+      --die: #efe4ee; --sticker-sh: rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --g-pink: #331c2c; --g-butter: #2e2316; --g-blue: #1a2840; --g-mint: #14332c; --g-lav: #2a1f45;
+    --pat-lilac: #2a1f45; --pat-white: #43326f; --night-a: #1d1432; --night-b: #33265a;
+    --bw-base: #1b1420; --bw-ink: #e9dff0;
+    --checker: url('images/pat-peach-checker-dk.svg'); --checker-lg: url('images/pat-peach-checker-lg-dk.svg'); --checker-sm: url('images/pat-peach-checker-sm-dk.svg');
+    --memphis: url('images/pat-memphis-dk.svg'); --memphis-blend: normal;
+    --die: #efe4ee; --sticker-sh: rgba(0, 0, 0, 0.5);
+  }
+
+  /* full-bleed pastel grounds, one per section, so the page walks through pink, butter, cornflower, mint and lavender */
+  .sec { position: relative; isolation: isolate; overflow-x: clip; }
+  .g-pink { background: var(--g-pink); --edge: var(--g-pink); }
+  .g-butter { background: var(--g-butter); --edge: var(--g-butter); }
+  .g-blue { background: var(--g-blue); --edge: var(--g-blue); }
+  .g-mint { background: var(--g-mint); --edge: var(--g-mint); }
+  .g-lav { background: var(--g-lav); --edge: var(--g-lav); }
+  .g-butter .label::before { background: var(--pink); }
+
+  /* edges: a scalloped lip in the section's own color, a thin black and white tribal strip, or a checker ribbon */
+  .sc, .tr, .rb { border-top-width: 0; }
+  .sc::before { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: -12px; height: 12px; pointer-events: none;
+    background: radial-gradient(circle at 50% 100%, var(--edge) 0 9.5px, var(--line) 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
+  .tr::before { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: -26px; height: 26px; box-sizing: border-box; pointer-events: none;
+    background: var(--bw-base); border-block: 2px solid var(--line); }
+  .tr::after { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: -24px; height: 22px; pointer-events: none; background: var(--bw-ink);
+    -webkit-mask: url('images/pat-bw-tribal-mask.webp') 0 -78px / 152px 198px repeat-x; mask: url('images/pat-bw-tribal-mask.webp') 0 -78px / 152px 198px repeat-x; }
+  .rb { z-index: 2; }
+  .rb::before { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: -40px; height: 40px; box-sizing: border-box; pointer-events: none;
+    border-block: 2px solid var(--line); background: var(--checker-sm) 0 0 / 144px 144px; }
+
+  /* the art layers: .art sits over the ground and under the words, .over sits on top (stickers), both ignore the pointer */
+  .art { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .art.over { z-index: 2; overflow: visible; }
+  .stk { position: absolute; display: block; height: auto; user-select: none; -webkit-user-select: none;
+    left: var(--x, auto); right: var(--xr, auto); top: var(--y, auto); bottom: var(--yb, auto);
+    width: calc(var(--w, 60px) * var(--s, 1)); rotate: var(--r, 0deg);
+    filter: drop-shadow(1.5px 0 0 var(--die)) drop-shadow(-1.5px 0 0 var(--die)) drop-shadow(0 1.5px 0 var(--die)) drop-shadow(0 -1.5px 0 var(--die)) drop-shadow(2px 3px 0 var(--sticker-sh)); }
+  .peek { position: absolute; display: block; bottom: -22px; width: 176px; height: 84px; object-fit: cover; object-position: 50% var(--py, 10%);
+    left: var(--x, auto); right: var(--xr, auto); rotate: var(--r, -4deg);
+    border: 2px solid var(--line); border-radius: 16px; box-shadow: 5px 5px 0 var(--c, var(--pink)); }
+  @media (max-width: 760px) { :root { --s: 0.78; } .peek { width: 140px; height: 68px; } }
+  @media (max-width: 560px) { .hide-s { display: none; } }
+  @media (max-width: 340px) {
+    :root { --s: 0.6; }
+    .tile-btn { padding: 0 9px; font-size: 12.5px; }
+    .menu .m-price { white-space: normal; }
+  }
+  @supports not (overflow: clip) { body { overflow-x: hidden; } }
+
+  /* the sign: her purple tribal print, as the wall behind it. The sign box is black, so its tubes keep their glow. */
+  .sign-pat { background: var(--pat-lilac); --edge: var(--pat-lilac); }
+  .sign-pat::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--pat-white);
+    -webkit-mask: url('images/pat-purple-tribal-mask.webp') 0 0 / 246px 306px repeat; mask: url('images/pat-purple-tribal-mask.webp') 0 0 / 246px 306px repeat; }
+
+  @media (max-width: 760px) { #sign.sec { padding-bottom: 100px; } }
+
+  /* the three tiles sit on black and white tribal mats, with an offset in each tile's color */
+  #hello > .wrap { position: relative; }
+  #hello.sec { padding-bottom: 116px; }
+  #hello .tiles { gap: 44px; margin-top: 36px; }
+  .tile:nth-child(1) { --off: var(--pink); } .tile:nth-child(2) { --off: var(--butter); } .tile:nth-child(3) { --off: var(--blue); }
+  .tile::before { content: ""; position: absolute; inset: -12px; z-index: 0; background: var(--bw-base); border: 2px solid var(--line); border-radius: 26px; box-shadow: 6px 6px 0 var(--off); }
+  .tile::after { content: ""; position: absolute; inset: -10px; z-index: 0; border-radius: 24px; background: var(--bw-ink);
+    -webkit-mask: url('images/pat-bw-tribal-mask.webp') 0 0 / 152px 198px repeat; mask: url('images/pat-bw-tribal-mask.webp') 0 0 / 152px 198px repeat; }
+  .tile .photo { z-index: 1; box-shadow: none; }
+  @media (max-width: 760px) {
+    #hello .tiles { gap: 22px; margin-top: 30px; }
+    .tile::before { inset: -7px; border-radius: 20px; box-shadow: 4px 4px 0 var(--off); }
+    .tile::after { inset: -5px; border-radius: 18px; -webkit-mask-size: 114px 148px; mask-size: 114px 148px; }
+  }
+
+  /* jackpot: the purple tribal in deep night colors, like casino carpet. Her words sit on the black card. */
+  #lucky.band { background: var(--night-a); isolation: isolate; }
+  #lucky.band::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--night-b);
+    -webkit-mask: url('images/pat-purple-tribal-mask.webp') 0 0 / 246px 306px repeat; mask: url('images/pat-purple-tribal-mask.webp') 0 0 / 246px 306px repeat; }
+  #lucky .slot-grid > div:first-child { background: var(--band); border: 2px solid var(--on-band); border-radius: 22px; padding: 26px 28px 30px; box-shadow: 8px 8px 0 var(--pink); }
+
+  /* the shop opens under a peach checkerboard awning, with her title on a panel in front of it */
+  #shop.sec { padding-top: 0; }
+  .shop-band { position: relative; isolation: isolate; margin: 0 -20px 8px; padding: 46px 20px 66px; }
+  .shop-band::before, .shop-band::after { content: ""; position: absolute; left: 0; right: 0; top: 0; z-index: -1; pointer-events: none;
+    -webkit-mask: linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 18px) no-repeat, radial-gradient(circle at 50% 0, #000 17.5px, transparent 18px) 0 100% / 36px 18px repeat-x;
+    mask: linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 18px) no-repeat, radial-gradient(circle at 50% 0, #000 17.5px, transparent 18px) 0 100% / 36px 18px repeat-x; }
+  .shop-band::before { bottom: -3px; background: var(--line); }
+  .shop-band::after { bottom: 0; background: var(--checker) 0 0 / 240px 240px; }
+  .shop-band .shop-head { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 20px 26px 22px; box-shadow: 7px 7px 0 var(--lav); }
+  .shop-tabs button { background: var(--c, var(--card)); color: #1a1420; box-shadow: 3px 3px 0 var(--line); }
+  .shop-tabs button:nth-child(5n+1) { --c: var(--pink); } .shop-tabs button:nth-child(5n+2) { --c: var(--butter); } .shop-tabs button:nth-child(5n+3) { --c: var(--blue); }
+  .shop-tabs button:nth-child(5n+4) { --c: var(--mint); } .shop-tabs button:nth-child(5n) { --c: var(--lav); }
+  .bag-btn { background: var(--butter); color: #1a1420; box-shadow: 4px 4px 0 var(--line); }
+  .drop-bar { background: var(--g-butter); box-shadow: 4px 4px 0 var(--line); }
+  .drop-bar[data-state="drop"] { background: var(--g-pink); }
+  .drop-bar b::before, .drop-bar[data-state="drop"] b::before { background: var(--pink); }
+  .shop-care details { background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 0 16px; box-shadow: 4px 4px 0 var(--c, var(--pink)); }
+  .shop-care details:nth-child(2) { --c: var(--butter); } .shop-care details:nth-child(3) { --c: var(--blue); }
+  @media (max-width: 760px) { .shop-care { gap: 14px; } .shop-band { padding-bottom: 60px; } }
+
+  @media (max-width: 1000px) { .menu .m-price small { white-space: normal; } }
+  @media (min-width: 761px) and (max-width: 860px) { .views-card { grid-template-columns: minmax(0, 1fr); } .views-head { flex-direction: row; align-items: baseline; } }
+
+  /* pastel filled buttons and chips with black outlines and offsets */
+  .btn:not(.quiet) { background: var(--pink); color: #1a1420; border-color: var(--line); box-shadow: 4px 4px 0 var(--line); }
+  .btn:not(.quiet):hover { background: var(--butter); box-shadow: 5px 5px 0 var(--line); }
+  .bk-card .bk-go:not(.ghost), .cf-form .bk-go:not(.ghost), .bag .bk-go:not(.ghost) { background: var(--pink); color: #1a1420; border-color: var(--line); box-shadow: 3px 3px 0 var(--line); }
+  .gal-more button { background: var(--butter); color: #1a1420; box-shadow: 4px 4px 0 var(--line); }
+  .reach a { background: var(--pink); color: #1a1420; box-shadow: 3px 3px 0 var(--line); }
+  .reach a:nth-child(2n) { background: var(--butter); }
+  .reach a:hover { background: var(--mint); }
+  .care-tabs button { box-shadow: 3px 3px 0 var(--line); }
+  .loves li { background: var(--c, var(--pink)); color: #1a1420; border: 2px solid var(--line); box-shadow: 3px 3px 0 var(--line); }
+  .loves li:nth-child(4n+2) { --c: var(--butter); } .loves li:nth-child(4n+3) { --c: var(--blue); } .loves li:nth-child(4n) { --c: var(--mint); }
+  .pull { background: var(--g-butter); box-shadow: 5px 5px 0 var(--pink); }
+  .faq-list { background: var(--card); border: 2px solid var(--line); border-radius: 20px; padding: 2px 22px; box-shadow: 8px 8px 0 var(--pink); }
+  .faq-list details:first-child { border-top: 0; }
+  .faq-list details:last-child { border-bottom: 0; }
+  @media (max-width: 760px) { .faq-list { padding-inline: 16px; box-shadow: 5px 5px 0 var(--pink); } }
+
+  /* About: her photo on a memphis cars mat. Instagram: the six posts on a memphis board. */
+  .mat { position: relative; isolation: isolate; padding: 36px; border: 2px solid var(--line); border-radius: 28px; background: var(--g-pink); box-shadow: 8px 8px 0 var(--line); }
+  .mat::before, #insta .ig-grid::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: var(--memphis) 0 0 / 258px 330px; mix-blend-mode: var(--memphis-blend); }
+  .mat .photo { box-shadow: none; }
+  .about .credit { margin-top: 36px; }
+  #insta .ig-grid { position: relative; isolation: isolate; padding: 26px; gap: 12px; border: 2px solid var(--line); border-radius: 24px; background: var(--g-butter); box-shadow: 8px 8px 0 var(--line); }
+  @media (max-width: 760px) {
+    .mat { padding: 20px; border-radius: 22px; box-shadow: 5px 5px 0 var(--line); }
+    #insta .ig-grid { padding: 14px; gap: 8px; border-radius: 20px; box-shadow: 5px 5px 0 var(--line); }
+    .mat::before, #insta .ig-grid::before { background-size: 200px 256px; }
+  }
+
+  /* footer: the big checkerboard is the ground, her words sit on a card in front of it */
+  footer.foot-pat { background: var(--checker-lg) 0 0 / 360px 360px; }
+  footer .wrap, #letters .news-wrap { position: relative; }
+  .foot-card { position: relative; background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 28px 28px 24px; box-shadow: 8px 8px 0 var(--pink); }
+  @media (max-width: 560px) { .foot-card { padding: 22px 18px 18px; box-shadow: 5px 5px 0 var(--pink); } }
+</style>
 
 <a class="skip" href="#hello">Skip to the page</a>
 
@@ -850,7 +1009,7 @@
   })();
 </script>
 
-<div class="views gutter" id="views" hidden>
+<div class="views gutter sec rb g-pink" id="views" hidden>
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
@@ -868,7 +1027,8 @@
   <p class="vh" role="status" id="views-live"></p>
 </div>
 
-<section id="sign" class="gutter sign-sec" aria-labelledby="sign-h">
+<section id="sign" class="gutter sign-sec sec sc sign-pat" aria-labelledby="sign-h">
+  <div class="art over" aria-hidden="true"><img class="stk hide-s" src="images/stk-smiley.svg" width="96" height="96" alt="" loading="lazy" style="--x:15%;--y:70px;--w:64px;--r:-10deg"><img class="stk hide-s" src="images/stk-flower.svg" width="96" height="96" alt="" loading="lazy" style="--xr:14%;--y:110px;--w:60px;--r:9deg"><img class="stk" src="images/stk-yinyang.svg" width="96" height="96" alt="" loading="lazy" style="--x:5%;--yb:26px;--w:52px;--r:8deg"><img class="stk" src="images/stk-cherry.svg" width="96" height="96" alt="" loading="lazy" style="--xr:5%;--yb:32px;--w:54px;--r:-7deg"></div>
   <div class="wrap sign-wrap">
     <h2 class="vh" id="sign-h">Right now</h2>
     <div class="sign-hang">
@@ -884,7 +1044,7 @@
   </div>
 </section>
 
-<section id="hello" class="gutter" style="border-top:0">
+<section id="hello" class="gutter sec sc g-butter">
   <div class="wrap">
     <p class="label with-pill"><span>Handmade &middot; one of a kind &middot; solid 14kt gold</span> <span class="tag" data-go="maiden">Every build</span></p>
     <div class="tiles">
@@ -892,10 +1052,12 @@
       <a class="tile reveal" href="#shop" data-cat="jewelry"><figure class="photo flash"><img src="images/p-rainbow.webp" width="640" height="640" alt="A chunky gold charm cluster with a rainbow lattice sunstone, a smiley and a puffy flower" loading="lazy"></figure><span class="tile-btn">Jewelry</span></a>
       <a class="tile reveal" href="#shop" data-cat="apparel"><figure class="photo flash"><img src="images/p-peach.webp" width="640" height="640" alt="A cropped hooded windbreaker in a peach and butter checkerboard of little smileys" loading="lazy"></figure><span class="tile-btn">Apparel</span></a>
     </div>
+    <div class="art over" aria-hidden="true"><img class="stk" src="images/stk-car.webp" width="249" height="106" alt="" loading="lazy" style="--x:1%;--yb:-80px;--w:124px;--r:-6deg"><img class="stk hide-s" src="images/stk-boombox.svg" width="128" height="88" alt="" loading="lazy" style="--x:33%;--yb:-80px;--w:70px;--r:7deg"><img class="stk" src="images/stk-sailboat.svg" width="96" height="107" alt="" loading="lazy" style="--x:50%;--yb:-98px;--w:66px;--r:-5deg"><img class="stk" src="images/stk-dryer.svg" width="120" height="122" alt="" loading="lazy" style="--xr:11%;--yb:-92px;--w:58px;--r:12deg"><img class="stk" src="images/stk-daisy.webp" width="71" height="76" alt="" loading="lazy" style="--xr:0.5%;--y:-56px;--w:50px;--r:10deg"><img class="stk hide-s" src="images/stk-leaf.svg" width="58" height="132" alt="" loading="lazy" style="--x:70.5%;--yb:-102px;--w:32px;--r:-12deg"></div>
   </div>
 </section>
 
-<section id="book" class="gutter">
+<section id="book" class="gutter sec sc g-blue">
+  <div class="art over" aria-hidden="true"><img class="stk" src="images/stk-flower.svg" width="96" height="96" alt="" loading="lazy" style="--xr:3%;--y:10px;--w:56px;--r:12deg"><img class="stk hide-s" src="images/stk-cherry.svg" width="96" height="96" alt="" loading="lazy" style="--xr:12%;--y:22px;--w:48px;--r:-8deg"><img class="stk hide-s" src="images/stk-smiley.svg" width="96" height="96" alt="" loading="lazy" style="--x:3%;--yb:22px;--w:52px;--r:-9deg"></div>
   <div class="wrap two" style="align-items:start">
     <div class="bk-copy">
       <p class="label with-pill"><span>Book a tattoo</span> <span class="tag" data-go="maiden">Every build</span></p>
@@ -985,7 +1147,7 @@
   </div>
 </section>
 
-<section id="tattoos" class="gutter" style="background:var(--ground-2)">
+<section id="tattoos" class="gutter sec tr g-lav">
   <div class="wrap">
     <p class="label with-pill"><span>Gallery</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">80s babes <em>forever and ever</em> ⭐️</h2>
@@ -1078,8 +1240,8 @@
   </div>
 </section>
 
-<section id="shop" class="gutter">
-  <div class="wrap">
+<section id="shop" class="gutter sec g-mint">
+  <div class="shop-band"><div class="wrap">
     <div class="shop-head">
       <div>
         <p class="label with-pill"><span>Shop Pastel</span> <span class="tag" data-go="maiden">Every build</span> <span class="tag" data-go="crone" data-show="crone all">Selling right here: In Bloom</span></p>
@@ -1087,6 +1249,8 @@
       </div>
       <button type="button" class="bag-btn" id="bag-open" data-show="crone all" data-thing="shop checkout" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Bag <b id="bag-count">0</b></button>
     </div>
+  </div></div>
+  <div class="wrap">
     <div class="shop-tabs" role="group" aria-label="Show">
       <button type="button" data-cat="all" aria-pressed="true">Everything</button>
       <button type="button" data-cat="jewelry" aria-pressed="false">Gold jewelry</button>
@@ -1115,7 +1279,8 @@
   </div>
 </section>
 
-<section id="aftercare" class="gutter" style="background:var(--ground-2)">
+<section id="aftercare" class="gutter sec sc g-pink">
+  <div class="art" aria-hidden="true"><img class="peek" src="images/p-pr-glitch.webp" width="640" height="1005" alt="" loading="lazy" style="--xr:6%;--r:4deg;--py:30%;--c:var(--butter)"></div>
   <div class="wrap">
     <p class="label with-pill"><span>Aftercare</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Prepare <em>/ aftercare</em></h2>
@@ -1168,7 +1333,7 @@
   </div>
 </section>
 
-<section id="road" class="gutter" data-show="mother crone all" data-fold data-thing="guest spot and convention dates">
+<section id="road" class="gutter sec sc g-butter" data-show="mother crone all" data-fold data-thing="guest spot and convention dates">
   <div class="wrap">
     <p class="label with-pill"><span>monthly travels</span> <span class="tag" data-go="mother">Tended + In Bloom</span></p>
     <h2 class="reveal">Am I coming to a city <em>near you?</em></h2>
@@ -1182,7 +1347,7 @@
   </div>
 </section>
 
-<section id="consent" class="gutter" data-show="mother crone all" data-fold>
+<section id="consent" class="gutter sec sc g-blue" data-show="mother crone all" data-fold>
   <div class="wrap consent">
     <div>
       <p class="label with-pill"><span>Client consent form</span> <span class="tag" data-go="mother">Tended + In Bloom</span></p>
@@ -1232,10 +1397,13 @@
   </div>
 </section>
 
-<section id="about" class="gutter">
+<section id="about" class="gutter sec sc g-mint">
   <div class="wrap about">
     <div>
-      <figure class="reveal photo flash"><img src="images/about-linnea.webp" width="1000" height="1500" alt="Linnea at work, gloved hands tattooing, in black and white" loading="lazy"></figure>
+      <div class="mat">
+        <figure class="reveal photo flash"><img src="images/about-linnea.webp" width="1000" height="1500" alt="Linnea at work, gloved hands tattooing, in black and white" loading="lazy"></figure>
+        <div class="art over" aria-hidden="true"><img class="stk" src="images/stk-daisy.webp" width="71" height="76" alt="" loading="lazy" style="--x:-5%;--y:-22px;--w:46px;--r:-10deg"><img class="stk" src="images/stk-boombox.svg" width="128" height="88" alt="" loading="lazy" style="--xr:-5%;--y:-30px;--w:60px;--r:9deg"><img class="stk" src="images/stk-car.webp" width="249" height="106" alt="" loading="lazy" style="--x:-9%;--yb:-22px;--w:112px;--r:-8deg"><img class="stk hide-s" src="images/stk-sailboat.svg" width="96" height="107" alt="" loading="lazy" style="--xr:-34px;--y:52%;--w:60px;--r:7deg"></div>
+      </div>
       <p class="credit">Photo by Cally Nicole, @found.wanting</p>
     </div>
     <div>
@@ -1253,7 +1421,8 @@
   </div>
 </section>
 
-<section id="words" class="gutter" style="background:var(--ground-2)">
+<section id="words" class="gutter sec tr g-lav">
+  <div class="art" aria-hidden="true"><img class="peek" src="images/p-pr-girl.webp" width="640" height="853" alt="" loading="lazy" style="--x:5%;--r:-5deg;--py:6%;--c:var(--pink)"></div>
   <div class="wrap">
     <p class="label with-pill"><span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="vh">Praise</h2>
@@ -1277,7 +1446,8 @@
   </div>
 </section>
 
-<section id="visit" class="gutter">
+<section id="visit" class="gutter sec sc g-butter">
+  <div class="art" aria-hidden="true"><img class="peek" src="images/p-pr-glitch.webp" width="640" height="1005" alt="" loading="lazy" style="--xr:9%;--r:-3deg;--py:62%;--c:var(--blue)"></div>
   <div class="wrap visit-grid">
     <figure class="reveal photo flash"><img src="images/ig-studio.webp" width="480" height="640" alt="A studio with pink walls, a rainbow striped ceiling, a lime green chair and a black and white swirl painted floor" loading="lazy"></figure>
     <div>
@@ -1294,7 +1464,7 @@
   </div>
 </section>
 
-<section id="insta" class="gutter" data-show="mother crone all" data-fold data-thing="Instagram feed">
+<section id="insta" class="gutter sec sc g-pink" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
     <div class="ig-head">
       <div>
@@ -1320,8 +1490,9 @@
   </div>
 </section>
 
-<section id="letters" class="gutter" data-show="mother crone all" data-fold>
+<section id="letters" class="gutter sec sc g-blue" data-show="mother crone all" data-fold>
   <div class="wrap news-wrap">
+    <div class="art over" aria-hidden="true"><img class="stk" src="images/stk-dryer.svg" width="120" height="122" alt="" loading="lazy" style="--xr:-1.5%;--y:-34px;--w:54px;--r:14deg"><img class="stk hide-s" src="images/stk-daisy.webp" width="71" height="76" alt="" loading="lazy" style="--xr:44%;--y:-26px;--w:44px;--r:-8deg"><img class="stk hide-s" src="images/stk-leaf.svg" width="58" height="132" alt="" loading="lazy" style="--xr:-2%;--yb:-62px;--w:32px;--r:10deg"></div>
     <div>
       <h2 class="reveal">First <em>to know</em></h2>
       <div class="tier-note mock-note wf-note" style="margin-top:30px">
@@ -1346,7 +1517,7 @@
   </div>
 </section>
 
-<section id="found" class="gutter found-sec">
+<section id="found" class="gutter found-sec sec sc g-mint">
   <div class="wrap found-wrap">
     <p class="not-site"><span class="bk-demo">preview</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="vh">Google and text views</h2>
@@ -1370,15 +1541,16 @@
   </div>
 </section>
 
-<footer class="gutter">
-  <div class="wrap">
+<footer class="gutter sec foot-pat">
+  <div class="wrap"><div class="foot-card">
+    <div class="art over" aria-hidden="true"><img class="stk" src="images/stk-smiley.svg" width="96" height="96" alt="" loading="lazy" style="--xr:-3%;--y:-30px;--w:58px;--r:10deg"><img class="stk" src="images/stk-flower.svg" width="96" height="96" alt="" loading="lazy" style="--x:-4.5%;--y:-34px;--w:54px;--r:-9deg"><img class="stk hide-s" src="images/stk-yinyang.svg" width="96" height="96" alt="" loading="lazy" style="--xr:-2%;--yb:-30px;--w:52px;--r:-8deg"><img class="stk hide-s" src="images/stk-cherry.svg" width="96" height="96" alt="" loading="lazy" style="--x:-3%;--yb:-34px;--w:56px;--r:8deg"></div>
     <div class="foot-logo">
       <button type="button" id="foot-logo" aria-label="Pastel"><i class="logo-mask"></i></button>
       <span class="foot-sub">one-of-a-kind retro tattoos | nostalgic jewelry | prints &amp; apparel</span>
     </div>
     <p>📍Las&nbsp;Vegas,&nbsp;NV 🛸 monthly travels &middot; <a href="mailto:linneatattoos@gmail.com">linneatattoos@gmail.com</a> &middot; <a href="https://www.instagram.com/linneapastel/" target="_blank" rel="noopener">@linneapastel<span class="vh"> (opens in a new tab)</span></a></p>
     <p class="legend">Tags show which build includes each piece: <span class="tag" data-go="maiden">Planted</span> <span class="tag" data-go="mother">Tended</span> <span class="tag" data-go="crone">In Bloom</span><span data-js hidden>. Tap a tag to see your site as that build.</span></p>
-  </div>
+  </div></div>
 </footer>
 
 <!-- the bag -->

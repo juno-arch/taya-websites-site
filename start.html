@@ -1057,7 +1057,7 @@
             <li>Google-ready: clear titles and descriptions, business details Google can read, and a photo preview when someone texts your link</li>
             <li>Your Google profile, set up</li>
             <li>A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer</li>
-            <li>A slim banner across the top for news like “Now booking” or “Away until Nov 3” (email me to switch it, anytime)</li>
+            <li>A slim banner across the top for news like “Now booking” or “Away until Nov 3” (switch it anytime: post it, or email me, and it’s done)</li>
             <li>Your web address’s first year (then your subscription looks after it, so there’s nothing to renew)</li>
             <li>30 days of settling-in tweaks after launch</li>
             <li>A one-page “Your site” <span class="nowrap">hand-off</span> sheet</li>
@@ -1166,7 +1166,7 @@
           <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
           <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>, paid once: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
           <li><span class="k">Timing</span><span>The clock starts when all your content is in. A first draft in about a week, and ready in about <span data-a="weeks">2, 3 or 4 weeks</span>.</span></li>
-          <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one email with everything in it; any more rounds, I quote first. Once you’re live, email me your changes anytime, as often as you need, and your subscription covers them.</span></li>
+          <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one email with everything in it; any more rounds, I quote first. Once you’re live, I can follow your socials and update as you post, or you can email me your changes, as often as you need, and your subscription covers them.</span></li>
           <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
           <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">your subscription, at your build’s monthly price</span>. If anything breaks, or I got something wrong, I fix it.</span></li>
           <li><span class="k">Yours</span><span>Everything is in your name. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.</span></li>
@@ -1659,7 +1659,7 @@
         <li><b>Two rounds of changes,</b> by email.</li>
         <li><b>Launch,</b> with your “Your site” sheet, your brand sheet, and the logins to anything I set up for you.</li>
         <li><b>30 days of settling in.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
-        <li><b>After that, your subscription,</b> <span data-a="care">at your build’s monthly price</span>: you email me what’s changing, and I do the rest.</li>
+        <li><b>After that, your subscription,</b> <span data-a="care">at your build’s monthly price</span>: I follow your socials and update as you post, or you email me what’s changing, and I do the rest.</li>
       </ol>
       <p class="together-line" id="together-line" hidden></p>
     </div>
@@ -1847,7 +1847,7 @@
   };
   // what every plan's subscription also includes, shown once after the tiers (Pollen, Oct 6 2026; the same lines, in
   // the same words, as the "Every plan’s subscription also includes" card under the plans on webfaery.love)
-  const CARE_EVERY = ['Email me anytime and I make your changes', 'Changes usually within 2 business days',
+  const CARE_EVERY = ['I follow your socials and update your site as you post, or you email me', 'Changes usually within 2 business days',
     'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
     'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
   // how each care reads as a whole (gently in the garden's words: planted and kept healthy, tended as the seasons
@@ -1858,8 +1858,8 @@
     crone: 'everything above, plus keeping it in full bloom, doing business for you'
   };
   const CARE_SHORT = {
-    maiden: 'It keeps your site planted and healthy: hosting, your web address and backups, and your changes whenever you email me.',
-    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes whenever you email me, your posts showing up everywhere, and email from your own address and newsletter sending covered.',
+    maiden: 'It keeps your site planted and healthy: hosting, your web address and backups, and your changes as I follow your socials or whenever you email me.',
+    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes as I follow your socials or whenever you email me, your posts showing up everywhere, and email from your own address and newsletter sending covered.',
     crone: 'Everything in the Tended subscription, plus keeping your booking, payments or shop in full bloom, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STORE_KEY = 'webfaery-start-v1';
@@ -2410,7 +2410,7 @@
       const cc = $('#cf-care');
       cc.textContent = '';
       cc.hidden = !b;
-      if (b) cc.append(make('b', null, 'Subscription: '), document.createTextNode(money(CARE[c.build]) + ' a month, starting after your 30 days of settling in. It keeps your site running, and you email me your changes anytime. If you ever cancel, your site is still yours.'));
+      if (b) cc.append(make('b', null, 'Subscription: '), document.createTextNode(money(CARE[c.build]) + ' a month, starting after your 30 days of settling in. It keeps your site running, and I can follow your socials and update as you post, or you can email me your changes anytime. If you ever cancel, your site is still yours.'));
       $('#build-change').setAttribute('aria-label', 'Change my build');
     }
 
@@ -2448,7 +2448,7 @@
     set('after', 'your subscription, at ' + careMo);
     set('care', b ? 'at ' + money(CARE[c.build]) + ' a month for your ' + b.name + ' site' : 'at your build’s monthly price ($12, $45 or $90 a month)');
     set('after-long', 'Your subscription, ' + careMo + ', starting after your 30 days of settling in. It covers hosting, your web address and backups,'
-      + ' and you email me your changes anytime, as often as you need (I usually reply within 2 business days).'
+      + ' and I can follow your socials and update as you post, or you can email me your changes, as often as you need (changes usually go up within 2 business days).'
       + ' If anything breaks, or I got something wrong, I fix it. Big new things, like a new page or a new feature, I quote first.');
     $('#sig-date').textContent = ($('#f-agree').checked && val('f-sig')) ? 'Signed ' + longDate : 'Dated ' + longDate;
   }

@@ -9,9 +9,15 @@ which reads less clearly). Code keys stay as they were (care_monthly, data-tier-
 Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payments or a small shop) $1,800, paid once.
 Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. A subscription comes with
 every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
-are the same in every tier: email anytime, as often as needed, anything that breaks fixed, big new things quoted first.
+are the same in every tier: socials first (Oct 7 2026, Pollen: "media first then email just cause it's one less thing
+they need to do"), so Taya can follow the client's socials and update the site as they post, or they email her, as often
+as needed, anything that breaks fixed, big new things quoted first. She follows their public posts and updates the
+site; she doesn't manage their accounts or post for them (except where Tended's "Post once, show up everywhere" says so).
+On webfaery.love it's said generally ("I can follow your socials..."); in a business's own mockup or email it's said only
+if that business really posts on Instagram or Facebook, and the email and magic site wording stays for one that doesn't.
 Every plan's subscription also includes (Oct 6 2026, shown once under the plan cards as "Every plan's subscription also
-includes", and in the same words in the questions, the quiz and start.html): changes usually within 2 business days,
+includes", and in the same words in the questions, the quiz and start.html; the first line became "I follow your
+socials and update your site as you post, or you email me" on Oct 7 2026): changes usually within 2 business days,
 Taya watching over the site ("I watch over your site: if it goes down, I know before you do, and if anything breaks,
 I fix it": one line since Oct 6 2026, no "free"), holiday heads-ups with
 the hours updated on their site and Google profile, and a move on her if a host changes its rules.
