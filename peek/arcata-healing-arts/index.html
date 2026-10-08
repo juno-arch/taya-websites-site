@@ -494,13 +494,46 @@
   @media (max-width: 520px) {
     .fld-row { grid-template-columns: minmax(0, 1fr); }
     .bk-card { padding: 20px 16px; }
-    nav { width: 100%; justify-content: space-between; margin-inline: -4px; }
-    nav a { padding-inline: 4px; font-size: 15px; }
     .hero-band .cta-row .btn { flex: 1 1 100%; }
     .where { grid-template-columns: minmax(0, 1fr); }
     .hd-facts { grid-template-columns: minmax(0, 1fr); }
-    .mark span { display: none; }
+    .snav .mark svg { width: 40px; height: 40px; }
+    .snav .mark span { font-size: 10.5px; letter-spacing: 0.16em; line-height: 1.3; }
   }
+  /* ---------- the sticky nav ---------- */
+  .snav-wrap { position: sticky; top: 0; height: 0; z-index: 25; }
+  .snav { position: absolute; left: 0; right: 0; top: 36px; color: #fff8ea; --lt: #f6cf62;
+    transition: transform 0.35s cubic-bezier(.3,.8,.3,1), background-color 0.25s ease, box-shadow 0.25s ease; }
+  .snav .mark { color: inherit; text-decoration: none; }
+  .snav-in { display: flex; align-items: center; justify-content: space-between; gap: 14px; max-width: 1240px; margin: 0 auto; min-height: 60px; padding: 6px 20px; box-sizing: border-box; }
+  .snav .snav-links { display: flex; flex-wrap: nowrap; align-items: center; gap: 0 4px; margin: 0; width: auto; font-size: 16px; }
+  .snav .snav-links a { color: inherit; padding: 10px 10px; line-height: 24px; text-decoration: none; text-shadow: 0 1px 2px rgba(30, 10, 5, 0.6), 0 0 14px rgba(30, 10, 5, 0.6); border-radius: 8px; }
+  .snav .snav-links a:hover { color: #f6cf62; }
+  .snav a:focus-visible, .snav button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .snav-btn { display: none; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; margin: 0; cursor: pointer; font: inherit; font-weight: 500; font-size: 16px; color: inherit; background: rgba(30, 10, 5, 0.4); border: 1px solid currentColor; border-radius: 999px; -webkit-appearance: none; appearance: none; }
+  .snav.solid { top: 0; background: var(--ground); color: var(--ink); --lt: var(--maroon-ink); border-bottom: 1px solid var(--hair); box-shadow: 0 10px 26px -20px rgba(30, 10, 5, 0.7); }
+  .snav.solid .snav-links a { text-shadow: none; }
+  .snav.solid .snav-links a:hover { color: var(--maroon-ink); }
+  .snav.solid .snav-btn { background: transparent; border-color: var(--hair); }
+  .snav.tuck { transform: translateY(-110%); }
+  section[id], #welcome { scroll-margin-top: 76px; }
+  @media (max-width: 760px) {
+    .snav-in { min-height: 54px; padding-block: 5px; }
+    .snav-btn { display: inline-flex; }
+    .snav .snav-links { position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; align-items: stretch; gap: 0; padding: 6px 20px 12px; background: var(--ground); color: var(--ink); border-bottom: 1px solid var(--hair); box-shadow: 0 18px 30px -20px rgba(30, 10, 5, 0.7); }
+    .snav .snav-links[hidden] { display: none; }
+    .snav .snav-links a { padding: 12px 4px; font-size: 18px; border-bottom: 1px solid var(--hair); text-shadow: none; border-radius: 0; }
+    .snav .snav-links a:hover { color: var(--maroon-ink); }
+    .snav .snav-links a:last-child { border-bottom: 0; }
+    .snav.open { background: var(--ground); color: var(--ink); --lt: var(--maroon-ink); top: 0; }
+    .snav.open .snav-btn { background: transparent; border-color: var(--hair); }
+  }
+  @media (min-width: 761px) { .snav .snav-links[hidden] { display: flex !important; } }
+  @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } }
+  .snav .mark span { text-shadow: none; }
+  .snav:not(.solid):not(.open) .mark span { text-shadow: 0 1px 8px rgba(30, 10, 5, 0.7); }
+  .hero-main { padding-top: 96px; }
+  @media (max-width: 760px) { .hero-main { padding-top: min(122vw, 540px); } }
 </style>
 
 <a class="skip" href="#healers">Skip to the practitioners</a>
@@ -542,20 +575,22 @@
   <p class="vh" role="status" id="status-live"></p>
 </div>
 
-<div class="hero-band">
-  <div class="gutter">
-    <div class="wrap">
-      <header class="top">
-        <a class="mark" href="#welcome" aria-label="Arcata Healing Arts Center"><svg aria-hidden="true"><use href="#sunflower"/></svg><span>Arcata<br>Healing Arts<br>Center</span></a>
-        <nav aria-label="Sections">
-          <a href="#healers">Practitioners</a>
-          <a href="#healing-day">Healing Day</a>
-          <a href="#retreat">Retreats</a>
-          <a href="#visit">Visit</a>
-        </nav>
-      </header>
+<div class="snav-wrap">
+  <header class="snav" id="snav">
+    <div class="snav-in">
+      <a class="mark" href="#welcome" aria-label="Arcata Healing Arts Center, back to the top"><svg aria-hidden="true"><use href="#sunflower"/></svg><span>Arcata<br>Healing Arts<br>Center</span></a>
+      <nav class="snav-links" id="snav-links" aria-label="Sections">
+        <a href="#healers">Practitioners</a>
+        <a href="#healing-day">Healing Day</a>
+        <a href="#retreat">Retreats</a>
+        <a href="#visit">Visit</a>
+      </nav>
+      <button type="button" class="snav-btn" id="snav-btn" aria-expanded="false" aria-controls="snav-links"><span>Menu</span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4h10M2 7h10M2 10h10"/></svg></button>
     </div>
-  </div>
+  </header>
+</div>
+
+<div class="hero-band">
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
@@ -581,6 +616,37 @@
   })();
 </script>
 
+<script>
+  /* sticky nav: transparent over the hero, solid once you scroll; tucks away going down, back on the way up; a Menu button on phones */
+  (function () {
+    var nav = document.getElementById('snav'), btn = document.getElementById('snav-btn'), links = document.getElementById('snav-links');
+    if (!nav || !btn || !links) return;
+    var mq = window.matchMedia ? window.matchMedia('(max-width: 760px)') : { matches: false };
+    var rm = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    var last = window.pageYOffset || 0, tick = false;
+    function setOpen(o) {
+      nav.classList.toggle('open', o); btn.setAttribute('aria-expanded', o ? 'true' : 'false'); links.hidden = mq.matches ? !o : false;
+      if (o) nav.classList.remove('tuck');
+    }
+    function sync() { setOpen(false); }
+    function update() {
+      tick = false; var y = window.pageYOffset || 0, open = nav.classList.contains('open');
+      nav.classList.toggle('solid', y > 30);
+      if (!rm.matches && !open && y > 360 && y > last + 6 && !nav.contains(document.activeElement)) nav.classList.add('tuck');
+      else if (y < last - 6 || y <= 360 || open) nav.classList.remove('tuck');
+      last = y;
+    }
+    btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
+    links.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a') && mq.matches) setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); btn.focus(); } });
+    document.addEventListener('click', function (e) { if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    nav.addEventListener('focusin', function () { nav.classList.remove('tuck'); });
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+    if (mq.addEventListener) mq.addEventListener('change', sync); else if (mq.addListener) mq.addListener(sync);
+    sync(); update();
+  })();
+</script>
+
 <div class="views gutter" id="views" hidden>
   <div class="wrap views-card">
     <div class="views-head">
@@ -593,7 +659,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month, to keep yours healthy and current. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done, from a new practitioner&rsquo;s card to the next Healing Day schedule. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month, to keep yours healthy and current. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done, from a new practitioner&rsquo;s card to the next Healing Day schedule. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -1023,7 +1089,7 @@
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting, your domain and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, priced to match: $12, $45 or $90 a month. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
