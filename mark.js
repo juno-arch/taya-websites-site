@@ -258,7 +258,7 @@
   const dockSoon = () => { if (!dq) dq = requestAnimationFrame(() => { dq = 0; dock(); }); };
 
   /* ---------------- choosing a spot (the same rules as the magic mockup) ---------------- */
-  const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article';
+  const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article, [class*="hero"], header';
   const CONTROL = 'summary, select, option, button[aria-expanded], button[aria-pressed], [role="tab"], button[data-view], a[data-view], button[data-go], .tag[data-go], .build[data-go], a[data-go], '
     + '.theme-tab, .theme-panel, #theme-tab, #theme-panel, button[data-theme], a[data-theme]'; // (the Light / Dark pill and its panel; not <html data-theme>)
   const isControl = (t) => { const c = t.closest && t.closest(CONTROL); return !!(c && !ours(c)); };
@@ -644,7 +644,7 @@
   });
 
   /* ---------------- choosing a spot ---------------- */
-  const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article';
+  const PICKABLE = 'img, video, figure, h1, h2, h3, h4, p, li, a, button, label, blockquote, dt, dd, .price, .photo, section, article, [class*="hero"], header';
   // The mockup's own controls keep working while marking (Pollen, Oct 2: the "See it as" switcher and
   // dropdowns opened a note instead): view switches, toggles, dropdowns, tabs and build tags.
   // (the page's own <html data-view> says which view is showing: never a control)
