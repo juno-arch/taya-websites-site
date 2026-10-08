@@ -163,6 +163,32 @@
   @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hero-rise { from { opacity: 0; transform: translateY(56px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  /* COMING UP: a night shala strip along the foot of the hero, a half moon tag in their crescent red, and the next sound baths,
+     circles and retreats drifting by in Gilda, each set off by a small crescent like the one in their logo. It reads the
+     evenings and retreats lists on the page, so it stays in sync. Tap it to jump to the evenings. Stops on hover or focus and
+     off screen; under reduced motion it sits still and wraps. */
+  .os-marq { position: relative; z-index: 3; display: flex; align-items: stretch; text-decoration: none; color: #efebe3; background: #222c2b; overflow: hidden;
+    border-top: 1px solid rgba(239, 235, 227, 0.16); }
+  .os-marq ~ .own-tag { bottom: 62px; }
+  .osm-tag { flex: none; display: grid; place-items: center; padding: 0 22px 0 16px; font-family: 'Questrial', 'Segoe UI', sans-serif; font-size: 12px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #fbf6ee; background: #a80d10; border-radius: 0 26px 26px 0; position: relative; z-index: 1; }
+  .osm-win { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; padding: 11px 0 12px; font-family: 'Gilda Display', Georgia, serif; font-size: 19px; line-height: 1.3; }
+  .osm-run { display: inline-flex; padding-left: 18px; animation: osm-scroll var(--dur, 40s) linear infinite; }
+  .osm-run > span { white-space: pre; }
+  .osm-run small { font-family: 'Questrial', sans-serif; font-size: 0.74em; letter-spacing: 0.08em; color: #e3c2b2; }
+  .osm-run i { display: inline-block; width: 10px; height: 16px; margin: 0 16px; vertical-align: -0.12em;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 22'%3E%3Cpath d='M1 1c6 1.6 9.5 5.6 9.5 10S7 19.4 1 21' fill='none' stroke='%23e0675f' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+  @keyframes osm-scroll { to { transform: translateX(-50%); } }
+  .os-marq:not(.on) .osm-run, .os-marq:hover .osm-run, .os-marq:focus-visible .osm-run { animation-play-state: paused; }
+  .os-marq:hover .osm-win { color: #fff; }
+  .os-marq:focus-visible { outline: 2px solid #efebe3; outline-offset: -4px; }
+  .hero-band.wait .os-marq { opacity: 0; }
+  .hero-band.go .os-marq { animation: hero-fade 2s ease 4s both; }
+  @media (max-width: 520px) { .osm-tag { padding: 0 18px 0 12px; font-size: 11px; letter-spacing: 0.14em; } .osm-win { font-size: 17px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .osm-run { animation: none; display: inline; padding-left: 0; } .osm-run > span { white-space: normal; }
+    .osm-win { white-space: normal; padding-inline: 12px; }
+  }
   @keyframes arc-draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
   @keyframes arc-glow { 0%, 100% { filter: drop-shadow(0 0 6px rgba(196, 48, 44, 0.45)); } 50% { filter: drop-shadow(0 0 16px rgba(226, 92, 80, 0.75)); } }
   @media (max-aspect-ratio: 5 / 4) { .hero-band { --hero-pos: 46% 40%; } }
@@ -703,8 +729,52 @@
       </div>
     </div>
   </div>
+  <a class="os-marq" id="os-marq" href="#evenings" aria-label="Coming up at Om Shala: see the sound baths and evenings"><span class="osm-tag" aria-hidden="true">Coming up</span><span class="osm-win" aria-hidden="true"><span class="osm-run" id="osm-run"><span>Sound baths, circles and retreats</span></span></span></a>
   <span class="own-tag">Their photo</span>
 </div>
+<script>
+  /* COMING UP: built from the evenings and retreats lists on this page, so it stays in sync */
+  document.addEventListener('DOMContentLoaded', function () {
+    var hm = document.getElementById('os-marq'), run = document.getElementById('osm-run'); if (!hm || !run) return;
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var MO = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11, January: 0, February: 1, March: 2, April: 3, June: 5, July: 6, August: 7, September: 8, October: 9, November: 10, December: 11 };
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    function txt(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+    var items = [];
+    /* dated sound baths and circles (the weekly ones stay in the list below) */
+    document.querySelectorAll('#evenings .eve-list li').forEach(function (li) {
+      var when = txt(li.querySelector('.when')), re = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/g, m, next = null;
+      while ((m = re.exec(when))) { var d = new Date(2026, MO[m[1]], +m[2]); if (d >= now && !next) next = d; }
+      if (!next) return;
+      var parts = when.split(' \u00b7 '), who = parts.length > 1 ? parts[0] : '', time = parts[parts.length - 1].replace(/, \d+ hours?$/, '');
+      items.push({ at: next, name: txt(li.querySelector('b')), who: who, when: time });
+    });
+    /* retreats with a real date */
+    document.querySelectorAll('#retreats .trip').forEach(function (tr) {
+      var when = txt(tr.querySelector('.when')), m = when.match(/^([A-Z][a-z]+)(?: (\d{1,2}))?.*?(\d{4})$/); if (!m || !MO.hasOwnProperty(m[1])) return;
+      var d = new Date(+m[3], MO[m[1]], m[2] ? +m[2] : 1); if (d < now) return;
+      items.push({ at: d, name: 'Retreat: ' + txt(tr.querySelector('b')), who: '', when: when });
+    });
+    items.sort(function (a, b) { return a.at - b.at; });
+    if (still) items = items.slice(0, 3);
+    function paint(last) {
+      var sp = document.createElement('span');
+      items.forEach(function (x, k) {
+        sp.appendChild(document.createTextNode(x.name + '  '));
+        var s = document.createElement('small'); s.textContent = (x.who ? x.who + ', ' : '') + x.when; sp.appendChild(s);
+        if (!(last && k === items.length - 1)) sp.appendChild(document.createElement('i'));
+      });
+      if (!items.length) sp.textContent = 'New sound baths and circles coming soon';
+      return sp;
+    }
+    run.textContent = '';
+    for (var n = 0; n < (still ? 1 : 2); n++) run.appendChild(paint(still));
+    run.style.setProperty('--dur', Math.max(18, run.firstChild.textContent.length * 0.22).toFixed(1) + 's');
+    hm.setAttribute('aria-label', items.length ? 'Coming up at Om Shala: ' + items.map(function (x) { return x.name + ', ' + (x.who ? x.who + ', ' : '') + x.when; }).join('; ') + '. See the evenings.' : 'New sound baths and circles coming soon. See the evenings.');
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { hm.classList.toggle('on', e.isIntersecting); }); }).observe(hm);
+    else hm.classList.add('on');
+  });
+</script>
 <script>
   (function () {
     var h = document.querySelector('.hero-band');
