@@ -36,3 +36,5 @@ Skipped: Justine's copper melt (8d80ab_c9dd497c...) because the cape shows a bra
 Processing: resized to at most 1000 to 2400px wide (never upscaled), gentle UnsharpMask, WebP. share-preview.jpg is the mockup itself (desktop + phone composite).
 
 Oct 8 2026 re-export (Pollen's grainy-photo notes): the stylist portraits and Recent work photos were re-exported from the full-size originals on Haven's own Wix site (same media ids as above; no Instagram, no stock). The first export had cut them to 1000px and then compressed them; now 1400px (portraits up to 1200px) at WebP quality 86, plus a -640 copy of each for small slots via srcset. Kiersten's portrait is only 670px on their site, so it stays at that size.
+
+Oct 8 2026 drawings (Pollen's notes): the Price estimates card now has a flowing one line profile with long hair, and the Spacious icon is one of their arched mirrors. Both are hand drawn SVG made for this mockup, so there is no outside graphic to credit.
