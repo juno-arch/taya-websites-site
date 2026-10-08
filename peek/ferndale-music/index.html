@@ -264,17 +264,24 @@
   .jb-strip[aria-pressed="true"] .jb-key { color: #fff6ea; background: radial-gradient(circle at 35% 30%, #f08a7d, #d9493a 55%, #8f1d16); box-shadow: 0 0 10px rgba(217, 73, 58, 0.75), inset 0 -2px 0 rgba(0, 0, 0, 0.25); }
   .jb-strip.sel:not([aria-pressed="true"]) .jb-key { box-shadow: 0 0 0 2px #f0b85a, inset 0 -2px 0 rgba(0, 0, 0, 0.22); }
   .jb-empty { margin: 0; padding: 10px; text-align: center; font-size: 14px; color: #f5ead8; }
-  .amp-ctl { display: flex; align-items: center; gap: 6px; }
+  .amp-ctl { display: flex; align-items: center; justify-content: center; gap: 18px; }
   .amp-b { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 46px; min-height: 44px; padding: 0 12px; box-sizing: border-box; margin: 0;
     font: 600 12px/1 'Jost', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 22px;
     color: #2a1d17; background: linear-gradient(#fff6ea, #d9c7a6); border: 2px solid; border-color: #fffaf2 #8a6a4a #8a6a4a #fffaf2; }
   .amp-b:active { border-color: #8a6a4a #fffaf2 #fffaf2 #8a6a4a; background: #d9c7a6; }
-  .amp-play { flex: 1 1 auto; color: #fff6ea; background: linear-gradient(#d9493a, #b5231a); border-color: #f08a7d #6e130d #6e130d #f08a7d; }
-  .amp-play:active { border-color: #6e130d #f08a7d #f08a7d #6e130d; background: #a61f17; }
-  .amp-b:focus-visible, .amp-owl:focus-visible, .jb-strip:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; }
+  /* the big round play/pause key: plays the picked artist, same as tapping their title strip (Pollen, Oct 8: "make this a play button") */
+  .amp-play { flex: none; display: grid; place-items: center; width: 62px; height: 62px; padding: 0; margin: 0; box-sizing: border-box; cursor: pointer; border-radius: 50%; color: #fff6ea;
+    background: radial-gradient(circle at 35% 30%, #f08a7d, #d9493a 55%, #8f1d16); border: 2px solid #f0b85a;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.45); }
+  .amp-play:active { box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.35); background: radial-gradient(circle at 35% 30%, #d9493a, #b5231a 55%, #6e130d); }
+  .amp-play svg { display: block; }
+  .amp-play .i-play { margin-left: 4px; }
+  .amp-play .i-pause, .amp.open .amp-play .i-play { display: none; }
+  .amp.open .amp-play .i-pause { display: block; }
+  .amp.open .amp-play { box-shadow: 0 0 12px rgba(217, 73, 58, 0.75), inset 0 -3px 0 rgba(0, 0, 0, 0.25); }
+  .amp-play:disabled { cursor: default; opacity: 0.45; }
+  .amp-b:focus-visible, .amp-play:focus-visible, .amp-owl:focus-visible, .jb-strip:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; }
   .amp-hear { display: grid; gap: 8px; }
-  .amp-hear .amp-b { width: 100%; }
-  .amp-hear .amp-b[aria-pressed="true"] { background: #d9c7a6; }
   .amp-box iframe { display: block; width: 100%; border: 0; border-radius: 3px; background: #1c1411; }
   .amp-note { margin: 0; font-size: 13px; line-height: 1.45; color: #e9dcc4; }
   .amp-note a { color: #f0b85a; text-underline-offset: 3px; overflow-wrap: anywhere; }
@@ -878,11 +885,10 @@
           </div>
           <div class="amp-ctl">
             <button type="button" class="amp-b" id="amp-prev" aria-label="Previous show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M2 1h2v10H2zM15 1v10L9 6zM9 1v10L3 6z"/></svg></button>
-            <a class="amp-b amp-play" id="amp-play" href="#show-led"><svg width="11" height="12" viewBox="0 0 11 12" aria-hidden="true" fill="currentColor"><path d="M1 0l10 6-10 6z"/></svg>Tickets<span class="vh" id="amp-for"> for Led Kaapana</span></a>
+            <button type="button" class="amp-play" id="amp-play" aria-label="Play Led Kaapana" aria-controls="amp-box"><svg class="i-play" width="20" height="22" viewBox="0 0 11 12" aria-hidden="true" fill="currentColor"><path d="M1.5 0.5l9 5.5-9 5.5z"/></svg><svg class="i-pause" width="18" height="20" viewBox="0 0 10 12" aria-hidden="true" fill="currentColor"><path d="M1 0.5h3v11H1zM6 0.5h3v11H6z"/></svg></button>
             <button type="button" class="amp-b" id="amp-next" aria-label="Next show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M1 1v10l6-5zM7 1v10l6-5zM12 1h2v10h-2z"/></svg></button>
           </div>
           <div class="amp-hear">
-            <button type="button" class="amp-b" id="amp-hear" aria-pressed="false" aria-controls="amp-box" hidden>Hear Led Kaapana</button>
             <div class="amp-box" id="amp-box" hidden></div>
             <p class="amp-note" id="amp-note"></p>
           </div>
@@ -1473,30 +1479,35 @@
       else hm.classList.add('on');
     }
 
-    var hear = $('amp-hear'), box = $('amp-box'), note = $('amp-note'), strips = $('jb-strips'), btns = [];
+    var box = $('amp-box'), note = $('amp-note'), strips = $('jb-strips'), btns = [];
     function paintStrips() {
       var open = amp.classList.contains('open');
       btns.forEach(function (b, k) { b.classList.toggle('sel', k === i); b.setAttribute('aria-pressed', open && k === i ? 'true' : 'false'); });
     }
-    function closeBox() { box.innerHTML = ''; box.hidden = true; amp.classList.remove('open'); hear.setAttribute('aria-pressed', 'false'); paintStrips(); }
+    /* the round play/pause key follows the picked show */
+    function paintPlay() {
+      var s = up[i], open = amp.classList.contains('open');
+      if (!s || !s.hear) { play.disabled = true; play.setAttribute('aria-label', s ? 'No music online yet for ' + s.name : 'No shows to play yet'); return; }
+      play.disabled = false; play.setAttribute('aria-label', (open ? 'Pause ' : 'Play ') + s.name);
+    }
+    function closeBox() { box.innerHTML = ''; box.hidden = true; amp.classList.remove('open'); paintStrips(); paintPlay(); }
     function paintHear() {
-      var s = up[i]; closeBox(); if (!s) { hear.hidden = true; note.textContent = ''; return; }
-      if (s.hear) { hear.hidden = false; hear.textContent = 'Hear ' + s.name; note.textContent = ''; }
-      else { hear.hidden = true; note.textContent = 'No music online yet, come hear them live.'; }
+      var s = up[i]; closeBox(); if (!s) { note.textContent = ''; return; }
+      note.textContent = s.hear ? '' : 'No music online yet, come hear them live.';
     }
     function openBox() {
       var s = up[i]; if (!s || !s.hear) return;
-      if (!box.hidden) { closeBox(); hear.textContent = 'Hear ' + s.name; note.textContent = ''; now.textContent = 'Player closed.'; return; }
+      if (!box.hidden) { closeBox(); note.textContent = ''; now.textContent = s.name + ' paused. Player closed.'; return; }
       var f = document.createElement('iframe');
       f.src = s.hear.src; f.height = 120; f.loading = 'lazy'; f.title = s.name + ', music player from ' + s.hear.from;
       f.setAttribute('allow', 'autoplay; encrypted-media; clipboard-write'); f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-      box.appendChild(f); box.hidden = false; amp.classList.add('open'); hear.setAttribute('aria-pressed', 'true'); hear.textContent = 'Close the player';
+      box.appendChild(f); box.hidden = false; amp.classList.add('open');
       note.textContent = ''; note.appendChild(document.createTextNode('Press play in their player. Phones need that one tap inside it. From their ' + s.hear.from + ': '));
       var a = document.createElement('a'); a.href = s.hear.page; a.target = '_blank'; a.rel = 'noopener'; a.textContent = s.hear.pageName; note.appendChild(a);
       now.textContent = s.name + ' player loaded. Press play in their player.';
-      paintStrips();
+      paintStrips(); paintPlay();
     }
-    hear.addEventListener('click', openBox);
+    play.addEventListener('click', openBox);
     function pad(n) { return (n < 10 ? '0' : '') + n; }
     function tick() {
       var s = up[i]; if (!s) return;
@@ -1511,7 +1522,6 @@
       clearTimeout(owlT); owl.classList.remove('hoot');
       i = (k + up.length) % up.length; var s = up[i];
       $('amp-trk').textContent = 'A' + (i + 1) + ' · ' + (i + 1) + '/' + up.length;
-      play.setAttribute('href', s.href); $('amp-for').textContent = ' for ' + s.name;
       billEl.textContent = bill(s); tick(); paintHear();
       if (announce) now.textContent = 'Show ' + (i + 1) + ' of ' + up.length + ': ' + s.name + ', ' + s.say + ', 7:30 pm, ' + s.price + '.';
       amp.classList.remove('flip'); if (announce && !reduce) { void amp.offsetWidth; amp.classList.add('flip'); }
@@ -1539,7 +1549,7 @@
     } else {
       var li0 = document.createElement('li'); li0.className = 'jb-empty'; li0.textContent = 'New shows coming soon.'; strips.appendChild(li0);
       clock.textContent = 'SOON'; unit.textContent = 'new shows coming'; $('amp-trk').textContent = '0/0';
-      play.setAttribute('href', '#shows'); $('amp-for').textContent = ''; hear.hidden = true; billEl.textContent = 'NEW SHOWS COMING SOON';
+      paintPlay(); billEl.textContent = 'NEW SHOWS COMING SOON';
     }
     owl.hidden = false;
     owl.addEventListener('click', function () {
