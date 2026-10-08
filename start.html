@@ -634,6 +634,25 @@
   .made-list li { padding-left: 1.3em; position: relative; }
   .made-list li::before { content: "\2740"; content: "\2740" / ""; position: absolute; left: 0; top: 0; color: var(--acc); font-size: 0.85em; }
   .made-list b { color: var(--ink); font-weight: 500; }
+  /* short silent how-to clips (how/*.mp4, recorded Oct 8 2026): muted, looping, loaded only when scrolled to;
+     with reduced motion they wait on their poster with a Play button instead of starting by themselves */
+  .clip { margin: 10px 0 12px; max-width: 460px; }
+  .clip-box { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--hairline); background: var(--field-2); aspect-ratio: 3 / 2; }
+  .clip video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .clip-play {
+    position: absolute; right: 8px; top: 8px; min-width: 44px; height: 44px; padding: 0 14px; border-radius: 22px; border: 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px; background: rgba(14, 14, 12, 0.82); color: var(--ink);
+    font: inherit; font-size: 15px;
+  }
+  .clip-play svg { width: 14px; height: 14px; flex: none; }
+  .clip-play .pz { display: none; }
+  .clip.playing .clip-play .pl { display: none; }
+  .clip.playing .clip-play .pz { display: block; }
+  .clip.playing .clip-play .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .clip-play:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .clip figcaption { margin: 6px 0 0; font-size: 14.5px; font-style: italic; color: var(--ink-soft); }
+  .clip-pair { display: grid; gap: 4px; }
+  @media (min-width: 720px) { .clip-pair { grid-template-columns: 1fr 1fr; gap: 14px; } }
 
   /* ============ the agreement, inside "Sign and hold your spot" ============ */
   .in-short { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 0; }
@@ -1504,6 +1523,13 @@
               <li>Open your profile’s menu and choose <b>Business Profile settings</b>, then <b>People and access</b>, then <b>Add</b>.</li>
               <li>Type <span class="helper" data-helper>taya@webfaery.love</span>, choose <b>Manager</b>, and send it. You stay the owner, and you can remove me anytime.</li>
             </ol>
+            <figure class="clip">
+              <div class="clip-box">
+                <video muted loop playsinline preload="none" poster="how/google-add-manager.jpg" data-src="how/google-add-manager.mp4" aria-label="Adding a manager to a Google Business Profile, step by step"></video>
+                <button type="button" class="clip-play" aria-label="Play the clip: Adding a manager to a Google Business Profile, step by step"><svg class="pl" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5Z" fill="currentColor"/></svg><svg class="pz" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="currentColor"/></svg><span class="lbl">Play</span></button>
+              </div>
+              <figcaption>The steps above, one at a time (about 20 seconds).</figcaption>
+            </figure>
             <p class="stuck">Google moves its buttons around now and then. If it looks different, or you can’t get into your profile, stop there
                and we’ll sort it out together over email.</p>
           </details>
@@ -1576,6 +1602,25 @@
             <li data-if="made-cal"><b>Your booking, on Cal.com,</b> free for one person. Clients pick a time, and you both get reminders.
                 We’ll settle your sessions and hours together over email.</li>
           </ul>
+          <details class="how">
+            <summary>What the confirm email looks like</summary>
+            <div class="clip-pair">
+            <figure class="clip" data-if="made-news">
+              <div class="clip-box">
+                <video muted loop playsinline preload="none" poster="how/buttondown-confirm.jpg" data-src="how/buttondown-confirm.mp4" aria-label="Confirming your email for Buttondown"></video>
+                <button type="button" class="clip-play" aria-label="Play the clip: Confirming your email for Buttondown"><svg class="pl" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5Z" fill="currentColor"/></svg><svg class="pz" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="currentColor"/></svg><span class="lbl">Play</span></button>
+              </div>
+              <figcaption>Buttondown: open its email and tap the confirm link.</figcaption>
+            </figure>
+            <figure class="clip" data-if="made-cal">
+              <div class="clip-box">
+                <video muted loop playsinline preload="none" poster="how/calcom-confirm.jpg" data-src="how/calcom-confirm.mp4" aria-label="Confirming your email for Cal.com"></video>
+                <button type="button" class="clip-play" aria-label="Play the clip: Confirming your email for Cal.com"><svg class="pl" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5Z" fill="currentColor"/></svg><svg class="pz" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="currentColor"/></svg><span class="lbl">Play</span></button>
+              </div>
+              <figcaption>Cal.com: open its email and tap the verify button.</figcaption>
+            </figure>
+            </div>
+          </details>
           <p class="known" id="acct-known" hidden>I’ll make <span data-if="made-both">them</span><span data-if="made-one">it</span> with <b data-contact-email>your contact email</b>. <button type="button" class="later" id="acct-change" aria-label="Use a different email for your accounts">Change</button></p>
           <div class="q" id="acct-q">
             <label class="main" for="f-acctemail">The email for your accounts <span class="opt-tag">(if it’s not your contact email)</span></label>
@@ -1626,6 +1671,13 @@
               <li>Rather I renewed it for you? It can move in with mine, once it’s free to move: every registrar locks an address for 60 days
                   after it’s bought or moved (say, through Wix with an old site). Until then, we just point it.</li>
             </ol>
+            <figure class="clip">
+              <div class="clip-box">
+                <video muted loop playsinline preload="none" poster="how/porkbun-domain.jpg" data-src="how/porkbun-domain.mp4" aria-label="Finding your web address in Porkbun: its Details, the domain lock, where the move code lives, and the name search"></video>
+                <button type="button" class="clip-play" aria-label="Play the clip: Finding your web address in Porkbun: its Details, the domain lock, where the move code lives, and the name search"><svg class="pl" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5Z" fill="currentColor"/></svg><svg class="pz" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="currentColor"/></svg><span class="lbl">Play</span></button>
+              </div>
+              <figcaption>Porkbun as the example: your address, its Details, the lock, and where the move code lives. Keep that code private.</figcaption>
+            </figure>
           </details>
           <div class="ticks" data-if="dom-point">
             <label class="tick"><input type="checkbox" name="acct_domain" value="yes"> I can sign in where it lives</label>
@@ -1653,6 +1705,13 @@
               <li>Then add me: in Stripe’s <b>Settings</b>, find <b>Team</b>, and add <span class="helper" data-helper>taya@webfaery.love</span> with the <b>Developer</b> role.
                   That lets me set up your products and payment links without your password, and you can remove me anytime.</li>
             </ol>
+            <figure class="clip">
+              <div class="clip-box">
+                <video muted loop playsinline preload="none" poster="how/stripe-add-member.jpg" data-src="how/stripe-add-member.mp4" aria-label="Adding a team member with the Developer role in Stripe"></video>
+                <button type="button" class="clip-play" aria-label="Play the clip: Adding a team member with the Developer role in Stripe"><svg class="pl" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5Z" fill="currentColor"/></svg><svg class="pz" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="currentColor"/></svg><span class="lbl">Play</span></button>
+              </div>
+              <figcaption>Settings, Team and security, Add member, Developer, then Send invite.</figcaption>
+            </figure>
             <p class="stuck">Stripe asks a lot of questions. If any of them stump you, stop there; we’ll finish it together.</p>
           </details>
           <div class="q">
@@ -3442,6 +3501,41 @@
       }
     })();
   }
+})();
+</script>
+<script>
+/* the how-to clips in "Your accounts": each video gets its file only when it scrolls into view, plays muted on a loop
+   while it's on screen, and pauses when it leaves. With reduced motion it stays on its poster until Play is tapped.
+   The button plays or pauses it either way. */
+(function () {
+  const clips = document.querySelectorAll('.clip');
+  if (!clips.length) return;
+  const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const load = v => { if (!v.src && v.dataset.src) { v.src = v.dataset.src; } };
+  const set = (fig, on) => {
+    fig.classList.toggle('playing', on);
+    const b = fig.querySelector('.clip-play'), name = fig.querySelector('video').getAttribute('aria-label');
+    b.setAttribute('aria-label', (on ? 'Pause the clip: ' : 'Play the clip: ') + name);
+  };
+  const play = fig => { const v = fig.querySelector('video'); load(v); const p = v.play(); if (p && p.catch) p.catch(() => set(fig, false)); set(fig, true); };
+  const pause = fig => { fig.querySelector('video').pause(); set(fig, false); };
+  clips.forEach(fig => {
+    fig.querySelector('.clip-play').addEventListener('click', () => {
+      fig.dataset.chosen = '1';
+      fig.classList.contains('playing') ? pause(fig) : play(fig);
+    });
+  });
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    const fig = e.target;
+    if (e.isIntersecting) {
+      if (calm || fig.dataset.chosen) return;
+      play(fig);
+    } else if (fig.classList.contains('playing')) {
+      fig.querySelector('video').pause(); set(fig, false);
+    }
+  }), { rootMargin: '120px 0px', threshold: 0.25 });
+  clips.forEach(fig => io.observe(fig));
 })();
 </script>
 </body>
