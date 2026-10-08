@@ -206,68 +206,120 @@
   .played ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 0; font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5; color: var(--ink); }
   .played li:not(:last-child)::after { content: "\2726"; font-family: 'Jost', sans-serif; font-size: 10px; color: var(--amber); margin: 0 12px; vertical-align: 4px; }
 
-  /* THE PLAYER: "Live from The Old Steeple", a Y2K media player for the next show. It counts down to showtime,
-     flips between the upcoming shows, scrolls the bill like an old LCD, and a "Hear <artist>" button opens that artist's own
-     Bandcamp player (nothing loads until the tap). Its EQ bars only move while an artist player is open. A pixel barn owl from the bell tower blinks in the corner; tap it for a hoot of history. Paused off screen,
-     still under reduced motion. LCD face: Handjet (used nowhere else; Nor Cal's pager has Doto). */
-  .amp { flex: 0 1 410px; min-width: 0; max-width: 100%; box-sizing: border-box; color: #f5ead8; padding: 0 0 10px;
-    background: linear-gradient(#3b2a21, #1c1411 62%); border: 2px solid; border-color: #7a5236 #0e0a08 #0e0a08 #7a5236; border-radius: 3px;
-    box-shadow: 0 0 0 1px #0e0a08, 0 18px 34px -22px rgba(40, 20, 10, 0.75); }
-  .amp-bar { display: flex; align-items: center; gap: 8px; padding: 5px 8px; background: linear-gradient(90deg, #8f1d16, #b5231a 48%, #c97a1f);
-    font-size: 10.5px; line-height: 1.2; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #fff1e0; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35); }
-  .amp-bar > span:nth-child(2) { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .amp-dots { display: inline-flex; gap: 3px; flex: none; }
-  .amp-dots i { width: 7px; height: 7px; border-radius: 50%; box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.3); }
-  .amp-dots i:nth-child(1) { background: #5fb0aa; } .amp-dots i:nth-child(2) { background: #f6c766; } .amp-dots i:nth-child(3) { background: #a77ac0; }
-  .amp-trk { flex: none; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; }
-  .amp-face { padding: 10px 10px 0; display: grid; gap: 8px; }
-  .amp-lcd, .amp-marq { background: #0b0807; border: 2px solid; border-color: #0e0a08 #6b4a33 #6b4a33 #0e0a08; color: #f0b85a; }
-  .amp-lcd { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px; min-height: 62px; box-sizing: border-box; }
+  /* THE JUKEBOX: "Live from The Old Steeple" (Pollen, Oct 8: "make it a juke box"). An arched redwood cabinet in the hall's own colors:
+     a light band around the arch in the stained glass colors, bubble tubes up both sides, a record in the window with the countdown
+     to showtime beside it, and title strips for each upcoming show. Tap a strip (A1, A2...) and that artist's own Bandcamp player
+     opens below (nothing loads until the tap). The record spins, the bubbles rise and the arch lights drift only while an artist
+     player is open. The pixel barn owl from the bell tower sits on the speaker grille; tap it for a hoot of history.
+     Paused off screen, still under reduced motion. Display face: Handjet. Its old scrolling bill moved to the hero (.hero-marq). */
+  .amp { position: relative; min-width: 0; max-width: 100%; box-sizing: border-box; color: #f5ead8; padding: 16px 22px 14px;
+    background: radial-gradient(120% 60% at 50% 0%, #5a3a28 0%, rgba(90, 58, 40, 0) 70%), linear-gradient(90deg, #2a1c15, #4a3122 18%, #3b2a21 50%, #4a3122 82%, #2a1c15);
+    border-radius: 50% 50% 14px 14px / 150px 150px 14px 14px; border: 2px solid #120c0a;
+    box-shadow: inset 0 0 0 2px rgba(255, 220, 170, 0.12), 0 22px 40px -24px rgba(40, 20, 10, 0.85); }
+  /* the light band around the arch */
+  .amp::before { content: ""; position: absolute; left: 5px; right: 5px; top: 5px; height: 172px; box-sizing: border-box; padding: 7px 7px 0;
+    border-radius: 50% 50% 0 0 / 145px 145px 0 0; pointer-events: none;
+    background: linear-gradient(90deg, #d9493a, #f6c766, #5fb0aa, #a77ac0, #f6c766, #d9493a, #f6c766, #5fb0aa) 0 0 / 200% 100%;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    filter: drop-shadow(0 0 5px rgba(246, 199, 102, 0.7)); animation: jb-lights 9s linear infinite; animation-play-state: paused; }
+  @keyframes jb-lights { to { background-position: -200% 0; } }
+  /* bubble tubes down both sides */
+  .jb-tube { position: absolute; top: 178px; bottom: 96px; width: 8px; border-radius: 5px; pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 250, 235, 0.95) 0 1.6px, transparent 2.2px) 50% 0 / 8px 23px,
+      radial-gradient(circle at 50% 50%, rgba(255, 250, 235, 0.75) 0 1.1px, transparent 1.7px) 30% 9px / 8px 31px,
+      linear-gradient(#f6c766, #d9493a 55%, #a77ac0);
+    box-shadow: 0 0 8px rgba(246, 199, 102, 0.55), inset 0 0 0 1px rgba(255, 240, 210, 0.35);
+    animation: jb-bubbles 2.6s linear infinite; animation-play-state: paused; }
+  .jb-tube.l { left: 7px; } .jb-tube.r { right: 7px; animation-delay: -1.1s; }
+  @keyframes jb-bubbles { to { background-position: 50% -23px, 30% -22px, 0 0; } }
+  .jb-crown { text-align: center; padding: 18px 40px 10px; line-height: 1.1; }
+  .jb-crown small { display: block; font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; font-weight: 600; color: #ffd9a6; }
+  .jb-crown b { display: block; font-family: 'Abril Fatface', Georgia, serif; font-weight: 400; font-size: 23px; color: #fff1e0; margin-top: 4px; text-shadow: 0 0 14px rgba(240, 184, 90, 0.45); }
+  .jb-trk { display: inline-block; margin-top: 7px; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 13px; letter-spacing: 0.12em; color: #f0b85a; }
+  .jb-face { display: grid; gap: 9px; }
+  /* the window: a record beside the showtime countdown */
+  .jb-window { display: flex; align-items: center; gap: 12px; padding: 9px 12px 9px 9px; background: #0b0807; border: 2px solid; border-color: #0e0a08 #8a6a4a #8a6a4a #0e0a08;
+    border-radius: 44px 10px 10px 44px; color: #f0b85a; min-height: 86px; box-sizing: border-box; }
+  .jb-disc { position: relative; flex: none; width: 68px; height: 68px; }
+  .jb-disc svg { display: block; width: 100%; height: 100%; animation: jb-spin 1.8s linear infinite; animation-play-state: paused; }
+  .jb-disc::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; background: conic-gradient(from 20deg, transparent 0 40deg, rgba(255, 240, 210, 0.16) 60deg, transparent 80deg 220deg, rgba(255, 240, 210, 0.1) 240deg, transparent 260deg); }
+  @keyframes jb-spin { to { transform: rotate(360deg); } }
   .amp-time { margin: 0; display: grid; gap: 5px; line-height: 1; min-width: 0; }
-  .amp-time b { font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: clamp(23px, 6.6vw, 29px); white-space: nowrap; text-shadow: 0 0 8px rgba(240, 184, 90, 0.55); }
-  .amp-time small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; color: rgba(240, 184, 90, 0.75); }
-  .amp-eq { display: flex; align-items: flex-end; gap: 3px; height: 36px; flex: none; }
-  .amp-eq i { width: 5px; height: 100%; background: var(--c); box-shadow: 0 0 6px -1px var(--c); transform-origin: 50% 100%; transform: scaleY(var(--still, 0.4));
-    animation: amp-eq var(--d, 1.2s) ease-in-out var(--o, 0s) infinite alternate; }
-  .amp-eq i:nth-child(1) { --c: #d9493a; --d: 0.9s; --o: -0.2s; --still: 0.55; } .amp-eq i:nth-child(2) { --c: #f6c766; --d: 1.3s; --o: -0.7s; --still: 0.8; }
-  .amp-eq i:nth-child(3) { --c: #5fb0aa; --d: 1.05s; --o: -0.4s; --still: 0.65; } .amp-eq i:nth-child(4) { --c: #a77ac0; --d: 1.5s; --o: -1.1s; --still: 0.9; }
-  .amp-eq i:nth-child(5) { --c: #9cc272; --d: 0.8s; --o: -0.3s; --still: 0.7; } .amp-eq i:nth-child(6) { --c: #fbe08f; --d: 1.2s; --o: -0.9s; --still: 0.5; }
-  .amp-eq i:nth-child(7) { --c: #d9493a; --d: 1.4s; --o: -0.5s; --still: 0.4; } .amp-eq i:nth-child(8) { --c: #5fb0aa; --d: 1s; --o: -0.8s; --still: 0.3; }
-  .amp-eq i:nth-child(9) { --c: #f6c766; --d: 1.6s; --o: -0.1s; --still: 0.22; }
-  @keyframes amp-eq { 0% { transform: scaleY(0.18); } 30% { transform: scaleY(0.95); } 55% { transform: scaleY(0.4); } 80% { transform: scaleY(0.75); } 100% { transform: scaleY(0.25); } }
-  .amp-marq { overflow: hidden; white-space: nowrap; padding: 7px 0 6px; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 17px; line-height: 1.2; text-shadow: 0 0 6px rgba(240, 184, 90, 0.5); }
-  .amp-run { display: inline-flex; animation: amp-scroll var(--dur, 18s) linear infinite; }
-  .amp-run span { white-space: pre; }
-  @keyframes amp-scroll { to { transform: translateX(-50%); } }
+  .amp-time b { font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: clamp(25px, 7vw, 30px); white-space: nowrap; text-shadow: 0 0 8px rgba(240, 184, 90, 0.55); }
+  .amp-time small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; color: rgba(240, 184, 90, 0.8); }
+  .jb-bill { margin: 0; padding: 0 4px; text-align: center; font-family: 'Handjet', 'Courier New', monospace; font-weight: 600; font-size: 15px; line-height: 1.3; letter-spacing: 0.04em; color: #f5ead8; min-height: 2.6em; text-wrap: balance; }
+  /* the selection panel: title strips */
+  .jb-panel { padding: 8px; background: linear-gradient(#1c1411, #0e0a08); border: 2px solid; border-color: #0e0a08 #8a6a4a #8a6a4a #0e0a08; border-radius: 6px; }
+  .jb-strips { list-style: none; display: grid; gap: 6px; }
+  .jb-strip { display: flex; align-items: center; gap: 10px; width: 100%; margin: 0; padding: 6px 10px 6px 6px; box-sizing: border-box; cursor: pointer; text-align: left; font: inherit; color: #2a1d17;
+    background: linear-gradient(#b5231a, #b5231a) 0 0 / 100% 4px no-repeat, linear-gradient(#b5231a, #b5231a) 0 100% / 100% 4px no-repeat, #f7f1e6;
+    border: 0; border-radius: 2px; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 0 1px rgba(42, 29, 23, 0.15); }
+  .jb-strip:hover { background-color: #fff6ea; }
+  .jb-key { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 17px; letter-spacing: 0.04em; color: #2a1d17;
+    background: radial-gradient(circle at 35% 30%, #fffaf2, #d9c7a6 60%, #a88a62); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.35); }
+  .jb-t { display: grid; min-width: 0; line-height: 1.2; }
+  .jb-t b { font-family: 'Abril Fatface', Georgia, serif; font-weight: 400; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .jb-t small { font-size: 12px; letter-spacing: 0.04em; color: #5e4c40; }
+  .jb-strip[aria-pressed="true"] { background-color: #fde7b8; }
+  .jb-strip[aria-pressed="true"] .jb-key { color: #fff6ea; background: radial-gradient(circle at 35% 30%, #f08a7d, #d9493a 55%, #8f1d16); box-shadow: 0 0 10px rgba(217, 73, 58, 0.75), inset 0 -2px 0 rgba(0, 0, 0, 0.25); }
+  .jb-strip.sel:not([aria-pressed="true"]) .jb-key { box-shadow: 0 0 0 2px #f0b85a, inset 0 -2px 0 rgba(0, 0, 0, 0.22); }
+  .jb-empty { margin: 0; padding: 10px; text-align: center; font-size: 14px; color: #f5ead8; }
   .amp-ctl { display: flex; align-items: center; gap: 6px; }
-  .amp-b { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 46px; min-height: 42px; padding: 0 12px; box-sizing: border-box; margin: 0;
-    font: 600 12px/1 'Jost', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 2px;
-    color: #2a1d17; background: linear-gradient(#fff6ea, #e3d3b8); border: 2px solid; border-color: #fffaf2 #8a6a4a #8a6a4a #fffaf2; }
-  .amp-b:active { border-color: #8a6a4a #fffaf2 #fffaf2 #8a6a4a; background: #e3d3b8; }
+  .amp-b { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 46px; min-height: 44px; padding: 0 12px; box-sizing: border-box; margin: 0;
+    font: 600 12px/1 'Jost', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 22px;
+    color: #2a1d17; background: linear-gradient(#fff6ea, #d9c7a6); border: 2px solid; border-color: #fffaf2 #8a6a4a #8a6a4a #fffaf2; }
+  .amp-b:active { border-color: #8a6a4a #fffaf2 #fffaf2 #8a6a4a; background: #d9c7a6; }
   .amp-play { flex: 1 1 auto; color: #fff6ea; background: linear-gradient(#d9493a, #b5231a); border-color: #f08a7d #6e130d #6e130d #f08a7d; }
   .amp-play:active { border-color: #6e130d #f08a7d #f08a7d #6e130d; background: #a61f17; }
-  .amp-b:focus-visible, .amp-owl:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; }
-  .amp-owl { flex: none; width: 46px; height: 46px; margin: -2px -4px -2px 2px; padding: 0; display: grid; place-items: center; background: none; border: 0; border-radius: 4px; cursor: pointer; }
+  .amp-b:focus-visible, .amp-owl:focus-visible, .jb-strip:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; }
+  .amp-hear { display: grid; gap: 8px; }
+  .amp-hear .amp-b { width: 100%; }
+  .amp-hear .amp-b[aria-pressed="true"] { background: #d9c7a6; }
+  .amp-box iframe { display: block; width: 100%; border: 0; border-radius: 3px; background: #1c1411; }
+  .amp-note { margin: 0; font-size: 13px; line-height: 1.45; color: #e9dcc4; }
+  .amp-note a { color: #f0b85a; text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .amp-note a:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; border-radius: 2px; }
+  /* the speaker grille, with the owl perched on it */
+  .jb-grille { position: relative; display: grid; place-items: center; height: 62px; margin-top: 2px; border-radius: 8px 8px 4px 4px; border: 2px solid #8a6a4a;
+    background: repeating-linear-gradient(90deg, #0b0807 0 5px, #6b4a33 5px 7px), #0b0807; box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.6); }
+  .jb-grille::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -9px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #8a6a4a, #e9dcc4, #8a6a4a); }
+  .amp-owl { width: 50px; height: 50px; padding: 0; display: grid; place-items: center; background: radial-gradient(circle, #241519 55%, #3b2a21); border: 2px solid #d6952a; border-radius: 50%; cursor: pointer; }
   .amp-owl svg { width: 32px; height: 32px; display: block; shape-rendering: crispEdges; transform-origin: 50% 85%; }
   .amp-owl .eyes { transform-box: fill-box; transform-origin: center; animation: amp-blink 6.5s 2s infinite; }
   @keyframes amp-blink { 0%, 94%, 100% { transform: none; } 96%, 98% { transform: scaleY(0.12); } }
   .amp-owl.hoot svg { animation: amp-hoot 1s cubic-bezier(.3, .7, .3, 1); }
   @keyframes amp-hoot { 0% { transform: none; } 25% { transform: rotate(-16deg) translateY(-3px); } 55% { transform: rotate(12deg) translateY(-2px); } 80% { transform: rotate(-4deg); } 100% { transform: none; } }
-  .amp.flip .amp-lcd > * { animation: amp-flip 0.36s steps(3) both; }
+  .amp.flip .jb-window > * { animation: amp-flip 0.36s steps(3) both; }
   @keyframes amp-flip { 0% { opacity: 0.15; transform: translateX(-4px); } 50% { opacity: 1; transform: translateX(3px); } 100% { opacity: 1; transform: none; } }
-  .amp:not(.on) .amp-eq i, .amp:not(.on) .amp-run, .amp:not(.on) .amp-owl .eyes { animation-play-state: paused; }
-  .amp:not(.open) .amp-eq i { animation: none; }
-  .amp-hear { padding: 10px 10px 0; display: grid; gap: 8px; }
-  .amp-hear .amp-b { width: 100%; }
-  .amp-hear .amp-b[aria-pressed="true"] { background: #e3d3b8; }
-  .amp-box iframe { display: block; width: 100%; border: 0; border-radius: 3px; background: #1c1411; }
-  .amp-note { margin: 0; font-size: 13px; line-height: 1.45; color: #e9dcc4; }
-  .amp-note a { color: #f0b85a; text-underline-offset: 3px; overflow-wrap: anywhere; }
-  .amp-note a:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; border-radius: 2px; }
+  .amp.open.on::before, .amp.open.on .jb-tube, .amp.open.on .jb-disc svg { animation-play-state: running; }
+  .amp:not(.on) .amp-owl .eyes { animation-play-state: paused; }
+  @media (min-width: 640px) and (max-width: 979px) { .shows-grid > .amp { max-width: 440px; margin-inline: auto; } }
   @media (prefers-reduced-motion: reduce) {
-    .amp-eq i, .amp-run, .amp-owl .eyes, .amp-owl.hoot svg, .amp.flip .amp-lcd > * { animation: none; }
-    .amp-marq { white-space: normal; padding-inline: 10px; }
-    .amp-run { display: inline; } .amp-run span { white-space: normal; }
+    .amp::before, .jb-tube, .jb-disc svg, .amp-owl .eyes, .amp-owl.hoot svg, .amp.flip .jb-window > * { animation: none; }
+  }
+
+  /* THE MARQUEE: the bill that used to scroll inside the player, now a theater marquee along the foot of the hero, so the very
+     first screen says what is coming up. Every upcoming show rolls by; tap it to jump to the shows. Bulbs top and bottom.
+     Stops while you hover or focus it, and off screen; under reduced motion the bill sits still and wraps. */
+  .hero-marq { position: relative; z-index: 3; display: flex; align-items: stretch; text-decoration: none; color: #f0b85a; background: #0b0807; overflow: hidden;
+    padding-block: 7px; border-top: 1px solid #3b2a21; }
+  .hero-marq::before, .hero-marq::after { content: ""; position: absolute; left: 0; right: 0; height: 4px; pointer-events: none;
+    background: radial-gradient(circle, #ffe2a8 0 1.4px, rgba(240, 184, 90, 0.35) 2px, transparent 2.6px) 0 50% / 14px 4px repeat-x; }
+  .hero-marq::before { top: 1px; } .hero-marq::after { bottom: 1px; }
+  .hm-tag { flex: none; display: grid; place-items: center; padding: 0 14px 0 20px; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 600; color: #fff1e0;
+    background: linear-gradient(90deg, #8f1d16, #b5231a); box-shadow: 8px 0 14px -6px rgba(0, 0, 0, 0.8); position: relative; z-index: 1; }
+  .hm-win { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; padding: 8px 0 7px; font-family: 'Handjet', 'Courier New', monospace; font-weight: 700; font-size: 20px; line-height: 1.2;
+    letter-spacing: 0.04em; text-shadow: 0 0 7px rgba(240, 184, 90, 0.55); }
+  .hm-run { display: inline-flex; padding-left: 14px; animation: amp-scroll var(--dur, 30s) linear infinite; }
+  .hm-run span { white-space: pre; }
+  @keyframes amp-scroll { to { transform: translateX(-50%); } }
+  .hero-marq:not(.on) .hm-run, .hero-marq:hover .hm-run, .hero-marq:focus-visible .hm-run { animation-play-state: paused; }
+  .hero-marq:hover .hm-win { color: #ffd59a; }
+  .hero-marq:focus-visible { outline: 2px solid #f0b85a; outline-offset: -4px; }
+  @media (max-width: 520px) { .hm-tag { padding: 0 10px 0 16px; font-size: 10px; letter-spacing: 0.18em; } .hm-win { font-size: 18px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hm-run { animation: none; display: inline; padding-left: 0; } .hm-run span { white-space: normal; }
+    .hm-win { white-space: normal; padding-inline: 12px; }
   }
 
   /* THE HALL, at night */
@@ -765,6 +817,7 @@
       </div>
     </div>
   </div>
+  <a class="hero-marq" id="hero-marq" href="#shows" aria-label="Coming up: Led Kaapana, Sunday, October 18; Chris Pierce, Saturday, October 24. See the shows."><span class="hm-tag" aria-hidden="true">Coming up</span><span class="hm-win" aria-hidden="true"><span class="hm-run" id="hm-run"><span>LED KAAPANA &#10022; SUN OCT 18 &#10022; 7:30 PM &#10022; $31.50 &#10022; CHRIS PIERCE &#10022; SAT OCT 24 &#10022; 7:30 PM &#10022; $26.50 &#10022; ALL AGES &#10022; 246 BERDING ST, FERNDALE &#10022; </span></span></span></a>
 </div>
 <script>
   (function () {
@@ -808,24 +861,33 @@
     </div>
     <div class="shows-grid">
       <div class="amp" id="amp" role="group" aria-labelledby="amp-h">
-        <div class="amp-bar"><span class="amp-dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="amp-h">Live from The Old Steeple</span><span class="amp-trk" id="amp-trk" aria-hidden="true">1/2</span></div>
-        <div class="amp-face">
-          <div class="amp-lcd">
+        <span class="jb-tube l" aria-hidden="true"></span><span class="jb-tube r" aria-hidden="true"></span>
+        <div class="jb-crown"><p id="amp-h" style="margin:0"><small>Live from</small> <b>The Old Steeple</b></p><span class="jb-trk" id="amp-trk" aria-hidden="true">1/2</span></div>
+        <div class="jb-face">
+          <div class="jb-window">
+            <div class="jb-disc" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="49" fill="#120c0a"/><g fill="none" stroke="rgba(255,240,210,0.09)" stroke-width="1"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="39"/><circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="29"/><circle cx="50" cy="50" r="24"/></g><circle cx="50" cy="50" r="18" fill="#b5231a"/><path d="M50 36l5 6v14h-10V42z" fill="#f0b85a"/><path d="M50 30v6" stroke="#f0b85a" stroke-width="1.6"/><circle cx="50" cy="50" r="2.4" fill="#0b0807"/><path d="M38 63h24" stroke="#fff1e0" stroke-width="1.4" stroke-opacity="0.7"/></svg></div>
             <p class="amp-time"><b id="amp-clock">SUN OCT 18</b><small id="amp-unit">7:30 pm &middot; all ages</small></p>
-            <div class="amp-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           </div>
-          <div class="amp-marq"><span class="amp-run" id="amp-run"><span>LED KAAPANA &#10022; SUN OCT 18 &#10022; 7:30 PM &#10022; $31.50 &#10022; ALL AGES &#10022; 246 BERDING ST &#10022; </span></span></div>
+          <p class="jb-bill" id="amp-bill">LED KAAPANA &#10022; SUN OCT 18 &#10022; 7:30 PM &#10022; $31.50 &#10022; ALL AGES &#10022; 246 BERDING ST</p>
           <p class="vh" role="status" id="amp-now"></p>
+          <div class="jb-panel">
+            <ul class="jb-strips" id="jb-strips" aria-label="Pick an artist to hear">
+              <li><button type="button" class="jb-strip sel" aria-pressed="false"><span class="jb-key">A1</span><span class="jb-t"><b>Led Kaapana</b><small>Sun Oct 18 &middot; Hawaiian slack key</small></span></button></li>
+              <li><button type="button" class="jb-strip" aria-pressed="false"><span class="jb-key">A2</span><span class="jb-t"><b>Chris Pierce</b><small>Sat Oct 24 &middot; American roots</small></span></button></li>
+            </ul>
+          </div>
           <div class="amp-ctl">
             <button type="button" class="amp-b" id="amp-prev" aria-label="Previous show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M2 1h2v10H2zM15 1v10L9 6zM9 1v10L3 6z"/></svg></button>
             <a class="amp-b amp-play" id="amp-play" href="#show-led"><svg width="11" height="12" viewBox="0 0 11 12" aria-hidden="true" fill="currentColor"><path d="M1 0l10 6-10 6z"/></svg>Tickets<span class="vh" id="amp-for"> for Led Kaapana</span></a>
             <button type="button" class="amp-b" id="amp-next" aria-label="Next show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M1 1v10l6-5zM7 1v10l6-5zM12 1h2v10h-2z"/></svg></button>
-            <button type="button" class="amp-owl" id="amp-owl" aria-label="The owl from the bell tower" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d6952a" d="M5 1h6v1h-6zM3 2h10v1h-10zM2 3h2v1h-2zM7 3h2v1h-2zM12 3h2v1h-2zM2 4h1v1h-1zM13 4h1v1h-1zM2 5h1v1h-1zM13 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1zM2 7h1v1h-1zM13 7h1v1h-1zM3 8h1v1h-1zM12 8h1v1h-1zM3 9h2v1h-2zM11 9h2v1h-2zM2 10h4v1h-4zM10 10h4v1h-4zM2 11h3v1h-3zM11 11h3v1h-3zM2 12h3v1h-3zM11 12h3v1h-3zM3 13h2v1h-2zM11 13h2v1h-2zM4 14h8v1h-8z"/><path fill="#fff1e0" d="M4 3h3v1h-3zM9 3h3v1h-3zM3 4h10v1h-10zM3 5h10v2h-10zM3 7h4v1h-4zM9 7h4v1h-4zM4 8h4v1h-4zM9 8h3v1h-3zM5 9h6v1h-6zM6 10h4v1h-4zM5 11h2v1h-2zM8 11h3v1h-3zM5 12h5v1h-5zM5 13h1v1h-1zM7 13h4v1h-4z"/><path fill="#8a5a10" d="M7 11h1v1h-1zM10 12h1v1h-1zM6 13h1v1h-1z"/><path fill="#e8a07a" d="M7 7h2v1h-2zM8 8h1v1h-1zM5 15h2v1h-2zM9 15h2v1h-2z"/><path class="eyes" fill="#1c1411" d="M4 5h2v2h-2zM10 5h2v2h-2z"/></svg></button>
           </div>
           <div class="amp-hear">
             <button type="button" class="amp-b" id="amp-hear" aria-pressed="false" aria-controls="amp-box" hidden>Hear Led Kaapana</button>
             <div class="amp-box" id="amp-box" hidden></div>
             <p class="amp-note" id="amp-note"></p>
+          </div>
+          <div class="jb-grille">
+            <button type="button" class="amp-owl" id="amp-owl" aria-label="The owl from the bell tower" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d6952a" d="M5 1h6v1h-6zM3 2h10v1h-10zM2 3h2v1h-2zM7 3h2v1h-2zM12 3h2v1h-2zM2 4h1v1h-1zM13 4h1v1h-1zM2 5h1v1h-1zM13 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1zM2 7h1v1h-1zM13 7h1v1h-1zM3 8h1v1h-1zM12 8h1v1h-1zM3 9h2v1h-2zM11 9h2v1h-2zM2 10h4v1h-4zM10 10h4v1h-4zM2 11h3v1h-3zM11 11h3v1h-3zM2 12h3v1h-3zM11 12h3v1h-3zM3 13h2v1h-2zM11 13h2v1h-2zM4 14h8v1h-8z"/><path fill="#fff1e0" d="M4 3h3v1h-3zM9 3h3v1h-3zM3 4h10v1h-10zM3 5h10v2h-10zM3 7h4v1h-4zM9 7h4v1h-4zM4 8h4v1h-4zM9 8h3v1h-3zM5 9h6v1h-6zM6 10h4v1h-4zM5 11h2v1h-2zM8 11h3v1h-3zM5 12h5v1h-5zM5 13h1v1h-1zM7 13h4v1h-4z"/><path fill="#8a5a10" d="M7 11h1v1h-1zM10 12h1v1h-1zM6 13h1v1h-1z"/><path fill="#e8a07a" d="M7 7h2v1h-2zM8 8h1v1h-1zM5 15h2v1h-2zM9 15h2v1h-2z"/><path class="eyes" fill="#1c1411" d="M4 5h2v2h-2zM10 5h2v2h-2z"/></svg></button>
           </div>
         </div>
       </div>
@@ -1381,29 +1443,42 @@
     document.querySelectorAll('.reveal').forEach(function (el) { if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); } });
   })();
 
-  /* the player: counts down to the next show, flips between shows, and the owl hoots a bit of history */
+  /* the jukebox: counts down to the next show, title strips play each artist, flips between shows, and the owl hoots a bit of history.
+     The hero marquee rolls every upcoming show by. */
   (function () {
     var amp = document.getElementById('amp'); if (!amp) return;
     function $(id) { return document.getElementById(id); }
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var STAR = ' ✦ ';
     var SHOWS = [ /* 7:30 pm Pacific (PDT) */
-      { name: 'Led Kaapana', when: 'SUN OCT 18', say: 'Sunday, October 18', at: Date.UTC(2026, 9, 19, 2, 30), price: '$31.50', href: '#show-led',
+      { name: 'Led Kaapana', when: 'SUN OCT 18', short: 'Sun Oct 18', say: 'Sunday, October 18', kind: 'Hawaiian slack key', at: Date.UTC(2026, 9, 19, 2, 30), price: '$31.50', href: '#show-led',
         hear: { src: 'https://bandcamp.com/EmbeddedPlayer/album=572408350/size=large/bgcol=1c1411/linkcol=f0b85a/tracklist=false/artwork=small/transparent=true/', from: 'Bandcamp (Dancing Cat Records)', page: 'https://dancingcatrecords.bandcamp.com/album/led-live-solo', pageName: 'Led Live: Solo on Bandcamp' } },
-      { name: 'Chris Pierce', when: 'SAT OCT 24', say: 'Saturday, October 24', at: Date.UTC(2026, 9, 25, 2, 30), price: '$26.50', href: '#show-chris',
+      { name: 'Chris Pierce', when: 'SAT OCT 24', short: 'Sat Oct 24', say: 'Saturday, October 24', kind: 'American roots', at: Date.UTC(2026, 9, 25, 2, 30), price: '$26.50', href: '#show-chris',
         hear: { src: 'https://bandcamp.com/EmbeddedPlayer/album=1516178206/size=large/bgcol=1c1411/linkcol=f0b85a/tracklist=false/artwork=small/transparent=true/', from: 'Bandcamp', page: 'https://chrispierce.bandcamp.com/album/songs-for-the-heavy-hearted', pageName: 'Songs for the Heavy Hearted on Bandcamp' } }
     ];
     var up = SHOWS.filter(function (s) { return Date.now() < s.at + 3 * 3600e3; });
     var i = 0, timer = null, owlT = null;
-    var clock = $('amp-clock'), unit = $('amp-unit'), run = $('amp-run'), now = $('amp-now'), play = $('amp-play'), owl = $('amp-owl');
-    function marquee(text) {
-      run.textContent = '';
-      for (var k = 0; k < (reduce ? 1 : 2); k++) { var sp = document.createElement('span'); sp.textContent = text; run.appendChild(sp); }
-      run.style.setProperty('--dur', Math.max(9, text.length * 0.21).toFixed(1) + 's');
-      run.style.animation = 'none'; void run.offsetWidth; run.style.animation = '';
+    var clock = $('amp-clock'), unit = $('amp-unit'), billEl = $('amp-bill'), now = $('amp-now'), play = $('amp-play'), owl = $('amp-owl');
+
+    /* the hero marquee */
+    var hm = $('hero-marq'), hmRun = $('hm-run');
+    if (hm && hmRun) {
+      var hmText = up.length ? up.map(function (s) { return s.name.toUpperCase() + STAR + s.when + STAR + '7:30 PM' + STAR + s.price + STAR; }).join('') + 'ALL AGES' + STAR + '246 BERDING ST, FERNDALE' + STAR
+        : ('NEW SHOWS COMING SOON' + STAR + '246 BERDING ST, FERNDALE' + STAR);
+      hmRun.textContent = '';
+      for (var c = 0; c < (reduce ? 1 : 2); c++) { var sp = document.createElement('span'); sp.textContent = reduce ? hmText.replace(/ ✦ $/, '') : hmText; hmRun.appendChild(sp); }
+      hmRun.style.setProperty('--dur', Math.max(14, hmText.length * 0.2).toFixed(1) + 's');
+      hm.setAttribute('aria-label', up.length ? 'Coming up: ' + up.map(function (s) { return s.name + ', ' + s.say; }).join('; ') + '. See the shows.' : 'New shows coming soon. See the shows.');
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { hm.classList.toggle('on', e.isIntersecting); }); }).observe(hm);
+      else hm.classList.add('on');
     }
-    var hear = $('amp-hear'), box = $('amp-box'), note = $('amp-note');
-    function closeBox() { box.innerHTML = ''; box.hidden = true; amp.classList.remove('open'); hear.setAttribute('aria-pressed', 'false'); }
+
+    var hear = $('amp-hear'), box = $('amp-box'), note = $('amp-note'), strips = $('jb-strips'), btns = [];
+    function paintStrips() {
+      var open = amp.classList.contains('open');
+      btns.forEach(function (b, k) { b.classList.toggle('sel', k === i); b.setAttribute('aria-pressed', open && k === i ? 'true' : 'false'); });
+    }
+    function closeBox() { box.innerHTML = ''; box.hidden = true; amp.classList.remove('open'); hear.setAttribute('aria-pressed', 'false'); paintStrips(); }
     function paintHear() {
       var s = up[i]; closeBox(); if (!s) { hear.hidden = true; note.textContent = ''; return; }
       if (s.hear) { hear.hidden = false; hear.textContent = 'Hear ' + s.name; note.textContent = ''; }
@@ -1419,6 +1494,7 @@
       note.textContent = ''; note.appendChild(document.createTextNode('Press play in their player. Phones need that one tap inside it. From their ' + s.hear.from + ': '));
       var a = document.createElement('a'); a.href = s.hear.page; a.target = '_blank'; a.rel = 'noopener'; a.textContent = s.hear.pageName; note.appendChild(a);
       now.textContent = s.name + ' player loaded. Press play in their player.';
+      paintStrips();
     }
     hear.addEventListener('click', openBox);
     function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -1430,17 +1506,30 @@
       clock.textContent = (d ? d + 'd ' : '') + pad(h) + ':' + pad(m) + (reduce ? '' : ':' + pad(t % 60));
       unit.textContent = 'till showtime';
     }
-    function bill(s) { return s.name.toUpperCase() + STAR + s.when + STAR + '7:30 PM' + STAR + s.price + STAR + 'ALL AGES' + STAR + '246 BERDING ST' + STAR; }
+    function bill(s) { return s.name.toUpperCase() + STAR + s.when + STAR + '7:30 PM' + STAR + s.price + STAR + 'ALL AGES' + STAR + '246 BERDING ST'; }
     function load(k, announce) {
       clearTimeout(owlT); owl.classList.remove('hoot');
       i = (k + up.length) % up.length; var s = up[i];
-      $('amp-trk').textContent = (i + 1) + '/' + up.length;
+      $('amp-trk').textContent = 'A' + (i + 1) + ' · ' + (i + 1) + '/' + up.length;
       play.setAttribute('href', s.href); $('amp-for').textContent = ' for ' + s.name;
-      marquee(bill(s)); tick(); paintHear();
+      billEl.textContent = bill(s); tick(); paintHear();
       if (announce) now.textContent = 'Show ' + (i + 1) + ' of ' + up.length + ': ' + s.name + ', ' + s.say + ', 7:30 pm, ' + s.price + '.';
       amp.classList.remove('flip'); if (announce && !reduce) { void amp.offsetWidth; amp.classList.add('flip'); }
     }
+    /* the title strips: one per upcoming show; tap one and that artist plays */
+    strips.textContent = '';
     if (up.length) {
+      up.forEach(function (s, k) {
+        var li = document.createElement('li'), b = document.createElement('button');
+        b.type = 'button'; b.className = 'jb-strip'; b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', (s.hear ? 'Play ' : 'Pick ') + s.name + ', ' + s.say);
+        var key = document.createElement('span'); key.className = 'jb-key'; key.setAttribute('aria-hidden', 'true'); key.textContent = 'A' + (k + 1);
+        var t = document.createElement('span'); t.className = 'jb-t';
+        var nm = document.createElement('b'); nm.textContent = s.name;
+        var sm = document.createElement('small'); sm.textContent = s.short + ' · ' + s.kind;
+        t.appendChild(nm); t.appendChild(sm); b.appendChild(key); b.appendChild(t); li.appendChild(b); strips.appendChild(li); btns.push(b);
+        b.addEventListener('click', function () { if (k !== i || owl.classList.contains('hoot')) load(k, true); if (s.hear) openBox(); });
+      });
       load(0, false);
       if (up.length > 1) {
         $('amp-prev').hidden = false; $('amp-next').hidden = false;
@@ -1448,16 +1537,17 @@
         $('amp-next').addEventListener('click', function () { load(i + 1, true); });
       }
     } else {
+      var li0 = document.createElement('li'); li0.className = 'jb-empty'; li0.textContent = 'New shows coming soon.'; strips.appendChild(li0);
       clock.textContent = 'SOON'; unit.textContent = 'new shows coming'; $('amp-trk').textContent = '0/0';
-      play.setAttribute('href', '#shows'); $('amp-for').textContent = ''; hear.hidden = true; marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2));
+      play.setAttribute('href', '#shows'); $('amp-for').textContent = ''; hear.hidden = true; billEl.textContent = 'NEW SHOWS COMING SOON';
     }
     owl.hidden = false;
     owl.addEventListener('click', function () {
-      marquee('HOO’S THERE?' + STAR + 'BARN OWLS HAVE NESTED IN THE BELL TOWER SINCE 1902' + STAR);
+      billEl.textContent = 'HOO’S THERE?' + STAR + 'BARN OWLS HAVE NESTED IN THE BELL TOWER SINCE 1902';
       now.textContent = 'Hoo’s there? Barn owls have nested in the bell tower since 1902.';
       owl.classList.remove('hoot'); void owl.offsetWidth; owl.classList.add('hoot');
       clearTimeout(owlT);
-      owlT = setTimeout(function () { owl.classList.remove('hoot'); if (up.length) { marquee(bill(up[i])); tick(); } else marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2)); }, 11000);
+      owlT = setTimeout(function () { owl.classList.remove('hoot'); billEl.textContent = up.length ? bill(up[i]) : 'NEW SHOWS COMING SOON'; if (up.length) tick(); }, 11000);
     });
     /* only tick and move while it's on screen */
     function start() { if (!timer) { tick(); timer = setInterval(tick, reduce ? 30000 : 1000); } }
