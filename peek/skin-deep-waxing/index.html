@@ -869,13 +869,13 @@
       <li class="reveal"><b>After</b>For 24 hours, skip hot baths, saunas, tanning beds and hard workouts. Moisturize, and rebook for 4 to 6 weeks out: Fresha sends you a reminder.</li>
     </ol>
 
-    <div data-show="mother crone all" data-fold data-thing="wax planner" style="margin-top:60px">
-      <p class="label"><span>Plan your visit</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <div id="book" data-show="mother crone all" data-fold data-thing="wax planner" tabindex="-1" style="margin-top:60px">
+      <p class="label"><span data-show="mother" hidden>Plan your visit</span><span data-show="crone all">Plan and book your wax</span> <span class="bk-demo">preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Build your <em>wax</em></h2>
-      <p class="measure soft" style="margin-top:14px">Pick your areas and any extras, and the site adds up your price, checks your hair is ready, and hands you straight to <span data-show="mother" hidden>Fresha</span><span data-show="crone all">booking</span>. Give it a try:</p>
+      <p class="measure soft" style="margin-top:14px"><span data-show="mother" hidden>Pick your areas and any extras, and the site adds up your price, checks your hair is ready, and hands you straight to Fresha. Give it a try:</span><span data-show="crone all">Pick your areas and any extras, and the site adds up your price and checks your hair is ready. Then choose a day and time, add your details and the deposit, all without leaving your site. Give it a try:</span></p>
       <div class="bk">
         <div class="bk-card" id="pl-card">
-          <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your areas</button><button type="button" data-s="2" disabled>2 Comfort</button><button type="button" data-s="3" disabled>3 Your hair</button></div>
+          <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your areas</button><button type="button" data-s="2" disabled>2 Comfort</button><button type="button" data-s="3" disabled>3 Your hair</button><button type="button" data-s="4" data-show="crone all" disabled>4 Day and time</button><button type="button" data-s="5" data-show="crone all" disabled>5 You</button><button type="button" data-s="6" data-show="crone all" disabled>6 Deposit</button></div>
           <div id="pl-s1">
             <p class="bk-q" id="pl-q1">What would you like waxed? Pick any.</p>
             <div class="chips" role="group" aria-labelledby="pl-q1">
@@ -910,7 +910,30 @@
               <button type="button" class="chip" data-len="long">Longer than that</button>
               <button type="button" class="chip" data-len="short">I just shaved</button>
             </div>
+            <p class="hint" id="pl-hair" role="status" data-show="crone all"></p>
           </div>
+          <div data-show="crone all" data-thing="booking and deposits right on your own site">
+            <div id="pl-s4" hidden>
+              <p class="bk-q" id="pl-q5">Which day?</p>
+              <div class="chips" role="group" aria-labelledby="pl-q5">
+                <button type="button" class="chip" data-day="Tuesday">Tue</button><button type="button" class="chip" data-day="Wednesday">Wed</button><button type="button" class="chip" data-day="Thursday">Thu</button><button type="button" class="chip" data-day="Friday">Fri</button><button type="button" class="chip" data-day="Saturday">Sat</button>
+              </div>
+              <p class="bk-q" id="pl-q6">What time? <span style="text-transform:none;letter-spacing:0;font-weight:400">(sample times)</span></p>
+              <div class="chips" role="group" aria-labelledby="pl-q6" id="pl-times"></div>
+            </div>
+            <div id="pl-s5" hidden>
+              <div class="fld-row">
+                <label class="fld">First name<input id="pl-name" autocomplete="off" value="Jess"></label>
+                <label class="fld">Email<input id="pl-mail" type="email" autocomplete="off" value="jess@example.com"></label>
+              </div>
+            </div>
+            <div id="pl-s6" hidden>
+              <p class="bk-q">Hold your spot</p>
+              <div class="dep-box"><span>Deposit today: <b><span class="ph">your deposit</span></b></span><small>It comes off your total at the visit, and the rest is paid in the studio.</small><small>Cancellation policy: <span class="ph">how much notice you&rsquo;d like, and any fee</span></small></div>
+            </div>
+          </div>
+          <p class="bk-total" id="pl-total" aria-live="polite" data-show="crone all"></p>
+          <p class="hint" id="pl-formhint" role="status" data-show="crone all"></p>
           <div class="bk-nav" id="pl-nav"><button type="button" class="bk-go" id="pl-go" disabled>Next</button><button type="button" class="bk-go ghost" id="pl-back" hidden>Back</button></div>
           <div class="bk-done" id="pl-done" hidden>
             <h3 id="pl-done-h" tabindex="-1">Your <em>wax</em></h3>
@@ -918,83 +941,28 @@
             <ul class="tips" id="pl-tips"></ul>
             <div class="bk-nav">
               <a class="bk-go" id="pl-book" href="https://www.fresha.com/a/skin-deep-waxing-studio-eureka-1117a-myrtle-avenue-d7tzhmxx/booking?menu=true" target="_blank" rel="noopener" data-show="mother" hidden>Book these on Fresha<span class="vh"> (opens in a new tab)</span></a>
-              <a class="bk-go" id="pl-book-here" href="#book" data-show="crone all">Book these right here</a>
               <button type="button" class="bk-go ghost" id="pl-edit">Change something</button><button type="button" class="bk-go ghost" id="pl-again">Try it again</button>
             </div>
           </div>
+          <div class="bk-done fade-in" id="pl-booked" hidden>
+            <h3 id="pl-booked-h" tabindex="-1">You&rsquo;re <em>booked</em></h3>
+            <ul class="plan" id="pl-blist"></ul>
+            <p class="soft" id="pl-bsum" style="font-size:15px;margin-top:12px"></p>
+            <ul class="tips" id="pl-btips"></ul>
+            <p class="demo-note">Preview only: nothing was booked and nothing was paid.</p>
+            <div class="bk-nav"><button type="button" class="bk-go ghost" id="pl-bedit">Change something</button><button type="button" class="bk-go ghost" id="pl-bagain">Try it again</button></div>
+          </div>
         </div>
         <div class="bk-side mock-note wf-note">
-          <div class="bk-note"><b>Built from your real menu</b>Every price is from your Fresha menu, and the hair length advice is from your own FAQ: a quarter inch to three quarters, with your $20 pre-wax clean up for longer hair.</div>
-          <div class="bk-inbox" id="pl-inbox"><div class="from">What they&rsquo;ll <span data-show="mother" hidden>pick on Fresha</span><span data-show="crone all">book</span></div><div id="pl-inboxtext">Waiting&hellip; try it on the left</div></div>
+          <div class="bk-note" data-show="mother" hidden><b>Built from your real menu</b>Every price is from your Fresha menu, and the hair length advice is from your own FAQ: a quarter inch to three quarters, with your $20 pre-wax clean up for longer hair.</div>
+          <div class="bk-note" data-show="crone all"><b>One flow, right on your site</b>People pick their areas, check their hair, choose a day and time, and pay the deposit without ever leaving your site. The areas and prices are from your Fresha menu, the hair advice is from your own FAQ, and the days are from your hours. The times are samples, and your deposit and cancellation policy are dotted until you tell me. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></div>
+          <div class="bk-inbox" id="pl-inbox"><div class="from"><span data-show="mother" hidden>What they&rsquo;ll pick on Fresha</span><span data-show="crone all">New booking</span></div><div id="pl-inboxtext">Waiting&hellip; try it on the left</div></div>
           <div class="bk-note" data-show="mother" hidden><b>Still Fresha</b>Booking, deposits and your reminders all stay right where they are. This just helps nervous first timers walk in knowing the plan.</div>
-          <div class="bk-note" data-show="crone all"><b>Straight into booking</b>&ldquo;Book these&rdquo; carries the plan right into booking below, with the areas already picked. It still helps nervous first timers walk in knowing the plan.</div>
+          <div class="bk-note" data-show="crone all"><b>Your heads-up</b>With Cal.com, every deposit is in your own Stripe, you get a short heads-up email like the one above, and Stripe&rsquo;s phone app can ping you for each new one.</div>
           <p style="font-size:12px;color:var(--ink-soft)">Preview: nothing is sent and nothing is booked.</p>
         </div>
       </div>
-    </div>
-
-    <div id="book" data-show="crone all" data-fold data-thing="booking and deposits right on your own site" tabindex="-1" style="margin-top:60px">
-      <p class="label"><span>Book your wax</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <h2 class="reveal">Book it <em>right here</em></h2>
-      <p class="measure soft" style="margin-top:14px">Your areas, a day and time, your details and the deposit, all without leaving your site. Give it a try:</p>
-      <div class="bk">
-        <div class="bk-card" id="bw-card">
-          <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your areas</button><button type="button" data-s="2" disabled>2 Day and time</button><button type="button" data-s="3" disabled>3 You</button><button type="button" data-s="4" disabled>4 Deposit</button></div>
-          <div id="bw-s1">
-            <p class="bk-q" id="bw-q1">What would you like waxed? Pick any.</p>
-            <div class="chips" role="group" aria-labelledby="bw-q1">
-              <button type="button" class="chip" data-area="Eyebrows" data-p="25">Eyebrows <small>$25</small></button>
-              <button type="button" class="chip" data-area="Lip" data-p="17">Lip <small>$17</small></button>
-              <button type="button" class="chip" data-area="Full face" data-p="50">Full face <small>$50</small></button>
-              <button type="button" class="chip" data-area="Underarms" data-p="25">Underarms <small>$25</small></button>
-              <button type="button" class="chip" data-area="Lower legs" data-p="60">Lower legs <small>$60</small></button>
-              <button type="button" class="chip" data-area="Bikini line" data-p="40">Bikini line <small>$40</small></button>
-              <button type="button" class="chip" data-area="French bikini" data-p="60">French bikini <small>$60</small></button>
-              <button type="button" class="chip" data-area="Brazilian" data-p="75">Brazilian <small>$75</small></button>
-              <button type="button" class="chip" data-area="Back" data-p="80">Back <small>$80</small></button>
-              <button type="button" class="chip" data-area="Chest" data-p="50">Chest <small>$50</small></button>
-              <button type="button" class="chip" data-area="Lidocaine numbing spray" data-p="5">Numbing spray <small>$5</small></button>
-              <button type="button" class="chip" data-area="V-Facial jelly mask" data-p="30">Jelly mask <small>$30</small></button>
-              <button type="button" class="chip" data-area="Ingrown hair extractions" data-p="25">Ingrown extractions <small>$25</small></button>
-              <button type="button" class="chip" data-area="Pre-wax clean up" data-p="20">Pre-wax clean up <small>$20</small></button>
-            </div>
-            <p class="bk-total" id="bw-total" aria-live="polite"></p>
-          </div>
-          <div id="bw-s2" hidden>
-            <p class="bk-q" id="bw-q2">Which day?</p>
-            <div class="chips" role="group" aria-labelledby="bw-q2">
-              <button type="button" class="chip" data-day="Tuesday">Tue</button><button type="button" class="chip" data-day="Wednesday">Wed</button><button type="button" class="chip" data-day="Thursday">Thu</button><button type="button" class="chip" data-day="Friday">Fri</button><button type="button" class="chip" data-day="Saturday">Sat</button>
-            </div>
-            <p class="bk-q" id="bw-q3">What time? <span style="text-transform:none;letter-spacing:0;font-weight:400">(sample times)</span></p>
-            <div class="chips" role="group" aria-labelledby="bw-q3" id="bw-times"></div>
-          </div>
-          <div id="bw-s3" hidden>
-            <div class="fld-row">
-              <label class="fld">First name<input id="bw-name" autocomplete="off" value="Jess"></label>
-              <label class="fld">Email<input id="bw-mail" type="email" autocomplete="off" value="jess@example.com"></label>
-            </div>
-          </div>
-          <div id="bw-s4" hidden>
-            <p class="bk-q">Hold your spot</p>
-            <div class="dep-box"><span>Deposit today: <b><span class="ph">your deposit</span></b></span><small>It comes off your total at the visit, and the rest is paid in the studio.</small><small>Cancellation policy: <span class="ph">how much notice you&rsquo;d like, and any fee</span></small></div>
-          </div>
-          <p class="hint" id="bw-hint" role="status"></p>
-          <div class="bk-nav" id="bw-nav"><button type="button" class="bk-go" id="bw-go" disabled>Next</button><button type="button" class="bk-go ghost" id="bw-back" hidden>Back</button></div>
-          <div class="bk-done fade-in" id="bw-done" hidden>
-            <h3 id="bw-done-h" tabindex="-1">You&rsquo;re <em>booked</em></h3>
-            <ul class="plan" id="bw-list"></ul>
-            <p class="soft" id="bw-sum" style="font-size:15px;margin-top:12px"></p>
-            <p class="demo-note">Preview only: nothing was booked and nothing was paid.</p>
-            <div class="bk-nav"><button type="button" class="bk-go ghost" id="bw-edit">Change something</button><button type="button" class="bk-go ghost" id="bw-again">Try it again</button></div>
-          </div>
-        </div>
-        <div class="bk-side mock-note wf-note">
-          <div class="bk-note"><b>Right on your site</b>People pick their areas, a day and a time, and pay the deposit without ever leaving your site. With Cal.com, every deposit is in your own Stripe, you get a short heads-up email like the one below, and Stripe&rsquo;s phone app can ping you for each new one.</div>
-          <div class="bk-inbox"><div class="from">New booking</div><div id="bw-inbox">Waiting for a booking&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>Your real details</b>The areas and prices are from your Fresha menu and the days from your hours. The times are samples, and your deposit and cancellation policy are dotted until you tell me.</div>
-        </div>
-      </div>
-      <p class="tier-note mock-note wf-note">Happy on Fresha? Keep it: with Planted or Tended, every Book button opens your Fresha page, and that&rsquo;s all most studios need. In Bloom is for the day you&rsquo;d like booking right on your own site instead: either your Fresha booking sitting right here, if Fresha offers that for your account (I&rsquo;ll check), or a free Cal.com page in your name if you&rsquo;d rather switch, with deposits paid straight into your own Stripe. Stay or switch, it&rsquo;s your choice. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="tier-note mock-note wf-note" data-show="crone all">Happy on Fresha? Keep it: with Planted or Tended, every Book button opens your Fresha page, and that&rsquo;s all most studios need. In Bloom is for the day you&rsquo;d like booking right on your own site instead: either your Fresha booking sitting right here, if Fresha offers that for your account (I&rsquo;ll check), or a free Cal.com page in your name if you&rsquo;d rather switch, with deposits paid straight into your own Stripe. Stay or switch, it&rsquo;s your choice. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     </div>
 
     <div class="bk-alt" data-show="mother crone all" data-fold data-thing="consultation form" tabindex="-1" style="margin-top:60px">
@@ -1377,14 +1345,44 @@
 </script>
 
 <script>
-  /* the wax planner (Tended and In Bloom): their real Fresha prices and their own prep advice */
+  /* the wax planner. Tended: their real Fresha prices and prep advice, then a hand-off to Fresha. In Bloom (and the everything view): the same planner carries on into a day and time, details, the deposit and "You're booked". Times are samples */
   (function () {
     function $(id) { return document.getElementById('pl-' + id); }
     var card = $('card'); if (!card) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+    function booking() { var v = document.documentElement.getAttribute('data-view') || 'all'; return v === 'crone' || v === 'all'; }
+    function last() { return booking() ? 6 : 3; }
+    var TIMES = { Saturday: ['12:30 pm', '3:00 pm', '5:30 pm'], other: ['10:30 am', '1:00 pm', '4:30 pm'] };
+    var dayBtns = [].slice.call(card.querySelectorAll('[data-day]'));
     var st, go = $('go');
-    function reset() { st = { s: 1, max: 1, areas: [], adds: [], first: null, len: null }; }
-    function canGo(n) { return n === 1 || (n === 2 ? st.areas.length > 0 && st.max >= 2 : st.areas.length > 0 && !!st.first && st.max >= 3); }
+    function reset() { st = { s: 1, max: 1, areas: [], adds: [], first: null, len: null, day: null, time: null }; $('formhint').textContent = ''; times(); }
+    function times() {
+      var box = $('times'); box.innerHTML = '';
+      if (!st || !st.day) { var p = document.createElement('p'); p.className = 'demo-note'; p.style.margin = '0'; p.textContent = 'Pick a day first.'; box.appendChild(p); return; }
+      (TIMES[st.day] || TIMES.other).forEach(function (t) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('data-time', t); b.textContent = t; box.appendChild(b); });
+    }
+    function items() {
+      var it = st.areas.map(function (b) { return [b.dataset.area, +b.dataset.p]; });
+      st.adds.forEach(function (b) { it.push([b.dataset.add, +b.dataset.p]); });
+      if (st.len === 'long') it.push(['Pre-wax clean up', 20]);
+      return it;
+    }
+    function sum(it) { return it.reduce(function (s, x) { return s + x[1]; }, 0); }
+    function canGo(n) {
+      var a = st.areas.length > 0, base = a && !!st.first && !!st.len, d = !!(st.day && st.time);
+      if (n === 1) return true;
+      if (n === 2) return a && st.max >= 2;
+      if (n === 3) return a && !!st.first && st.max >= 3;
+      if (n === 4) return base && st.max >= 4;
+      return base && d && st.max >= n;
+    }
+    function hairLine() {
+      if (st.len === 'ready') return 'A quarter inch is just right.';
+      if (st.len === 'long') return 'Longer than three quarters of an inch? No problem. Mary trims it first, so the $20 pre-wax clean up is added to your total.';
+      if (st.len === 'short') return 'Give it a little time first: the hair needs to be about a quarter inch long. You can still pick a day for when it gets there.';
+      return '';
+    }
     function paint() {
       st.max = Math.max(st.max, st.s);
       card.querySelectorAll('.bk-steps [data-s]').forEach(function (b) {
@@ -1392,35 +1390,37 @@
         if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
         b.disabled = !on && !canGo(n);
       });
-      [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
+      [1, 2, 3, 4, 5, 6].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
       $('back').hidden = st.s === 1;
-      go.textContent = st.s === 3 ? 'See my plan' : 'Next';
-      go.disabled = st.s === 1 ? !st.areas.length : st.s === 2 ? !st.first : !st.len;
+      go.textContent = st.s === 6 ? 'Pay and book (preview)' : st.s === 3 && !booking() ? 'See my plan' : 'Next';
+      go.disabled = st.s === 1 ? !st.areas.length : st.s === 2 ? !st.first : st.s === 3 ? !st.len : st.s === 4 ? !(st.day && st.time) : false;
       card.querySelectorAll('[data-area]').forEach(function (b) { b.setAttribute('aria-pressed', st.areas.indexOf(b) > -1 ? 'true' : 'false'); });
       card.querySelectorAll('[data-add]').forEach(function (b) { b.setAttribute('aria-pressed', st.adds.indexOf(b) > -1 ? 'true' : 'false'); });
       card.querySelectorAll('[data-first]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.first === st.first ? 'true' : 'false'); });
       card.querySelectorAll('[data-len]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.len === st.len ? 'true' : 'false'); });
+      dayBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.day === st.day ? 'true' : 'false'); });
+      card.querySelectorAll('[data-time]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.time === st.time ? 'true' : 'false'); });
+      var tot = $('total');
+      if (booking() && st.areas.length) {
+        var it = items(), t = 'Your total: <b>$' + sum(it) + '</b>';
+        tot.innerHTML = t; if (st.s >= 4) { var sp = document.createElement('span'); sp.textContent = ' (' + it.map(function (x) { return x[0]; }).join(', ') + ')'; tot.appendChild(sp); }
+      } else tot.textContent = '';
+      $('hair').textContent = booking() && st.s === 3 ? hairLine() : '';
     }
     function toggle(list, b) { var i = list.indexOf(b); if (i > -1) list.splice(i, 1); else list.push(b); }
     card.querySelectorAll('[data-area]').forEach(function (b) { b.addEventListener('click', function () { toggle(st.areas, b); paint(); }); });
     card.querySelectorAll('[data-add]').forEach(function (b) { b.addEventListener('click', function () { toggle(st.adds, b); paint(); }); });
     card.querySelectorAll('[data-first]').forEach(function (b) { b.addEventListener('click', function () { st.first = b.dataset.first; paint(); }); });
     card.querySelectorAll('[data-len]').forEach(function (b) { b.addEventListener('click', function () { st.len = b.dataset.len; paint(); }); });
-    function jump(n) { st.s = n; paint(); var box = $('s' + n); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button')); }
+    dayBtns.forEach(function (b) { b.addEventListener('click', function () { st.day = b.dataset.day; if ((TIMES[st.day] || TIMES.other).indexOf(st.time) < 0) st.time = null; times(); paint(); }); });
+    $('times').addEventListener('click', function (e) { var b = e.target.closest('[data-time]'); if (!b) return; st.time = b.dataset.time; paint(); });
+    function jump(n) { st.s = n; paint(); var box = $('s' + n); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input')); }
     card.querySelectorAll('.bk-steps [data-s]').forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && canGo(n)) jump(n); }); });
-    $('back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
-    function show(on) { [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; }); $('nav').hidden = on; card.querySelector('.bk-steps').hidden = on; $('done').hidden = !on; }
+    $('back').addEventListener('click', function () { $('formhint').textContent = ''; if (st.s > 1) jump(st.s - 1); });
+    function show(which) { [1, 2, 3, 4, 5, 6].forEach(function (n) { $('s' + n).hidden = true; }); var on = !!which; $('nav').hidden = on; card.querySelector('.bk-steps').hidden = on; $('total').hidden = on; $('done').hidden = which !== 'plan'; $('booked').hidden = which !== 'booked'; if (on) $('formhint').textContent = ''; }
     function li(parent, a, b, cls) { var x = document.createElement('li'); if (cls) x.className = cls; var s1 = document.createElement('span'); s1.textContent = a; x.appendChild(s1); if (b != null) { var s2 = document.createElement('span'); s2.textContent = b; x.appendChild(s2); } parent.appendChild(x); }
-    go.addEventListener('click', function () {
-      if (st.s < 3) { st.s++; paint(); return; }
-      var items = st.areas.map(function (b) { return [b.dataset.area, +b.dataset.p]; });
-      st.adds.forEach(function (b) { items.push([b.dataset.add, +b.dataset.p]); });
-      if (st.len === 'long') items.push(['Pre-wax clean up', 20]);
-      var total = items.reduce(function (s, x) { return s + x[1]; }, 0);
-      var list = $('list'); list.innerHTML = '';
-      items.forEach(function (x) { li(list, x[0], '$' + x[1]); });
-      li(list, 'Your total', '$' + total, 'total');
-      var tips = $('tips'); tips.innerHTML = '';
+    function fillTips(tips) {
+      tips.innerHTML = '';
       var bik = st.areas.some(function (b) { return b.dataset.bikini; });
       var numb = st.adds.some(function (b) { return /numbing/i.test(b.dataset.add); });
       if (st.len === 'short') li(tips, 'Give it a little time first: the hair needs to be about a quarter inch long. Book for when it gets there.');
@@ -1430,96 +1430,41 @@
       if (st.first === 'yes') li(tips, numb ? 'First time: Mary will talk you through every step, and the numbing spray helps.' : 'First time: Mary will talk you through every step. Feeling nervous? Add the $5 numbing spray when you book.');
       if (bik && st.adds.every(function (b) { return !/jelly/i.test(b.dataset.add); })) li(tips, 'Ask about the V-Facial jelly mask afterward, to soothe and calm.');
       li(tips, 'For 24 hours after: no hot baths, saunas, tanning or hard workouts.');
-      $('done-h').innerHTML = 'Your <em>wax</em>, $' + total;
-      $('inboxtext').textContent = items.map(function (x) { return x[0]; }).join(', ') + (st.first === 'yes' ? '. First wax.' : '.');
-      show(true); quietFocus($('done-h'));
-    });
-    $('edit').addEventListener('click', function () { show(false); st.s = 1; paint(); quietFocus(card.querySelector('[data-area][aria-pressed="true"]') || go); });
-    $('again').addEventListener('click', function () { reset(); show(false); $('inboxtext').textContent = 'Waiting… try it on the left'; paint(); quietFocus(card.querySelector('[data-area]')); });
-    var here = $('book-here');
-    if (here) here.addEventListener('click', function () {
-      var names = st.areas.map(function (b) { return b.dataset.area; }).concat(st.adds.map(function (b) { return b.dataset.add; }));
-      if (st.len === 'long') names.push('Pre-wax clean up');
-      try { document.dispatchEvent(new CustomEvent('sd:plan', { detail: { areas: names } })); } catch (e) {}
-    });
-    reset(); paint();
-  })();
-</script>
-
-<script>
-  /* In Bloom booking right on the site (key crone): areas, day and time, you, deposit. Their real Fresha prices; times are samples */
-  (function () {
-    function $(id) { return document.getElementById('bw-' + id); }
-    var card = $('card'); if (!card) return;
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-    var TIMES = { Saturday: ['12:30 pm', '3:00 pm', '5:30 pm'], other: ['10:30 am', '1:00 pm', '4:30 pm'] };
-    var areaBtns = [].slice.call(card.querySelectorAll('[data-area]')), dayBtns = [].slice.call(card.querySelectorAll('[data-day]'));
-    var st, go = $('go');
-    function reset() { st = { s: 1, max: 1, areas: [], day: null, time: null }; $('hint').textContent = ''; times(); }
-    function total() { return st.areas.reduce(function (t, b) { return t + (+b.dataset.p); }, 0); }
-    function times() {
-      var box = $('times'); box.innerHTML = '';
-      if (!st || !st.day) { var p = document.createElement('p'); p.className = 'demo-note'; p.style.margin = '0'; p.textContent = 'Pick a day first.'; box.appendChild(p); return; }
-      (TIMES[st.day] || TIMES.other).forEach(function (t) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('data-time', t); b.textContent = t; box.appendChild(b); });
     }
-    function canGo(n) {
-      var a = st.areas.length > 0, d = !!(st.day && st.time);
-      return n === 1 || (n === 2 ? a && st.max >= 2 : n === 3 ? a && d && st.max >= 3 : a && d && st.max >= 4);
-    }
-    function paint() {
-      st.max = Math.max(st.max, st.s);
-      card.querySelectorAll('.bk-steps [data-s]').forEach(function (b) {
-        var n = +b.dataset.s, on = n === st.s; b.classList.toggle('on', on);
-        if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
-        b.disabled = !on && !canGo(n);
-      });
-      [1, 2, 3, 4].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
-      $('back').hidden = st.s === 1;
-      go.textContent = st.s === 4 ? 'Pay and book (preview)' : 'Next';
-      go.disabled = st.s === 1 ? !st.areas.length : st.s === 2 ? !(st.day && st.time) : false;
-      areaBtns.forEach(function (b) { b.setAttribute('aria-pressed', st.areas.indexOf(b) > -1 ? 'true' : 'false'); });
-      dayBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.day === st.day ? 'true' : 'false'); });
-      card.querySelectorAll('[data-time]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.time === st.time ? 'true' : 'false'); });
-      $('total').innerHTML = st.areas.length ? 'Your total: <b>$' + total() + '</b>' : '';
-    }
-    function show(done) { [1, 2, 3, 4].forEach(function (n) { $('s' + n).hidden = true; }); $('nav').hidden = done; card.querySelector('.bk-steps').hidden = done; $('done').hidden = !done; if (done) $('hint').textContent = ''; }
-    function jump(n) { st.s = n; paint(); var box = $('s' + n); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input')); }
-    card.addEventListener('click', function (e) {
-      var b = e.target.closest('button'); if (!b || !card.contains(b)) return;
-      if (b.hasAttribute('data-area')) { var i = st.areas.indexOf(b); if (i > -1) st.areas.splice(i, 1); else st.areas.push(b); paint(); }
-      else if (b.hasAttribute('data-day')) { st.day = b.dataset.day; if ((TIMES[st.day] || TIMES.other).indexOf(st.time) < 0) st.time = null; times(); paint(); }
-      else if (b.hasAttribute('data-time')) { st.time = b.dataset.time; paint(); }
-      else if (b.hasAttribute('data-s')) { var n = +b.dataset.s; if (n !== st.s && canGo(n)) jump(n); }
-    });
-    $('back').addEventListener('click', function () { $('hint').textContent = ''; if (st.s > 1) jump(st.s - 1); });
-    function li(parent, a, b, cls) { var x = document.createElement('li'); if (cls) x.className = cls; var s1 = document.createElement('span'); s1.textContent = a; x.appendChild(s1); if (b != null) { var s2 = document.createElement('span'); s2.textContent = b; x.appendChild(s2); } parent.appendChild(x); }
     function okYou() {
-      var name = $('name').value.trim(), mail = $('mail').value.trim();
-      if (!name) { $('hint').textContent = 'Add your first name first.'; $('name').focus(); return false; }
-      if (!isEmail(mail)) { $('hint').textContent = 'Add an email address, like name@example.com, for your confirmation.'; $('mail').focus(); return false; }
-      $('hint').textContent = ''; return true;
+      var name = $('name').value.trim(), mail = $('mail').value.trim(), h = $('formhint');
+      if (!name) { h.textContent = 'Add your first name first.'; $('name').focus(); return false; }
+      if (!isEmail(mail)) { h.textContent = 'Add an email address, like name@example.com, for your confirmation.'; $('mail').focus(); return false; }
+      h.textContent = ''; return true;
     }
     go.addEventListener('click', function () {
-      if (st.s === 3 && !okYou()) return;
-      if (st.s < 4) { jump(st.s + 1); return; }
-      if (!okYou()) { st.s = 3; paint(); return; }
+      if (st.s === 5 && !okYou()) return;
+      if (st.s < last()) { if (booking()) { jump(st.s + 1); } else { st.s++; paint(); } return; }
+      var it = items(), total = sum(it);
+      if (booking()) {
+        if (!okYou()) { st.s = 5; paint(); return; }
+        var bl = $('blist'); bl.innerHTML = '';
+        it.forEach(function (x) { li(bl, x[0], '$' + x[1]); });
+        li(bl, 'Your total', '$' + total, 'total');
+        var name = $('name').value.trim().split(/\s+/)[0], mail = $('mail').value.trim();
+        $('bsum').textContent = 'Your deposit is in, and ' + st.day + ' at ' + st.time + ' is held for you. A confirmation is on its way to ' + mail + ', and your reminder goes out on its own.';
+        fillTips($('btips'));
+        $('inboxtext').textContent = name + ' booked ' + it.map(function (x) { return x[0]; }).join(', ') + ' for ' + st.day + ' at ' + st.time + (st.first === 'yes' ? '. First wax.' : '.') + ' Deposit paid.';
+        show('booked'); quietFocus($('booked-h')); return;
+      }
       var list = $('list'); list.innerHTML = '';
-      st.areas.forEach(function (b) { li(list, b.dataset.area, '$' + b.dataset.p); });
-      li(list, 'Your total', '$' + total(), 'total');
-      var name = $('name').value.trim().split(/\s+/)[0], mail = $('mail').value.trim();
-      $('sum').textContent = 'Your deposit is in, and ' + st.day + ' at ' + st.time + ' is held for you. A confirmation is on its way to ' + mail + ', and your reminder goes out on its own.';
-      $('inbox').textContent = name + ' booked ' + st.areas.map(function (b) { return b.dataset.area; }).join(', ') + ' for ' + st.day + ' at ' + st.time + '. Deposit paid.';
-      show(true); quietFocus($('done-h'));
+      it.forEach(function (x) { li(list, x[0], '$' + x[1]); });
+      li(list, 'Your total', '$' + total, 'total');
+      fillTips($('tips'));
+      $('done-h').innerHTML = 'Your <em>wax</em>, $' + total;
+      $('inboxtext').textContent = it.map(function (x) { return x[0]; }).join(', ') + (st.first === 'yes' ? '. First wax.' : '.');
+      show('plan'); quietFocus($('done-h'));
     });
-    $('edit').addEventListener('click', function () { show(false); st.s = 1; paint(); quietFocus(card.querySelector('[data-area][aria-pressed="true"]') || go); });
-    $('again').addEventListener('click', function () { reset(); show(false); $('inbox').textContent = 'Waiting for a booking… try it on the left'; paint(); quietFocus(areaBtns[0]); });
-    document.addEventListener('sd:plan', function (e) {
-      var names = (e.detail && e.detail.areas) || [];
-      reset(); show(false);
-      st.areas = areaBtns.filter(function (b) { return names.indexOf(b.dataset.area) > -1; });
-      st.s = st.areas.length ? 2 : 1; st.max = st.s; paint();
-    });
+    function edit() { show(null); st.s = 1; paint(); quietFocus(card.querySelector('[data-area][aria-pressed="true"]') || go); }
+    function again() { reset(); show(null); $('inboxtext').textContent = 'Waiting… try it on the left'; paint(); quietFocus(card.querySelector('[data-area]')); }
+    $('edit').addEventListener('click', edit); $('bedit').addEventListener('click', edit);
+    $('again').addEventListener('click', again); $('bagain').addEventListener('click', again);
+    try { new MutationObserver(function () { reset(); show(null); $('inboxtext').textContent = 'Waiting… try it on the left'; paint(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-view'] }); } catch (e) {}
     reset(); paint();
   })();
 </script>
