@@ -198,8 +198,8 @@
   .played li:not(:last-child)::after { content: "\2726"; font-family: 'Jost', sans-serif; font-size: 10px; color: var(--amber); margin: 0 12px; vertical-align: 4px; }
 
   /* THE PLAYER: "Live from The Old Steeple", a Y2K media player for the next show. It counts down to showtime,
-     flips between the upcoming shows, scrolls the bill like an old LCD, and its EQ bars are the window's glass colors.
-     A pixel barn owl from the bell tower blinks in the corner; tap it for a hoot of history. Paused off screen,
+     flips between the upcoming shows, scrolls the bill like an old LCD, and a "Hear <artist>" button opens that artist's own
+     Bandcamp player (nothing loads until the tap). Its EQ bars only move while an artist player is open. A pixel barn owl from the bell tower blinks in the corner; tap it for a hoot of history. Paused off screen,
      still under reduced motion. LCD face: Handjet (used nowhere else; Nor Cal's pager has Doto). */
   .amp { flex: 0 1 410px; min-width: 0; max-width: 100%; box-sizing: border-box; color: #f5ead8; padding: 0 0 10px;
     background: linear-gradient(#3b2a21, #1c1411 62%); border: 2px solid; border-color: #7a5236 #0e0a08 #0e0a08 #7a5236; border-radius: 3px;
@@ -247,13 +247,21 @@
   .amp.flip .amp-lcd > * { animation: amp-flip 0.36s steps(3) both; }
   @keyframes amp-flip { 0% { opacity: 0.15; transform: translateX(-4px); } 50% { opacity: 1; transform: translateX(3px); } 100% { opacity: 1; transform: none; } }
   .amp:not(.on) .amp-eq i, .amp:not(.on) .amp-run, .amp:not(.on) .amp-owl .eyes { animation-play-state: paused; }
+  .amp:not(.open) .amp-eq i { animation: none; }
+  .amp-hear { padding: 10px 10px 0; display: grid; gap: 8px; }
+  .amp-hear .amp-b { width: 100%; }
+  .amp-hear .amp-b[aria-pressed="true"] { background: #e3d3b8; }
+  .amp-box iframe { display: block; width: 100%; border: 0; border-radius: 3px; background: #1c1411; }
+  .amp-note { margin: 0; font-size: 13px; line-height: 1.45; color: #e9dcc4; }
+  .amp-note a { color: #f0b85a; text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .amp-note a:focus-visible { outline: 2px solid #f0b85a; outline-offset: 2px; border-radius: 2px; }
   @media (prefers-reduced-motion: reduce) {
     .amp-eq i, .amp-run, .amp-owl .eyes, .amp-owl.hoot svg, .amp.flip .amp-lcd > * { animation: none; }
     .amp-marq { white-space: normal; padding-inline: 10px; }
     .amp-run { display: inline; } .amp-run span { white-space: normal; }
   }
 
-  /* THE HALL, at night: the glowing window (signature) */
+  /* THE HALL, at night */
   .band { background: var(--band); color: var(--on-band); border-top: none; position: relative; overflow: hidden; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: var(--glow); }
@@ -261,26 +269,12 @@
   .band .label::before { background: var(--glow); }
   .band p { color: rgba(245, 234, 216, 0.9); }
   .band .ph { color: #ffd59a; text-decoration-color: var(--glow); }
-  .hall { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 56px; align-items: center; }
-  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 28px; margin-top: 34px; }
+  .hall { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .hall .measure { max-width: 62ch; }
+  .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 28px; margin-top: 34px; }
   .facts div { border-top: 1px solid rgba(245, 234, 216, 0.2); padding-top: 12px; }
   .facts b { display: block; font-family: 'Abril Fatface', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.1; color: var(--glow); }
   .facts span { font-size: 15px; color: rgba(245, 234, 216, 0.82); }
-  .win-wrap { position: relative; display: grid; justify-items: center; gap: 16px; }
-  .win-wrap::before { content: ""; position: absolute; left: 50%; top: 40%; width: 130%; aspect-ratio: 1; translate: -50% -50%; z-index: 0; pointer-events: none;
-    background: radial-gradient(closest-side, rgba(240, 184, 90, 0.22), rgba(240, 184, 90, 0) 70%); animation: win-breathe 9s ease-in-out infinite; }
-  @keyframes win-breathe { 0%, 100% { opacity: 0.55; transform: scale(0.94); } 50% { opacity: 1; transform: scale(1.04); } }
-  .win { position: relative; z-index: 1; width: min(300px, 74vw); height: auto; overflow: visible; }
-  .win .came { fill: none; stroke: #120c0a; stroke-width: 3.2; stroke-linejoin: round; }
-  .win .frame { fill: none; stroke: #5b3a24; stroke-width: 10; }
-  .win .frame-in { fill: none; stroke: #8a5a34; stroke-width: 2; }
-  .win .pane .glass { transition: filter 0.4s ease; }
-  .win .pane .lite { fill: #fff3c8; opacity: 0; mix-blend-mode: screen; animation: sunwalk 21s ease-in-out infinite; animation-delay: calc(var(--i) * 3s - 21s); }
-  @keyframes sunwalk { 0%, 100% { opacity: 0; } 6% { opacity: 0.55; } 14% { opacity: 0.12; } 22% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) {
-    .win .pane .lite { animation: none; opacity: 0.16; }
-    .win-wrap::before { animation: none; opacity: 0.8; }
-  }
   .band .photo.pano { margin-top: 56px; }
   .owls { margin-top: 40px; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 22px; align-items: center; border: 1px solid rgba(245, 234, 216, 0.16); border-radius: 6px; padding: 16px; }
   .owls .photo { aspect-ratio: 1; border-radius: 4px; background: #000; }
@@ -618,7 +612,6 @@
   @media (max-width: 760px) {
     section { padding-block: 58px; }
     .two, .hall, .stay, .faq, .touch, .bk { grid-template-columns: minmax(0, 1fr); row-gap: 36px; }
-    .hall .win-wrap { order: -1; }
     .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .reviews, .found, .ig-foot { grid-template-columns: minmax(0, 1fr); }
     .caps, .lesson-facts { grid-template-columns: minmax(0, 1fr); gap: 12px; }
@@ -795,6 +788,11 @@
             <button type="button" class="amp-b" id="amp-next" aria-label="Next show" hidden><svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" fill="currentColor"><path d="M1 1v10l6-5zM7 1v10l6-5zM12 1h2v10h-2z"/></svg></button>
             <button type="button" class="amp-owl" id="amp-owl" aria-label="The owl from the bell tower" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#d6952a" d="M5 1h6v1h-6zM3 2h10v1h-10zM2 3h2v1h-2zM7 3h2v1h-2zM12 3h2v1h-2zM2 4h1v1h-1zM13 4h1v1h-1zM2 5h1v1h-1zM13 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1zM2 7h1v1h-1zM13 7h1v1h-1zM3 8h1v1h-1zM12 8h1v1h-1zM3 9h2v1h-2zM11 9h2v1h-2zM2 10h4v1h-4zM10 10h4v1h-4zM2 11h3v1h-3zM11 11h3v1h-3zM2 12h3v1h-3zM11 12h3v1h-3zM3 13h2v1h-2zM11 13h2v1h-2zM4 14h8v1h-8z"/><path fill="#fff1e0" d="M4 3h3v1h-3zM9 3h3v1h-3zM3 4h10v1h-10zM3 5h10v2h-10zM3 7h4v1h-4zM9 7h4v1h-4zM4 8h4v1h-4zM9 8h3v1h-3zM5 9h6v1h-6zM6 10h4v1h-4zM5 11h2v1h-2zM8 11h3v1h-3zM5 12h5v1h-5zM5 13h1v1h-1zM7 13h4v1h-4z"/><path fill="#8a5a10" d="M7 11h1v1h-1zM10 12h1v1h-1zM6 13h1v1h-1z"/><path fill="#e8a07a" d="M7 7h2v1h-2zM8 8h1v1h-1zM5 15h2v1h-2zM9 15h2v1h-2z"/><path class="eyes" fill="#1c1411" d="M4 5h2v2h-2zM10 5h2v2h-2z"/></svg></button>
           </div>
+          <div class="amp-hear">
+            <button type="button" class="amp-b" id="amp-hear" aria-pressed="false" aria-controls="amp-box" hidden>Hear Led Kaapana</button>
+            <div class="amp-box" id="amp-box" hidden></div>
+            <p class="amp-note" id="amp-note"></p>
+          </div>
         </div>
       </div>
     </div>
@@ -849,29 +847,6 @@
         <div class="reveal"><b>24 ft</b><span>Italian tin ceilings</span></div>
         <div class="reveal"><b>ADA</b><span>accessible, all ages shows</span></div>
       </div>
-    </div>
-    <div class="win-wrap">
-      <svg class="win" id="win" viewBox="0 0 240 400" role="img" aria-label="A stained glass window after the hall's tall memorial windows, with sunlight drifting through its panes">
-        <defs>
-          <linearGradient id="g-amber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6c766"/><stop offset="1" stop-color="#c97a1f"/></linearGradient>
-          <linearGradient id="g-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbe08f"/><stop offset="1" stop-color="#e2a83a"/></linearGradient>
-          <linearGradient id="g-ruby" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9493a"/><stop offset="1" stop-color="#8f1d16"/></linearGradient>
-          <linearGradient id="g-teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5fb0aa"/><stop offset="1" stop-color="#245f5b"/></linearGradient>
-          <linearGradient id="g-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9cc272"/><stop offset="1" stop-color="#4e7a3a"/></linearGradient>
-          <linearGradient id="g-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a77ac0"/><stop offset="1" stop-color="#5d3478"/></linearGradient>
-          <radialGradient id="g-rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff0b8"/><stop offset="0.45" stop-color="#f2b847"/><stop offset="1" stop-color="#b8322a"/></radialGradient>
-        </defs>
-        <!-- the arch, after their tall memorial windows -->
-        <path class="frame" d="M14 392V150a106 106 0 0 1 212 0v242Z"/>
-        <g class="pane" data-n="6" style="--i:6"><circle class="glass" cx="120" cy="104" r="52" fill="url(#g-rose)"/><circle class="lite" cx="120" cy="104" r="52"/><g class="came came-f"><circle cx="120" cy="104" r="52"/><circle cx="120" cy="104" r="17"/><path d="M120 52v35M120 121v35M68 104h35M137 104h35M83 67l25 25M132 116l25 25M157 67l-25 25M108 116l-25 25"/></g></g>
-        <g class="pane" data-n="5" style="--i:5"><path class="glass" d="M26 168a94 94 0 0 1 34-62v62Z" fill="url(#g-teal)"/><path class="lite" d="M26 168a94 94 0 0 1 34-62v62Z"/><path class="came came-f" d="M26 168a94 94 0 0 1 34-62v62Z"/></g>
-        <g class="pane" data-n="4" style="--i:4"><path class="glass" d="M214 168a94 94 0 0 0-34-62v62Z" fill="url(#g-teal)"/><path class="lite" d="M214 168a94 94 0 0 0-34-62v62Z"/><path class="came came-f" d="M214 168a94 94 0 0 0-34-62v62Z"/></g>
-        <g class="pane" data-n="3" style="--i:3"><path class="glass" d="M26 176h88v70H26Z" fill="url(#g-ruby)"/><path class="lite" d="M26 176h88v70H26Z"/><g class="came came-f"><path d="M26 176h88v70H26Z"/><path d="M70 186l18 25-18 25-18-25Z"/></g></g>
-        <g class="pane" data-n="2" style="--i:2"><path class="glass" d="M126 176h88v70h-88Z" fill="url(#g-violet)"/><path class="lite" d="M126 176h88v70h-88Z"/><g class="came came-f"><path d="M126 176h88v70h-88Z"/><path d="M170 186l18 25-18 25-18-25Z"/></g></g>
-        <g class="pane" data-n="1" style="--i:1"><path class="glass" d="M26 254h88v130H26Z" fill="url(#g-amber)"/><path class="lite" d="M26 254h88v130H26Z"/><g class="came came-f"><path d="M26 254h88v130H26Z"/><path d="M26 298h88M26 342h88M70 254v130"/></g></g>
-        <g class="pane" data-n="0" style="--i:0"><path class="glass" d="M126 254h88v130h-88Z" fill="url(#g-gold)"/><path class="lite" d="M126 254h88v130h-88Z"/><g class="came came-f"><path d="M126 254h88v130h-88Z"/><path d="M126 298h88M126 342h88M170 254v130"/></g></g>
-        <path class="frame-in" d="M20 388V150a100 100 0 0 1 200 0v238Z"/>
-      </svg>
     </div>
   </div>
   <div class="wrap">
@@ -1404,8 +1379,10 @@
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var STAR = ' ✦ ';
     var SHOWS = [ /* 7:30 pm Pacific (PDT) */
-      { name: 'Led Kaapana', when: 'SUN OCT 18', say: 'Sunday, October 18', at: Date.UTC(2026, 9, 19, 2, 30), price: '$31.50', href: '#show-led' },
-      { name: 'Chris Pierce', when: 'SAT OCT 24', say: 'Saturday, October 24', at: Date.UTC(2026, 9, 25, 2, 30), price: '$26.50', href: '#show-chris' }
+      { name: 'Led Kaapana', when: 'SUN OCT 18', say: 'Sunday, October 18', at: Date.UTC(2026, 9, 19, 2, 30), price: '$31.50', href: '#show-led',
+        hear: { src: 'https://bandcamp.com/EmbeddedPlayer/album=572408350/size=large/bgcol=1c1411/linkcol=f0b85a/tracklist=false/artwork=small/transparent=true/', from: 'Bandcamp (Dancing Cat Records)', page: 'https://dancingcatrecords.bandcamp.com/album/led-live-solo', pageName: 'Led Live: Solo on Bandcamp' } },
+      { name: 'Chris Pierce', when: 'SAT OCT 24', say: 'Saturday, October 24', at: Date.UTC(2026, 9, 25, 2, 30), price: '$26.50', href: '#show-chris',
+        hear: { src: 'https://bandcamp.com/EmbeddedPlayer/album=1516178206/size=large/bgcol=1c1411/linkcol=f0b85a/tracklist=false/artwork=small/transparent=true/', from: 'Bandcamp', page: 'https://chrispierce.bandcamp.com/album/songs-for-the-heavy-hearted', pageName: 'Songs for the Heavy Hearted on Bandcamp' } }
     ];
     var up = SHOWS.filter(function (s) { return Date.now() < s.at + 3 * 3600e3; });
     var i = 0, timer = null, owlT = null;
@@ -1416,6 +1393,25 @@
       run.style.setProperty('--dur', Math.max(9, text.length * 0.21).toFixed(1) + 's');
       run.style.animation = 'none'; void run.offsetWidth; run.style.animation = '';
     }
+    var hear = $('amp-hear'), box = $('amp-box'), note = $('amp-note');
+    function closeBox() { box.innerHTML = ''; box.hidden = true; amp.classList.remove('open'); hear.setAttribute('aria-pressed', 'false'); }
+    function paintHear() {
+      var s = up[i]; closeBox(); if (!s) { hear.hidden = true; note.textContent = ''; return; }
+      if (s.hear) { hear.hidden = false; hear.textContent = 'Hear ' + s.name; note.textContent = ''; }
+      else { hear.hidden = true; note.textContent = 'No music online yet, come hear them live.'; }
+    }
+    function openBox() {
+      var s = up[i]; if (!s || !s.hear) return;
+      if (!box.hidden) { closeBox(); hear.textContent = 'Hear ' + s.name; note.textContent = ''; now.textContent = 'Player closed.'; return; }
+      var f = document.createElement('iframe');
+      f.src = s.hear.src; f.height = 120; f.loading = 'lazy'; f.title = s.name + ', music player from ' + s.hear.from;
+      f.setAttribute('allow', 'autoplay; encrypted-media; clipboard-write'); f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      box.appendChild(f); box.hidden = false; amp.classList.add('open'); hear.setAttribute('aria-pressed', 'true'); hear.textContent = 'Close the player';
+      note.textContent = ''; note.appendChild(document.createTextNode('Press play in their player. Phones need that one tap inside it. From their ' + s.hear.from + ': '));
+      var a = document.createElement('a'); a.href = s.hear.page; a.target = '_blank'; a.rel = 'noopener'; a.textContent = s.hear.pageName; note.appendChild(a);
+      now.textContent = s.name + ' player loaded. Press play in their player.';
+    }
+    hear.addEventListener('click', openBox);
     function pad(n) { return (n < 10 ? '0' : '') + n; }
     function tick() {
       var s = up[i]; if (!s) return;
@@ -1431,7 +1427,7 @@
       i = (k + up.length) % up.length; var s = up[i];
       $('amp-trk').textContent = (i + 1) + '/' + up.length;
       play.setAttribute('href', s.href); $('amp-for').textContent = ' for ' + s.name;
-      marquee(bill(s)); tick();
+      marquee(bill(s)); tick(); paintHear();
       if (announce) now.textContent = 'Show ' + (i + 1) + ' of ' + up.length + ': ' + s.name + ', ' + s.say + ', 7:30 pm, ' + s.price + '.';
       amp.classList.remove('flip'); if (announce && !reduce) { void amp.offsetWidth; amp.classList.add('flip'); }
     }
@@ -1444,7 +1440,7 @@
       }
     } else {
       clock.textContent = 'SOON'; unit.textContent = 'new shows coming'; $('amp-trk').textContent = '0/0';
-      play.setAttribute('href', '#shows'); $('amp-for').textContent = ''; marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2));
+      play.setAttribute('href', '#shows'); $('amp-for').textContent = ''; hear.hidden = true; marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2));
     }
     owl.hidden = false;
     owl.addEventListener('click', function () {
@@ -1452,7 +1448,7 @@
       now.textContent = 'Hoo’s there? Barn owls have nested in the bell tower since 1902.';
       owl.classList.remove('hoot'); void owl.offsetWidth; owl.classList.add('hoot');
       clearTimeout(owlT);
-      owlT = setTimeout(function () { owl.classList.remove('hoot'); if (up.length) load(i, false); else marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2)); }, 11000);
+      owlT = setTimeout(function () { owl.classList.remove('hoot'); if (up.length) { marquee(bill(up[i])); tick(); } else marquee(('NEW SHOWS COMING SOON' + STAR).repeat(2)); }, 11000);
     });
     /* only tick and move while it's on screen */
     function start() { if (!timer) { tick(); timer = setInterval(tick, reduce ? 30000 : 1000); } }

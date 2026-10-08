@@ -29,3 +29,9 @@ All photos are THEIR OWN, downloaded from ferndalemusiccompany.com (Squarespace 
 | chris-pierce.webp | /calendar (Oct 24 2026 event) | GABRIEL BARRETO - DSC05065.jpeg (2500, exported 1400) | press photo, credited "Photo: Gabriel Barreto" on the card |
 | ferndale-lettering.png | site logo | title3.png (600x300) | only the red "Ferndale" letters, keyed to transparent and used as a CSS mask |
 
+
+## Artist players (Oct 8 2026)
+"Live from The Old Steeple" embeds each upcoming artist's official Bandcamp player, loaded only after a tap (nothing from Bandcamp loads on page open):
+- Led Kaapana: "Led Live: Solo", Dancing Cat Records on Bandcamp, https://dancingcatrecords.bandcamp.com/album/led-live-solo (album=572408350)
+- Chris Pierce: "Songs for the Heavy Hearted", https://chrispierce.bandcamp.com/album/songs-for-the-heavy-hearted (album=1516178206)
+The stained glass window drawing was removed from The Hall section the same day.
