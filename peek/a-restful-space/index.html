@@ -466,6 +466,25 @@
   .ig-grid .photo { aspect-ratio: 1; }
   .ig-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 24px; }
   .ig-foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; margin-top: 22px; }
+  /* ---------- Instagram feed: clearly theirs ---------- */
+  #insta { --igx: var(--accent); }
+  .igx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; }
+  .igx-head > div { min-width: 0; }
+  .igx-handle { display: inline-flex; align-items: center; gap: 0.3em; overflow-wrap: anywhere; }
+  .igx-handle .igx-glyph { width: 0.8em; height: 0.8em; flex: none; }
+  .igx-sub { margin-top: 8px; font-size: 16px; color: var(--ink-soft); }
+  .igx-follow { margin-top: 0; }
+  .igx-follow a { border: 2px solid var(--igx); font-weight: 700; max-width: 100%; overflow-wrap: anywhere; line-height: 1.2; padding-block: 8px; }
+  .igx-follow a:hover { background: var(--ground-2); }
+  .igx-follow svg { flex: none; color: var(--igx); }
+  .ig-grid .photo { position: relative; }
+  .ig-grid .photo::after { content: ""; position: absolute; top: 7px; right: 7px; left: auto; bottom: auto; inset-inline-start: auto; width: 24px; height: 24px; border-radius: 50%; z-index: 2; pointer-events: none; box-shadow: none;
+    background: rgba(20, 16, 14, 0.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='17.2' cy='6.8' r='.6' fill='white'/%3E%3C/svg%3E") center / 14px 14px no-repeat; }
+  .ig-grid .photo img { transition: scale 1.8s cubic-bezier(.2,.7,.3,1), filter .3s ease; }
+  .ig-grid .photo:hover img { filter: brightness(1.07) saturate(1.05); }
+  .ig-grid .photo:hover { outline: 2px solid var(--igx); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) { .ig-grid .photo img { transition: none; } }
+  @media (max-width: 640px) { .igx-handle { font-size: 0.68em; } .igx-follow { width: 100%; } .igx-follow a { width: 100%; justify-content: center; box-sizing: border-box; } }
 
   /* ---------- contact + newsletter ---------- */
   .touch { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 48px; align-items: start; }
@@ -1105,12 +1124,13 @@
 
 <section id="insta" class="gutter" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
-    <div class="ig-head">
+    <div class="ig-head igx-head">
       <div>
         <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-        <h2 class="reveal">Fresh from <em>@arestfulspace</em></h2>
+        <h2 class="reveal">Fresh from <em class="igx-handle"><svg class="igx-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@arestfulspace</em></h2>
+        <p class="igx-sub">Follow along on Instagram</p>
       </div>
-      <span class="reach"><a href="https://www.instagram.com/arestfulspace/" target="_blank" rel="noopener" aria-label="Follow @arestfulspace on Instagram (opens in a new tab)">Follow along</a></span>
+      <span class="reach igx-follow"><a href="https://www.instagram.com/arestfulspace/" target="_blank" rel="noopener" aria-label="Follow @arestfulspace on Instagram (opens in a new tab)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow @arestfulspace</a></span>
     </div>
     <div class="ig-grid" role="img" aria-label="Recent posts: Laura resting, the studio, and the Jacoby Storehouse">
       <figure class="photo"><img src="images/ig-laura-sand.webp" alt="" loading="lazy"></figure>
@@ -1121,7 +1141,7 @@
       <figure class="photo"><img src="images/laura-sand.webp" alt="" loading="lazy" style="object-position:50% 55%"></figure>
     </div>
     <div class="ig-foot mock-note wf-note">
-      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts appear here on their own. Nothing to copy over.</div>
+      <div class="bk-note"><b>Post once, it shows up here too</b>These fill in by themselves every time you post.</div>
       <div class="bk-note"><b>What you see</b>Stand-ins from your site and Instagram for now; on your real site it&rsquo;s your actual feed.</div>
     </div>
   </div>

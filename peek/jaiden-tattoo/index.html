@@ -271,6 +271,21 @@
   .live-dot { display: inline-flex; align-items: center; gap: 8px; }
   .live-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 3px var(--ground-2); }
 
+  /* ---------- Instagram feed: clearly hers ---------- */
+  #feed { --igx: var(--ink); }
+  .igx-head > div { min-width: 0; }
+  .igx-handle { display: inline-flex; align-items: center; gap: 0.3em; overflow-wrap: anywhere; }
+  .igx-handle .igx-glyph { width: 0.8em; height: 0.8em; flex: none; }
+  .igx-follow.btn { gap: 8px; box-shadow: inset 0 0 0 2px var(--igx); font-weight: 700; max-width: 100%; overflow-wrap: anywhere; line-height: 1.2; }
+  .igx-follow svg { color: var(--igx); flex: none; }
+  #feed .ig-grid .photo { aspect-ratio: 1 / 1; }
+  #feed .ig-grid .photo::after { content: ""; position: absolute; top: 7px; right: 7px; width: 24px; height: 24px; border-radius: 50%; z-index: 2; pointer-events: none;
+    background: rgba(20, 16, 14, 0.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='17.2' cy='6.8' r='.6' fill='white'/%3E%3C/svg%3E") center / 14px 14px no-repeat; }
+  #feed .ig-grid .photo:hover img { filter: grayscale(0.15) contrast(1.02) brightness(1.07); }
+  #feed .ig-grid .photo:hover, #feed .ig-grid .photo:focus-visible { outline: 2px solid var(--igx); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) { #feed .ig-grid .photo img { transition: none; } }
+  @media (max-width: 640px) { .igx-handle { font-size: 0.68em; } .feed-foot .igx-follow { width: 100%; } }
+
   /* ---------- WELCOME (her letter) ---------- */
   .welcome { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; align-items: center; }
   .portrait .photo { aspect-ratio: 3 / 4; }
@@ -813,11 +828,11 @@
 <main>
 <section id="feed" class="gutter" tabindex="-1">
   <div class="wrap">
-    <div class="feed-head">
+    <div class="feed-head igx-head">
       <div>
         <svg class="sprig" aria-hidden="true"><use href="#sprig"/></svg>
-        <p class="label with-pill"><span data-show="mother crone all">Fresh from Instagram</span><span data-show="maiden" hidden>Your latest work</span> <span class="tag" data-go="maiden">Every build</span><span data-show="mother crone all"><span class="tag" data-go="mother">Fills itself: Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></span></p>
-        <h2 class="reveal">The <em>latest</em>, straight from the studio</h2>
+        <p class="label with-pill"><span data-show="mother crone all">Instagram</span><span data-show="maiden" hidden>Your latest work</span> <span class="tag" data-go="maiden">Every build</span><span data-show="mother crone all"><span class="tag" data-go="mother">Fills itself: Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></span></p>
+        <h2 class="reveal">Fresh from <em class="igx-handle"><svg class="igx-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@jaidentattoo</em></h2>
       </div>
       <a class="handle" href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener"><img src="images/jackalope.jpg" width="52" height="52" alt=""><span><b>@jaidentattoo</b><small>Follow along on Instagram</small></span></a>
     </div>
@@ -831,9 +846,9 @@
     </div>
     <div class="feed-foot">
       <span class="live-dot" data-show="mother crone all" data-thing="Instagram feed that fills itself">Updates on its own, every time you post</span><span data-show="maiden" hidden>Kept fresh: I follow your socials and swap it in as you post, or you email me a new piece</span>
-      <a class="btn quiet" href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener">Follow @jaidentattoo</a>
+      <a class="btn quiet igx-follow" href="https://www.instagram.com/jaidentattoo/" target="_blank" rel="noopener" aria-label="Follow @jaidentattoo on Instagram (opens in a new tab)"><svg class="igx-glyph" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow @jaidentattoo</a>
     </div>
-    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">With Tended or In Bloom, this fills itself from your Instagram through <b>Behold</b>: free for your newest 6 posts, and your subscription covers more.</p>
+    <p class="mock-note wf-note" style="margin-top:30px;font-size:14.5px">These fill in by themselves every time you post. With Tended or In Bloom, that runs through <b>Behold</b>: free for your newest 6 posts, and your subscription covers more.</p>
   </div>
 </section>
 

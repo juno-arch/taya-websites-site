@@ -389,6 +389,27 @@
   .ig-grid img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 2px; }
   .ig-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 24px; }
   .ig-foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; margin-top: 22px; }
+  /* ---------- Instagram feed: clearly theirs ---------- */
+  #insta { --igx: var(--sage); }
+  .igx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; }
+  .igx-head > div { min-width: 0; }
+  .igx-handle { display: inline-flex; align-items: center; gap: 0.3em; overflow-wrap: anywhere; }
+  .igx-handle .igx-glyph { width: 0.8em; height: 0.8em; flex: none; }
+  .igx-sub { margin-top: 8px; font-size: 16px; color: var(--ink-soft); }
+  .igx-follow { margin-top: 0; }
+  .igx-follow a { border: 2px solid var(--igx); font-weight: 700; max-width: 100%; overflow-wrap: anywhere; line-height: 1.2; padding-block: 8px; }
+  .igx-follow a:hover { background: var(--ground-2); }
+  .igx-follow svg { flex: none; color: var(--igx); }
+  .ig-grid .igx-tile { margin: 0; overflow: hidden; border-radius: 2px; aspect-ratio: 1; background: var(--ground-2); }
+  .ig-grid .igx-tile img { height: 100%; border-radius: 0; }
+  .ig-grid .igx-tile { position: relative; }
+  .ig-grid .igx-tile::after { content: ""; position: absolute; top: 7px; right: 7px; left: auto; bottom: auto; inset-inline-start: auto; width: 24px; height: 24px; border-radius: 50%; z-index: 2; pointer-events: none; box-shadow: none;
+    background: rgba(20, 16, 14, 0.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='17.2' cy='6.8' r='.6' fill='white'/%3E%3C/svg%3E") center / 14px 14px no-repeat; }
+  .ig-grid .igx-tile img { transition: filter .3s ease; }
+  .ig-grid .igx-tile:hover img { filter: brightness(1.07) saturate(1.05); }
+  .ig-grid .igx-tile:hover { outline: 2px solid var(--igx); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) { .ig-grid .igx-tile img { transition: none; } }
+  @media (max-width: 640px) { .igx-handle { font-size: 0.68em; } .igx-follow { width: 100%; } .igx-follow a { width: 100%; justify-content: center; box-sizing: border-box; } }
 
   /* CONTACT + NEWS */
   .touch { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 48px; align-items: start; }
@@ -1195,23 +1216,24 @@
 
 <section id="insta" class="gutter" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
-    <div class="ig-head">
+    <div class="ig-head igx-head">
       <div>
         <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-        <h2 class="reveal">Fresh from <em>@havensaloneureka</em></h2>
+        <h2 class="reveal">Fresh from <em class="igx-handle"><svg class="igx-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@havensaloneureka</em></h2>
+        <p class="igx-sub">Follow along on Instagram</p>
       </div>
-      <span class="reach"><a href="https://www.instagram.com/havensaloneureka" target="_blank" rel="noopener">Follow along<span class="vh"> on Instagram (opens in a new tab)</span></a></span>
+      <span class="reach igx-follow"><a href="https://www.instagram.com/havensaloneureka" target="_blank" rel="noopener" aria-label="Follow @havensaloneureka on Instagram (opens in a new tab)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow @havensaloneureka</a></span>
     </div>
     <div class="ig-grid" data-lightbox>
-      <img src="images/w-golden-blonde.webp" srcset="images/w-golden-blonde-640.webp 640w, images/w-golden-blonde.webp 1400w" sizes="(max-width: 700px) 33vw, 200px" data-full="images/w-golden-blonde.webp" width="1400" height="1867" alt="Golden blonde with a soft root, by Lisa" loading="lazy">
-      <img src="images/salon-mirrors.webp" width="1800" height="1164" alt="The salon floor, arched mirrors and plants" loading="lazy">
-      <img src="images/w-face-frame.webp" srcset="images/w-face-frame-640.webp 640w, images/w-face-frame.webp 1165w" sizes="(max-width: 700px) 33vw, 200px" data-full="images/w-face-frame.webp" width="1165" height="1552" alt="Smoky brunette with bright face framing pieces, by Justine" loading="lazy">
-      <img src="images/w-dark-dimension.webp" srcset="images/w-dark-dimension-640.webp 640w, images/w-dark-dimension.webp 1113w" sizes="(max-width: 700px) 30vw, 140px" data-full="images/w-dark-dimension.webp" width="1113" height="1309" alt="Long dark hair with soft dimension, by Kiersten" loading="lazy">
-      <img src="images/lisa-chair.webp" srcset="images/lisa-chair-640.webp 640w, images/lisa-chair.webp 985w" sizes="(max-width: 700px) 30vw, 140px" data-full="images/lisa-chair.webp" width="985" height="1267" alt="Lisa resting in one of the green chairs beside a big plant" loading="lazy">
-      <img src="images/w-glossy-brunette.webp" srcset="images/w-glossy-brunette-640.webp 640w, images/w-glossy-brunette.webp 1400w" sizes="(max-width: 700px) 30vw, 140px" data-full="images/w-glossy-brunette.webp" width="1400" height="1867" alt="Glossy chestnut brunette, by Jamie" loading="lazy">
+      <figure class="igx-tile"><img src="images/w-golden-blonde.webp" srcset="images/w-golden-blonde-640.webp 640w, images/w-golden-blonde.webp 1400w" sizes="(max-width: 700px) 33vw, 200px" data-full="images/w-golden-blonde.webp" width="1400" height="1867" alt="Golden blonde with a soft root, by Lisa" loading="lazy"></figure>
+      <figure class="igx-tile"><img src="images/salon-mirrors.webp" width="1800" height="1164" alt="The salon floor, arched mirrors and plants" loading="lazy"></figure>
+      <figure class="igx-tile"><img src="images/w-face-frame.webp" srcset="images/w-face-frame-640.webp 640w, images/w-face-frame.webp 1165w" sizes="(max-width: 700px) 33vw, 200px" data-full="images/w-face-frame.webp" width="1165" height="1552" alt="Smoky brunette with bright face framing pieces, by Justine" loading="lazy"></figure>
+      <figure class="igx-tile"><img src="images/w-dark-dimension.webp" srcset="images/w-dark-dimension-640.webp 640w, images/w-dark-dimension.webp 1113w" sizes="(max-width: 700px) 30vw, 140px" data-full="images/w-dark-dimension.webp" width="1113" height="1309" alt="Long dark hair with soft dimension, by Kiersten" loading="lazy"></figure>
+      <figure class="igx-tile"><img src="images/lisa-chair.webp" srcset="images/lisa-chair-640.webp 640w, images/lisa-chair.webp 985w" sizes="(max-width: 700px) 30vw, 140px" data-full="images/lisa-chair.webp" width="985" height="1267" alt="Lisa resting in one of the green chairs beside a big plant" loading="lazy"></figure>
+      <figure class="igx-tile"><img src="images/w-glossy-brunette.webp" srcset="images/w-glossy-brunette-640.webp 640w, images/w-glossy-brunette.webp 1400w" sizes="(max-width: 700px) 30vw, 140px" data-full="images/w-glossy-brunette.webp" width="1400" height="1867" alt="Glossy chestnut brunette, by Jamie" loading="lazy"></figure>
     </div>
     <div class="ig-foot mock-note wf-note">
-      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts are pulled in on their own. Nothing to copy over.</div>
+      <div class="bk-note"><b>Post once, it shows up here too</b>These fill in by themselves every time you post.</div>
       <div class="bk-note"><b>What you see</b>These are photos from your own site. On your real site, the latest from @havensaloneureka shows here by itself.</div>
     </div>
   </div>
