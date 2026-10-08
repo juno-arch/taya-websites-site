@@ -28,3 +28,5 @@ No new photos were fetched: no extra Instagram or website load was needed. Every
 ## Not used
 - Their old GoDaddy site's other images are GoDaddy stock (isteam/stock), and their new site (lotusstudiopottery.com) uses only Getty/GoDaddy stock, so none of those are here.
 - g-tiny-cup (raffle ticket lettering) and g-love-tumbler ("Love" and "SOUP" lettering) were cut for having words in the photo.
+
+Oct 8: `images/p-cat-magnet.webp` (her black clay cat magnet, from her shop photos, was saved but unused) now replaces the second use of the lotus close-up in the Mary section. Pottery photos are centered with per-image object-position.

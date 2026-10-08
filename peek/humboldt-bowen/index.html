@@ -13,7 +13,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Bowen therapy and therapeutic massage with Christine Finta, LMT, CBT, at 616 Wood Street in Eureka. Over twenty years of practice. Book online, or call or text (707) 498-9762.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d3f6e'/%3E%3Cg fill='%23f0b131'%3E%3Ccircle cx='16' cy='9.4' r='5.2'/%3E%3Ccircle cx='9.4' cy='16' r='5.2'/%3E%3Ccircle cx='22.6' cy='16' r='5.2'/%3E%3Ccircle cx='16' cy='22.6' r='5.2'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="preload" as="image" href="images/sign-616.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-hands.webp" media="(min-width: 761px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-hands-m.webp" media="(max-width: 760px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..600;1,400..500&family=Sofia+Sans:ital,wght@0,300..700;1,400&family=Arimo:wght@700&family=Caveat:wght@600&display=swap">
@@ -127,13 +128,14 @@
   .btn.quiet:hover { background: var(--ground-2); }
   .btn svg { margin-left: 8px; vertical-align: -1px; }
 
-  /* THE HERO: her own sign at 616 Wood Street in daylight, on the right, fading into the cream page where the words sit,
+  /* THE HERO: a soft stock photo of hands over a white towel (Unsplash, Mat Kilkeary) on the right, fading into the cream page where the words sit,
      so this one is light where most heroes are dark. Dark mode never darkens it. */
   .hero { position: relative; overflow: hidden; min-height: 92vh; min-height: 92svh; display: flex; flex-direction: column;
     background: #faf7ec; color: #13284a; }
   .hero-photo { position: absolute; inset: 0 0 0 33%; z-index: 0; margin: 0;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 9%, #000 30%); mask-image: linear-gradient(90deg, transparent 0, transparent 9%, #000 30%); }
   .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 55%; display: block; }
+  .hero .sample { left: auto; right: 12px; }
   .hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background:
       linear-gradient(180deg, rgba(250, 247, 236, 0.7) 0, rgba(250, 247, 236, 0) 150px); }
@@ -730,10 +732,12 @@
 <div class="hero">
   <figure class="hero-photo">
     <picture>
-      <source type="image/webp" srcset="images/sign-616.webp">
-      <img src="images/sign-616.jpg" width="1400" height="1120" alt="The blue Humboldt Bowen and Massage Therapy sign at 616 Wood Street, with four gold circles, in the sun" fetchpriority="high">
+      <source type="image/webp" media="(max-width: 760px)" srcset="images/hero-hands-m.webp">
+      <source type="image/webp" srcset="images/hero-hands.webp">
+      <img src="images/hero-hands.jpg" width="1600" height="1280" alt="Two hands resting softly on a leg over a thick white towel, in warm natural light" fetchpriority="high">
     </picture>
   </figure>
+  <span class="sample">Sample photo</span>
 <div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
