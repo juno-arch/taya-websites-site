@@ -1876,6 +1876,9 @@
     if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) linkKnown.email = email;
     if (biz) linkKnown.biz = biz;
     if (site) linkKnown.site = site;
+    // their email but no full name in the link: the one thing to ask is their full name, typed once where they sign,
+    // and About you takes it from there (Pollen, Oct 8: a last name we don't know goes on the agreement)
+    if (linkKnown.email && !linkKnown.full) linkKnown.nameBySig = true;
   } catch (e) { /* an old browser: everything is simply asked on the page */ }
 
   /* ================= CONFIG: the only things to fill in ================= */
@@ -2434,7 +2437,9 @@
      A field the link filled isn't asked again: it's said back in one "I have you as" line with a quiet
      Change, and its value is saved and sent exactly like a typed one. Without those link options, nothing changes. */
   const LINK_KEY = { 'f-name': 'full', 'f-email': 'email', 'f-biz': 'biz', 'f-site': 'site' };
+  const nameBySig = () => !!linkKnown.nameBySig && !opened.you;
   function youKnown(id) {
+    if (id === 'f-name' && nameBySig()) return !!val(id);
     if (opened.you || !linkKnown[LINK_KEY[id]] || !val(id)) return false;
     return id !== 'f-email' || emailOk(val(id));
   }
@@ -2451,11 +2456,11 @@
   const acctKnown = () => !!linkKnown.email && !opened.acct && !val('f-acctemail') && emailOk(val('f-email'));
   function renderKnown() {
     const known = ['f-name', 'f-biz', 'f-email', 'f-site'].filter(youKnown);
-    $$('[data-known]').forEach((q) => { q.hidden = known.includes(q.dataset.known); });
+    $$('[data-known]').forEach((q) => { q.hidden = known.includes(q.dataset.known) || (q.dataset.known === 'f-name' && nameBySig()); });
     $('#you-known').hidden = !known.length;
     $('#you-known-text').textContent = known.map(val).join(' \u00b7 ');
     // with their name and email both known, there's nothing they have to tell me here
-    const both = known.includes('f-name') && known.includes('f-email');
+    const both = (known.includes('f-name') || nameBySig()) && known.includes('f-email');
     $('#you-hint').hidden = both;
     $$('[data-who]').forEach((el) => { el.hidden = both; });
     $$('[data-who-known]').forEach((el) => { el.hidden = !both; });
@@ -2711,7 +2716,7 @@
     you() {
       let first = null;
       const name = $('#f-name'), email = $('#f-email');
-      if (!val('f-name')) { setErr(name, $('#e-f-name'), 'I’ll need your name, so I know who this is from.'); first = first || name; }
+      if (!val('f-name') && !nameBySig()) { setErr(name, $('#e-f-name'), 'I’ll need your name, so I know who this is from.'); first = first || name; }
       else setErr(name, $('#e-f-name'), '');
       if (!val('f-email')) { setErr(email, $('#e-f-email'), 'And an email, so I can write back.'); first = first || email; }
       else if (!emailOk(val('f-email'))) { setErr(email, $('#e-f-email'), 'That email doesn’t look quite right. Mind checking it?'); first = first || email; }
@@ -2744,6 +2749,12 @@
     }
   };
   // live: clear an error as soon as it's fixed
+  // the full name they type to sign is their name in About you too (only when the link left the name out)
+  $('#f-sig').addEventListener('input', () => {
+    if (!nameBySig() || $('#f-sig-tap').value === '1') return;
+    $('#f-name').value = $('#f-sig').value;
+    $('#f-name').dispatchEvent(new Event('input', { bubbles: true }));
+  });
   ['f-name', 'f-email', 'f-sig', 'f-acctemail'].forEach((id) => $('#' + id).addEventListener('input', () => {
     if ($('#' + id).getAttribute('aria-invalid') === 'true') (id === 'f-sig' ? CHECKS.agree(false) : id === 'f-acctemail' ? CHECKS.accounts() : CHECKS.you());
   }));
