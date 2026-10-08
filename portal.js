@@ -26,6 +26,7 @@
    ---- HOW IT TALKS TO THE SERVER ----
    All in the api block below (the demo has the same eight calls with the same shapes):
      requestCode, verifyCode, me, logout, file, upload, todo, change
+   plus three for a shop's orders (Oct 8 2026; never called in the preview): shopOrders, shopPacked, shopExport
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -44,6 +45,7 @@
   const TAYA = 'taya@webfaery.love';
 
   const BASE = SERVER + '/api/webfaery/portal';
+  const SHOP = SERVER + '/api/webfaery/shop';         // a shop's orders (Oct 8 2026): only clients with a shop get any
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -318,18 +320,18 @@
     if (data && Number.isInteger(data.at) && data.at >= 0 && data.at < 100) e.at = data.at;
     return e;
   };
-  const post = async (path, body, key) => {
+  const post = async (path, body, key, base) => {
     const headers = { 'Content-Type': 'application/json' };
     if (key) headers['X-WF-Session'] = key;
     try {
-      return await fetch(BASE + path, {
+      return await fetch((base || BASE) + path, {
         method: 'POST', headers, body: JSON.stringify(body || {}),
         mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer'
       });
     } catch (e) { throw fail('network'); }
   };
-  const postJSON = async (path, body, key) => {
-    const res = await post(path, body, key);
+  const postJSON = async (path, body, key, base) => {
+    const res = await post(path, body, key, base);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw errorFrom(res.status, data);
     return data;
@@ -368,7 +370,15 @@
     upload: (id, files, onProgress) => sendForm('/upload', [['todo', id]], files, token, onProgress),
     change: (req, onProgress) => (req.files.length
       ? sendForm('/change', [['what', req.what], ['where_on_site', req.where], ['nonce', req.nonce]], req.files, token, onProgress)
-      : postJSON('/change', { what: req.what, where_on_site: req.where, nonce: req.nonce }, token))
+      : postJSON('/change', { what: req.what, where_on_site: req.where, nonce: req.nonce }, token)),
+    // a shop's orders (Oct 8 2026)
+    shopOrders: () => postJSON('/orders', {}, token, SHOP),
+    shopPacked: (id, packed) => postJSON('/packed', { order: id, packed }, token, SHOP),
+    async shopExport(what) {
+      const res = await post('/export', { what }, token, SHOP);
+      if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+      return res.blob();
+    }
   };
   let api = realApi;
 
@@ -463,6 +473,8 @@
   /* ================= signing in ================= */
   function toEmailStep(notice, moveFocus) {
     me = null;
+    shop = null;
+    $('#sec-orders').hidden = true;
     heroSignedOut();
     const n = $('#email-notice');
     n.textContent = notice || '';
@@ -621,6 +633,7 @@
       lastLoad = Date.now();
       render();
       show('v-project');
+      loadOrders();
       if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
     } catch (err) {
@@ -639,6 +652,7 @@
       me = clean(data);
       lastLoad = Date.now();
       render();
+      loadOrders();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
@@ -1435,6 +1449,137 @@
     } finally { btn.removeAttribute('aria-busy'); }
   }
 
+  /* ---- your shop's orders (Oct 8 2026) ----
+     Only for a client whose shop runs on Web Faery's server (the server answers shop: null for everyone else, and
+     the section stays hidden). Newest first: what, size, total, the full shipping address, a Packed tick (the one
+     thing saved from here) and a link to the order in their own Stripe. Addresses leave the server 30 days after
+     Packed; then the row says where it went, and Stripe keeps the whole order. */
+  let shop = null;           // { shop: { name, test }, orders: [...] } as the server last sent it (cleaned)
+  let ordersBusy = false;
+  async function loadOrders() {
+    if (DEMO) { $('#sec-orders').hidden = true; return; } // the preview has no shop
+    if (ordersBusy) return;
+    ordersBusy = true;
+    try {
+      const d = await api.shopOrders();
+      shop = cleanShop(d);
+      renderOrders();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      // a shop that can't load right now keeps what it showed; a client without one sees nothing new
+      if (!shop) $('#sec-orders').hidden = true;
+    } finally { ordersBusy = false; }
+  }
+  function cleanShop(d) {
+    d = d && typeof d === 'object' ? d : {};
+    if (!d.shop || typeof d.shop !== 'object') return null;
+    const stripeUrl = (u) => { const s = safeUrl(u); return /^https:\/\/dashboard\.stripe\.com\//.test(s) ? s : ''; };
+    const order = (o) => {
+      if (!o || typeof o !== 'object' || !str(o.id)) return null;
+      const a = o.address && typeof o.address === 'object' ? o.address : null;
+      return {
+        id: str(o.id, 20), day: str(o.day, 10), total: str(o.total, 20), ship_option: str(o.ship_option, 120),
+        city: str(o.city, 120), state: str(o.state, 60), packed_on: str(o.packed_on, 10), cleared_on: str(o.address_cleared_on, 10),
+        test: !!o.test, oversold: !!o.oversold, stripe_url: stripeUrl(o.stripe_url),
+        items: arr(o.items).slice(0, 50).map((it) => ({ title: str(it && it.title, 250), size: str(it && it.size, 30), qty: Math.max(1, Math.min(999, Math.round(+(it && it.qty) || 1))), total: str(it && it.total, 20) })).filter((it) => it.title),
+        address: a ? { name: str(a.name, 200), line1: str(a.line1, 200), line2: str(a.line2, 200), city: str(a.city, 120), state: str(a.state, 60), postal_code: str(a.postal_code, 20), country: str(a.country, 8) } : null
+      };
+    };
+    return { shop: { name: str(d.shop.name, 120), test: !!d.shop.test }, orders: arr(d.orders).slice(0, 200).map(order).filter(Boolean) };
+  }
+  function renderOrders() {
+    const sec = $('#sec-orders');
+    if (!shop) { sec.hidden = true; return; }
+    sec.hidden = false;
+    $('#orders-test').hidden = !shop.shop.test;
+    $('#orders-empty').hidden = shop.orders.length > 0;
+    $('#orders').replaceChildren(...shop.orders.map(orderRow));
+  }
+  function orderRow(o) {
+    const li = make('li', 'order' + (o.packed_on ? ' packed' : ''));
+    li.dataset.order = o.id;
+    const head = make('div', 'o-head');
+    head.append(make('span', 'o-date', shortDate(o.day) || 'New'), make('span', 'o-total', o.total));
+    li.append(head);
+    const items = make('ul', 'o-items');
+    o.items.forEach((it) => {
+      const row = make('li');
+      row.append(make('span', 'o-what', it.title + (it.size ? ', size ' + it.size : '')), make('span', 'o-cost', (it.qty > 1 ? it.qty + ' for ' : '') + it.total));
+      items.append(row);
+    });
+    li.append(items);
+    const ship = make('div', 'o-ship');
+    const where = [o.city, o.state].filter(Boolean).join(', ');
+    if (o.address) {
+      const a = o.address;
+      ship.append(make('span', 'o-label', 'Ship to'));
+      const lines = make('p', 'o-addr');
+      [a.name, a.line1, a.line2, [[a.city, a.state].filter(Boolean).join(', '), a.postal_code].filter(Boolean).join(' '), a.country && a.country !== 'US' ? a.country : '']
+        .filter(Boolean).forEach((t) => lines.append(make('span', null, t)));
+      ship.append(lines);
+    } else if (o.cleared_on) {
+      ship.append(make('span', 'o-label', 'Shipped to'), make('p', 'o-gone', (where ? where + '. ' : '') + 'The full address is in your Stripe now.'));
+    } else {
+      ship.append(make('span', 'o-label', 'Ship to'), make('p', 'o-gone', (where ? where + '. ' : '') + 'The full address is in your Stripe.'));
+    }
+    if (o.ship_option) ship.append(make('p', 'o-opt', o.ship_option));
+    li.append(ship);
+    if (o.oversold) li.append(make('p', 'o-warn', 'This was the last one, and it sold twice. Refund one of the two in your Stripe, and email me if you’d like a hand.'));
+    const act = make('div', 'o-act');
+    const lab = make('label', 'o-packed');
+    const cb = make('input');
+    cb.type = 'checkbox';
+    cb.checked = !!o.packed_on;
+    const word = make('span', null, o.packed_on ? 'Packed ' + shortDate(o.packed_on) : 'Packed');
+    lab.append(cb, word);
+    cb.addEventListener('change', () => setPacked(o, cb, word, li));
+    act.append(lab);
+    if (o.stripe_url) act.append(outLink(o.stripe_url, 'Open in Stripe', null, 'this order in Stripe'));
+    li.append(act);
+    return li;
+  }
+  async function setPacked(o, cb, word, li) {
+    const want = cb.checked;
+    cb.disabled = true;
+    busy++;
+    try {
+      const r = await api.shopPacked(o.id, want);
+      const fresh = cleanShop({ shop: { name: shop.shop.name, test: shop.shop.test }, orders: [r && r.order] });
+      const now = fresh && fresh.orders[0] ? fresh.orders[0] : null;
+      if (now) {
+        const i = shop.orders.findIndex((x) => x.id === o.id);
+        if (i >= 0) shop.orders[i] = now;
+        o.packed_on = now.packed_on;
+      }
+      cb.checked = !!o.packed_on;
+      word.textContent = o.packed_on ? 'Packed ' + shortDate(o.packed_on) : 'Packed';
+      li.classList.toggle('packed', !!o.packed_on);
+      announce(o.packed_on ? 'Marked packed.' : 'Packed tick taken off.');
+    } catch (err) {
+      cb.checked = !want;
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(words(err));
+    } finally { cb.disabled = false; busy = Math.max(0, busy - 1); }
+  }
+  async function downloadCsv(btn, what) {
+    if (DEMO || btn.getAttribute('aria-busy') === 'true') return;
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const blob = await api.shopExport(what);
+      const url = URL.createObjectURL(new Blob([blob], { type: 'text/csv' }));
+      const a = make('a');
+      a.href = url;
+      a.download = what + '-' + todayISO + '.csv';
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(words(err));
+    } finally { btn.removeAttribute('aria-busy'); }
+  }
+
   /* ---- payments ---- */
   function renderPay() {
     const c = me.client;
@@ -1755,6 +1900,8 @@
     $('#in-what').addEventListener('input', whatCount);
     $('#in-pics').addEventListener('change', onPics);
     $('#b-another').addEventListener('click', askAnother);
+    $('#b-csv-orders').addEventListener('click', () => downloadCsv($('#b-csv-orders'), 'orders'));
+    $('#b-csv-products').addEventListener('click', () => downloadCsv($('#b-csv-products'), 'products'));
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {

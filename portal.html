@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261002c">
+<link rel="stylesheet" href="portal.css?v=20261008a">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -97,7 +97,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261005a"></script>
+<script src="portal.js?v=20261008a"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -210,6 +210,20 @@
         <p class="note-text" id="note-text"></p>
         <p class="note-date" id="note-date"></p>
       </div>
+    </section>
+
+    <!-- your shop's orders (Oct 8 2026): only for a client whose shop runs on Web Faery's server -->
+    <section class="p-card" id="sec-orders" aria-labelledby="h-orders" hidden>
+      <span class="kicker">Your shop</span>
+      <h2 id="h-orders" tabindex="-1">Orders</h2>
+      <p class="orders-test" id="orders-test" hidden>Test mode: these are practice orders, no real money.</p>
+      <p class="orders-fine">Newest first. Tick Packed once it’s in the mail. Each address stays here until 30 days after Packed, and your Stripe keeps the whole order.</p>
+      <ul class="orders" id="orders"></ul>
+      <p class="empty" id="orders-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+        <span class="empty-body">No orders yet. They show up here as soon as someone checks out.</span></p>
+      <p class="orders-csv"><span>Your copy, any time:</span>
+        <button type="button" class="later" id="b-csv-orders">Orders (CSV)</button>
+        <button type="button" class="later" id="b-csv-products">Products (CSV)</button></p>
     </section>
 
     <section class="p-card" id="sec-list" aria-labelledby="h-list">

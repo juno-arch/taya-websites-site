@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- No outside scripts, no inline scripts: only this site's own files may run here, and the page may only
+     talk to itself and the bookings server. (GitHub Pages can't send security headers, so they live here.) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://bookings.gardenfaery.love; font-src 'self'; connect-src 'self' https://bookings.gardenfaery.love; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>Book a session &middot; Web Faery</title>
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261008a">
+<link rel="stylesheet" href="soil.css?v=20261008a">
+<link rel="stylesheet" href="pages.css?v=20261008a">
+<link rel="stylesheet" href="book.css?v=20261008a">
+<!--
+  book.html: private sessions with Taya (built Oct 8 2026). Private and unlisted: not in sitemap.xml, no link to it
+  from any page, noindex. It only opens from a client's own booking link (book.html#k=...) or the change-or-cancel
+  link in a booking email (book.html#m=...). The part after # stays in the browser: it does not reach any server log.
+  Everything it shows comes from the bookings server (garden-faery-hub/pocketbase/pb_hooks/webfaery-booking.pb.js).
+  Files: book.css (the look), book.js (everything that happens). The soil is still here (no mycelium.js): calm.
+-->
+<script src="book.js?v=20261008a" defer></script>
+</head>
+<body>
+<div class="soil" aria-hidden="true"></div>
+
+<header class="b-top">
+  <span class="brand"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></span>
+</header>
+
+<main class="b-main" id="main">
+  <noscript><div class="b-card"><p>This page needs JavaScript to show open times. No problem at all:
+    just write to me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll find a time.</p></div></noscript>
+
+  <p class="sr-only" id="live" aria-live="polite"></p>
+
+  <!-- loading -->
+  <section class="b-card" id="s-loading" data-state="loading" aria-labelledby="h-loading">
+    <h1 id="h-loading" tabindex="-1" class="b-soft-h">Opening your booking page…</h1>
+  </section>
+
+  <!-- no key, a malformed key, or a key the server does not know -->
+  <section class="b-card" id="s-nokey" data-state="nokey" aria-labelledby="h-nokey" hidden>
+    <h1 id="h-nokey" tabindex="-1">This page is for Web Faery clients</h1>
+    <p>If we’re working together, the booking link I sent you opens it. Anything else, write to me at
+      <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+  </section>
+
+  <!-- 1. pick a session -->
+  <section class="b-card" id="s-type" data-state="type" aria-labelledby="h-type" hidden>
+    <p class="kicker" id="type-hi"></p>
+    <h1 id="h-type" tabindex="-1">Pick a session</h1>
+    <p class="soft" id="type-lede"></p>
+    <div class="b-types" id="type-list"></div>
+    <div class="b-upcoming" id="upcoming" hidden>
+      <h2 class="b-sub">Already booked</h2>
+      <ul id="upcoming-list"></ul>
+    </div>
+  </section>
+
+  <!-- 2. pick a day (also used to move a session) -->
+  <section class="b-card" id="s-day" data-state="day" aria-labelledby="h-day" hidden>
+    <p class="notice" id="day-notice" role="status" hidden></p>
+    <p class="kicker" id="day-kicker"></p>
+    <h1 id="h-day" tabindex="-1">Pick a day</h1>
+    <div class="b-days" id="day-grid" role="group" aria-labelledby="h-day"></div>
+    <p class="b-empty" id="day-empty" hidden></p>
+    <div class="b-row"><button type="button" class="btn secondary small" id="day-back">Back</button></div>
+  </section>
+
+  <!-- 3. pick a time -->
+  <section class="b-card" id="s-time" data-state="time" aria-labelledby="h-time" hidden>
+    <p class="notice" id="time-notice" role="status" hidden></p>
+    <p class="kicker" id="time-kicker"></p>
+    <h1 id="h-time" tabindex="-1">Pick a time</h1>
+    <p class="b-tz">Pacific time</p>
+    <div class="b-times" id="time-list" role="group" aria-labelledby="h-time"></div>
+    <div class="b-row"><button type="button" class="btn secondary small" id="time-back">Back</button></div>
+  </section>
+
+  <!-- 4. a short note, then book it -->
+  <section class="b-card" id="s-note" data-state="note" aria-labelledby="h-note" hidden>
+    <p class="kicker">Almost done</p>
+    <h1 id="h-note" tabindex="-1">Your session</h1>
+    <dl class="b-sum" id="note-sum"></dl>
+    <label class="field-label" for="note-in">What would you like to go over?</label>
+    <p class="b-hint" id="note-hint">Optional. A few words help me get ready.</p>
+    <textarea id="note-in" maxlength="1000" rows="4" aria-describedby="note-hint note-count"></textarea>
+    <p class="b-count" id="note-count">0 of 1000</p>
+    <p class="b-err" id="note-err" role="alert" hidden></p>
+    <div class="b-row">
+      <button type="button" class="btn" id="note-go">Book it</button>
+      <button type="button" class="btn secondary small" id="note-back">Back</button>
+    </div>
+  </section>
+
+  <!-- 5. booked -->
+  <section class="b-card" id="s-done" data-state="done" aria-labelledby="h-done" hidden>
+    <p class="kicker">All set</p>
+    <h1 id="h-done" tabindex="-1">You’re booked</h1>
+    <p class="b-when" id="done-when"></p>
+    <p id="done-join"></p>
+    <p class="soft">A note with the details is on its way to your email.</p>
+    <div class="b-row"><button type="button" class="btn secondary small" id="done-again">Book another</button></div>
+  </section>
+
+  <!-- already a few booked -->
+  <section class="b-card" id="s-toomany" data-state="toomany" aria-labelledby="h-toomany" hidden>
+    <h1 id="h-toomany" tabindex="-1">You already have a few sessions booked</h1>
+    <p>Write to me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll make room.</p>
+    <div class="b-row"><button type="button" class="btn secondary small" id="toomany-back">Back to your sessions</button></div>
+  </section>
+
+  <!-- too many tries -->
+  <section class="b-card" id="s-slow" data-state="slow" aria-labelledby="h-slow" hidden>
+    <h1 id="h-slow" tabindex="-1">Too many tries for now</h1>
+    <p id="slow-words"></p>
+  </section>
+
+  <!-- the server could not answer -->
+  <section class="b-card" id="s-error" data-state="error" aria-labelledby="h-error" hidden>
+    <h1 id="h-error" tabindex="-1">Something went wrong on my end</h1>
+    <p>Please try again in a moment, or write to me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+    <div class="b-row"><button type="button" class="btn" id="error-again">Try again</button></div>
+  </section>
+
+  <!-- manage: one booking -->
+  <section class="b-card" id="s-manage" data-state="manage" aria-labelledby="h-manage" hidden>
+    <p class="kicker" id="manage-hi"></p>
+    <h1 id="h-manage" tabindex="-1">Your session</h1>
+    <dl class="b-sum" id="manage-sum"></dl>
+    <div class="b-row">
+      <button type="button" class="btn" id="manage-move">Pick a new time</button>
+      <button type="button" class="btn secondary" id="manage-cancel">Cancel this session</button>
+    </div>
+    <div class="b-row" id="manage-home-row" hidden><button type="button" class="btn secondary small" id="manage-home">Back to your sessions</button></div>
+  </section>
+
+  <!-- manage: are you sure? -->
+  <section class="b-card" id="s-confirm" data-state="confirm" aria-labelledby="h-confirm" hidden>
+    <h1 id="h-confirm" tabindex="-1"></h1>
+    <p class="b-err" id="confirm-err" role="alert" hidden></p>
+    <div class="b-row">
+      <button type="button" class="btn" id="confirm-yes">Yes, cancel it</button>
+      <button type="button" class="btn secondary" id="confirm-keep">Keep it</button>
+    </div>
+  </section>
+
+  <!-- manage: move to the picked time -->
+  <section class="b-card" id="s-move" data-state="move" aria-labelledby="h-move" hidden>
+    <p class="kicker">Your new time</p>
+    <h1 id="h-move" tabindex="-1">Move your session?</h1>
+    <dl class="b-sum" id="move-sum"></dl>
+    <div class="b-row">
+      <button type="button" class="btn" id="move-go">Move it</button>
+      <button type="button" class="btn secondary small" id="move-back">Back</button>
+    </div>
+  </section>
+
+  <section class="b-card" id="s-moved" data-state="moved" aria-labelledby="h-moved" hidden>
+    <h1 id="h-moved" tabindex="-1">All set</h1>
+    <p class="b-when" id="moved-when"></p>
+    <p class="soft">A note with the new time is on its way to your email.</p>
+  </section>
+
+  <section class="b-card" id="s-canceled" data-state="canceled" aria-labelledby="h-canceled" hidden>
+    <h1 id="h-canceled" tabindex="-1">Canceled</h1>
+    <p>The same booking link still works whenever you’d like another time.</p>
+  </section>
+
+  <section class="b-card" id="s-wascanceled" data-state="wascanceled" aria-labelledby="h-wascanceled" hidden>
+    <h1 id="h-wascanceled" tabindex="-1">This session was canceled</h1>
+    <p>The same booking link still works whenever you’d like another time.</p>
+  </section>
+
+  <section class="b-card" id="s-started" data-state="started" aria-labelledby="h-started" hidden>
+    <h1 id="h-started" tabindex="-1">This session has already started</h1>
+    <p>So it can’t be changed here. Write to me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+  </section>
+</main>
+</body>
+</html>
