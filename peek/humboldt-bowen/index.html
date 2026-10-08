@@ -568,7 +568,8 @@
   .vseg .pr s, .views-care .pr s { margin-left: 5px; }
   .vseg button:hover { background: var(--ground); }
   .vseg button[aria-pressed="true"] { background: var(--clay); color: var(--ground); }
-  .vseg button[aria-pressed="true"] .pr, .vseg button[aria-pressed="true"] .pr strong { color: var(--ground); }
+  .vseg .psub { display: block; max-width: 24ch; font-size: 12px; line-height: 1.3; color: var(--ink-soft); text-wrap: balance; }
+  .vseg button[aria-pressed="true"] .pr, .vseg button[aria-pressed="true"] .pr strong, .vseg button[aria-pressed="true"] .psub { color: var(--ground); }
   .views-note { margin: 0 2px; font-size: 15px; line-height: 1.55; color: var(--ink-soft); }
   .views-note b { font-weight: 700; color: var(--ink); }
   .views-next { font: inherit; font-weight: 700; color: var(--clay-deep); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -780,12 +781,12 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your sessions and prices, Bowen, your story, reviews, hours and a Book button to your Square page."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, mailing list, FAQ and intake form."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your own site, gift certificates and four Bowen sessions paid ahead."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your sessions and prices, Bowen, your story, reviews, hours and a Book button to your Square page."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, mailing list, FAQ and intake form."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your own site, gift certificates and four Bowen sessions paid ahead."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update your site and Google profile as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -984,7 +985,7 @@
           <div class="four-card">
             <b>Your first four Bowen sessions</b>
             <div class="four-dots" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span></div>
-            <p style="font-size:15px;color:var(--ink-soft)">Once a week for four weeks, 60 minutes each, at $80 a session. Paid once, then just show up.</p>
+            <p style="font-size:15px;color:var(--ink-soft)">Once a week for four weeks, 60 minutes each, at $80 a session. Pay for all four up front, then just show up.</p>
           </div>
         </div>
         <p class="hint" id="gf-hint" role="status"></p>
@@ -1219,12 +1220,12 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your sessions and prices, Bowen, your story, reviews, hours and a Book button to your Square page."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, mailing list, FAQ and intake form."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your own site, gift certificates and four Bowen sessions paid ahead."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your sessions and prices, Bowen, your story, reviews, hours and a Book button to your Square page."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, mailing list, FAQ and intake form."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your own site, gift certificates and four Bowen sessions paid ahead."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Part of every site, matching it: $12, $45 or $90 a month, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update your site and Google profile as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
