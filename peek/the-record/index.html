@@ -255,8 +255,10 @@
   .deck-player { margin-top: 10px; }
   .deck-player iframe { display: block; width: 100%; border: 0; border-radius: 8px; background: #0d1a16; }
   .band .deck-note { border-color: rgba(243, 165, 104, 0.55); text-align: left; width: 100%; margin-top: 4px; }
+  .deck-player.cue iframe { box-shadow: 0 0 0 2px var(--glow); animation: deck-cue 1.6s ease-in-out 3; }
+  @keyframes deck-cue { 0%, 100% { box-shadow: 0 0 0 2px rgba(232, 137, 74, 0.35); } 50% { box-shadow: 0 0 0 5px var(--glow); } }
   .deck-src { font-size: 13px !important; color: rgba(242, 236, 220, 0.7) !important; margin-top: 6px; }
-  @media (prefers-reduced-motion: reduce) { .tt .spin { animation: none; } .tt .arm { transition: none; } .tt .lamp { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .deck-player.cue iframe { animation: none; } .tt .spin { animation: none; } .tt .arm { transition: none; } .tt .lamp { transition: none; } }
   .name-story { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 36px; align-items: center; margin-top: 64px; padding-top: 44px; border-top: 1px solid rgba(242, 236, 220, 0.18); }
   .name-story .photo { aspect-ratio: 3 / 2; }
   .name-story h3 { font-size: clamp(26px, 3.2vw, 34px); color: var(--on-wall); line-height: 1.1; margin-bottom: 12px; }
@@ -864,7 +866,7 @@
           <div class="deck-player" id="deck-player" hidden></div>
         </div>
         <p class="vh" role="status" id="deck-live"></p>
-        <p class="tier-note mock-note deck-note">Tap the record to hear who&rsquo;s up next, from the band&rsquo;s own Bandcamp or Spotify, so they get the play. <span class="tag" data-go="maiden">Every build</span></p>
+        <p class="tier-note mock-note deck-note">Tap the record to open who&rsquo;s up next in the band&rsquo;s own Bandcamp or Spotify player, then press play there, so they get the play. <span class="tag" data-go="maiden">Every build</span></p>
       </div>
     </div>
   </div>
@@ -1416,7 +1418,7 @@
       $('deck-say').innerHTML = html;
       $('now-lbl').textContent = on ? 'Now spinning' : (i === 0 && !a.played ? 'Up next' : 'Coming up');
       document.querySelector('#now b').textContent = a.name + ', ' + a.day;
-      if (p.src) { play.removeAttribute('aria-disabled'); play.innerHTML = on ? '&#9632; Stop the record' : '&#9654; Hear who&rsquo;s playing'; }
+      if (p.src) { play.removeAttribute('aria-disabled'); play.innerHTML = on ? '&#9632; Close the player' : '&#9654; Hear who&rsquo;s playing'; }
       else { var j = ahead(); if (j < 0) { play.setAttribute('aria-disabled', 'true'); play.innerHTML = 'No recording for this one'; } else { play.removeAttribute('aria-disabled'); play.innerHTML = '&#9654; Skip ahead to ' + esc(list[j].name); } }
       play.setAttribute('aria-pressed', on ? 'true' : 'false');
     }
@@ -1428,8 +1430,10 @@
       f.setAttribute('allow', 'autoplay; encrypted-media; clipboard-write'); f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
       box.appendChild(f);
       var src = document.createElement('p'); src.className = 'deck-src';
-      src.innerHTML = 'From ' + p.from + '. ' + (/soundcloud/.test(p.src) ? 'If it doesn&rsquo;t start on its own, press play.' : 'Press play in the little player.');
-      box.appendChild(src); box.hidden = false; return true;
+      src.innerHTML = 'From ' + p.from + '. ' + (/soundcloud/.test(p.src) ? 'If it doesn&rsquo;t start on its own, press play.' : 'The band&rsquo;s player is loaded. Press its play button to hear them (phones need that one tap inside the player).');
+      box.appendChild(src); box.hidden = false; box.classList.remove('cue'); void box.offsetWidth; box.classList.add('cue');
+      try { var r = box.getBoundingClientRect(); if (r.bottom > window.innerHeight || r.top < 0) box.scrollIntoView({ block: 'center', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); } catch (e) {}
+      return true;
     }
     function needle() { clearTimeout(drop); tt.classList.remove('on'); drop = setTimeout(function () { if (on) tt.classList.add('on'); }, 450); }
     function start() {
