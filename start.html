@@ -59,12 +59,13 @@
   and care is part of every site, monthly only, matching the build: $12 / $45 / $90 a month, starting
   after the 30 days of settling in. There's no care choice on this page. Clients reach Taya by email only.
 
-  The link to send a client can answer things ahead of time (build, founding, name, and what they
-  already have). Every link option, with three example links, is written out in the comment at the top
+  The link to send a client can answer things ahead of time (build, founding, name, what they already
+  have, and their full name, email, business and website, so none of it is asked again; full and email
+  go only after the # in the link, never in the ?query part). Every link option, with example links, is written out in the comment at the top
   of the script near the bottom.
 
   Before sending this page to anyone, fill in CONFIG at the top of the script near the bottom
-  (the six deposit links), then set LIVE = true once the PocketBase collection
+  (the six deposit links), (LIVE = true since Oct 8 2026) once the PocketBase collection
   exists (its fields and rules are written out just above CONFIG).
 
   Words: warm but plain, no dashes, curly quotes. Taya doesn't make logos: with no logo, the client's
@@ -655,6 +656,18 @@
   .sign .dated { margin: 10px 0 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
   .sign .opt-line { margin-top: 12px; padding-top: 10px; border-top: 1px dotted rgba(var(--acc-glow), 0.25); }
   .sign .opt-line .tick { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 16px; color: var(--ink-soft); }
+  /* signing with one tap, when Taya's link already gave their name (no typing it again) */
+  .tap-sign { margin-top: 14px; }
+  .tap-sign .btn { margin-top: 2px; }
+  .tap-sign .tap-hint { margin: 0; font-size: 15.5px; color: var(--ink-soft); font-style: italic; }
+  .tap-sign .signed-as { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    font-style: italic; font-size: 24px; line-height: 1.25; color: var(--ink); overflow-wrap: anywhere; }
+  .tap-sign .signed-as svg { width: 22px; height: 22px; flex: none; color: var(--acc); }
+  .tap-sign .later { display: block; margin-top: 6px; font-size: 15.5px; min-height: 40px; padding: 0 2px; }
+  /* what Taya's link already told us, said back in one line instead of fields to fill (with a quiet Change) */
+  .known { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--link-wash); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+  .known b { color: var(--ink); font-weight: 500; }
+  .known .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 2px 2px; margin: 0 0 0 2px; vertical-align: baseline; }
 
   /* ============ the deposit, and what happens next ============ */
   .pay-card {
@@ -1134,28 +1147,30 @@
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body" id="b-sign">
-        <p class="lead-in" data-if="build-in-sign">Check your build, tell me who you are, and sign our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
-        <p class="lead-in" data-if="build-own-step">Tell me who you are and sign our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
+        <p class="lead-in" data-if="build-in-sign">Check your build<span data-who>, tell me who you are,</span> and sign our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
+        <p class="lead-in" data-if="build-own-step"><span data-who>Tell me who you are and sign</span><span data-who-known hidden>Sign</span> our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
         <div id="build-slot-sign"></div>
 
         <h3 class="sub-h">About you</h3>
-        <p class="hint sub-hint">Your name and email are the only musts on this whole page.</p>
+        <p class="hint sub-hint" id="you-hint">Your name and email are the only musts on this whole page.</p>
+        <!-- what Taya's link already told us (full, email, biz, site): one line, not fields to fill again -->
+        <p class="known" id="you-known" hidden>I have you as <b id="you-known-text"></b>. <button type="button" class="later" id="you-change" aria-label="Change your name, email, business or website">Change</button></p>
         <div class="pair you-pair">
-          <div class="q">
+          <div class="q" data-known="f-name">
             <label class="main" for="f-name">Your full name</label>
             <input type="text" id="f-name" name="name" autocomplete="name" maxlength="120" aria-required="true">
             <p class="err" id="e-f-name" hidden></p>
           </div>
-          <div class="q">
+          <div class="q" data-known="f-email">
             <label class="main" for="f-email">Best email</label>
             <input type="email" id="f-email" name="email" autocomplete="email" maxlength="200" aria-required="true" spellcheck="false">
             <p class="err" id="e-f-email" hidden></p>
           </div>
-          <div class="q">
+          <div class="q" data-known="f-biz">
             <label class="main" for="f-biz">Your business name <span class="opt-tag">(if it’s just your name, that counts)</span></label>
             <input type="text" id="f-biz" name="business" autocomplete="organization" maxlength="160">
           </div>
-          <div class="q">
+          <div class="q" data-known="f-site">
             <label class="main" for="f-site">Your website now <span class="opt-tag">(if you have one)</span></label>
             <input type="text" id="f-site" name="website" inputmode="url" autocomplete="url" maxlength="300" spellcheck="false" placeholder="yourname.com">
           </div>
@@ -1224,11 +1239,21 @@
         <div class="sign">
           <label class="tick"><input type="checkbox" name="agree" value="yes" id="f-agree"> I’ve read it, and I agree.</label>
           <p class="err" id="e-f-agree" hidden></p>
-          <div class="q" style="margin-top: 12px">
+          <div class="q" id="sig-typed" style="margin-top: 12px">
             <label class="main" for="f-sig">Type your full name to sign</label>
             <input type="text" id="f-sig" name="signature" class="sig" autocomplete="name" maxlength="120">
             <p class="err" id="e-f-sig" hidden></p>
             <p class="dated" id="sig-date">Signed today</p>
+          </div>
+          <!-- Taya's link gave their name (full): one tap signs with it. signed_by_tap keeps how it was signed -->
+          <input type="hidden" name="signed_by_tap" id="f-sig-tap" value="">
+          <div class="tap-sign" id="tap-sign" hidden>
+            <p class="tap-hint" id="tap-hint">Tick the box, and you can sign with one tap.</p>
+            <button type="button" class="btn" id="tap-sign-btn" hidden><span id="tap-sign-label">Sign</span></button>
+            <p class="signed-as" id="tap-signed" tabindex="-1" hidden><svg aria-hidden="true"><use href="#i-check"/></svg><span id="tap-signed-text"></span></p>
+            <p class="err" id="e-tap-sign" hidden></p>
+            <p class="dated" id="tap-date">Dated today</p>
+            <button type="button" class="later" id="sig-own">Not you? Sign with your own name</button>
           </div>
           <div class="opt-line">
             <label class="tick"><input type="checkbox" name="show_in_work" value="yes"> It’s fine to show my finished site in your recent work (optional, and you can change your mind).</label>
@@ -1547,7 +1572,8 @@
             <li data-if="made-cal"><b>Your booking, on Cal.com,</b> free for one person. Clients pick a time, and you both get reminders.
                 We’ll settle your sessions and hours together over email.</li>
           </ul>
-          <div class="q">
+          <p class="known" id="acct-known" hidden>I’ll make <span data-if="made-both">them</span><span data-if="made-one">it</span> with <b data-contact-email>your contact email</b>. <button type="button" class="later" id="acct-change" aria-label="Use a different email for your accounts">Change</button></p>
+          <div class="q" id="acct-q">
             <label class="main" for="f-acctemail">The email for your accounts <span class="opt-tag">(if it’s not your contact email)</span></label>
             <p class="hint" id="h-acctemail">They’re made with this email, so they’re truly yours, and any codes or password resets come straight
                to you. Leave it blank and I’ll use <span data-contact-email>your contact email</span>.</p>
@@ -1574,8 +1600,9 @@
                  asking you to confirm your email address for it, just click it.</p>
             </div>
           </div>
+          <p class="known" id="dom-known" hidden>Your web address: <b id="dom-known-text"></b>. <button type="button" class="later" id="dom-change" aria-label="Change your web address">Change</button></p>
           <div class="q" data-if="dom-owned">
-            <label class="main" for="f-owned"><span data-if="dom-have">Your web address, and where it lives</span><span data-if="dom-maybe">Already own one? Where does it live?</span> <span class="opt-tag" data-if="dom-maybe">(skip if not)</span></label>
+            <label class="main" for="f-owned"><span id="dom-label-full"><span data-if="dom-have">Your web address, and where it lives</span><span data-if="dom-maybe">Already own one? Where does it live?</span> <span class="opt-tag" data-if="dom-maybe">(skip if not)</span></span><span id="dom-label-where" hidden>Where does it live? <span class="opt-tag">(if you know, like GoDaddy or Squarespace)</span></span></label>
             <input type="text" id="f-owned" name="domain_owned" maxlength="200" spellcheck="false" placeholder="like “yourname.com, at GoDaddy”">
           </div>
           <div class="q" data-if="dom-wish">
@@ -1735,8 +1762,28 @@
      mockup      the mockup's key (as in webfaery.love/peek/KEY). Their words, photos and look are already on it, so
                  "A few quick things" becomes "Check your mockup" (an "I love it" button, or one box for what's off)
                  and the look step is left off their list. Example: start.html?name=Amber&mockup=amber
+     biz         their business name ("The Record"). Public, so the query is fine (the fragment works too)
+     site        their website now ("therecordpointarena.com"). Public, so the query is fine (the fragment works too).
+                 With have=domain, it's also the web address in "Your accounts" (they only add where it lives),
+                 unless it's a site builder's own address (like name.wixsite.com)
+     full        the name they sign with ("Paul"). FRAGMENT ONLY (after the #, see below)
+     email       their email. FRAGMENT ONLY (after the #, see below), with the @ written as %40
 
-   Three examples:
+   What the link already knows isn't asked again (Pollen, Oct 8: "we already know a lot about Paul. don't add
+   anything we already know for him to do"). In "About you", the fields the link filled become one line, "I have
+   you as Paul · The Record · email · site", with a quiet Change that brings the fields back; anything the link
+   left out is still a field to fill. With full, there's no name to type to sign: once they tick "I've read it,
+   and I agree", one tap on "Sign as Paul" signs it with that name (agreement_name is the name, agreement_how is
+   "tap"), and "Not Paul? Sign with your own name" brings back the typed signature. With email, "Your accounts"
+   just says the email their accounts are made with (Change to use another). The step times shrink to match.
+   What they type or change on the page always wins, and it's all saved and sent exactly like typed answers.
+
+   THE FRAGMENT RULE: anything personal (full, email) goes after a # at the very end, never in the ?query part.
+   Browsers don't send the part after # to the server, so it stays out of server logs. The page reads it once,
+   then wipes it from the address bar right away (the ?query part stays). biz and site are public, so they can
+   go in the query (or in the fragment too). Write the fragment like a query: #full=Paul&email=paul%40mail.com
+
+   Four examples:
      A founding Tended client who has a logo and uses Vagaro (the quick check asks only about a brand kit,
      photos, a web address, selling and a newsletter):
        start.html?name=Juliet&build=mother&founding=1&have=logo&booking=vagaro
@@ -1746,6 +1793,8 @@
      An In Bloom client who sells online and has a brand kit (the quick check asks about a logo, photos,
      a web address, booking and a newsletter):
        start.html?name=Wren&build=crone&have=brandkit&sell=1
+     And one that knows nearly everything (About you is one line, and signing is one tap):
+       start.html?name=Paul&build=mother&founding=1&mockup=the-record&have=logo,no-kit,photos,domain&booking=no-need&sell=0&newsletter=1&biz=The%20Record&site=therecordpointarena.com#full=Paul&email=therecordpa%40gmail.com
 
    ---- WHEN THIS GOES LIVE (set LIVE = true below) ----
    "Send it to Taya" creates one record in the PocketBase collection "webfaery_intake" on
@@ -1784,7 +1833,9 @@
      deposit_paid      bool   (the client's own tick; check Stripe to be sure)
      call_booked       bool   (no longer sent: there's no call to book. Left in the collection for older records)
      agreed            bool
-     agreement_name    text, max 120   (their typed signature)
+     agreement_name    text, max 120   (their typed signature, or the name from Taya's link when they signed by tap)
+     agreement_how     text, max 20    ("tap" or "typed"; not on the collection yet, so the page sends it inside steps as sign_how.
+                                        summary_text always says "How it was signed: By tap" too)
      agreement_date    date            (when they sent it)
      agreement_version text, max 40    ("2026-10-06b")
      show_in_work      bool
@@ -1802,8 +1853,29 @@
 (() => {
   'use strict';
 
+  // Taya's link can carry what we already know about them. Personal details (full, email) come ONLY in the
+  // fragment after # (browsers never send it to a server, so it stays out of server logs); biz and site may
+  // be in either. The fragment is read once and wiped from the address bar straight away (the query stays).
+  const linkKnown = {};
+  try {
+    const hs = new URLSearchParams(location.hash.slice(1)), qs0 = new URLSearchParams(location.search);
+    if (/=/.test(location.hash)) history.replaceState(history.state, '', location.pathname + location.search);
+    // starting over on this device brings the link's details back (they were wiped from the address bar)
+    let stash = null;
+    try { stash = JSON.parse(sessionStorage.getItem('wf-start-link') || 'null'); sessionStorage.removeItem('wf-start-link'); } catch (e) { /* storage off */ }
+    const pick = (k, fromQuery) => hs.get(k) || (fromQuery && qs0.get(k)) || (stash && stash[k]) || '';
+    const full = pick('full', false).replace(/[^\p{L}\p{M}' .-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 120);
+    const email = pick('email', false).trim().toLowerCase().slice(0, 200);
+    const biz = pick('biz', true).replace(/[\u0000-\u001f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+    const site = pick('site', true).trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '').replace(/[^\w.\-/~%?=&#:+]/g, '').slice(0, 300);
+    if (full) linkKnown.full = full;
+    if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) linkKnown.email = email;
+    if (biz) linkKnown.biz = biz;
+    if (site) linkKnown.site = site;
+  } catch (e) { /* an old browser: everything is simply asked on the page */ }
+
   /* ================= CONFIG: the only things to fill in ================= */
-  const LIVE = false; // PREVIEW: shows the thank-you and a summary, sends nothing. true = send to PocketBase.
+  const LIVE = true; // LIVE since Oct 8 2026: sends to PocketBase. false = PREVIEW (shows the thank-you and a summary, sends nothing).
   const CONFIG = {
     // Stripe Payment Links for the DEPOSIT (half the build), made Sep 30 2026 in the Web Faery Stripe account
     // (list: ~/Documents/Garden-Faery/web-faery-kit/stripe-links.md).
@@ -1983,6 +2055,9 @@
     clear() { try { localStorage.removeItem(STORE_KEY); } catch (e) { /* nothing saved, nothing to clear */ } }
   };
   let stepState = {};                                  // step id: 'done' or 'skipped'
+  // what they opened to change, where Taya's link already knew it: About you, the accounts email, the web address,
+  // and signing with their own typed name instead of one tap
+  const opened = { you: false, acct: false, dom: false, sig: false };
   const files = { photos: [], logo: [], kit: [] };     // File objects (these can't be saved on the device)
   let savedNames = { photos: [], logo: [], kit: [] };  // names from last time, to remind them
   // photos and files are kept on this device too (IndexedDB), so coming back later doesn't mean adding them again
@@ -2078,7 +2153,9 @@
     // only their own taps are kept; what Taya's link said is read from the link again each visit
     const mine = {};
     for (const k of Object.keys(have)) if (haveBy[k] === 'you') mine[k] = have[k];
-    return { v: 1, fields, steps: stepState, names, have: mine, qcSkipped, at: Date.now() };
+    // what Taya's link told us, and which of those they opened up to change, so a later visit (when the
+    // fragment is long gone from the address) still shows them as known
+    return { v: 1, fields, steps: stepState, names, have: mine, qcSkipped, link: Object.assign({}, linkKnown), opened: Object.assign({}, opened), at: Date.now() };
   }
   function restore(data) {
     const f = data.fields || {};
@@ -2096,6 +2173,10 @@
       }
     }
     qcSkipped = !!data.qcSkipped;
+    if (data.link && typeof data.link === 'object') {
+      for (const k of ['full', 'email', 'biz', 'site']) if (!linkKnown[k] && typeof data.link[k] === 'string' && data.link[k]) linkKnown[k] = data.link[k];
+    }
+    if (data.opened && typeof data.opened === 'object') for (const k of Object.keys(opened)) opened[k] = !!data.opened[k];
   }
 
   const savedEl = $('#p-saved'), savedText = $('#p-saved-text');
@@ -2314,9 +2395,10 @@
     const md = modes(c);
     switch (idOf(s)) {
       case 'build': return 5;
-      // who you are 1, read and sign 3, pay the deposit 3; plus the build at the top when Taya's link set it:
-      // nothing more to confirm it (its care comes with it), 3 for the whole chooser, 1 for extras to answer
-      case 'sign': return 7 + (!linkBuild ? 0 : md.confirm ? 0 : 3)
+      // who you are 1 (nothing when Taya's link gave their name and email), read and sign 3, pay the deposit 3;
+      // plus the build at the top when Taya's link set it: nothing more to confirm it (its care comes with it),
+      // 3 for the whole chooser, 1 for extras to answer
+      case 'sign': return 7 - (youKnown('f-name') && youKnown('f-email') ? 1 : 0) + (!linkBuild ? 0 : md.confirm ? 0 : 3)
         + (linkBuild && (have.news == null || have.booking == null || have.sell == null) ? 1 : 0);
       case 'work': return $('#b-work').classList.contains('has-mock') ? 2 : 5;
       // the look 3 (a brand kit to add, or moods and colors), a logo 1, photos 5 (none with free stock photos)
@@ -2343,6 +2425,62 @@
     if (need.pay) out.push('taking payments with Stripe');
     return out;
   }
+
+  /* ================= what Taya's link already told us (full, email, biz, site) =================
+     A field the link filled isn't asked again: it's said back in one "I have you as" line with a quiet
+     Change, and its value is saved and sent exactly like a typed one. Without those link options, nothing changes. */
+  const LINK_KEY = { 'f-name': 'full', 'f-email': 'email', 'f-biz': 'biz', 'f-site': 'site' };
+  function youKnown(id) {
+    if (opened.you || !linkKnown[LINK_KEY[id]] || !val(id)) return false;
+    return id !== 'f-email' || emailOk(val(id));
+  }
+  // sign with one tap, as the name in Taya's link (unless they chose to type their own)
+  const tapSign = () => !!linkKnown.full && !opened.sig;
+  const tapSigned = () => tapSign() && $('#f-agree').checked && !!val('f-sig') && $('#f-sig-tap').value === '1';
+  // the web address their site lives at now (not a site builder's own address, like name.wixsite.com)
+  function siteDomain() {
+    const host = (linkKnown.site || '').split(/[/?#:]/)[0].toLowerCase().replace(/^www\./, '');
+    if (!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(host)) return '';
+    return /(^|\.)(wixsite\.com|wix\.com|squarespace\.com|weebly\.com|square\.site|godaddysites\.com|carrd\.co|wordpress\.com|blogspot\.com|github\.io|business\.site|linktr\.ee|facebook\.com|instagram\.com)$/.test(host) ? '' : host;
+  }
+  const domKnown = () => !!siteDomain() && have.domain === 'yes' && !opened.dom;
+  const acctKnown = () => !!linkKnown.email && !opened.acct && !val('f-acctemail') && emailOk(val('f-email'));
+  function renderKnown() {
+    const known = ['f-name', 'f-biz', 'f-email', 'f-site'].filter(youKnown);
+    $$('[data-known]').forEach((q) => { q.hidden = known.includes(q.dataset.known); });
+    $('#you-known').hidden = !known.length;
+    $('#you-known-text').textContent = known.map(val).join(' \u00b7 ');
+    // with their name and email both known, there's nothing they have to tell me here
+    const both = known.includes('f-name') && known.includes('f-email');
+    $('#you-hint').hidden = both;
+    $$('[data-who]').forEach((el) => { el.hidden = both; });
+    $$('[data-who-known]').forEach((el) => { el.hidden = !both; });
+    // signing: one tap as the link's name, or typed as before
+    const tap = tapSign();
+    $('#sig-typed').hidden = tap;
+    $('#tap-sign').hidden = !tap;
+    if (tap) {
+      const agreed = $('#f-agree').checked, signed = tapSigned();
+      $('#tap-hint').hidden = agreed;
+      $('#tap-sign-btn').hidden = !agreed || signed;
+      $('#tap-sign-label').textContent = 'Sign as ' + linkKnown.full;
+      $('#tap-signed').hidden = !signed;
+      $('#tap-signed-text').textContent = signed ? 'Signed as ' + val('f-sig') : '';
+      $('#sig-own').textContent = 'Not ' + linkKnown.full + '? Sign with your own name';
+    }
+    // the accounts: the email they're made with, and the web address they already have
+    const ak = acctKnown();
+    $('#acct-known').hidden = !ak;
+    $('#acct-q').hidden = ak;
+    const dk = domKnown();
+    $('#dom-known').hidden = !dk;
+    $('#dom-known-text').textContent = dk ? siteDomain() : '';
+    $('#dom-label-full').hidden = dk;
+    $('#dom-label-where').hidden = !dk;
+    $('#f-owned').placeholder = dk ? 'like GoDaddy' : 'like \u201cyourname.com, at GoDaddy\u201d';
+  }
+  // the web address, with where it lives (when the link gave the address, they only add where)
+  const domainOwned = () => (domKnown() && onList('f-owned') ? [siteDomain(), val('f-owned') ? 'at ' + val('f-owned') : ''].filter(Boolean).join(', ') : said('f-owned'));
 
   function renderPlan(c) {
     const show = flagsFor(c), md = modes(c);
@@ -2420,6 +2558,8 @@
     tl.textContent = '';
     tl.append(make('b', null, 'We’ll also do these together over email: '), document.createTextNode(listOf(tog) + '.'));
 
+    renderKnown();
+
     // number the steps they can see, and time each one; the last one finishes the list
     const list = shown();
     list.forEach((st, i) => {
@@ -2451,6 +2591,7 @@
       + ' and if you post on Instagram or Facebook, I can follow along and update as you post, or you can email me your changes, as often as you need (changes usually go up within 2 business days).'
       + ' If anything breaks, or I got something wrong, I fix it. Big new things, like a new page or a new feature, I quote first.');
     $('#sig-date').textContent = ($('#f-agree').checked && val('f-sig')) ? 'Signed ' + longDate : 'Dated ' + longDate;
+    $('#tap-date').textContent = tapSigned() ? 'Signed ' + longDate : 'Dated ' + longDate;
   }
 
   function renderDeposit(c, m) {
@@ -2586,12 +2727,15 @@
       return bad ? el : null;
     },
     agree(strict) {
-      const box = $('#f-agree'), sig = $('#f-sig');
+      const box = $('#f-agree'), sig = $('#f-sig'), tap = tapSign();
       const a = box.checked, s = !!val('f-sig');
-      setErr(box, $('#e-f-agree'), ''); setErr(sig, $('#e-f-sig'), '');
-      if (a && !s) { setErr(sig, $('#e-f-sig'), 'Just type your full name here, and it’s signed.'); return sig; }
+      setErr(box, $('#e-f-agree'), ''); setErr(sig, $('#e-f-sig'), ''); setErr(null, $('#e-tap-sign'), '');
+      if (a && !s) {
+        if (tap) { setErr(null, $('#e-tap-sign'), 'Just tap “Sign as ' + linkKnown.full + '” and it’s signed.'); return $('#tap-sign-btn'); }
+        setErr(sig, $('#e-f-sig'), 'Just type your full name here, and it’s signed.'); return sig;
+      }
       if (!a && s) { setErr(box, $('#e-f-agree'), 'Tick the box too, so I know you agree.'); return box; }
-      if (strict && !a && !s) { setErr(box, $('#e-f-agree'), 'Tick the box and type your name to sign, or skip this for now and we’ll go through it together.'); return box; }
+      if (strict && !a && !s) { setErr(box, $('#e-f-agree'), tap ? 'Tick the box and tap to sign, or skip this for now and we’ll go through it together.' : 'Tick the box and type your name to sign, or skip this for now and we’ll go through it together.'); return box; }
       return null;
     }
   };
@@ -2599,7 +2743,33 @@
   ['f-name', 'f-email', 'f-sig', 'f-acctemail'].forEach((id) => $('#' + id).addEventListener('input', () => {
     if ($('#' + id).getAttribute('aria-invalid') === 'true') (id === 'f-sig' ? CHECKS.agree(false) : id === 'f-acctemail' ? CHECKS.accounts() : CHECKS.you());
   }));
-  $('#f-agree').addEventListener('change', () => { if ($('#e-f-agree').textContent) CHECKS.agree(false); });
+  $('#f-agree').addEventListener('change', () => {
+    // signed by tap, then unticked: the signature goes with the tick (one tap signs it again)
+    if (!$('#f-agree').checked && $('#f-sig-tap').value === '1') { $('#f-sig').value = ''; $('#f-sig-tap').value = ''; }
+    if ($('#e-f-agree').textContent || $('#e-tap-sign').textContent) CHECKS.agree(false);
+  });
+  // one tap signs with the name Taya's link gave
+  $('#tap-sign-btn').addEventListener('click', () => {
+    if (!tapSign() || !$('#f-agree').checked) return;
+    $('#f-sig').value = linkKnown.full; $('#f-sig-tap').value = '1';
+    CHECKS.agree(false); renderAll(); saveNow();
+    $('#tap-signed').focus({ preventScroll: true });
+  });
+  // "Not Paul?": back to typing a name to sign
+  $('#sig-own').addEventListener('click', () => {
+    opened.sig = true;
+    if ($('#f-sig-tap').value === '1') { $('#f-sig').value = ''; $('#f-sig-tap').value = ''; }
+    CHECKS.agree(false); renderAll(); saveNow();
+    $('#f-sig').focus();
+  });
+  // Change: shows the fields the link filled, ready to edit
+  $('#you-change').addEventListener('click', () => { opened.you = true; renderAll(); saveNow(); $('#f-name').focus(); });
+  $('#acct-change').addEventListener('click', () => { opened.acct = true; renderAll(); saveNow(); $('#f-acctemail').focus(); });
+  $('#dom-change').addEventListener('click', () => {
+    const v = domainOwned();
+    opened.dom = true; $('#f-owned').value = v;
+    renderAll(); saveNow(); $('#f-owned').focus();
+  });
   form.addEventListener('change', (e) => { if (e.target.name === 'build' && $('#e-build').textContent) CHECKS.build(); });
 
   steps.forEach((s) => {
@@ -2738,7 +2908,7 @@
         booking_done: yes('acct_booking'), booking_app: app, booking_link: said('f-booklink'),
         // the email Taya makes their Buttondown and Cal.com with (blank on the page = their contact email)
         accounts_email: said('f-acctemail') || (onList('f-acctemail') ? val('f-email') : ''), accounts_email_is_contact: !said('f-acctemail'),
-        domain_done: yes('acct_domain'), domain_owned: said('f-owned'),
+        domain_done: yes('acct_domain'), domain_owned: domainOwned(),
         payments_done: yes('acct_pay'), payments_note: said('f-paynote'),
         // the quick check (Taya's PocketBase already has this json field, so nothing new is needed there)
         have: {
@@ -2753,6 +2923,9 @@
         year_low: m.yearLow, year_high: m.yearHigh, lines: m.rows.concat(m.after).map((r) => r.label + ': ' + r.amt + (r.note ? ' (' + r.note + ')' : '')), total: m.total },
       deposit: m.deposit || 0, deposit_paid: yes('deposit_paid'),
       agreed: $('#f-agree').checked && !!val('f-sig'), agreement_name: val('f-sig'),
+      // how it was signed: 'tap' (one tap, with the name from Taya's link) or 'typed'
+      agreement_how: !($('#f-agree').checked && val('f-sig')) ? '' : tapSigned() ? 'tap' : 'typed',
+      agreement_note: tapSigned() ? 'Signed by tap, with the name from Taya’s link' : '',
       agreement_date: today.toISOString(), agreement_version: CONFIG.agreementVersion,
       show_in_work: yes('show_in_work')
     };
@@ -2819,7 +2992,8 @@
           : 'Part of In Bloom, so we’ll talk it over by email']
       ])],
       ['Agreement', [['Agreed', r.agreed ? 'Yes' : 'Not yet, going through it over email'], ['Signed', r.agreed ? r.agreement_name + ', ' + longDate : ''],
-        ['Show in recent work', r.show_in_work ? 'Yes, that’s fine' : '']]],
+        r.agreement_how === 'tap' && ['How it was signed', 'By tap, with the name from Taya’s link'],
+        ['Show in recent work', r.show_in_work ? 'Yes, that’s fine' : '']].filter(Boolean)],
       ['Still to do', [
         ['Steps saved for later', shown().filter((s) => stepState[idOf(s)] !== 'done').map((s) => stepName(idOf(s))).join(', ')],
         ['Together over email', togetherList(c).length ? cap(listOf(togetherList(c))) : 'Nothing']]]
@@ -2870,7 +3044,15 @@
     const fd = new FormData();
     // PocketBase reads the ordinary fields from @jsonPayload and the files from their own keys
     // (summary_text is capped at the field's 20000 characters, so a long answer can never make the whole send fail)
-    fd.append('@jsonPayload', JSON.stringify(Object.assign({}, r, { summary_text: summaryText(r).slice(0, 20000), hp: $('#f-hp').value })));
+    // agreement_how and agreement_note aren't fields on the collection (yet), so they ride along inside the steps
+    // json (and summary_text says "How it was signed") instead of as their own fields: an unknown field can never
+    // trip the create. When agreement_how is added to the collection, it can move back out as its own field.
+    const rec = Object.assign({}, r, {
+      steps: Object.assign({}, r.steps, r.agreement_how ? { sign_how: r.agreement_how } : {}, r.agreement_note ? { sign_note: r.agreement_note } : {}),
+      summary_text: summaryText(r).slice(0, 20000), hp: $('#f-hp').value
+    });
+    delete rec.agreement_how; delete rec.agreement_note;
+    fd.append('@jsonPayload', JSON.stringify(rec));
     for (const f of files.photos) { const s = await shrink(f); fd.append('photos', s, s.name); }
     for (const f of files.logo) fd.append('logo', f, f.name);
     for (const f of files.kit) fd.append('brand_kit', f, f.name);
@@ -2940,6 +3122,8 @@
     if (!window.confirm('Clear all your answers on this device and start fresh?')) return;
     wiping = true;
     store.clear(); fileStore.clear(); cloud.clear();
+    // the link's own details (wiped from the address bar on arrival) come back after the fresh start
+    try { if (Object.keys(linkKnown).length) sessionStorage.setItem('wf-start-link', JSON.stringify(linkKnown)); } catch (e) { /* storage off */ }
     location.href = location.pathname + location.search;
   });
 
@@ -3157,7 +3341,15 @@
       $('#s-work .st').textContent = 'Check your mockup';
       $('#s-look').hidden = true;
     }
-    const first = (qs.get('name') || '').replace(/[^\p{L}\p{M}' .-]/gu, '').trim().slice(0, 40);
+    // what Taya's link knows about them (read from the fragment at the very top): filled in, unless they've
+    // already typed something there themselves or opened it to change
+    if (!opened.you) {
+      const fill = (id, v) => { if (v && !val(id)) $('#' + id).value = v; };
+      fill('f-name', linkKnown.full); fill('f-email', linkKnown.email); fill('f-biz', linkKnown.biz); fill('f-site', linkKnown.site);
+    }
+    // a signature typed before (not by tap) stays a typed one
+    if (linkKnown.full && val('f-sig') && $('#f-sig-tap').value !== '1') opened.sig = true;
+    const first = ((qs.get('name') || '').trim() || (linkKnown.full || '').split(' ')[0]).replace(/[^\p{L}\p{M}' .-]/gu, '').trim().slice(0, 40);
     if (first) {
       const h1 = $('#hello'); h1.textContent = 'Welcome in, ';
       h1.append(make('em', null, first + '.'));
