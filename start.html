@@ -1005,7 +1005,7 @@
         <!-- the build block: the build (a card to confirm, or the chooser) with its care, founding, extras and the price -->
         <div id="build-block">
         <div class="fit-card" id="fit-card" hidden><p class="fit-k">From your answers</p><p class="fit-h"><span id="fit-name"></span> fits you best</p><p class="fit-why" id="fit-why"></p></div>
-        <p class="lead-in" data-if="build-choose">Each build is paid once, and it’s yours to keep. After launch, a subscription keeps it running, at a monthly price that matches your build. If you outgrow it later, what you paid counts toward a bigger build.</p>
+        <p class="lead-in" data-if="build-choose">Each build is yours to keep. After launch, a subscription keeps it running, at a monthly price that matches your build. If you outgrow it later, what you paid counts toward a bigger build.</p>
 
         <!-- when Taya's link picked the build: a card to confirm it (the script fills it in) -->
         <div class="confirm" id="build-confirm" data-if="build-confirm" role="group" aria-labelledby="cf-k">
@@ -1183,7 +1183,7 @@
         <h3 class="sub-h">Our agreement, in short</h3>
         <ul class="in-short">
           <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
-          <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>, paid once: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
+          <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
           <li><span class="k">Timing</span><span>The clock starts when all your content is in. A first draft in about a week, and ready in about <span data-a="weeks">2, 3 or 4 weeks</span>.</span></li>
           <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one email with everything in it; any more rounds, I quote first. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can email me your changes, as often as you need, and your subscription covers them.</span></li>
           <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
@@ -1202,7 +1202,7 @@
                   the Google basics (clear titles and descriptions, business details Google can read, a photo preview when someone texts your link),
                   your Google profile set up, a slim top banner for news, a one-page brand sheet (your colors and fonts, and your logo if you have one, ready for any designer), your web address’s
                   first year, 30 days of settling-in tweaks, and a one-page “Your site” hand-off sheet.</li>
-              <li><b>The price.</b> <span data-a="price">The price of your build</span>, paid once. Half to start (<span data-a="deposit">your deposit</span>),
+              <li><b>The price.</b> <span data-a="price">The price of your build</span>. Half to start (<span data-a="deposit">your deposit</span>),
                   which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By card or US bank account.</li>
               <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. The build clock starts
                   the day all your content is in. I send a first draft in about a week, on a private link. You get two rounds of changes; each round
@@ -1893,7 +1893,7 @@
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
     collection: 'webfaery_intake',
-    agreementVersion: '2026-10-08',  // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
+    agreementVersion: '2026-10-08b',  // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
                                       // ladder, and Planted's again that afternoon (its Book now button to the app they already use).
                                       // The server keeps it as plain text (agreement_version, max 40) and only shows it back
     maxUploadMB: 30                              // a little under the server's limit
@@ -2217,7 +2217,7 @@
     if (b) {
       m.full = b.price; m.price = c.founding ? b.price / 2 : b.price; m.deposit = m.price / 2; m.balance = m.price - m.deposit;
       m.rows.push({ label: b.name + ' build' + (c.founding ? ', founding price' : ''), amt: money(m.price),
-        note: c.founding ? 'Half off ' + money(b.price) + '. Paid once, yours to keep.' : 'Paid once, yours to keep.' });
+        note: c.founding ? 'Half off ' + money(b.price) + '. Yours to keep.' : 'Yours to keep.' });
       m.rows.push({ label: 'Deposit today (half, it holds your spot)', amt: money(m.deposit), big: true });
       m.rows.push({ label: 'Balance at launch', amt: money(m.balance) });
       m.care = CARE[c.build];
@@ -2303,7 +2303,7 @@
     if (!BUILDS[c.build]) {
       const f = c.founding;
       box.append(make('p', 'r-empty', c.build === 'unsure'
-        ? 'We’ll pick your build together over email. Planted is ' + money(f ? 300 : 600) + ', Tended ' + money(f ? 600 : 1200) + ' and In Bloom ' + money(f ? 900 : 1800) + (f ? ' at the founding price' : '') + ', each paid once.'
+        ? 'We’ll pick your build together over email. Planted is ' + money(f ? 300 : 600) + ', Tended ' + money(f ? 600 : 1200) + ' and In Bloom ' + money(f ? 900 : 1800) + (f ? ' at the founding price' : '') + '.'
         : 'Pick a build above, and your price shows up here.'));
     } else box.append(rowsList(m.rows));
     box.append(make('p', 'r-label', 'After launch'));
@@ -2959,7 +2959,7 @@
       ].filter((row) => row && row[1])],
       ['Your build and price', [
         ['Build', b ? b.name + (r.founding ? ' (founding client)' : '') : (r.build === 'unsure' ? 'Not sure yet, deciding over email' : '')],
-        ['Price', b ? money(m.price) + ', paid once' : ''],
+        ['Price', b ? money(m.price) : ''],
         ['Deposit', b ? money(m.deposit) + (r.deposit_paid ? ' (paid)' : '') : ''],
         ['Balance at launch', b ? money(m.balance) : ''],
         ['After launch', careName],
