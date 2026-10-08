@@ -348,8 +348,6 @@
   .painting { margin-top: 18px; max-width: 360px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 15px; color: var(--ink-soft); }
   .painting .photo { aspect-ratio: 1; border-radius: 10px; }
   .painting p { grid-column: 1 / -1; }
-  .lang { display: inline-grid; grid-template-columns: 1fr 1fr; margin-top: 4px; }
-  .lang button { padding-inline: 16px; }
   .bio p { font-size: 18.5px; }
   .creds { list-style: none; margin-top: 22px; display: grid; gap: 8px; }
   .creds li { display: flex; gap: 10px; align-items: baseline; color: var(--ink-soft); }
@@ -614,6 +612,18 @@
   }
 </style>
 
+<script>
+  /* English / Español, part of her real site: decided before anything paints. Her saved choice wins; otherwise Spanish only
+     when the browser's language starts with "es". The switch itself lives in the sticky nav (script near the end of the page). */
+  window.TT = (function () {
+    var K = 'tlanextic-lang', l = 'en', saved = null;
+    try { saved = localStorage.getItem(K); } catch (e) {}
+    if (saved === 'en' || saved === 'es') l = saved;
+    else { try { if (/^es/i.test(navigator.language || (navigator.languages && navigator.languages[0]) || '')) l = 'es'; } catch (e) {} }
+    document.documentElement.lang = l;
+    return { lang: l, key: K };
+  })();
+</script>
 <a class="skip" href="#work">Skip to the work</a>
 
 <div class="status" id="status">
@@ -644,7 +654,7 @@
   .snav { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; transition: transform 0.35s cubic-bezier(.3,.8,.3,1), background-color 0.25s ease, box-shadow 0.25s ease; }
   .snav-gap { height: 94px; }
   .snav-in { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; max-width: 1080px; margin: 0 auto; padding: 44px 20px 0; }
-  .snav .mark, .snav .wordmark, .snav-btn, .snav-links { pointer-events: auto; }
+  .snav .mark, .snav .wordmark, .snav-btn, .snav-links, .snav-lang { pointer-events: auto; }
   .snav .mark, .snav .wordmark { white-space: nowrap; min-width: 0; }
   .snav-links { position: relative; }
   .snav-btn { display: none; align-items: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-weight: 500; font-size: 15px; line-height: 1; letter-spacing: 0.02em; text-transform: none; color: var(--sn-fg); background: rgba(0, 0, 0, 0.3); border: 1px solid currentColor; border-radius: 999px; -webkit-appearance: none; appearance: none; }
@@ -669,6 +679,24 @@
   }
   @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } .secbar { transition: none; } }
   @media print { .snav-wrap { position: static; } .snav { position: static; } .snav-btn { display: none; } }
+
+  /* English / Español: part of her nav, in her nav's own type and colors (EN · ES, the current one in marigold) */
+  .snav .mark { margin-right: auto; }
+  .snav-lang { display: inline-flex; align-items: center; pointer-events: auto; padding-left: 8px; border-left: 1px solid rgba(251, 245, 233, 0.35);
+    font-family: 'Urbanist', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; color: var(--sn-fg); }
+  .snav-lang button { min-width: 44px; min-height: 44px; margin: 0; padding: 0 6px 0 calc(6px + 0.14em); cursor: pointer; font: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; border-radius: 8px; -webkit-appearance: none; appearance: none;
+    opacity: 0.8; text-shadow: 0 1px 3px rgba(20, 14, 6, 0.6), 0 0 14px rgba(20, 14, 6, 0.5); }
+  .snav-lang button:hover { opacity: 1; color: #ffe3a6; }
+  .snav-lang button[aria-pressed="true"] { opacity: 1; color: #ffe3a6; text-decoration: underline; text-decoration-color: var(--s4); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .snav-lang-dot { opacity: 0.6; }
+  .snav-menu-lang { display: none; }
+  @media (max-width: 760px) {
+    .snav-lang { order: 2; padding-left: 0; border-left: 0; margin-right: -6px; }
+    .snav-btn { order: 3; }
+    .snav .snav-menu-lang { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 0 4px; border-top: 1px solid rgba(128, 128, 128, 0.28); }
+    .snav-menu-lang button { min-height: 44px; margin: 0; padding: 0 18px; cursor: pointer; font: inherit; font-size: 16px; font-weight: 600; color: var(--sn-fg); background: transparent; border: 1px solid rgba(251, 245, 233, 0.5); border-radius: 999px; -webkit-appearance: none; appearance: none; }
+    .snav-menu-lang button[aria-pressed="true"] { background: var(--sn-fg); color: var(--sn-bg); border-color: var(--sn-fg); }
+  }
 </style>
 <div class="snav-wrap" id="snav-wrap">
 <header class="snav" id="snav">
@@ -682,7 +710,9 @@
           <a href="#aftercare" data-show="mother crone all">Aftercare</a>
           <a href="#visit" data-show="mother crone all">Book</a>
           <a href="#visit" data-show="maiden" hidden>Contact</a>
+          <div class="snav-menu-lang" role="group" aria-label="Idioma / Language"><button type="button" data-setlang="en" lang="en" aria-pressed="true">English</button><button type="button" data-setlang="es" lang="es" aria-pressed="false">Espa&ntilde;ol</button></div>
         </nav>
+    <div class="snav-lang" role="group" aria-label="Idioma / Language"><button type="button" data-setlang="en" lang="en" aria-pressed="true" aria-label="English">EN</button><span class="snav-lang-dot" aria-hidden="true">&middot;</span><button type="button" data-setlang="es" lang="es" aria-pressed="false" aria-label="Espa&ntilde;ol">ES</button></div>
   </div>
 </header>
 </div>
@@ -902,7 +932,6 @@
       <span class="stripes" aria-hidden="true"></span>
       <p class="label with-pill"><span>Meet the artist</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Roxanne <em>Andrade</em></h2>
-      <div class="seg lang" role="group" aria-label="Language" data-show="mother crone all" style="margin-top:16px"><button type="button" data-lang="en" aria-pressed="true">English</button><button type="button" data-lang="es" aria-pressed="false">Espa&ntilde;ol</button></div>
       <div lang="en" data-l="en" style="margin-top:18px">
         <p>Hello! I&rsquo;m Roxanne Andrade, an Indigenous queer tattoo artist. I&rsquo;ve been tattooing for 6 years, and I&rsquo;m based at Tlanextic Tattoo, my private studio in Arcata.</p>
         <p>When I&rsquo;m not tattooing, I enjoy creating in other art forms like painting, printmaking, or working with clay. I also practice Danza Azteca/Mexica, a traditional Indigenous dance.</p>
@@ -1039,7 +1068,6 @@
         <h2 class="reveal" data-l="en">Heal it <em>right</em></h2>
         <h2 data-l="es" lang="es" hidden>Despu&eacute;s <em>del cuidado</em></h2>
       </div>
-      <div class="seg lang" role="group" aria-label="Language for aftercare"><button type="button" data-lang="en" aria-pressed="true">English</button><button type="button" data-lang="es" aria-pressed="false">Espa&ntilde;ol</button></div>
     </div>
     <div class="care" data-l="en" lang="en">
       <div class="care-card wide"><h3>Day one</h3><p>Your new tattoo will be somewhat tender and will feel like a new sunburn. The care of your tattoo is your responsibility. How you care for your tattoo while it&rsquo;s healing will determine how it will look forever.</p></div>
@@ -1160,7 +1188,7 @@
     <span class="stripes" aria-hidden="true"></span>
     <p class="label">Find the studio</p>
     <h2 class="reveal">By appointment, <em>in Arcata</em></h2>
-    <p class="measure soft" style="margin-top:14px">A private studio on 11th Street. <span data-show="mother crone all">Send your idea, or</span> DM <a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a> or email to book.</p>
+    <p class="measure soft" style="margin-top:14px">A private studio on 11th Street. <span data-show="mother crone all">Send your idea, or DM</span><span data-show="maiden" data-es="Escr&iacute;bele por DM a" hidden>DM</span> <a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a> or email to book.</p>
     </div>
     <div class="where">
       <div class="reveal"><b>Studio</b>1433 11th St, Suite G<br>Arcata, CA 95521</div>
@@ -1224,7 +1252,7 @@
         <li style="--k:3;--bb:#9b1b24"><a href="#visit"><span class="f1">by appt</span> <span class="f2">arcata</span></a></li>
         <li style="--k:4;--bb:#5d7322"><a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener"><span class="f1">@tlanextic</span> <span class="f2">instagram</span></a></li>
       </ul>
-      <p class="legend">Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.</p>
+      <p class="legend" data-en-only>Tags show which build includes each piece, at your founding price: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span>, <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span>, <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span>.</p>
     </div>
   </div>
 </footer>
@@ -1279,23 +1307,30 @@
     /* the dial-up bar: counts the dots as they go in (reads the flower's own animation clock, so they stay in step) */
     var N = d.length, bar = document.getElementById('dial-bar'), txt = document.getElementById('dial-t'), blocks = [], lastKey = '';
     for (var bk = 0; bk < 20; bk++) { var cell = document.createElement('i'); bar.appendChild(cell); blocks.push(cell); }
-    var DONE = 'done \u273F ' + N + ' dots, 1 needle';
-    function dial(t, on) { var key = t + '|' + on; if (key === lastKey) return; lastKey = key; txt.textContent = t; blocks.forEach(function (x, k) { x.className = k < on ? 'on' : ''; }); }
+    function es() { return window.TT && TT.lang === 'es'; }
+    var DONE = { toString: function () { return es() ? 'listo \u273F ' + N + ' puntos, 1 aguja' : 'done \u273F ' + N + ' dots, 1 needle'; } };
+    function poking(p) { return (es() ? 'picando... ' : 'poking... ') + p + '%'; }
+    var lastT = '', lastOn = 0;
+    function dial(t, on) { t = String(t); lastT = t; lastOn = on; var key = t + '|' + on; if (key === lastKey) return; lastKey = key; txt.textContent = t; blocks.forEach(function (x, k) { x.className = k < on ? 'on' : ''; }); }
+    document.addEventListener('tt:lang', function () {
+      var t = /^(done|listo)/.test(lastT) ? String(DONE) : /^(poking|picando)/.test(lastT) ? poking(lastT.replace(/\D/g, '')) : (es() ? 'ya vuelvo \u273F otra flor' : 'brb \u273F new flower');
+      dial(t, lastOn);
+    });
     /* only run while it's on screen; slow connections get the finished flower */
     var fig = document.getElementById('dotfig'), conn = navigator.connection || {};
     if (conn.saveData || /2g/.test(conn.effectiveType || '')) { fig.classList.add('still'); dial(DONE, 20); return; }
     var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var first = g.firstChild, anim = null, live = false, raf = 0;
-    if (still || !first.getAnimations) dial(DONE, 20); else dial('poking... 0%', 0);
+    if (still || !first.getAnimations) dial(DONE, 20); else dial(poking(0), 0);
     function tick() {
       raf = 0; if (!live) return;
       if (!anim || anim.playState === 'idle') { var as = first.getAnimations ? first.getAnimations() : []; anim = as[0] || null; }
       var ct = anim ? anim.currentTime : null;
       if (ct === null || ct === undefined) { dial(DONE, 20); return; }
       var tm = ct % 22000;
-      if (tm < N * 8.4) { var n = Math.min(N, Math.floor(tm / 8.4) + 1); dial('poking... ' + Math.round(100 * n / N) + '%', Math.round(20 * n / N)); }
+      if (tm < N * 8.4) { var n = Math.min(N, Math.floor(tm / 8.4) + 1); dial(poking(Math.round(100 * n / N)), Math.round(20 * n / N)); }
       else if (tm < 16280) dial(DONE, 20);
-      else dial('brb \u273F new flower', 0);
+      else dial(es() ? 'ya vuelvo \u273F otra flor' : 'brb \u273F new flower', 0);
       raf = requestAnimationFrame(tick);
     }
     if ('IntersectionObserver' in window) {
@@ -1314,34 +1349,36 @@
   /* banner: books open / closed / flash day */
   (function () {
     function $(id) { return document.getElementById(id); }
+    function L(p) { return window.TT && TT.lang === 'es' ? p[1] : p[0]; }
     var STATES = {
-      open: { label: 'Books open', cta: 'Send your idea', href: '#request' },
-      closed: { label: 'Books are closed for now', cta: 'Hear first when they open', href: '#alerts' },
-      event: { label: 'Oct 10: flash fundraiser', cta: 'See the flash and the spots', href: '#fundraiser' }
+      open: { label: ['Books open', 'Agenda abierta'], cta: ['Send your idea', 'Envía tu idea'], href: '#request' },
+      closed: { label: ['Books are closed for now', 'La agenda está cerrada por ahora'], cta: ['Hear first when they open', 'Entérate primero cuando abra'], href: '#alerts' },
+      event: { label: ['Oct 10: flash fundraiser', '10 de oct: flash solidario'], cta: ['See the flash and the spots', 'Ve el flash y los lugares'], href: '#fundraiser' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
     function view() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function stateFor(k) {
       var s = STATES[k], v = view();
-      if (k === 'open' && v === 'maiden') return { label: s.label, cta: 'DM or email to book', href: '#visit' };
-      if (k === 'closed' && v === 'maiden') return { label: s.label, cta: 'Follow along on Instagram', href: '#visit' };
-      return s;
+      if (k === 'open' && v === 'maiden') return { label: L(s.label), cta: L(['DM or email to book', 'Agenda por DM o correo']), href: '#visit' };
+      if (k === 'closed' && v === 'maiden') return { label: L(s.label), cta: L(['Follow along on Instagram', 'Síguela en Instagram']), href: '#visit' };
+      return { label: L(s.label), cta: L(s.cta), href: s.href };
     }
-    var B88 = { open: ['\u273F books open', 'send your idea'], closed: ['books closed', 'hear first'], event: ['oct 10', 'flash day'] };
+    var B88 = { open: [['\u273F books open', '\u273F agenda abierta'], ['send your idea', 'envía tu idea']], closed: [['books closed', 'agenda cerrada'], ['hear first', 'entérate primero']], event: [['oct 10', '10 de oct'], ['flash day', 'día de flash']] };
     function paint88(k, s) {
       var a = $('b88-books'); if (!a) return; var x = B88[k], v = view();
-      if (v === 'maiden') x = k === 'open' ? ['\u273F books open', 'dm or email'] : k === 'closed' ? ['books closed', 'follow along'] : x;
-      a.querySelector('.f1').textContent = x[0]; a.querySelector('.f2').textContent = x[1]; a.setAttribute('href', s.href);
+      if (v === 'maiden') x = k === 'open' ? [x[0], ['dm or email', 'dm o correo']] : k === 'closed' ? [x[0], ['follow along', 'síguela']] : x;
+      a.querySelector('.f1').textContent = L(x[0]); a.querySelector('.f2').textContent = L(x[1]); a.setAttribute('href', s.href);
     }
     function setState(k, say) {
       var s = stateFor(k); current = k; strip.dataset.state = k;
       $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href); paint88(k, s);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
-      if (say) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
+      if (say) $('status-live').textContent = L(['The banner now reads: ', 'El aviso ahora dice: ']) + s.label + '. ' + s.cta + '.';
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('ex:view', function () { setState(current, false); });
+    document.addEventListener('tt:lang', function () { setState(current, false); });
     tryBtn.addEventListener('click', function () { var o = panel.hidden; panel.hidden = !o; tryBtn.setAttribute('aria-expanded', o ? 'true' : 'false'); });
   })();
 
@@ -1352,7 +1389,8 @@
     function set(t) {
       if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-theme') === t ? 'true' : 'false'); });
-      live.textContent = t ? (t === 'dark' ? 'Dark' : 'Light') + ' look, for this preview.' : 'Following the phone setting again.';
+      var es = window.TT && TT.lang === 'es';
+      live.textContent = es ? (t ? (t === 'dark' ? 'Vista oscura' : 'Vista clara') + ', para esta vista previa.' : 'Siguiendo otra vez el ajuste del teléfono.') : (t ? (t === 'dark' ? 'Dark' : 'Light') + ' look, for this preview.' : 'Following the phone setting again.');
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { var t = b.getAttribute('data-theme'); set(root.getAttribute('data-theme') === t ? null : t); }); });
     document.getElementById('theme-auto').addEventListener('click', function () { set(null); });
@@ -1376,28 +1414,29 @@
     function press(list, key, val) { list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset[key] === val ? 'true' : 'false'); }); }
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-    /* English / Español: about + aftercare */
-    var langBtns = all(document, '.lang [data-lang]');
-    langBtns.forEach(function (b) { b.addEventListener('click', function () {
-      var l = b.dataset.lang; press(langBtns, 'lang', l);
-      all(document, '[data-l]').forEach(function (el) { el.hidden = el.getAttribute('data-l') !== l; });
-    }); });
+    function T(en, es) { return window.TT && TT.lang === 'es' ? es : en; }
 
     /* flash: claim a design */
-    var note = $('claim-note');
-    all(document, '.claim').forEach(function (b) {
+    var note = $('claim-note'), claims = all(document, '.claim'), claimed = null;
+    function paintClaims() {
+      claims.forEach(function (b) { b.textContent = b.getAttribute('aria-pressed') === 'true' ? T('Claimed (tap to undo)', 'Apartado (toca para deshacer)') : T('Claim a design', 'Aparta un diseño'); });
+      var h = claimed ? claimed.closest('.fbody').querySelector('h3').textContent.toLowerCase() : '';
+      note.textContent = claimed ? T('Preview: next you would pick your design from ' + h + ' and pay your deposit through Stripe. Nothing was charged.', 'Vista previa: después elegirías tu diseño de la ' + h + ' y pagarías tu depósito con Stripe. No se cobró nada.') : '';
+    }
+    claims.forEach(function (b) {
       b.addEventListener('click', function () {
-        var on = b.getAttribute('aria-pressed') !== 'true', h = b.closest('.fbody').querySelector('h3').textContent;
-        b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? 'Claimed (tap to undo)' : 'Claim a design';
-        note.textContent = on ? 'Preview: next you would pick your design from ' + h.toLowerCase() + ' and pay your deposit through Stripe. Nothing was charged.' : '';
+        var on = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', on ? 'true' : 'false'); claimed = on ? b : null; paintClaims();
       });
     });
-    var slots = all(document, '.slot'), sn = $('slot-note');
+    var slots = all(document, '.slot'), sn = $('slot-note'), slotOn = null;
+    function paintSlot() { var t = slotOn ? slotOn.textContent : ''; sn.textContent = slotOn ? T('The ' + t + ' spot: message Roxanne to claim it. Tap again to choose a different time.', 'El lugar de las ' + t + ': escríbele a Roxanne para apartarlo. Toca otra vez para elegir otra hora.') : ''; }
     slots.forEach(function (b) { b.addEventListener('click', function () {
       var on = b.getAttribute('aria-pressed') !== 'true';
       slots.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); b.setAttribute('aria-pressed', on ? 'true' : 'false');
-      sn.textContent = on ? 'The ' + b.textContent + ' spot: message Roxanne to claim it. Tap again to choose a different time.' : '';
+      slotOn = on ? b : null; paintSlot();
     }); });
+    document.addEventListener('tt:lang', function () { paintClaims(); paintSlot(); });
 
     /* request form, three steps */
     (function () {
@@ -1408,38 +1447,45 @@
       function paint() {
         all(card, '.bk-steps [data-s]').forEach(function (sp) { var n = +sp.dataset.s, on = n === st.s; sp.classList.toggle('on', on); if (on) sp.setAttribute('aria-current', 'step'); else sp.removeAttribute('aria-current'); sp.disabled = !on && n > st.max; });
         [1, 2, 3].forEach(function (n) { $('rq-s' + n).hidden = st.s !== n; });
-        $('rq-back').hidden = st.s === 1; go.textContent = st.s === 3 ? 'Send my idea (preview)' : 'Next';
+        $('rq-back').hidden = st.s === 1; go.textContent = st.s === 3 ? T('Send my idea (preview)', 'Enviar mi idea (vista previa)') : T('Next', 'Siguiente');
         press(kinds, 'kind', st.kind); press(inks, 'ink', st.ink);
+        list.setAttribute('aria-label', T('Reference photos added', 'Fotos de referencia agregadas'));
         list.innerHTML = '';
         st.files.forEach(function (f, i) {
           var li = document.createElement('li'); li.innerHTML = '<img src="' + f[0] + '" alt=""><span>' + f[1] + '</span>';
-          var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + f[1]); x.innerHTML = '&times;';
+          var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', T('Remove ', 'Quitar ') + f[1]); x.innerHTML = '&times;';
           x.addEventListener('click', function () { st.files.splice(i, 1); paint(); quietFocus($('rq-drop')); });
           li.appendChild(x); list.appendChild(li);
         });
       }
       kinds.forEach(function (b) { b.addEventListener('click', function () { st.kind = b.dataset.kind; paint(); }); });
       inks.forEach(function (b) { b.addEventListener('click', function () { st.ink = b.dataset.ink; paint(); }); });
-      $('rq-drop').addEventListener('click', function () { if (st.files.length < REFS.length) st.files.push(REFS[st.files.length]); paint(); hint.textContent = st.files.length >= REFS.length ? 'That’s all the sample photos for the preview.' : ''; });
+      $('rq-drop').addEventListener('click', function () { if (st.files.length < REFS.length) st.files.push(REFS[st.files.length]); paint(); hint.textContent = st.files.length >= REFS.length ? T('That’s all the sample photos for the preview.', 'Esas son todas las fotos de ejemplo de la vista previa.') : ''; });
       function jump(n) { st.s = n; st.max = Math.max(st.max, n); hint.textContent = ''; paint(); quietFocus($('rq-s' + n).querySelector('[aria-pressed="true"], input, textarea, button')); }
       all(card, '.bk-steps [data-s]').forEach(function (sp) { sp.addEventListener('click', function () { var n = +sp.dataset.s; if (n !== st.s && n <= st.max) jump(n); }); });
       $('rq-back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
       go.addEventListener('click', function () {
-        if (st.s === 1 && !$('rq-idea').value.trim()) { hint.textContent = 'Add a few words about your idea first.'; $('rq-idea').focus(); return; }
-        if (st.s === 2 && !$('rq-place').value.trim()) { hint.textContent = 'Say where on your body it goes.'; $('rq-place').focus(); return; }
+        if (st.s === 1 && !$('rq-idea').value.trim()) { hint.textContent = T('Add a few words about your idea first.', 'Primero escribe unas palabras sobre tu idea.'); $('rq-idea').focus(); return; }
+        if (st.s === 2 && !$('rq-place').value.trim()) { hint.textContent = T('Say where on your body it goes.', 'Dinos en qué parte del cuerpo va.'); $('rq-place').focus(); return; }
         if (st.s < 3) { jump(st.s + 1); return; }
         var name = $('rq-name').value.trim(), mail = $('rq-mail').value.trim();
-        if (!name) { hint.textContent = 'Add your name first.'; $('rq-name').focus(); return; }
-        if (!isEmail(mail)) { hint.textContent = 'Add an email address, so Roxanne can write back.'; $('rq-mail').focus(); return; }
+        if (!name) { hint.textContent = T('Add your name first.', 'Primero escribe tu nombre.'); $('rq-name').focus(); return; }
+        if (!isEmail(mail)) { hint.textContent = T('Add an email address, so Roxanne can write back.', 'Escribe un correo electrónico para que Roxanne te pueda contestar.'); $('rq-mail').focus(); return; }
         hint.textContent = '';
-        var first = name.split(/\s+/)[0];
-        $('rq-done-h').textContent = 'Sent, ' + first + '!';
-        $('rq-done-t').textContent = 'Roxanne will look it over and write back to ' + mail + '.';
-        var rows = [['Kind', st.kind + ', ' + st.ink.toLowerCase()], ['Idea', $('rq-idea').value.trim()], ['Placement', $('rq-place').value.trim() + ', about ' + $('rq-size').value.trim() + ' in'], ['Photos', st.files.length ? st.files.length + ' attached' : 'none yet'], ['Budget', $('rq-budget').value.trim()], ['Days', $('rq-days').value.trim()]];
-        $('rq-sum').innerHTML = ''; rows.forEach(function (r) { var dv = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = r[0]; dd.textContent = r[1]; dv.appendChild(dt); dv.appendChild(dd); $('rq-sum').appendChild(dv); });
+        renderDone();
         $('rq-inbox').textContent = name + ' wants a ' + st.kind.toLowerCase() + ' tattoo, ' + st.ink.toLowerCase() + ', ' + $('rq-place').value.trim().toLowerCase() + '. ' + (st.files.length ? st.files.length + ' photo' + (st.files.length > 1 ? 's' : '') + ' attached.' : 'No photos yet.');
         [1, 2, 3].forEach(function (n) { $('rq-s' + n).hidden = true; }); $('rq-nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('rq-done').hidden = false; quietFocus($('rq-done-h'));
       });
+      var KIND_ES = { 'Custom': 'Diseño propio', 'Flash': 'Flash', 'Hand poke': 'Hand poke' }, INK_ES = { 'Black and gray': 'Negro y gris', 'Color': 'Color' };
+      function renderDone() {
+        var name = $('rq-name').value.trim(), mail = $('rq-mail').value.trim(), first = name.split(/\s+/)[0], n = st.files.length;
+        $('rq-done-h').textContent = T('Sent, ' + first + '!', '¡Enviado, ' + first + '!');
+        $('rq-done-t').textContent = T('Roxanne will look it over and write back to ' + mail + '.', 'Roxanne lo va a revisar y te contestará a ' + mail + '.');
+        var size = $('rq-size').value.trim(), place = $('rq-place').value.trim();
+        var rows = [[T('Kind', 'Tipo'), T(st.kind + ', ' + st.ink.toLowerCase(), KIND_ES[st.kind] + ', ' + INK_ES[st.ink].toLowerCase())], [T('Idea', 'Idea'), $('rq-idea').value.trim()], [T('Placement', 'Lugar'), place + T(', about ' + size + ' in', ', unas ' + size + ' pulgadas')], [T('Photos', 'Fotos'), n ? T(n + ' attached', n + (n > 1 ? ' adjuntas' : ' adjunta')) : T('none yet', 'ninguna todavía')], [T('Budget', 'Presupuesto'), $('rq-budget').value.trim()], [T('Days', 'Días'), $('rq-days').value.trim()]];
+        $('rq-sum').innerHTML = ''; rows.forEach(function (r) { var dv = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = r[0]; dd.textContent = r[1]; dv.appendChild(dt); dv.appendChild(dd); $('rq-sum').appendChild(dv); });
+      }
+      document.addEventListener('tt:lang', function () { paint(); hint.textContent = ''; if (!$('rq-done').hidden) renderDone(); });
       function back(toStep) { $('rq-done').hidden = true; $('rq-nav').hidden = false; card.querySelector('.bk-steps').hidden = false; jump(toStep); }
       $('rq-change').addEventListener('click', function () { back(1); });
       $('rq-again').addEventListener('click', function () { st = { s: 1, max: 1, kind: 'Custom', ink: 'Black and gray', files: [] }; $('rq-inbox').textContent = 'Waiting for a request…'; back(1); });
@@ -1458,22 +1504,36 @@
         e.preventDefault();
         if (st.mode === 'dep') {
           var nm = $('pay-name').value.trim() || 'You';
-          $('pay-item').textContent = 'Deposit'; $('pay-price').innerHTML = $('pay-total').innerHTML = '<span class="ph">your deposit</span>';
-          $('pay-sub').textContent = nm + ', ' + ($('pay-when').value.trim() || 'your appointment');
-          st.done = 'Your deposit is in, and your date is held. A receipt is on its way to your inbox.';
           st.inbox = nm + ' paid a deposit for ' + ($('pay-when').value.trim() || 'an appointment') + '. Details in your Stripe.';
         } else {
           var n = st.amt === 'any' ? parseInt(String($('pay-any').value).replace(/[^0-9]/g, ''), 10) : +st.amt;
-          if (!(n >= 10 && n <= 5000)) { hint.textContent = 'Type an amount first, like 150.'; $('pay-any').focus(); return; }
-          var to = $('pay-to').value.trim() || 'someone special', from = $('pay-from').value.trim() || 'you';
-          $('pay-item').textContent = 'Gift card'; $('pay-price').textContent = $('pay-total').textContent = '$' + n; $('pay-sub').textContent = 'For ' + to + ', from ' + from;
-          st.done = 'A $' + n + ' gift card for ' + to + ' is on its way to your inbox, ready to print or forward.';
-          st.inbox = from.charAt(0).toUpperCase() + from.slice(1) + ' bought a $' + n + ' gift card for ' + to + '. Details in your Stripe.';
+          if (!(n >= 10 && n <= 5000)) { hint.textContent = T('Type an amount first, like 150.', 'Primero escribe una cantidad, como 150.'); $('pay-any').focus(); return; }
+          var from = $('pay-from').value.trim() || 'you';
+          st.n = n; st.inbox = from.charAt(0).toUpperCase() + from.slice(1) + ' bought a $' + n + ' gift card for ' + ($('pay-to').value.trim() || 'someone special') + '. Details in your Stripe.';
         }
+        st.paid = st.mode; renderSheet();
         hint.textContent = ''; form.hidden = true; $('pay-sheet').hidden = false; quietFocus($('pay-sheet-h'));
       });
       $('pay-back').addEventListener('click', function () { $('pay-sheet').hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-      $('pay-complete').addEventListener('click', function () { $('pay-done-t').textContent = st.done; if ($('pay-inbox')) $('pay-inbox').textContent = st.inbox; $('pay-sheet').hidden = true; $('pay-done').hidden = false; quietFocus($('pay-done-h')); });
+      function renderSheet() {
+        if (st.paid === 'dep') {
+          var nm = $('pay-name').value.trim() || T('You', 'Tú');
+          $('pay-item').textContent = T('Deposit', 'Depósito');
+          [$('pay-price'), $('pay-total')].forEach(function (x) { x.textContent = ''; var ph = document.createElement('span'); ph.className = 'ph'; ph.textContent = T('your deposit', 'tu depósito'); x.appendChild(ph); });
+          $('pay-sub').textContent = nm + ', ' + ($('pay-when').value.trim() || T('your appointment', 'tu cita'));
+        } else {
+          var to = $('pay-to').value.trim() || T('someone special', 'alguien especial'), from = $('pay-from').value.trim() || T('you', 'ti');
+          $('pay-item').textContent = T('Gift card', 'Tarjeta de regalo'); $('pay-price').textContent = $('pay-total').textContent = '$' + st.n;
+          $('pay-sub').textContent = T('For ' + to + ', from ' + from, 'Para ' + to + ', de ' + from);
+        }
+      }
+      function doneText() {
+        if (st.paid === 'dep') return T('Your deposit is in, and your date is held. A receipt is on its way to your inbox.', 'Tu depósito ya quedó y tu fecha está apartada. Ya va en camino un recibo a tu correo.');
+        var to = $('pay-to').value.trim() || T('someone special', 'alguien especial');
+        return T('A $' + st.n + ' gift card for ' + to + ' is on its way to your inbox, ready to print or forward.', 'Una tarjeta de regalo de $' + st.n + ' para ' + to + ' va en camino a tu correo, lista para imprimir o reenviar.');
+      }
+      document.addEventListener('tt:lang', function () { hint.textContent = ''; if (!$('pay-sheet').hidden) renderSheet(); if (!$('pay-done').hidden) $('pay-done-t').textContent = doneText(); });
+      $('pay-complete').addEventListener('click', function () { $('pay-done-t').textContent = doneText(); if ($('pay-inbox')) $('pay-inbox').textContent = st.inbox; $('pay-sheet').hidden = true; $('pay-done').hidden = false; quietFocus($('pay-done-h')); });
       $('pay-change').addEventListener('click', function () { $('pay-done').hidden = true; form.hidden = false; quietFocus(form.querySelector('[aria-pressed="true"]')); });
       $('pay-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
       reset();
@@ -1484,9 +1544,10 @@
       var form = $('nl'); if (!form) return;
       form.addEventListener('submit', function (e) {
         e.preventDefault(); var m = $('nl-mail').value.trim();
-        if (!isEmail(m)) { $('nl-hint').textContent = 'Add an email address first.'; $('nl-mail').focus(); return; }
+        if (!isEmail(m)) { $('nl-hint').textContent = T('Add an email address first.', 'Primero escribe un correo electrónico.'); $('nl-mail').focus(); return; }
         $('nl-hint').textContent = ''; $('nl-to').textContent = m; form.hidden = true; $('nl-done').hidden = false; quietFocus($('nl-done-h'));
       });
+      document.addEventListener('tt:lang', function () { $('nl-hint').textContent = ''; });
       $('nl-change').addEventListener('click', function () { $('nl-done').hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
       $('nl-again').addEventListener('click', function () { form.reset(); $('nl-done').hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
     })();
@@ -1612,6 +1673,225 @@
     window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
     window.addEventListener('resize', function () { if (!mq.matches && open) setOpen(false); update(); });
     update();
+  })();
+</script>
+<script>
+  /* English / Español for the whole page (Oct 8 2026). One source of truth: setLang() below. Her own Spanish (About and aftercare)
+     sits in the page as [data-l] blocks and is shown or hidden; everything else is swapped from this dictionary, English words as
+     keys, by textContent only, no HTML. Taya's notes, the build tags and the mockup tools stay in English: they speak to Roxanne. */
+  (function () {
+    var D = {
+      'Skip to the work': 'Saltar a los trabajos',
+      'Menu': 'Menú',
+      'Work': 'Trabajos', 'About': 'La artista', 'Aftercare': 'Cuidados', 'Book': 'Agendar', 'Contact': 'Contacto',
+      '· private studio': '· estudio privado',
+      'Where creativity and comfort come together.': 'Donde la creatividad y la comodidad se unen.',
+      'Custom, flash and hand poke tattoos, by appointment.': 'Tatuajes personalizados, flash y hand poke, con cita.',
+      'Tlanextic (thl-ah-NESH-teek) is Nahuatl for “the sun is rising.”': 'Tlanextic (tla-NESH-tik) quiere decir “el sol está saliendo” en náhuatl.',
+      'Send your idea': 'Envía tu idea',
+      'DM or email to book': 'Agenda por DM o correo',
+      'See the flash': 'Ver el flash',
+      /* work */
+      'Fresh work': 'Trabajos recientes',
+      'Nature, critters': 'Naturaleza, animalitos', 'and meaning': 'y significado',
+      'Native designs': 'Diseños nativos', 'Nature, animals, insects': 'Naturaleza, animales, insectos', 'Traditional, neo traditional': 'Tradicional, neotradicional',
+      'Anime and characters': 'Anime y personajes', 'Dot work, pepper shading': 'Dot work, sombreado de puntos', 'Fine line': 'Línea fina',
+      'All work by Roxanne, from': 'Todos los trabajos son de Roxanne, de',
+      /* hand poke */
+      'New: hand poke': 'Nuevo: hand poke',
+      'Dot by dot,': 'Punto por punto,', 'by hand': 'a mano',
+      'No machine, just one needle, placed one dot at a time.': 'Sin máquina, solo una aguja, un punto a la vez.',
+      '$175 to $200': '$175 a $200', 'Designs': 'Diseños', 'her flash, or custom': 'su flash, o personalizado', 'To book': 'Para agendar', 'DM or email': 'DM o correo',
+      'A hand poke sun, dot by dot.': 'Un sol hand poke, punto por punto.',
+      'Her favorite flower, the cempasúchil': 'Su flor favorita, el cempasúchil',
+      /* flash */
+      'Drawn,': 'Dibujados,', 'ready to wear': 'listos para llevar',
+      'Designs she’d love to tattoo.': 'Diseños que le encantaría tatuar.',
+      'Claim one with your deposit.': 'Apártalo con tu depósito.',
+      'Message her with the one you want.': 'Escríbele con el que quieras.',
+      'Hand poke sheet one': 'Hoja hand poke uno', 'Hand poke sheet two': 'Hoja hand poke dos', 'Hand poke sheet three': 'Hoja hand poke tres',
+      'Suns, flowers, butterfly, frog, lizard': 'Soles, flores, mariposa, rana, lagartija',
+      'Spiral, star, maize, flower, fret': 'Espiral, estrella, maíz, flor, greca',
+      'Butterflies, salmon, frog, lizard': 'Mariposas, salmón, rana, lagartija',
+      'Oct 10 · Domestic Violence Awareness Month': '10 de oct · Mes de Concientización sobre la Violencia Doméstica',
+      'Flash fundraiser for Humboldt Domestic Violence Services': 'Flash solidario para Humboldt Domestic Violence Services',
+      'Two flash sheets, $175 each, and 75% of every tattoo goes to Humboldt Domestic Violence Services. Black and gray, up to 5 by 5 inches, small changes welcome.':
+        'Dos hojas de flash, $175 cada tatuaje, y el 75% de cada uno va para Humboldt Domestic Violence Services. Negro y gris, hasta 5 por 5 pulgadas, se aceptan cambios pequeños.',
+      'Five spots that day': 'Cinco lugares ese día',
+      'Where': 'Dónde', 'Her studio, 1433 11th St, Suite G, Arcata': 'Su estudio, 1433 11th St, Suite G, Arcata', 'Direct message': 'Mensaje directo a',
+      /* about */
+      'Her painting of Tlaltecuhtli, the spirit of the earth.': 'Su pintura de Tlaltecuhtli, el espíritu de la tierra.',
+      'Meet the artist': 'Conoce a la artista',
+      /* request */
+      'Tell her': 'Cuéntale', 'what you’re dreaming up': 'lo que estás soñando',
+      'Photos attached, nothing lost in a thread. Try it:': 'Con fotos adjuntas, sin que nada se pierda en el chat. Pruébalo:',
+      '1 Your idea': '1 Tu idea', '2 Placement & photos': '2 Lugar y fotos', '3 About you': '3 Sobre ti',
+      'What kind of tattoo?': '¿Qué tipo de tatuaje?', 'Custom': 'Diseño propio',
+      'Describe your idea': 'Describe tu idea',
+      'Color or black and gray?': '¿Color o negro y gris?', 'Black and gray': 'Negro y gris',
+      'Where on your body?': '¿En qué parte del cuerpo?', 'About how big, in inches?': '¿Más o menos de qué tamaño, en pulgadas?',
+      'Add reference photos': 'Agrega fotos de referencia',
+      'Pictures of the idea, and of the spot on your body. Up to 6.': 'Fotos de la idea y del lugar en tu cuerpo. Hasta 6.',
+      'Your name': 'Tu nombre', 'Email': 'Correo', 'Budget': 'Presupuesto', 'Days that work': 'Días que puedes',
+      'Back': 'Atrás',
+      'Preview only: nothing was sent.': 'Solo es una vista previa: no se envió nada.',
+      'Change something': 'Cambiar algo', 'Try it again': 'Probar otra vez',
+      'or email': 'o correo',
+      'Send Roxanne your idea, where it goes, about how big, and a few reference photos.': 'Mándale a Roxanne tu idea, dónde va, más o menos de qué tamaño y unas fotos de referencia.',
+      'DM @tlanextic.tattoos': 'DM a @tlanextic.tattoos', 'Email Roxanne': 'Escríbele a Roxanne',
+      'With Planted, people book by DM or email.': 'Con Planted, la gente agenda por DM o correo.',
+      /* deposit */
+      'Deposits and gift cards': 'Depósitos y tarjetas de regalo',
+      'Hold': 'Aparta', 'your date': 'tu fecha',
+      'Got a plan with Roxanne? Pay your deposit here. Or give a gift card toward someone’s next piece.': '¿Ya tienes un plan con Roxanne? Paga tu depósito aquí. O regala una tarjeta para el próximo tatuaje de alguien.',
+      'Pay my deposit': 'Pagar mi depósito', 'Gift card': 'Tarjeta de regalo',
+      'Holds your appointment, and comes off your final price': 'Aparta tu cita y se descuenta de tu precio final',
+      'your deposit': 'tu depósito', 'Your appointment': 'Tu cita',
+      'Choose an amount': 'Elige una cantidad', 'Any amount': 'Otra cantidad', 'Your amount': 'Tu cantidad', 'For': 'Para', 'From': 'De',
+      'Continue to checkout': 'Continuar al pago',
+      'Secure checkout': 'Pago seguro',
+      'Card or phone wallet, in your own Stripe checkout': 'Tarjeta o cartera del celular, en tu propio pago de Stripe',
+      'Preview: on your real site this opens your own Stripe checkout. Nothing is charged.': 'Vista previa: en tu sitio real esto abre tu propio pago de Stripe. No se cobra nada.',
+      'Complete (preview)': 'Completar (vista previa)',
+      'All set!': '¡Listo!',
+      'Preview only. Nothing was charged.': 'Solo es una vista previa. No se cobró nada.',
+      /* aftercare */
+      /* kind words */
+      'Kind words': 'Palabras bonitas', 'From people': 'De quienes', 'who wear her work': 'llevan su arte', '5.0 on Google': '5.0 en Google',
+      /* alerts */
+      'Books open alerts': 'Avisos de agenda abierta',
+      'Hear first': 'Entérate primero', 'when books open': 'cuando abra la agenda',
+      'New flash, open books, flash days. A short email, only when there’s news.': 'Flash nuevo, agenda abierta, días de flash. Un correo cortito, solo cuando hay novedades.',
+      'Your email': 'Tu correo', 'Let me know': 'Avísame',
+      'You’re on the list!': '¡Ya estás en la lista!',
+      'The next note goes to': 'El próximo aviso llegará a',
+      'Preview only. On your real site, sign-ups go to your own Buttondown list.': 'Solo es una vista previa. En tu sitio real, las suscripciones van a tu propia lista de Buttondown.',
+      'Change my email': 'Cambiar mi correo',
+      /* faq */
+      'Questions': 'Preguntas', 'Before': 'Antes', 'you book': 'de agendar',
+      'Do you take walk-ins?': '¿Atiendes sin cita?',
+      'No, it’s a private studio, by appointment only. Send your idea, DM or email.': 'No, es un estudio privado, solo con cita. Envía tu idea, por DM o correo.',
+      'Can you add onto a tattoo I already have?': '¿Le puedes agregar a un tatuaje que ya tengo?',
+      'Yes. She loves add-ons (like that vine past the shoulder), and she’s brought older tattoos by other artists back to life.': 'Sí. Le encanta agregar a tatuajes (como esa enredadera que sigue por el hombro), y les ha devuelto la vida a tatuajes viejos de otros artistas.',
+      'What does a hand poke cost?': '¿Cuánto cuesta un hand poke?',
+      'Hand poke tattoos are $175 to $200. Machine tattoos are priced by design:': 'Los tatuajes hand poke cuestan de $175 a $200. Los de máquina se cotizan según el diseño:',
+      'how you price': 'cómo cobras',
+      'Do you do color?': '¿Haces color?', 'your answer on color': 'tu respuesta sobre el color',
+      'Do I need a deposit?': '¿Necesito dejar depósito?', 'your deposit policy': 'tu política de depósito',
+      'How do I care for it after?': '¿Cómo lo cuido después?',
+      'Everything is on the': 'Todo está en la sección de', 'aftercare': 'cuidados', 'part of this page, in English and Spanish.': 'de esta página, en inglés y en español.',
+      /* visit */
+      'Find the studio': 'Encuentra el estudio', 'By appointment,': 'Con cita,', 'in Arcata': 'en Arcata',
+      'A private studio on 11th Street.': 'Un estudio privado en la calle 11.',
+      'Send your idea, or DM': 'Envía tu idea, o escríbele por DM a',
+      'or email to book.': 'o mándale un correo para agendar.',
+      'Studio': 'Estudio', 'Hours': 'Horario', 'By appointment only': 'Solo con cita', 'your usual days': 'tus días de siempre',
+      /* instagram */
+      'On Instagram': 'En Instagram', 'Fresh from': 'Lo más nuevo de',
+      'Your newest posts show up here on their own.': 'Tus publicaciones más nuevas aparecen aquí solitas.',
+      /* footer */
+      'Roxanne Andrade · 1433 11th St, Suite G, Arcata · by appointment': 'Roxanne Andrade · 1433 11th St, Suite G, Arcata · con cita',
+      'hand poke': 'hand poke', 'by appt': 'con cita',
+      /* the sun rises */
+      'The sun is rising.': 'El sol está saliendo.', 'Tap anywhere to come back': 'Toca donde sea para volver',
+      /* labels, alt text and screen reader words */
+      'Tattoos by Roxanne': 'Tatuajes de Roxanne', 'Choose a tattoo': 'Elige un tatuaje',
+      'Butterflies': 'Mariposas', 'Hummingbird': 'Colibrí', 'Cempasuchil': 'Cempasúchil', 'Eye hand': 'Ojo en la mano', 'Pause the photos': 'Pausar las fotos',
+      'Sections': 'Secciones', 'Styles Roxanne loves doing': 'Estilos que a Roxanne le encanta hacer',
+      'A cempasuchil, a marigold, appearing one dot at a time, like a hand poke tattoo': 'Un cempasúchil que aparece punto por punto, como un tatuaje hand poke',
+      'Steps, tap one you have done to go back': 'Pasos, toca uno que ya hiciste para regresar',
+      'Reference photos added': 'Fotos de referencia agregadas',
+      'Deposit or gift card, preview': 'Depósito o tarjeta de regalo, vista previa', 'Choose one': 'Elige una opción',
+      'Books open alerts, preview': 'Avisos de agenda abierta, vista previa',
+      'Recent Instagram posts': 'Publicaciones recientes de Instagram',
+      'Tlanextic Tattoos sun badge': 'Insignia del sol de Tlanextic Tattoos', 'Shortcuts': 'Atajos', 'The sun is rising': 'El sol está saliendo',
+      'Two butterflies with small flowers in fine line and pepper shading, down a calf': 'Dos mariposas con florecitas en línea fina y sombreado de puntos, a lo largo de una pantorrilla',
+      'A hummingbird, huitzil, with spread wings under leaves, in black and gray': 'Un colibrí, huitzil, con las alas abiertas bajo unas hojas, en negro y gris',
+      'A cempasuchil held by a skeleton hand, her favorite flower, in black and gray': 'Un cempasúchil en una mano de esqueleto, su flor favorita, en negro y gris',
+      'A custom hand tattoo with an eye on the back of the hand': 'Un tatuaje personalizado con un ojo en el dorso de la mano',
+      'Two butterfly flash designs with small flowers, tattooed together down a calf in fine black line and pepper shading': 'Dos diseños de flash de mariposas con florecitas, tatuados juntos a lo largo de una pantorrilla en línea fina negra y sombreado de puntos',
+      'A cempasuchil, a marigold, held by a skeleton hand, in black and gray on the back of an arm. Her own design and her favorite flower': 'Un cempasúchil en una mano de esqueleto, en negro y gris en la parte de atrás del brazo. Diseño suyo y su flor favorita',
+      'A flowering yarrow plant in fine line on a forearm, one of her available flash designs': 'Una milenrama en flor en línea fina sobre un antebrazo, uno de sus diseños de flash disponibles',
+      'A monarch butterfly added beside a large peony piece on an upper arm': 'Una mariposa monarca agregada junto a una pieza grande de peonías en la parte alta del brazo',
+      'A custom hand tattoo with an eye on the back of the hand and bold lines down the fingers, joining eye tattoos up the arm': 'Un tatuaje personalizado con un ojo en el dorso de la mano y líneas gruesas por los dedos, que se une a los tatuajes de ojos que suben por el brazo',
+      'A prowling jaguar with heart shaped spots, down the side of a hip': 'Un jaguar al acecho con manchas en forma de corazón, a un costado de la cadera',
+      'A leafy vine in fine line climbing over the shoulder blade, added onto a vine that started on the forearm': 'Una enredadera frondosa en línea fina que sube por el omóplato, agregada a una enredadera que empezó en el antebrazo',
+      'A hummingbird, huitzil, with spread wings under leaves, in black and gray on a thigh': 'Un colibrí, huitzil, con las alas abiertas bajo unas hojas, en negro y gris sobre un muslo',
+      'A crescent moon in swirling clouds above California poppies and a jellyfish, on an upper arm': 'Una luna creciente entre nubes en remolino sobre amapolas de California y una medusa, en la parte alta del brazo',
+      'A bat face with ears up and fangs out, in black and gray': 'La cara de un murciélago con las orejas paradas y los colmillos de fuera, en negro y gris',
+      'A hand poke flower sun in dot work on the back of the neck': 'Un sol de flor hand poke en dot work, en la nuca',
+      'Hand poke flash sheet: suns and flowers, a step fret butterfly, a frog, a lizard, a spiral sun and a long bird, in dot work on paper': 'Hoja de flash hand poke: soles y flores, una mariposa con greca escalonada, una rana, una lagartija, un sol en espiral y un pájaro largo, en dot work sobre papel',
+      'Hand poke flash sheet: a stepped spiral, a four point star, an ear of maize, crossed bands, a flower and a fret pattern': 'Hoja de flash hand poke: una espiral escalonada, una estrella de cuatro puntas, una mazorca, bandas cruzadas, una flor y una greca',
+      'Hand poke flash sheet: two patterned butterflies, a salmon with a diamond pattern, a frog and a lizard': 'Hoja de flash hand poke: dos mariposas con dibujos, un salmón con rombos, una rana y una lagartija',
+      'Fundraiser flash sheet: a climbing jaguar, a black sun, a lotus, a dandelion and a spiky sea flower': 'Hoja de flash solidario: un jaguar trepando, un sol negro, un loto, un diente de león y una flor de mar espinosa',
+      'Fundraiser flash sheet: frogs, an axolotl, a dragonfly, a butterfly and a beetle with flames': 'Hoja de flash solidario: ranas, un ajolote, una libélula, una mariposa y un escarabajo con llamas',
+      'Roxanne Andrade outdoors among green leaves, wearing a Tlanextic Tattoos shirt and blue feather earrings': 'Roxanne Andrade al aire libre entre hojas verdes, con una camiseta de Tlanextic Tattoos y aretes de plumas azules',
+      'Her painting of Tlaltecuhtli, spirit of the earth, in yellow, red and turquoise': 'Su pintura de Tlaltecuhtli, espíritu de la tierra, en amarillo, rojo y turquesa',
+      'Roxanne drawing in her sketchbook beside her Tlaltecuhtli painting': 'Roxanne dibujando en su cuaderno junto a su pintura de Tlaltecuhtli'
+    };
+    /* the demo's filled in answers, swapped only while nobody has typed over them */
+    var VALS = {
+      'rq-idea': 'Un cempasúchil con una monarca posándose en él, de línea fina, quizá con un poco de sombreado de puntos.',
+      'rq-place': 'Antebrazo exterior', 'rq-size': '5 por 3', 'rq-budget': '$250 a $350', 'rq-days': 'Fines de semana, o después de las 3', 'pay-when': 'sáb 24 de oct'
+    };
+    var TITLE = ['Tlanextic Tattoos | Roxanne Andrade, Tattoo Artist in Arcata', 'Tlanextic Tattoos | Roxanne Andrade, tatuadora en Arcata'];
+    /* kept in English on purpose: Taya's notes, the build tags and every mockup tool; and the parts the page's own scripts fill in (they listen for tt:lang) */
+    var SKIP = '.wf-note, .mock-note, .tier-note, .tag, .bk-demo, #views, #vp, .ribbon, #found, .status-panel, #status-try, #theme-tab, [data-l], [data-en-only], .snav-lang, .snav-menu-lang, .lb, .wfm, .wfm-bar, .wfm-pop, .wfm-panel, .wfm-pin, [class^="wf-"], [class*=" wf-"]'
+      + ', #status-label, #status-cta, #b88-books, #dial-t, .claim, #claim-note, #slot-note, #rq-go, #rq-hint, #rq-done-h, #rq-done-t, #rq-sum, #rq-files, #pay-item, #pay-price, #pay-total, #pay-sub, #pay-done-t, #pay-hint, #nl-hint, #nl-to, #theme-live, #status-live';
+    var ATTRS = ['alt', 'aria-label', 'placeholder'];
+    var textEn = new WeakMap(), attrEn = new WeakMap(), root = document.documentElement;
+    function norm(t) { return t.replace(/\s+/g, ' ').trim(); }
+    function swapText(lang) {
+      var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: function (n) {
+        var p = n.parentElement; if (!p || /^(SCRIPT|STYLE|TEXTAREA|NOSCRIPT)$/.test(p.tagName) || p.closest(SKIP)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT; } });
+      for (var n = w.nextNode(); n; n = w.nextNode()) {
+        if (!textEn.has(n)) textEn.set(n, n.nodeValue);
+        var en = textEn.get(n), key = norm(en); if (!key) continue;
+        var p = n.parentElement, es = p.hasAttribute('data-es') && p.childNodes.length === 1 ? p.getAttribute('data-es') : D[key];
+        var out = lang === 'es' && es ? en.match(/^\s*/)[0] + es + en.match(/\s*$/)[0] : en;
+        if (n.nodeValue !== out) n.nodeValue = out;
+      }
+      [].forEach.call(document.body.querySelectorAll('[alt], [aria-label], [placeholder]'), function (el) {
+        if (el.closest(SKIP)) return;
+        var saved = attrEn.get(el); if (!saved) { saved = {}; ATTRS.forEach(function (a) { if (el.hasAttribute(a)) saved[a] = el.getAttribute(a); }); attrEn.set(el, saved); }
+        Object.keys(saved).forEach(function (a) {
+          if (a === 'aria-label' && el.classList.contains('lb-thumb')) return;
+          var es = D[norm(saved[a])], out = lang === 'es' && es ? es : saved[a];
+          if (el.getAttribute(a) !== out) el.setAttribute(a, out);
+        });
+      });
+      Object.keys(VALS).forEach(function (id) {
+        var el = document.getElementById(id); if (!el) return;
+        if (el.__en == null) el.__en = el.defaultValue;
+        el.defaultValue = lang === 'es' ? VALS[id] : el.__en;   /* the value follows only while it hasn't been typed over */
+      });
+    }
+    function T(en, es) { return TT.lang === 'es' ? es : en; }
+    function relabelLightbox() {
+      [].forEach.call(document.querySelectorAll('[data-lightbox] img'), function (im) {
+        var t = im.__lbThumb; if (t && t.setAttribute) t.setAttribute('aria-label', T('Open photo', 'Abrir foto') + (im.getAttribute('alt') ? ': ' + im.getAttribute('alt') : ''));
+      });
+      var box = document.querySelector('.lb'); if (!box) return;
+      box.setAttribute('aria-label', T('Photo viewer', 'Visor de fotos'));
+      [['.lb-close', 'Close photo', 'Cerrar foto'], ['.lb-prev', 'Previous photo', 'Foto anterior'], ['.lb-next', 'Next photo', 'Foto siguiente']].forEach(function (x) { var b = box.querySelector(x[0]); if (b) b.setAttribute('aria-label', T(x[1], x[2])); });
+    }
+    var btns = [].slice.call(document.querySelectorAll('[data-setlang]'));
+    function setLang(lang, save) {
+      if (lang !== 'es') lang = 'en';
+      TT.lang = lang; root.lang = lang; document.title = lang === 'es' ? TITLE[1] : TITLE[0];
+      [].forEach.call(document.querySelectorAll('[data-l]'), function (el) { el.hidden = el.getAttribute('data-l') !== lang; });
+      swapText(lang);
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-setlang') === lang ? 'true' : 'false'); });
+      try { document.dispatchEvent(new CustomEvent('tt:lang', { detail: { lang: lang } })); } catch (e) {}
+      relabelLightbox();
+      if (save) { try { localStorage.setItem(TT.key, lang); } catch (e) {} }
+    }
+    TT.set = setLang;
+    btns.forEach(function (b) { b.addEventListener('click', function () { if (b.getAttribute('aria-pressed') !== 'true') setLang(b.getAttribute('data-setlang'), true); }); });
+    document.addEventListener('DOMContentLoaded', relabelLightbox);
+    document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.lb-thumb')) setTimeout(relabelLightbox, 0); }, true);
+    setLang(TT.lang, false);
   })();
 </script>
 </html>
