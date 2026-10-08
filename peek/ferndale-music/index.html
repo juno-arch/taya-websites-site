@@ -640,6 +640,25 @@
     .news { padding: 24px 18px 22px; }
   }
   @media (orientation: landscape) and (max-height: 500px) { .hero-main { padding-block: 24px 40px; } .hero-band h1 { font-size: 48px; } }
+
+  /* ---------- Instagram feed: clearly theirs ---------- */
+  #insta { --igx: var(--red); }
+  .igx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; }
+  .igx-head > div { min-width: 0; }
+  .igx-handle { display: inline-flex; align-items: center; gap: 0.3em; overflow-wrap: anywhere; }
+  .igx-handle .igx-glyph { width: 0.8em; height: 0.8em; flex: none; }
+  .igx-sub { margin-top: 8px; font-size: 16px; color: var(--ink-soft); }
+  .igx-follow { margin-top: 0; }
+  .igx-follow a { border: 2px solid var(--igx); font-weight: 700; max-width: 100%; overflow-wrap: anywhere; line-height: 1.2; padding-block: 8px; }
+  .igx-follow a:hover { background: var(--ground-2); }
+  .igx-follow svg { color: var(--igx); }
+  .ig-grid .photo { position: relative; }
+  .ig-grid .photo::after { content: ""; position: absolute; top: 7px; right: 7px; width: 24px; height: 24px; border-radius: 50%; z-index: 2; pointer-events: none;
+    background: rgba(20, 16, 14, 0.5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='17.2' cy='6.8' r='.6' fill='white'/%3E%3C/svg%3E") center / 14px 14px no-repeat; }
+  .ig-grid .photo img { transition: filter .3s ease; }
+  .ig-grid .photo:hover img { filter: brightness(1.07) saturate(1.05); }
+  .ig-grid .photo:hover { outline: 2px solid var(--igx); outline-offset: -2px; }
+  @media (max-width: 640px) { .igx-follow { width: 100%; } .igx-follow a { width: 100%; justify-content: center; box-sizing: border-box; } }
 </style>
 </head>
 <body>
@@ -1159,12 +1178,13 @@
 
 <section id="insta" class="gutter" data-show="mother crone all" data-fold data-thing="Instagram feed">
   <div class="wrap">
-    <div class="ig-head">
+    <div class="ig-head igx-head">
       <div>
         <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-        <h2 class="reveal">Fresh from <em>@theoldsteeple</em></h2>
+        <h2 class="reveal">Fresh from <em class="igx-handle"><svg class="igx-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@theoldsteeple</em></h2>
+        <p class="igx-sub">Follow along on Instagram</p>
       </div>
-      <span class="reach"><a href="https://www.instagram.com/theoldsteeple/" target="_blank" rel="noopener" aria-label="Follow @theoldsteeple on Instagram (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow along</a></span>
+      <span class="reach igx-follow"><a href="https://www.instagram.com/theoldsteeple/" target="_blank" rel="noopener" aria-label="Follow @theoldsteeple on Instagram (opens in a new tab)"><svg class="igx-glyph" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow @theoldsteeple</a></span>
     </div>
     <div class="ig-grid" role="img" aria-label="Recent posts: the hall, the stained glass, the seats, the Green Room and the tower">
       <figure class="photo"><img src="images/show-night.webp" alt="" loading="lazy"></figure>
@@ -1175,7 +1195,7 @@
       <figure class="photo"><img src="images/sweetheart-table.webp" alt="" loading="lazy"></figure>
     </div>
     <div class="ig-foot mock-note">
-      <div class="bk-note"><b>Post once, it shows up here too</b>Your newest posts, pulled in on their own.</div>
+      <div class="bk-note"><b>Post once, it shows up here too</b>These fill in by themselves every time you post.</div>
       <div class="bk-note"><b>What you see</b>Your own photos, standing in for your posts.</div>
     </div>
   </div>
