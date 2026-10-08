@@ -22,3 +22,5 @@ From their Instagram @therecord_pub (post images via one profile page load):
 
 Menu text: their two menu images (/menu, 1.png and 2.png). Shows: their October poster (/new-page, Monthly_OCTOBER.jpg) and IG caption.
 No stock photos. No Sample photo tags needed.
+
+Logo: images/logo-the-record.svg, their real wordmark, supplied by The Record (Paul), Oct 8 2026 (vector from their PDF, Record-wordmark.pdf).
