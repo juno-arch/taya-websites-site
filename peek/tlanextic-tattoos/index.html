@@ -23,40 +23,42 @@
   ol, ul { margin: 0; padding: 0; }
   [hidden] { display: none !important; }
   :root {
-    /* Her brand, from her own "Meet the artist" and aftercare cards and her sun badge */
-    --ground: #fbf5e9;      /* masa paper */
-    --ground-2: #f3e9d3;
-    --ink: #1f2416;
-    --ink-soft: #4c5140;
-    --teal: #1c6f77;        /* her headline teal */
-    --teal-deep: #155a61;
-    --green: #5d7322;       /* her card green */
-    --milpa: #3d4c15;       /* deep green, footer */
-    --crimson: #9b1b24;     /* sun badge */
-    --s1: #06888a; --s2: #a25752; --s3: #d54b1a; --s4: #e2a72f;  /* her four-stripe rainbow */
-    --marigold: #e2a72f;
-    --on-band: #fbf5e9;
-    --hair: #e2d6bb;
-    --tag-bg: #e4efe9; --tag-ink: #155a61; --tag-line: #bcd6d2;
-    --slat: rgba(28, 111, 119, 0.07);
+    /* Her palette, sampled from her Tlaltecuhtli painting (Oct 8 2026 rework): sand and bone grounds, mustard ochre,
+       turquoise ear spools, the red disc, the dusty rose of the feathered hair, and the brown black of the outlines */
+    --ground: #f7efe0;      /* bone */
+    --ground-2: #efdfc3;    /* sand */
+    --ink: #2b1b19;         /* outline brown black */
+    --ink-soft: #5c433d;
+    --teal: #0a6787;        /* turquoise, deepened for words */
+    --teal-deep: #08566f;
+    --green: #0d5d78;       /* deep turquoise bands (the name stays so nothing else moves) */
+    --milpa: #3b1a1c;       /* deep red brown, footer */
+    --crimson: #a3323a;     /* the red disc */
+    --rose: #a8625d;        /* the feathered hair */
+    --s1: #1f9cc9; --s2: #b4706b; --s3: #b83a42; --s4: #d4a33e;  /* four stripes: turquoise, rose, red, ochre */
+    --marigold: #d4a33e;    /* ochre */
+    --on-band: #fbf3e4;
+    --hair: #e0caa5;
+    --tag-bg: #dcedf2; --tag-ink: #08566f; --tag-line: #a8d0de;
+    --slat: rgba(11, 109, 143, 0.07);
     --badge-lift: none;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #14160f; --ground-2: #1d2016; --ink: #efe9da; --ink-soft: #b4b6a6;
-      --teal: #6cc3c4; --teal-deep: #8fd4d4; --green: #4a5d1a; --milpa: #10140a; --crimson: #e8737a;
-      --marigold: #f0b84a; --on-band: #f6f0e1; --hair: #33372a;
-      --tag-bg: #1a2b2b; --tag-ink: #8fd4d4; --tag-line: #2c4848; --slat: rgba(108, 195, 196, 0.06);
+      --ground: #1a1211; --ground-2: #251a18; --ink: #f3e9da; --ink-soft: #cbb8a8;
+      --teal: #5cc2e6; --teal-deep: #8ad5ef; --green: #0f3d4f; --milpa: #140b0b; --crimson: #ef8a86;
+      --marigold: #e6b955; --on-band: #f7ecdc; --hair: #3d2b27; --rose: #d99a92;
+      --tag-bg: #12313d; --tag-ink: #8ad5ef; --tag-line: #24505f; --slat: rgba(92, 194, 230, 0.06);
       --badge-lift: brightness(1.04);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --ground: #14160f; --ground-2: #1d2016; --ink: #efe9da; --ink-soft: #b4b6a6;
-    --teal: #6cc3c4; --teal-deep: #8fd4d4; --green: #4a5d1a; --milpa: #10140a; --crimson: #e8737a;
-    --marigold: #f0b84a; --on-band: #f6f0e1; --hair: #33372a;
-    --tag-bg: #1a2b2b; --tag-ink: #8fd4d4; --tag-line: #2c4848; --slat: rgba(108, 195, 196, 0.06);
+    --ground: #1a1211; --ground-2: #251a18; --ink: #f3e9da; --ink-soft: #cbb8a8;
+    --teal: #5cc2e6; --teal-deep: #8ad5ef; --green: #0f3d4f; --milpa: #140b0b; --crimson: #ef8a86;
+    --marigold: #e6b955; --on-band: #f7ecdc; --hair: #3d2b27; --rose: #d99a92;
+    --tag-bg: #12313d; --tag-ink: #8ad5ef; --tag-line: #24505f; --slat: rgba(92, 194, 230, 0.06);
     --badge-lift: brightness(1.04);
     color-scheme: dark;
   }
@@ -108,8 +110,8 @@
   .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; box-sizing: border-box; text-decoration: none;
     font-family: 'Dosis', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 24px; border-radius: 12px;
     background: var(--teal); color: #fff; border: 2px solid var(--teal); }
-  :root[data-theme="dark"] .btn { color: #0f1a1a; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #0f1a1a; } }
+  :root[data-theme="dark"] .btn { color: #1a1211; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #1a1211; } }
   button.btn { cursor: pointer; }
   .btn:hover { background: var(--teal-deep); border-color: var(--teal-deep); }
   .btn.quiet { background: transparent; color: var(--teal-deep); }
@@ -122,27 +124,47 @@
   .mark span { font-family: 'Dosis', sans-serif; font-weight: 800; font-size: 21px; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1; }
   .mark small { display: block; font-family: 'Urbanist', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.22em; margin-top: 4px; opacity: 0.9; }
   nav { display: flex; gap: 0 8px; flex-wrap: wrap; font-size: 15px; margin: -10px -6px; }
-  nav a { color: var(--on-band); text-decoration: none; padding: 10px 6px; line-height: 24px; font-weight: 600; text-shadow: 0 1px 3px rgba(20, 14, 6, 0.6), 0 0 14px rgba(20, 14, 6, 0.5); }
-  nav a:hover { color: #ffe3a6; }
+  nav a { color: var(--on-band); text-decoration: none; padding: 10px 6px; line-height: 24px; font-weight: 600; text-shadow: 0 1px 3px rgba(30, 14, 12, 0.6), 0 0 14px rgba(30, 14, 12, 0.5); }
+  nav a:hover { color: #f6dc95; }
 
   /* HERO: her own tattoos, big, and each new one goes in dot by dot, like a hand poke. Words sit on dark paper printed with her flash */
-  .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #2a2014; color: var(--on-band); }
+  .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #2a1817; color: var(--on-band); }
   .hero-band > .gutter { position: relative; z-index: 3; }
-  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: rgba(240, 184, 74, 0.085);
+  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: rgba(212, 163, 62, 0.1);
     -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 300px 300px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 300px 300px repeat; }
-  .hero-art { position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: 54%; margin: 0; background: #1d160c; }
+  .hero-art { position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: 54%; margin: 0; background: #1f1211; }
   .hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); opacity: 0; }
   .hero-art img.on { opacity: 1; }
   @property --dot { syntax: '<length>'; inherits: false; initial-value: 0px; }
   .hero-art img.poke { z-index: 1; -webkit-mask: radial-gradient(circle, #000 var(--dot), transparent calc(var(--dot) + 0.6px)) 50% 50% / 14px 14px; mask: radial-gradient(circle, #000 var(--dot), transparent calc(var(--dot) + 0.6px)) 50% 50% / 14px 14px; animation: poke-in 1.9s cubic-bezier(.5,0,.3,1) both; }
   @keyframes poke-in { from { --dot: 0px; } to { --dot: 11px; } }
-  .hero-pick { position: absolute; z-index: 2; right: 14px; bottom: 14px; display: flex; gap: 2px; padding: 3px 4px; border-radius: 999px; background: rgba(26, 18, 8, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-pick { position: absolute; z-index: 2; left: 14px; bottom: 14px; display: flex; gap: 2px; padding: 3px 4px; border-radius: 999px; background: rgba(34, 18, 16, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  /* her Tlaltecuhtli painting leads the hero: shown whole (her mark bottom right stays in), on the dark paper */
+  .hero-art img.hero-painting { object-fit: contain; object-position: 50% 100%; background-color: #1f1211; }
+  .hero-cap { position: absolute; z-index: 2; left: 14px; bottom: 56px; display: none; flex-direction: column-reverse; align-items: flex-start; gap: 8px; max-width: min(340px, calc(100% - 28px)); }
+  .hero-art.is-painting .hero-cap { display: flex; }
+  .hero-cap-btn { min-height: 36px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #fbf5e9; background: rgba(34, 18, 16, 0.62); border: 1px solid rgba(251, 245, 233, 0.35); border-radius: 999px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-cap-btn[aria-expanded="true"] { color: #f6dc95; border-color: #d4a33e; }
+  .hero-cap-btn:focus-visible { outline: 2px solid #fbf5e9; outline-offset: 2px; }
+  .hero-cap-txt { box-sizing: border-box; padding: 12px 14px 13px; font-size: 14px; line-height: 1.5; color: #fbf5e9; background: rgba(34, 18, 16, 0.86); border-radius: 12px; border-left: 3px solid #d4a33e; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-cap-txt b { display: block; font-family: 'Dosis', sans-serif; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: #f6dc95; margin-bottom: 4px; }
+  .hero-cap-txt a { color: #f4d68a; font-weight: 700; }
+  .hero-cap-txt { position: relative; }
+  .hero-cap-x { display: none; position: absolute; top: 2px; right: 2px; width: 40px; height: 40px; margin: 0; padding: 0; border: 0; background: none; color: #fbf5e9; font-size: 22px; line-height: 1; cursor: pointer; }
+  /* phones: the open caption sits low, over the skirt band, so her face and the red disc stay clear */
+  @media (max-width: 760px) {
+    .hero-art.cap-open .hero-pick, .hero-art.cap-open .hero-cap-btn { display: none; }
+    .hero-art.cap-open .hero-cap { left: 10px; right: 10px; bottom: 10px; max-width: none; }
+    .hero-cap-txt { font-size: 13.5px; line-height: 1.45; padding: 10px 40px 11px 12px; }
+    .hero-cap-txt b { font-size: 14px; }
+    .hero-cap-x { display: block; }
+  }
   .hero-pick button { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; margin: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; color: #fbf5e9; }
   .hero-pick button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid currentColor; box-sizing: border-box; }
-  .hero-pick button[aria-pressed="true"]::before { background: #e2a72f; border-color: #e2a72f; }
+  .hero-pick button[aria-pressed="true"]::before { background: #d4a33e; border-color: #d4a33e; }
   .hero-pick .hp-pause::before { display: none; }
   .hero-pick button:focus-visible { outline: 2px solid #fbf5e9; outline-offset: -2px; }
-  .hero-band::after { content: ""; position: absolute; inset: 0 0 auto; height: 150px; z-index: 2; pointer-events: none; background: linear-gradient(rgba(26, 18, 8, 0.62), rgba(26, 18, 8, 0)); }
+  .hero-band::after { content: ""; position: absolute; inset: 0 0 auto; height: 150px; z-index: 2; pointer-events: none; background: linear-gradient(rgba(34, 18, 16, 0.62), rgba(34, 18, 16, 0)); }
   .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 40px 84px; }
   .hero-copy { max-width: 600px; }
   @media (min-width: 761px) {
@@ -151,14 +173,14 @@
     .hero-band .hero-copy h1 { font-size: clamp(46px, 5.6vw, 84px); }
   }
   .hero-band .label { color: rgba(251, 245, 233, 0.92); }
-  .hero-band h1 { font-size: clamp(54px, 9vw, 112px); line-height: 0.92; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; text-shadow: 0 2px 30px rgba(20, 14, 6, 0.4); }
+  .hero-band h1 { font-size: clamp(54px, 9vw, 112px); line-height: 0.92; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; text-shadow: 0 2px 30px rgba(30, 14, 12, 0.4); }
   .hero-band h1 em { font-style: normal; display: block; color: var(--s4); font-size: 0.5em; letter-spacing: 0.24em; margin-top: 8px; }
-  .hero-band .tagline { display: block; margin-top: 18px; font-family: 'Dosis', sans-serif; font-weight: 600; font-size: clamp(21px, 3vw, 26px); line-height: 1.25; color: #fff1d0; }
+  .hero-band .tagline { display: block; margin-top: 18px; font-family: 'Dosis', sans-serif; font-weight: 600; font-size: clamp(21px, 3vw, 26px); line-height: 1.25; color: #fbecd0; }
   .hero-band .lede { margin-top: 12px; font-size: clamp(17px, 2.2vw, 19px); color: rgba(251, 245, 233, 0.93); max-width: 46ch; }
   .say { font-size: 14px; color: rgba(251, 245, 233, 0.82); margin-top: 10px; }
-  .hero-band .btn { background: #fbf5e9; border-color: #fbf5e9; color: #134e54; }
+  .hero-band .btn { background: #fbf5e9; border-color: #fbf5e9; color: #08566f; }
   .hero-band .btn:hover { background: #fff; border-color: #fff; }
-  .hero-band .btn.quiet { background: rgba(26, 18, 8, 0.4); color: var(--on-band); border-color: rgba(251, 245, 233, 0.65); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-band .btn.quiet { background: rgba(34, 18, 16, 0.4); color: var(--on-band); border-color: rgba(251, 245, 233, 0.65); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .hero-band a:focus-visible { outline-color: #fbf5e9; }
 
   /* the slow fade-in: photo first, then the words */
@@ -176,9 +198,9 @@
 
   @media (max-width: 760px) {
     .hero-band { min-height: 0; }
-    .hero-art { position: relative; order: -1; left: auto; right: auto; width: 100%; bottom: auto; height: min(100vw, 66svh); flex: none; }
+    .hero-art { position: relative; order: -1; left: auto; right: auto; width: 100%; bottom: auto; height: min(calc(100vw + 84px), 78svh); flex: none; }  /* the extra 84px is dark headroom so the sticky nav sits above her painting's headdress */
     .hero-band > .gutter:first-of-type { position: absolute; top: 0; left: 0; right: 0; }
-    .hero-band::after { height: 200px; background: linear-gradient(rgba(26, 18, 8, 0.72), rgba(26, 18, 8, 0.38) 60%, rgba(26, 18, 8, 0)); }
+    .hero-band::after { height: 200px; background: linear-gradient(rgba(34, 18, 16, 0.72), rgba(34, 18, 16, 0.38) 60%, rgba(34, 18, 16, 0)); }
     .hero-main { padding-block: 30px 52px; }
   }
   .hero-art { overflow: hidden; }
@@ -187,11 +209,11 @@
   /* ---------- STATUS STRIP (books open / closed / fundraiser) ---------- */
   .status { position: relative; z-index: 5; }
   .status-strip { margin: 0; background: var(--teal); color: #fff; text-align: center; font-size: 13px; line-height: 1.4; }
-  :root[data-theme="dark"] .status-strip { color: #0f1a1a; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .status-strip { color: #0f1a1a; } }
+  :root[data-theme="dark"] .status-strip { color: #1a1211; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .status-strip { color: #1a1211; } }
   .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; color: inherit; text-decoration: none; }
   .status-strip b { text-transform: uppercase; letter-spacing: 0.14em; font-size: 11.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
-  .status-strip b::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--s4); box-shadow: 0 0 0 3px rgba(226, 167, 47, 0.3); }
+  .status-strip b::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--s4); box-shadow: 0 0 0 3px rgba(212, 163, 62, 0.3); }
   .status-strip[data-state="closed"] b::before { background: transparent; box-shadow: inset 0 0 0 1.5px currentColor; }
   /* Y2K: the dot blinks like an old "online" light while books are open (still under reduced motion) */
   @media (prefers-reduced-motion: no-preference) { .status-strip[data-state="open"] b::before { animation: led 2.6s steps(1) infinite; } }
@@ -275,16 +297,16 @@
   .work-grid .photo.big { grid-column: span 2; grid-row: span 2; }
   .work-grid figure img { transition: scale 0.7s cubic-bezier(.2,.7,.3,1); }
   .work-grid .lb-thumb:hover img { scale: 1.06; }
-  :root { --lb-veil: rgba(20, 18, 10, 0.96); --lb-ink: #fbf5e9; --lb-accent: #e2a72f; --lb-caption-font: 'Urbanist', sans-serif; }
+  :root { --lb-veil: rgba(26, 14, 13, 0.96); --lb-ink: #fbf5e9; --lb-accent: #d4a33e; --lb-caption-font: 'Urbanist', sans-serif; }
   .work-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 20px; margin-top: 20px; }
 
   /* ---------- HAND POKE band + "dot by dot" signature ---------- */
   .band { background: var(--green); color: var(--on-band); overflow: hidden; }
   .band h2 { color: var(--on-band); }
-  .band h2 em { color: #ffe0a0; }
+  .band h2 em { color: #f4d68a; }
   .band .label { color: #fbf5e9; }
-  .band a { color: #fff1d0; }
-  .band .ph { color: #fff1d0; text-decoration-color: #ffe0a0; }
+  .band a { color: #fbecd0; }
+  .band .ph { color: #fbecd0; text-decoration-color: #f4d68a; }
   .poke { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
   .poke-facts { margin: 22px 0 0; display: grid; gap: 0; border-top: 1px solid rgba(251, 245, 233, 0.3); }
   .poke-facts div { display: flex; justify-content: space-between; gap: 6px 18px; flex-wrap: wrap; padding: 11px 0; border-bottom: 1px solid rgba(251, 245, 233, 0.3); }
@@ -298,10 +320,10 @@
   /* Y2K: the marigold "loads" like a picture on dial-up, and the bar counts the dots as they go in */
   .px { font-family: 'DotGothic16', 'Courier New', monospace; font-weight: 400; }
   .dial { display: grid; justify-items: center; gap: 6px; margin-top: 2px; contain: layout paint; overflow-anchor: none; }
-  .dial-bar { display: grid; grid-template-columns: repeat(20, 8px); gap: 2px; padding: 3px; border: 2px solid; border-color: rgba(20, 26, 6, 0.55) rgba(251, 245, 233, 0.6) rgba(251, 245, 233, 0.6) rgba(20, 26, 6, 0.55); background: rgba(20, 26, 6, 0.3); }
+  .dial-bar { display: grid; grid-template-columns: repeat(20, 8px); gap: 2px; padding: 3px; border: 2px solid; border-color: rgba(30, 14, 12, 0.55) rgba(251, 245, 233, 0.6) rgba(251, 245, 233, 0.6) rgba(30, 14, 12, 0.55); background: rgba(30, 14, 12, 0.3); }
   .dial-bar i { display: block; height: 12px; }
   .dial-bar i.on { background: #ffd27a; }
-  .dial-t { margin: 0; height: 1.5em; font-size: 15px; line-height: 1.5; letter-spacing: 0.04em; color: #fff1d0; white-space: nowrap; }
+  .dial-t { margin: 0; height: 1.5em; font-size: 15px; line-height: 1.5; letter-spacing: 0.04em; color: #fbecd0; white-space: nowrap; }
   .dial-t::after { content: "_"; margin-left: 2px; }
   @media (prefers-reduced-motion: no-preference) { .dial-t::after { animation: led 1.1s steps(1) infinite; } }
   .poke-photo { margin-top: 30px; display: grid; grid-template-columns: 0.75fr 1fr; gap: 18px; align-items: center; }
@@ -323,7 +345,7 @@
   .event { margin-top: 36px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--hair); background: var(--ground-2); }
   .event-copy { padding: 28px 28px 26px; }
   .event h3 { font-size: clamp(26px, 3.4vw, 34px); text-transform: uppercase; color: var(--crimson); line-height: 1.02; }
-  .event-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: #ecebe6; align-content: center; }
+  .event-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: #efe3cf; align-content: center; }
   .event-pics .photo { border-radius: 0; aspect-ratio: auto; }
   .slots { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .slot { font: inherit; font-weight: 700; font-size: 15px; min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1.5px solid var(--hair); background: var(--ground); color: var(--ink); cursor: pointer; font-variant-numeric: tabular-nums; }
@@ -342,6 +364,11 @@
   .painting { margin-top: 18px; max-width: 360px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 15px; color: var(--ink-soft); }
   .painting .photo { aspect-ratio: 1; border-radius: 10px; }
   .painting p { grid-column: 1 / -1; }
+  .story { margin-top: 18px; max-width: 360px; padding: 20px 22px 22px; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); scroll-margin-top: 90px; }
+  .story h3 { font-size: 22px; line-height: 1.1; text-transform: uppercase; color: var(--teal); }
+  .story-q { margin: 12px 0 14px; padding-left: 14px; border-left: 3px solid var(--s3); }
+  .story-q p { font-family: 'Dosis', sans-serif; font-weight: 600; font-size: 21px; line-height: 1.25; color: var(--ink); }
+  .story-q .story-by { margin-top: 4px; font-family: 'Urbanist', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
   .bio p { font-size: 18.5px; }
   .creds { list-style: none; margin-top: 22px; display: grid; gap: 8px; }
   .creds li { display: flex; gap: 10px; align-items: baseline; color: var(--ink-soft); }
@@ -358,7 +385,7 @@
   .files li { position: relative; border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; background: var(--ground); font-size: 12.5px; }
   .files img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
   .files span { display: block; padding: 6px 8px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .files button { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(20, 22, 15, 0.72); color: #fff; cursor: pointer; display: grid; place-items: center; }
+  .files button { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(30, 18, 16, 0.72); color: #fff; cursor: pointer; display: grid; place-items: center; }
   .sum { margin-top: 8px; display: grid; gap: 6px; font-size: 15px; }
   .sum div { display: flex; gap: 12px; } .sum dt { min-width: 92px; color: var(--ink-soft); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding-top: 3px; } .sum dd { margin: 0; }
   .bk-alt .reach { margin-top: 18px; }
@@ -402,10 +429,10 @@
   .alerts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
   .nl-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
   .nl-row input { flex: 999 1 200px; font: inherit; font-size: 16px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(251, 245, 233, 0.45); background: rgba(251, 245, 233, 0.08); color: var(--on-band); min-width: 0; }
-  .band .bk-go { background: var(--on-band); border-color: var(--on-band); color: #2c3a0e; }
+  .band .bk-go { background: var(--on-band); border-color: var(--on-band); color: #0d5d78; }
   .band .bk-go.ghost { background: transparent; color: var(--on-band); border-color: rgba(251, 245, 233, 0.6); }
   .band .fld { color: #fbf5e9; }
-  .band .hint { color: #ffe0a0; }
+  .band .hint { color: #f4d68a; }
   .band .demo-note { color: rgba(251, 245, 233, 0.82); }
   .band .mock-note { border-color: rgba(251, 245, 233, 0.6); }
   .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 48px; align-items: start; }
@@ -453,7 +480,7 @@
 
   /* ---------- FOOTER ---------- */
   footer { background: var(--milpa); color: #f3ead2; padding-block: 56px 96px; font-size: 14.5px; position: relative; overflow: hidden; }
-  footer a { color: #ffe0a0; }
+  footer a { color: #f4d68a; }
   .foot-in { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
   .foot-badge { width: 120px; height: auto; cursor: pointer; background: none; border: 0; padding: 0; filter: var(--badge-lift); }
   .foot-badge img { width: 100%; height: auto; display: block; }
@@ -466,13 +493,13 @@
   .b88 { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
   .b88 a { display: grid; place-items: center; width: 132px; height: 46px; box-sizing: border-box; text-decoration: none; text-align: center;
     font-family: 'DotGothic16', 'Courier New', monospace; font-size: 13px; line-height: 1.1; letter-spacing: 0.05em; text-transform: uppercase;
-    color: var(--bi, #fff); background: var(--bb, #1c6f77); border: 1px solid #10140a;
+    color: var(--bi, #fff); background: var(--bb, #0b6d8f); border: 1px solid #1f1211;
     box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.42), inset -2px -2px 0 rgba(0, 0, 0, 0.32); transition: translate 0.15s ease; }
   .b88 a > span { grid-area: 1 / 1; padding: 0 6px; }
   .b88 .f2 { opacity: 0; }
   .b88 a:hover { translate: 0 -2px; }
   .b88 a:active { translate: 0 1px; box-shadow: inset -2px -2px 0 rgba(255, 255, 255, 0.42), inset 2px 2px 0 rgba(0, 0, 0, 0.32); }
-  .b88 a:focus-visible { outline: 2px solid #ffe0a0; outline-offset: 3px; }
+  .b88 a:focus-visible { outline: 2px solid #f4d68a; outline-offset: 3px; }
   @media (prefers-reduced-motion: no-preference) {
     .b88 .f1 { animation: f88a 3.2s steps(1) infinite; animation-delay: calc(var(--k, 0) * -0.7s); }
     .b88 .f2 { animation: f88b 3.2s steps(1) infinite; animation-delay: calc(var(--k, 0) * -0.7s); }
@@ -521,7 +548,7 @@
   .sunrise .sun img { width: 100%; height: auto; display: block; }
   .sunrise .words { position: relative; z-index: 2; translate: 0 -30vh; opacity: 0; transition: opacity 2s ease 3s; padding: 0 20px; }
   .sunrise.up .words { opacity: 1; }
-  .sunrise h2 { color: #ffe0a0; font-size: clamp(34px, 7vw, 64px); }
+  .sunrise h2 { color: #f4d68a; font-size: clamp(34px, 7vw, 64px); }
   .sunrise p { margin-top: 8px; font-size: 17px; }
   .sunrise small { display: block; margin-top: 14px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
   @media (prefers-reduced-motion: reduce) { .sunrise .sun, .sunrise .words { transition: none; } }
@@ -535,15 +562,15 @@
   .flash-mat { position: relative; margin-top: 30px; padding: 22px; border-radius: 22px; background: var(--kraft); border: 1px solid var(--hair); }
   .flash-mat .flash { position: relative; margin-top: 0; }
   .flash-mat .fcard { background: var(--ground); }
-  :root { --kraft: #e8d3ad; --kraft-ink: rgba(122, 82, 30, 0.2); }
-  :root[data-theme="dark"] { --kraft: #2a2317; --kraft-ink: rgba(240, 184, 74, 0.1); }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --kraft: #2a2317; --kraft-ink: rgba(240, 184, 74, 0.1); } }
+  :root { --kraft: #e6c98f; --kraft-ink: rgba(140, 86, 24, 0.2); }
+  :root[data-theme="dark"] { --kraft: #2b1f15; --kraft-ink: rgba(230, 185, 85, 0.1); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --kraft: #2b1f15; --kraft-ink: rgba(230, 185, 85, 0.1); } }
   /* her hand poke flash as full-bleed grounds, like wallpaper on the studio wall. The tiles (images/art/gr-*.webp) are ink masks
      cut from her own three hand poke sheets, so every dot is hers; CSS colors them. Words always sit on a solid plate or card,
      the pattern only shows around them. Nothing here moves. */
-  :root { --gr-kraft: #e8d3ad; --gr-kraft-ink: rgba(92, 58, 18, 0.15); --gr-green-ink: rgba(93, 115, 34, 0.16); --gr-teal-ink: rgba(28, 111, 119, 0.12); --gr-rb: 0.2; }
-  :root[data-theme="dark"] { --gr-kraft: #231d12; --gr-kraft-ink: rgba(240, 184, 74, 0.085); --gr-green-ink: rgba(170, 196, 98, 0.08); --gr-teal-ink: rgba(108, 195, 196, 0.08); --gr-rb: 0.13; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --gr-kraft: #231d12; --gr-kraft-ink: rgba(240, 184, 74, 0.085); --gr-green-ink: rgba(170, 196, 98, 0.08); --gr-teal-ink: rgba(108, 195, 196, 0.08); --gr-rb: 0.13; } }
+  :root { --gr-kraft: #e2c286; --gr-kraft-ink: rgba(110, 62, 16, 0.16); --gr-green-ink: rgba(163, 50, 58, 0.11); --gr-teal-ink: rgba(11, 109, 143, 0.12); --gr-rb: 0.2; }
+  :root[data-theme="dark"] { --gr-kraft: #2a1d14; --gr-kraft-ink: rgba(230, 185, 85, 0.085); --gr-green-ink: rgba(239, 138, 134, 0.08); --gr-teal-ink: rgba(92, 194, 230, 0.08); --gr-rb: 0.13; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --gr-kraft: #2a1d14; --gr-kraft-ink: rgba(230, 185, 85, 0.085); --gr-green-ink: rgba(239, 138, 134, 0.08); --gr-teal-ink: rgba(92, 194, 230, 0.08); --gr-rb: 0.13; } }
   .gr { position: relative; isolation: isolate; overflow-x: clip; background: var(--gr-bg, var(--ground)); --gr-w: 640px; --gr-h: 320px; }
   .gr::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--gr-ink);
     -webkit-mask: var(--gr-tile) 50% 0 / var(--gr-w) var(--gr-h) repeat; mask: var(--gr-tile) 50% 0 / var(--gr-w) var(--gr-h) repeat; }
@@ -623,6 +650,33 @@
   .ig-grid .photo:hover img { filter: brightness(1.07) saturate(1.05); }
   .ig-grid .photo:hover { outline: 2px solid var(--igx); outline-offset: -2px; }
   @media (max-width: 640px) { .igx-follow { width: 100%; } .igx-follow a { width: 100%; justify-content: center; box-sizing: border-box; } }
+
+  /* ---------- MERCH: her own hand printed tee, with a stock count that turns to sold out on its own (In Bloom) ---------- */
+  .merch { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr); gap: 28px; margin-top: 30px; align-items: start; }
+  .merch .flash-mat { margin-top: 0; }
+  .tee { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--ground); border: 1px solid var(--hair); border-radius: 16px; overflow: hidden; }
+  .tee .photo { border-radius: 0; min-height: 340px; }
+  .tee .photo img { position: absolute; inset: 0; object-position: 50% 40%; }
+  .tee.is-sold .photo img { filter: saturate(0.55) brightness(0.92); }
+  .tee-stamp { position: absolute; z-index: 2; top: 16px; left: 14px; display: grid; place-items: center; width: 92px; height: 92px; box-sizing: border-box; border-radius: 50%; text-align: center;
+    font-family: 'Dosis', sans-serif; font-weight: 800; font-size: 17px; line-height: 1.05; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px;
+    color: #fbf5e9; background: #a3323a; border: 3px double #fbf5e9; box-shadow: 0 0 0 2px #a3323a, 0 8px 18px -8px rgba(20, 10, 6, 0.6); rotate: -12deg; pointer-events: none; }
+  .tee-body { padding: 20px 20px 22px; display: grid; gap: 8px; align-content: start; }
+  .tee-body h3 { font-size: 25px; line-height: 1.08; text-transform: uppercase; color: var(--ink); }
+  .tee-body .soft { font-size: 15px; }
+  .tee-run { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 2px; }
+  .tee-ltd { font-family: 'Dosis', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--crimson); border: 1.5px solid var(--crimson); border-radius: 999px; padding: 2px 10px; }
+  .tee-left { font-size: 14.5px; font-weight: 700; color: var(--teal-deep); font-variant-numeric: tabular-nums; }
+  .tee .seg { margin-top: 2px; }
+  .tee .seg button { font-family: 'Dosis', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.06em; }
+  .tee .seg button:disabled { cursor: default; text-decoration: line-through; text-decoration-thickness: 2px; opacity: 0.55; }
+  .tee .bk-go { width: 100%; margin-top: 6px; }
+  .tee-bag { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .tee-bag:empty { display: none; }
+  .tee .demo-note { margin-top: 2px; }
+  .tee-again { justify-self: start; font: inherit; font-size: 14.5px; font-weight: 700; color: var(--teal-deep); background: none; border: 0; padding: 8px 2px; min-height: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 860px) { .merch { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 600px) { .tee { grid-template-columns: minmax(0, 1fr); } .tee .photo { min-height: 0; aspect-ratio: 524 / 536; } .tee-stamp { width: 80px; height: 80px; font-size: 15px; } }
 </style>
 
 <script>
@@ -660,7 +714,7 @@
 
 <style id="wf-snav">
   /* ---------- STICKY NAV (Oct 7 2026): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; styled from this page's own colors and fonts ---------- */
-  :root { --sn-h: 60px; --sn-bg: #2a2014; --sn-fg: #fbf5e9; }
+  :root { --sn-h: 60px; --sn-bg: #2a1817; --sn-fg: #fbf5e9; }
   [id] { scroll-margin-top: calc(var(--sn-h) + 16px); }
   #top, .snav-gap { scroll-margin-top: 0; }
   .snav-wrap { position: sticky; top: 0; height: 0; z-index: 26; }
@@ -698,9 +752,9 @@
   .snav-lang { display: inline-flex; align-items: center; pointer-events: auto; padding-left: 8px; border-left: 1px solid rgba(251, 245, 233, 0.35);
     font-family: 'Urbanist', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.14em; line-height: 1; color: var(--sn-fg); }
   .snav-lang button { min-width: 44px; min-height: 44px; margin: 0; padding: 0 6px 0 calc(6px + 0.14em); cursor: pointer; font: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; border-radius: 8px; -webkit-appearance: none; appearance: none;
-    opacity: 0.8; text-shadow: 0 1px 3px rgba(20, 14, 6, 0.6), 0 0 14px rgba(20, 14, 6, 0.5); }
-  .snav-lang button:hover { opacity: 1; color: #ffe3a6; }
-  .snav-lang button[aria-pressed="true"] { opacity: 1; color: #ffe3a6; text-decoration: underline; text-decoration-color: var(--s4); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+    opacity: 0.8; text-shadow: 0 1px 3px rgba(30, 14, 12, 0.6), 0 0 14px rgba(30, 14, 12, 0.5); }
+  .snav-lang button:hover { opacity: 1; color: #f6dc95; }
+  .snav-lang button[aria-pressed="true"] { opacity: 1; color: #f6dc95; text-decoration: underline; text-decoration-color: var(--s4); text-decoration-thickness: 2px; text-underline-offset: 6px; }
   .snav-lang-dot { opacity: 0.6; }
   .snav-menu-lang { display: none; }
   @media (max-width: 760px) {
@@ -720,6 +774,7 @@
           <a href="#work">Work</a>
           <a href="#flash">Flash</a>
           <a href="#about">About</a>
+          <a href="#merch" data-show="crone all">Merch</a>
           <a href="#aftercare" data-show="mother crone all">Aftercare</a>
           <a href="#visit" data-show="mother crone all">Book</a>
           <a href="#visit" data-show="maiden" hidden>Contact</a>
@@ -730,14 +785,19 @@
 </header>
 </div>
 <div class="hero-band">
-  <figure class="hero-art" id="hero-art" aria-label="Tattoos by Roxanne">
-    <img class="on" src="images/w-butterflies.webp" width="1100" height="1100" alt="Two butterflies with small flowers in fine line and pepper shading, down a calf" fetchpriority="high">
+  <figure class="hero-art is-painting" id="hero-art" aria-label="Art by Roxanne">
+    <img class="on hero-painting" src="images/hero-tlaltecuhtli.webp" width="1050" height="1069" alt="Her painting of Tlaltecuhtli, the spirit of the earth: a yellow figure with arms raised, a feathered red face, turquoise ear spools and a red disc at her center" fetchpriority="high">
+    <img data-src="images/w-butterflies.webp" width="1100" height="1100" alt="Two butterflies with small flowers in fine line and pepper shading, down a calf">
     <img data-src="images/w-hummingbird.webp" width="1074" height="1075" alt="A hummingbird, huitzil, with spread wings under leaves, in black and gray">
     <img data-src="images/w-cempasuchil.webp" width="1100" height="1098" alt="A cempasuchil held by a skeleton hand, her favorite flower, in black and gray">
     <img data-src="images/w-eye-hand.webp" width="1100" height="825" alt="A custom hand tattoo with an eye on the back of the hand" style="--pos:50% 40%">
     <div class="hero-pick" role="group" aria-label="Choose a tattoo">
-      <button type="button" aria-pressed="true" aria-label="Butterflies"></button><button type="button" aria-pressed="false" aria-label="Hummingbird"></button><button type="button" aria-pressed="false" aria-label="Cempasuchil"></button><button type="button" aria-pressed="false" aria-label="Eye hand"></button>
+      <button type="button" aria-pressed="true" aria-label="Tlaltecuhtli painting"></button><button type="button" aria-pressed="false" aria-label="Butterflies"></button><button type="button" aria-pressed="false" aria-label="Hummingbird"></button><button type="button" aria-pressed="false" aria-label="Cempasuchil"></button><button type="button" aria-pressed="false" aria-label="Eye hand"></button>
       <button type="button" class="hp-pause" aria-label="Pause the photos" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><rect class="ic-pause" x="2" y="1.5" width="2.8" height="9" rx="0.8"/><rect class="ic-pause" x="7.2" y="1.5" width="2.8" height="9" rx="0.8"/><path class="ic-play" d="M3 1.5v9l7.5-4.5z" style="display:none"/></svg></button>
+    </div>
+    <div class="hero-cap">
+      <button type="button" class="hero-cap-btn" id="hero-cap-btn" aria-expanded="false" aria-controls="hero-cap-txt">About this painting</button>
+      <p class="hero-cap-txt" id="hero-cap-txt" hidden><button type="button" class="hero-cap-x" id="hero-cap-x" aria-label="Close">&times;</button><b>Tlaltecuhtli, painting by Roxanne</b> <span>Tlaltecuhtli is the spirit of the earth. In the old story, the gods made the world on her back: her hair became trees, flowers and grasses, and her eyes became wells and springs.</span> <a href="#tlaltecuhtli">Her story</a></p>
     </div>
   </figure>
 <div class="snav-gap" aria-hidden="true"></div>
@@ -766,7 +826,7 @@
     if (!h || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     h.classList.add('wait');
     var started = false, go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
-    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/w-butterflies.webp'; if (im.complete) go(); setTimeout(go, 1500);
+    var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-tlaltecuhtli.webp'; if (im.complete) go(); setTimeout(go, 1500);
   })();
 
   /* the hero's tattoos: every 6 seconds the next one goes in dot by dot. Tap a dot to choose one, or pause.
@@ -781,13 +841,20 @@
       if (n === i) return; var prev = imgs[i], next = imgs[n];
       if (next.dataset.src) load();
       i = n; pick.forEach(function (b, k) { b.setAttribute('aria-pressed', k === n ? 'true' : 'false'); });
+      art.classList.toggle('is-painting', n === 0); if (n !== 0) capOpen(false);
       imgs.forEach(function (im) { im.classList.remove('poke'); if (im !== prev) im.classList.remove('on'); });
       next.classList.add('on');
       if (still) { prev.classList.remove('on'); return; }
       void next.offsetWidth; next.classList.add('poke');
       next.addEventListener('animationend', function done() { next.removeEventListener('animationend', done); if (imgs[i] === next) { prev.classList.remove('on'); next.classList.remove('poke'); } });
     }
-    function tick() { if (paused || !onScreen || document.hidden) return; var n = (i + 1) % imgs.length; if (imgs[n].complete && imgs[n].naturalWidth) show(n); }
+    var capB = document.getElementById('hero-cap-btn'), capT = document.getElementById('hero-cap-txt');
+    function quietFocusB(el) { try { el.focus({ preventScroll: true }); } catch (e) {} }
+    function capOpen(o) { if (!capB) return; capT.hidden = !o; capB.setAttribute('aria-expanded', o ? 'true' : 'false'); art.classList.toggle('cap-open', o); }
+    if (capB) capB.addEventListener('click', function () { capOpen(capT.hidden); if (!capT.hidden && !capB.offsetParent) quietFocusB(document.getElementById('hero-cap-x')); });
+    var capX = document.getElementById('hero-cap-x'); if (capX) capX.addEventListener('click', function () { capOpen(false); quietFocusB(capB); });
+    art.addEventListener('keydown', function (e) { if (e.key === 'Escape' && capT && !capT.hidden) { capOpen(false); capB.focus(); } });
+    function tick() { if (paused || art.classList.contains('cap-open') || !onScreen || document.hidden) return; var n = (i + 1) % imgs.length; if (imgs[n].complete && imgs[n].naturalWidth) show(n); }
     function start() { clearInterval(t); if (!paused) t = setInterval(tick, 6000); }
     pick.forEach(function (b, k) { b.addEventListener('click', function () { show(k); start(); }); });
     function paintPause() {
@@ -810,7 +877,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="0" data-tier-founding="0" data-tier-build="A $300 tattoo trade, no build fee" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your work, flash, hand poke, about you, DM or email to book, and the whole page in English and Spanish."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300 tattoo trade</strong></span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="0" data-tier-founding="0" data-tier-build="A $600 tattoo trade, no build fee" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus your own request form with reference photos, aftercare in English and Spanish, books open alerts, an FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600 tattoo trade</strong></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A $900 tattoo trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits, claimable flash and gift cards through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900 tattoo trade</strong></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A $900 tattoo trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits, claimable flash, gift cards and merch with stock counts, through your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900 tattoo trade</strong></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one: $12, $45 or $90 a month, matching your build: hosting, backups, your web address (I hold and renew it for you, and it&rsquo;s legally yours), and any change: I follow your socials and update as you post, or you email me. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -934,7 +1001,12 @@
       <div class="painting" data-lightbox>
         <figure class="photo"><img src="images/tlaltecuhtli.webp" width="900" height="917" alt="Her painting of Tlaltecuhtli, spirit of the earth, in yellow, red and turquoise" loading="lazy"></figure>
         <figure class="photo"><img src="images/hero.webp" width="900" height="1200" alt="Roxanne drawing in her sketchbook beside her Tlaltecuhtli painting" loading="lazy" style="object-position:50% 70%"></figure>
-        <p>Her painting of Tlaltecuhtli, the spirit of the earth.</p>
+      </div>
+      <div class="story plate" id="tlaltecuhtli">
+        <h3>Tlaltecuhtli, the spirit of the earth</h3>
+        <blockquote class="story-q"><p>&ldquo;Here she is, the painting reveal.&rdquo;</p><p class="story-by">Roxanne, on Instagram</p></blockquote>
+        <p>In the old story, she was a great creature like a cayman, swimming in the first waters. Quetzalcoatl and Tezcatlipoca fought her to make a solid place for life, and Tezcatlipoca lost his foot in the struggle.</p>
+        <p>The gods made the world on her back: her hair became trees, flowers and grasses, her eyes became wells and springs, and her shoulders became mountains. Roxanne painted her and revealed her in August 2025.</p>
       </div>
     </div>
     <div class="bio plate">
@@ -1064,6 +1136,36 @@
         <p class="demo-note">Preview only. Nothing was charged.</p>
         <div class="bk-nav"><button type="button" class="bk-go ghost" id="pay-change">Change something</button><button type="button" class="bk-go ghost" id="pay-again">Try it again</button></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="merch" class="gutter gr gr-kraft gr-creatures" data-show="crone all" data-fold data-thing="merch with stock counts">
+  <div class="wrap" style="position:relative">
+    <div class="plate fit">
+    <span class="stripes" aria-hidden="true"></span>
+    <p class="label with-pill"><span>Merch</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom</span></p>
+    <h2 class="reveal">Hand printed, <em>in small runs</em></h2>
+    <p class="measure soft" style="margin-top:14px">Tees printed by hand, a few at a time. When a size is gone, it&rsquo;s gone.</p>
+    </div>
+    <div class="merch">
+      <div class="flash-mat">
+        <article class="tee reveal" id="tee">
+          <figure class="photo" data-lightbox><img src="images/merch-tee.webp" width="524" height="536" alt="A maroon tee hand printed in white, TLANEXTIC TATTOO arched over a big serpent glyph, worn outdoors among green leaves" loading="lazy"><span class="tee-stamp" id="tee-stamp" hidden>Sold out</span></figure>
+          <div class="tee-body">
+            <h3>Hand printed Tlanextic tee</h3>
+            <p class="soft">Maroon, printed by hand in white: TLANEXTIC TATTOO over a big serpent glyph.</p>
+            <div class="tee-run"><span class="tee-ltd">Limited run</span> <span class="tee-left" id="tee-left" role="status"></span></div>
+            <p class="q" id="tee-size-q">Size</p>
+            <div class="seg three" role="group" aria-labelledby="tee-size-q"><button type="button" data-size="S" aria-pressed="false">S</button><button type="button" data-size="M" aria-pressed="true">M</button><button type="button" data-size="L" aria-pressed="false">L</button></div>
+            <button type="button" class="bk-go" id="tee-add">Add to bag</button>
+            <p class="tee-bag" id="tee-bag" role="status"></p>
+            <p class="demo-note">Preview: on your real site the bag opens your own Stripe checkout. Nothing is charged.</p>
+            <button type="button" class="tee-again" id="tee-again" hidden>Start over</button>
+          </div>
+        </article>
+      </div>
+      <div class="mock-note wf-note" style="font-size:14.5px"><p>Your tees are so good! In Bloom has room for a little merch like this, with stock counts so it shows sold out on its own.</p><p>Tap Add to bag a few times to see it.</p></div>
     </div>
   </div>
 </section>
@@ -1261,11 +1363,11 @@
       <p>Roxanne Andrade &middot; 1433 11th St, Suite G, Arcata &middot; by appointment</p>
       <p style="margin-top:4px"><a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a> &middot; <a href="mailto:Sweetflowersan@gmail.com">Sweetflowersan@gmail.com</a></p>
       <ul class="b88" aria-label="Shortcuts">
-        <li style="--k:0;--bb:#1c6f77"><a id="b88-books" href="#request"><span class="f1">&#10047; books open</span> <span class="f2">send your idea</span></a></li>
-        <li style="--k:1;--bb:#e2a72f;--bi:#1f2416"><a href="#handpoke"><span class="f1">hand poke</span> <span class="f2">$175 to $200</span></a></li>
-        <li style="--k:2;--bb:#a25752" data-show="mother crone all"><a href="#aftercare"><span class="f1">aftercare</span> <span class="f2">en &#10047; es</span></a></li>
-        <li style="--k:3;--bb:#9b1b24"><a href="#visit"><span class="f1">by appt</span> <span class="f2">arcata</span></a></li>
-        <li style="--k:4;--bb:#5d7322"><a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener"><span class="f1">@tlanextic</span> <span class="f2">instagram</span></a></li>
+        <li style="--k:0;--bb:#0b6d8f"><a id="b88-books" href="#request"><span class="f1">&#10047; books open</span> <span class="f2">send your idea</span></a></li>
+        <li style="--k:1;--bb:#d4a33e;--bi:#2b1b19"><a href="#handpoke"><span class="f1">hand poke</span> <span class="f2">$175 to $200</span></a></li>
+        <li style="--k:2;--bb:#b4706b" data-show="mother crone all"><a href="#aftercare"><span class="f1">aftercare</span> <span class="f2">en &#10047; es</span></a></li>
+        <li style="--k:3;--bb:#a3323a"><a href="#visit"><span class="f1">by appt</span> <span class="f2">arcata</span></a></li>
+        <li style="--k:4;--bb:#0d5d78"><a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener"><span class="f1">@tlanextic</span> <span class="f2">instagram</span></a></li>
       </ul>
       <p class="legend" data-en-only>Tags show which build includes each piece: <span class="tag" data-go="maiden">Planted</span>, <span class="tag" data-go="mother">Tended</span>, <span class="tag" data-go="crone">In Bloom</span>.</p>
       <div class="tier-note mock-note wf-note" style="margin-top:18px"><p>I love your work, so instead of paying for the build, I&rsquo;d love to trade it for a tattoo: about $300 of your work for Planted, $600 for Tended or $900 for In Bloom. Then it&rsquo;s just the monthly subscription for the size you pick: $12, $45 or $90 a month.</p></div>
@@ -1282,7 +1384,7 @@
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="0" data-tier-founding="0" data-tier-build="A $300 tattoo trade, no build fee" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your work, flash, hand poke, about you, DM or email to book, and the whole page in English and Spanish."><b>Planted</b><span class="pr"><strong>$300 tattoo trade</strong></span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="0" data-tier-founding="0" data-tier-build="A $600 tattoo trade, no build fee" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus your own request form with reference photos, aftercare in English and Spanish, books open alerts, an FAQ and your Instagram feed."><b>Tended</b><span class="pr"><strong>$600 tattoo trade</strong></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A $900 tattoo trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits, claimable flash and gift cards through your own Stripe."><b>In Bloom</b><span class="pr"><strong>$900 tattoo trade</strong></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A $900 tattoo trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus deposits, claimable flash, gift cards and merch with stock counts, through your own Stripe."><b>In Bloom</b><span class="pr"><strong>$900 tattoo trade</strong></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr">with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="pr">from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one: $12, $45 or $90 a month, matching your build: hosting, backups, your web address (I hold and renew it for you, and it&rsquo;s legally yours), and any change: I follow your socials and update as you post, or you email me. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1598,6 +1700,34 @@
       $('nl-again').addEventListener('click', function () { form.reset(); $('nl-done').hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
     })();
 
+    /* merch: her hand printed tee. Demo stock per size; every add counts it down, and at zero it shows sold out on its own */
+    (function () {
+      var card = $('tee'); if (!card) return;
+      var START = { S: 1, M: 2, L: 2 }, sizes = all(card, '[data-size]'), add = $('tee-add'), st;
+      function total(o) { return o.S + o.M + o.L; }
+      function paint() {
+        var out = total(st.stock) === 0, left = st.stock[st.size], n = total(st.bag);
+        sizes.forEach(function (b) { var k = b.dataset.size; b.disabled = st.stock[k] === 0; b.setAttribute('aria-pressed', k === st.size && !out ? 'true' : 'false'); b.setAttribute('aria-label', st.stock[k] === 0 ? T(k + ', sold out', k + ', agotada') : k); });
+        card.classList.toggle('is-sold', out); $('tee-stamp').hidden = !out; $('tee-stamp').textContent = T('Sold out', 'Agotada');
+        $('tee-left').textContent = out ? T('All sold out', 'Todas agotadas') : T(left + ' left in ' + st.size, (left === 1 ? 'Queda 1' : 'Quedan ' + left) + ' en ' + st.size);
+        add.disabled = out; add.textContent = out ? T('Sold out', 'Agotada') : T('Add to bag', 'Agregar a la bolsa');
+        var parts = ['S', 'M', 'L'].filter(function (k) { return st.bag[k]; }).map(function (k) { return st.bag[k] + ' ' + k; });
+        $('tee-bag').textContent = n ? T('In your bag: ' + n + (n === 1 ? ' tee' : ' tees') + ' (' + parts.join(', ') + ')', 'En tu bolsa: ' + n + (n === 1 ? ' camiseta' : ' camisetas') + ' (' + parts.join(', ') + ')') : '';
+        $('tee-again').hidden = !n; $('tee-again').textContent = T('Start over', 'Empezar de nuevo');
+      }
+      function reset() { st = { size: 'M', stock: { S: START.S, M: START.M, L: START.L }, bag: { S: 0, M: 0, L: 0 } }; paint(); }
+      sizes.forEach(function (b) { b.addEventListener('click', function () { if (b.disabled) return; st.size = b.dataset.size; paint(); }); });
+      add.addEventListener('click', function () {
+        if (!st.stock[st.size]) return;
+        st.stock[st.size]--; st.bag[st.size]++;
+        if (!st.stock[st.size]) { var next = ['S', 'M', 'L'].filter(function (k) { return st.stock[k]; })[0]; if (next) st.size = next; }
+        paint(); if (add.disabled) quietFocus($('tee-again'));
+      });
+      $('tee-again').addEventListener('click', function () { reset(); quietFocus(add); });
+      document.addEventListener('tt:lang', paint);
+      reset();
+    })();
+
     /* secret: the sun rises (type "tlanextic", or tap the footer badge three times) */
     (function () {
       var ov = $('sunrise'), open = false, back = null; if (!ov) return;
@@ -1629,7 +1759,7 @@
     var V = {
       maiden: { name: 'Planted', price: 'a $300 tattoo trade', what: 'one page, planted and kept healthy: your work, flash, hand poke, about you, DM or email to book, and the whole page in English and Spanish.', next: 'mother' },
       mother: { name: 'Tended', price: 'a $600 tattoo trade', what: 'a full site, tended through the seasons: your own request form (reference photos included), aftercare in English and Spanish, books open alerts, an FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: 'a $900 tattoo trade', what: 'your site in full bloom: everything in Tended, plus deposits, claimable flash and gift cards through your own Stripe.' },
+      crone: { name: 'In Bloom', price: 'a $900 tattoo trade', what: 'your site in full bloom: everything in Tended, plus deposits, claimable flash, gift cards and merch with stock counts, through your own Stripe.' },
       all: { name: 'Everything' }
     };
     var view = 'all', shows = [].slice.call(document.querySelectorAll('[data-show]')), things = [].slice.call(document.querySelectorAll('[data-thing]'));
@@ -1727,6 +1857,23 @@
      keys, by textContent only, no HTML. Taya's notes, the build tags and the mockup tools stay in English: they speak to Roxanne. */
   (function () {
     var D = {
+      'Close': 'Cerrar',
+      'Art by Roxanne': 'Arte de Roxanne', 'Tlaltecuhtli painting': 'Pintura de Tlaltecuhtli', 'About this painting': 'Sobre esta pintura',
+      'Her painting of Tlaltecuhtli, the spirit of the earth: a yellow figure with arms raised, a feathered red face, turquoise ear spools and a red disc at her center': 'Su pintura de Tlaltecuhtli, el espíritu de la tierra: una figura amarilla con los brazos en alto, un rostro rojo de plumas, orejeras turquesa y un disco rojo en su centro',
+      'Tlaltecuhtli, painting by Roxanne': 'Tlaltecuhtli, pintura de Roxanne',
+      'Tlaltecuhtli is the spirit of the earth. In the old story, the gods made the world on her back: her hair became trees, flowers and grasses, and her eyes became wells and springs.': 'Tlaltecuhtli es el espíritu de la tierra. En la historia antigua, los dioses hicieron el mundo sobre su espalda: su cabello se volvió árboles, flores y pastos, y sus ojos se volvieron pozos y manantiales.',
+      'Her story': 'Su historia',
+      'Tlaltecuhtli, the spirit of the earth': 'Tlaltecuhtli, el espíritu de la tierra',
+      '“Here she is, the painting reveal.”': '“Aquí está, la revelación de la pintura.”', 'Roxanne, on Instagram': 'Roxanne, en Instagram',
+      'In the old story, she was a great creature like a cayman, swimming in the first waters. Quetzalcoatl and Tezcatlipoca fought her to make a solid place for life, and Tezcatlipoca lost his foot in the struggle.': 'En la historia antigua, ella era una gran criatura parecida a un caimán, que nadaba en las primeras aguas. Quetzalcóatl y Tezcatlipoca lucharon con ella para crear un lugar firme para la vida, y Tezcatlipoca perdió un pie en la lucha.',
+      'The gods made the world on her back: her hair became trees, flowers and grasses, her eyes became wells and springs, and her shoulders became mountains. Roxanne painted her and revealed her in August 2025.': 'Los dioses hicieron el mundo sobre su espalda: su cabello se volvió árboles, flores y pastos, sus ojos se volvieron pozos y manantiales, y sus hombros se volvieron montañas. Roxanne la pintó y la presentó en agosto de 2025.',
+      'Merch': 'Mercancía', 'Hand printed,': 'Estampadas a mano,', 'in small runs': 'en tiradas pequeñas',
+      'Tees printed by hand, a few at a time. When a size is gone, it’s gone.': 'Camisetas estampadas a mano, unas cuantas a la vez. Cuando se acaba una talla, se acabó.',
+      'Hand printed Tlanextic tee': 'Camiseta Tlanextic estampada a mano',
+      'Maroon, printed by hand in white: TLANEXTIC TATTOO over a big serpent glyph.': 'Color guinda, estampada a mano en blanco: TLANEXTIC TATTOO sobre un gran glifo de serpiente.',
+      'Limited run': 'Edición limitada', 'Size': 'Talla',
+      'Preview: on your real site the bag opens your own Stripe checkout. Nothing is charged.': 'Vista previa: en tu sitio real, la bolsa abre tu propio pago de Stripe. No se cobra nada.',
+      'A maroon tee hand printed in white, TLANEXTIC TATTOO arched over a big serpent glyph, worn outdoors among green leaves': 'Una camiseta guinda estampada a mano en blanco, con TLANEXTIC TATTOO en arco sobre un gran glifo de serpiente, puesta al aire libre entre hojas verdes',
       'Skip to the work': 'Saltar a los trabajos',
       'Menu': 'Menú',
       'Work': 'Trabajos', 'About': 'La artista', 'Aftercare': 'Cuidados', 'Book': 'Agendar', 'Contact': 'Contacto',
@@ -1766,7 +1913,6 @@
       'Five spots that day': 'Cinco lugares ese día',
       'Where': 'Dónde', 'Her studio, 1433 11th St, Suite G, Arcata': 'Su estudio, 1433 11th St, Suite G, Arcata', 'Direct message': 'Mensaje directo a',
       /* about */
-      'Her painting of Tlaltecuhtli, the spirit of the earth.': 'Su pintura de Tlaltecuhtli, el espíritu de la tierra.',
       'Meet the artist': 'Conoce a la artista',
       /* request */
       'Tell her': 'Cuéntale', 'what you’re dreaming up': 'lo que estás soñando',
@@ -1885,7 +2031,7 @@
     var TITLE = ['Tlanextic Tattoos | Roxanne Andrade, Tattoo Artist in Arcata', 'Tlanextic Tattoos | Roxanne Andrade, tatuadora en Arcata'];
     /* kept in English on purpose: Taya's notes, the build tags and every mockup tool; and the parts the page's own scripts fill in (they listen for tt:lang) */
     var SKIP = '.wf-note, .mock-note, .tier-note, .tag, .bk-demo, #views, #vp, .ribbon, #found, .status-panel, #status-try, #theme-tab, [data-l], [data-en-only], .snav-lang, .snav-menu-lang, .lb, .wfm, .wfm-bar, .wfm-pop, .wfm-panel, .wfm-pin, [class^="wf-"], [class*=" wf-"]'
-      + ', #status-label, #status-cta, #b88-books, #dial-t, .claim, #claim-note, #slot-note, #rq-go, #rq-hint, #rq-done-h, #rq-done-t, #rq-sum, #rq-files, #pay-item, #pay-price, #pay-total, #pay-sub, #pay-done-t, #pay-hint, #nl-hint, #nl-to, #theme-live, #status-live';
+      + ', #status-label, #status-cta, #b88-books, #dial-t, .claim, #claim-note, #slot-note, #rq-go, #rq-hint, #rq-done-h, #rq-done-t, #rq-sum, #rq-files, #pay-item, #pay-price, #pay-total, #pay-sub, #pay-done-t, #pay-hint, #nl-hint, #nl-to, #theme-live, #status-live, #tee-left, #tee-add, #tee-bag, #tee-again, #tee-stamp, .tee .seg';
     var ATTRS = ['alt', 'aria-label', 'placeholder'];
     var textEn = new WeakMap(), attrEn = new WeakMap(), root = document.documentElement;
     function norm(t) { return t.replace(/\s+/g, ' ').trim(); }

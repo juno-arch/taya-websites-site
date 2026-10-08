@@ -37,3 +37,12 @@ Her words (bio, aftercare in English and Spanish) are from the same "Meet the ar
   - gr-suns: flower sun, star, spiral sun, butterfly sun, stepped spiral, antenna sun, hook spiral (sheets one and two)
   - gr-milpa: maize, fret, star, crossed bands, stepped spiral, flower, spiral sun (sheet two, plus the spiral sun from sheet one)
   - gr-creatures: butterfly, frog and lizard from sheet one; both patterned butterflies, the frog and the lizard from sheet three
+
+## Oct 8 2026: her merch and her painting as the hero
+
+| File | Source |
+|---|---|
+| merch-tee.jpg / .webp | her own photo, from her Instagram post of Jan 19 2025 ("T-Shirts Available!"), photo 1; cropped from Pollen's screenshot to the shirt only (no Instagram buttons; the model's face stays out of frame, cropped at the chin) |
+| hero-tlaltecuhtli.jpg / .webp | her Tlaltecuhtli painting, same post as tlaltecuhtli.jpg (instagram.com/p/DM3v4KKyGNX, Aug 2 2025), made sharper from the 1078x1120 capture (prospects/batch4/tlanextic-tattoos/ig/art-tlaltecuhtli-painting.png), cropped to the canvas edge; her mark bottom right kept |
+
+The Tlaltecuhtli story on the page is retold in our own words; only her line "Here she is, the painting reveal." is quoted from her post.
