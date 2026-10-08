@@ -117,7 +117,7 @@
   .btn.quiet { background: transparent; color: var(--teal-deep); }
   .btn.quiet:hover { background: var(--ground-2); }
 
-  /* ---------- HERO: her own photo, drawing beside her Tlaltecuhtli painting ---------- */
+  /* ---------- HERO: her Tlaltecuhtli painting, full screen ---------- */
   header.top { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; padding-block: 44px 0; }
   .mark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--on-band); }
   .mark img { width: 44px; height: auto; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35)); }
@@ -127,22 +127,19 @@
   nav a { color: var(--on-band); text-decoration: none; padding: 10px 6px; line-height: 24px; font-weight: 600; text-shadow: 0 1px 3px rgba(30, 14, 12, 0.6), 0 0 14px rgba(30, 14, 12, 0.5); }
   nav a:hover { color: #f6dc95; }
 
-  /* HERO: her own tattoos, big, and each new one goes in dot by dot, like a hand poke. Words sit on dark paper printed with her flash */
+  /* HERO: her Tlaltecuhtli painting, full screen and edge to edge (Pollen's note, Oct 8). Her words sit on a soft dark wash over the painting */
   .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #2a1817; color: var(--on-band); }
   .hero-band > .gutter { position: relative; z-index: 3; }
   .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: rgba(212, 163, 62, 0.1);
     -webkit-mask: url('images/art/pat-flash.webp') 0 0 / 300px 300px repeat; mask: url('images/art/pat-flash.webp') 0 0 / 300px 300px repeat; }
-  .hero-art { position: absolute; z-index: 1; top: 0; right: 0; bottom: 0; width: 54%; margin: 0; background: #1f1211; }
-  .hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); opacity: 0; }
-  .hero-art img.on { opacity: 1; }
-  @property --dot { syntax: '<length>'; inherits: false; initial-value: 0px; }
-  .hero-art img.poke { z-index: 1; -webkit-mask: radial-gradient(circle, #000 var(--dot), transparent calc(var(--dot) + 0.6px)) 50% 50% / 14px 14px; mask: radial-gradient(circle, #000 var(--dot), transparent calc(var(--dot) + 0.6px)) 50% 50% / 14px 14px; animation: poke-in 1.9s cubic-bezier(.5,0,.3,1) both; }
-  @keyframes poke-in { from { --dot: 0px; } to { --dot: 11px; } }
-  .hero-pick { position: absolute; z-index: 2; left: 14px; bottom: 14px; display: flex; gap: 2px; padding: 3px 4px; border-radius: 999px; background: rgba(34, 18, 16, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  /* her Tlaltecuhtli painting leads the hero: shown whole (her mark bottom right stays in), on the dark paper */
-  .hero-art img.hero-painting { object-fit: contain; object-position: 50% 100%; background-color: #1f1211; }
-  .hero-cap { position: absolute; z-index: 2; left: 14px; bottom: 56px; display: none; flex-direction: column-reverse; align-items: flex-start; gap: 8px; max-width: min(340px, calc(100% - 28px)); }
-  .hero-art.is-painting .hero-cap { display: flex; }
+  .hero-art { position: absolute; z-index: 1; inset: 0; width: 100%; margin: 0; background: #1f1211; }
+  /* cover, held near the top so her headdress, face and the red disc stay in frame on wide screens */
+  .hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 9%; }
+  /* the wash: dark at the left and bottom where her name and buttons sit, clear over her face and the disc */
+  .hero-art::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(90deg, rgba(34, 18, 16, 0.86) 0, rgba(34, 18, 16, 0.66) 26%, rgba(34, 18, 16, 0.2) 46%, rgba(34, 18, 16, 0) 58%),
+                linear-gradient(0deg, rgba(34, 18, 16, 0.55) 0, rgba(34, 18, 16, 0) 34%); }
+  .hero-cap { position: absolute; z-index: 2; right: 18px; bottom: 18px; display: flex; flex-direction: column-reverse; align-items: flex-end; gap: 8px; max-width: min(360px, calc(100% - 36px)); }
   .hero-cap-btn { min-height: 36px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #fbf5e9; background: rgba(34, 18, 16, 0.62); border: 1px solid rgba(251, 245, 233, 0.35); border-radius: 999px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .hero-cap-btn[aria-expanded="true"] { color: #f6dc95; border-color: #d4a33e; }
   .hero-cap-btn:focus-visible { outline: 2px solid #fbf5e9; outline-offset: 2px; }
@@ -151,24 +148,25 @@
   .hero-cap-txt a { color: #f4d68a; font-weight: 700; }
   .hero-cap-txt { position: relative; }
   .hero-cap-x { display: none; position: absolute; top: 2px; right: 2px; width: 40px; height: 40px; margin: 0; padding: 0; border: 0; background: none; color: #fbf5e9; font-size: 22px; line-height: 1; cursor: pointer; }
-  /* phones: the open caption sits low, over the skirt band, so her face and the red disc stay clear */
+  /* tall tablet screens: the painting runs behind more of the words, so the wash comes up from the bottom too */
+  @media (min-width: 761px) and (max-aspect-ratio: 1/1) {
+    .hero-art::after { background: linear-gradient(90deg, rgba(34, 18, 16, 0.7) 0, rgba(34, 18, 16, 0.3) 45%, rgba(34, 18, 16, 0) 70%), linear-gradient(0deg, rgba(34, 18, 16, 0.88) 0, rgba(34, 18, 16, 0.6) 32%, rgba(34, 18, 16, 0) 58%); }
+  }
+  /* phones: the button sits low on the painting, above her name; the open caption spans the painting with a close button */
   @media (max-width: 760px) {
-    .hero-art.cap-open .hero-pick, .hero-art.cap-open .hero-cap-btn { display: none; }
-    .hero-art.cap-open .hero-cap { left: 10px; right: 10px; bottom: 10px; max-width: none; }
+    .hero-cap { bottom: 198px; right: 12px; max-width: calc(100% - 24px); }  /* just above where her name rises onto the painting, under the red disc */
+    .hero-art.cap-open .hero-cap-btn { display: none; }
+    .hero-art.cap-open .hero-cap { left: 10px; right: 10px; max-width: none; }
     .hero-cap-txt { font-size: 13.5px; line-height: 1.45; padding: 10px 40px 11px 12px; }
     .hero-cap-txt b { font-size: 14px; }
     .hero-cap-x { display: block; }
   }
-  .hero-pick button { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; margin: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; color: #fbf5e9; }
-  .hero-pick button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid currentColor; box-sizing: border-box; }
-  .hero-pick button[aria-pressed="true"]::before { background: #d4a33e; border-color: #d4a33e; }
-  .hero-pick .hp-pause::before { display: none; }
-  .hero-pick button:focus-visible { outline: 2px solid #fbf5e9; outline-offset: -2px; }
   .hero-band::after { content: ""; position: absolute; inset: 0 0 auto; height: 150px; z-index: 2; pointer-events: none; background: linear-gradient(rgba(34, 18, 16, 0.62), rgba(34, 18, 16, 0)); }
   .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 40px 84px; }
   .hero-copy { max-width: 600px; }
   @media (min-width: 761px) {
-    .hero-main { width: 46%; box-sizing: border-box; padding-left: max(20px, calc((100% - 1040px) / 2)); padding-right: 34px; }
+    .hero-main { box-sizing: border-box; padding-left: max(28px, calc((100% - 1040px) / 2 - 120px)); padding-right: 24px; }
+    .hero-copy { max-width: min(560px, 44vw); }
     .hero-main > .wrap { margin: 0; }
     .hero-band .hero-copy h1 { font-size: clamp(46px, 5.6vw, 84px); }
   }
@@ -198,7 +196,10 @@
 
   @media (max-width: 760px) {
     .hero-band { min-height: 0; }
-    .hero-art { position: relative; order: -1; left: auto; right: auto; width: 100%; bottom: auto; height: min(calc(100vw + 84px), 78svh); flex: none; }  /* the extra 84px is dark headroom so the sticky nav sits above her painting's headdress */
+    .hero-art { position: relative; order: -1; inset: auto; width: 100%; height: min(175vw, 86svh); flex: none; }  /* a tall band of the painting; her name rises onto its lower edge */
+    .hero-art img { object-position: 50% 30%; }
+    .hero-art::after { background: linear-gradient(0deg, #2a1817 0, rgba(42, 24, 23, 0.82) 16%, rgba(42, 24, 23, 0.35) 30%, rgba(42, 24, 23, 0) 42%); }
+    .hero-main { margin-top: -190px; }
     .hero-band > .gutter:first-of-type { position: absolute; top: 0; left: 0; right: 0; }
     .hero-band::after { height: 200px; background: linear-gradient(rgba(34, 18, 16, 0.72), rgba(34, 18, 16, 0.38) 60%, rgba(34, 18, 16, 0)); }
     .hero-main { padding-block: 30px 52px; }
@@ -785,16 +786,8 @@
 </header>
 </div>
 <div class="hero-band">
-  <figure class="hero-art is-painting" id="hero-art" aria-label="Art by Roxanne">
-    <img class="on hero-painting" src="images/hero-tlaltecuhtli.webp" width="1050" height="1069" alt="Her painting of Tlaltecuhtli, the spirit of the earth: a yellow figure with arms raised, a feathered red face, turquoise ear spools and a red disc at her center" fetchpriority="high">
-    <img data-src="images/w-butterflies.webp" width="1100" height="1100" alt="Two butterflies with small flowers in fine line and pepper shading, down a calf">
-    <img data-src="images/w-hummingbird.webp" width="1074" height="1075" alt="A hummingbird, huitzil, with spread wings under leaves, in black and gray">
-    <img data-src="images/w-cempasuchil.webp" width="1100" height="1098" alt="A cempasuchil held by a skeleton hand, her favorite flower, in black and gray">
-    <img data-src="images/w-eye-hand.webp" width="1100" height="825" alt="A custom hand tattoo with an eye on the back of the hand" style="--pos:50% 40%">
-    <div class="hero-pick" role="group" aria-label="Choose a tattoo">
-      <button type="button" aria-pressed="true" aria-label="Tlaltecuhtli painting"></button><button type="button" aria-pressed="false" aria-label="Butterflies"></button><button type="button" aria-pressed="false" aria-label="Hummingbird"></button><button type="button" aria-pressed="false" aria-label="Cempasuchil"></button><button type="button" aria-pressed="false" aria-label="Eye hand"></button>
-      <button type="button" class="hp-pause" aria-label="Pause the photos" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><rect class="ic-pause" x="2" y="1.5" width="2.8" height="9" rx="0.8"/><rect class="ic-pause" x="7.2" y="1.5" width="2.8" height="9" rx="0.8"/><path class="ic-play" d="M3 1.5v9l7.5-4.5z" style="display:none"/></svg></button>
-    </div>
+  <figure class="hero-art" id="hero-art" aria-label="Art by Roxanne">
+    <img src="images/hero-tlaltecuhtli.webp" width="1050" height="1069" alt="Her painting of Tlaltecuhtli, the spirit of the earth: a yellow figure with arms raised, a feathered red face, turquoise ear spools and a red disc at her center" fetchpriority="high">
     <div class="hero-cap">
       <button type="button" class="hero-cap-btn" id="hero-cap-btn" aria-expanded="false" aria-controls="hero-cap-txt">About this painting</button>
       <p class="hero-cap-txt" id="hero-cap-txt" hidden><button type="button" class="hero-cap-x" id="hero-cap-x" aria-label="Close">&times;</button><b>Tlaltecuhtli, painting by Roxanne</b> <span>Tlaltecuhtli is the spirit of the earth. In the old story, the gods made the world on her back: her hair became trees, flowers and grasses, and her eyes became wells and springs.</span> <a href="#tlaltecuhtli">Her story</a></p>
@@ -829,42 +822,15 @@
     var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-tlaltecuhtli.webp'; if (im.complete) go(); setTimeout(go, 1500);
   })();
 
-  /* the hero's tattoos: every 6 seconds the next one goes in dot by dot. Tap a dot to choose one, or pause.
-     Still for people who turn off motion (the dots still switch photos), and only runs while the hero is on screen. */
+  /* "About this painting": opens and closes her caption over the hero */
   (function () {
-    var art = document.getElementById('hero-art'); if (!art) return;
-    var imgs = [].slice.call(art.querySelectorAll('img')), pick = [].slice.call(art.querySelectorAll('.hero-pick button:not(.hp-pause)')), pause = art.querySelector('.hp-pause');
-    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, i = 0, paused = still, onScreen = true, t = null;
-    function load() { imgs.forEach(function (im) { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } }); }
-    if (document.readyState === 'complete') setTimeout(load, 600); else window.addEventListener('load', function () { setTimeout(load, 600); });
-    function show(n) {
-      if (n === i) return; var prev = imgs[i], next = imgs[n];
-      if (next.dataset.src) load();
-      i = n; pick.forEach(function (b, k) { b.setAttribute('aria-pressed', k === n ? 'true' : 'false'); });
-      art.classList.toggle('is-painting', n === 0); if (n !== 0) capOpen(false);
-      imgs.forEach(function (im) { im.classList.remove('poke'); if (im !== prev) im.classList.remove('on'); });
-      next.classList.add('on');
-      if (still) { prev.classList.remove('on'); return; }
-      void next.offsetWidth; next.classList.add('poke');
-      next.addEventListener('animationend', function done() { next.removeEventListener('animationend', done); if (imgs[i] === next) { prev.classList.remove('on'); next.classList.remove('poke'); } });
-    }
-    var capB = document.getElementById('hero-cap-btn'), capT = document.getElementById('hero-cap-txt');
+    var art = document.getElementById('hero-art'), capB = document.getElementById('hero-cap-btn'), capT = document.getElementById('hero-cap-txt'), capX = document.getElementById('hero-cap-x');
+    if (!art || !capB || !capT) return;
     function quietFocusB(el) { try { el.focus({ preventScroll: true }); } catch (e) {} }
-    function capOpen(o) { if (!capB) return; capT.hidden = !o; capB.setAttribute('aria-expanded', o ? 'true' : 'false'); art.classList.toggle('cap-open', o); }
-    if (capB) capB.addEventListener('click', function () { capOpen(capT.hidden); if (!capT.hidden && !capB.offsetParent) quietFocusB(document.getElementById('hero-cap-x')); });
-    var capX = document.getElementById('hero-cap-x'); if (capX) capX.addEventListener('click', function () { capOpen(false); quietFocusB(capB); });
-    art.addEventListener('keydown', function (e) { if (e.key === 'Escape' && capT && !capT.hidden) { capOpen(false); capB.focus(); } });
-    function tick() { if (paused || art.classList.contains('cap-open') || !onScreen || document.hidden) return; var n = (i + 1) % imgs.length; if (imgs[n].complete && imgs[n].naturalWidth) show(n); }
-    function start() { clearInterval(t); if (!paused) t = setInterval(tick, 6000); }
-    pick.forEach(function (b, k) { b.addEventListener('click', function () { show(k); start(); }); });
-    function paintPause() {
-      pause.setAttribute('aria-pressed', paused ? 'true' : 'false');
-      pause.querySelector('.ic-play').style.display = paused ? '' : 'none'; [].forEach.call(pause.querySelectorAll('.ic-pause'), function (r) { r.style.display = paused ? 'none' : ''; });
-    }
-    if (still) pause.hidden = true;
-    pause.addEventListener('click', function () { paused = !paused; paintPause(); start(); });
-    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; }).observe(art);
-    paintPause(); start();
+    function capOpen(o) { capT.hidden = !o; capB.setAttribute('aria-expanded', o ? 'true' : 'false'); art.classList.toggle('cap-open', o); }
+    capB.addEventListener('click', function () { capOpen(capT.hidden); if (!capT.hidden && !capB.offsetParent && capX) quietFocusB(capX); });
+    if (capX) capX.addEventListener('click', function () { capOpen(false); quietFocusB(capB); });
+    art.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !capT.hidden) { capOpen(false); capB.focus(); } });
   })();
 </script>
 
@@ -1858,7 +1824,7 @@
   (function () {
     var D = {
       'Close': 'Cerrar',
-      'Art by Roxanne': 'Arte de Roxanne', 'Tlaltecuhtli painting': 'Pintura de Tlaltecuhtli', 'About this painting': 'Sobre esta pintura',
+      'Art by Roxanne': 'Arte de Roxanne', 'About this painting': 'Sobre esta pintura',
       'Her painting of Tlaltecuhtli, the spirit of the earth: a yellow figure with arms raised, a feathered red face, turquoise ear spools and a red disc at her center': 'Su pintura de Tlaltecuhtli, el espíritu de la tierra: una figura amarilla con los brazos en alto, un rostro rojo de plumas, orejeras turquesa y un disco rojo en su centro',
       'Tlaltecuhtli, painting by Roxanne': 'Tlaltecuhtli, pintura de Roxanne',
       'Tlaltecuhtli is the spirit of the earth. In the old story, the gods made the world on her back: her hair became trees, flowers and grasses, and her eyes became wells and springs.': 'Tlaltecuhtli es el espíritu de la tierra. En la historia antigua, los dioses hicieron el mundo sobre su espalda: su cabello se volvió árboles, flores y pastos, y sus ojos se volvieron pozos y manantiales.',
@@ -1989,8 +1955,7 @@
       /* the sun rises */
       'The sun is rising.': 'El sol está saliendo.', 'Tap anywhere to come back': 'Toca donde sea para volver',
       /* labels, alt text and screen reader words */
-      'Tattoos by Roxanne': 'Tatuajes de Roxanne', 'Choose a tattoo': 'Elige un tatuaje',
-      'Butterflies': 'Mariposas', 'Hummingbird': 'Colibrí', 'Cempasuchil': 'Cempasúchil', 'Eye hand': 'Ojo en la mano', 'Pause the photos': 'Pausar las fotos',
+      'Tattoos by Roxanne': 'Tatuajes de Roxanne',
       'Sections': 'Secciones', 'Styles Roxanne loves doing': 'Estilos que a Roxanne le encanta hacer',
       'A cempasuchil, a marigold, appearing one dot at a time, like a hand poke tattoo': 'Un cempasúchil que aparece punto por punto, como un tatuaje hand poke',
       'Steps, tap one you have done to go back': 'Pasos, toca uno que ya hiciste para regresar',
