@@ -146,6 +146,33 @@
   @keyframes hero-float { from { opacity: 0; transform: translateY(70px); letter-spacing: 0.04em; } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
 
+  /* COMING UP: a circus banner along the foot of the hero, built from the October calendar below, so the first screen says
+     which classes are next. Bunting along the top edge, a pennant tag, the next classes rolling by in their thin wide caps.
+     Tap it to jump to the calendar. Stops while you hover or focus it, and off screen; under reduced motion it sits still and wraps. */
+  .lv-marq { position: relative; z-index: 3; display: flex; align-items: stretch; text-decoration: none; color: #ffd9a8; background: #1b2147; overflow: hidden;
+    padding-top: 12px; border-bottom: 1px solid #2f3870; }
+  .lv-marq::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 11px; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='54' height='11' viewBox='0 0 54 11'%3E%3Crect width='54' height='1.4' fill='%23fff1d6' fill-opacity='.55'/%3E%3Cpath d='M1 1h16l-8 9.5z' fill='%23f28c1e'/%3E%3Cpath d='M19 1h16l-8 9.5z' fill='%23a9b6e8'/%3E%3Cpath d='M37 1h16l-8 9.5z' fill='%23ffd9a8'/%3E%3C/svg%3E") 0 0 / 54px 11px repeat-x; }
+  .lm-tag { flex: none; display: grid; place-items: center; padding: 0 26px 0 18px; font-family: 'Quicksand', 'Avenir Next', sans-serif; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.12em; text-transform: lowercase; color: #fff; background: #b0500b; position: relative; z-index: 1;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%); }
+  .lm-win { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; padding: 10px 0 11px; font-family: 'Raleway', 'Avenir Next', sans-serif; font-weight: 500;
+    font-size: 17px; line-height: 1.25; letter-spacing: 0.16em; }
+  .lm-run { display: inline-flex; padding-left: 16px; animation: lm-scroll var(--dur, 40s) linear infinite; }
+  .lm-run span { white-space: pre; }
+  .lm-run i { font-style: normal; color: #f28c1e; }
+  @keyframes lm-scroll { to { transform: translateX(-50%); } }
+  .lv-marq:not(.on) .lm-run, .lv-marq:hover .lm-run, .lv-marq:focus-visible .lm-run { animation-play-state: paused; }
+  .lv-marq:hover .lm-win { color: #fff1d6; }
+  .lv-marq:focus-visible { outline: 2px solid #ffd9a8; outline-offset: -4px; }
+  .hero-band.wait .lv-marq { opacity: 0; }
+  .hero-band.go .lv-marq { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.8s both; }
+  @media (max-width: 520px) { .lm-tag { padding: 0 22px 0 14px; font-size: 12px; } .lm-win { font-size: 15px; letter-spacing: 0.12em; } }
+  @media (prefers-reduced-motion: reduce) {
+    .lm-run { animation: none; display: inline; padding-left: 0; } .lm-run span { white-space: normal; }
+    .lm-win { white-space: normal; padding-inline: 12px; }
+  }
+
   section { padding-block: 80px; }
   section + section { border-top: 1px solid var(--hair); }
   .intro { max-width: 62ch; margin-top: 16px; color: var(--ink-soft); }
@@ -399,6 +426,25 @@
   .ig { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--hair); }
   .ig-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 22px; }
   .ig-grid .photo { aspect-ratio: 1; border-radius: 8px; }
+  /* Instagram: clearly theirs (handle + glyph, Follow pill, tiles that read as posts) */
+  .ig { --igx: var(--peri); }
+  .igx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; }
+  .igx-head > div { min-width: 0; }
+  .igx-handle { display: inline-flex; align-items: center; gap: 0.3em; overflow-wrap: anywhere; color: var(--btn); }
+  .igx-handle .igx-glyph { width: 0.8em; height: 0.8em; flex: none; }
+  .igx-sub { margin-top: 8px; font-size: 16px; color: var(--ink-soft); }
+  .reach.igx-follow { margin-top: 0; }
+  .reach.igx-follow a { border: 2px solid var(--igx); font-weight: 700; max-width: 100%; overflow-wrap: anywhere; line-height: 1.2; padding-block: 8px; }
+  .reach.igx-follow a:hover { background: var(--ground-2); }
+  .igx-follow svg { color: var(--igx); }
+  .ig-grid .photo { position: relative; }
+  .ig-grid .photo::after { content: ""; position: absolute; top: 7px; right: 7px; width: 24px; height: 24px; border-radius: 50%; z-index: 2; pointer-events: none;
+    background: rgba(16, 18, 44, 0.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='17.2' cy='6.8' r='.6' fill='white'/%3E%3C/svg%3E") center / 14px 14px no-repeat; }
+  .ig-grid .photo img { transition: filter .3s ease; }
+  .ig-grid .photo:hover img { filter: brightness(1.07) saturate(1.05); }
+  .ig-grid .photo:hover { outline: 2px solid var(--igx); outline-offset: -2px; }
+  @media (max-width: 640px) { .igx-handle { font-size: 0.72em; } .igx-follow { width: 100%; } .igx-follow a { width: 100%; justify-content: center; box-sizing: border-box; } }
+  @media (prefers-reduced-motion: reduce) { .ig-grid .photo img { transition: none; } }
   .reach { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .reach a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid var(--hair); border-radius: 999px;
     background: var(--paper); color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 700; }
@@ -734,6 +780,7 @@
       </div>
     </div>
   </div>
+  <a class="lv-marq" id="lv-marq" href="#month" aria-label="Coming up at Levity: see October&rsquo;s calendar"><span class="lm-tag" aria-hidden="true">coming up</span><span class="lm-win" aria-hidden="true"><span class="lm-run" id="lm-run"><span>OCTOBER&rsquo;S CALENDAR &#10022; 280 E HERSEY ST, ASHLAND</span></span></span></a>
 </div>
 <script>
   (function () {
@@ -1225,8 +1272,14 @@
       <figure class="photo reveal"><img src="images/handstand.jpg" alt="A bent leg handstand against a weathered steel wall" loading="lazy"></figure>
     </div>
     <div class="ig" data-show="mother crone all" data-fold data-thing="Instagram feed">
-      <p class="label with-pill"><span>on instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h3 style="font-size:clamp(26px,3.4vw,32px)">This week <em>at the studio</em></h3>
+      <div class="igx-head">
+        <div>
+          <p class="label with-pill"><span>instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+          <h3 style="font-size:clamp(26px,3.4vw,32px)">Fresh from <em class="igx-handle"><svg class="igx-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@levitycircuscollective</em></h3>
+          <p class="igx-sub">Follow along on Instagram</p>
+        </div>
+        <div class="reach igx-follow"><a href="https://www.instagram.com/levitycircuscollective/" target="_blank" rel="noopener" aria-label="Follow @levitycircuscollective on Instagram (opens in a new tab)"><svg class="igx-glyph" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow @levitycircuscollective</a></div>
+      </div>
       <div class="ig-grid" role="img" aria-label="Recent Instagram posts">
         <figure class="photo"><img src="images/studio-silks.jpg" alt="" loading="lazy"></figure>
         <figure class="photo"><img src="images/juggling.jpg" alt="" loading="lazy"></figure>
@@ -1235,8 +1288,7 @@
         <figure class="photo"><img src="images/lake-hoop.jpg" alt="" loading="lazy"></figure>
         <figure class="photo"><img src="images/handstand.jpg" alt="" loading="lazy"></figure>
       </div>
-      <div class="reach"><a href="https://www.instagram.com/levitycircuscollective/" target="_blank" rel="noopener" aria-label="Levity on Instagram (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></svg>@levitycircuscollective</a></div>
-      <p class="demo-note">On your real site this shows your latest posts, on its own, every time you post.</p>
+      <p class="demo-note">These fill in by themselves every time you post.</p>
     </div>
   </div>
 </section>
@@ -1359,6 +1411,57 @@
       ['friday', 5, []],
       ['saturday', 6, [[open('10 am to noon', [3, 10, 17, 24, 31])]]]
     ];
+
+    /* COMING UP: the hero banner rolls the next classes by, straight from this calendar (C and DAYS), so it stays in sync */
+    (function () {
+      var lm = document.getElementById('lv-marq'), run = document.getElementById('lm-run'); if (!lm || !run) return;
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], WD = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      function start(t) { /* "5:30 to 6:30 pm" -> [17, 30]; "10 am to noon" -> [10, 0] */
+        var m = t.match(/^(\d+)(?::(\d+))?\s*(am|pm)?/i), end = t.match(/(am|pm|noon)\s*$/i), ap = (m[3] || (end ? end[1] : 'pm')).toLowerCase(), hh = +m[1];
+        if (ap === 'noon') ap = 'am';
+        if (ap === 'pm' && hh < 12) hh += 12; return [hh, +(m[2] || 0)];
+      }
+      function clock(t) { var m = t.match(/^(\d+(?::\d+)?)\s*(am|pm)?/i), end = t.match(/(am|pm)\s*$/i); return (m[1] + ' ' + (m[2] || (end ? end[1] : 'pm'))).toUpperCase(); }
+      function price(p) {
+        if (/^free/i.test(p)) return 'FREE';
+        var m = p.match(/\$(\d+) or \$\d+ a class/) || (/a class/.test(p) && p.match(/\$(\d+)/));
+        return m ? '$' + m[1] + ' A CLASS' : '';
+      }
+      var now = Date.now(), list = [];
+      DAYS.forEach(function (row) {
+        row[2].forEach(function (it) {
+          var c = typeof it[0] === 'string' ? C[it[0]] : it[0];
+          if (c.k === 'open' || !price(c.price)) return; /* open studio runs most days; a series already under way has no drop in */
+          c.dates.forEach(function (d) {
+            if (typeof d !== 'number') return;
+            var s = start(c.t), at = Date.UTC(2026, 9, d, s[0] + 7, s[1]); /* Ashland, Pacific daylight time in October */
+            if (at + 3600e3 > now) list.push({ c: c, d: d, at: at, wd: WD[new Date(Date.UTC(2026, 9, d)).getUTCDay()] });
+          });
+        });
+      });
+      list.sort(function (a, b) { return a.at - b.at; }); list = list.slice(0, still ? 3 : 8);
+      var STAR = '✦', parts = [];
+      list.forEach(function (x) { parts.push([x.c.n.toUpperCase(), x.wd + ' OCT ' + x.d, clock(x.c.t), price(x.c.price)]); });
+      parts.push(list.length ? ['OPEN STUDIO MOST DAYS', '280 E HERSEY ST, ASHLAND'] : ['NOVEMBER CALENDAR COMING SOON', '280 E HERSEY ST, ASHLAND']);
+      function paintRun(last) {
+        var sp = document.createElement('span');
+        parts.forEach(function (bits, k) {
+          bits.forEach(function (b, j) {
+            sp.appendChild(document.createTextNode(b));
+            if (!(last && k === parts.length - 1 && j === bits.length - 1)) { var i = document.createElement('i'); i.textContent = ' ' + STAR + ' '; sp.appendChild(i); }
+          });
+        });
+        return sp;
+      }
+      run.textContent = '';
+      for (var n = 0; n < (still ? 1 : 2); n++) run.appendChild(paintRun(still));
+      var len = parts.reduce(function (a, b) { return a + b.join(' + ').length + 3; }, 0);
+      run.style.setProperty('--dur', Math.max(18, len * 0.24).toFixed(1) + 's');
+      lm.setAttribute('aria-label', list.length ? 'Coming up at Levity: ' + list.slice(0, 4).map(function (x) { return x.c.n + ', ' + x.wd.charAt(0) + x.wd.slice(1).toLowerCase() + ' October ' + x.d + ' at ' + clock(x.c.t).toLowerCase(); }).join('; ') + '. See October’s calendar.' : 'November’s calendar is coming soon. See October’s calendar.');
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { lm.classList.toggle('on', e.isIntersecting); }); }).observe(lm);
+      else lm.classList.add('on');
+    })();
     var today = new Date(), mon = today.getFullYear() === 2026 && today.getMonth() === 9, dnum = mon ? today.getDate() : 0;
     var filter = 'all', openBtn = null;
     DAYS.forEach(function (row) {
