@@ -311,43 +311,22 @@
   .facts div { display: flex; justify-content: space-between; gap: 6px 18px; flex-wrap: wrap; padding: 11px 0; border-bottom: 1px solid var(--hair); }
   .facts dt { font-size: 12.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); }
   .facts dd { margin: 0; font-weight: 600; text-align: right; }
-  /* the halo between the wings: one drawing, viewBox -60 0 720 620 */
+  /* the halo: one drawing, viewBox -60 0 720 620 */
   .halo { position: relative; max-width: 560px; width: 100%; margin: 0 auto; }
   .halo svg.art { display: block; width: 100%; height: auto; aspect-ratio: 720 / 620; overflow: visible; }
   .halo .ray { fill: var(--ink); transform-box: fill-box; transform-origin: 50% 100%; }
   .halo .ring { fill: none; stroke: var(--ink); stroke-width: 1.4; opacity: 0.35; }
-  .halo .glow { opacity: calc(0.35 + 0.65 * var(--open, 1)); transition: opacity 1.8s ease; }
+  .halo .glow { opacity: 1; }
   .halo .fig-bone { display: none; }
   :root[data-theme="dark"] .halo .fig-ink { display: none; } :root[data-theme="dark"] .halo .fig-bone { display: inline; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .halo .fig-ink { display: none; } :root:not([data-theme="light"]) .halo .fig-bone { display: inline; } }
-  /* the wings open with how close the next class is (--open, 0 to 1), from their root behind the halo */
-  .halo .wing { transform-origin: 383px 312px; transform: rotate(calc((1 - var(--open, 1)) * -16deg)) scale(calc(0.3 + 0.7 * var(--open, 1)), calc(0.78 + 0.22 * var(--open, 1))); transition: transform 1.8s cubic-bezier(.2,.8,.2,1); }
-  .halo .wing-in { transform-origin: 383px 312px; }
-  .halo.run .wing-in { animation: breathe 7s ease-in-out infinite; }
-  .halo.flap .wing-in { animation: flap 0.9s cubic-bezier(.3,.7,.3,1); }
   .halo.run .ray { animation: heat 12s ease-in-out infinite; animation-delay: calc(var(--i) * -0.3s); }
   .halo.run .rays-g { animation: turn 240s linear infinite; transform-origin: 300px 300px; }
   @keyframes heat { 0%, 100% { opacity: 0.55; transform: scaleY(0.9); } 50% { opacity: 1; transform: scaleY(1.06); } }
   @keyframes turn { to { transform: rotate(360deg); } }
-  @keyframes breathe { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-3deg); } }
-  @keyframes flap { 0% { transform: none; } 40% { transform: rotate(-24deg) scale(0.86); } 100% { transform: none; } }
   .halo.off * { animation-play-state: paused !important; }
-  @media (prefers-reduced-motion: reduce) { .halo .ray, .halo .rays-g, .halo .wing-in { animation: none !important; } .halo .wing, .halo .glow { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .halo .ray, .halo .rays-g { animation: none !important; } }
   .halo-cap { display: block; margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); text-align: center; }
-  /* the next class, read off the wings */
-  .next { margin: 18px auto 0; max-width: 460px; text-align: center; border-top: 1.5px solid var(--hair); padding-top: 16px; }
-  .next-l { font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
-  .next-w { margin-top: 4px; font-family: 'Oswald', sans-serif; font-size: clamp(24px, 3.2vw, 30px); line-height: 1.15; text-transform: uppercase; letter-spacing: 0.03em; }
-  .next-w span { font-family: 'UnifrakturMaguntia', serif; text-transform: none; color: var(--flame-ink); letter-spacing: 0; }
-  .next-in { margin-top: 4px; font-weight: 600; color: var(--accent); }
-  .next-nav { display: flex; justify-content: center; gap: 10px; margin-top: 14px; }
-  .next-nav button { font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; min-height: 44px; padding: 8px 18px; border-radius: 4px; cursor: pointer; color: var(--ink); background: var(--ground); border: 1.5px solid var(--ink); }
-  .next-nav button:hover { background: var(--ground-2); }
-  .next-nav button:disabled { opacity: 0.45; cursor: default; }
-  /* the next class on the week board gets a pair of wings */
-  .cls.next { position: relative; }
-  .cls .nx { display: flex; align-items: center; gap: 5px; margin-top: 5px; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--accent); }
-  .cls .nx svg { width: 30px; height: 14px; flex: none; overflow: visible; color: var(--ink); }
 
   /* ---------- SEAN AND MARJORIE ---------- */
   .about { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 54px; align-items: start; }
@@ -742,9 +721,9 @@
   <div class="wrap halo-sec">
     <div>
       <span class="sun" aria-hidden="true"><svg viewBox="0 0 128 56"><use href="#wingmark"/></svg></span>
-      <p class="label with-pill"><span>Your wings</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <h2 class="reveal">Under the halo, <em>between the wings</em></h2>
-      <p style="margin-top:16px">The flaming wings painted on your studio wall are the spot everyone stands in front of for a picture, so here they belong to the figure from your logo, hands together under its halo of rays. The wings also keep time: they open wider as the next class gets closer, and spread all the way while a class is on.</p>
+      <p class="label with-pill"><span>Your logo</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <h2 class="reveal">Under <em>the halo</em></h2>
+      <p style="margin-top:16px">The flaming wings painted on your studio wall are the spot everyone stands in front of for a picture, so here is the figure from your logo, hands together under its halo of rays, drawn to turn slowly.</p>
       <dl class="facts">
         <div><dt>Open since</dt><dd>2003, family run</dd></div>
         <div><dt>Every class</dt><dd>90 minutes, heated room</dd></div>
@@ -754,7 +733,7 @@
       </dl>
     </div>
     <div>
-      <figure class="halo" id="halo-art" aria-label="The praying figure from the Old School logo under its full halo of jagged rays, standing between two flaming wings drawn after the mural on the studio wall. The wings open wider as the next class gets closer.">
+      <figure class="halo" id="halo-art" aria-label="The praying figure from the Old School logo under its full halo of jagged rays.">
         <svg class="art" viewBox="-60 0 720 620" aria-hidden="true" focusable="false">
           <defs><radialGradient id="glow-g"><stop offset="0" stop-color="#f3bb24" stop-opacity="0.6"/><stop offset="0.45" stop-color="#e8481a" stop-opacity="0.2"/><stop offset="1" stop-color="#e8481a" stop-opacity="0"/></radialGradient></defs>
           <circle class="glow" cx="300" cy="300" r="190" fill="url(#glow-g)"/>
@@ -801,19 +780,11 @@
 <path class="ray" style="--i:38" d="M250.6 128.9 245.6 110.9 237.2 94.0 231.5 76.2 223.8 59.1 217.4 41.5 210.4 24.2 210.4 24.2 210.4 24.2 215.9 42.0 218.1 61.0 226.8 77.7 225.8 97.7 237.8 113.4 233.4 134.5Z"/>
 <path class="ray" style="--i:39" d="M276.6 123.5 275.3 110.7 271.1 98.4 269.2 85.7 265.6 73.3 263.2 60.7 260.1 48.1 260.1 48.1 260.1 48.1 261.9 60.9 261.0 74.0 265.4 86.3 261.9 99.8 269.0 111.7 262.8 125.7Z"/>
             </g>
-          <g class="wing"><g class="wing-in"><use href="#wing-r" x="362" y="150" width="294" height="330"/></g></g>
-          <g transform="translate(600 0) scale(-1 1)"><g class="wing"><g class="wing-in"><use href="#wing-r" x="362" y="150" width="294" height="330"/></g></g></g>
           <image class="fig-ink" href="images/halo-ink.webp" x="120" y="137" width="360" height="482.6"/>
           <image class="fig-bone" href="images/halo-bone.webp" x="120" y="137" width="360" height="482.6"/>
         </svg>
-        <figcaption class="halo-cap">Your own logo drawing and your own wings, redrawn to move</figcaption>
+        <figcaption class="halo-cap">Your own logo drawing, redrawn to move</figcaption>
       </figure>
-      <div class="next" id="next">
-        <p class="next-l" id="next-l">Next class</p>
-        <p class="next-w" id="next-w">Every day <span>of the week</span></p>
-        <p class="next-in" id="next-in" aria-live="polite">Mornings at 9 or 10, evenings at 6</p>
-        <div class="next-nav" hidden id="next-nav"><button type="button" id="next-prev">Earlier</button><button type="button" id="next-more">After that</button></div>
-      </div>
     </div>
   </div>
 </section>
@@ -1110,7 +1081,7 @@
 </div>
 
 <script>
-  /* the halo between the wings: only moves while it's on screen; slow connections and reduced motion get it still */
+  /* the halo: only moves while it's on screen; slow connections and reduced motion get it still */
   (function () {
     var k = document.getElementById('halo-art'); if (!k) return;
     var conn = navigator.connection || {};
@@ -1118,61 +1089,6 @@
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     k.classList.add('run');
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { k.classList.toggle('off', !e.isIntersecting); }); }).observe(k);
-  })();
-
-  /* the wings keep time: they open wider as the next class gets closer (studio time, Arcata), and the week board marks it */
-  (function () {
-    var art = document.getElementById('halo-art'), nav = document.getElementById('next-nav'); if (!art || !nav) return;
-    var DN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var CL = [];
-    [].forEach.call(document.querySelectorAll('#days .day'), function (day) {
-      var d = +day.getAttribute('data-d');
-      [].forEach.call(day.querySelectorAll('.cls[data-h]'), function (c) { CL.push({ d: d, h: +c.getAttribute('data-h'), who: c.querySelector('span').textContent, el: c }); });
-    });
-    if (!CL.length) return;
-    CL.forEach(function (c) { c.wm = c.d * 1440 + c.h * 60; });
-    CL.sort(function (a, b) { return a.wm - b.wm; });
-    function nowWM() {
-      try {
-        var p = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date()), o = {};
-        p.forEach(function (x) { o[x.type] = x.value; });
-        return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(o.weekday) * 1440 + (+o.hour % 24) * 60 + (+o.minute);
-      } catch (e) { var n = new Date(); return n.getDay() * 1440 + n.getHours() * 60 + n.getMinutes(); }
-    }
-    function t12(h) { return (h % 12 || 12) + (h < 12 ? ' AM' : ' PM'); }
-    function away(m) {
-      if (m < 60) return 'in ' + m + (m === 1 ? ' minute' : ' minutes');
-      var h = Math.floor(m / 60), r = m % 60;
-      if (h < 24) return 'in ' + h + (h === 1 ? ' hour' : ' hours') + (r ? ' ' + r + ' min' : '');
-      var dd = Math.round(m / 1440); return 'in ' + (dd <= 1 ? 'a day' : dd + ' days');
-    }
-    var base = 0, step = 0, on = false;
-    function find() {
-      var n = nowWM(); on = false;
-      for (var i = 0; i < CL.length; i++) { var since = (n - CL[i].wm + 10080) % 10080; if (since < 90) { on = true; return i; } }
-      var best = 0, bm = 1e9;
-      CL.forEach(function (c, i) { var m = (c.wm - n + 10080) % 10080; if (m < bm) { bm = m; best = i; } });
-      return best;
-    }
-    function paint() {
-      var n = nowWM(), c = CL[(base + step) % CL.length], m = (c.wm - n + 10080) % 10080, live = on && step === 0;
-      var dayDiff = Math.floor((n % 1440 + m) / 1440), when = live ? 'On now' : dayDiff === 0 ? 'Today' : dayDiff === 1 ? 'Tomorrow' : DN[c.d];
-      var open = live ? 1 : Math.max(0.1, Math.exp(-m / 360));
-      art.style.setProperty('--open', open.toFixed(3));
-      document.getElementById('next-l').textContent = live ? 'Class is on now' : step === 0 ? 'Next class' : 'After that';
-      var w = document.getElementById('next-w'); w.textContent = (live ? t12(c.h) : when + ', ' + t12(c.h)) + ' '; var sp = document.createElement('span'); sp.textContent = 'with ' + c.who; w.appendChild(sp);
-      document.getElementById('next-in').textContent = live ? 'Until ' + t12(c.h + 1).replace(' ', ':30 ') + ', the wings are all the way open' : away(m) + (step === 0 ? ', the wings open as it gets close' : '');
-      document.getElementById('next-prev').disabled = step === 0;
-      CL.forEach(function (x) { x.el.classList.remove('next'); var t = x.el.querySelector('.nx'); if (t) t.remove(); });
-      var b = CL[base], tag = document.createElement('span'); tag.className = 'nx';
-      tag.innerHTML = '<svg viewBox="0 0 128 56" aria-hidden="true"><use href="#wingmark"/></svg>' + (on ? 'On now' : 'Next up');
-      b.el.classList.add('next'); b.el.appendChild(tag);
-    }
-    function flap() { if (!art.classList.contains('run')) return; art.classList.remove('flap'); void art.getBoundingClientRect(); art.classList.add('flap'); }
-    document.getElementById('next-more').addEventListener('click', function () { if (step < CL.length - 1) step++; flap(); paint(); });
-    document.getElementById('next-prev').addEventListener('click', function () { if (step > 0) step--; flap(); paint(); });
-    base = find(); nav.hidden = false; paint();
-    setInterval(function () { var b = find(); if (b !== base) { base = b; step = 0; } paint(); }, 60000);
   })();
 
   /* today's column in the week */
