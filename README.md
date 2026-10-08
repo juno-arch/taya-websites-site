@@ -1,12 +1,12 @@
 # Web Faery
 
-The website for Web Faery: hand-built websites for small local businesses, paid once and theirs to keep,
+The website for Web Faery: hand-built websites for small local businesses, theirs to keep,
 with a monthly subscription that keeps them running. Live at https://webfaery.love
 
 The pricing (Oct 5 2026; source of truth: web-faery-kit/pricing-oct2026.md), said the same way on every page.
 Since Oct 6 2026 the monthly part is called a "subscription" everywhere people read it (it used to be "care",
 which reads less clearly). Code keys stay as they were (care_monthly, data-tier-care, #care...):
-Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payments or a small shop) $1,800, paid once.
+Planted (one page) $600, Tended (a full site) $1,200, In Bloom (booking, payments or a small shop) $1,800.
 Founding clients (5 spots, through Dec 31 2026) get half off the build: $300 / $600 / $900. A subscription comes with
 every site, monthly only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in. Changes
 are the same in every tier: socials first (Oct 7 2026, Pollen: "media first then email just cause it's one less thing

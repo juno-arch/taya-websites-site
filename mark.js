@@ -822,9 +822,9 @@
       } else if (founding) {
         price.append(document.createTextNode(usd(bd.founding)));
         const s = el('s', '', usd(bd.full)); s.setAttribute('aria-label', 'regular price ' + usd(bd.full));
-        price.append(s, el('span', 'once', ' paid once, founding price'));
+        price.append(s, el('span', 'once', ' founding price'));
       } else {
-        price.append(document.createTextNode(usd(bd.full)), el('span', 'once', ' paid once'));
+        price.append(document.createTextNode(usd(bd.full)), el('span', 'once', ' for the build'));
       }
       if (PRICED && bd.care) price.append(el('span', 'once care-mo', 'then a ' + usd(bd.care) + ' a month subscription'));
       btn.append(el('span', 'nm', bd.name), price, el('span', 'what', bd.what));

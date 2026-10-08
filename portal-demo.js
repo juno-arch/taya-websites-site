@@ -286,7 +286,7 @@
         'Between Taya of Web Faery and Rosa Linden, Fern & Clay Pottery.', '',
         'What we are building: a Tended build. A full site with a contact form,',
         'newsletter signup and a Book now button to your booking app.', '',
-        'Price: $600, a founding price (half off the build), paid once.',
+        'Price: $600, a founding price (half off the build).',
         'Half to start, half at launch.', '',
         'After launch: a $45 a month subscription, which keeps your site running.',
         'Billing starts after 30 days of settling in. If you ever cancel it,',
