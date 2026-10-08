@@ -204,12 +204,7 @@
   .sounder { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 40px 70px -40px rgba(0, 0, 0, 0.9); }
   .snd-scroll { animation: snd-roll 42s linear infinite; }
   @keyframes snd-roll { from { transform: translateX(0); } to { transform: translateX(-600px); } }
-  .snd-ping { transform-box: fill-box; transform-origin: 50% 0%; animation: snd-ping 4.2s ease-out infinite; opacity: 0; }
-  .snd-ping.p2 { animation-delay: 2.1s; }
-  @keyframes snd-ping { 0% { transform: scale(0.15); opacity: 0.7; } 70% { opacity: 0.12; } 100% { transform: scale(1); opacity: 0; } }
-  .snd-now { animation: snd-now 4.2s ease-in-out infinite; }
-  @keyframes snd-now { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
-  @media (prefers-reduced-motion: reduce) { .snd-scroll, .snd-ping, .snd-now { animation: none; } .snd-ping { opacity: 0.25; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .snd-scroll { animation: none; } }
   .sounder-cap { margin-top: 12px; font-size: 13.5px; color: rgba(234, 241, 245, 0.66); }
   .facts { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 22px; margin-top: 28px; }
   .facts li { border-top: 1px solid rgba(234, 241, 245, 0.18); padding-top: 12px; font-size: 15px; line-height: 1.5; }
@@ -784,29 +779,22 @@
     </div>
     <div class="sounder-wrap reveal">
       <svg class="sounder" viewBox="0 0 640 380" role="img" aria-labelledby="snd-t">
-        <title id="snd-t">A fish finder screen like the ones at the Judah Paul&rsquo;s helm: the sea floor rolls slowly past and fish show up as little arches in the water</title>
+        <title id="snd-t">A fish finder screen like the ones at the Judah Paul&rsquo;s helm: the picture scrolls slowly from right to left, the sea floor shows as a bright band, a depth scale in feet runs down the right side, and fish show up as arches in the water</title>
         <defs>
-          <linearGradient id="snd-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d3d73"/><stop offset="0.55" stop-color="#0a2a55"/><stop offset="1" stop-color="#071a36"/></linearGradient>
-          <linearGradient id="snd-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a2e"/><stop offset="0.12" stop-color="#e2392b"/><stop offset="0.3" stop-color="#9c2f3d"/><stop offset="0.6" stop-color="#4a2a4e"/><stop offset="1" stop-color="#22203e"/></linearGradient>
-          <linearGradient id="snd-surf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd6ff" stop-opacity="0.55"/><stop offset="1" stop-color="#9fd6ff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="snd-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f4a8c"/><stop offset="0.5" stop-color="#0a3166"/><stop offset="1" stop-color="#061f48"/></linearGradient>
+          <linearGradient id="snd-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe14d"/><stop offset="0.07" stop-color="#ff9f2e"/><stop offset="0.16" stop-color="#e5412f"/><stop offset="0.32" stop-color="#7a2f78"/><stop offset="0.6" stop-color="#25409a"/><stop offset="1" stop-color="#0a2a66"/></linearGradient>
+          <linearGradient id="snd-surf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe3ff" stop-opacity="0.45"/><stop offset="1" stop-color="#bfe3ff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="snd-therm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fc1f2" stop-opacity="0"/><stop offset="0.5" stop-color="#7fc1f2" stop-opacity="0.16"/><stop offset="1" stop-color="#7fc1f2" stop-opacity="0"/></linearGradient>
           <clipPath id="snd-clip"><rect x="18" y="18" width="604" height="344" rx="10"/></clipPath>
+          <path id="snd-arch-p" d="M-25 5C-15 5 -11 -9 0 -9C11 -9 15 5 25 5" fill="none" stroke-linecap="round"/>
+          <g id="snd-arch"><use href="#snd-arch-p" stroke="#38c8ff" stroke-width="10" opacity="0.32"/><use href="#snd-arch-p" stroke="#3fe08a" stroke-width="6.5" opacity="0.9"/><use href="#snd-arch-p" stroke="#ffe14d" stroke-width="3.6"/><path d="M-9 -4C-5 -8 5 -8 9 -4" fill="none" stroke="#ff4b2b" stroke-width="1.8" stroke-linecap="round"/></g>
           <g id="snd-tile">
+            <rect x="-1" y="150" width="602" height="26" fill="url(#snd-therm)"/>
             <path d="M-1 286.2C40 280 80 262 130 262S210 294 270 290S360 250 420 252S520 292 601 285.8L601 400L-1 400Z" fill="url(#snd-floor)"/>
-            <path d="M0 286C40 280 80 262 130 262S210 294 270 290S360 250 420 252S520 292 600 286" fill="none" stroke="#ffd34d" stroke-width="3"/>
-            <path d="M0 304C40 298 80 280 130 280S210 312 270 308S360 268 420 270S520 310 600 304" fill="none" stroke="#f08a2b" stroke-width="2" opacity="0.7"/>
-            <g fill="none" stroke-linecap="round" stroke-width="4">
-              <path d="M40 140q14-11 28 0" stroke="#ffd34d"/>
-              <path d="M92 196q12-9 24 0" stroke="#f08a2b"/>
-              <path d="M150 228q16-12 32 0" stroke="#ff5a2e"/>
-              <path d="M198 120q12-9 24 0" stroke="#ffd34d"/>
-              <path d="M300 210q14-11 28 0" stroke="#ffd34d"/>
-              <path d="M330 236q12-9 24 0" stroke="#f08a2b"/>
-              <path d="M372 222q14-10 28 0" stroke="#ff5a2e"/>
-              <path d="M455 168q14-11 28 0" stroke="#f08a2b"/>
-              <path d="M520 232q16-12 32 0" stroke="#ffd34d"/>
-              <path d="M548 112q12-9 24 0" stroke="#ffd34d"/>
-            </g>
-            <g fill="#7fc1f2" opacity="0.45"><circle cx="60" cy="74" r="1.6"/><circle cx="170" cy="96" r="1.4"/><circle cx="250" cy="70" r="1.6"/><circle cx="390" cy="88" r="1.4"/><circle cx="470" cy="66" r="1.6"/><circle cx="580" cy="92" r="1.4"/></g>
+            <path d="M0 288C40 282 80 264 130 264S210 296 270 292S360 252 420 254S520 294 600 288" fill="none" stroke="#fff3a6" stroke-width="2" opacity="0.8"/>
+            <use href="#snd-arch" x="54" y="142"/><use href="#snd-arch" x="104" y="198"/><use href="#snd-arch" x="166" y="232"/><use href="#snd-arch" x="210" y="122"/><use href="#snd-arch" x="314" y="214"/><use href="#snd-arch" x="342" y="238"/><use href="#snd-arch" x="386" y="224"/><use href="#snd-arch" x="468" y="170"/><use href="#snd-arch" x="536" y="236"/><use href="#snd-arch" x="562" y="114"/>
+            <g fill="#c9f06a" opacity="0.75"><circle cx="246" cy="196" r="1.7"/><circle cx="253" cy="193" r="1.7"/><circle cx="260" cy="198" r="1.7"/><circle cx="240" cy="201" r="1.7"/><circle cx="249" cy="204" r="1.7"/><circle cx="257" cy="205" r="1.7"/><circle cx="265" cy="195" r="1.7"/><circle cx="244" cy="191" r="1.7"/><circle cx="254" cy="200" r="1.7"/><circle cx="262" cy="204" r="1.7"/><circle cx="237" cy="196" r="1.7"/><circle cx="269" cy="201" r="1.7"/></g><g fill="#c9f06a" opacity="0.75"><circle cx="426" cy="108" r="1.7"/><circle cx="433" cy="105" r="1.7"/><circle cx="440" cy="110" r="1.7"/><circle cx="420" cy="113" r="1.7"/><circle cx="429" cy="116" r="1.7"/><circle cx="437" cy="117" r="1.7"/><circle cx="445" cy="107" r="1.7"/><circle cx="424" cy="103" r="1.7"/><circle cx="434" cy="112" r="1.7"/><circle cx="442" cy="116" r="1.7"/><circle cx="417" cy="108" r="1.7"/><circle cx="449" cy="113" r="1.7"/></g><g fill="#c9f06a" opacity="0.75"><circle cx="96" cy="102" r="1.7"/><circle cx="103" cy="99" r="1.7"/><circle cx="110" cy="104" r="1.7"/><circle cx="90" cy="107" r="1.7"/><circle cx="99" cy="110" r="1.7"/><circle cx="107" cy="111" r="1.7"/><circle cx="115" cy="101" r="1.7"/><circle cx="94" cy="97" r="1.7"/><circle cx="104" cy="106" r="1.7"/><circle cx="112" cy="110" r="1.7"/><circle cx="87" cy="102" r="1.7"/><circle cx="119" cy="107" r="1.7"/></g>
+            <g fill="#7fc1f2" opacity="0.4"><circle cx="60" cy="74" r="1.2"/><circle cx="170" cy="96" r="1.2"/><circle cx="250" cy="70" r="1.2"/><circle cx="390" cy="88" r="1.2"/><circle cx="470" cy="66" r="1.2"/><circle cx="580" cy="92" r="1.2"/><circle cx="330" cy="150" r="1.2"/><circle cx="20" cy="170" r="1.2"/></g>
           </g>
         </defs>
         <rect x="0" y="0" width="640" height="380" rx="22" fill="#15191c"/>
@@ -817,15 +805,14 @@
             <use href="#snd-tile" x="600"/>
             <use href="#snd-tile" x="1200"/>
           </g>
-          <rect x="18" y="18" width="604" height="36" fill="url(#snd-surf)"/>
-          <rect class="snd-now" x="586" y="18" width="2" height="344" fill="#bfe3ff"/>
-          <circle class="snd-ping" cx="587" cy="20" r="160" fill="none" stroke="#bfe3ff" stroke-width="1.5"/>
-          <circle class="snd-ping p2" cx="587" cy="20" r="160" fill="none" stroke="#bfe3ff" stroke-width="1.5"/>
+          <rect x="18" y="18" width="604" height="30" fill="url(#snd-surf)"/>
+          <rect x="560" y="18" width="62" height="344" fill="#071428" fill-opacity="0.88"/>
         </g>
-        <g stroke="#bfe3ff" stroke-opacity="0.5" stroke-width="1.2"><path d="M604 86h12M604 154h12M604 222h12M604 290h12"/></g>
+        <g stroke="#d7ecfb" stroke-opacity="0.7" stroke-width="1.2"><path d="M560 40.0h10"/><path d="M560 78.8h5"/><path d="M560 117.5h10"/><path d="M560 156.2h5"/><path d="M560 195.0h10"/><path d="M560 233.8h5"/><path d="M560 272.5h10"/><path d="M560 311.2h5"/><path d="M560 350.0h10"/></g>
+        <g fill="#d7ecfb" font-family="Archivo, sans-serif" font-size="12" font-weight="700"><text x="592" y="44.0" text-anchor="middle">0</text><text x="592" y="121.5" text-anchor="middle">20</text><text x="592" y="199.0" text-anchor="middle">40</text><text x="592" y="276.5" text-anchor="middle">60</text><text x="592" y="354.0" text-anchor="middle">80</text></g>
+        <text x="592" y="34" text-anchor="middle" fill="#d7ecfb" fill-opacity="0.75" font-family="Archivo, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5">FT</text>
         <text x="34" y="44" fill="#d7ecfb" font-family="Archivo, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5">SONAR</text>
         <text x="34" y="348" fill="#d7ecfb" fill-opacity="0.75" font-family="Lobster, cursive" font-size="17">Judah Paul</text>
-        <circle cx="612" cy="38" r="4" fill="#3fd18a"/>
       </svg>
       <p class="sounder-cap">The Judah Paul runs dual Garmin displays with a fish finder, GPS mapping, radar and autopilot.</p>
     </div>

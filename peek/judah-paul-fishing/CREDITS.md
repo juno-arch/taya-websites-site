@@ -17,3 +17,6 @@ From their Facebook page (facebook.com/Judapaulfishing, captured by the main ses
 - rockfish-deck.jpg (j01), albacore-deck.jpg (j03), crab-ring.jpg (j02, top cropped), crab-pot-sun.jpg (j04), halibut-dock.jpg (j07, black frame trimmed)
 
 Left out on purpose: every photo with a child's face (j05, j06, and several Wix photos of kids and teens).
+
+## Oct 7: fish finder drawing (Captain Steve section)
+Redrawn to look like a real traditional-sonar screen (arches, bright bottom band, depth scale in feet down the right side, picture scrolling right to left, baitfish clouds). Drawn from scratch, no photos. Reference reading: Garmin's "Traditional Sonar View" manual page (https://www8.garmin.com/manuals/webhelp/echomapplus/EN-US/GUID-8B6EAEE7-022D-4B20-A7A5-6AF7A1D83C60.html) and "How to Read a Fish Finder" (https://castandspear.com/how-to-read-a-fish-finder). The palette is a generic blue-water, warm-echo look (Garmin offers 16 palettes), not a copy of any one model.
