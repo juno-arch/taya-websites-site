@@ -3,7 +3,7 @@
 //   node _tests/site-text.test.mjs
 //
 // The pricing model (Oct 5 2026, per Pollen; the source of truth is web-faery-kit/pricing-oct2026.md):
-//   builds Planted $600 / Tended $1,200 / In Bloom $1,800, paid once (founding $300 / $600 / $900, half off the
+//   builds Planted $600 / Tended $1,200 / In Bloom $1,800 (founding $300 / $600 / $900, half off the
 //     build only, 5 spots through Dec 31, 2026), half to start, half at launch;
 //   a subscription comes with every site (called "care" until Oct 6 2026, when Pollen switched the word), monthly
 //     only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in; changes are the

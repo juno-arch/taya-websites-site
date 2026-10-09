@@ -50,7 +50,7 @@ class El {
     };
   }
   set textContent(v) { this._text = String(v); this.children = []; }
-  // no-break spaces (the quiz keeps "$1,200 once" and the like on one line) read as plain spaces
+  // no-break spaces (the quiz keeps "$45 a month" and the like on one line) read as plain spaces
   get textContent() { return this.rawText.replace(/\u00a0/g, ' '); }
   get rawText() { return this._text + this.children.map((c) => (c.rawText !== undefined ? c.rawText : c.textContent)).join(''); }
   set innerHTML(v) { throw new Error('quiz should build text with textContent, not innerHTML'); }
@@ -187,7 +187,7 @@ combos.forEach((picks, n) => {
   const costs = $('r-costs').textContent;
   const because = $('r-care-because').textContent;
   const careAlso = $('r-care-also').textContent;
-  if (!costs.includes(usd(full) + ' once')) failures.push(`${tag}: cost list lacks the build price`);
+  if (!costs.includes('The build: ' + usd(full) + ' (founding clients ' + usd(founding) + ')')) failures.push(`${tag}: cost list lacks the build price`);
   if (!/Half to start, which holds your spot, and half at launch/.test(costs)) failures.push(`${tag}: cost list lacks how paying works`);
   if (!costs.includes(`Subscription: ${usd(care)} a month, starting after your 30 days of settling in`)) failures.push(`${tag}: cost list lacks the subscription price`);
   if (!/Every site comes with a subscription/.test(because)) failures.push(`${tag}: doesn't say every site comes with a subscription`);
