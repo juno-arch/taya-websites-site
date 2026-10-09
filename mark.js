@@ -41,6 +41,16 @@
    the studio the edits can start (the same key, this page only: /ready). The button then waits ("Waiting on edits")
    until the edits are done, and the bar says a note will be in her Studio. A second tap while waiting changes
    nothing. It shows only once the server answers with where her edits stand, so this file can go up first. */
+// Founding spots (Pollen, Oct 9): the ONE place to update the count. Juliet holds 1. At 0 the picker card drops
+// founding, and every <span class="wf-founding-left"> on a mockup reads "all 5 spots are taken".
+var FOUNDING_TOTAL = 5, FOUNDING_LEFT = 4;
+function foundingLeftWords() {
+  return FOUNDING_LEFT > 0
+    ? FOUNDING_LEFT + ' of ' + FOUNDING_TOTAL + (FOUNDING_LEFT === 1 ? ' spot is' : ' spots are') + ' still open. While one is, the build is half off, and your deposit holds yours'
+    : 'all ' + FOUNDING_TOTAL + ' spots are taken';
+}
+document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textContent = foundingLeftWords(); });
+
 (function () {
   'use strict';
   if (window.__wfMark) return;
@@ -568,6 +578,7 @@
   .wfm-build .price .once { color: #c9bfac; font-weight: 400; }
   .wfm-build .price .care-mo { display: block; font-size: 14px; margin-top: 2px; }
   .wfm-build .what { font-size: 14.5px; line-height: 1.45; color: #d9cfbd; }
+  .wfm-card .spots { margin: 14px 0 0; font-size: 14px; color: #c9bfac; font-style: italic; }
   .wfm-card .care { margin: 16px 0 0; font-size: 14px; color: #c9bfac; }
   .wfm-card .care a { color: #f2c77c; }
   .wfm-card .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 14px; }
@@ -833,6 +844,8 @@
       grid.append(btn);
     });
     box.append(grid);
+    // founding spots (Pollen, Oct 9): one calm line, only while the founding price shows
+    if (founding && FOUNDING_LEFT > 0 && BUILDS.some((bd) => bd.full !== 0)) box.append(el('p', 'spots', 'Founding price: I’m taking ' + FOUNDING_TOTAL + ' founding clients this year, and ' + foundingLeftWords() + '.'));
     const care = el('p', 'care', PRICED ? 'Every site comes with a subscription: it keeps yours healthy and current. If you ever cancel, your site is still yours and I hand you every file and login. Every cost is written out at '
       : 'Care is optional, and every cost is written out at ');
     const a = el('a', '', 'webfaery.love'); a.href = 'https://webfaery.love/'; a.target = '_blank'; a.rel = 'noopener';
@@ -1165,7 +1178,7 @@
     let pending = false; store((s) => { if (s.getItem(DONE_KEY)) pending = true; });
     if (pending) sendDone(); // last time's Done didn't reach the server
     if (typeof d.pick === 'string') { // the server knows about picks
-      pickReady = true; founding = d.founding === true; myPick = d.pick;
+      pickReady = true; founding = d.founding === true && FOUNDING_LEFT > 0; myPick = d.pick;
       if (myPick && myPick !== 'all') showView(myPick);
       if (!myPick || myPick === 'all') openCard(); // "everything" from before: pick a real build now
       showPick();
