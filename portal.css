@@ -586,3 +586,42 @@ select[aria-invalid="true"], input[type="time"][aria-invalid="true"], input[type
   .p-card, .todo, .payrow, .asks li { background: #fff; border-color: #ccc; box-shadow: none; }
   .rise { animation: none !important; }
 }
+
+/* ============ your bookings (Oct 10 2026): only for a client whose booking runs on Web Faery's server ============ */
+.bk .bk-svc { font-size: 17px; text-align: right; overflow-wrap: anywhere; min-width: 0; }
+.bk .o-head { flex-wrap: wrap; }
+.bk .bk-who { margin: 8px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; font-size: 16.5px; line-height: 1.45; }
+.bk .bk-who .bk-name { font-weight: 600; }
+.bk .bk-who .later { min-height: 44px; display: inline-flex; align-items: center; overflow-wrap: anywhere; }
+.bk.bk-gone .o-date, .bk.bk-gone .bk-svc { color: var(--ink-soft); text-decoration: line-through; }
+.bk .dc-meta { margin: 8px 0 0; color: var(--ink-soft); font-size: 15.5px; line-height: 1.45; }
+.bk-past { margin: 16px 0 0; }
+.bk-past summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 8px; font-size: 16.5px; color: var(--acc); }
+.bk-past summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.bk-off-form { margin-top: 12px; }
+.bk-off-label { font-size: 17px; }
+.bk-week { display: grid; gap: 10px; margin: 12px 0 0; }
+.bk-day { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 10px 14px; border-radius: 12px; background: var(--field); border: 1px solid var(--hairline); }
+.bk-dayname { font-family: 'Gloock', Georgia, serif; font-size: 17px; }
+.bk-wins { display: grid; gap: 6px; }
+.bk-win { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; align-items: center; gap: 6px 10px; }
+.bk-win input[type="time"] { width: 100%; min-width: 0; padding-left: 8px; padding-right: 6px; }
+@media (max-width: 520px) {
+  .bk-win { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 6px; }
+  .bk-win .later { grid-column: 1 / -1; justify-self: start; }
+  .bk-win input[type="time"] { font-size: 15px; padding: 8px 4px 8px 8px; }
+  .bk-win input[type="time"]::-webkit-calendar-picker-indicator { margin: 0; padding: 0; }
+  .bk-day { padding: 10px 10px; }
+}
+.bk-win .later, .bk-day .bk-add { min-height: 44px; }
+.bk-to { color: var(--ink-soft); }
+.bk-closed { color: var(--ink-soft); font-size: 15.5px; }
+.bk-day .bk-add { justify-self: start; }
+.bk-form .o-hint { margin: 12px 0 0; }
+.bk-form h4.small-h { margin-top: 12px; padding-top: 0; border-top: 0; }
+#bk-feed-note { overflow-wrap: anywhere; }
+@media (min-width: 720px) {
+  .bk-day { grid-template-columns: 9em 1fr auto; align-items: center; }
+  .bk-closed { grid-column: 2; }
+}
+@media (max-width: 420px) { .order.bk .o-act2 { flex-wrap: nowrap; } .order.bk .o-act2 .open-btn { width: auto; flex: 1 1 0; } }

@@ -50,6 +50,7 @@
   const BASE = SERVER + '/api/webfaery/portal';
   const SHOP = SERVER + '/api/webfaery/shop';         // a shop's orders (Oct 8 2026): only clients with a shop get any
   const GIFT = SERVER + '/api/webfaery/gift';         // gift certificates (Oct 10 2026): only clients whose site sells them
+  const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -325,6 +326,8 @@
     if (data && Number.isInteger(data.at) && data.at >= 0 && data.at < 100) e.at = data.at;
     // the shop's back end (Oct 10 2026) says what to fix in its own words, and 409 "taken" for a code name in use
     if (data && typeof data.message === 'string') e.msg = cleanLine(data.message, 200);
+    // a client's bookings (Oct 10 2026) say why too (no_payments, not_set_up)
+    if (data && typeof data.why === 'string') e.why = data.why.slice(0, 20);
     if (status === 409 && data && data.error === 'taken') e.code = 'input';
     return e;
   };
@@ -404,6 +407,9 @@
     giftRedeem: (b) => postJSON('/redeem', b, token, GIFT)
   };
   let api = realApi;
+  // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
+  // if the sign-in changes (the private links door), only this line changes.
+  const bookCall = (path, body) => postJSON(path, body || {}, token, BOOKINGS);
 
   // what people read when something goes sideways
   const words = (err, where) => {
@@ -505,6 +511,8 @@
     $('#sec-gifts').hidden = true;
     $('#gift-card').hidden = true;
     $('#in-gift-code').value = '';
+    bk = null;
+    $('#sec-bookings').hidden = true;
     heroSignedOut();
     const n = $('#email-notice');
     n.textContent = notice || '';
@@ -665,6 +673,7 @@
       show('v-project');
       loadOrders();
       loadGifts();
+      loadBookings();
       if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
     } catch (err) {
@@ -685,11 +694,12 @@
       render();
       loadOrders();
       loadGifts();
+      loadBookings();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
     $$('#v-project textarea, #v-project input[type="text"]:not(.keeps)').some((t) => t.value.trim()) ||
-    !!document.querySelector('#v-project .ship-form') || !$('#f-dc').hidden;
+    !!document.querySelector('#v-project .ship-form') || !$('#f-dc').hidden || !!document.querySelector('#sec-bookings .bk-form');
 
   // Back from Stripe (its "after payment" link can be portal.html?paid=deposit, or ?paid=1): note it, so the
   // pay button turns into a thank-you instead of asking again while Taya waits to see it land.
@@ -1986,6 +1996,417 @@
     } finally { btn.removeAttribute('aria-busy'); }
   }
 
+  /* ---- your bookings (Oct 10 2026) ----
+     Only for a client whose booking runs on Web Faery's server (the server answers booking: null for everyone else,
+     and the section stays hidden). Coming up (move or cancel, which emails the person), past, time off, weekly hours,
+     services, and the private calendar link. Every call goes through bookCall, the one place this part signs in. */
+  let bk = null;             // the overview as the server last sent it (cleaned)
+  let bkBusy = false;
+  const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
+  const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
+  async function loadBookings() {
+    if (DEMO) { $('#sec-bookings').hidden = true; return; }
+    if (bkBusy) return;
+    bkBusy = true;
+    try {
+      bk = cleanBk(await bookCall('/overview'));
+      renderBk();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!bk) $('#sec-bookings').hidden = true;
+    } finally { bkBusy = false; }
+  }
+  function cleanBkRow(b) {
+    if (!b || typeof b !== 'object' || !str(b.id)) return null;
+    return {
+      id: str(b.id, 20), when: str(b.when, 60), starts_at: str(b.starts_at, 30), service_name: str(b.service_name, 80), minutes: +b.minutes || 0,
+      location: str(b.location, 10), where: str(b.where, 400), address: str(b.address, 400), name: str(b.name, 120), email: str(b.email, 200),
+      phone: str(b.phone, 40), note: str(b.note, 1000), status: str(b.status, 12), group_index: +b.group_index || 1, group_size: +b.group_size || 1,
+      deposit: str(b.deposit, 20), paid: !!b.paid, canceled_by: str(b.canceled_by, 12)
+    };
+  }
+  function cleanBk(d) {
+    d = d && typeof d === 'object' ? d : {};
+    if (!d.booking || typeof d.booking !== 'object') return null;
+    const o = d.booking;
+    const hours = {};
+    BK_DAYS.forEach(([k]) => { hours[k] = arr(o.hours && o.hours[k]).filter((w) => Array.isArray(w) && w.length === 2).map((w) => [str(w[0], 5), str(w[1], 5)]).slice(0, 4); });
+    const svc = (s) => (s && str(s.id) ? {
+      id: str(s.id, 20), name: str(s.name, 80), minutes: +s.minutes || 60, price_cents: +s.price_cents || 0, deposit_cents: +s.deposit_cents || 0,
+      description: str(s.description, 600), location: str(s.location, 10), package_count: Math.max(1, +s.package_count || 1), active: !!s.active
+    } : null);
+    return {
+      owner: { name: str(o.name, 80), active: !!o.active, zone: str(o.zone, 20), hours, locations: arr(o.locations).map((x) => str(x, 10)).filter((x) => BK_WHERE[x]),
+        payments: !!o.payments, payments_test: !!o.payments_test, feed_url: safeUrl(o.feed_url) },
+      services: arr(d.services).slice(0, 40).map(svc).filter(Boolean),
+      upcoming: arr(d.upcoming).slice(0, 500).map(cleanBkRow).filter(Boolean),
+      past: arr(d.past).slice(0, 300).map(cleanBkRow).filter(Boolean),
+      time_off: arr(d.time_off).slice(0, 300).map((t) => (t && str(t.id) ? { id: str(t.id, 20), label: str(t.label, 80), note: str(t.note, 200) } : null)).filter(Boolean)
+    };
+  }
+  function renderBk() {
+    const sec = $('#sec-bookings');
+    if (!bk) { sec.hidden = true; return; }
+    sec.hidden = false;
+    $('#bk-off').hidden = bk.owner.active;
+    $('#bk-test').hidden = !bk.owner.payments_test;
+    $('#bk-zone').textContent = 'Times here are ' + (bk.owner.zone || 'Pacific') + ' time.';
+    if (!sec.querySelector('#bk-up .bk-form')) {
+      $('#bk-up-empty').hidden = bk.upcoming.length > 0;
+      $('#bk-up').replaceChildren(...bk.upcoming.map((b) => bkRow(b, false)));
+    }
+    $('#bk-past-wrap').hidden = !bk.past.length;
+    $('#bk-past').replaceChildren(...bk.past.map((b) => bkRow(b, true)));
+    $('#bk-off-list').replaceChildren(...bk.time_off.map(offRow));
+    if (!$('#f-bk-hours').contains(document.activeElement)) renderWeek(bk.owner.hours);
+    if (!sec.querySelector('#bk-svcs .bk-form')) $('#bk-svcs').replaceChildren(...bk.services.map(svcRow));
+  }
+  function bkRow(b, past) {
+    const li = make('li', 'order bk' + (b.status === 'canceled' ? ' bk-gone' : ''));
+    li.dataset.booking = b.id;
+    const head = make('div', 'o-head');
+    head.append(make('span', 'o-date', b.when), make('span', 'o-total bk-svc', b.service_name + (b.group_size > 1 ? ' (' + b.group_index + ' of ' + b.group_size + ')' : '')));
+    li.append(head);
+    const who = make('p', 'bk-who');
+    who.append(make('span', 'bk-name', b.name));
+    const mail = make('a', 'later', b.email);
+    mail.href = 'mailto:' + b.email;
+    who.append(' ', mail);
+    if (b.phone) { const tel = make('a', 'later', b.phone); tel.href = 'tel:' + digits(b.phone); who.append(' ', tel); }
+    li.append(who);
+    const ship = make('div', 'o-ship');
+    ship.append(make('span', 'o-label', b.location === 'home' ? 'Their place' : 'Where'));
+    ship.append(make('p', 'o-addr', b.location === 'home' ? (b.address || 'Address not given') : b.where));
+    li.append(ship);
+    if (b.note) { const n = make('div', 'o-note'); n.append(make('span', 'o-label', 'Their note'), make('p', null, b.note)); li.append(n); }
+    const bits = [];
+    if (b.status === 'pending') bits.push('Waiting for the deposit (held 30 minutes)');
+    if (b.deposit) bits.push(b.paid ? 'Deposit paid: ' + b.deposit : 'Deposit ' + b.deposit);
+    if (b.status === 'canceled') bits.push(b.canceled_by === 'owner' ? 'You canceled it' : 'They canceled');
+    if (bits.length) li.append(make('p', 'dc-meta', bits.join(' · ')));
+    if (!past && b.status === 'confirmed') {
+      const act = make('div', 'o-act o-act2');
+      const mv = make('button', 'open-btn', 'Move');
+      mv.type = 'button';
+      mv.setAttribute('aria-label', 'Move ' + b.name + '’s booking on ' + b.when);
+      mv.addEventListener('click', () => openMove(b, li));
+      const cx = make('button', 'open-btn', 'Cancel');
+      cx.type = 'button';
+      cx.setAttribute('aria-label', 'Cancel ' + b.name + '’s booking on ' + b.when);
+      cx.addEventListener('click', () => openCancel(b, li));
+      act.append(mv, cx);
+      li.append(act);
+    }
+    return li;
+  }
+  function closeBkForms(li) { $$('.bk-form', li || document).forEach((f) => f.remove()); }
+  function msgBox(id, label) {
+    const wrap = make('div');
+    const lab = make('label', 'field-label');
+    lab.htmlFor = id;
+    lab.append(label + ' ', make('span', 'opt-tag', '(optional)'));
+    const ta = make('textarea', 'short');
+    ta.id = id;
+    ta.maxLength = 600;
+    wrap.append(lab, ta);
+    return { wrap, ta };
+  }
+  function openCancel(b, li) {
+    closeBkForms();
+    const f = make('form', 'ship-form bk-form');
+    f.noValidate = true;
+    f.append(make('p', 'o-hint', 'Cancel ' + b.service_name + ' with ' + b.name + ' on ' + b.when + '? They get an email saying so.'));
+    const m = msgBox('in-bk-cmsg-' + b.id, 'A few words for them');
+    f.append(m.wrap);
+    const err = make('p', 'err'); err.hidden = true; f.append(err);
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Cancel it and email them'));
+    const keep = make('button', 'later', 'Keep it'); keep.type = 'button';
+    keep.addEventListener('click', () => { f.remove(); focusEl($$('.open-btn', li)[1]); });
+    btns.append(go, keep); f.append(btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      setBusy(go, true, 'Canceling…');
+      try {
+        await bookCall('/cancel', { id: b.id, message: cleanText(m.ta.value, 600), tell: true });
+        f.remove();
+        toast('Canceled. ' + b.name + ' has an email saying so.');
+        await loadBookings();
+        focusEl($('#h-bookings'), true);
+      } catch (e2) {
+        setBusy(go, false, 'Cancel it and email them');
+        if (e2.code === 'signed_out') { quietSignOut(false); return; }
+        err.textContent = bkWords(e2); err.hidden = false;
+      }
+    });
+    li.append(f);
+    focusEl(m.ta);
+  }
+  async function openMove(b, li) {
+    closeBkForms();
+    const f = make('form', 'ship-form bk-form');
+    f.noValidate = true;
+    f.append(make('p', 'o-hint', 'Finding open times…'));
+    li.append(f);
+    let days = [];
+    try { days = arr((await bookCall('/slots', { id: b.id })).days); } catch (e1) {
+      if (e1.code === 'signed_out') { quietSignOut(false); return; }
+      f.replaceChildren(make('p', 'err', bkWords(e1)));
+      return;
+    }
+    f.replaceChildren();
+    if (!days.length) { f.append(make('p', 'o-hint', 'No open times to move it to right now. Add hours above, or email them to sort it out.')); return; }
+    f.append(make('p', 'o-hint', 'Move ' + b.service_name + ' with ' + b.name + ' (now ' + b.when + '). They get an email with the new time.'));
+    const dl = make('label', 'field-label', 'New day'); dl.htmlFor = 'in-bk-day-' + b.id;
+    const ds = make('select'); ds.id = 'in-bk-day-' + b.id;
+    days.forEach((d) => { const o = make('option', null, longDay(str(d.date, 10))); o.value = str(d.date, 10); ds.append(o); });
+    const tl = make('label', 'field-label', 'New time'); tl.htmlFor = 'in-bk-time-' + b.id;
+    const ts = make('select'); ts.id = 'in-bk-time-' + b.id;
+    const fillTimes = () => {
+      const d = days.find((x) => str(x.date) === ds.value);
+      ts.replaceChildren(...arr(d && d.times).map((t) => { const o = make('option', null, str(t.label, 20)); o.value = str(t.at, 30); return o; }));
+    };
+    ds.addEventListener('change', fillTimes);
+    fillTimes();
+    const m = msgBox('in-bk-mmsg-' + b.id, 'A few words for them');
+    const err = make('p', 'err'); err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Move it and email them'));
+    const keep = make('button', 'later', 'Keep the time'); keep.type = 'button';
+    keep.addEventListener('click', () => { f.remove(); focusEl($$('.open-btn', li)[0]); });
+    btns.append(go, keep);
+    f.append(dl, ds, tl, ts, m.wrap, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (!ts.value) return;
+      setBusy(go, true, 'Moving…');
+      try {
+        await bookCall('/move', { id: b.id, at: ts.value, message: cleanText(m.ta.value, 600) });
+        f.remove();
+        toast('Moved. ' + b.name + ' has an email with the new time.');
+        await loadBookings();
+        focusEl($('#h-bookings'), true);
+      } catch (e2) {
+        setBusy(go, false, 'Move it and email them');
+        if (e2.code === 'signed_out') { quietSignOut(false); return; }
+        err.textContent = bkWords(e2); err.hidden = false;
+      }
+    });
+    focusEl(ds);
+  }
+  function bkWords(e) {
+    if (e.code === 'slow_down') return 'Lots of changes just now. Try again in a few minutes.';
+    if (e.code === 'not_found') return 'That’s not here anymore. Try refreshing the page.';
+    if (e.status === 409) return 'That time isn’t open anymore, or the booking already changed. Refresh and try again.';
+    if (e.code === 'input') return e.why === 'no_payments' ? 'Deposits need your Stripe connected first. Email Taya and she’ll set it up.' : 'Something in there didn’t fit. Could you check it and try again?';
+    return 'I can’t reach your bookings right now. Try again soon, or email me at ' + TAYA + '.';
+  }
+
+  // ---- time off
+  function offRow(t) {
+    const li = make('li', 'dc');
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'bk-off-label', t.label));
+    li.append(head);
+    if (t.note) li.append(make('p', 'dc-meta', t.note));
+    const act = make('div', 'o-act');
+    const rm = make('button', 'open-btn', 'Remove');
+    rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove time off: ' + t.label);
+    rm.addEventListener('click', async () => {
+      setBusy(rm, true, 'Removing…');
+      try { await bookCall('/time-off-remove', { id: t.id }); toast('Removed. Those times are open again.'); await loadBookings(); focusEl($('#in-bk-from'), true); } catch (e) {
+        setBusy(rm, false, 'Remove');
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        toast(bkWords(e));
+      }
+    });
+    act.append(rm);
+    li.append(act);
+    return li;
+  }
+  async function onBkOff(ev) {
+    ev.preventDefault();
+    const err = $('#bk-off-err');
+    err.hidden = true;
+    const all = $('#in-bk-allday').checked;
+    const body = { from: $('#in-bk-from').value, to: $('#in-bk-to').value || $('#in-bk-from').value, note: cleanLine($('#in-bk-offnote').value, 200) };
+    if (!all) { body.to = body.from; body.start = $('#in-bk-start').value; body.end = $('#in-bk-end').value; }
+    if (!body.from) { err.textContent = 'Pick the first day.'; err.hidden = false; focusEl($('#in-bk-from')); return; }
+    const btn = $('#b-bk-off');
+    setBusy(btn, true, 'Adding…');
+    try {
+      const r = await bookCall('/time-off-add', body);
+      $('#in-bk-from').value = ''; $('#in-bk-to').value = ''; $('#in-bk-offnote').value = ''; $('#in-bk-start').value = ''; $('#in-bk-end').value = '';
+      const hits = arr(r && r.overlaps);
+      toast(hits.length ? 'Added. ' + plural(hits.length, 'booking is', 'bookings are') + ' already in that time: move or cancel ' + (hits.length === 1 ? 'it' : 'them') + ' below.' : 'Added. Those times are closed for booking.', hits.length ? 9000 : 0);
+      await loadBookings();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      err.textContent = e.code === 'input' ? 'Check the days and times: the end comes after the start, in quarter hours.' : bkWords(e);
+      err.hidden = false;
+    } finally { setBusy(btn, false, 'Add time off'); }
+  }
+
+  // ---- weekly hours
+  function hoursRow(win) {
+    const row = make('div', 'bk-win');
+    const a = make('input'); a.type = 'time'; a.step = 900; a.value = win[0]; a.className = 'keeps'; a.setAttribute('aria-label', 'From');
+    const b = make('input'); b.type = 'time'; b.step = 900; b.value = win[1]; b.className = 'keeps'; b.setAttribute('aria-label', 'Until');
+    const rm = make('button', 'later', 'Remove'); rm.type = 'button';
+    rm.addEventListener('click', () => { const day = row.parentElement; row.remove(); syncDay(day); });
+    row.append(a, make('span', 'bk-to', 'to'), b, rm);
+    return row;
+  }
+  function syncDay(list) {
+    const box = list.closest('.bk-day');
+    box.querySelector('.bk-closed').hidden = list.children.length > 0;
+    box.querySelector('.bk-add').hidden = list.children.length >= 4;
+    $$('.bk-win', list).forEach((r) => {
+      const name = box.dataset.name;
+      const [a, b] = $$('input', r);
+      a.setAttribute('aria-label', name + ', from');
+      b.setAttribute('aria-label', name + ', until');
+      r.querySelector('button').setAttribute('aria-label', 'Remove these ' + name + ' hours');
+    });
+  }
+  function renderWeek(hours) {
+    const week = $('#bk-week');
+    week.replaceChildren(...BK_DAYS.map(([k, name]) => {
+      const box = make('div', 'bk-day');
+      box.dataset.day = k;
+      box.dataset.name = name;
+      box.append(make('span', 'bk-dayname', name));
+      const list = make('div', 'bk-wins');
+      (hours[k] || []).forEach((w) => list.append(hoursRow(w)));
+      box.append(list, make('span', 'bk-closed', 'Closed'));
+      const add = make('button', 'later bk-add', 'Add hours'); add.type = 'button';
+      add.setAttribute('aria-label', 'Add hours on ' + name);
+      add.addEventListener('click', () => { const r = hoursRow(['10:00', '16:00']); list.append(r); syncDay(list); focusEl(r.querySelector('input')); });
+      box.append(add);
+      syncDay(list);
+      return box;
+    }));
+  }
+  async function onBkHours(ev) {
+    ev.preventDefault();
+    const err = $('#bk-hours-err');
+    err.hidden = true;
+    const hours = {};
+    $$('#bk-week .bk-day').forEach((box) => {
+      hours[box.dataset.day] = $$('.bk-win', box).map((r) => $$('input', r).map((i) => i.value))
+        .filter((w) => w[0] && w[1]).sort((x, y) => (x[0] < y[0] ? -1 : 1));
+    });
+    const btn = $('#b-bk-hours');
+    setBusy(btn, true, 'Saving…');
+    try {
+      await bookCall('/hours', { hours });
+      toast('Saved. New bookings fit inside these hours.');
+      await loadBookings();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      const day = BK_DAYS.find(([k]) => k === e.field);
+      err.textContent = day ? 'Check ' + day[1] + ': each start comes before its end, in quarter hours, without overlapping.' : bkWords(e);
+      err.hidden = false;
+    } finally { setBusy(btn, false, 'Save your hours'); }
+  }
+
+  // ---- services
+  function svcRow(s) {
+    const li = make('li', 'dc' + (s.active ? '' : ' st-off'));
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'dc-name bk-svc-name', s.name), make('span', 'dc-off', s.price_cents ? '$' + dollars(s.price_cents) : ''));
+    li.append(head);
+    const bits = [s.minutes + ' minutes', BK_WHERE[s.location] || '', s.package_count > 1 ? s.package_count + ' sessions, booked together' : '',
+      s.deposit_cents ? '$' + dollars(s.deposit_cents) + ' deposit' : '', s.active ? 'On' : 'Off, not shown'].filter(Boolean);
+    li.append(make('p', 'dc-meta', bits.join(' · ')));
+    if (s.description) li.append(make('p', 'dc-meta', s.description));
+    const act = make('div', 'o-act');
+    const ed = make('button', 'open-btn', 'Change'); ed.type = 'button';
+    ed.setAttribute('aria-label', 'Change ' + s.name);
+    ed.addEventListener('click', () => openSvc(s, li));
+    act.append(ed);
+    li.append(act);
+    return li;
+  }
+  function openSvc(s, li) {
+    closeBkForms($('#bk-svcs'));
+    const key = s ? s.id : 'new';
+    const f = make('form', 'dc-form bk-form');
+    f.noValidate = true;
+    const field = (label, el, opt) => { const l = make('label', 'field-label', label + ' '); l.htmlFor = el.id; if (opt) l.append(make('span', 'opt-tag', opt)); return [l, el]; };
+    const inp = (id, type, val, max) => { const i = make('input'); i.id = id + '-' + key; i.type = type; i.value = val; if (max) i.maxLength = max; i.autocomplete = 'off'; return i; };
+    const name = inp('in-bks-name', 'text', s ? s.name : '', 80);
+    const mins = inp('in-bks-min', 'text', s ? String(s.minutes) : '60', 3); mins.inputMode = 'numeric';
+    const price = inp('in-bks-price', 'text', s && s.price_cents ? dollars(s.price_cents) : '', 9); price.inputMode = 'decimal';
+    const where = make('select'); where.id = 'in-bks-where-' + key;
+    bk.owner.locations.forEach((l) => { const o = make('option', null, BK_WHERE[l]); o.value = l; where.append(o); });
+    if (s && bk.owner.locations.includes(s.location)) where.value = s.location;
+    const pk = inp('in-bks-pk', 'text', s ? String(s.package_count) : '1', 2); pk.inputMode = 'numeric';
+    const desc = make('textarea', 'short'); desc.id = 'in-bks-desc-' + key; desc.maxLength = 600; desc.value = s ? s.description : '';
+    const depWrap = make('label', 'dc-check');
+    const dep = make('input'); dep.type = 'checkbox'; dep.checked = !!(s && s.deposit_cents); dep.disabled = !bk.owner.payments && !dep.checked;
+    depWrap.append(dep, make('span', null, bk.owner.payments ? 'Ask for a deposit to hold the time' : 'Ask for a deposit (needs your Stripe connected; email Taya)'));
+    const depAmt = inp('in-bks-dep', 'text', s && s.deposit_cents ? dollars(s.deposit_cents) : '', 9); depAmt.inputMode = 'decimal';
+    const depRow = make('div'); depRow.append(...field('Deposit, in dollars', depAmt)); depRow.hidden = !dep.checked;
+    dep.addEventListener('change', () => { depRow.hidden = !dep.checked; });
+    const onWrap = make('label', 'dc-check');
+    const on = make('input'); on.type = 'checkbox'; on.checked = s ? s.active : true;
+    onWrap.append(on, make('span', null, 'On, people can book it'));
+    const err = make('p', 'err'); err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save the service'));
+    const no = make('button', 'later', 'Cancel'); no.type = 'button';
+    no.addEventListener('click', () => { f.remove(); focusEl(s ? li.querySelector('.open-btn') : $('#b-bk-svc-new')); });
+    btns.append(go, no);
+    f.append(make('h4', 'small-h', s ? 'Change ' + s.name : 'A new service'), ...field('Name', name), ...field('Length, in minutes', mins), ...field('Price shown', price, '(optional, in dollars)'),
+      ...field('Where', where), ...field('Sessions in a package', pk, '(1 for a single session)'), ...field('A short description', desc, '(optional)'), depWrap, depRow, onWrap, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      err.hidden = true;
+      const pc = toCents(price.value), dc = dep.checked ? toCents(depAmt.value) : 0;
+      const m = Math.round(+mins.value), n = Math.round(+pk.value || 1);
+      const bad = (msg, el) => { err.textContent = msg; err.hidden = false; focusEl(el); };
+      if (!cleanLine(name.value, 80)) return bad('Give it a name.', name);
+      if (!(m >= 15 && m <= 480 && m % 5 === 0)) return bad('The length is in minutes, from 15 to 480 (in steps of 5).', mins);
+      if (pc === null) return bad('The price is a dollar amount, like 90 or 92.50.', price);
+      if (dep.checked && (!dc || dc < 100)) return bad('The deposit is a dollar amount, at least $1.', depAmt);
+      if (!(n >= 1 && n <= 12)) return bad('Sessions in a package is 1 to 12.', pk);
+      setBusy(go, true, 'Saving…');
+      try {
+        await bookCall('/service-save', { id: s ? s.id : '', name: cleanLine(name.value, 80), minutes: m, price_cents: pc, deposit_cents: dc, description: cleanText(desc.value, 600),
+          location: where.value, package_count: n, active: on.checked });
+        f.remove();
+        toast('Saved.');
+        await loadBookings();
+        focusEl($('#b-bk-svc-new'), true);
+      } catch (e) {
+        setBusy(go, false, 'Save the service');
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        err.textContent = bkWords(e); err.hidden = false;
+      }
+    });
+    if (s) li.append(f); else $('#bk-svcs').append(f);
+    focusEl(name);
+  }
+
+  // ---- the calendar link
+  async function copyFeed(fresh) {
+    const note = $('#bk-feed-note');
+    let url = bk && bk.owner.feed_url;
+    const btn = fresh ? $('#b-bk-feed-new') : $('#b-bk-feed');
+    try {
+      if (fresh) { url = safeUrl((await bookCall('/feed-new')).feed_url); if (bk) bk.owner.feed_url = url; }
+      if (!url) throw fail('server');
+      await navigator.clipboard.writeText(url);
+      note.textContent = fresh ? 'A new link is copied. The old one stops working, so update it on your phone.' : 'Copied. Paste it into your phone’s calendar as a subscribed calendar.';
+    } catch (e) {
+      if (e && e.code === 'signed_out') { quietSignOut(false); return; }
+      note.textContent = url ? 'Copying didn’t work here. Your link: ' + url : bkWords(e || {});
+    }
+    focusEl(btn, true);
+  }
+
   /* ---- payments ---- */
   function renderPay() {
     const c = me.client;
@@ -2497,6 +2918,12 @@
     $$('input[name="dc-kind"]').forEach((r) => r.addEventListener('change', syncDcKind));
     $('#f-shop-set').addEventListener('submit', onShopSettings);
     $('#f-gift').addEventListener('submit', onGiftFind);
+    $('#f-bk-off').addEventListener('submit', onBkOff);
+    $('#in-bk-allday').addEventListener('change', () => { $('#bk-off-hours').hidden = $('#in-bk-allday').checked; $('#in-bk-to').disabled = !$('#in-bk-allday').checked; });
+    $('#f-bk-hours').addEventListener('submit', onBkHours);
+    $('#b-bk-svc-new').addEventListener('click', () => { if (bk) openSvc(null, null); });
+    $('#b-bk-feed').addEventListener('click', () => copyFeed(false));
+    $('#b-bk-feed-new').addEventListener('click', () => copyFeed(true));
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {

@@ -308,6 +308,62 @@
         <span class="empty-body">No gift certificates yet. They show up here once someone buys one.</span></p>
     </section>
 
+    <!-- your bookings (Oct 10 2026): only for a client whose booking runs on Web Faery's server -->
+    <section class="p-card" id="sec-bookings" aria-labelledby="h-bookings" hidden>
+      <span class="kicker">Your booking</span>
+      <h2 id="h-bookings" tabindex="-1">Bookings</h2>
+      <p class="orders-test" id="bk-off" hidden>Booking isn’t switched on for your site yet. Taya turns it on with you once your hours and services look right.</p>
+      <p class="orders-test" id="bk-test" hidden>Deposits are in test mode: no real money moves yet.</p>
+      <p class="orders-fine" id="bk-zone"></p>
+      <h3 class="small-h">Coming up</h3>
+      <ul class="orders bks" id="bk-up"></ul>
+      <p class="empty" id="bk-up-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+        <span class="empty-body">Nothing booked yet. New bookings show up here, and in your calendar if you add your link below.</span></p>
+      <details class="bk-past" id="bk-past-wrap" hidden>
+        <summary>Past and canceled <span class="opt-tag">(the last 60 days)</span></summary>
+        <ul class="orders bks" id="bk-past"></ul>
+      </details>
+
+      <h3 class="small-h">Time off</h3>
+      <p class="orders-fine">Block a day, a few days, or a few hours. Those times close for booking right away.</p>
+      <ul class="dcs" id="bk-off-list"></ul>
+      <form class="dc-form bk-off-form" id="f-bk-off" novalidate>
+        <div class="dc-dates">
+          <div><label class="field-label" for="in-bk-from">From</label><input id="in-bk-from" class="keeps" type="date" aria-describedby="bk-off-err"></div>
+          <div><label class="field-label" for="in-bk-to">To <span class="opt-tag">(optional, for more than one day)</span></label><input id="in-bk-to" class="keeps" type="date"></div>
+        </div>
+        <label class="dc-check"><input type="checkbox" id="in-bk-allday" checked> <span>All day</span></label>
+        <div class="dc-dates" id="bk-off-hours" hidden>
+          <div><label class="field-label" for="in-bk-start">Starting at</label><input id="in-bk-start" class="keeps" type="time" step="900"></div>
+          <div><label class="field-label" for="in-bk-end">Until</label><input id="in-bk-end" class="keeps" type="time" step="900"></div>
+        </div>
+        <label class="field-label" for="in-bk-offnote">A note for you <span class="opt-tag">(optional, only you see it)</span></label>
+        <input id="in-bk-offnote" class="keeps" type="text" maxlength="200" autocomplete="off" placeholder="Like: Trip to see family">
+        <p class="err" id="bk-off-err" hidden></p>
+        <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-off"><span>Add time off</span></button></div>
+      </form>
+
+      <h3 class="small-h">Your weekly hours</h3>
+      <p class="orders-fine">When people can book, each week. Bookings fit inside these hours.</p>
+      <form id="f-bk-hours" novalidate>
+        <div class="bk-week" id="bk-week"></div>
+        <p class="err" id="bk-hours-err" hidden></p>
+        <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-hours"><span>Save your hours</span></button></div>
+      </form>
+
+      <h3 class="small-h">Your services</h3>
+      <ul class="dcs" id="bk-svcs"></ul>
+      <p class="dc-new"><button type="button" class="pick" id="b-bk-svc-new">New service</button></p>
+
+      <h3 class="small-h">Your calendar</h3>
+      <p class="orders-fine">Copy your private calendar link and add it on your phone as a subscribed calendar. Every booking shows up there, with the address for home visits. Keep the link to yourself.</p>
+      <div class="dc-btns">
+        <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
+        <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
+      </div>
+      <p class="orders-fine" id="bk-feed-note" role="status"></p>
+    </section>
+
     <section class="p-card" id="sec-list" aria-labelledby="h-list">
       <span class="kicker">Your list</span>
       <h2 id="h-list" tabindex="-1">Just these few things</h2>
