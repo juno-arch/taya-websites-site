@@ -1892,7 +1892,7 @@
     function place() {
       q = false; t.style.bottom = ''; if (!vp || vp.hidden) return;
       var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect(); if (!b.width || !b.height) return;
-      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8) + 'px';
+      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8 - (parseFloat(t.style.marginBottom) || 0)) + 'px';
     }
     function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
     addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
@@ -1904,3 +1904,38 @@
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
 <script src="/note-motion.js?v=1" defer></script>
 <script src="/lightbox.js?v=2" defer></script>
+<script>
+  /* mockup pills vs the Coming up strip: on a phone the strip sits right where the Light/Dark, "A mockup from Web Faery"
+     and See it as pills float. While the strip is behind them, all three ride just above it together (keeping their
+     own spacing), so its tag and first show stay readable; they drop back once it scrolls past. */
+  (function () {
+    var m = document.getElementById('ha-marq'); if (!m) return;
+    var pills = [document.querySelector('.ribbon'), document.getElementById('theme-tab'), document.getElementById('vp')].filter(Boolean);
+    var lift = 0, q = false;
+    function place() {
+      q = false;
+      var b = m.getBoundingClientRect(), mr = { top: b.top, bottom: b.bottom, left: b.left, right: b.right, height: b.height }, need = 0;
+      var tf = getComputedStyle(m).transform;   /* measure where the strip lands, not where its rise-in starts */
+      if (tf && tf !== 'none' && window.DOMMatrixReadOnly) { var dy = new DOMMatrixReadOnly(tf).m42; mr.top -= dy; mr.bottom -= dy; }
+      if (mr.height && mr.bottom > 0 && mr.top < innerHeight) {
+        var low = -Infinity, hit = false;
+        pills.forEach(function (p) {
+          if (p.hidden) return;
+          var r = p.getBoundingClientRect(); if (!r.width || !r.height) return;
+          var top = r.top + (p._wfLift || 0), bottom = r.bottom + (p._wfLift || 0);   /* where it sits with no lift */
+          if (bottom > low) low = bottom;
+          if (top < mr.bottom && bottom > mr.top && r.left < mr.right && r.right > mr.left) hit = true;
+        });
+        if (hit) need = Math.max(0, Math.ceil(low - mr.top + 8));
+      }
+      lift = need;
+      pills.forEach(function (p) { var v = lift; if ((p._wfLift || 0) === v) return; p._wfLift = v; p.style.marginBottom = v ? v + 'px' : ''; });
+    }
+    function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
+    addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon); addEventListener('load', soon);
+    if (window.MutationObserver) { var mo = new MutationObserver(soon); pills.forEach(function (p) { mo.observe(p, { attributes: true }); }); }
+    if (window.ResizeObserver) new ResizeObserver(soon).observe(m);
+    m.addEventListener('animationend', function (e) { if (e.target === m) soon(); });
+    soon(); setTimeout(soon, 600); setTimeout(soon, 2000);
+  })();
+</script>

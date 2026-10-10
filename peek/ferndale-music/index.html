@@ -1880,7 +1880,7 @@
     var c = getComputedStyle(t); t.style.borderTop = c.borderLeftWidth + ' solid ' + c.borderLeftColor;
     t.title = 'Try light or dark. Tap your choice again to follow the phone.';
     var vp = document.getElementById('vp'), q = false;
-    function place() { q = false; t.style.bottom = ''; if (!vp || vp.hidden) return; var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect(); if (!b.width || !b.height) return; if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8) + 'px'; }
+    function place() { q = false; t.style.bottom = ''; if (!vp || vp.hidden) return; var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect(); if (!b.width || !b.height) return; if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8 - (parseFloat(t.style.marginBottom) || 0)) + 'px'; }
     function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
     addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
     if (vp && window.MutationObserver) new MutationObserver(soon).observe(vp, { attributes: true, subtree: true, childList: true });
@@ -1929,6 +1929,41 @@
     window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
     window.addEventListener('resize', function () { if (!mq.matches && open) setOpen(false); update(); });
     update();
+  })();
+</script>
+<script>
+  /* mockup pills vs the Coming up strip: on a phone the strip sits right where the Light/Dark, "A mockup from Web Faery"
+     and See it as pills float. While the strip is behind them, all three ride just above it together (keeping their
+     own spacing), so its tag and first show stay readable; they drop back once it scrolls past. */
+  (function () {
+    var m = document.getElementById('hero-marq'); if (!m) return;
+    var pills = [document.querySelector('.ribbon'), document.getElementById('theme-tab'), document.getElementById('vp')].filter(Boolean);
+    var lift = 0, q = false;
+    function place() {
+      q = false;
+      var b = m.getBoundingClientRect(), mr = { top: b.top, bottom: b.bottom, left: b.left, right: b.right, height: b.height }, need = 0;
+      var tf = getComputedStyle(m).transform;   /* measure where the strip lands, not where its rise-in starts */
+      if (tf && tf !== 'none' && window.DOMMatrixReadOnly) { var dy = new DOMMatrixReadOnly(tf).m42; mr.top -= dy; mr.bottom -= dy; }
+      if (mr.height && mr.bottom > 0 && mr.top < innerHeight) {
+        var low = -Infinity, hit = false;
+        pills.forEach(function (p) {
+          if (p.hidden) return;
+          var r = p.getBoundingClientRect(); if (!r.width || !r.height) return;
+          var top = r.top + (p._wfLift || 0), bottom = r.bottom + (p._wfLift || 0);   /* where it sits with no lift */
+          if (bottom > low) low = bottom;
+          if (top < mr.bottom && bottom > mr.top && r.left < mr.right && r.right > mr.left) hit = true;
+        });
+        if (hit) need = Math.max(0, Math.ceil(low - mr.top + 8));
+      }
+      lift = need;
+      pills.forEach(function (p) { var v = lift; if ((p._wfLift || 0) === v) return; p._wfLift = v; p.style.marginBottom = v ? v + 'px' : ''; });
+    }
+    function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
+    addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon); addEventListener('load', soon);
+    if (window.MutationObserver) { var mo = new MutationObserver(soon); pills.forEach(function (p) { mo.observe(p, { attributes: true }); }); }
+    if (window.ResizeObserver) new ResizeObserver(soon).observe(m);
+    m.addEventListener('animationend', function (e) { if (e.target === m) soon(); });
+    soon(); setTimeout(soon, 600); setTimeout(soon, 2000);
   })();
 </script>
 </html>
