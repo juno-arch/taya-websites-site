@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261010k">
+<link rel="stylesheet" href="portal.css?v=20261010p">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -97,7 +97,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261010k"></script>
+<script src="portal.js?v=20261010p"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -210,6 +210,72 @@
         <p class="note-text" id="note-text"></p>
         <p class="note-date" id="note-date"></p>
       </div>
+    </section>
+
+    <!-- your shop's products (Oct 10 2026): the owner adds and keeps their own products here; only for a client whose
+         shop runs on Web Faery's server. Its code is the "Products card" block in portal.js. -->
+    <section class="p-card" id="sec-products" aria-labelledby="h-products" hidden>
+      <span class="kicker">Your shop</span>
+      <h2 id="h-products" tabindex="-1">Products</h2>
+      <p class="orders-fine">What’s in your shop. A draft stays off your site until you set it live, and a count at 0 shows as sold out.</p>
+      <p class="pr-new"><button type="button" class="pick" id="b-pr-new" aria-expanded="false" aria-controls="f-pr">Add a product</button></p>
+      <ul class="prs" id="prs"></ul>
+      <p class="empty" id="prs-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+        <span class="empty-body">No products yet. Add your first one, and it shows on your site once it’s live.</span></p>
+      <form class="pr-form" id="f-pr" novalidate hidden>
+        <h3 class="small-h" id="pr-form-h">A new product</h3>
+        <fieldset class="pr-set">
+          <legend class="field-label">Photos <span class="opt-tag">(up to 6, the first one leads)</span></legend>
+          <ul class="pr-photos" id="pr-photos"></ul>
+          <label class="pick pr-add-photo" id="pr-add-photo"><input type="file" id="in-pr-photos" class="pr-file" accept="image/*" multiple> <span>Add photos</span></label>
+          <p class="pr-hint">Straight from your phone is fine. They’re made smaller here before they send, and the camera details (like where a photo was taken) are left behind.</p>
+          <p class="err" id="pr-photo-err" hidden></p>
+        </fieldset>
+        <label class="field-label" for="in-pr-title">Name</label>
+        <input id="in-pr-title" type="text" maxlength="120" autocomplete="off" placeholder="Like: Owl sticker" aria-describedby="pr-title-err">
+        <p class="err" id="pr-title-err" hidden></p>
+        <label class="field-label" for="in-pr-blurb">Description <span class="opt-tag">(optional)</span></label>
+        <textarea id="in-pr-blurb" class="short" maxlength="1000" placeholder="A line or two: what it’s made of, how big, how it’s made." aria-describedby="pr-blurb-err"></textarea>
+        <p class="err" id="pr-blurb-err" hidden></p>
+        <label class="field-label" for="in-pr-price">Price</label>
+        <label class="dc-amt"><span aria-hidden="true">$</span>
+          <input id="in-pr-price" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="Like: 28" aria-describedby="pr-price-err"></label>
+        <p class="err" id="pr-price-err" hidden></p>
+        <fieldset class="pr-set">
+          <legend class="field-label">What kind of piece</legend>
+          <label class="dc-check pr-check"><input type="checkbox" id="in-pr-one"> <span>One of a kind (it sells once)</span></label>
+          <label class="dc-check pr-check"><input type="checkbox" id="in-pr-mto"> <span>Made to order (no count to keep)</span></label>
+        </fieldset>
+        <div id="pr-opt-block">
+          <span class="field-label" id="pr-opts-h">Sizes or options <span class="opt-tag">(optional)</span></span>
+          <ul class="pr-opts" id="pr-opts" aria-labelledby="pr-opts-h"></ul>
+          <button type="button" class="later" id="b-pr-opt-add">Add a size or option</button>
+          <label class="dc-check pr-check" id="pr-own-wrap" hidden><input type="checkbox" id="in-pr-own" checked> <span>Each one has its own count</span></label>
+          <p class="err" id="pr-opts-err" hidden></p>
+        </div>
+        <div id="pr-count-block">
+          <label class="field-label" for="in-pr-stock">How many you have</label>
+          <input id="in-pr-stock" class="pr-num" type="text" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="Like: 10" aria-describedby="pr-stock-err">
+          <p class="err" id="pr-stock-err" hidden></p>
+        </div>
+        <fieldset class="pr-set">
+          <legend class="field-label">On your site</legend>
+          <label class="dc-radio pr-radio"><input type="radio" name="pr-status" value="draft" checked> <span>Draft, only you see it</span></label>
+          <label class="dc-radio pr-radio"><input type="radio" name="pr-status" value="live"> <span>Live now</span></label>
+          <label class="dc-radio pr-radio"><input type="radio" name="pr-status" value="scheduled"> <span>Goes live by itself at a set time</span></label>
+          <div id="pr-drop-block" hidden>
+            <label class="field-label" for="in-pr-drop">Day and time <span class="opt-tag">(Pacific time)</span></label>
+            <input id="in-pr-drop" type="datetime-local" aria-describedby="pr-drop-err">
+            <p class="err" id="pr-drop-err" hidden></p>
+          </div>
+        </fieldset>
+        <p class="err" id="pr-err" hidden></p>
+        <p class="pr-progress" id="pr-progress" role="status" hidden></p>
+        <div class="dc-btns">
+          <button class="btn small" type="submit" id="b-pr-save"><span>Save</span></button>
+          <button class="later" type="button" id="b-pr-cancel">Cancel</button>
+        </div>
+      </form>
     </section>
 
     <!-- your shop's orders (Oct 8 2026): only for a client whose shop runs on Web Faery's server -->

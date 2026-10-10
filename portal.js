@@ -30,6 +30,8 @@
    and six more for a shop (Oct 10 2026, also never in the preview): shopCodes, shopCodeSave, shopCodeActive,
    shopSettings, shopShipped, shopSlip
    and three for gift certificates (Oct 10 2026, never in the preview): giftOwner, giftLookup, giftRedeem
+   and the Products card's own door, prodDoor (Oct 10 2026, never in the preview): /products, /product-save,
+   /product-photo, /product-photos
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -1508,6 +1510,7 @@
       shop = cleanShop(d);
       renderOrders();
       if (shop) loadCodes(); else { codes = null; $('#sec-codes').hidden = true; }
+      if (shop) loadProducts(); else hideProducts(); // the Products card (Oct 10 2026)
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       // a shop that can't load right now keeps what it showed; a client without one sees nothing new
@@ -2407,6 +2410,394 @@
     focusEl(btn, true);
   }
 
+  /* ---- your shop's products: the Products card (Oct 10 2026) ----
+     The owner adds and keeps their own products: photos (shrunk right here to 2000 px before they send, which also
+     leaves the camera details behind), name, description, price, sizes or options each with their own count, how
+     many they have (every change is a move in the server's stock ledger), one of a kind, made to order, and draft,
+     live, or a Pacific day and time it goes live by itself. Only for a client with a shop; never in the preview.
+     Everything here talks to the server through prodDoor (below), the card's one way in. */
+  const PR_MAX_PHOTOS = 6, PR_SIDE = 2000, PR_MIN_SIDE = 200, PR_MAX_FILE = 40 * MB;
+  const PR_FILE_RE = /^\/api\/files\/[a-z0-9_]{1,40}\/[a-z0-9]{15}\/[A-Za-z0-9_.-]{1,120}(\?thumb=\d{1,4}x\d{1,4})?$/;
+  // the card's one door to the server: the signed-in key goes in a header (never a web address), JSON or a photo form
+  async function prodDoor(path, body) {
+    const form = body instanceof FormData;
+    const headers = { 'X-WF-Session': token };
+    if (!form) headers['Content-Type'] = 'application/json';
+    let res;
+    try {
+      res = await fetch(SHOP + path, { method: 'POST', headers, body: form ? body : JSON.stringify(body || {}),
+        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+    } catch (e) { throw fail('network'); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw errorFrom(res.status, data);
+    return data;
+  }
+  const prodApi = {
+    list: () => prodDoor('/products', {}),
+    save: (b) => prodDoor('/product-save', b),
+    photo: (id, blob, name) => { const fd = new FormData(); fd.append('product', id); fd.append('photo', blob, name); return prodDoor('/product-photo', fd); },
+    photos: (id, names) => prodDoor('/product-photos', { product: id, photos: names })
+  };
+
+  let prods = null;          // { products: [...] } as the server last sent it (cleaned)
+  let prEditing = null;      // the product in the editor (null: a new one)
+  let prPics = [];           // the editor's photos, in order: { name, src } kept, or { blob, src, ext } new
+  let prBusy = false;
+  const prFileUrl = (u) => { const s = str(u, 300); return PR_FILE_RE.test(s) ? SERVER + s : ''; };
+  const prInt = (v) => (Number.isInteger(v) ? v : null);
+  function cleanProduct(p) {
+    if (!p || typeof p !== 'object' || !/^[a-z0-9]{15}$/.test(str(p.id))) return null;
+    const kind = ['limited', 'one_of_a_kind', 'made_to_order'].includes(p.kind) ? p.kind : 'limited';
+    return {
+      id: p.id, title: str(p.title, 120), blurb: str(p.blurb, 1000), price_cents: prInt(p.price_cents) || 0, price: str(p.price, 20),
+      kind, state: ['draft', 'scheduled', 'live', 'sold_out'].includes(p.state) ? p.state : 'draft',
+      drop_at: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(str(p.drop_at)) ? p.drop_at : '', drop_label: str(p.drop_label, 40),
+      option_stock: !!p.option_stock,
+      options: arr(p.options).slice(0, 20).map((o) => ({ name: str(o && o.name, 30), stock: prInt(o && o.stock) })).filter((o) => o.name),
+      stock: prInt(p.stock), held: prInt(p.held) || 0,
+      photos: arr(p.photos).slice(0, 8).map((x) => ({ name: str(x && x.name, 120), src: prFileUrl(x && x.thumb) || prFileUrl(x && x.url) })).filter((x) => x.name && x.src),
+      linked: prInt(p.linked_photos) || 0
+    };
+  }
+  async function loadProducts() {
+    if (DEMO) { $('#sec-products').hidden = true; return; }
+    try {
+      const d = await prodApi.list();
+      prods = d && d.shop ? { products: arr(d.products).slice(0, 300).map(cleanProduct).filter(Boolean) } : null;
+      renderProducts();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!prods) $('#sec-products').hidden = true;
+    }
+  }
+  function hideProducts() { prods = null; $('#sec-products').hidden = true; }
+  const PR_STATE = { draft: 'Draft', live: 'Live', sold_out: 'Sold out' };
+  function prStockLine(p) {
+    if (p.kind === 'one_of_a_kind') return 'One of a kind';
+    if (p.kind === 'made_to_order') return 'Made to order';
+    if (p.option_stock && p.options.length) return p.options.map((o) => o.name + ' ' + (o.stock || 0)).join(' · ');
+    const n = p.stock || 0;
+    return n + ' left' + (p.held ? ', ' + p.held + ' in a checkout' : '');
+  }
+  function renderProducts() {
+    const sec = $('#sec-products');
+    if (!prods) { sec.hidden = true; return; }
+    sec.hidden = false;
+    const editing = !$('#f-pr').hidden;
+    $('#prs').hidden = editing;
+    $('#prs-empty').hidden = editing || prods.products.length > 0;
+    $('#prs').replaceChildren(...prods.products.map(productRow));
+  }
+  function productRow(p) {
+    const li = make('li', 'pr st-' + p.state);
+    li.dataset.product = p.id;
+    const pic = make('div', 'pr-pic');
+    if (p.photos[0]) {
+      const img = make('img');
+      img.src = p.photos[0].src;
+      img.alt = '';
+      img.decoding = 'async';
+      pic.append(img);
+    } else pic.append(icon('i-leaf'));
+    const main = make('div', 'pr-main');
+    main.append(make('p', 'pr-title', p.title));
+    const line = make('p', 'pr-line');
+    line.append(make('span', 'pr-price', p.price), make('span', 'pr-stock', prStockLine(p)));
+    main.append(line);
+    const act = make('div', 'pr-act');
+    act.append(make('span', 'pr-status', p.state === 'scheduled' ? 'Goes live ' + p.drop_label : PR_STATE[p.state]));
+    const edit = make('button', 'open-btn pr-edit', 'Change');
+    edit.type = 'button';
+    edit.setAttribute('aria-label', 'Change ' + p.title);
+    edit.addEventListener('click', () => openProductForm(p));
+    act.append(edit);
+    li.append(pic, main, act);
+    return li;
+  }
+
+  // ---- the editor
+  const PR_ERRS = { title: 'pr-title', blurb: 'pr-blurb', price_cents: 'pr-price', options: 'pr-opts', stock: 'pr-stock', drop_at: 'pr-drop', status: 'pr', kind: 'pr', photo: 'pr-photo', photos: 'pr-photo' };
+  const PR_INPUTS = { 'pr-title': '#in-pr-title', 'pr-blurb': '#in-pr-blurb', 'pr-price': '#in-pr-price', 'pr-stock': '#in-pr-stock', 'pr-drop': '#in-pr-drop' };
+  function prErr(id, text) {
+    const p = $('#' + id + '-err');
+    p.textContent = text || '';
+    p.hidden = !text;
+    const input = PR_INPUTS[id] && $(PR_INPUTS[id]);
+    if (input) { if (text) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); }
+  }
+  const prClearErrs = () => ['pr-title', 'pr-blurb', 'pr-price', 'pr-opts', 'pr-stock', 'pr-drop', 'pr-photo', 'pr'].forEach((id) => prErr(id, ''));
+  const prStatus = () => { const r = document.querySelector('input[name="pr-status"]:checked'); return r ? r.value : 'draft'; };
+  function prSync() {
+    const one = $('#in-pr-one').checked, mto = $('#in-pr-mto').checked;
+    const rows = $$('#pr-opts > li');
+    $('#pr-opt-block').hidden = one;
+    const own = !one && !mto && rows.length > 0;
+    $('#pr-own-wrap').hidden = !own;
+    const perOpt = own && $('#in-pr-own').checked;
+    rows.forEach((li) => { li.querySelector('.pr-opt-count').hidden = !perOpt; li.classList.toggle('no-count', !perOpt); });
+    $('#pr-count-block').hidden = one || mto || perOpt;
+    $('#pr-drop-block').hidden = prStatus() !== 'scheduled';
+  }
+  function optionRow(o) {
+    const li = make('li', 'pr-opt');
+    const n = $$('#pr-opts > li').length + 1;
+    const name = make('input', 'pr-opt-name');
+    name.type = 'text';
+    name.maxLength = 30;
+    name.autocomplete = 'off';
+    name.placeholder = 'Like: M';
+    name.setAttribute('aria-label', 'Size or option ' + n);
+    name.value = o ? o.name : '';
+    const count = make('input', 'pr-opt-count pr-num');
+    count.type = 'text';
+    count.inputMode = 'numeric';
+    count.maxLength = 5;
+    count.autocomplete = 'off';
+    count.placeholder = 'How many';
+    count.setAttribute('aria-label', 'How many of option ' + n);
+    if (o && Number.isInteger(o.stock)) { count.value = String(o.stock); count.dataset.was = String(o.stock); li.dataset.was = o.name; }
+    const del = make('button', 'pr-opt-del');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Take off option ' + n);
+    del.append(icon('i-x'));
+    del.addEventListener('click', () => { li.remove(); prSync(); focusEl($('#b-pr-opt-add'), true); });
+    li.append(name, count, del);
+    return li;
+  }
+  function renderPrPhotos() {
+    const ul = $('#pr-photos');
+    ul.replaceChildren(...prPics.map((ph, i) => {
+      const li = make('li', 'ph' + (i === 0 ? ' lead' : ''));
+      const img = make('img');
+      img.src = ph.src;
+      img.alt = 'Photo ' + (i + 1) + (i === 0 ? ', the one that leads' : '');
+      li.append(img);
+      const row = make('div', 'ph-btns');
+      const btn = (cls, label, ico, fn, off) => {
+        const b = make('button', cls);
+        b.type = 'button';
+        b.setAttribute('aria-label', label);
+        b.append(icon(ico));
+        b.disabled = !!off;
+        b.addEventListener('click', fn);
+        return b;
+      };
+      row.append(
+        btn('ph-left', 'Move photo ' + (i + 1) + ' earlier', 'i-down', () => movePic(i, -1), i === 0),
+        btn('ph-right', 'Move photo ' + (i + 1) + ' later', 'i-down', () => movePic(i, 1), i === prPics.length - 1),
+        btn('ph-del', 'Take photo ' + (i + 1) + ' off', 'i-x', () => { const gone = prPics.splice(i, 1)[0]; if (gone && gone.blob) URL.revokeObjectURL(gone.src); renderPrPhotos(); focusEl($('#pr-add-photo'), true); })
+      );
+      li.append(row);
+      return li;
+    }));
+    $('#pr-add-photo').hidden = prPics.length >= PR_MAX_PHOTOS;
+  }
+  function movePic(i, d) {
+    const j = i + d;
+    if (j < 0 || j >= prPics.length) return;
+    const t = prPics[i]; prPics[i] = prPics[j]; prPics[j] = t;
+    renderPrPhotos();
+    const b = $$('#pr-photos > li')[j];
+    if (b) focusEl(b.querySelector(d < 0 ? (j === 0 ? '.ph-right' : '.ph-left') : (j === prPics.length - 1 ? '.ph-left' : '.ph-right')), true);
+    announce('Photo moved to place ' + (j + 1) + '.');
+  }
+  // a photo from the phone, drawn again at 2000 px at most: WebP where the browser can make it, else JPEG
+  const toBlob = (canvas, type, q) => new Promise((res) => { try { canvas.toBlob((b) => res(b), type, q); } catch (e) { res(null); } });
+  async function shrinkPhoto(file) {
+    let src = null, w = 0, h = 0, url = '';
+    try {
+      src = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      w = src.width; h = src.height;
+    } catch (e) {
+      url = URL.createObjectURL(file);
+      src = await new Promise((res) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = url; });
+      if (src) { w = src.naturalWidth; h = src.naturalHeight; }
+    }
+    if (!src || !w || !h) { if (url) URL.revokeObjectURL(url); return { error: 'open' }; }
+    if (Math.min(w, h) < PR_MIN_SIDE) { if (url) URL.revokeObjectURL(url); return { error: 'small' }; }
+    const k = Math.min(1, PR_SIDE / Math.max(w, h));
+    const cw = Math.max(1, Math.round(w * k)), ch = Math.max(1, Math.round(h * k));
+    const canvas = document.createElement('canvas');
+    canvas.width = cw; canvas.height = ch;
+    const ctx = canvas.getContext('2d');
+    const draw = (fill) => { ctx.clearRect(0, 0, cw, ch); if (fill) { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cw, ch); } ctx.imageSmoothingQuality = 'high'; ctx.drawImage(src, 0, 0, cw, ch); };
+    draw(false);
+    let blob = await toBlob(canvas, 'image/webp', 0.86);
+    let ext = 'webp';
+    if (!blob || blob.type !== 'image/webp') { draw(true); blob = await toBlob(canvas, 'image/jpeg', 0.86); ext = 'jpg'; }
+    if (url) URL.revokeObjectURL(url);
+    if (src.close) src.close();
+    if (!blob) return { error: 'open' };
+    return { blob, ext, src: URL.createObjectURL(blob) };
+  }
+  async function onPrPhotos() {
+    const input = $('#in-pr-photos');
+    const files = Array.from(input.files || []);
+    input.value = '';
+    prErr('pr-photo', '');
+    if (!files.length) return;
+    const room = PR_MAX_PHOTOS - prPics.length;
+    const notes = [];
+    if (files.length > room) notes.push('That’s more than 6 in all, so I kept the first ' + plural(Math.max(0, room), 'one', 'ones') + '.');
+    $('#pr-progress').hidden = false;
+    $('#pr-progress').textContent = 'Getting your photos ready…';
+    for (const f of files.slice(0, Math.max(0, room))) {
+      if (f.size > PR_MAX_FILE) { notes.push('One of those is too big to open here. Try a smaller copy of it.'); continue; }
+      const r = await shrinkPhoto(f);
+      if (r.error === 'small') { notes.push('One of those is very small. A photo at least 200 pixels across looks best.'); continue; }
+      if (r.error) { notes.push('One of those won’t open here. A JPEG or PNG photo works.'); continue; }
+      prPics.push({ blob: r.blob, ext: r.ext, src: r.src });
+    }
+    $('#pr-progress').hidden = true;
+    renderPrPhotos();
+    if (notes.length) prErr('pr-photo', notes.join(' '));
+  }
+  function openProductForm(p) {
+    const f = $('#f-pr');
+    prEditing = p || null;
+    prClearErrs();
+    prPics.forEach((x) => { if (x.blob) URL.revokeObjectURL(x.src); });
+    prPics = p ? p.photos.map((x) => ({ name: x.name, src: x.src })) : [];
+    $('#pr-form-h').textContent = p ? 'Change ' + p.title : 'A new product';
+    $('#in-pr-title').value = p ? p.title : '';
+    $('#in-pr-blurb').value = p ? p.blurb : '';
+    $('#in-pr-price').value = p ? dollars(p.price_cents) : '';
+    $('#in-pr-one').checked = !!p && p.kind === 'one_of_a_kind';
+    $('#in-pr-mto').checked = !!p && p.kind === 'made_to_order';
+    $('#in-pr-own').checked = !p || p.option_stock || !p.options.length;
+    $('#pr-opts').replaceChildren();
+    if (p) p.options.forEach((o) => $('#pr-opts').append(optionRow(p.option_stock ? o : { name: o.name, stock: null })));
+    const st = $('#in-pr-stock');
+    st.value = p && p.kind === 'limited' && !p.option_stock && Number.isInteger(p.stock) ? String(p.stock) : '';
+    if (st.value) st.dataset.was = st.value; else delete st.dataset.was;
+    const status = !p ? 'draft' : p.state === 'scheduled' ? 'scheduled' : p.state === 'draft' ? 'draft' : 'live';
+    document.querySelector('input[name="pr-status"][value="' + status + '"]').checked = true;
+    $('#in-pr-drop').value = p ? p.drop_at : '';
+    $('#pr-progress').hidden = true;
+    renderPrPhotos();
+    prSync();
+    f.hidden = false;
+    $('#b-pr-new').hidden = true;
+    $('#b-pr-new').setAttribute('aria-expanded', 'true');
+    renderProducts();
+    $('#sec-products').scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+    focusEl($('#in-pr-title'), true);
+  }
+  function closeProductForm() {
+    $('#f-pr').hidden = true;
+    prPics.forEach((x) => { if (x.blob) URL.revokeObjectURL(x.src); });
+    prPics = [];
+    $('#b-pr-new').hidden = false;
+    $('#b-pr-new').setAttribute('aria-expanded', 'false');
+    renderProducts();
+  }
+  function keepProduct(p) {
+    const i = prods.products.findIndex((x) => x.id === p.id);
+    if (i >= 0) prods.products[i] = p; else prods.products.push(p);
+  }
+  async function onProductSave(ev) {
+    ev.preventDefault();
+    const btn = $('#b-pr-save');
+    if (btn.disabled || prBusy) return;
+    prClearErrs();
+    const one = $('#in-pr-one').checked, mto = $('#in-pr-mto').checked;
+    const kind = one ? 'one_of_a_kind' : mto ? 'made_to_order' : 'limited';
+    const title = cleanLine($('#in-pr-title').value, 200);
+    if (!title) { prErr('pr-title', 'A name for it, like Owl sticker.'); focusEl($('#in-pr-title')); return; }
+    const price = toCents($('#in-pr-price').value);
+    if (!price || price < 50) { prErr('pr-price', 'A price in dollars, like 28 or 6.50.'); focusEl($('#in-pr-price')); return; }
+    const b = { title, blurb: cleanText($('#in-pr-blurb').value, 1200), price_cents: price, kind, status: prStatus() };
+    if (prEditing) b.id = prEditing.id;
+    const rows = one ? [] : $$('#pr-opts > li');
+    const perOpt = kind === 'limited' && rows.length > 0 && $('#in-pr-own').checked;
+    const count = (v) => { const s = String(v || '').trim(); return /^\d{1,5}$/.test(s) ? +s : null; };
+    b.options = [];
+    for (const li of rows) {
+      const name = cleanLine(li.querySelector('.pr-opt-name').value, 40);
+      if (!name) continue;
+      const o = { name };
+      if (perOpt) {
+        const c = count(li.querySelector('.pr-opt-count').value);
+        if (c === null) { prErr('pr-opts', 'How many of ' + name + ' you have, as a number (0 is fine).'); focusEl(li.querySelector('.pr-opt-count')); return; }
+        o.stock = c;
+        const was = li.querySelector('.pr-opt-count').dataset.was;
+        if (was !== undefined && li.dataset.was === name) o.was = +was;
+      }
+      b.options.push(o);
+    }
+    if (kind === 'limited' && b.options.length) b.option_stock = perOpt;
+    if (kind === 'limited' && !perOpt) {
+      const raw = $('#in-pr-stock').value.trim();
+      const c = count(raw);
+      if (c === null && (raw || !prEditing)) { prErr('pr-stock', 'How many you have, as a number (0 is fine).'); focusEl($('#in-pr-stock')); return; }
+      if (c !== null) { b.stock = c; if ($('#in-pr-stock').dataset.was !== undefined) b.stock_was = +$('#in-pr-stock').dataset.was; }
+    }
+    if (b.status === 'scheduled') {
+      b.drop_at = $('#in-pr-drop').value || '';
+      if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(b.drop_at)) { prErr('pr-drop', 'Pick a day and a time for it to go live.'); focusEl($('#in-pr-drop')); return; }
+    }
+    prBusy = true;
+    setBusy(btn, true, 'Saving…');
+    busy++;
+    const progress = $('#pr-progress');
+    let saved = null;
+    try {
+      const r = await prodApi.save(b);
+      saved = cleanProduct(r && r.product);
+      if (!saved) throw fail('server');
+      prEditing = saved;
+      keepProduct(saved);
+      // then the photos: each new one sends on its own, and the order (and any taken off) is saved last
+      const fresh = prPics.filter((x) => x.blob);
+      let have = saved.photos.map((x) => x.name);
+      for (let i = 0; i < prPics.length; i++) {
+        const ph = prPics[i];
+        if (!ph.blob) continue;
+        progress.hidden = false;
+        progress.textContent = 'Sending photo ' + (fresh.indexOf(ph) + 1) + ' of ' + fresh.length + '…';
+        const r2 = await prodApi.photo(saved.id, ph.blob, 'photo.' + ph.ext);
+        const name = r2 && r2.photo && str(r2.photo.name, 120);
+        if (!name) throw fail('server');
+        URL.revokeObjectURL(ph.src);
+        prPics[i] = { name, src: prFileUrl(r2.photo.thumb) || prFileUrl(r2.photo.url) };
+        saved = cleanProduct(r2.product) || saved;
+        have = saved.photos.map((x) => x.name);
+      }
+      const want = prPics.map((x) => x.name);
+      if (want.join('/') !== have.join('/')) {
+        const r3 = await prodApi.photos(saved.id, want);
+        saved = cleanProduct(r3 && r3.product) || saved;
+      }
+      keepProduct(saved);
+      progress.hidden = true;
+      closeProductForm();
+      const row = $('#prs').querySelector('[data-product="' + saved.id + '"]');
+      if (row) focusEl(row.querySelector('.pr-edit'), true);
+      toast(saved.state === 'live' ? 'Saved. ' + saved.title + ' is on your site.' : saved.state === 'sold_out' ? 'Saved. ' + saved.title + ' shows as sold out.'
+        : saved.state === 'scheduled' ? 'Saved. ' + saved.title + ' goes live ' + saved.drop_label + '.' : 'Saved. ' + saved.title + ' is a draft for now.');
+    } catch (err) {
+      progress.hidden = true;
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      if (saved) $('#pr-form-h').textContent = 'Change ' + saved.title;
+      if (err.code === 'input' && err.msg) {
+        const id = PR_ERRS[err.field] || 'pr';
+        prErr(id, (saved && id === 'pr-photo' ? 'Saved, all but a photo. ' : '') + err.msg);
+        if (PR_INPUTS[id]) focusEl($(PR_INPUTS[id]));
+      } else prErr('pr', (saved ? 'Saved, but not every photo made it. ' : '') + words(err));
+    } finally { prBusy = false; setBusy(btn, false); busy = Math.max(0, busy - 1); }
+  }
+  function wireProducts() {
+    $('#b-pr-new').addEventListener('click', () => openProductForm(null));
+    $('#b-pr-cancel').addEventListener('click', () => { const id = prEditing && prEditing.id; closeProductForm(); const row = id && $('#prs').querySelector('[data-product="' + id + '"]'); focusEl(row ? row.querySelector('.pr-edit') : $('#b-pr-new')); });
+    $('#f-pr').addEventListener('submit', onProductSave);
+    $('#in-pr-photos').addEventListener('change', onPrPhotos);
+    $('#b-pr-opt-add').addEventListener('click', () => { const li = optionRow(null); $('#pr-opts').append(li); prSync(); focusEl(li.querySelector('.pr-opt-name')); });
+    $('#in-pr-one').addEventListener('change', () => { if ($('#in-pr-one').checked) $('#in-pr-mto').checked = false; prSync(); });
+    $('#in-pr-mto').addEventListener('change', () => { if ($('#in-pr-mto').checked) $('#in-pr-one').checked = false; prSync(); });
+    $('#in-pr-own').addEventListener('change', prSync);
+    $$('input[name="pr-status"]').forEach((r) => r.addEventListener('change', prSync));
+  }
+
   /* ---- payments ---- */
   function renderPay() {
     const c = me.client;
@@ -2917,6 +3308,7 @@
     $('#f-dc').addEventListener('submit', onCodeSave);
     $$('input[name="dc-kind"]').forEach((r) => r.addEventListener('change', syncDcKind));
     $('#f-shop-set').addEventListener('submit', onShopSettings);
+    wireProducts(); // the Products card (Oct 10 2026)
     $('#f-gift').addEventListener('submit', onGiftFind);
     $('#f-bk-off').addEventListener('submit', onBkOff);
     $('#in-bk-allday').addEventListener('change', () => { $('#bk-off-hours').hidden = $('#in-bk-allday').checked; $('#in-bk-to').disabled = !$('#in-bk-allday').checked; });
