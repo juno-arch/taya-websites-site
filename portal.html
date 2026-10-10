@@ -286,6 +286,28 @@
       </form>
     </section>
 
+    <!-- gift certificates (Oct 10 2026): only for a client whose site sells them through Web Faery's server -->
+    <section class="p-card" id="sec-gifts" aria-labelledby="h-gifts" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-gifts" tabindex="-1">Gift certificates</h2>
+      <p class="orders-test" id="gifts-test" hidden>Test mode: these are practice certificates, no real money.</p>
+      <p class="orders-fine">When someone brings a certificate, look up its code, then record what they used. Whatever is left stays on it for next time. The money is already in your Stripe.</p>
+      <form class="gift-find" id="f-gift" novalidate>
+        <label class="field-label" for="in-gift-code">The code</label>
+        <div class="gift-find-row">
+          <input id="in-gift-code" class="keeps" type="text" maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Like: ABCD-EFGH-JK" aria-describedby="gift-code-err">
+          <button class="btn small" type="submit" id="b-gift-find"><span>Look it up</span></button>
+        </div>
+        <p class="err" id="gift-code-err" hidden></p>
+      </form>
+      <div class="gift-card" id="gift-card" tabindex="-1" hidden></div>
+      <h3 class="small-h">Recent</h3>
+      <p class="orders-fine" id="gifts-out" hidden></p>
+      <ul class="dcs" id="gifts"></ul>
+      <p class="empty" id="gifts-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+        <span class="empty-body">No gift certificates yet. They show up here once someone buys one.</span></p>
+    </section>
+
     <section class="p-card" id="sec-list" aria-labelledby="h-list">
       <span class="kicker">Your list</span>
       <h2 id="h-list" tabindex="-1">Just these few things</h2>

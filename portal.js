@@ -29,6 +29,7 @@
    plus three for a shop's orders (Oct 8 2026; never called in the preview): shopOrders, shopPacked, shopExport,
    and six more for a shop (Oct 10 2026, also never in the preview): shopCodes, shopCodeSave, shopCodeActive,
    shopSettings, shopShipped, shopSlip
+   and three for gift certificates (Oct 10 2026, never in the preview): giftOwner, giftLookup, giftRedeem
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -48,6 +49,7 @@
 
   const BASE = SERVER + '/api/webfaery/portal';
   const SHOP = SERVER + '/api/webfaery/shop';         // a shop's orders (Oct 8 2026): only clients with a shop get any
+  const GIFT = SERVER + '/api/webfaery/gift';         // gift certificates (Oct 10 2026): only clients whose site sells them
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -305,7 +307,8 @@
   };
 
   /* ================= the server (the only place that talks to it) ================= */
-  const KNOWN = ['input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big'];
+  const KNOWN = ['input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big',
+    'over_balance', 'not_paid', 'refunded', 'expired'];
   const fail = (code, status, retry) => { const e = new Error(code); e.code = code; e.status = status || 0; if (retry) e.retry = retry; return e; };
   const errorFrom = (status, data) => {
     let code = data && typeof data.error === 'string' && KNOWN.includes(data.error) ? data.error : '';
@@ -394,7 +397,11 @@
       const res = await post('/slip', { order: id }, token, SHOP);
       if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
       return res.text();
-    }
+    },
+    // gift certificates (Oct 10 2026)
+    giftOwner: () => postJSON('/owner', {}, token, GIFT),
+    giftLookup: (code) => postJSON('/lookup', { code }, token, GIFT),
+    giftRedeem: (b) => postJSON('/redeem', b, token, GIFT)
   };
   let api = realApi;
 
@@ -491,8 +498,13 @@
     me = null;
     shop = null;
     codes = null;
+    gifts = null;
+    giftNow = null;
     $('#sec-orders').hidden = true;
     $('#sec-codes').hidden = true;
+    $('#sec-gifts').hidden = true;
+    $('#gift-card').hidden = true;
+    $('#in-gift-code').value = '';
     heroSignedOut();
     const n = $('#email-notice');
     n.textContent = notice || '';
@@ -652,6 +664,7 @@
       render();
       show('v-project');
       loadOrders();
+      loadGifts();
       if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
     } catch (err) {
@@ -671,6 +684,7 @@
       lastLoad = Date.now();
       render();
       loadOrders();
+      loadGifts();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
@@ -2178,6 +2192,189 @@
     $('#in-what').focus();
   }
 
+  /* ---- gift certificates (Oct 10 2026) ----
+     Only for a client whose site sells gift certificates through Web Faery's server (the server answers gifts: null
+     for everyone else, and the section stays hidden). Look up a code, see what is left on it, record what was used
+     (part or all). The server checks the code is theirs, and refuses more than the balance. */
+  let gifts = null;          // { business, test, outstanding, recent: [...] } (cleaned)
+  let giftNow = null;        // the certificate on screen (cleaned)
+  let giftNonce = '';
+  const GIFT_STATES = ['paid', 'sent', 'partly_redeemed', 'redeemed', 'refunded', 'pending', 'canceled'];
+  async function loadGifts() {
+    if (DEMO) { $('#sec-gifts').hidden = true; return; }
+    try {
+      const d = await api.giftOwner();
+      gifts = cleanGifts(d);
+      renderGifts();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!gifts) $('#sec-gifts').hidden = true;
+    }
+  }
+  function cleanGifts(d) {
+    const g = d && typeof d === 'object' && d.gifts && typeof d.gifts === 'object' ? d.gifts : null;
+    if (!g) return null;
+    return {
+      test: !!g.test, outstanding: str(g.outstanding, 20),
+      recent: arr(g.recent).slice(0, 30).map((r) => (r && typeof r === 'object' ? {
+        code_end: str(r.code_end, 4), bought_on: str(r.bought_on, 10), amount: str(r.amount, 20), balance: str(r.balance, 20),
+        status: GIFT_STATES.includes(r.status) ? r.status : 'paid', words: str(r.status_words, 40), to: str(r.to, 120), by: str(r.by, 120)
+      } : null)).filter(Boolean)
+    };
+  }
+  function cleanGift(x) {
+    if (!x || typeof x !== 'object' || !str(x.code)) return null;
+    const int = (v) => (Number.isInteger(+v) && +v >= 0 ? +v : 0);
+    return {
+      code: str(x.code, 14), amount: str(x.amount, 20), balance: str(x.balance, 20), balance_cents: int(x.balance_cents),
+      status: GIFT_STATES.includes(x.status) ? x.status : 'paid', words: str(x.status_words, 40), usable: !!x.usable, test: !!x.test,
+      bought_on: str(x.bought_on, 10), buyer_name: str(x.buyer_name, 120), buyer_email: str(x.buyer_email, 200),
+      recipient_name: str(x.recipient_name, 120), recipient_email: str(x.recipient_email, 200), message: str(x.message, 600),
+      send_on: str(x.send_on, 10), sent_on: str(x.sent_on, 10), expires_on: str(x.expires_on, 10), cash_note: !!x.cash_note,
+      redemptions: arr(x.redemptions).slice(0, 200).map((r) => ({ day: str(r && r.day, 10), amount: str(r && r.amount, 20), note: str(r && r.note, 200), left: str(r && r.left, 20) }))
+    };
+  }
+  function renderGifts() {
+    const sec = $('#sec-gifts');
+    if (!gifts) { sec.hidden = true; return; }
+    sec.hidden = false;
+    $('#gifts-test').hidden = !gifts.test;
+    $('#gifts-empty').hidden = gifts.recent.length > 0;
+    const out = $('#gifts-out');
+    out.textContent = gifts.recent.length ? 'Still to be used, in all: ' + gifts.outstanding + '.' : '';
+    out.hidden = !gifts.recent.length;
+    $('#gifts').replaceChildren(...gifts.recent.map((r) => {
+      const li = make('li', 'dc gift-row st-' + r.status);
+      const head = make('div', 'dc-head');
+      head.append(make('span', 'dc-name', '••••' + r.code_end), make('span', 'dc-off', r.balance === r.amount ? r.amount : r.balance + ' of ' + r.amount));
+      li.append(head, make('p', 'dc-meta', [shortDate(r.bought_on), r.to ? 'For ' + r.to : (r.by ? 'Bought by ' + r.by : ''), r.words].filter(Boolean).join(' · ')));
+      return li;
+    }));
+  }
+  // what the code box takes: letters and numbers, shown in its three groups
+  const giftCodeOf = (v) => {
+    const s = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    return s.length === 10 ? s.slice(0, 4) + '-' + s.slice(4, 8) + '-' + s.slice(8) : '';
+  };
+  const giftErr = (text) => {
+    const p = $('#gift-code-err');
+    p.textContent = text || '';
+    p.hidden = !text;
+    if (text) $('#in-gift-code').setAttribute('aria-invalid', 'true'); else $('#in-gift-code').removeAttribute('aria-invalid');
+  };
+  async function onGiftFind(ev) {
+    ev.preventDefault();
+    const code = giftCodeOf($('#in-gift-code').value);
+    giftErr('');
+    if (!code) { giftErr('A code has 10 letters and numbers, like ABCD-EFGH-JK.'); focusEl($('#in-gift-code')); return; }
+    const btn = $('#b-gift-find');
+    setBusy(btn, true, 'Looking…');
+    busy++;
+    try {
+      const d = await api.giftLookup(code);
+      giftNow = cleanGift(d && d.gift);
+      giftNonce = newNonce().replace(/[^A-Za-z0-9]/g, '');
+      renderGiftCard(true);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      $('#gift-card').hidden = true;
+      giftNow = null;
+      giftErr(err.code === 'not_found' ? 'That code isn’t one of your certificates. Check the letters, and ask to see the email it came in.'
+        : err.code === 'input' ? 'A code has 10 letters and numbers, like ABCD-EFGH-JK.' : words(err));
+      focusEl($('#in-gift-code'));
+    } finally { setBusy(btn, false); busy = Math.max(0, busy - 1); }
+  }
+  function renderGiftCard(moveFocus) {
+    const card = $('#gift-card');
+    const g = giftNow;
+    if (!g) { card.hidden = true; return; }
+    card.hidden = false;
+    card.className = 'gift-card st-' + g.status;
+    const head = make('div', 'gift-head');
+    head.append(make('span', 'gift-code', g.code), make('span', 'gift-state', g.words));
+    const bal = make('p', 'gift-bal');
+    bal.append(make('span', 'gift-left', g.balance), make('span', 'gift-of', ' left of ' + g.amount));
+    const who = [g.recipient_name ? 'For ' + g.recipient_name : '', g.buyer_name ? 'From ' + g.buyer_name : '', g.bought_on ? 'Bought ' + shortDate(g.bought_on) : '',
+      g.expires_on ? 'Good through ' + shortDate(g.expires_on) : 'No expiry date'].filter(Boolean).join(' · ');
+    const parts = [head, bal, make('p', 'dc-meta', who)];
+    if (g.test) parts.push(make('p', 'gift-note', 'A test certificate: no real money.'));
+    if (g.cash_note) parts.push(make('p', 'gift-note', 'Under $15 left: in California they can ask for it in cash instead. If you pay it out, record it here as used.'));
+    if (g.usable) {
+      const f = make('form', 'gift-use');
+      f.noValidate = true;
+      const lab = make('label', 'field-label', 'Amount they used');
+      lab.htmlFor = 'in-gift-amt';
+      const row = make('div', 'dc-amt');
+      const pre = make('span', null, '$');
+      pre.setAttribute('aria-hidden', 'true');
+      const amt = make('input');
+      amt.type = 'text'; amt.id = 'in-gift-amt'; amt.className = 'keeps'; amt.inputMode = 'decimal'; amt.maxLength = 9; amt.autocomplete = 'off';
+      amt.setAttribute('aria-describedby', 'gift-amt-err');
+      row.append(pre, amt);
+      const all = make('button', 'later', 'Use all of it (' + g.balance + ')');
+      all.type = 'button';
+      all.addEventListener('click', () => { amt.value = (g.balance_cents / 100).toFixed(g.balance_cents % 100 ? 2 : 0); amt.focus(); });
+      const nl = make('label', 'field-label', 'A note for yourself ');
+      nl.htmlFor = 'in-gift-note';
+      nl.append(make('span', 'opt-tag', '(optional)'));
+      const note = make('input');
+      note.type = 'text'; note.id = 'in-gift-note'; note.className = 'keeps'; note.maxLength = 200; note.autocomplete = 'off';
+      note.placeholder = 'Like: a massage, or paid out in cash';
+      const err = make('p', 'err', '');
+      err.id = 'gift-amt-err';
+      err.hidden = true;
+      const btns = make('div', 'dc-btns');
+      const save = make('button', 'btn small');
+      save.type = 'submit';
+      save.append(make('span', null, 'Record it'));
+      btns.append(save, all);
+      f.append(lab, row, nl, note, err, btns);
+      f.addEventListener('submit', (ev) => { ev.preventDefault(); onGiftRedeem(amt, note, err, save); });
+      parts.push(f);
+    } else if (g.status === 'redeemed') parts.push(make('p', 'gift-note', 'This one is used up.'));
+    else if (g.status === 'refunded') parts.push(make('p', 'gift-note', 'This one was refunded, so it can’t be used.'));
+    else if (g.status === 'pending') parts.push(make('p', 'gift-note', 'This one isn’t paid yet, so it can’t be used.'));
+    else if (g.expires_on) parts.push(make('p', 'gift-note', 'This one is past its date.'));
+    if (g.redemptions.length) {
+      const h = make('h3', 'small-h', 'Used so far');
+      const ul = make('ul', 'gift-uses');
+      g.redemptions.slice().reverse().forEach((r) => {
+        const li = make('li');
+        li.append(make('span', 'gift-use-what', shortDate(r.day) + ': ' + r.amount + (r.note ? ', ' + r.note : '')), make('span', 'gift-use-left', r.left + ' left'));
+        ul.append(li);
+      });
+      parts.push(h, ul);
+    }
+    card.replaceChildren(...parts);
+    if (moveFocus) focusEl(card);
+  }
+  async function onGiftRedeem(amt, note, err, save) {
+    const g = giftNow;
+    if (!g) return;
+    const show = (t) => { err.textContent = t || ''; err.hidden = !t; if (t) amt.setAttribute('aria-invalid', 'true'); else amt.removeAttribute('aria-invalid'); };
+    show('');
+    const cents = toCents(amt.value);
+    if (!cents) { show('How much they used, in dollars, like 25 or 12.50.'); amt.focus(); return; }
+    if (cents > g.balance_cents) { show('That’s more than is left (' + g.balance + ').'); amt.focus(); return; }
+    setBusy(save, true, 'Saving…');
+    busy++;
+    try {
+      const d = await api.giftRedeem({ code: g.code, cents, note: cleanLine(note.value, 200), nonce: giftNonce });
+      giftNow = cleanGift(d && d.gift);
+      giftNonce = newNonce().replace(/[^A-Za-z0-9]/g, '');
+      renderGiftCard(true);
+      announce('Recorded. ' + (giftNow ? giftNow.balance + ' left on it.' : ''));
+      loadGifts();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(true); return; }
+      show(e.code === 'over_balance' ? 'That’s more than is left on it. Look it up again to see the balance.'
+        : e.code === 'refunded' ? 'This one was refunded, so it can’t be used.'
+        : e.code === 'expired' ? 'This one is past its date.'
+        : e.code === 'not_paid' ? 'This one isn’t paid yet.' : words(e));
+      amt.focus();
+    } finally { if (document.body.contains(save)) setBusy(save, false); busy = Math.max(0, busy - 1); }
+  }
+
   /* ================= no do-it-yourself editing (Oct 5 2026) =================
      The "Change it yourself" editors (hours, banner, prices and more) were retired with the Oct 5 2026
      pricing: every change goes through Taya, by email or the change form above. Their code is gone on
@@ -2299,6 +2496,7 @@
     $('#f-dc').addEventListener('submit', onCodeSave);
     $$('input[name="dc-kind"]').forEach((r) => r.addEventListener('change', syncDcKind));
     $('#f-shop-set').addEventListener('submit', onShopSettings);
+    $('#f-gift').addEventListener('submit', onGiftFind);
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {
