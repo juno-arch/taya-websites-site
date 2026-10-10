@@ -24,3 +24,9 @@ Menu text: their two menu images (/menu, 1.png and 2.png). Shows: their October 
 No stock photos. No Sample photo tags needed.
 
 Logo: images/logo-the-record.svg, their real wordmark, supplied by The Record (Paul), Oct 8 2026 (vector from their PDF, Record-wordmark.pdf).
+
+Videos: The Record's own, from their website (therecordpointarena.com home page, pulled Oct 10 2026 at 1080p; Paul asked for them on the new site). Originals in prospects/the-record-from-paul/videos/.
+- videos/room-a (.mp4/.webm, 6 s, hero, muted): a pint poured across the bar in afternoon sun
+- videos/room-b (.mp4/.webm, 5 s, hero, muted): a band playing to a full room at night
+- videos/room-long (.mp4/.webm, 29 s, The room, sound on tap): a sunny afternoon on the patio and in the yard
+- *-poster.jpg: a frame from each

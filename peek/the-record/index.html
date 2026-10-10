@@ -260,6 +260,44 @@
   .name-story .photo { aspect-ratio: 3 / 2; }
   .name-story h3 { font-size: clamp(26px, 3.2vw, 34px); color: var(--on-wall); line-height: 1.1; margin-bottom: 12px; }
 
+  /* THEIR OWN VIDEOS: two short clips play quietly behind the hero; the long one waits in The room for a tap, with sound */
+  .hero-vid { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .hero-vid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: 0; transition: opacity 1.4s ease; }
+  .hero-vid video.on { opacity: 1; }
+  .hero-band.vid-on::after { background:
+      linear-gradient(rgba(16, 30, 25, 0.86) 0, rgba(16, 30, 25, 0.62) 26%, rgba(16, 30, 25, 0.16) 48%, rgba(16, 30, 25, 0.12) 56%),
+      linear-gradient(rgba(16, 30, 25, 0) 46%, rgba(16, 30, 25, 0.6) 70%, rgba(16, 30, 25, 0.92) 100%); }
+  .hero-play { position: absolute; z-index: 4; right: max(16px, calc((100% - 1180px) / 2)); bottom: 22px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px 9px 11px; border-radius: 999px; border: 1px solid rgba(251, 246, 234, 0.55); background: rgba(16, 30, 25, 0.5); color: #fbf6ea;
+    font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-play:hover { background: rgba(16, 30, 25, 0.72); }
+  .hero-play:focus-visible { outline: 2px solid #fbf6ea; outline-offset: 3px; }
+  .hero-play svg { flex: none; }
+  .hero-play .i-play { display: none; }
+  .hero-play[data-paused] .i-play { display: block; }
+  .hero-play[data-paused] .i-pause { display: none; }
+  .reel-wrap { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 36px; align-items: center; margin-top: 64px; padding-top: 44px; border-top: 1px solid rgba(242, 236, 220, 0.18); }
+  .reel-wrap h3 { font-size: clamp(26px, 3.2vw, 34px); color: var(--on-wall); line-height: 1.1; margin-bottom: 12px; }
+  .reel { margin: 0; }
+  .reel-box { position: relative; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; background: #0b1714; }
+  .reel-box video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .reel-play { position: absolute; z-index: 2; left: 50%; top: 50%; translate: -50% -50%; display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px 13px 15px; border: 0; border-radius: 999px;
+    background: #f6efe0; color: #173a24; font: 700 15px/1.2 'Source Serif 4', Georgia, serif; cursor: pointer; box-shadow: 0 6px 30px rgba(8, 16, 12, 0.45); white-space: nowrap; }
+  .reel-play:hover { background: #fff; }
+  .reel-play:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; }
+  .reel-box::after { content: ""; position: absolute; inset: 0; background: rgba(8, 16, 12, 0.22); pointer-events: none; transition: opacity 0.4s ease; }
+  .reel-box.playing::after { opacity: 0; }
+  .reel figcaption { font-size: 13.5px; color: rgba(242, 236, 220, 0.72); margin-top: 8px; }
+  @media (max-width: 760px) {
+    .hero-vid { bottom: auto; height: min(68svh, 560px); }
+    .hero-band.vid-on::after { background: linear-gradient(rgba(16, 30, 25, 0.84) 0, rgba(16, 30, 25, 0.42) 190px, rgba(16, 30, 25, 0.1) 260px),
+      linear-gradient(rgba(22, 36, 31, 0) 0, rgba(22, 36, 31, 0) calc(min(68svh, 560px) - 170px), #16241f min(68svh, 560px)); }
+    .hero-play { right: 16px; bottom: auto; top: calc(min(68svh, 560px) - 54px); }
+    .reel-wrap { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-vid video, .reel-box::after { transition: none; } }
+
   /* MENU: a newspaper page */
   .menu-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px 48px; align-items: end; }
   .menu-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
@@ -682,6 +720,11 @@
 </div>
 
 <div class="hero-band">
+  <div class="hero-vid" id="hero-vid" aria-hidden="true">
+    <video muted playsinline preload="none" disablepictureinpicture tabindex="-1" data-src="videos/room-a" width="1280" height="720"></video>
+    <video muted playsinline preload="none" disablepictureinpicture tabindex="-1" data-src="videos/room-b" width="1280" height="720"></video>
+  </div>
+  <button type="button" class="hero-play" id="hero-play" data-paused aria-label="Play the video of the room" hidden><svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><rect x="2" y="1.5" width="3" height="9" rx="0.8"/><rect x="7" y="1.5" width="3" height="9" rx="0.8"/></svg><svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><path d="M3 1.6v8.8a.6.6 0 0 0 .9.5l7-4.4a.6.6 0 0 0 0-1L3.9 1.1a.6.6 0 0 0-.9.5Z"/></svg><span id="hero-play-txt">Play</span></button>
   <div class="gutter">
     <div class="wrap">
       <header class="top">
@@ -723,6 +766,66 @@
     var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero-bar.webp';
     if (im.complete) go();
     setTimeout(go, 1500);
+  })();
+  /* their own two short clips, quietly behind the hero: start after the photo fades in, take turns, pause off screen */
+  (function () {
+    var band = document.querySelector('.hero-band'), box = document.getElementById('hero-vid'), btn = document.getElementById('hero-play'), txt = document.getElementById('hero-play-txt');
+    if (!band || !box || !btn || !box.querySelectorAll) return;
+    var vids = [].slice.call(box.querySelectorAll('video'));
+    if (!vids.length || !vids[0].canPlayType) return;
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var save = navigator.connection && navigator.connection.saveData;
+    var cur = 0, loaded = false, paused = true, userPaused = false, onScreen = true;
+    btn.hidden = false;
+    function load() {
+      if (loaded) return; loaded = true;
+      vids.forEach(function (v) {
+        [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (s) { var e = document.createElement('source'); e.src = v.getAttribute('data-src') + '.' + s[0]; e.type = s[1]; v.appendChild(e); });
+        v.muted = true; v.preload = 'auto'; v.load();
+      });
+    }
+    function setBtn(p) {
+      paused = p;
+      if (p) { btn.setAttribute('data-paused', ''); txt.textContent = 'Play'; btn.setAttribute('aria-label', 'Play the video of the room'); }
+      else { btn.removeAttribute('data-paused'); txt.textContent = 'Pause'; btn.setAttribute('aria-label', 'Pause the video of the room'); }
+    }
+    function show(i) {
+      vids.forEach(function (v, j) { v.style.zIndex = j === i ? 2 : 1; });
+      vids[i].classList.add('on'); band.classList.add('vid-on');
+      var other = vids[1 - i];
+      if (other) setTimeout(function () { if (cur === i) other.classList.remove('on'); }, 1500);
+    }
+    function playCur() {
+      var v = vids[cur];
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { setBtn(true); });
+    }
+    vids.forEach(function (v, i) {
+      v.addEventListener('playing', function () { if (i === cur) show(i); });
+      v.addEventListener('ended', function () {
+        if (i !== cur) return;
+        cur = (cur + 1) % vids.length;
+        vids[cur].currentTime = 0;
+        if (!paused && onScreen) playCur();
+      });
+    });
+    function start() { load(); setBtn(false); if (onScreen) playCur(); }
+    function stop() { vids.forEach(function (v) { v.pause(); }); }
+    btn.addEventListener('click', function () {
+      if (paused) { userPaused = false; start(); } else { userPaused = true; setBtn(true); stop(); }
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        onScreen = es[0].isIntersecting;
+        if (!onScreen) stop(); else if (!paused) playCur();
+      }, { threshold: 0.05 }).observe(band);
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else if (!paused && onScreen) playCur();
+    });
+    if (rm || save) return;
+    var kick = function () { setTimeout(function () { if (!userPaused && paused) start(); }, 1600); };
+    if (document.readyState === 'complete') kick(); else window.addEventListener('load', kick);
   })();
 </script>
 
@@ -866,6 +969,23 @@
         <p class="tier-note mock-note deck-note">Tap the record to open who&rsquo;s up next in the band&rsquo;s own Bandcamp or Spotify player, then press play there, so they get the play. <span class="tag" data-go="maiden">Every build</span></p>
       </div>
     </div>
+  </div>
+  <div class="wrap reel-wrap">
+    <div>
+      <p class="label">Out back</p>
+      <h3>A sunny day <em>on the patio</em></h3>
+      <p>Friends at the patio tables, a crowd out in the yard, a whole afternoon in the sun. Turn the sound up and you are there.</p>
+    </div>
+    <figure class="reel">
+      <div class="reel-box" id="reel-box">
+        <video id="reel-v" playsinline preload="none" width="1280" height="720" data-poster="videos/room-long-poster.jpg" aria-label="A sunny afternoon at The Record: people talking on the patio and out in the yard behind the building, 29 seconds">
+          <source src="videos/room-long.webm" type="video/webm">
+          <source src="videos/room-long.mp4" type="video/mp4">
+        </video>
+        <button type="button" class="reel-play" id="reel-play"><svg width="18" height="18" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><path d="M3 1.6v8.8a.6.6 0 0 0 .9.5l7-4.4a.6.6 0 0 0 0-1L3.9 1.1a.6.6 0 0 0-.9.5Z"/></svg>Play, with sound</button>
+      </div>
+      <figcaption>Your own video, from your current site. 29 seconds.</figcaption>
+    </figure>
   </div>
   <div class="wrap name-story">
     <figure class="reveal photo"><img src="images/etched-window.webp" width="1600" height="1067" alt="The front window, etched with vines and the words Point Arena Record, looking out on Main Street, a flag and the trees" loading="lazy"></figure>
@@ -1838,6 +1958,25 @@
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
+<script>
+  /* the long patio video: poster loads when near, plays only on a tap, with sound; pauses when scrolled away */
+  (function () {
+    var box = document.getElementById('reel-box'), v = document.getElementById('reel-v'), b = document.getElementById('reel-play');
+    if (!box || !v || !b) return;
+    var poster = function () { if (!v.getAttribute('poster')) v.setAttribute('poster', v.getAttribute('data-poster')); };
+    b.addEventListener('click', function () {
+      poster(); v.muted = false; v.controls = true; b.hidden = true; box.classList.add('playing');
+      var p = v.play(); if (p && p.catch) p.catch(function () { b.hidden = false; box.classList.remove('playing'); });
+      v.focus();
+    });
+    v.addEventListener('ended', function () { b.hidden = false; box.classList.remove('playing'); v.controls = false; v.currentTime = 0; });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { if (es[0].isIntersecting) poster(); }, { rootMargin: '600px 0px' }).observe(box);
+      new IntersectionObserver(function (es) { if (!es[0].isIntersecting && !v.paused) v.pause(); }, { threshold: 0.2 }).observe(box);
+    } else poster();
+    document.addEventListener('visibilitychange', function () { if (document.hidden && !v.paused) v.pause(); });
+  })();
+</script>
 <script src="/note-motion.js?v=1" defer></script>
 <script src="/lightbox.js?v=2" defer></script>
 </body>
