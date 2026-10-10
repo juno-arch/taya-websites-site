@@ -6,12 +6,19 @@
 <meta name="robots" content="noindex, nofollow">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Massage by Tera | Deep Tissue Massage in Arcata</title>
+<meta property="og:title" content="Massage by Tera | Deep Tissue Massage in Arcata">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webfaery.love/peek/tera/">
+<meta property="og:image" content="https://webfaery.love/peek/tera/share-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="860">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2328312a'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23c9a94f' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%23c9a94f' opacity='.55'/%3E%3C/svg%3E">
 <meta name="description" content="Massage by Tera, Holistic Health Practitioner, CMT. Body, mind and soul integration, with a deep tissue focus. Studio in Arcata, or mobile massage at your home. Call or text 707-932-0037.">
-<link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="images/coast.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@400;500;600&family=Caveat:wght@600&display=swap">
-<script src="https://webfaery.love/content.js" data-site="tera" defer></script>
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -43,6 +50,7 @@
     --breath-halo: rgba(214, 180, 92, 0.2);
     --breath-inner: rgba(226, 198, 112, 0.14);
     --slat: rgba(86, 99, 58, 0.07);   
+    --lb-veil: rgba(22, 27, 23, 0.95); --lb-ink: #eef0e6; --lb-accent: #c9a94f; --lb-caption-font: 'Petrona', Georgia, serif;
     color-scheme: light;
   }
   
@@ -139,12 +147,15 @@
   }
   .hero-band > .gutter, .hero-band > .hero-center { position: relative; z-index: 1; }
   .hero-band > .gutter:not(.hero-center) { z-index: 2; }
+  /* Oct 10 2026: the hero is Tera's own photo, the coast she posted in September ("I am so in love with this land").
+     It is a 720 x 1280 phone frame, so it is not stretched: full screen on phones, the right half on wider screens
+     (at most 720px wide, about 1:1), with her fern band holding the words on the left. */
   .hero-band.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 0;
-    background: url('images/hero.jpg') var(--hero-pos, 50% 42%) / cover no-repeat; }
+    background: url('images/coast.jpg') var(--hero-pos, 50% 46%) / cover no-repeat; }
   .hero-band.has-photo::after { content: ""; position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(60% 50% at 50% 56%, rgba(20, 25, 21, 0.30) 0%, rgba(20, 25, 21, 0) 100%),
-      linear-gradient(rgba(20, 25, 21, 0.62) 0, rgba(20, 25, 21, 0.24) 170px, rgba(20, 25, 21, 0.20) 55%, rgba(20, 25, 21, 0.58) 100%); }
+      radial-gradient(70% 46% at 50% 52%, rgba(20, 25, 21, 0.34) 0%, rgba(20, 25, 21, 0) 100%),
+      linear-gradient(rgba(20, 25, 21, 0.5) 0, rgba(20, 25, 21, 0.2) 170px, rgba(20, 25, 21, 0.24) 55%, rgba(20, 25, 21, 0.62) 100%); }
   .hero-band .mark { color: var(--on-band); }
   .hero-band .mark span { color: #a8b98a; }
   .hero-band nav a { color: rgba(233, 236, 223, 0.86); }
@@ -182,6 +193,21 @@
   @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hero-rise { from { opacity: 0; transform: translateY(64px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+  @media (min-width: 900px) {
+    .hero-band.has-photo::before { left: auto; width: min(50%, 720px); --hero-pos: 50% 44%; }
+    .hero-band.has-photo::after { left: auto; width: min(50%, 720px);
+      background:
+        linear-gradient(90deg, var(--fern-band) 0, rgba(40, 49, 42, 0.55) 60px, rgba(40, 49, 42, 0) 200px),
+        linear-gradient(rgba(20, 25, 21, 0.42) 0, rgba(20, 25, 21, 0) 150px, rgba(20, 25, 21, 0) 80%, rgba(20, 25, 21, 0.3) 100%); }
+    .hero-center { justify-content: flex-start; text-align: left; }
+    .hero-center .hero-copy { margin-left: max(0px, calc((100vw - 1020px) / 2)); width: min(560px, calc(50vw - 64px - max(0px, (100vw - 1020px) / 2))); }
+    .hero-copy::before { display: none; }
+    .hero-band h1, .hero-band .lede { margin-inline: 0; }
+    .hero-band .cta-row { justify-content: flex-start; }
+    .hero-band h1 { font-size: clamp(44px, 4.9vw, 68px); max-width: none; }
+    .hero-band .label .sep { display: none; }
+    .hero-band .label .place { display: block; margin-top: 4px; }
+  }
 
   
   .photo { position: relative; margin: 0; overflow: hidden; border-radius: 22px; max-width: 100%; background: var(--ground-2); isolation: isolate; }
@@ -194,10 +220,17 @@
   @media (prefers-reduced-motion: reduce) { .photo img, .photo.reveal.pre:not(.in) img { scale: 1; translate: none; transition: none; } }
   .photo.wide { aspect-ratio: 4 / 3; width: 100%; margin-top: 28px; }
   .photo.wide img { object-position: 58% 45%; }
+  .photo.own { aspect-ratio: 4 / 5; max-width: 420px; }
+  .photo.own img { object-position: 50% 40%; }
+  .photo-cap { position: absolute; z-index: 2; left: 16px; bottom: 14px; right: 16px; margin: 0; pointer-events: none;
+    font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.3; color: #f6f4ec;
+    text-shadow: 0 1px 2px rgba(10, 12, 10, 0.75), 0 0 14px rgba(10, 12, 10, 0.6); }
   .photo.pano { aspect-ratio: 16 / 7; width: 100%; margin-top: 40px; }
   .photo.hands { aspect-ratio: 2 / 1; background: #d9c3a8; }
   .photo.hands img { object-position: 50% 57%; }
-  .photo.path img { object-position: 50% 16%; }
+  .garden-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 40px; }
+  .photo.pair { aspect-ratio: 4 / 5; }
+  .pair-cap { grid-column: 1 / -1; margin: 2px 2px 0; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 16px; color: var(--ink-soft); }
   
   .sample-tag { position: absolute; right: 14px; bottom: 14px; z-index: 2; pointer-events: none;
     font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
@@ -206,7 +239,6 @@
     padding: 6px 10px 6px 11px; border-radius: 999px; white-space: nowrap; }
   .hero-band .sample-tag { right: max(16px, env(safe-area-inset-right, 0px)); bottom: 16px; }
   
-  @media (max-aspect-ratio: 5 / 4) { .hero-band { --hero-pos: 64% 50%; } }
 
   
   section { padding-block: 72px; border-top: 1px solid var(--hair); }
@@ -228,6 +260,9 @@
   .band p { color: var(--on-band); opacity: 0.9; }
   .steps { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 28px; margin-top: 36px; }
   .steps div { border-top: 1px solid rgba(233, 236, 223, 0.25); padding-top: 16px; }
+  .her-words { margin: 44px 0 0; max-width: 46ch; border-left: 2px solid var(--yarrow); padding: 2px 0 2px 22px; }
+  .her-words p { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 300; font-size: clamp(21px, 2.6vw, 26px); line-height: 1.4; color: var(--on-band); opacity: 1; }
+  .her-words cite { display: block; margin-top: 10px; font-style: normal; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yarrow); }
   .steps b { display: block; font-family: 'Petrona', Georgia, serif; font-weight: 400; font-size: 21px; margin-bottom: 6px; }
 
   
@@ -241,6 +276,11 @@
     background: radial-gradient(closest-side, var(--breath-core) 0%, var(--breath-gold) 38%, var(--breath-sage) 74%, rgba(0, 0, 0, 0) 100%);
     box-shadow: 0 0 80px var(--breath-halo), 0 0 22px var(--breath-halo), inset 0 0 56px var(--breath-inner);
     transform: scale(0.72); opacity: 0.55; animation: breath 10s infinite; will-change: transform, opacity; }
+  /* Easter egg (Oct 10 2026): tap the sessions card five times and the ring takes one long, slow breath with you */
+  .breath-ring.deep { animation: deep-breath 11s ease-in-out 1; }
+  @keyframes deep-breath { 0% { transform: scale(0.72); opacity: 0.55; } 40% { transform: scale(1.12); opacity: 1; } 55% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(0.72); opacity: 0.55; } }
+  .egg-line { margin: 14px 0 0; min-height: 1.5em; text-align: center; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 17px; color: var(--moss-deep); opacity: 0; transition: opacity 1.2s ease; }
+  .egg-line.on { opacity: 1; }
   @keyframes breath {
     0%   { transform: scale(0.72); opacity: 0.55; animation-timing-function: cubic-bezier(.4, 0, .6, 1); }
     40%  { transform: scale(1);    opacity: 1;    animation-timing-function: cubic-bezier(.4, 0, .6, 1); }
@@ -293,6 +333,10 @@
   
   .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .review { display: flex; flex-direction: column; gap: 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 22px clamp(18px, 2.2vw, 22px) 20px; }
+  .words-h { margin-bottom: 30px; }
+  .reviews.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stars { font-size: 14px; letter-spacing: 0.18em; color: var(--yarrow); }
+  .words-note { margin-top: 18px; }
   .review-sample { font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
   .review blockquote p { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 300; font-size: clamp(19px, 2.2vw, 21px); line-height: 1.4; color: var(--ink); }
   .review figcaption { margin-top: auto; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
@@ -445,7 +489,7 @@
   .sms { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   .sms-bubble { background: var(--ground); border: 1px solid var(--hair); border-radius: 18px 18px 18px 6px; padding: 9px 14px; font-size: 15px; line-height: 1.45; max-width: 88%; }
   .linkcard { display: block; width: min(100%, 300px); border-radius: 18px 18px 18px 6px; overflow: hidden; border: 1px solid var(--hair); background: var(--ground); }
-  .linkcard img { display: block; width: 100%; aspect-ratio: 1.91 / 1; object-fit: cover; object-position: 62% 45%; }
+  .linkcard img { display: block; width: 100%; height: auto; aspect-ratio: 1.91 / 1; object-fit: cover; object-position: 50% 54%; }
   .linkcard span { display: block; padding: 10px 14px 12px; }
   .linkcard b { display: block; font-size: 15px; font-weight: 600; line-height: 1.35; }
   .linkcard small { display: block; font-size: 12.5px; color: var(--ink-soft); }
@@ -464,9 +508,11 @@
     
     .photo { margin-inline: -20px; border-radius: 0; max-width: none; }
     .photo.wide, .photo.pano { width: auto; }
+    .garden-pair { gap: 10px; }
+    .garden-pair .photo { margin-inline: 0; border-radius: 14px; }
     .photo.hands { aspect-ratio: 4 / 3; }
     .photo.hands img { object-position: 50% 50%; }
-    .reviews { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .reviews, .reviews.two-up { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .gift { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "card" "notes"; }
     .pay-card { margin-top: 26px; }
     .faq { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "list" "intake"; }
@@ -590,8 +636,8 @@
     text-decoration-color: currentColor; text-decoration-color: color-mix(in srgb, currentColor 55%, transparent); }
   .status-strip a:hover em { text-decoration-color: currentColor; }
   .status-strip a:focus-visible { outline: 2px solid var(--ground); outline-offset: -4px; border-radius: 6px; }
-  .status + .hero-band { min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); }
-  .status + .hero-band header.top { padding-top: 42px; }  
+  .status ~ .hero-band { min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); }
+  
   
   .status-tab { position: absolute; top: 100%; left: calc(20px + max(0px, (100% - 1020px) / 2));
     display: flex; align-items: flex-start; gap: 6px; }
@@ -682,6 +728,9 @@
   .vseg button:hover { background: var(--ground); }
   .vseg button[aria-pressed="true"] { background: var(--moss); color: var(--ground); }
   .vseg button[aria-pressed="true"] .pr, .vseg button[aria-pressed="true"] .pr strong { color: var(--ground); }
+  .vseg .psub { display: block; max-width: 22ch; font-size: 12px; line-height: 1.3; color: var(--ink-soft); text-align: center; text-wrap: balance; }
+  .vseg button[aria-pressed="true"] .psub { color: var(--ground); }
+  .views-spots { grid-column: 1 / -1; margin: 0 2px; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
   .views-note { margin: 0 2px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
   .views-note b { font-weight: 600; color: var(--ink); }
   .views-next { font: inherit; font-weight: 600; color: var(--moss-deep); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap;
@@ -775,7 +824,7 @@
         <button type="button" data-state="full" aria-pressed="false">Full</button>
         <button type="button" data-state="away" aria-pressed="false">Away</button>
       </div>
-      <p class="status-note">Switch it anytime, free.</p>
+      <p class="status-note">Switch it anytime: email me, and it&rsquo;s done.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -788,34 +837,73 @@
   <p class="vh" role="status" id="status-live"></p>
 </div>
 
-<div class="hero-band has-photo">
-  <div class="gutter">
-    <div class="wrap">
-      <header class="top">
-        <div class="mark">Massage <span>by Tera</span></div>
-        <nav aria-label="Sections">
-          <a href="#roots">Roots</a>
-          <a href="#table">On the table</a>
-          <a href="#sessions">Sessions</a>
-          <a href="#come">Where</a>
-          <a href="#own-booking" data-show="mother crone all">Booking</a>
-          <a href="#book">Book</a>
-        </nav>
-      </header>
-    </div>
+<style id="wf-snav">
+  /* ---------- STICKY NAV (Oct 7 2026 rule, added Oct 10): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; her fern band, Petrona and Karla ---------- */
+  :root { --sn-h: 60px; --sn-bg: #28312a; --sn-fg: #e9ecdf; }
+  [id] { scroll-margin-top: calc(var(--sn-h) + 16px); }
+  #status, .snav-gap { scroll-margin-top: 0; }
+  .snav-wrap { position: sticky; top: 0; height: 0; z-index: 26; }
+  .snav { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; transition: transform 0.35s cubic-bezier(.3,.8,.3,1), background-color 0.25s ease, box-shadow 0.25s ease; }
+  .snav-gap { height: 96px; }
+  .snav-in { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; max-width: 1020px; margin: 0 auto; padding: 50px 20px 0; }
+  .snav .mark, .snav-btn, .snav-links { pointer-events: auto; }
+  .snav .mark { white-space: nowrap; min-width: 0; color: var(--sn-fg); text-decoration: none; text-shadow: 0 1px 2px rgba(10, 12, 10, 0.5), 0 0 14px rgba(10, 12, 10, 0.45); }
+  .snav .mark span { color: #b9c99b; }
+  .snav-links { position: relative; }
+  .snav-btn { display: none; align-items: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; line-height: 1; color: var(--sn-fg); background: rgba(20, 25, 21, 0.35); border: 1px solid currentColor; border-radius: 999px; -webkit-appearance: none; appearance: none; }
+  .snav nav a { color: rgba(233, 236, 223, 0.9); text-shadow: 0 1px 2px rgba(10, 12, 10, 0.6), 0 0 14px rgba(10, 12, 10, 0.55); }
+  .snav nav a:hover, .snav nav a:focus-visible { color: #fff; }
+  .snav.solid, .snav.open { background: color-mix(in srgb, var(--sn-bg) 95%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 10px 26px -18px rgba(0, 0, 0, 0.7); pointer-events: auto; }
+  .snav.solid .snav-in, .snav.open .snav-in { padding-top: 0; min-height: var(--sn-h); }
+  .snav.solid .mark, .snav.solid nav a, .snav.open .mark, .snav.open nav a { text-shadow: none; }
+  .snav.solid .snav-btn, .snav.open .snav-btn { background: transparent; }
+  .snav.tuck { transform: translateY(-110%); }
+  .snav a:focus-visible, .snav button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  @media (max-width: 760px) {
+    :root { --sn-h: 54px; }
+    .snav-gap { height: 104px; }
+    .snav-in { gap: 10px; }
+    .snav-btn { display: inline-flex; }
+    .snav nav.snav-links { margin: 0; width: auto; justify-content: flex-start; }
+    .snav-js .snav-links { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0; padding: 6px 20px 12px; background: var(--sn-bg); box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.7); }
+    .snav-js.snav-open .snav-links, .snav.open .snav-links { display: flex; }
+    html:not(.snav-js) .snav-links { width: 100%; flex-wrap: wrap; }
+    .snav .snav-links a:not([hidden]) { display: block; min-width: 0; padding: 13px 4px; font-size: 18px; line-height: 24px; text-align: left; text-shadow: none; border-bottom: 1px solid rgba(233, 236, 223, 0.16); }
+    .snav .snav-links a:last-of-type { border-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } }
+  @media print { .snav-wrap { position: static; } .snav { position: static; } .snav-btn { display: none; } }
+</style>
+<div class="snav-wrap" id="snav-wrap">
+<header class="snav" id="snav">
+  <div class="snav-in">
+    <a class="mark" href="#status" aria-label="Massage by Tera, back to the top">Massage <span>by Tera</span></a>
+    <button type="button" class="snav-btn" id="snav-btn" aria-expanded="false" aria-controls="snav-links"><span>Menu</span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4h10M2 7h10M2 10h10"/></svg></button>
+    <nav class="snav-links" id="snav-links" aria-label="Sections">
+      <a href="#roots">Roots</a>
+      <a href="#table">On the table</a>
+      <a href="#sessions">Sessions</a>
+      <a href="#come">Where</a>
+      <a href="#words">Kind words</a>
+      <a href="#book">Book</a>
+    </nav>
   </div>
+</header>
+</div>
+<div class="hero-band has-photo">
+<div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-center gutter">
     <div class="hero-copy">
       <p class="label"><span class="cred"><span class="nw">Holistic Health</span> <span class="nw">Practitioner, CMT</span></span><span class="sep"> &middot; </span><span class="nw place">Arcata, California</span></p>
       <h1>As deep as you&rsquo;re <em>ready</em> to go.</h1>
-      <p class="lede"><span class="tagline">Body, mind and soul integration.</span>Deep tissue massage, led by your breath and your pace, in her Arcata studio or in your own home.</p>
+      <p class="lede"><span class="tagline">Body, mind and soul integration.</span>Deep tissue focused massage, relaxing and therapeutic, led by your breath and your pace. In Tera&rsquo;s own studio in Arcata, or in your home.</p>
       <div class="cta-row">
         <a class="btn" href="#own-booking" data-wf="booking">Book with Tera</a>
         <a class="btn quiet" href="#table">What a session feels like</a>
       </div>
     </div>
   </div>
-  <span class="sample-tag" role="img" aria-label="Sample photo: a therapist's hands resting on a client's forehead in warm lamplight">Sample photo</span>
+  <span class="vh" role="img" aria-label="Tera&rsquo;s own photo: a lone fir on a green headland above the blue Pacific on a clear day"></span>
 </div>
 <script>
   (function () {
@@ -826,7 +914,7 @@
     var go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
     var im = new Image();
     im.onload = go; im.onerror = go;
-    im.src = 'images/hero.jpg';
+    im.src = 'images/coast.jpg';
     if (im.complete) go();
     setTimeout(go, 1500);
   })();
@@ -837,15 +925,16 @@
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your story and training, your sessions and rates, studio or home visits, kind words, and how to reach you to book."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book button to a free Cal.com I set up in your name, the first-visit FAQ and intake form, a contact form and seasonal notes."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site with reminders (Cal.com), and gift certificates and session payments paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. Email me any change, and it&rsquo;s done: I update your site and your Google profile, like new hours, a new rate or a week away. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">4 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -857,15 +946,16 @@
       <p class="label">Roots</p>
       <div class="fact reveal">1,000+</div>
       <p class="fact-note">hours of hands-on training at Heartwood Institute, up in the Southern Humboldt hills <span class="nw">(class of 2000)</span>.</p>
-      <figure class="reveal photo wide">
-        <img src="images/garden.jpg" alt="Soil-dusted hands pressing earth around young seedlings in a garden bed" loading="lazy">
-        <span class="sample-tag">Sample photo</span>
+      <figure class="reveal photo wide own">
+        <img src="images/garden-snapdragons.jpg" alt="Ruffled peach and pink snapdragons in full bloom in Tera&rsquo;s backyard garden" loading="lazy" width="720" height="900">
+        <figcaption class="photo-cap">From Tera&rsquo;s backyard garden</figcaption>
       </figure>
     </div>
     <div class="measure">
       <h2 class="reveal">A deep love for <em>all life</em>, and the ground beneath it</h2>
       <p style="margin-top:20px">Tera is a Holistic Health Practitioner and a certified massage therapist (CMT). She has a deep love for all life and nature and draws from that connection and grounding energy that guides her in her work.</p>
       <p>Over the last 24 years as a mother, a farmer, and a backyard gardener, she has learned the art of nurturing. She brings that knowledge, compassion and gentle care to the table, holding space for you to relax, unwind and allow healing to happen.</p>
+      <p>This summer she opened her own practice, a quiet studio in Arcata, something she had long been manifesting. She also comes to you, with mobile sessions in your own home.</p>
       <div class="reveal modalities" aria-label="Training">
         <span class="lead"><b>Deep Tissue</b></span><span><b>Swedish</b></span><span><b>Neuromuscular</b></span>
         <span>Advanced Clinical Techniques</span><span>Polarity</span><span>Hypnotherapy</span>
@@ -884,8 +974,9 @@
       <div class="reveal"><b>Breathe</b><p>The work follows your breath. Go as deep as feels right, and no deeper.</p></div>
       <div class="reveal"><b>Rest</b><p>Leave grounded, a little lighter, with time to settle before you step back out.</p></div>
     </div>
+    <blockquote class="her-words reveal"><p>&ldquo;Holistic health means whole health, body, mind and soul. All are connected, all are equal in importance. To give ourselves time for rest and healing benefits our whole being.&rdquo;</p><cite>Tera</cite></blockquote>
     <figure class="reveal photo pano hands">
-      <img src="images/hands-at-work.jpg" alt="A therapist's hands massaging a client's bare back and shoulder in soft window light" loading="lazy">
+      <img src="images/hands-at-work.jpg" alt="A therapist&rsquo;s hands massaging a client&rsquo;s bare back and shoulder in soft window light" loading="lazy" width="2000" height="3000">
       <span class="sample-tag">Sample photo</span>
     </figure>
   </div>
@@ -896,11 +987,12 @@
     <div>
       <p class="label">Sessions</p>
       <h2 class="reveal">A <em>deep tissue</em> focus</h2>
-      <p style="margin-top:18px;color:var(--ink-soft)">Deep tissue is the heart of Tera&rsquo;s work: slow, steady pressure into the deeper layers of muscle, guided by your breath, and never deeper than you&rsquo;re ready to go.</p>
+      <p style="margin-top:18px;color:var(--ink-soft)">Deep tissue is the heart of Tera&rsquo;s work, relaxing and therapeutic at once: slow, steady pressure into the deeper layers of muscle, guided by your breath, and only as deep as you&rsquo;re ready to go.</p>
       <p style="color:var(--ink-soft)">She also offers Swedish, Neuromuscular, Polarity and Hypnotherapy. Any session can be one of these, or a blend, shaped around your breath and your pace.</p>
     </div>
     <div class="sessions-rates">
       <span class="breath" aria-hidden="true"><span class="breath-ring"></span></span>
+      <p class="egg-line" id="egg-line" role="status"></p>
       <table class="reveal rates">
         <thead><tr><th>Session</th><th>Rate</th></tr></thead>
         <tbody>
@@ -948,22 +1040,20 @@
 <section id="words" class="gutter">
   <div class="wrap">
     <p class="label with-pill"><span>Kind words</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <div class="reviews">
+    <h2 class="reveal words-h">In their <em>own words</em></h2>
+    <div class="reviews two-up">
       <figure class="reveal review">
-        <span class="review-sample">Sample review</span>
-        <blockquote><p>&ldquo;I left feeling lighter than I have in years. She really listened to what my body needed.&rdquo;</p></blockquote>
-        <figcaption>A client</figcaption>
+        <span class="stars" role="img" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <blockquote><p>&ldquo;My first massage with Tera was incredible and I am now a loyal fan.&rdquo;</p></blockquote>
+        <figcaption>A client, on Yelp</figcaption>
       </figure>
       <figure class="reveal review">
-        <span class="review-sample">Sample review</span>
-        <blockquote><p>&ldquo;Calm, kind and so attentive to my breath. My shoulders finally let go.&rdquo;</p></blockquote>
-        <figcaption>Jess, Eureka</figcaption>
+        <span class="stars" role="img" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <blockquote><p>&ldquo;Regular massage therapy is a key part of my strategy for relieving chronic pain, and has been for decades. I am extremely happy with the results that I get from her treatment and I confidently make this recommendation.&rdquo;</p></blockquote>
+        <figcaption>A client, July 2026</figcaption>
       </figure>
-      <figure class="reveal review">
-        <span class="review-sample">Sample review</span>
-        <blockquote><p>&ldquo;Gentle when I needed gentle, deeper when I was ready. I&rsquo;ll be back.&rdquo;</p></blockquote>
-        <figcaption>Rowan, McKinleyville</figcaption>
-      </figure>
+    </div>
+    <p class="mock-note wf-note words-note">These are real words from your clients. As new reviews come in on your Google profile, I add the best ones here.</p>
     </div>
   </div>
 </section>
@@ -971,7 +1061,7 @@
 <section id="own-booking" class="gutter">
   <div class="wrap">
     <div data-show="crone all" data-fold data-thing="booking that runs itself">
-    <p class="label with-pill"><span>Your own booking</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+    <p class="label with-pill"><span>Your own booking</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Booking that <em>runs itself</em></h2>
     <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Clients book you directly, any time of day, without a single phone call. Give it a try:</p>
 
@@ -1005,7 +1095,7 @@
           <div class="done-acts"><button type="button" class="bk-go ghost" id="tb-change">Change something</button><button type="button" class="bk-go ghost" id="tb-again">Try it again</button></div>
         </div>
       </div>
-      <p class="tier-note" data-show="all" data-fold>With the Mother build, this spot is a simple &ldquo;Book now&rdquo; button that opens your own booking app. <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      <p class="tier-note" data-show="all" data-fold>With Tended, this spot is a simple &ldquo;Book now&rdquo; button to a free Cal.com I set up in your name. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
       <div class="bk-side wf-note">
         <div class="bk-note"><b>What you see</b>Every new booking lands in your inbox and phone calendar the moment it happens.</div>
@@ -1021,12 +1111,12 @@
 
     
     <div class="bk-alt" data-show="mother" data-fold data-thing="Book now button" tabindex="-1" hidden>
-      <p class="label with-pill"><span>Book online</span> <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
+      <p class="label with-pill"><span>Book online</span> <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
       <h2>Find a time <em>that suits you</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">See Tera&rsquo;s open times and book your session online, any time of day.</p>
       <div class="cta-row"><a class="btn" id="bn-go" href="#own-booking" data-wf="booking">Book now<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></a></div>
       <p class="hint" id="bn-hint" role="status"></p>
-      <p class="demo-note">With Mother, this button opens the booking app you already use.</p>
+      <p class="demo-note">With Tended, this button opens your own Cal.com page, free and set up in your name: clients pick a time, and reminders go out on their own.</p>
     </div>
 
     
@@ -1035,7 +1125,7 @@
       <h2>Call, text <em>or email</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Call or text Tera at <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>, or email <a class="ph" data-wf="email">your email</a>. She&rsquo;ll find a time that works for you.</p>
       <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17079320037" aria-label="Text Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span>
-      <p class="demo-note">With Maiden, people reach you by call, text or email.</p>
+      <p class="demo-note">With Planted, people reach you by call, text or email to book. Already using a booking app for your own practice? Your Book button can go straight to it.</p>
     </div>
   </div>
 </section>
@@ -1044,7 +1134,7 @@
 <section id="gift" class="gutter" data-show="crone all" data-fold data-thing="gift certificates">
   <div class="wrap gift">
     <div class="gift-intro">
-      <p class="label with-pill"><span>Gift a session</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="label with-pill"><span>Gift a session</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Give the gift of <em>rest</em></h2>
       <p style="margin-top:14px;color:var(--ink-soft)">A gift certificate for someone you love, or your own session paid ahead of time, right here on her site. Try it:</p>
     </div>
@@ -1104,7 +1194,7 @@
       </div>
     </div>
     <div class="gift-notes wf-note">
-      <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, set up in your name.</div>
+      <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, set up in your name. Every purchase lives right there in your Stripe, and you get a short heads-up email for each one.</div>
       <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward.</div>
     </div>
   </div>
@@ -1113,7 +1203,7 @@
 <section id="faq" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap faq">
     <div class="faq-head">
-      <p class="label with-pill"><span>First visit</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>First visit</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Questions, <em>gently answered</em></h2>
       <p class="measure" style="margin-top:16px;color:var(--ink-soft)">The things first-time clients tend to wonder about, before they arrive.</p>
     </div>
@@ -1144,7 +1234,7 @@
       </details>
     </div>
     <div class="intake" data-thing="intake form">
-      <p class="label with-pill"><span>Intake form</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Intake form</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <button type="button" class="btn quiet" id="ik-btn" aria-expanded="false" aria-controls="ik-card">New client? Get the intake form</button>
       <div class="ik-card fade-in" id="ik-card" hidden>
         <h3 class="ik-h" id="ik-h" tabindex="-1">Intake form <span class="bk-demo">preview</span></h3>
@@ -1176,10 +1266,11 @@
         <a class="btn" href="#own-booking" data-wf="booking">Book online with Tera</a>
       </div>
     </div>
-    <figure class="reveal photo pano path">
-      <img src="images/garden-path.jpg" alt="A sunny garden bed of orange flowers and leafy plants behind low wooden edging, seen from the grass" loading="lazy">
-      <span class="sample-tag">Sample photo</span>
-    </figure>
+    <div class="garden-pair" data-lightbox>
+      <figure class="reveal photo pair"><img src="images/garden-dahlia.jpg" alt="A pink and white dahlia opening wide in Tera&rsquo;s garden, more buds on tall stems behind it" loading="lazy" width="720" height="900"></figure>
+      <figure class="reveal photo pair"><img src="images/garden-coral.jpg" alt="Tall coral and rose snapdragons in Tera&rsquo;s garden, ruffled blooms stacked up each stem" loading="lazy" width="720" height="900"></figure>
+      <p class="pair-cap">Grown in Tera&rsquo;s garden, the same care she brings to the table.</p>
+    </div>
     <div class="where">
       <div class="reveal"><b>Studio</b><span class="ph copy" data-wf="address">your address</span><br>Arcata, California<br>or mobile, at your home</div>
       <div class="reveal"><b>Call or text</b><span class="num copy" data-wf="phone">707-932-0037</span>
@@ -1193,7 +1284,7 @@
 <section id="contact" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap touch">
     <div data-thing="contact form">
-      <p class="label with-pill"><span>Write to Tera</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Write to Tera</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Send a <em>note</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Not sure which session is right for you, or have a question first? Write any time, or call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p>
       <div class="bk-card cf-card">
@@ -1215,7 +1306,7 @@
       </div>
     </div>
     <aside class="news" aria-labelledby="nl-h" data-thing="newsletter signup">
-      <p class="label with-pill"><span>Seasonal notes</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Seasonal notes</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h3 id="nl-h">Notes from <em>the garden</em></h3>
       <p style="margin-top:10px">A few letters a year: new openings, new offerings, and a little seasonal care.</p>
       <form id="nl" method="dialog" novalidate aria-label="Newsletter signup, preview">
@@ -1226,7 +1317,7 @@
       <div class="nl-done fade-in" id="nl-done" hidden>
         <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
         <p>The next seasonal note will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
-        <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
+        <p class="demo-note">Preview only: nothing was sent, and no list was joined. On your real site, this joins your own Buttondown list, set up in your name.</p>
         <div class="done-acts"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
       </div>
     </aside>
@@ -1244,7 +1335,7 @@
         <figcaption>In a search</figcaption>
         <div class="serp">
           <div class="serp-q"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>deep tissue massage Arcata</div>
-          <div class="serp-site"><span class="serp-fav" aria-hidden="true">T</span><span><b>Massage by Tera</b><small>yourname.com</small></span></div>
+          <div class="serp-site"><span class="serp-fav" aria-hidden="true">T</span><span><b>Massage by Tera</b><small><span class="ph">teranansen.com</span></small></span></div>
           <p class="serp-title">Massage by Tera | Deep Tissue Massage in Arcata</p>
           <p class="serp-desc">Holistic Health Practitioner, CMT. Body, mind and soul integration, with a deep tissue focus. Studio in Arcata, or mobile massage at your home.</p>
         </div>
@@ -1253,18 +1344,18 @@
         <figcaption>In a text from a friend</figcaption>
         <div class="sms">
           <p class="sms-bubble">This is who I was telling you about!</p>
-          <span class="linkcard"><img src="images/hero.jpg" alt="" loading="lazy"><span><b>Massage by Tera</b><small>yourname.com</small></span></span>
+          <span class="linkcard"><img src="images/coast.jpg" alt="" loading="lazy" width="720" height="1280"><span><b>Massage by Tera</b><small><span class="ph">teranansen.com</span></small></span></span>
         </div>
       </figure>
     </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile is set up too (that lives on Google, not on your site): your pin on the map, your hours, and reviews from real clients.</span></p>
+    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile stays in step with your site (it lives on Google, not on your site): your pin on the map, your hours, and reviews from real clients. I keep the profile you already have, in your name, and update it whenever your site changes.</span></p>
   </div>
 </section>
 
 <footer class="gutter">
   <div class="wrap"><span class="nw">Massage by Tera &middot;</span> <span class="nw">Holistic Health Practitioner, CMT &middot;</span> <span class="nw">Arcata, California</span>
     <p class="foot-reach">Call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/terarose37/" data-wf-social="instagram" target="_blank" rel="noopener" aria-label="Instagram @Terarose37 (opens in a new tab)">@Terarose37</a></p>
-    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page, call, text or email to book), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site, Book button to your own Cal.com), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and gift certificates right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1297,15 +1388,16 @@
   <div class="vpanel" id="vp-panel" hidden>
     <div class="views-head">
       <p class="views-q" id="vp-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your story and training, your sessions and rates, studio or home visits, kind words, and how to reach you to book."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book button to a free Cal.com I set up in your name, the first-visit FAQ and intake form, a contact form and seasonal notes."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site with reminders (Cal.com), and gift certificates and session payments paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. Email me any change, and it&rsquo;s done: I update your site and your Google profile, like new hours, a new rate or a week away. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
+    <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">4 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1652,9 +1744,9 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
 
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one beautiful page with everything people need to find you and reach you.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with a contact form, newsletter signup and a Book now button to the booking app you already use.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus booking, selling or both, set up for you. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your story and training, your sessions and rates, studio or home visits, kind words, and how to reach you to book.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus a Book now button to a free Cal.com set up in your name, the first-visit FAQ and intake form, a contact form and seasonal notes.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, doing business for you: everything in Tended, plus booking right on your site with reminders, and gift certificates and session payments paid straight into your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1672,8 +1764,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Mother, ' + more('maiden', 'crone') + ' with Crone.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Crone.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
 
@@ -1849,7 +1941,7 @@
     var bn = $('bn-go'), bnHint = $('bn-hint');
     if (bn && bnHint) bn.addEventListener('click', function (e) {
       if ((bn.getAttribute('href') || '').charAt(0) !== '#') return;   
-      e.preventDefault(); bnHint.textContent = 'Preview: on your real site, this opens your booking app.';
+      e.preventDefault(); bnHint.textContent = 'Preview: on your real site, this opens your own Cal.com booking page.';
     });
 
     root.setAttribute('data-view', view);
@@ -1928,8 +2020,55 @@
     });
   })();
 </script>
+<script>
+  /* Easter egg: five taps on the sessions card, and the breathing ring takes one deep breath with you */
+  (function () {
+    var card = document.querySelector('.sessions-rates'), ring = document.querySelector('.breath-ring'), line = document.getElementById('egg-line');
+    if (!card || !ring || !line) return;
+    var taps = [], busy = false, rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function say(t) { line.textContent = t; line.classList.add('on'); }
+    card.addEventListener('click', function (e) {
+      if (busy || (e.target.closest && e.target.closest('a, button'))) return;
+      var now = Date.now(); taps = taps.filter(function (t) { return now - t < 4000; }); taps.push(now);
+      if (taps.length < 5) return;
+      taps = []; busy = true;
+      if (!rm) { ring.classList.remove('deep'); void ring.offsetWidth; ring.classList.add('deep'); }
+      say('Breathe in, slow and full\u2026');
+      setTimeout(function () { say('\u2026and let it all go. That\u2019s the pace here.'); }, rm ? 2500 : 4600);
+      setTimeout(function () { line.classList.remove('on'); ring.classList.remove('deep'); busy = false; }, rm ? 7000 : 11500);
+    });
+  })();
+</script>
+<script>
+  /* sticky nav: stays at the top; Menu button on phones; tucks up while scrolling down and returns on scroll up (no tucking with reduced motion) */
+  (function () {
+    var bar = document.getElementById('snav'), wrap = document.getElementById('snav-wrap'), btn = document.getElementById('snav-btn'), links = document.getElementById('snav-links');
+    if (!bar || !wrap || !btn || !links) return;
+    document.documentElement.classList.add('snav-js');
+    var mq = window.matchMedia('(max-width: 760px)'), rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var last = window.pageYOffset || 0, open = false, tucked = false, raf = 0;
+    function tuck(t) { if (t === tucked) return; tucked = t; bar.classList.toggle('tuck', t); document.body.classList.toggle('nav-tuck', t); }
+    function setOpen(o) { open = o; bar.classList.toggle('open', o); btn.setAttribute('aria-expanded', o ? 'true' : 'false'); if (o) tuck(false); }
+    function update() {
+      raf = 0; var y = window.pageYOffset || 0;
+      bar.classList.toggle('solid', wrap.getBoundingClientRect().top <= 1);
+      if (!rm.matches && !open && y > 360 && y > last + 6 && !bar.contains(document.activeElement)) tuck(true);
+      else if (y < last - 6 || y <= 360 || open) tuck(false);
+      if (Math.abs(y - last) > 6 || y <= 360) last = y;
+    }
+    btn.addEventListener('click', function () { setOpen(!open); });
+    links.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { setOpen(false); btn.focus(); } });
+    document.addEventListener('click', function (e) { if (open && !bar.contains(e.target)) setOpen(false); });
+    bar.addEventListener('focusin', function () { tuck(false); });
+    window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+    window.addEventListener('resize', function () { if (!mq.matches && open) setOpen(false); update(); });
+    update();
+  })();
+</script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
+<script src="/lightbox.js?v=2" defer></script>
 <script src="/note-motion.js?v=1" defer></script>
 </body>
 </html>
