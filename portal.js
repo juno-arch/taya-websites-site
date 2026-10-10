@@ -26,7 +26,9 @@
    ---- HOW IT TALKS TO THE SERVER ----
    All in the api block below (the demo has the same eight calls with the same shapes):
      requestCode, verifyCode, me, logout, file, upload, todo, change
-   plus three for a shop's orders (Oct 8 2026; never called in the preview): shopOrders, shopPacked, shopExport
+   plus three for a shop's orders (Oct 8 2026; never called in the preview): shopOrders, shopPacked, shopExport,
+   and six more for a shop (Oct 10 2026, also never in the preview): shopCodes, shopCodeSave, shopCodeActive,
+   shopSettings, shopShipped, shopSlip
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -318,6 +320,9 @@
     // (field and at: kept for older server answers; the editors were retired Oct 5 2026)
     if (data && typeof data.field === 'string') e.field = data.field.slice(0, 20);
     if (data && Number.isInteger(data.at) && data.at >= 0 && data.at < 100) e.at = data.at;
+    // the shop's back end (Oct 10 2026) says what to fix in its own words, and 409 "taken" for a code name in use
+    if (data && typeof data.message === 'string') e.msg = cleanLine(data.message, 200);
+    if (status === 409 && data && data.error === 'taken') e.code = 'input';
     return e;
   };
   const post = async (path, body, key, base) => {
@@ -378,6 +383,17 @@
       const res = await post('/export', { what }, token, SHOP);
       if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
       return res.blob();
+    },
+    // a shop's codes, free shipping, shipped and packing slips (Oct 10 2026)
+    shopCodes: () => postJSON('/codes', {}, token, SHOP),
+    shopCodeSave: (c) => postJSON('/code-save', c, token, SHOP),
+    shopCodeActive: (id, active) => postJSON('/code-active', { id, active }, token, SHOP),
+    shopSettings: (s) => postJSON('/settings', s, token, SHOP),
+    shopShipped: (b) => postJSON('/shipped', b, token, SHOP),
+    async shopSlip(id) {
+      const res = await post('/slip', { order: id }, token, SHOP);
+      if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+      return res.text();
     }
   };
   let api = realApi;
@@ -474,7 +490,9 @@
   function toEmailStep(notice, moveFocus) {
     me = null;
     shop = null;
+    codes = null;
     $('#sec-orders').hidden = true;
+    $('#sec-codes').hidden = true;
     heroSignedOut();
     const n = $('#email-notice');
     n.textContent = notice || '';
@@ -656,7 +674,8 @@
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
-    $$('#v-project textarea, #v-project input[type="text"]').some((t) => t.value.trim());
+    $$('#v-project textarea, #v-project input[type="text"]:not(.keeps)').some((t) => t.value.trim()) ||
+    !!document.querySelector('#v-project .ship-form') || !$('#f-dc').hidden;
 
   // Back from Stripe (its "after payment" link can be portal.html?paid=deposit, or ?paid=1): note it, so the
   // pay button turns into a thank-you instead of asking again while Taya waits to see it land.
@@ -1464,6 +1483,7 @@
       const d = await api.shopOrders();
       shop = cleanShop(d);
       renderOrders();
+      if (shop) loadCodes(); else { codes = null; $('#sec-codes').hidden = true; }
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       // a shop that can't load right now keeps what it showed; a client without one sees nothing new
@@ -1481,6 +1501,9 @@
         id: str(o.id, 20), day: str(o.day, 10), total: str(o.total, 20), ship_option: str(o.ship_option, 120),
         city: str(o.city, 120), state: str(o.state, 60), packed_on: str(o.packed_on, 10), cleared_on: str(o.address_cleared_on, 10),
         test: !!o.test, oversold: !!o.oversold, stripe_url: stripeUrl(o.stripe_url),
+        code: str(o.code, 30), discount: str(o.discount, 20), note: str(o.note, 600),
+        shipped_on: str(o.shipped_on, 10), carrier: str(o.carrier, 40), tracking: str(o.tracking, 60),
+        tracking_url: safeUrl(o.tracking_url), emailed_on: str(o.emailed_on, 10), can_email: !!o.can_email,
         items: arr(o.items).slice(0, 50).map((it) => ({ title: str(it && it.title, 250), size: str(it && it.size, 30), qty: Math.max(1, Math.min(999, Math.round(+(it && it.qty) || 1))), total: str(it && it.total, 20) })).filter((it) => it.title),
         address: a ? { name: str(a.name, 200), line1: str(a.line1, 200), line2: str(a.line2, 200), city: str(a.city, 120), state: str(a.state, 60), postal_code: str(a.postal_code, 20), country: str(a.country, 8) } : null
       };
@@ -1508,6 +1531,7 @@
       items.append(row);
     });
     li.append(items);
+    if (o.code) li.append(make('p', 'o-code', 'Code ' + o.code + (o.discount ? ', ' + o.discount + ' off' : '')));
     const ship = make('div', 'o-ship');
     const where = [o.city, o.state].filter(Boolean).join(', ');
     if (o.address) {
@@ -1524,6 +1548,12 @@
     }
     if (o.ship_option) ship.append(make('p', 'o-opt', o.ship_option));
     li.append(ship);
+    if (o.note) {
+      const n = make('div', 'o-note');
+      n.append(make('span', 'o-label', 'Their note'), make('p', null, o.note));
+      li.append(n);
+    }
+    if (o.shipped_on) li.append(shippedLine(o));
     if (o.oversold) li.append(make('p', 'o-warn', 'This was the last one, and it sold twice. Refund one of the two in your Stripe, and email me if you’d like a hand.'));
     const act = make('div', 'o-act');
     const lab = make('label', 'o-packed');
@@ -1536,7 +1566,369 @@
     act.append(lab);
     if (o.stripe_url) act.append(outLink(o.stripe_url, 'Open in Stripe', null, 'this order in Stripe'));
     li.append(act);
+    const act2 = make('div', 'o-act o-act2');
+    const shipBtn = make('button', 'open-btn o-ship-btn', o.shipped_on ? 'Change tracking' : 'Shipped');
+    shipBtn.type = 'button';
+    shipBtn.setAttribute('aria-expanded', 'false');
+    shipBtn.addEventListener('click', () => openShipForm(o, li, shipBtn));
+    const slipBtn = make('button', 'open-btn o-slip-btn', 'Packing slip');
+    slipBtn.type = 'button';
+    slipBtn.addEventListener('click', () => openSlip(slipBtn, o));
+    act2.append(shipBtn, slipBtn);
+    li.append(act2);
     return li;
+  }
+  // "Shipped Oct 10 by USPS, 9400... Track it" and whether the buyer has their email
+  function shippedLine(o) {
+    const p = make('p', 'o-shipped');
+    p.append(make('span', null, 'Shipped ' + shortDate(o.shipped_on) + (o.carrier ? ' by ' + o.carrier : '') + (o.tracking ? ', ' + o.tracking : '') + '.'));
+    if (o.tracking_url) {
+      p.append(' ');
+      const a = make('a', 'later', 'Track it');
+      a.href = o.tracking_url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      p.append(a);
+    }
+    p.append(make('span', 'o-mailed', o.emailed_on ? 'The buyer has their shipped email.' : (o.can_email ? '' : 'No buyer email here, so no email went out.')));
+    return p;
+  }
+  const CARRIER_KEYS = { USPS: 'usps', UPS: 'ups', FedEx: 'fedex', DHL: 'dhl' };
+  // the Shipped form, right on the order: carrier, tracking number, and for another carrier its name and link
+  function openShipForm(o, li, btn) {
+    const open = li.querySelector('.ship-form');
+    if (open) { focusEl(open.querySelector('select')); return; }
+    const id = o.id;
+    const f = make('form', 'ship-form');
+    f.noValidate = true;
+    const field = (label, input, opt) => {
+      const l = make('label', 'field-label', label);
+      l.htmlFor = input.id;
+      if (opt) { l.append(' '); l.append(make('span', 'opt-tag', opt)); }
+      return l;
+    };
+    const sel = make('select');
+    sel.id = 'car-' + id;
+    [['usps', 'USPS'], ['ups', 'UPS'], ['fedex', 'FedEx'], ['dhl', 'DHL'], ['other', 'Another carrier'], ['', 'No tracking (a plain stamp)']]
+      .forEach(([v, t]) => { const op = make('option', null, t); op.value = v; sel.append(op); });
+    if (o.shipped_on) sel.value = o.carrier ? (CARRIER_KEYS[o.carrier] || 'other') : '';
+    const trk = make('input');
+    trk.type = 'text'; trk.id = 'trk-' + id; trk.maxLength = 60; trk.autocomplete = 'off'; trk.spellcheck = false;
+    trk.value = o.tracking || '';
+    const trkWrap = make('div');
+    trkWrap.append(field('Tracking number', trk), trk);
+    const cname = make('input');
+    cname.type = 'text'; cname.id = 'cname-' + id; cname.maxLength = 40; cname.autocomplete = 'off';
+    const curl = make('input');
+    curl.type = 'url'; curl.id = 'curl-' + id; curl.maxLength = 500; curl.autocomplete = 'off'; curl.placeholder = 'https://';
+    if (o.shipped_on && sel.value === 'other') { cname.value = o.carrier; curl.value = o.tracking_url || ''; }
+    const otherWrap = make('div');
+    otherWrap.append(field('Carrier name', cname), cname, field('Tracking link', curl, '(optional)'), curl);
+    const sync = () => { otherWrap.hidden = sel.value !== 'other'; trkWrap.hidden = sel.value === ''; };
+    sel.addEventListener('change', sync);
+    sync();
+    const hint = make('p', 'o-hint', o.can_email
+      ? (o.emailed_on ? 'The buyer already has their email. A new tracking number sends them the new one.' : 'Saving emails the buyer their tracking, signed with your shop’s name.')
+      : 'There’s no buyer email on this order here, so no email goes out.');
+    const err = make('p', 'err');
+    err.hidden = true;
+    err.setAttribute('role', 'alert');
+    const save = make('button', 'btn small');
+    save.type = 'submit';
+    save.append(make('span', null, o.shipped_on ? 'Save tracking' : 'Mark shipped'));
+    const cancel = make('button', 'later', 'Cancel');
+    cancel.type = 'button';
+    const btns = make('div', 'dc-btns');
+    btns.append(save, cancel);
+    if (o.shipped_on) {
+      const undo = make('button', 'later', 'Not shipped after all');
+      undo.type = 'button';
+      undo.addEventListener('click', () => sendShipped(o, li, { order: o.id, shipped: false }, save, err));
+      btns.append(undo);
+    }
+    f.append(field('Carrier', sel), sel, trkWrap, otherWrap, hint, err, btns);
+    const close = () => { f.remove(); btn.setAttribute('aria-expanded', 'false'); focusEl(btn); };
+    cancel.addEventListener('click', close);
+    f.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const b = { order: o.id, shipped: true, carrier: sel.value, tracking: cleanLine(trk.value, 60) };
+      if (sel.value === '') b.tracking = '';
+      if (sel.value === 'other') { b.carrier_name = cleanLine(cname.value, 40); b.tracking_url = cleanLine(curl.value, 500); }
+      sendShipped(o, li, b, save, err);
+    });
+    li.querySelector('.o-act2').after(f);
+    btn.setAttribute('aria-expanded', 'true');
+    focusEl(sel);
+  }
+  async function sendShipped(o, li, b, save, err) {
+    if (save.disabled) return;
+    setBusy(save, true, 'Saving…');
+    err.hidden = true;
+    busy++;
+    try {
+      const r = await api.shopShipped(b);
+      const fresh = cleanShop({ shop: { name: shop.shop.name, test: shop.shop.test }, orders: [r && r.order] });
+      const now = fresh && fresh.orders[0] ? fresh.orders[0] : null;
+      if (now) {
+        const i = shop.orders.findIndex((x) => x.id === o.id);
+        if (i >= 0) shop.orders[i] = now;
+        const row = orderRow(now);
+        li.replaceWith(row);
+        focusEl(row.querySelector('.o-ship-btn'));
+      }
+      const m = r && r.mail;
+      toast(!b.shipped ? 'Taken off. It shows as not shipped.'
+        : m === 'sent' ? 'Marked shipped. The buyer’s email is on its way.'
+          : m === 'no_email' ? 'Marked shipped. There’s no buyer email on this order, so none went out.'
+            : m === 'not_sent' ? 'Marked shipped, but the email didn’t go out. Try saving again in a little while.'
+              : 'Saved.');
+    } catch (e) {
+      setBusy(save, false);
+      if (e.code === 'signed_out') { quietSignOut(true); return; }
+      err.textContent = e.code === 'input' && e.msg ? e.msg : words(e);
+      err.hidden = false;
+    } finally { busy = Math.max(0, busy - 1); }
+  }
+  // The packing slip: a page from the server for the signed-in owner only, opened in a new tab as a private
+  // page (a tab is opened during the tap, so phones allow it). It prints on plain paper.
+  async function openSlip(btn, o) {
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    let win = null;
+    try { win = window.open('', '_blank'); } catch (e) { win = null; }
+    if (win) { try { win.opener = null; win.document.title = 'Opening…'; win.document.body.textContent = 'Opening your packing slip…'; } catch (e) { /* fine */ } }
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const html = await api.shopSlip(o.id);
+      const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+      if (win && !win.closed) win.location.href = url;
+      else toast('Your browser kept the new tab from opening. Allow pop ups for this page, then tap Packing slip again.');
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    } catch (err) {
+      if (win) win.close();
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(words(err));
+    } finally { btn.removeAttribute('aria-busy'); }
+  }
+
+  /* ---- your shop's discount codes, free shipping and the packing slip line (Oct 10 2026) ----
+     Codes live on Web Faery's server, in the owner's own back end: % or $ off, a smallest order, first and last
+     days, a limit, once per buyer, on or off. Checkout checks them and puts them on the Stripe receipt; a use
+     counts once the order is paid. */
+  let codes = null;          // { settings, codes: [...] } as the server last sent it (cleaned)
+  let codeEditing = '';      // the id of the code in the form ('' for a new one)
+  async function loadCodes() {
+    if (DEMO) { $('#sec-codes').hidden = true; return; }
+    try {
+      const d = await api.shopCodes();
+      codes = cleanCodes(d);
+      renderCodes();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!codes) $('#sec-codes').hidden = true;
+    }
+  }
+  function cleanCode(c) {
+    if (!c || typeof c !== 'object' || !str(c.id)) return null;
+    const int = (v) => (Number.isInteger(+v) && +v >= 0 ? +v : 0);
+    return {
+      id: str(c.id, 20), code: str(c.code, 30), kind: c.kind === 'amount' ? 'amount' : 'percent',
+      percent: int(c.percent), amount_cents: int(c.amount_cents), min_cents: int(c.min_cents),
+      label: str(c.label, 30), min: str(c.min, 20), starts_on: str(c.starts_on, 10), ends_on: str(c.ends_on, 10),
+      max_uses: int(c.max_uses), uses: int(c.uses), one_per_email: !!c.one_per_email, active: !!c.active,
+      state: ['on', 'off', 'scheduled', 'ended', 'used_up'].includes(c.state) ? c.state : 'off'
+    };
+  }
+  function cleanCodes(d) {
+    d = d && typeof d === 'object' ? d : {};
+    if (!d.shop) return null;
+    const st = d.settings && typeof d.settings === 'object' ? d.settings : {};
+    return {
+      settings: { free_ship_cents: Number.isInteger(+st.free_ship_cents) ? +st.free_ship_cents : 0, slip_note: str(st.slip_note, 300) },
+      codes: arr(d.codes).slice(0, 200).map(cleanCode).filter(Boolean)
+    };
+  }
+  const dollars = (cents) => (cents % 100 ? (cents / 100).toFixed(2) : String(cents / 100));
+  // "40", "$40", "40.5", "40.50" -> 4050; '' -> 0; anything else -> null
+  const toCents = (v) => {
+    const s = String(v || '').trim().replace(/^\$\s*/, '').replace(/,/g, '');
+    if (!s) return 0;
+    const m = /^(\d{1,7})(?:\.(\d{1,2}))?$/.exec(s);
+    return m ? +m[1] * 100 + (m[2] ? +((m[2] + '0').slice(0, 2)) : 0) : null;
+  };
+  function renderCodes() {
+    const sec = $('#sec-codes');
+    if (!codes) { sec.hidden = true; return; }
+    sec.hidden = false;
+    $('#dcs-empty').hidden = codes.codes.length > 0;
+    $('#dcs').replaceChildren(...codes.codes.map(codeRow));
+    const setForm = $('#f-shop-set');
+    if (!setForm.contains(document.activeElement)) {
+      $('#in-free').value = codes.settings.free_ship_cents ? dollars(codes.settings.free_ship_cents) : '';
+      $('#in-slip-note').value = codes.settings.slip_note;
+    }
+  }
+  const STATE_WORDS = { on: 'On', off: 'Off', ended: 'Ended', used_up: 'Used up' };
+  function codeRow(c) {
+    const li = make('li', 'dc st-' + c.state);
+    li.dataset.code = c.id;
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'dc-name', c.code), make('span', 'dc-off', c.label));
+    li.append(head);
+    const when = c.starts_on && c.ends_on ? (c.starts_on === c.ends_on ? 'Only ' + shortDate(c.starts_on) : shortDate(c.starts_on) + ' to ' + shortDate(c.ends_on))
+      : c.starts_on ? 'From ' + shortDate(c.starts_on) : c.ends_on ? 'Until ' + shortDate(c.ends_on) : '';
+    const bits = [c.min ? 'Orders of ' + c.min + ' or more' : 'Any order', when,
+      c.max_uses ? c.uses + ' of ' + c.max_uses + ' used' : plural(c.uses, 'use', 'uses') + ' so far',
+      c.one_per_email ? 'Once per buyer' : ''].filter(Boolean);
+    li.append(make('p', 'dc-meta', bits.join(' · ')));
+    const act = make('div', 'o-act');
+    const lab = make('label', 'o-packed dc-on');
+    const cb = make('input');
+    cb.type = 'checkbox';
+    cb.checked = c.active;
+    const word = make('span', null, c.state === 'scheduled' ? 'On, starts ' + shortDate(c.starts_on) : (c.active ? (STATE_WORDS[c.state] || 'On') : 'Off'));
+    lab.append(cb, word);
+    cb.addEventListener('change', () => setCodeActive(c, cb));
+    const edit = make('button', 'open-btn', 'Change');
+    edit.type = 'button';
+    edit.setAttribute('aria-label', 'Change the code ' + c.code);
+    edit.addEventListener('click', () => openCodeForm(c));
+    act.append(lab, edit);
+    li.append(act);
+    return li;
+  }
+  async function setCodeActive(c, cb) {
+    const want = cb.checked;
+    cb.disabled = true;
+    busy++;
+    try {
+      const r = await api.shopCodeActive(c.id, want);
+      const now = cleanCode(r && r.code);
+      if (now) {
+        const i = codes.codes.findIndex((x) => x.id === c.id);
+        if (i >= 0) codes.codes[i] = now;
+        const row = codeRow(now);
+        $('#dcs').querySelector('[data-code="' + c.id + '"]').replaceWith(row);
+        focusEl(row.querySelector('input'), true);
+      }
+      announce(want ? 'Code ' + c.code + ' is on.' : 'Code ' + c.code + ' is off.');
+    } catch (err) {
+      cb.checked = !want;
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(words(err));
+    } finally { cb.disabled = false; busy = Math.max(0, busy - 1); }
+  }
+  const DC_ERRS = { code: 'dc-code', percent: 'dc-value', amount_cents: 'dc-value', kind: 'dc-value', min_cents: 'dc-min', starts_on: 'dc-start', ends_on: 'dc-end', max_uses: 'dc-max' };
+  const DC_INPUTS = { 'dc-code': '#in-dc-code', 'dc-value': '#in-dc-value', 'dc-min': '#in-dc-min', 'dc-start': '#in-dc-start', 'dc-end': '#in-dc-end', 'dc-max': '#in-dc-max' };
+  function dcErr(id, text) {
+    const p = $('#' + id + '-err');
+    p.textContent = text || '';
+    p.hidden = !text;
+    const input = DC_INPUTS[id] && $(DC_INPUTS[id]);
+    if (input) { if (text) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); }
+  }
+  function clearDcErrs() { ['dc-code', 'dc-value', 'dc-min', 'dc-start', 'dc-end', 'dc-max', 'dc'].forEach((id) => dcErr(id, '')); }
+  function dcKind() { const r = document.querySelector('input[name="dc-kind"]:checked'); return r ? r.value : 'percent'; }
+  function syncDcKind() {
+    const pct = dcKind() === 'percent';
+    $('#dc-amt-pre').hidden = pct;
+    $('#dc-amt-post').textContent = pct ? '% off' : 'off';
+    $('#in-dc-value').placeholder = pct ? 'Like: 10' : 'Like: 5';
+  }
+  function openCodeForm(c) {
+    const f = $('#f-dc');
+    codeEditing = c ? c.id : '';
+    clearDcErrs();
+    $('#dc-form-h').textContent = c ? 'Change ' + c.code : 'A new code';
+    $('#in-dc-code').value = c ? c.code : '';
+    document.querySelector('input[name="dc-kind"][value="' + (c ? c.kind : 'percent') + '"]').checked = true;
+    $('#in-dc-value').value = c ? (c.kind === 'percent' ? String(c.percent) : dollars(c.amount_cents)) : '';
+    $('#in-dc-min').value = c && c.min_cents ? dollars(c.min_cents) : '';
+    $('#in-dc-start').value = c ? c.starts_on : '';
+    $('#in-dc-end').value = c ? c.ends_on : '';
+    $('#in-dc-max').value = c && c.max_uses ? String(c.max_uses) : '';
+    $('#in-dc-once').checked = c ? c.one_per_email : false;
+    $('#in-dc-on').checked = c ? c.active : true;
+    syncDcKind();
+    f.hidden = false;
+    $('#b-dc-new').setAttribute('aria-expanded', 'true');
+    f.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+    focusEl($('#in-dc-code'), true);
+  }
+  function closeCodeForm() {
+    $('#f-dc').hidden = true;
+    codeEditing = '';
+    $('#b-dc-new').setAttribute('aria-expanded', 'false');
+  }
+  async function onCodeSave(ev) {
+    ev.preventDefault();
+    const btn = $('#b-dc-save');
+    if (btn.disabled) return;
+    clearDcErrs();
+    const kind = dcKind();
+    const b = { code: cleanLine($('#in-dc-code').value, 40).toUpperCase().replace(/\s+/g, ''), kind,
+      starts_on: $('#in-dc-start').value || '', ends_on: $('#in-dc-end').value || '',
+      one_per_email: $('#in-dc-once').checked, active: $('#in-dc-on').checked };
+    if (codeEditing) b.id = codeEditing;
+    const v = $('#in-dc-value').value.trim().replace(/%$/, '');
+    if (kind === 'percent') {
+      if (!/^\d{1,3}$/.test(v) || +v < 1 || +v > 100) { dcErr('dc-value', 'A percent from 1 to 100.'); focusEl($('#in-dc-value')); return; }
+      b.percent = +v;
+    } else {
+      const c = toCents(v);
+      if (!c) { dcErr('dc-value', 'How many dollars off, like 5.'); focusEl($('#in-dc-value')); return; }
+      b.amount_cents = c;
+    }
+    const min = toCents($('#in-dc-min').value);
+    if (min === null) { dcErr('dc-min', 'The smallest order in dollars, like 40, or leave it empty.'); focusEl($('#in-dc-min')); return; }
+    b.min_cents = min;
+    const max = $('#in-dc-max').value.trim();
+    if (max && !/^\d{1,7}$/.test(max)) { dcErr('dc-max', 'A number, like 20, or leave it empty.'); focusEl($('#in-dc-max')); return; }
+    b.max_uses = max ? +max : 0;
+    setBusy(btn, true, 'Saving…');
+    busy++;
+    try {
+      const r = await api.shopCodeSave(b);
+      const now = cleanCode(r && r.code);
+      if (now) {
+        const i = codes.codes.findIndex((x) => x.id === now.id);
+        if (i >= 0) codes.codes[i] = now; else codes.codes.unshift(now);
+      }
+      closeCodeForm();
+      renderCodes();
+      const row = now && $('#dcs').querySelector('[data-code="' + now.id + '"]');
+      if (row) focusEl(row, true);
+      toast(now ? 'Saved. ' + now.code + (now.active ? ' is ready for buyers.' : ' is off for now.') : 'Saved.');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      if (err.code === 'input' && err.msg) {
+        const id = DC_ERRS[err.field] || 'dc';
+        dcErr(id, err.msg);
+        if (DC_INPUTS[id]) focusEl($(DC_INPUTS[id]));
+      } else dcErr('dc', words(err));
+    } finally { setBusy(btn, false); busy = Math.max(0, busy - 1); }
+  }
+  async function onShopSettings(ev) {
+    ev.preventDefault();
+    const btn = $('#b-set-save');
+    if (btn.disabled) return;
+    ['free', 'slip'].forEach((id) => { $('#' + id + '-err').hidden = true; });
+    const free = toCents($('#in-free').value);
+    if (free === null || (free > 0 && free < 100)) { $('#free-err').textContent = 'An amount in dollars, like 75, or leave it empty for none.'; $('#free-err').hidden = false; focusEl($('#in-free')); return; }
+    setBusy(btn, true, 'Saving…');
+    busy++;
+    try {
+      const r = await api.shopSettings({ free_ship_cents: free || null, slip_note: cleanLine($('#in-slip-note').value, 300) });
+      const st = r && r.settings && typeof r.settings === 'object' ? r.settings : {};
+      codes.settings = { free_ship_cents: Number.isInteger(+st.free_ship_cents) ? +st.free_ship_cents : 0, slip_note: str(st.slip_note, 300) };
+      $('#in-free').value = codes.settings.free_ship_cents ? dollars(codes.settings.free_ship_cents) : '';
+      $('#in-slip-note').value = codes.settings.slip_note;
+      toast(codes.settings.free_ship_cents ? 'Saved. Orders of $' + dollars(codes.settings.free_ship_cents) + ' or more get free shipping.' : 'Saved. No free shipping for now.');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      const p = err.field === 'slip_note' ? $('#slip-err') : $('#free-err');
+      p.textContent = err.code === 'input' && err.msg ? err.msg : words(err);
+      p.hidden = false;
+    } finally { setBusy(btn, false); busy = Math.max(0, busy - 1); }
   }
   async function setPacked(o, cb, word, li) {
     const want = cb.checked;
@@ -1902,6 +2294,11 @@
     $('#b-another').addEventListener('click', askAnother);
     $('#b-csv-orders').addEventListener('click', () => downloadCsv($('#b-csv-orders'), 'orders'));
     $('#b-csv-products').addEventListener('click', () => downloadCsv($('#b-csv-products'), 'products'));
+    $('#b-dc-new').addEventListener('click', () => { if ($('#f-dc').hidden || codeEditing) openCodeForm(null); else closeCodeForm(); });
+    $('#b-dc-cancel').addEventListener('click', () => { closeCodeForm(); focusEl($('#b-dc-new')); });
+    $('#f-dc').addEventListener('submit', onCodeSave);
+    $$('input[name="dc-kind"]').forEach((r) => r.addEventListener('change', syncDcKind));
+    $('#f-shop-set').addEventListener('submit', onShopSettings);
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {

@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261008a">
+<link rel="stylesheet" href="portal.css?v=20261010k">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -97,7 +97,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261008a"></script>
+<script src="portal.js?v=20261010k"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -217,13 +217,73 @@
       <span class="kicker">Your shop</span>
       <h2 id="h-orders" tabindex="-1">Orders</h2>
       <p class="orders-test" id="orders-test" hidden>Test mode: these are practice orders, no real money.</p>
-      <p class="orders-fine">Newest first. Tick Packed once it’s in the mail. Each address stays here until 30 days after Packed, and your Stripe keeps the whole order.</p>
+      <p class="orders-fine">Newest first. Tick Packed once it’s in the mail, or tap Shipped to send the buyer their tracking. Each address stays here until 30 days after Packed, and your Stripe keeps the whole order.</p>
       <ul class="orders" id="orders"></ul>
       <p class="empty" id="orders-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
         <span class="empty-body">No orders yet. They show up here as soon as someone checks out.</span></p>
       <p class="orders-csv"><span>Your copy, any time:</span>
         <button type="button" class="later" id="b-csv-orders">Orders (CSV)</button>
         <button type="button" class="later" id="b-csv-products">Products (CSV)</button></p>
+    </section>
+
+    <!-- your shop's discount codes and free shipping (Oct 10 2026): only for a client whose shop runs on Web Faery's server -->
+    <section class="p-card" id="sec-codes" aria-labelledby="h-codes" hidden>
+      <span class="kicker">Your shop</span>
+      <h2 id="h-codes" tabindex="-1">Discount codes</h2>
+      <p class="orders-fine">Make a code, share it, and buyers type it at checkout. Their Stripe receipt shows it too. A use counts once the order is paid.</p>
+      <ul class="dcs" id="dcs"></ul>
+      <p class="empty" id="dcs-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+        <span class="empty-body">No codes yet. Make one for a sale, a newsletter, or a friend.</span></p>
+      <p class="dc-new"><button type="button" class="pick" id="b-dc-new" aria-expanded="false" aria-controls="f-dc">New code</button></p>
+      <form class="dc-form" id="f-dc" novalidate hidden>
+        <h3 class="small-h" id="dc-form-h">A new code</h3>
+        <label class="field-label" for="in-dc-code">The code</label>
+        <input id="in-dc-code" type="text" maxlength="30" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Like: SPRING10" aria-describedby="dc-code-err">
+        <p class="err" id="dc-code-err" hidden></p>
+        <fieldset class="dc-kind">
+          <legend class="field-label">What it takes off</legend>
+          <div class="dc-row">
+            <label class="dc-radio"><input type="radio" name="dc-kind" value="percent" checked> <span>A percent</span></label>
+            <label class="dc-radio"><input type="radio" name="dc-kind" value="amount"> <span>Dollars</span></label>
+          </div>
+          <label class="dc-amt"><span id="dc-amt-pre" aria-hidden="true" hidden>$</span>
+            <input id="in-dc-value" type="text" inputmode="decimal" maxlength="9" autocomplete="off" aria-label="How much off" aria-describedby="dc-value-err">
+            <span id="dc-amt-post" aria-hidden="true">% off</span></label>
+          <p class="err" id="dc-value-err" hidden></p>
+        </fieldset>
+        <label class="field-label" for="in-dc-min">Smallest order it works on <span class="opt-tag">(optional, in dollars)</span></label>
+        <input id="in-dc-min" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="Like: 40" aria-describedby="dc-min-err">
+        <p class="err" id="dc-min-err" hidden></p>
+        <div class="dc-dates">
+          <div><label class="field-label" for="in-dc-start">First day <span class="opt-tag">(optional)</span></label>
+            <input id="in-dc-start" type="date" aria-describedby="dc-start-err"><p class="err" id="dc-start-err" hidden></p></div>
+          <div><label class="field-label" for="in-dc-end">Last day <span class="opt-tag">(optional)</span></label>
+            <input id="in-dc-end" type="date" aria-describedby="dc-end-err"><p class="err" id="dc-end-err" hidden></p></div>
+        </div>
+        <label class="field-label" for="in-dc-max">How many times in all <span class="opt-tag">(optional, empty is no limit)</span></label>
+        <input id="in-dc-max" type="text" inputmode="numeric" maxlength="7" autocomplete="off" placeholder="Like: 20" aria-describedby="dc-max-err">
+        <p class="err" id="dc-max-err" hidden></p>
+        <label class="dc-check"><input type="checkbox" id="in-dc-once"> <span>Once per buyer (checkout asks for their email first)</span></label>
+        <label class="dc-check"><input type="checkbox" id="in-dc-on" checked> <span>On, buyers can use it</span></label>
+        <p class="err" id="dc-err" hidden></p>
+        <div class="dc-btns">
+          <button class="btn small" type="submit" id="b-dc-save"><span>Save the code</span></button>
+          <button class="later" type="button" id="b-dc-cancel">Cancel</button>
+        </div>
+      </form>
+
+      <h3 class="small-h dc-set-h">Free shipping and packing slips</h3>
+      <form class="dc-set" id="f-shop-set" novalidate>
+        <label class="field-label" for="in-free">Free shipping on orders of <span class="opt-tag">(after any code; empty is none)</span></label>
+        <label class="dc-amt"><span aria-hidden="true">$</span>
+          <input id="in-free" class="keeps" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="Like: 75" aria-label="Free shipping on orders of, in dollars" aria-describedby="free-err">
+          <span aria-hidden="true">or more</span></label>
+        <p class="err" id="free-err" hidden></p>
+        <label class="field-label" for="in-slip-note">A thank you line on each packing slip <span class="opt-tag">(optional)</span></label>
+        <input id="in-slip-note" class="keeps" type="text" maxlength="300" autocomplete="off" placeholder="Like: Thank you for supporting a tiny shop!" aria-describedby="slip-err">
+        <p class="err" id="slip-err" hidden></p>
+        <div class="dc-btns"><button class="btn small" type="submit" id="b-set-save"><span>Save</span></button></div>
+      </form>
     </section>
 
     <section class="p-card" id="sec-list" aria-labelledby="h-list">
