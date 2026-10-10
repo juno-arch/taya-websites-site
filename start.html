@@ -1204,7 +1204,7 @@
           <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
           <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
           <li><span class="k">Timing</span><span>The clock starts when all your content is in. A first draft in about a week, and ready in about <span data-a="weeks">2, 3 or 4 weeks</span>.</span></li>
-          <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one email with everything in it; any more rounds, I quote first. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can email me your changes, as often as you need, and your subscription covers them.</span></li>
+          <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one batch with everything in it (notes on your draft, or one email); any more rounds, I quote first. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need, and your subscription covers them.</span></li>
           <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
           <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">your subscription, at your build’s monthly price</span>. If anything breaks, or I got something wrong, I fix it.</span></li>
           <li><span class="k">Yours</span><span>Everything is in your name. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.</span></li>
@@ -1214,7 +1214,7 @@
           <summary>Read the whole agreement</summary>
           <div class="agreement-doc">
             <h3>Our agreement</h3>
-            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of October 6, 2026.</p>
+            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of October 10, 2026.</p>
             <ol>
               <li><b>What I’ll make.</b> Your <span data-a="build">build</span>: <span data-a="does">the site we choose together</span>
                   Every build comes with your words written for you from your answers, a phone-first design,
@@ -1225,7 +1225,7 @@
                   which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By card or US bank account.</li>
               <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. The build clock starts
                   the day all your content is in. I send a first draft in about a week, on a private link. You get two rounds of changes; each round
-                  is one email with everything in it. Any more rounds, I quote first, and nothing starts until you say yes. Your site
+                  is one batch, with everything in it: notes on your draft, or one email. Any more rounds, I quote first, and nothing starts until you say yes. Your site
                   is ready in about <span data-a="weeks">2, 3 or 4 weeks</span> from when your content is in.</li>
               <li><b>If life gets busy.</b> If your content isn’t in 30 days after you say yes, I’ll nudge you gently. At 60 days the project closes,
                   so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
@@ -1919,6 +1919,25 @@
   // Taya's link can carry what we already know about them. Personal details (full, email) come ONLY in the
   // fragment after # (browsers never send it to a server, so it stays out of server logs); biz and site may
   // be in either. The fragment is read once and wiped from the address bar straight away (the query stays).
+  // Their private link (Oct 10 2026, no sign-in): the door opens this page as start.html#wf=KEY. The key is kept for
+  // this tab only (sessionStorage), so a link Taya opens to check a client's page isn't remembered on her device, and
+  // taken out of the address bar right away. With a key, the page asks the server who they are (/start-who) instead of
+  // reading Taya's link options, saves as they go to the server, and sends with /start-send.
+  const KEY_STORE = 'wf-key-v1:start';
+  let wfKey = '';
+  try {
+    const km = /[#&]wf=([A-Za-z0-9]{24,64})(?:&|$)/.exec(location.hash);
+    if (km) {
+      wfKey = km[1];
+      try { sessionStorage.setItem(KEY_STORE, wfKey); } catch (e) { /* storage off: this load only */ }
+      let rest = location.hash.replace(km[0], ''); if (rest && rest.charAt(0) !== '#') rest = '#' + rest.slice(1);
+      history.replaceState(history.state, '', location.pathname + location.search + (rest.length > 1 ? rest : ''));
+    } else {
+      const v = sessionStorage.getItem(KEY_STORE) || '';
+      if (/^[A-Za-z0-9]{24,64}$/.test(v)) wfKey = v;
+    }
+  } catch (e) { /* an old browser: the page works as a preview */ }
+
   const linkKnown = {};
   try {
     const hs = new URLSearchParams(location.hash.slice(1)), qs0 = new URLSearchParams(location.search);
@@ -1942,6 +1961,8 @@
 
   /* ================= CONFIG: the only things to fill in ================= */
   const LIVE = true; // LIVE since Oct 8 2026: sends to PocketBase. false = PREVIEW (shows the thank-you and a summary, sends nothing).
+                     // With their private link (#wf=, Oct 10 2026) it always sends through /start-send; without one (an
+                     // older link with name=, build=... in it) it still creates the record straight in webfaery_intake.
   const CONFIG = {
     // Stripe Payment Links for the DEPOSIT (half the build), made Sep 30 2026 in the Web Faery Stripe account
     // (list: ~/Documents/Garden-Faery/web-faery-kit/stripe-links.md).
@@ -1955,9 +1976,13 @@
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
     collection: 'webfaery_intake',
-    agreementVersion: '2026-10-08b',  // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
-                                      // ladder, and Planted's again that afternoon (its Book now button to the app they already use).
-                                      // The server keeps it as plain text (agreement_version, max 40) and only shows it back
+    agreementVersion: '2026-10-10',   // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
+                                      // ladder, Planted's again that afternoon, and on Oct 10 2026 (no login): a round of changes is
+                                      // "notes on your draft, or one email", and live sites take a tap. The full words of each version
+                                      // are public at /agreement/<version>.html (made from this page's words; left as they are once used).
+                                      // The server keeps it as plain text (agreement_version, max 40) and only shows it back.
+    agreementSha256: '22cd00566f93b8e0574df4f8126b5bc18f2d788a31fa1398302aaf6ec6d9e919', // sha256 of agreement/2026-10-10.html: the check code
+                                      // the server keeps with a signature (a site test keeps it, the file and the server's equal)
     maxUploadMB: 30                              // a little under the server's limit
   };
 
@@ -2115,10 +2140,15 @@
   $$('[data-helper]').forEach((el) => { el.textContent = CONFIG.helperEmail; });
 
   /* ================= saving on this device ================= */
+  // Whose device copy is it (Oct 10 2026): with a private link, the copy on this device is kept under that client's own
+  // tag (owner, from /start-who), so a stranger's preview, Taya's own look or another client's answers on the same
+  // device stay apart from theirs, and out of their draft. Without a link, the one preview copy, as before.
+  let owner = '';
+  const storeKey = () => STORE_KEY + (owner ? ':' + owner : '');
   const store = {
-    get() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { return null; } },
-    set(v) { try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); return true; } catch (e) { return false; } },
-    clear() { try { localStorage.removeItem(STORE_KEY); } catch (e) { /* nothing saved, nothing to clear */ } }
+    get(k) { try { return JSON.parse(localStorage.getItem(k || storeKey()) || 'null'); } catch (e) { return null; } },
+    set(v) { try { localStorage.setItem(storeKey(), JSON.stringify(v)); return true; } catch (e) { return false; } },
+    clear() { try { localStorage.removeItem(storeKey()); } catch (e) { /* nothing saved, nothing to clear */ } }
   };
   let stepState = {};                                  // step id: 'done' or 'skipped'
   // what they opened to change, where Taya's link already knew it: About you, the accounts email, the web address,
@@ -2138,60 +2168,91 @@
       return this.db;
     },
     async put(kind, list) {
+      if (owner) kind = owner + ':' + kind; // their own files, apart from a preview's
       try {
         const db = await this.open();
         const rows = list.map((f) => ({ name: f.name, type: f.type, lastModified: f.lastModified, blob: f }));
         await new Promise((res, rej) => { const t = db.transaction('files', 'readwrite'); t.objectStore('files').put(rows, kind); t.oncomplete = res; t.onerror = () => rej(t.error); });
       } catch (e) { /* private mode or full: they just add them again, as before */ }
     },
-    async get(kind) {
+    async get(kind, plain) {
+      if (owner && !plain) kind = owner + ':' + kind;
       try {
         const db = await this.open();
         return await new Promise((res) => { const r = db.transaction('files').objectStore('files').get(kind); r.onsuccess = () => res(r.result || []); r.onerror = () => res([]); });
       } catch (e) { return []; }
     },
-    async clear() { try { const db = await this.open(); db.transaction('files', 'readwrite').objectStore('files').clear(); } catch (e) { /* nothing to clear */ } }
+    async clear() {
+      try {
+        const db = await this.open(); const os = db.transaction('files', 'readwrite').objectStore('files');
+        if (!owner) { os.clear(); return; }
+        ['photos', 'logo', 'kit'].forEach((k) => os.delete(owner + ':' + k));
+      } catch (e) { /* nothing to clear */ }
+    }
   };
-  // signed in to their portal (same website, same key portal.js keeps)? Then the page also saves to Taya's server as
-  // they go, words and photos, so it follows them to any device (Oct 1 2026). Without a sign-in it works as before.
+  let serverPrices = null, who = null; // from /start-who: their own price lines for each build, and who they are
+  // With their private link (Oct 10 2026), the page also saves to Taya's server as they go, words and photos, so it
+  // follows them to any device they open their link on. Without a link it works on this device only, as before.
+  // The key goes in the JSON body (k), and in the X-WF-Key header for a file (one file per request, in order).
   const cloud = {
     BASE: 'https://bookings.gardenfaery.love/api/webfaery/portal',
-    token: (() => { try { const o = JSON.parse(localStorage.getItem('wf-portal-v1') || 'null'); return o && /^[A-Za-z0-9]{40,64}$/.test(o.token || '') ? o.token : ''; } catch (e) { return ''; } })(),
+    get token() { return wfKey; }, // (the old name, kept so every "if (cloud.token)" below reads as "with a key")
     on: false,           // the server answered: saving there is working
+    sent: false,         // their page is sent: the server copy is theirs to keep, not to clear
     names: { photos: [], logo: [], kit: [] },   // what the server holds right now
-    async req(path, body, form) {
-      const headers = { 'X-WF-Session': this.token };
-      if (!form) headers['Content-Type'] = 'application/json';
-      const res = await fetch(this.BASE + path, { method: 'POST', headers, body: form || JSON.stringify(body || {}),
-        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
-      if (res.status === 401) { this.token = ''; this.on = false; showCloud(); throw new Error('signed_out'); }
+    async req(path, body) {
+      const res = await fetch(this.BASE + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({}, body || {}, { k: wfKey })), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+      if (res.status === 401 || res.status === 409) { this.on = false; showCloud(); }
       return res;
     },
-    async json(path, body) { const r = await this.req(path, body); const d = await r.json().catch(() => null); if (!r.ok || !d || !d.ok) throw new Error((d && d.error) || 'server'); return d; },
+    async json(path, body) {
+      const r = await this.req(path, body); const d = await r.json().catch(() => null);
+      if (!r.ok || !d || !d.ok) { const x = new Error((d && d.error) || 'server'); x.code = (d && d.error) || 'server'; x.status = r.status; x.data = d; throw x; }
+      return d;
+    },
     saveTimer: 0,
-    saveSoon() { if (!this.token) return; clearTimeout(this.saveTimer); this.saveTimer = setTimeout(() => this.save(), 1500); },
+    saveSoon() { if (!this.token || !this.ready || this.sent) return; clearTimeout(this.saveTimer); this.saveTimer = setTimeout(() => this.save(), 1500); },
+    ready: false,        // only once /start-who has said whose page this is
     async save() {
-      if (!this.token || wiping) return;
+      if (!this.token || !this.ready || this.sent || wiping) return;
       try { await this.json('/draft-save', { data: snapshot(), at: Date.now() }); this.on = true; showCloud(); } catch (e) { /* the device copy still has it */ }
     },
-    async upload(kind, list) {
-      if (!this.token || !list.length) return;
-      const form = new FormData(); form.append('kind', kind);
-      const ready = [];
-      for (const f of list) { const g = kind === 'photos' ? await shrink(f) : f; form.append('files', g, g.name); ready.push(f); }
-      try {
-        const r = await this.req('/draft-upload', null, form); const d = await r.json().catch(() => null);
-        if (!r.ok || !d || !d.ok) return;
-        const fresh = d.files.filter((n) => !this.names[kind].includes(n));
-        ready.forEach((f, i) => { if (fresh[i]) f._srv = fresh[i]; });
-        this.names[kind] = d.files; this.on = true; showCloud();
-      } catch (e) { /* kept on the device; tried again next visit */ }
+    // one file per request, in order; busy (too many uploads at once on the server): wait 5 seconds, try again, up to 3 times
+    async upOne(kind, f) {
+      const g = kind === 'photos' ? await shrink(f) : f;
+      for (let tries = 0; ; tries++) {
+        const form = new FormData(); form.append('kind', kind); form.append('files', g, g.name);
+        let res;
+        try { res = await fetch(this.BASE + '/draft-upload', { method: 'POST', headers: { 'X-WF-Key': wfKey }, body: form, mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
+        catch (e) { return { err: 'network' }; }
+        const d = await res.json().catch(() => null);
+        if (res.ok && d && d.ok) return { files: d.files };
+        const code = res.status === 413 ? 'big' : (d && d.error) || 'server';
+        if (code === 'busy' && tries < 3) { await new Promise((r) => setTimeout(r, 5000)); continue; }
+        return { err: code, reason: d && d.reason };
+      }
+    },
+    uploading: Promise.resolve(),
+    upload(kind, list) {
+      if (!this.token || !this.ready || this.sent || !list.length) return this.uploading;
+      this.uploading = this.uploading.then(async () => {
+        for (const f of list) {
+          if (f._srv) continue;
+          const r = await this.upOne(kind, f);
+          if (r.err) { f._err = r.err === 'busy_day' ? (r.reason === 'full' ? 'full' : 'busy') : r.err; continue; }
+          const fresh = r.files.filter((n) => !this.names[kind].includes(n));
+          if (fresh.length) f._srv = fresh[fresh.length - 1];
+          this.names[kind] = r.files; this.on = true; showCloud();
+        }
+      });
+      return this.uploading;
     },
     async remove(kind, f) {
-      if (!this.token || !f._srv) return;
+      if (!this.token || !this.ready || this.sent || !f._srv) return;
       try { const d = await this.json('/draft-remove', { kind, name: f._srv }); this.names[kind] = d.files; } catch (e) { /* fine */ }
     },
-    async clear() { if (!this.token) return; try { await this.json('/draft-clear', {}); } catch (e) { /* fine */ } },
+    async clear() { if (!this.token || !this.ready || this.sent) return; try { await this.json('/draft-clear', {}); } catch (e) { /* fine */ } },
     async fetchFile(kind, name) {
       const r = await this.req('/draft-file', { kind, name });
       if (!r.ok) return null;
@@ -2202,8 +2263,8 @@
   };
   function showCloud() {
     const where = document.getElementById('p-where'), link = document.getElementById('p-cloud');
-    if (where) where.textContent = cloud.on ? ' to your portal, so it follows you to any device' : ' on this device';
-    if (link) link.hidden = !!cloud.token;
+    if (where) where.textContent = cloud.on ? ', on any device you open your link on' : ' on this device';
+    if (link) link.hidden = true; // (no sign-in anymore: their link does it)
   }
 
   function snapshot() {
@@ -2276,12 +2337,20 @@
     const m = { build: c.build, founding: c.founding, rows: [], after: [], total: '' };
     const b = BUILDS[c.build];
     let year = 0;
-    if (b) {
+    // with their private link, the server's own lines for them (a trade, a gift, or a deposit Taya set) win (Oct 10 2026)
+    const sp = serverPrices && serverPrices[c.build] ? serverPrices[c.build] : null;
+    if (b && sp && sp.deal) {
+      m.deal = sp.deal; m.dealNote = sp.deal_note; m.full = 0; m.price = 0; m.deposit = 0; m.balance = 0; m.founding = false;
+      m.rows.push({ label: b.name + ' build', amt: 'as we agreed', note: 'Your price, as we agreed: ' + sp.deal_note + '.' });
+    } else if (b) {
       m.full = b.price; m.price = c.founding ? b.price / 2 : b.price; m.deposit = m.price / 2; m.balance = m.price - m.deposit;
-      m.rows.push({ label: b.name + ' build' + (c.founding ? ', founding price' : ''), amt: money(m.price),
-        note: c.founding ? 'Half off ' + money(b.price) + '. Yours to keep.' : 'Yours to keep.' });
+      if (sp) { m.founding = sp.founding; m.full = sp.full; m.price = sp.price; m.deposit = sp.deposit; m.balance = sp.balance; }
+      m.rows.push({ label: b.name + ' build' + (m.founding ? ', founding price' : ''), amt: money(m.price),
+        note: m.founding ? 'Half off ' + money(b.price) + '. Yours to keep.' : 'Yours to keep.' });
       m.rows.push({ label: 'Deposit today (half, it holds your spot)', amt: money(m.deposit), big: true });
       m.rows.push({ label: 'Balance at launch', amt: money(m.balance) });
+    }
+    if (b) {
       m.care = CARE[c.build];
       m.after.push({ label: 'Your ' + b.name + ' subscription', amt: money(m.care) + ' a month',
         note: 'It starts after your 30 days of settling in. ' + CARE_SHORT[c.build] });
@@ -2645,7 +2714,7 @@
     const set = (key, text) => $$('[data-a="' + key + '"]').forEach((el) => { el.textContent = text; });
     set('build', b ? b.name + ' build' : 'build (we’ll choose it together)');
     set('does', b ? b.does : 'the site we choose together.');
-    set('price', b ? money(m.price) + (c.founding ? ' (the founding price, half off ' + money(b.price) + ')' : '') : 'The price of your build');
+    set('price', b && m.deal ? 'Your price, as we agreed: ' + m.dealNote : b ? money(m.price) + (m.founding ? ' (the founding price, half off ' + money(b.price) + ')' : '') : 'The price of your build');
     set('deposit', b ? money(m.deposit) : 'your deposit');
     set('balance', b ? money(m.balance) : 'the balance');
     set('weeks', b ? b.weeks + ' weeks' : '2, 3 or 4 weeks');
@@ -2656,26 +2725,34 @@
     set('after', 'your subscription, at ' + careMo);
     set('care', b ? 'at ' + money(CARE[c.build]) + ' a month for your ' + b.name + ' site' : 'at your build’s monthly price ($12, $45 or $90 a month)');
     set('after-long', 'Your subscription, ' + careMo + ', starting after your 30 days of settling in. It covers hosting, your web address and backups,'
-      + ' and if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can email me your changes, as often as you need (changes usually go up within 2 business days).'
+      + ' and if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need (changes usually go up within 2 business days).'
       + ' If anything breaks, or I got something wrong, I fix it. Big new things, like a new page or a new feature, I quote first.');
     $('#sig-date').textContent = ($('#f-agree').checked && val('f-sig')) ? 'Signed ' + longDate : 'Dated ' + longDate;
     $('#tap-date').textContent = tapSigned() ? 'Signed ' + longDate : 'Dated ' + longDate;
   }
 
+  // the Stripe link for their deposit: the server's for them (a deposit Taya set, or the standard one), else the page's own
+  function depositLinkFor(c, m) {
+    if (!BUILDS[c.build] || m.deal) return '';
+    const sp = serverPrices && serverPrices[c.build];
+    if (sp && sp.deposit_link) return sp.deposit_link;
+    return CONFIG.depositLinks[c.build][m.founding ? 'founding' : 'regular'];
+  }
   function renderDeposit(c, m) {
     const b = BUILDS[c.build];
     const btn = $('#pay-btn'), agreed = $('#f-agree').checked && !!val('f-sig');
     $('#pay-amt').textContent = b ? money(m.deposit) : '$0';
     $('#pay-amt').hidden = !b;
-    $('#pay-what').textContent = b
-      ? 'Half of your ' + b.name + ' build (' + (c.founding ? 'founding price ' : '') + money(m.price) + '). The other ' + money(m.balance) + ' is due at launch.'
+    $('#pay-what').textContent = b && m.deal ? 'No deposit for you: your price, as we agreed, is ' + m.dealNote + '.' : b
+      ? 'Half of your ' + b.name + ' build (' + (m.founding ? 'founding price ' : '') + money(m.price) + '). The other ' + money(m.balance) + ' is due at launch.'
       : (c.build === 'unsure' ? 'Once we’ve picked your build together, your deposit shows up here, and I’ll send you the link.'
         : 'Pick your build ' + (linkBuild ? 'above' : 'in step 1') + ', and your deposit shows up here.');
-    btn.hidden = !b;
-    $('#pay-note').hidden = !b;
-    $('#pay-gate').hidden = !b || agreed;
+    btn.hidden = !b || !!m.deal;
+    $('#pay-note').hidden = !b || !!m.deal;
+    $('#pay-gate').hidden = !b || agreed || !!m.deal;
+    $('#pay-amt').hidden = !b || !!m.deal;
     $('#pay-label').textContent = b ? 'Pay my ' + money(m.deposit) + ' deposit' : 'Pay my deposit';
-    const link = b ? CONFIG.depositLinks[c.build][c.founding ? 'founding' : 'regular'] : '';
+    const link = depositLinkFor(c, m);
     if (b && agreed && isLink(link)) { btn.href = link; btn.removeAttribute('aria-disabled'); }
     else { btn.removeAttribute('href'); btn.setAttribute('role', 'link'); btn.tabIndex = 0; btn.setAttribute('aria-disabled', agreed ? 'false' : 'true'); }
     if (b && agreed && isLink(link)) { btn.removeAttribute('role'); btn.removeAttribute('tabindex'); }
@@ -2683,7 +2760,7 @@
   $('#pay-btn').addEventListener('click', (e) => {
     const c = choices(), b = BUILDS[c.build];
     const agreed = $('#f-agree').checked && !!val('f-sig');
-    const link = b ? CONFIG.depositLinks[c.build][c.founding ? 'founding' : 'regular'] : '';
+    const link = depositLinkFor(c, priceModel(c));
     if (!agreed) { e.preventDefault(); $('#pay-preview').textContent = ''; $('#pay-gate').hidden = false; return; }
     if (!isLink(link)) { e.preventDefault(); $('#pay-preview').textContent = 'Preview: the payment link isn’t added yet, so nothing opens. (' + link + ')'; }
   });
@@ -2993,9 +3070,9 @@
         }
       },
       steps: Object.assign({}, stepState),
-      price: { build: c.build, founding: c.founding, full: m.full || 0, price: m.price || 0, deposit: m.deposit || 0, balance: m.balance || 0, care: 'monthly', care_month: m.care || 0,
+      price: { build: c.build, founding: !!m.founding, deal: m.deal || '', full: m.full || 0, price: m.price || 0, deposit: m.deposit || 0, balance: m.balance || 0, care: 'monthly', care_month: m.care || 0,
         year_low: m.yearLow, year_high: m.yearHigh, lines: m.rows.concat(m.after).map((r) => r.label + ': ' + r.amt + (r.note ? ' (' + r.note + ')' : '')), total: m.total },
-      deposit: m.deposit || 0, deposit_paid: yes('deposit_paid'),
+      deposit: m.deposit || 0, deposit_paid: yes('deposit_paid'), agreement_sha256: CONFIG.agreementSha256,
       agreed: $('#f-agree').checked && !!val('f-sig'), agreement_name: val('f-sig'),
       // how it was signed: 'tap' (one tap, with the name from Taya's link) or 'typed'
       agreement_how: !($('#f-agree').checked && val('f-sig')) ? '' : tapSigned() ? 'tap' : 'typed',
@@ -3125,7 +3202,7 @@
       steps: Object.assign({}, r.steps, r.agreement_how ? { sign_how: r.agreement_how } : {}, r.agreement_note ? { sign_note: r.agreement_note } : {}),
       summary_text: summaryText(r).slice(0, 20000), hp: $('#f-hp').value
     });
-    delete rec.agreement_how; delete rec.agreement_note;
+    delete rec.agreement_how; delete rec.agreement_note; delete rec.agreement_sha256;
     fd.append('@jsonPayload', JSON.stringify(rec));
     for (const f of files.photos) { const s = await shrink(f); fd.append('photos', s, s.name); }
     for (const f of files.logo) fd.append('logo', f, f.name);
@@ -3133,6 +3210,58 @@
     const res = await fetch(CONFIG.server + '/api/collections/' + CONFIG.collection + '/records', { method: 'POST', body: fd });
     if (!res.ok) throw new Error('server ' + res.status);
     return res.json();
+  }
+
+  // Sending with their private link (Oct 10 2026): every photo and file goes up first (one at a time), then the words.
+  // The server works out the price lines itself and checks the agreement's words; if what this page showed is out of
+  // date, nothing is made and the page shows the server's lines to read and sign again.
+  async function sendWithKey(r, status, btn) {
+    btn.disabled = true; status.textContent = 'Sending… (photos can take a minute)';
+    try {
+      for (const k of ['photos', 'logo', 'kit']) cloud.upload(k, files[k].filter((f) => !f._srv));
+      await cloud.uploading;
+      const stuck = ['photos', 'logo', 'kit'].reduce((a, k) => a.concat(files[k].filter((f) => !f._srv)), []);
+      if (stuck.length) {
+        const why = stuck.some((f) => f._err === 'full') ? 'That’s everything I can hold for your site right now. Just email me and I’ll make room 💛'
+          : stuck.some((f) => f._err === 'busy') ? 'Busy day! I’ve got everything so far. For the rest, just email me at taya@webfaery.love 💛'
+          : stuck.some((f) => f._err === 'big' || f._err === 'size') ? 'One of your files is too big for here. Email me and I’ll send you an easy way to share it.'
+          : 'A photo or file didn’t go up yet. Try again in a minute, or email them to me at taya@webfaery.love.';
+        status.className = 'status err'; status.textContent = why; return;
+      }
+      const body = Object.assign({}, r, {
+        steps: Object.assign({}, r.steps, r.agreement_how ? { sign_how: r.agreement_how } : {}, r.agreement_note ? { sign_note: r.agreement_note } : {}),
+        summary_text: summaryText(r).slice(0, 20000)
+      });
+      delete body.agreement_how; delete body.agreement_note;
+      let d = null, res = null;
+      try {
+        res = await fetch(cloud.BASE + '/start-send', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.assign(body, { k: wfKey })), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+        d = await res.json().catch(() => null);
+      } catch (e) { res = null; }
+      if (res && res.ok && d && d.ok) { cloud.sent = true; status.textContent = ''; showDone(r); return; }
+      status.className = 'status err';
+      const code = d && d.error;
+      if (res && res.status === 409 && code === 'price_changed' && d.price) {
+        serverPrices = Object.assign({}, serverPrices || {}); if (d.price.build) serverPrices[d.price.build] = d.price;
+        CHECKS.agree(false); $('#f-agree').checked = false; renderAll(); saveNow();
+        status.textContent = 'Your price lines just changed. Here they are as they stand now: please read them, tick “I agree” again, and send.';
+        setOpen($('#s-sign'), true); scrollToEl($('#s-sign'));
+        return;
+      }
+      if (res && res.status === 409 && code === 'agreement_changed') {
+        status.textContent = '';
+        status.append('I just updated the agreement’s words. ', Object.assign(make('a', null, 'Tap here to see the newest.'), { href: location.pathname + location.search }), ' Everything you’ve filled in is kept.');
+        return;
+      }
+      if (code === 'closed' || code === 'bad_link') {
+        status.innerHTML = 'This page isn’t open on your link right now. Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out.';
+        return;
+      }
+      status.innerHTML = 'Hmm, that didn’t go through. Everything is still saved, so nothing is lost. Try again in a minute, or email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out.';
+    } finally {
+      btn.disabled = false;
+    }
   }
 
   function showDone(r) {
@@ -3177,6 +3306,7 @@
     // a bot filled in the hidden field: act as if all went well, and send nothing
     if ($('#f-hp').value) { showDone(r); return; }
     saveNow();
+    if (wfKey && cloud.ready) { await sendWithKey(r, status, btn); return; }
     if (!LIVE) { showDone(r); return; }
     btn.disabled = true; status.textContent = 'Sending… (photos can take a minute)';
     try {
@@ -3385,12 +3515,86 @@
 
   /* ================= starting up ================= */
   $('#preview-pill-wrap').hidden = LIVE;
+  if (wfKey) startWithKey(); else boot(new URLSearchParams(location.search));
+
+  // With their private link (Oct 10 2026): who they are comes from the server, and so do Taya's link options (kept
+  // on their row), so the link carries only the key. Sent already: a thank-you. Not open for them: a kind "not yet".
+  async function startWithKey() {
+    let res = null, d = null;
+    try {
+      res = await fetch(cloud.BASE + '/start-who', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ k: wfKey }),
+        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+      d = await res.json().catch(() => null);
+    } catch (e) { res = null; }
+    if (res && res.ok && d && d.ok && d.sent) { restCard('You’ve sent it, thank you!', 'Your getting-started page is with me. I’ll be in touch by email soon 💛 Anything you need, just email me at taya@webfaery.love.', ''); return; }
+    if (res && res.ok && d && d.ok) {
+      who = d; owner = d.owner || ''; serverPrices = d.prices || null;
+      const qs = new URLSearchParams();
+      if (d.first) qs.set('name', d.first);
+      if (d.build) qs.set('build', d.build);
+      if (d.mockup) qs.set('mockup', d.mockup);
+      const o = d.options || {};
+      ['have', 'booking', 'sell', 'newsletter'].forEach((k) => { if (o[k]) qs.set(k, o[k]); });
+      if (d.full) linkKnown.full = d.full;
+      if (d.email) linkKnown.email = d.email;
+      if (d.business) linkKnown.biz = d.business;
+      if (d.site) linkKnown.site = d.site;
+      if (linkKnown.email && !linkKnown.full) linkKnown.nameBySig = true;
+      boot(qs);
+      return;
+    }
+    if (res && res.status === 401 && d && d.error === 'bad_link') {
+      try { sessionStorage.removeItem(KEY_STORE); } catch (e) { /* off */ }
+      restCard('This link was replaced', 'This link was replaced with a new one. Check your email, or get it again here.', 'https://webfaery.love/my/');
+      return;
+    }
+    if (res && res.status === 401) { restCard('Not quite yet', 'This page opens once we’ve emailed about your mockup. Your link opens your newest things.', 'https://webfaery.love/my/#wf=' + wfKey); return; }
+    // the server can't be reached: the page works on this device for now, and says so
+    wfKey = ''; boot(new URLSearchParams(location.search));
+    savedText.textContent = 'I can’t reach my server right now, so this saves on this device for now';
+  }
+  function restCard(title, words, href) {
+    const main = document.getElementById('main');
+    const wrap = main && main.querySelector('.wrap');
+    if (!wrap) return;
+    [...wrap.children].forEach((n) => { n.hidden = true; });
+    const qcBox = document.getElementById('qc'); if (qcBox) qcBox.hidden = true;
+    const card = make('div', 'card'); card.setAttribute('role', 'status');
+    card.append(make('h2', null, title), make('p', null, words));
+    if (href) { const p2 = make('p'); const a = make('a', 'btn', href.indexOf('#wf=') > 0 ? 'Open my newest' : 'Get my link'); a.href = href; p2.append(a); card.append(p2); }
+    wrap.prepend(card);
+  }
+  // A preview filled in on this device before they had their link (it might be theirs, or someone else's): asked once,
+  // and only "Use it" sends it up into their draft.
+  function offerPreview() {
+    const plain = store.get(STORE_KEY);
+    if (!plain || plain.v !== 1) return;
+    const box = make('div', 'card'); box.setAttribute('role', 'region'); box.setAttribute('aria-label', 'An earlier preview');
+    box.append(make('p', null, 'You filled some of this in on this device before. Use it?'));
+    const row = make('p');
+    const use = make('button', 'btn', 'Use it'); use.type = 'button';
+    const fresh = make('button', 'later', 'Start fresh'); fresh.type = 'button';
+    row.append(use, document.createTextNode(' '), fresh); box.append(row);
+    const wrap = document.querySelector('#main .wrap'); if (wrap) wrap.prepend(box);
+    fresh.addEventListener('click', () => box.remove());
+    use.addEventListener('click', async () => {
+      box.remove();
+      restore(plain); applyHave(); renderAll(); renderSteps(); renderQC(); saveNow();
+      for (const k of ['photos', 'logo', 'kit']) {
+        const rows = await fileStore.get(k, true);
+        if (!rows.length) continue;
+        addFiles(k, rows.map((r) => new File([r.blob], r.name, { type: r.type, lastModified: r.lastModified })));
+      }
+      cloud.save();
+    });
+  }
+
+  function boot(qs) {
   const saved = store.get();
   if (saved && saved.v === 1) restore(saved);
   // a link from Taya's welcome email can pick the build and founding ahead of time, and say what they
   // already have (what they pick on the page wins). An older link's care= is simply ignored: care comes with every build.
   try {
-    const qs = new URLSearchParams(location.search);
     const f = (saved && saved.fields) || {};
     const pick = (name, value) => { const el = form.querySelector('input[name="' + name + '"][value="' + value + '"]'); if (el) el.checked = true; };
     const b = (qs.get('build') || qs.get('plan') || '').trim().toLowerCase();
@@ -3399,8 +3603,9 @@
     // the founding switch is only for someone Taya gave a founding spot (her link says founding=1)
     const linkFounding = /^(1|yes|true)$/i.test(qs.get('founding') || '');
     foundingLink = linkFounding || (CONFIG.foundingOpen && !/^(0|no|false)$/i.test(qs.get('founding') || ''));
+    if (who) { foundingLink = false; $('#f-founding').checked = !!who.founding; $('#f-founding').disabled = true; } // with their link, the server says
     if (!linkFounding && foundingLink) $('#h-founding').textContent = 'I’m taking 5 founding clients through Dec 31, 2026, and while a spot’s open, this is on for you: half off your build. Your subscription stays at its usual monthly price.';
-    if (foundingLink && !saved) $('#f-founding').checked = true;
+    if (foundingLink && !saved && !who) $('#f-founding').checked = true;
     foundingAsk = foundingLink && !$('#f-founding').checked;
     // what they already have: the link answers these unless they've answered them on the page themselves
     for (const [k, v] of Object.entries(haveFromLink(qs))) if (haveBy[k] !== 'you') { have[k] = v; haveBy[k] = 'link'; }
@@ -3409,7 +3614,7 @@
     if (mock) {
       $('#love-it').addEventListener('click', () => { $('#s-work [data-next]').click(); });
       const url = 'https://webfaery.love/peek/' + mock + '/';
-      if (CONFIG.magicSite) { $('#magic-it').hidden = false; $('#magic-link').href = url + '?mark=1'; $('label[for="f-mock"]').firstChild.textContent = 'Rather write it here? '; }
+      if (CONFIG.magicSite) { $('#magic-it').hidden = false; $('#magic-link').href = url + '?mark=1' + (wfKey ? '#wf=' + wfKey : ''); $('label[for="f-mock"]').firstChild.textContent = 'Rather write it here? '; }
       $('#mock-link').href = url; $('#mock-link').textContent = 'webfaery.love/peek/' + mock;
       $('#mock-q').hidden = false; $('#b-work').classList.add('has-mock');
       $('#s-work .st').textContent = 'Check your mockup';
@@ -3428,6 +3633,16 @@
       const h1 = $('#hello'); h1.textContent = 'Welcome in, ';
       h1.append(make('em', null, first + '.'));
       document.title = 'Welcome in, ' + first + ' · Web Faery';
+      if (who) {
+        // "Not {first}? Just look": this device lets go of their link (this tab's and the door's), and the page is a preview
+        const not = make('button', 'later', 'Not ' + first + '? Just look'); not.type = 'button';
+        not.style.cssText = 'display:block;margin:10px auto 0;font-size:16px;min-height:44px';
+        not.addEventListener('click', () => {
+          try { sessionStorage.removeItem(KEY_STORE); sessionStorage.removeItem('wf-key-v1:door'); localStorage.removeItem('wf-key-v1:door'); localStorage.removeItem('wf-door-go-v1'); } catch (e) { /* off */ }
+          location.replace(location.pathname);
+        });
+        h1.after(not);
+      }
     }
   } catch (e) { /* an old browser: the page still works, just without the head start */ }
   // (founding saved from an earlier visit stays visible too, so it can always be seen and switched off: see renderPlan)
@@ -3457,38 +3672,19 @@
   renderSteps();
   renderQC();
   if (saved) { savedText.textContent = 'Saved'; $('#p-where').hidden = false; }
-  // the sign-in link brings them back here, with the same link options
-  $('#p-cloud').href = '/portal.html?back=' + encodeURIComponent('/start.html' + location.search);
   showCloud();
-  // Getting started opens per client, once Taya has emailed them about their mockup (Oct 2 2026). A signed-in
-  // client whose turn it isn't yet sees a kind "not yet" instead of the agreement and deposit.
-  if (cloud.token) {
-    cloud.json('/me', {}).then((me) => {
-      if (!me || me.start_open !== false) return;
-      const main = document.getElementById('main');
-      const wrap = main && main.querySelector('.wrap');
-      if (!wrap) return;
-      [...wrap.children].forEach((n) => { n.hidden = true; });
-      const card = document.createElement('div'); card.className = 'card'; card.setAttribute('role', 'status');
-      const h = document.createElement('h2'); h.textContent = 'Not quite yet';
-      const p1 = document.createElement('p');
-      p1.textContent = 'This page opens once we’ve emailed about your mockup. For now it’s just your mockup: pick a build, leave me notes, and tap Done.';
-      const p2 = document.createElement('p');
-      const a = document.createElement('a'); a.className = 'btn'; a.href = me.mockup && /^https:\/\/webfaery\.love\/peek\//.test(me.mockup.url) ? me.mockup.url : '/portal.html';
-      a.textContent = me.mockup ? 'Open my mockup' : 'Back to my portal';
-      p2.append(a); card.append(h, p1, p2); wrap.prepend(card);
-    }).catch(() => {});
-  }
   if (cloud.token) {
     (async () => {
       let d = null;
       try { d = await cloud.json('/draft-load', {}); } catch (e) { return; }
+      cloud.ready = true;
       cloud.on = true; cloud.names = d.files || cloud.names; showCloud(); $('#p-where').hidden = false;
-      // their answers: whichever copy is newer wins (this device, or the server from another one)
+      // their answers: whichever copy is newer wins (their own copy on this device, or the server from another one)
       if (d.data && d.data.v === 1 && (d.at || 0) > ((saved && saved.at) || 0)) {
         restore(d.data); applyHave(); renderAll(); renderSteps(); renderQC(); store.set(d.data);
         savedText.textContent = 'Picked up where you left off';
-      } else if (!d.data || (saved && saved.at > (d.at || 0))) cloud.save();
+      } else if (saved && saved.at > (d.at || 0)) cloud.save();
+      else if (!d.data && !saved) offerPreview(); // a preview filled in on this device before they had their link: theirs?
       // their files: bring down what's on the server, send up what's only here
       for (const k of ['photos', 'logo', 'kit']) {
         const onServer = cloud.names[k] || [];
@@ -3500,6 +3696,7 @@
         }
       }
     })();
+  }
   }
 })();
 </script>

@@ -1,0 +1,20 @@
+<!--
+  The note bar loader (Oct 10 2026, no login): ONE identical block for every client site and draft, placed first in
+  <head>, right after <meta charset="utf-8">. It takes their private key (#wf=) out of the address bar, keeps it on
+  their device, reloads the page clean (so no script on the page sees the key, not even in its navigation timing
+  entry), and only then loads https://webfaery.love/mark.js. Visitors have no key: nothing loads, nothing is stored.
+  Copy the block exactly, from <script> to </script> (a client site with its own Content-Security-Policy also needs
+  script-src https://webfaery.love 'sha256-MghEyiH7IpYhBnRe1tMRrG58TzvL1w59aGNY6ukwp3Q=', connect-src https://bookings.gardenfaery.love and img-src blob:).
+  sha256 of the block: b08672416b47c3e76b32e76fac25f0f84d6793ddc2d7ed98d4ba1a723c06b890
+  The reload step stays unless a real-phone check fails (NO-LOGIN-DESIGN.md 2.6 and 7.10).
+  Each client repo also gets client-site.test.mjs from this folder (no outside scripts beside this block).
+-->
+<script>/* Web Faery: the owner's note bar. Runs first; visitors get nothing. */
+(function(){try{var L=location,h=L.hash,m=/[#&]wf=([A-Za-z0-9]{24,64})/.exec(h),
+g=/\.github\.io$/.test(L.hostname)?L.pathname.split("/")[1]||"":"",s="wf-key-v1"+(g?":/"+g+"/":""),k="",ok=0;
+if(m){k=m[1];try{localStorage.setItem(s,k);ok=localStorage.getItem(s)===k}catch(e){}
+try{sessionStorage.setItem(s,k);sessionStorage.setItem("wf-arrived","1");ok=ok||sessionStorage.getItem(s)===k}catch(e){}
+var r=h.replace(m[0],"");if(r&&r.charAt(0)!=="#")r="#"+r.slice(1);history.replaceState(history.state,"",L.pathname+L.search+r);
+if(ok){try{window.stop()}catch(e){}L.reload();return}}
+else{try{k=localStorage.getItem(s)||""}catch(e){}if(!k)try{k=sessionStorage.getItem(s)||""}catch(e){}}
+if(k){var t=document.createElement("script");t.src="https://webfaery.love/mark.js?v=5";t.async=true;(document.head||document.documentElement).appendChild(t)}}catch(e){}})();</script>

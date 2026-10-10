@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- No outside scripts, no inline scripts: only this site's own files may run here, and the page may only
+     talk to itself and Taya's server. (GitHub Pages can't send security headers, so they live here.) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://bookings.gardenfaery.love; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Your link &middot; Web Faery</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Your own private link to everything for your site. No sign-in needed.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e0c">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261001f">
+<link rel="stylesheet" href="/soil.css?v=20261001f">
+<link rel="stylesheet" href="/pages.css?v=20261001f">
+<link rel="stylesheet" href="/portal.css?v=20261008a">
+<!--
+  my/index.html: the door (Oct 10 2026). Every client's one private link is https://webfaery.love/my/#wf=<their key>.
+  door.js takes the key out of the address bar, asks the server where they belong now, and opens it. With no key:
+  "Lost your link?" (link-again.js). Not in sitemap.xml, not linked from other pages.
+-->
+<style>
+  main { padding-block: clamp(48px, 12vh, 120px) 64px; }
+  .door .lede { color: var(--ink-soft); }
+  .door .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 20px; }
+  .door .linkish { appearance: none; background: none; border: 0; padding: 0; color: var(--link); font: inherit; text-decoration: underline; cursor: pointer; }
+  .door .key-line { margin-top: 18px; font-size: 15.5px; color: var(--ink-soft); }
+  .door .la-done { margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="soil" aria-hidden="true"></div>
+<main class="gutter" id="main"><div class="wrap">
+  <noscript><div class="p-card"><p>Your link needs JavaScript to open. No problem at all: just email me at
+    <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p></div></noscript>
+
+  <section class="p-card signin door" id="d-wait" aria-labelledby="d-wait-h">
+    <span class="kicker">Web Faery</span>
+    <h2 id="d-wait-h" tabindex="-1">Opening your link…</h2>
+    <p class="lede">Just a moment.</p>
+  </section>
+
+  <section class="p-card signin door" id="d-continue" aria-labelledby="d-cont-h" hidden>
+    <span class="kicker">Web Faery</span>
+    <h2 id="d-cont-h" tabindex="-1">Welcome back</h2>
+    <p class="lede">This device remembers a link from my emails.</p>
+    <div class="row">
+      <button type="button" class="btn" id="d-cont-btn">Continue with my link</button>
+      <button type="button" class="linkish" id="d-cont-not">Not me</button>
+    </div>
+    <p class="key-line">It’s like a house key, just for you, so please keep passwords out of notes.</p>
+  </section>
+
+  <section class="p-card signin door" id="d-say" aria-labelledby="d-say-h" hidden>
+    <span class="kicker">Web Faery</span>
+    <h2 id="d-say-h" tabindex="-1"></h2>
+    <p class="lede" id="d-say-p"></p>
+    <p class="row"><a class="btn secondary" id="d-say-a" hidden></a></p>
+  </section>
+
+  <section class="p-card signin door" id="d-lost" aria-labelledby="d-lost-h" hidden>
+    <span class="kicker">No sign-in needed</span>
+    <p class="lede" id="d-lost-why" hidden></p>
+    <h2 id="d-lost-h" tabindex="-1">Lost your link?</h2>
+    <p>Everything for your site opens with your own private link, from my emails. Tap it in any of my emails, or type the email you use with me, and I’ll send it right over.</p>
+    <form class="link-again" novalidate>
+      <label class="field-label" for="la-email">Your email</label>
+      <input id="la-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200">
+      <p class="err" hidden></p>
+      <button class="btn wide" type="submit"><span>Send my link</span></button>
+    </form>
+    <p class="la-done" tabindex="-1" hidden></p>
+    <p class="key-line">Questions? Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+  </section>
+</div></main>
+<script src="/link-again.js?v=20261010a"></script>
+<script src="/my/door.js?v=20261010a"></script>
+</body>
+</html>
