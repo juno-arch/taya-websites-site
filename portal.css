@@ -432,6 +432,49 @@ details.done-fold summary:focus-visible { outline: 2px solid var(--focus); outli
 .orders-csv .later[aria-busy="true"] { color: var(--ink-soft); cursor: wait; }
 @media (max-width: 420px) { .order .o-act .open-btn { width: 100%; } }
 
+/* ============ shipped, packing slips, discount codes, free shipping (Oct 10 2026): only for a client with a shop ============ */
+.order .o-code { margin: 6px 0 0; font-size: 15.5px; color: var(--gold); }
+.order .o-note { margin-top: 10px; }
+.order .o-note p { margin: 4px 0 0; font-size: 16px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+.order .o-shipped { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: rgba(var(--acc-glow), 0.07); font-size: 15.5px; line-height: 1.45; overflow-wrap: anywhere; }
+.order .o-shipped .later { display: inline-flex; min-height: 44px; vertical-align: middle; }
+.order .o-mailed { display: block; color: var(--ink-soft); }
+.order .o-mailed:empty { display: none; }
+.order .o-act2 { justify-content: flex-start; margin-top: 6px; }
+.ship-form { margin-top: 12px; padding: 4px 14px 14px; border-radius: 12px; border: 1px dashed var(--acc-line); }
+.ship-form .field-label { margin-top: 14px; }
+.ship-form .o-hint { margin: 12px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.45; }
+select {
+  width: 100%; background: var(--field-2); color: var(--ink); border: 1px solid var(--field-edge); border-radius: 10px;
+  font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.4; padding: 9px 11px; min-height: 48px; color-scheme: dark;
+}
+select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-color: var(--acc); }
+.dc-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 16px; }
+.dcs { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 12px; }
+.dc { background: var(--field); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px 10px; min-width: 0; }
+.dc .dc-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.dc .dc-name { font-family: 'Gloock', Georgia, serif; font-size: 19px; letter-spacing: 0.06em; overflow-wrap: anywhere; min-width: 0; }
+.dc .dc-off { color: var(--gold); font-size: 16.5px; white-space: nowrap; }
+.dc .dc-meta { margin: 6px 0 0; color: var(--ink-soft); font-size: 15.5px; line-height: 1.45; overflow-wrap: anywhere; }
+.dc .o-act { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; margin-top: 8px; }
+.dc.st-off .dc-name, .dc.st-ended .dc-name, .dc.st-used_up .dc-name { color: var(--ink-soft); }
+.dc.st-on .dc-on span, .dc.st-scheduled .dc-on span { color: var(--acc); }
+.dc-new { margin: 16px 0 0; }
+.dc-form { margin-top: 16px; padding: 4px 16px 16px; border-radius: 14px; border: 1px dashed var(--acc-line); }
+.dc-form .small-h { margin: 14px 0 0; padding-top: 0; border-top: 0; }
+.dc-kind { border: 0; margin: 0; padding: 0; min-width: 0; }
+.dc-row { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.dc-radio, .dc-check { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 16.5px; }
+.dc-check { display: flex; margin-top: 10px; line-height: 1.35; }
+.dc-radio input, .dc-check input { width: 22px; height: 22px; margin: 0; accent-color: var(--acc-fill); flex: none; cursor: pointer; }
+.dc-radio input:focus-visible, .dc-check input:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.dc-amt { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 17px; }
+.dc-amt input { max-width: 9em; }
+.dc-dates { display: grid; grid-template-columns: 1fr; gap: 0 16px; }
+@media (min-width: 560px) { .dc-dates { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px) { .dc .o-act .open-btn, .order .o-act2 .open-btn { flex: 1 1 auto; } }
+@media print { #sec-codes, .order .o-act2, .ship-form { display: none !important; } }
+
 .asks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
 .asks li { background: var(--field); border: 1px solid var(--hairline); border-radius: 14px; padding: 14px 16px; }
 .asks .a-what { margin: 0; font-size: 16.5px; line-height: 1.5; overflow-wrap: anywhere; }
