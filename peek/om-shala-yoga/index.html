@@ -741,23 +741,23 @@
     var MO = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11, January: 0, February: 1, March: 2, April: 3, June: 5, July: 6, August: 7, September: 8, October: 9, November: 10, December: 11 };
     var now = new Date(); now.setHours(0, 0, 0, 0);
     function txt(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
-    var items = [];
+    var all = [], items = [];
     /* dated sound baths and circles (the weekly ones stay in the list below) */
     document.querySelectorAll('#evenings .eve-list li').forEach(function (li) {
       var when = txt(li.querySelector('.when')), re = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/g, m, next = null;
       while ((m = re.exec(when))) { var d = new Date(2026, MO[m[1]], +m[2]); if (d >= now && !next) next = d; }
       if (!next) return;
       var parts = when.split(' \u00b7 '), who = parts.length > 1 ? parts[0] : '', time = parts[parts.length - 1].replace(/, \d+ hours?$/, '');
-      items.push({ at: next, name: txt(li.querySelector('b')), who: who, when: time });
+      all.push({ at: next, name: txt(li.querySelector('b')), who: who, when: time });
     });
-    /* retreats with a real date */
+    /* retreats with a real date (only while the retreats section shows in the current "See it as" view) */
+    var rsec = document.getElementById('retreats');
     document.querySelectorAll('#retreats .trip').forEach(function (tr) {
       var when = txt(tr.querySelector('.when')), m = when.match(/^([A-Z][a-z]+)(?: (\d{1,2}))?.*?(\d{4})$/); if (!m || !MO.hasOwnProperty(m[1])) return;
       var d = new Date(+m[3], MO[m[1]], m[2] ? +m[2] : 1); if (d < now) return;
-      items.push({ at: d, name: 'Retreat: ' + txt(tr.querySelector('b')), who: '', when: when });
+      all.push({ at: d, name: 'Retreat: ' + txt(tr.querySelector('b')), who: '', when: when, retreat: true });
     });
-    items.sort(function (a, b) { return a.at - b.at; });
-    if (still) items = items.slice(0, 3);
+    all.sort(function (a, b) { return a.at - b.at; });
     function paint(last) {
       var sp = document.createElement('span');
       items.forEach(function (x, k) {
@@ -768,10 +768,20 @@
       if (!items.length) sp.textContent = 'New sound baths and circles coming soon';
       return sp;
     }
-    run.textContent = '';
-    for (var n = 0; n < (still ? 1 : 2); n++) run.appendChild(paint(still));
-    run.style.setProperty('--dur', Math.max(18, run.firstChild.textContent.length * 0.22).toFixed(1) + 's');
-    hm.setAttribute('aria-label', items.length ? 'Coming up at Om Shala: ' + items.map(function (x) { return x.name + ', ' + (x.who ? x.who + ', ' : '') + x.when; }).join('; ') + '. See the evenings.' : 'New sound baths and circles coming soon. See the evenings.');
+    var shown = null;
+    function build() {
+      var withRetreats = !!rsec && !rsec.hidden;
+      if (shown === withRetreats) return; shown = withRetreats;
+      items = all.filter(function (x) { return withRetreats || !x.retreat; });
+      if (still) items = items.slice(0, 3);
+      run.textContent = '';
+      for (var n = 0; n < (still ? 1 : 2); n++) run.appendChild(paint(still));
+      run.style.setProperty('--dur', Math.max(18, run.firstChild.textContent.length * 0.22).toFixed(1) + 's');
+      hm.setAttribute('aria-label', items.length ? 'Coming up at Om Shala: ' + items.map(function (x) { return x.name + ', ' + (x.who ? x.who + ', ' : '') + x.when; }).join('; ') + '. See the evenings.' : 'New sound baths and circles coming soon. See the evenings.');
+    }
+    build();
+    /* the view switch shows or hides the retreats section; follow it so the strip only names what is on the page */
+    if (rsec && 'MutationObserver' in window) new MutationObserver(build).observe(rsec, { attributes: true, attributeFilter: ['hidden'] });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { hm.classList.toggle('on', e.isIntersecting); }); }).observe(hm);
     else hm.classList.add('on');
   });
@@ -863,7 +873,7 @@
         <p class="tier-note demo-note" data-show="all">With Planted, a plain Book on Punchpass button opens your Punchpass schedule. <span class="tag" data-go="maiden">Planted<span class="tag-p"> <span aria-hidden="true">&middot;</span> $300</span></span> With Tended, each Reserve here is a Book button that opens that class on Punchpass. <span class="tag" data-go="mother">Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
       </div>
       <div class="wf-note">
-        <div class="nb"><b>Post it, or email me</b>A new class, a sub, a holiday week off: I follow your socials and update as you post, or you email me, and it shows up here and on your Punchpass, so your schedule matches everywhere.</div>
+        <div class="nb"><b>Post it, or email me</b>A new class, a sub, a holiday week off: I follow your socials and update as you post, or you email me, and it shows up here and on your Google profile.</div>
         <div class="nb"><b>From your Punchpass</b>Every class here is copied from your Punchpass schedule, as of Oct 2.</div>
       </div>
     </div>
@@ -1855,7 +1865,7 @@
       if (!vp || vp.hidden) return;
       var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect();
       if (!b.width || !b.height) return;
-      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8) + 'px';
+      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8 - (parseFloat(t.style.marginBottom) || 0)) + 'px';
     }
     function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
     addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
@@ -1893,6 +1903,41 @@
     window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
     window.addEventListener('resize', function () { if (!mq.matches && open) setOpen(false); update(); });
     update();
+  })();
+</script>
+<script>
+  /* mockup pills vs the Coming up strip: on a phone the strip sits right where the Light/Dark, "A mockup from Web Faery"
+     and See it as pills float. While the strip is behind them, all three ride just above it together (keeping their
+     own spacing), so its tag and first show stay readable; they drop back once it scrolls past. */
+  (function () {
+    var m = document.getElementById('os-marq'); if (!m) return;
+    var pills = [document.querySelector('.ribbon'), document.getElementById('theme-tab'), document.getElementById('vp')].filter(Boolean);
+    var lift = 0, q = false;
+    function place() {
+      q = false;
+      var b = m.getBoundingClientRect(), mr = { top: b.top, bottom: b.bottom, left: b.left, right: b.right, height: b.height }, need = 0;
+      var tf = getComputedStyle(m).transform;   /* measure where the strip lands, not where its rise-in starts */
+      if (tf && tf !== 'none' && window.DOMMatrixReadOnly) { var dy = new DOMMatrixReadOnly(tf).m42; mr.top -= dy; mr.bottom -= dy; }
+      if (mr.height && mr.bottom > 0 && mr.top < innerHeight) {
+        var low = -Infinity, hit = false;
+        pills.forEach(function (p) {
+          if (p.hidden) return;
+          var r = p.getBoundingClientRect(); if (!r.width || !r.height) return;
+          var top = r.top + (p._wfLift || 0), bottom = r.bottom + (p._wfLift || 0);   /* where it sits with no lift */
+          if (bottom > low) low = bottom;
+          if (top < mr.bottom && bottom > mr.top && r.left < mr.right && r.right > mr.left) hit = true;
+        });
+        if (hit) need = Math.max(0, Math.ceil(low - mr.top + 8));
+      }
+      lift = need;
+      pills.forEach(function (p) { var v = lift; if ((p._wfLift || 0) === v) return; p._wfLift = v; p.style.marginBottom = v ? v + 'px' : ''; });
+    }
+    function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
+    addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon); addEventListener('load', soon);
+    if (window.MutationObserver) { var mo = new MutationObserver(soon); pills.forEach(function (p) { mo.observe(p, { attributes: true }); }); }
+    if (window.ResizeObserver) new ResizeObserver(soon).observe(m);
+    m.addEventListener('animationend', function (e) { if (e.target === m) soon(); });
+    soon(); setTimeout(soon, 600); setTimeout(soon, 2000);
   })();
 </script>
 </html>
