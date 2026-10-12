@@ -9,6 +9,7 @@ Every photo, the logo and the film are Jaiden Sky's own (jaidentattoo.com and @j
 
 ## Logo
 - `images/jackalope.jpg`, `images/mark-64.png`: her jackalope logo, the header logo on jaidentattoo.com.
+- The little pixel jackalope (the keychain pet and the hopping banner under the hero) is drawn in the page itself, after her logo.
 
 ## Instagram grid (via the Instagram block on her own home page, Squarespace CDN)
 - `ig-monstera.jpg` (Katherine's shoulder, "booking summer 2026"), `ig-books.jpg` ("1 year healed", 3RL), `ig-studio.jpg` (studio, "mini realism"), `ig-poppies.jpg` ("California poppies"), `ig-roses.jpg` ("2 sessions and she's gorgeous"), `ig-pups.jpg` ("MORE PET PORTRAITS PLEASE", Jess).
@@ -18,4 +19,3 @@ Every photo, the logo and the film are Jaiden Sky's own (jaidentattoo.com and @j
 
 ## Portfolio (jaidentattoo.com/portfolio)
 - `pf-*.jpg` (18 files) and `fresh-books.jpg`: from her Portfolio page gallery, resized to 1400 px tall. Skipped on purpose: one sternum piece (nudity) and one piece still showing purple stencil lines.
-- `mq-*.jpg` (8 files): smaller copies (480 px tall) of pf-victory, pf-owl-fern, pf-rose-serpent, pf-greek-face, pf-frog, pf-guadalupe, pf-poppies and pf-cherub, for the slow moving banner under the hero.

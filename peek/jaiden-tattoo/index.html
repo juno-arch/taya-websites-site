@@ -168,46 +168,33 @@
     .mark img { width: 38px; height: 38px; }
   }
 
-  /* ---------- THE SLOW BANNER: her pieces drift by, under the hero ----------
-     Her own tattoos, big and one at a time, with her own words between them. One loop takes 90 seconds.
-     It stops while you hover or focus it, while it's offscreen, and with its Pause tab. Under reduced motion it
-     stands still as a row you can swipe. The books line reads the banner, like the jackalope does. */
-  .mq { --mq-h: clamp(150px, 15vw, 224px); --mq-gap: clamp(30px, 3.8vw, 58px); --mq-dur: 90s;
-    position: relative; z-index: 4; background: var(--night); color: var(--on-night); border-block: 1px solid rgba(238,236,232,0.14); }
-  .mq-view { overflow: hidden; padding-block: clamp(28px, 3.2vw, 44px);
-    -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 5%, #000 95%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 5%, #000 95%, rgba(0,0,0,0)); }
-  .mq-track { display: flex; width: max-content; }
-  .mq.run .mq-track { animation: mq-drift var(--mq-dur) linear infinite; will-change: transform; }
-  .mq.paused .mq-track, .mq.off .mq-track, .mq-view:focus-within .mq-track { animation-play-state: paused; }
-  @media (hover: hover) { .mq-view:hover .mq-track { animation-play-state: paused; } }
-  @keyframes mq-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
-  .mq-list { flex: none; display: flex; align-items: center; gap: var(--mq-gap); margin: 0; padding: 0 var(--mq-gap) 0 0; list-style: none; }
-  .mq-pc { flex: none; }
-  .mq-pc img { display: block; height: var(--mq-h); width: auto; background: #1c1c1b; outline: 1px solid rgba(238,236,232,0.3); outline-offset: 5px;
-    filter: grayscale(1) contrast(1.06); transition: filter 1s ease; }
-  @media (hover: hover) { .mq-pc:hover img { filter: grayscale(0.1) contrast(1.02); } }
-  .mq-w { flex: none; white-space: nowrap; font-family: 'Libre Caslon Display', 'Didot', Georgia, serif; font-size: clamp(34px, 4.3vw, 62px); line-height: 1.05; letter-spacing: -0.01em; color: #fff; }
-  .mq-w em, .mq-w.it, .mq-l { font-family: 'Libre Caslon Text', Georgia, serif; font-style: italic; font-weight: 400; }
-  .mq-w em { font-size: 0.84em; color: rgba(238,236,232,0.8); }
-  .mq-w.it, .mq-l { font-size: clamp(28px, 3.4vw, 48px); color: rgba(238,236,232,0.88); }
-  .mq-w.duo { display: grid; justify-items: start; gap: 12px; }
-  .mq-k { display: inline-flex; align-items: center; gap: 9px; font-family: 'Geist', sans-serif; font-size: 11.5px; line-height: 1.2; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(238,236,232,0.92); }
-  .mq-k::before { content: "\2726"; content: "\2726" / ""; font-size: 9px; letter-spacing: 0; }
-  .mq-pause { position: absolute; top: 100%; right: calc(20px + max(0px, (100% - 1160px) / 2)); display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; margin: 0; padding: 7px 12px 8px; cursor: pointer; -webkit-appearance: none; appearance: none;
-    font-family: 'Geist', sans-serif; font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    color: var(--on-night); background: var(--night); border: 1px solid rgba(238,236,232,0.14); border-top: 0; border-radius: 0 0 6px 6px; }
-  .mq-pause:hover { background: #1c1c1b; }
-  .mq + .views { padding-top: 46px; }
-  .mq-pause:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-  .mq-pause svg { flex: none; display: block; }
-  .mq-pause .i-play, .mq.paused .mq-pause .i-pause { display: none; }
-  .mq.paused .mq-pause .i-play { display: block; }
-  @media (prefers-reduced-motion: reduce) {
-    .mq.run .mq-track { animation: none; will-change: auto; }
-    .mq-view { overflow-x: auto; overscroll-behavior-x: contain; padding-inline: 20px; -webkit-mask-image: none; mask-image: none; scrollbar-width: thin; scrollbar-color: #55534f transparent; }
-    .mq-list[aria-hidden="true"], .mq-pause { display: none; }
-    .mq + .views { padding-top: 22px; }
-  }
+  /* ---------- THE BANNER: her jackalope, hopping, under the hero ----------
+     The little pixel jackalope from the keychain pet (her logo, in pixels, paper white on her black) hops slowly across a
+     slim black strip: small hops with a squash and a stretch, a shadow that shrinks as it leaves the ground, a rest now and
+     then (a blink, sometimes a look back), then off one side and back in from the other. It moves in whole sprite pixels,
+     so it stays crisp. It reads the banner like the pet does: designs up, a heart blinks over it; books closed, it naps.
+     Decorative, so screen readers skip it; it rests offscreen; under reduced motion it sits still and blinks once. */
+  .jb { --px: 2px; position: relative; z-index: 4; height: calc(var(--px) * 36); overflow: hidden;
+    background: var(--night); color: var(--on-night); border-block: 1px solid rgba(238,236,232,0.14); }
+  @media (min-width: 900px) { .jb { --px: 3px; } }
+  .jb-run { position: absolute; left: calc(50% - var(--px) * 16); bottom: calc(var(--px) * 4); width: calc(var(--px) * 32); height: calc(var(--px) * 26); }
+  .jb.live .jb-run { left: 0; will-change: transform; }
+  .jb-sprite { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; fill: currentColor; shape-rendering: crispEdges; transform: scaleX(-1); }
+  .jb-sprite path { display: none; }
+  .jb[data-f="sit"] .jf-sit, .jb[data-f="squash"] .jf-squash, .jb[data-f="stretch"] .jf-stretch, .jb[data-f="hop"] .jf-hop, .jb[data-f="sleep"] .jf-sleep,
+  .jb.blink[data-f="sit"] .jf-blink, .jb[data-state="event"] .jf-heart, .jb[data-f="sleep"] .jf-z { display: inline; }
+  .jb-shadow { position: absolute; left: 50%; bottom: calc(var(--px) * -1); width: calc(var(--px) * var(--sw, 20)); height: calc(var(--px) * 3); transform: translateX(-50%);
+    background: rgba(238,236,232,0.2);
+    clip-path: polygon(calc(var(--px) * 2) 0, calc(100% - var(--px) * 2) 0, calc(100% - var(--px) * 2) var(--px), 100% var(--px), 100% calc(var(--px) * 2), calc(100% - var(--px) * 2) calc(var(--px) * 2),
+      calc(100% - var(--px) * 2) 100%, calc(var(--px) * 2) 100%, calc(var(--px) * 2) calc(var(--px) * 2), 0 calc(var(--px) * 2), 0 var(--px), calc(var(--px) * 2) var(--px)); }
+  .jb[data-state="event"] .jf-heart { animation: jb-blink 1.2s infinite step-end; }
+  .jb .jf-z1 { animation: jb-z1 2.4s infinite step-end; }
+  .jb .jf-z2 { animation: jb-z2 2.4s infinite step-end; }
+  @keyframes jb-blink { 0% { opacity: 1; } 60%, 100% { opacity: 0; } }
+  @keyframes jb-z1 { 0% { opacity: 1; } 75%, 100% { opacity: 0; } }
+  @keyframes jb-z2 { 0% { opacity: 0; } 33% { opacity: 1; } 75%, 100% { opacity: 0; } }
+  .jb.off * { animation-play-state: paused !important; }
+  @media (prefers-reduced-motion: reduce) { .jb .jf-heart, .jb .jf-z { animation: none !important; } }
 
   /* ---------- STATUS STRIP ---------- */
   .status { position: relative; z-index: 5; }
@@ -849,30 +836,11 @@
   })();
 </script>
 
-<div class="mq" id="mq">
-  <div class="mq-view">
-    <div class="mq-track">
-      <ul class="mq-list" aria-label="A few of my tattoos">
-        <li class="mq-pc"><img src="images/mq-victory.jpg" width="360" height="480" alt="The Winged Victory of Samothrace in soft black and grey realism on a thigh" loading="lazy" decoding="async"></li>
-        <li class="mq-w">Classical art</li>
-        <li class="mq-pc"><img src="images/mq-owl-fern.jpg" width="360" height="480" alt="A barred owl among fern fronds and blossoms on a thigh" loading="lazy" decoding="async"></li>
-        <li class="mq-w duo mq-books"><span class="mq-k">Books are open</span><span class="mq-l">for 2026</span></li>
-        <li class="mq-pc"><img src="images/mq-rose-serpent.jpg" width="480" height="480" alt="A full rose with a snake winding through its leaves, on an upper arm" loading="lazy" decoding="async"></li>
-        <li class="mq-w">Botanicals</li>
-        <li class="mq-pc"><img src="images/mq-greek-face.jpg" width="360" height="480" alt="A classical marble face split in two, the eyes floating above, on a forearm" loading="lazy" decoding="async"></li>
-        <li class="mq-w it">Black &amp; grey</li>
-        <li class="mq-pc"><img src="images/mq-frog.jpg" width="360" height="480" alt="A little tree frog sitting on a toadstool with tiny mushrooms, on a calf" loading="lazy" decoding="async"></li>
-        <li class="mq-w">Folklore <em>&amp;</em> creatures</li>
-        <li class="mq-pc"><img src="images/mq-guadalupe.jpg" width="360" height="480" alt="The Virgin of Guadalupe with a halo of rays and a starry cloak, down a forearm" loading="lazy" decoding="async"></li>
-        <li class="mq-w duo"><span class="mq-k">One client a day</span><span class="mq-l">and the day is yours</span></li>
-        <li class="mq-pc"><img src="images/mq-poppies.jpg" width="360" height="480" alt="Poppies, buds and seed heads in fine line and grey wash up a forearm" loading="lazy" decoding="async"></li>
-        <li class="mq-w it">Fine line &amp; realism</li>
-        <li class="mq-pc"><img src="images/mq-cherub.jpg" width="480" height="480" alt="A dreamy cherub resting its chin on a full rose, on the back of an arm" loading="lazy" decoding="async"></li>
-        <li class="mq-w duo"><span class="mq-k">Grants Pass, Oregon</span><span class="mq-l">since 2018</span></li>
-      </ul>
-    </div>
+<div class="jb" id="jb" aria-hidden="true" data-state="open" data-f="sit">
+  <div class="jb-run">
+    <i class="jb-shadow"></i>
+    <svg class="jb-sprite" viewBox="0 0 32 26" focusable="false"><path class="jf-sit" d="M7 3h1v1h-1zM11 3h1v1h-1zM4 4h1v1h-1zM7 4h1v1h-1zM10 4h1v1h-1zM5 5h1v1h-1zM7 5h1v1h-1zM9 5h1v1h-1zM12 5h1v1h-1zM6 6h3v1h-3zM11 6h1v1h-1zM7 7h5v1h-5zM21 7h4v1h-4zM8 8h3v1h-3zM16 8h8v1h-8zM8 9h3v1h-3zM12 9h9v1h-9zM6 10h10v1h-10zM4 11h10v1h-10zM3 12h3v1h-3zM7 12h8v1h-8zM20 12h7v1h-7zM2 13h4v1h-4zM7 13h22v1h-22zM1 14h29v1h-29zM1 15h30v1h-30zM3 16h28v1h-28zM6 17h24v1h-24zM7 18h23v1h-23zM7 19h22v1h-22zM7 20h4v1h-4zM14 20h15v1h-15zM7 21h4v1h-4zM17 21h12v1h-12zM7 22h4v1h-4zM19 22h10v1h-10zM6 23h5v1h-5zM16 23h13v1h-13zM5 24h6v1h-6zM12 24h16v1h-16z"/><path class="jf-squash" d="M7 5h1v1h-1zM11 5h1v1h-1zM4 6h1v1h-1zM7 6h1v1h-1zM10 6h1v1h-1zM5 7h1v1h-1zM7 7h1v1h-1zM9 7h1v1h-1zM12 7h1v1h-1zM6 8h3v1h-3zM11 8h1v1h-1zM7 9h5v1h-5zM22 9h4v1h-4zM8 10h3v1h-3zM16 10h9v1h-9zM8 11h3v1h-3zM12 11h10v1h-10zM6 12h10v1h-10zM4 13h10v1h-10zM3 14h3v1h-3zM7 14h8v1h-8zM21 14h7v1h-7zM2 15h4v1h-4zM7 15h23v1h-23zM1 16h30v1h-30zM1 17h31v1h-31zM3 18h29v1h-29zM7 19h24v1h-24zM7 20h4v1h-4zM14 20h16v1h-16zM7 21h4v1h-4zM17 21h13v1h-13zM7 22h4v1h-4zM20 22h10v1h-10zM6 23h5v1h-5zM16 23h14v1h-14zM5 24h6v1h-6zM12 24h17v1h-17z"/><path class="jf-stretch" d="M7 1h1v1h-1zM11 1h1v1h-1zM4 2h1v1h-1zM7 2h1v1h-1zM10 2h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM9 3h1v1h-1zM12 3h1v1h-1zM6 4h3v1h-3zM11 4h1v1h-1zM7 5h5v1h-5zM20 5h4v1h-4zM8 6h3v1h-3zM16 6h7v1h-7zM8 7h3v1h-3zM12 7h8v1h-8zM6 8h10v1h-10zM4 9h10v1h-10zM3 10h3v1h-3zM7 10h8v1h-8zM19 10h7v1h-7zM2 11h4v1h-4zM7 11h21v1h-21zM1 12h28v1h-28zM1 13h28v1h-28zM1 14h29v1h-29zM3 15h27v1h-27zM3 16h27v1h-27zM6 17h23v1h-23zM7 18h22v1h-22zM7 19h21v1h-21zM6 20h5v1h-5zM18 20h11v1h-11zM4 21h5v1h-5zM21 21h10v1h-10zM3 22h4v1h-4zM24 22h7v1h-7zM2 23h3v1h-3zM27 23h4v1h-4z"/><path class="jf-hop" d="M7 1h1v1h-1zM11 1h1v1h-1zM4 2h1v1h-1zM7 2h1v1h-1zM10 2h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM9 3h1v1h-1zM12 3h1v1h-1zM6 4h3v1h-3zM11 4h1v1h-1zM7 5h5v1h-5zM21 5h4v1h-4zM8 6h3v1h-3zM16 6h8v1h-8zM8 7h3v1h-3zM12 7h9v1h-9zM6 8h10v1h-10zM4 9h10v1h-10zM3 10h3v1h-3zM7 10h8v1h-8zM20 10h7v1h-7zM2 11h4v1h-4zM7 11h22v1h-22zM1 12h29v1h-29zM1 13h30v1h-30zM3 14h28v1h-28zM6 15h24v1h-24zM7 16h23v1h-23zM7 17h22v1h-22zM6 18h5v1h-5zM19 18h11v1h-11zM4 19h5v1h-5zM22 19h10v1h-10zM3 20h4v1h-4zM25 20h7v1h-7zM2 21h3v1h-3zM28 21h4v1h-4z"/><path class="jf-sleep" transform="translate(0 -1)" d="M7 11h1v1h-1zM11 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM10 12h1v1h-1zM5 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM12 13h1v1h-1zM6 14h3v1h-3zM11 14h1v1h-1zM7 15h5v1h-5zM18 15h6v1h-6zM8 16h3v1h-3zM13 16h9v1h-9zM8 17h9v1h-9zM6 18h6v1h-6zM17 18h11v1h-11zM4 19h10v1h-10zM15 19h15v1h-15zM3 20h28v1h-28zM2 21h3v1h-3zM7 21h24v1h-24zM1 22h30v1h-30zM1 23h30v1h-30zM2 24h29v1h-29zM3 25h28v1h-28z"/><path class="jf-blink" d="M6 12h1v2h-1z"/><path class="jf-heart" d="M26 0h2v1h-2zM29 0h2v1h-2zM25 1h7v1h-7zM25 2h7v1h-7zM26 3h5v1h-5zM27 4h3v1h-3zM28 5h1v1h-1z"/><path class="jf-z jf-z1" d="M3 5h4v1h-4zM4 6h1v1h-1zM5 7h1v1h-1zM3 8h4v1h-4z"/><path class="jf-z jf-z2" d="M0 0h5v1h-5zM1 1h1v1h-1zM2 2h1v1h-1zM3 3h1v1h-1zM0 4h5v1h-5z"/></svg>
   </div>
-  <button type="button" class="mq-pause" id="mq-pause"><svg class="i-pause" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2v8H2zM6 1h2v8H6z" fill="currentColor"/></svg><svg class="i-play" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 1 9 5 2.5 9z" fill="currentColor"/></svg><span id="mq-pause-t">Pause</span><span class="vh"> the moving tattoos</span></button>
 </div>
 
 <div class="views gutter" id="views" hidden>
@@ -1515,26 +1483,89 @@
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { fig.classList.toggle('off', !e.isIntersecting); }); }).observe(fig);
   })();
 
-  /* the slow banner: a second copy of the row (hidden from screen readers) makes the loop seamless. It loads its pictures
-     together as it nears the screen, rests offscreen, and its books line follows the banner. */
+  /* the banner: her jackalope hops slowly across, a few hops at a time, resting now and then (a blink, sometimes a look
+     back), then off one side and back in at the other. Whole sprite pixels only, so it stays crisp. It reads the banner
+     like the pet does (designs: a heart; closed: it naps), rests offscreen, and sits still with one blink under reduced motion. */
   (function () {
-    var mq = document.getElementById('mq'); if (!mq) return;
-    var track = mq.querySelector('.mq-track'), list = track.querySelector('.mq-list'), btn = document.getElementById('mq-pause'), btnT = document.getElementById('mq-pause-t');
-    var dupe = list.cloneNode(true); dupe.setAttribute('aria-hidden', 'true'); dupe.removeAttribute('aria-label');
-    [].forEach.call(dupe.querySelectorAll('img'), function (im) { im.alt = ''; });
-    track.appendChild(dupe);
-    var BOOKS = { open: ['Books are open', 'for 2026'], event: ['Discounted designs', 'available'], closed: ['Books are closed', 'for now'] };
+    var jb = document.getElementById('jb'); if (!jb) return;
+    var run = jb.querySelector('.jb-run'), sp = jb.querySelector('.jb-sprite'), sh = jb.querySelector('.jb-shadow');
+    var rm = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    var LIFT = { sit: 0, squash: 0, stretch: 1, hop: 3, sleep: 0 }, H = 5, AIR = 480;
+    var px = 2, cols = 200, x = 0, h = 0, face = 1, f = 'sit', ph = 'pause', left = 0, hops = 2, x0 = 0, d = 10;
+    var blinkAt = -1, lookAt = -1, lookEnd = -1, state = jb.getAttribute('data-state') || 'open';
+    var seen = !('IntersectionObserver' in window), still = false, raf = 0, last = 0, winked = false;
+    function r(a, b) { return a + Math.random() * (b - a); }
+    function measure() { px = parseFloat(getComputedStyle(jb).getPropertyValue('--px')) || 2; cols = jb.clientWidth / px; }
+    var drawn = '';
+    function paint() {
+      var lift = Math.round(h) + LIFT[f], key = [Math.round(x), Math.round(h), face, f, px].join();
+      if (key === drawn) return; drawn = key;
+      run.style.transform = 'translate3d(' + Math.round(x) * px + 'px,0,0)';
+      sp.style.transform = 'translate3d(0,' + -Math.round(h) * px + 'px,0)' + (face > 0 ? ' scaleX(-1)' : '');
+      sh.style.setProperty('--sw', 2 * Math.round((20 - lift) / 2));
+      sh.style.opacity = Math.max(0.45, 1 - lift * 0.07).toFixed(2);
+      if (jb.getAttribute('data-f') !== f) jb.setAttribute('data-f', f);
+    }
+    function blink() { jb.classList.add('blink'); setTimeout(function () { jb.classList.remove('blink'); }, 170); }
+    function rest(ms) {
+      ph = 'pause'; left = ms; hops = Math.round(r(3, 6));
+      blinkAt = Math.random() < 0.7 ? r(250, ms - 250) : -1;
+      lookAt = Math.random() < 0.3 ? ms * 0.75 : -1; lookEnd = lookAt - r(700, 1000);
+    }
+    function step(dt) {
+      if (state === 'closed') { f = 'sleep'; h = 0; return; }
+      left -= dt;
+      if (ph === 'pause' || ph === 'beat') {
+        f = 'sit'; h = 0;
+        if (ph === 'pause') {
+          if (blinkAt >= 0 && left <= blinkAt) { blinkAt = -1; blink(); }
+          if (lookAt >= 0 && left <= lookAt) { lookAt = -1; face = -1; }
+          if (face < 0 && left <= lookEnd) face = 1;
+        }
+        if (left <= 0) { face = 1; ph = 'crouch'; left = 100; }
+      } else if (ph === 'crouch') {
+        f = 'squash';
+        if (left <= 0) { ph = 'air'; x0 = x; d = Math.round(r(9, 12.4)); left = AIR; }
+      } else if (ph === 'air') {
+        var t = Math.min(1, 1 - left / AIR);
+        x = x0 + d * t; h = H * 4 * t * (1 - t); f = t < 0.3 || t > 0.82 ? 'stretch' : 'hop';
+        if (left <= 0) { x = x0 + d; h = 0; f = 'squash'; ph = 'land'; left = 120; }
+      } else if (ph === 'land') {
+        f = 'squash';
+        if (left <= 0) {
+          f = 'sit';
+          if (x > cols + 1) { ph = 'away'; left = r(1200, 2600); }
+          else if (--hops <= 0) rest(r(1500, 3200));
+          else { ph = 'beat'; left = r(240, 460); }
+        }
+      } else if (ph === 'away' && left <= 0) { x = -34; ph = 'beat'; left = 0; hops = Math.round(r(4, 7)); }
+    }
+    function tick(now) {
+      raf = 0; if (!seen || still) return;
+      var dt = last ? Math.min(64, now - last) : 16; last = now;
+      step(dt); paint(); raf = requestAnimationFrame(tick);
+    }
+    function go() { if (!raf && seen && !still) { last = 0; raf = requestAnimationFrame(tick); } }
+    function settle() {
+      still = !!(rm && rm.matches);
+      if (!still) return go();
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      x = Math.round(cols / 2 - 16); h = 0; face = 1; f = state === 'closed' ? 'sleep' : 'sit'; paint();
+      if (seen && !winked && f === 'sit') { winked = true; setTimeout(blink, 1800); }
+    }
     document.addEventListener('ex:books', function (e) {
-      var t = BOOKS[e.detail && e.detail.state]; if (!t) return;
-      [].forEach.call(mq.querySelectorAll('.mq-books'), function (el) { el.querySelector('.mq-k').textContent = t[0]; el.querySelector('.mq-l').textContent = t[1]; });
+      var k = e.detail && e.detail.state; if (!k || k === state) return;
+      var was = state; state = k; jb.setAttribute('data-state', k);
+      if (k === 'closed') { if (x < 2 || x > cols - 34) x = Math.round(cols * 0.42 - 16); h = 0; face = 1; f = 'sleep'; }
+      else if (was === 'closed') { f = 'sit'; rest(1000); blinkAt = 600; lookAt = -1; }
+      if (still) settle(); else paint();
     });
-    btn.addEventListener('click', function () { var p = mq.classList.toggle('paused'); btnT.textContent = p ? 'Play' : 'Pause'; });
-    mq.classList.add('run');
-    if (!('IntersectionObserver' in window)) return;
-    var imgs = [].slice.call(mq.querySelectorAll('img'));
-    var near = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { imgs.forEach(function (im) { im.loading = 'eager'; }); near.disconnect(); } }, { rootMargin: '900px 0px' });
-    near.observe(mq);
-    new IntersectionObserver(function (es) { es.forEach(function (e) { mq.classList.toggle('off', !e.isIntersecting); }); }).observe(mq);
+    measure(); x = Math.round(cols * 0.16); rest(1100); blinkAt = -1; lookAt = -1;
+    jb.classList.add('live'); paint();
+    window.addEventListener('resize', function () { measure(); if (still) settle(); else paint(); });
+    if (rm) { if (rm.addEventListener) rm.addEventListener('change', settle); else if (rm.addListener) rm.addListener(settle); }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { seen = e.isIntersecting; jb.classList.toggle('off', !seen); if (seen) settle(); }); }).observe(jb);
+    settle();
   })();
 
   /* the Book button (every build): opens the booking app she already uses */
