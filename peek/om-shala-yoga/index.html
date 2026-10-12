@@ -91,7 +91,9 @@
   .tag { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; flex: none; font-family: 'Questrial', sans-serif; font-style: normal;
     font-size: 10.5px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tag-ink); background: var(--tag-bg); border: 1px solid var(--tag-line);
     padding: 5px 10px 5px 9px; border-radius: 999px; white-space: nowrap; }
-  .tag::before { content: "\263E"; content: "\263E" / ""; font-size: 10px; letter-spacing: 0; opacity: 0.8; }
+  /* the little moon on every tag: the same slim crescent as the hero, in the tag's own ink (light and dark) */
+  .tag::before { content: ""; flex: none; width: 10px; height: 10px; background: currentColor; opacity: 0.8;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-77 -98 200 200'%3E%3Cpath d='M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-77 -98 200 200'%3E%3Cpath d='M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z'/%3E%3C/svg%3E") center / contain no-repeat; }
   .tag-p { margin-left: -3px; }
   button.tag { position: relative; margin: 0; padding-block: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; transition: background-color 0.2s ease, border-color 0.2s ease; }
   button.tag::after { content: ""; position: absolute; inset: -8px -2px; }
@@ -135,14 +137,15 @@
   .hero-band a:focus-visible, .hero-band button:focus-visible { outline-color: #f6f3ee; }
   .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 60px 72px; }
   .hero-copy { position: relative; max-width: 640px; padding-left: clamp(18px, 4vw, 44px); }
-  /* the crescent moon beside the words (Oct 12, Pollen: the old single stroke read as a wide C): two offset circles give
-     it pointed horns, tilted like an evening moon, with the faint rest of the moon behind it, a soft red glow and two small stars */
-  .hero-arc { position: absolute; left: calc(100% - 6px); top: 50%; translate: 0 -50%; width: clamp(190px, 21vw, 280px); height: auto; pointer-events: none; overflow: visible;
-    filter: drop-shadow(0 0 10px rgba(196, 48, 44, 0.5)); }
-  /* up to 940 (tablets too) the moon sits small above the words, so it stays whole on screen */
-  @media (max-width: 940px) { .hero-arc { left: auto; right: 0; top: -14px; translate: 0 -100%; width: 112px; } }
-  @media (max-width: 560px) { .hero-arc { display: none; } }
-  .hm-ghost { fill: rgba(20, 26, 25, 0.12); stroke: rgba(246, 234, 217, 0.18); stroke-width: 1; }
+  /* the crescent moon beside the words (Oct 12, Pollen: "redraw the moon as a slim crescent"): a thin three day moon, the lit
+     circle minus the same circle shifted a little left, so it tapers to two sharp horns. Tilted like an evening moon, lit side
+     toward the set sun, in their crescent red with a faint glow and two small stars. Nothing behind it, so it reads as a crescent. */
+  .hero-arc { position: absolute; left: calc(100% - 6px); top: 50%; translate: 0 -56%; width: clamp(132px, 14.6vw, 194px); height: auto; pointer-events: none; overflow: visible;
+    filter: drop-shadow(0 0 7px rgba(210, 67, 59, 0.42)); }
+  /* up to 940 (tablets and phones) the moon sits small above the words at the right, in the flow, so it stays whole on
+     screen and clear of the menu even on short phones */
+  @media (max-width: 940px) { .hero-arc { position: relative; display: block; left: auto; top: auto; translate: none; width: 88px; margin: 0 0 8px auto; } }
+  @media (max-width: 560px) { .hero-arc { width: 70px; margin-bottom: 6px; } }
   .hm-lit { fill: url(#hmLit); }
   .hm-star { fill: #f6ead9; transform-box: fill-box; transform-origin: center; }
   .hero-band .label { color: rgba(246, 243, 238, 0.88); text-shadow: 0 1px 10px rgba(10, 14, 14, 0.7); margin-bottom: 18px; }
@@ -183,9 +186,9 @@
   .osm-run { display: inline-flex; padding-left: 18px; animation: osm-scroll var(--dur, 40s) linear infinite; }
   .osm-run > span { white-space: pre; }
   .osm-run small { font-family: 'Questrial', sans-serif; font-size: 0.74em; letter-spacing: 0.08em; color: #e3c2b2; }
-  /* separators: a tiny filled crescent, two offset circles like the hero moon (a little fuller at this size), so it reads as a moon and not a bracket */
+  /* separators: a tiny slim crescent, the hero moon's shape and tilt (a hair fuller at this size), so it reads as a moon and not a bracket */
   .osm-run i { display: inline-block; width: 14px; height: 14px; margin: 0 15px; vertical-align: -0.05em;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-104 -104 208 208'%3E%3Cpath transform='rotate(-22)' d='M-48.2 -87.6A100 100 0 1 1 -48.2 87.6A88 88 0 1 0 -48.2 -87.6Z' fill='%23e0675f'/%3E%3C/svg%3E") center / contain no-repeat; }
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-77 -98 200 200'%3E%3Cpath d='M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z' fill='%23e0675f'/%3E%3C/svg%3E") center / contain no-repeat; }
   @keyframes osm-scroll { to { transform: translateX(-50%); } }
   .os-marq:not(.on) .osm-run, .os-marq:hover .osm-run, .os-marq:focus-visible .osm-run { animation-play-state: paused; }
   .os-marq:hover .osm-win { color: #fff; }
@@ -197,7 +200,7 @@
     .osm-run { animation: none; display: inline; padding-left: 0; } .osm-run > span { white-space: normal; }
     .osm-win { white-space: normal; padding-inline: 12px; }
   }
-  @keyframes moon-glow { 0%, 100% { filter: drop-shadow(0 0 10px rgba(196, 48, 44, 0.5)); } 50% { filter: drop-shadow(0 0 22px rgba(226, 92, 80, 0.8)); } }
+  @keyframes moon-glow { 0%, 100% { filter: drop-shadow(0 0 7px rgba(210, 67, 59, 0.42)); } 50% { filter: drop-shadow(0 0 13px rgba(226, 92, 80, 0.58)); } }
   @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.7); } }
   @media (max-aspect-ratio: 5 / 4) { .hero-band { --hero-pos: 46% 40%; } }
 
@@ -206,7 +209,8 @@
   .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; border-radius: 20px; padding: 16px 16px 14px; }
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
   .views-q { margin: 0; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-deep); }
-  .views-q::before { content: "\263E"; content: "\263E" / ""; font-size: 11px; opacity: 0.8; }
+  .views-q::before { content: ""; flex: none; width: 11px; height: 11px; background: currentColor; opacity: 0.8;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-77 -98 200 200'%3E%3Cpath d='M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-77 -98 200 200'%3E%3Cpath d='M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z'/%3E%3C/svg%3E") center / contain no-repeat; }
   .views-price { margin: 0; font-family: 'Gilda Display', Georgia, serif; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
   .views-spots { grid-column: 1 / -1; margin: 0 2px; font-family: 'Gilda Display', Georgia, serif; font-size: 15px; color: var(--ink-soft); line-height: 1.5; }
   .vseg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 16px; }
@@ -715,11 +719,11 @@
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
-        <svg class="hero-arc" viewBox="-150 -150 300 300" aria-hidden="true">
-          <defs><linearGradient id="hmLit" x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0" stop-color="#f09a86"/><stop offset="0.5" stop-color="#d2433b"/><stop offset="1" stop-color="#a80d10"/></linearGradient></defs>
-          <g transform="rotate(-22)"><circle class="hm-ghost" r="100"/><path class="hm-lit" id="hm-lit" d="M-28.07 -95.98A100 100 0 1 1 -28.07 95.98A96 96 0 0 0 -28.07 -95.98Z"/></g>
-          <path class="hm-star" d="M-104 -142Q-104 -128 -92 -128Q-104 -128 -104 -114Q-104 -128 -116 -128Q-104 -128 -104 -142Z"/>
-          <path class="hm-star hm-star2" d="M122 -126Q122 -118 129 -118Q122 -118 122 -110Q122 -118 115 -118Q122 -118 122 -126Z"/>
+        <svg class="hero-arc" viewBox="-56 -150 208 254" aria-hidden="true">
+          <defs><linearGradient id="hmLit" x1="0.62" y1="0" x2="0.38" y2="1"><stop offset="0" stop-color="#f19a87"/><stop offset="0.45" stop-color="#d9493f"/><stop offset="1" stop-color="#b3201f"/></linearGradient></defs>
+          <g transform="rotate(24)"><path class="hm-lit" id="hm-lit" d="M-10 -99.5A100 100 0 1 1 -10 99.5A100 100 0 0 0 -10 -99.5Z"/></g>
+          <path class="hm-star" d="M96 -146Q96 -132 108 -132Q96 -132 96 -118Q96 -132 84 -132Q96 -132 96 -146Z"/>
+          <path class="hm-star hm-star2" d="M142 -70Q142 -62 149 -62Q142 -62 142 -54Q142 -62 135 -62Q142 -62 142 -70Z"/>
         </svg>
         <p class="label">Yoga &middot; Aerial &middot; Sound baths &middot; Meditation <span class="nw">&middot; Arcata</span></p>
         <h1>Just come, <em>as you are.</em></h1>
@@ -797,11 +801,11 @@
     var h = document.querySelector('.hero-band');
     if (!h || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     h.classList.add('wait');
-    /* the crescent waxes in: the shadow circle slides off the moon and its light grows from a thin edge into the crescent
+    /* the crescent waxes in: the shadow circle slides off the moon and its light grows from a hairline into the slim crescent
        (the finished shape is in the page, so without this script, or with reduced motion, the moon simply shows) */
     var lit = document.getElementById('hm-lit'), D0 = lit ? lit.getAttribute('d') : '';
-    function crescent(t) {   /* lit circle r 100 at the center; the shadow circle moves 0 to 30 left as it shrinks 104 to 96 */
-      var R = 100, d = 30 * t, rb = 104 - 8 * t; if (d <= 0) return '';
+    function crescent(t) {   /* lit circle r 100 at the center; the same size shadow circle moves 0 to 20 left */
+      var R = 100, d = 20 * t, rb = 100; if (d <= 0) return '';
       var x = (rb * rb - R * R - d * d) / (2 * d); if (x >= R || x <= -R) return '';
       var y = Math.sqrt(R * R - x * x), X = x.toFixed(2), T = (-y).toFixed(2), B = y.toFixed(2), r = rb.toFixed(2);
       return 'M' + X + ' ' + T + 'A100 100 0 ' + (x < 0 ? 1 : 0) + ' 1 ' + X + ' ' + B + 'A' + r + ' ' + r + ' 0 ' + (x + d < 0 ? 1 : 0) + ' 0 ' + X + ' ' + T + 'Z';
