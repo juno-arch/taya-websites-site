@@ -146,9 +146,10 @@
   @keyframes hero-float { from { opacity: 0; transform: translateY(70px); letter-spacing: 0.04em; } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
 
-  /* COMING UP: a circus banner along the foot of the hero, built from the October calendar below, so the first screen says
-     which classes are next. Bunting along the top edge, a pennant tag, the next classes rolling by in their thin wide caps.
-     Tap it to jump to the calendar. Stops while you hover or focus it, and off screen; under reduced motion it sits still and wraps. */
+  /* AT LEVITY: a circus banner along the foot of the hero with lines that stay true all year, all in their own words (their
+     About and Classes pages, their Instagram bio). No dates, so it can't go stale. Bunting along the top edge, a pennant tag,
+     the lines rolling by in their thin wide caps. Tap it to jump to the classes. Stops while you hover or focus it, and off
+     screen; under reduced motion it sits still and wraps. */
   .lv-marq { position: relative; z-index: 3; display: flex; align-items: stretch; text-decoration: none; color: #ffd9a8; background: #1b2147; overflow: hidden;
     padding-top: 12px; border-bottom: 1px solid #2f3870; }
   .lv-marq::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 11px; pointer-events: none;
@@ -171,6 +172,7 @@
   @media (prefers-reduced-motion: reduce) {
     .lm-run { animation: none; display: inline; padding-left: 0; } .lm-run span { white-space: normal; }
     .lm-win { white-space: normal; padding-inline: 12px; }
+    .lm-more { display: none; } /* sitting still, the first three lines are plenty */
   }
 
   section { padding-block: 80px; }
@@ -763,7 +765,20 @@
       </div>
     </div>
   </div>
-  <a class="lv-marq" id="lv-marq" href="#month" aria-label="Coming up at Levity: see October&rsquo;s calendar"><span class="lm-tag" aria-hidden="true">coming up</span><span class="lm-win" aria-hidden="true"><span class="lm-run" id="lm-run"><span>OCTOBER&rsquo;S CALENDAR &#10022; 280 E HERSEY ST, ASHLAND</span></span></span></a>
+  <a class="lv-marq" id="lv-marq" href="#classes" aria-label="At Levity: silks, rope, sling, lyra, handstands and juggling. We all start at the beginning. A community of circus artists. Open training to meet new friends. Private lessons with every coach. Two studio showcases a year. Find your place in or above the circus ring. In Ashland since 2018, at 280 E Hersey St. See the classes."><span class="lm-tag" aria-hidden="true">at levity</span><span class="lm-win" aria-hidden="true"><span class="lm-run" id="lm-run"><span>SILKS, ROPE, SLING, LYRA, HANDSTANDS AND JUGGLING<i> &#10022; </i>WE ALL START AT THE BEGINNING<i> &#10022; </i>A COMMUNITY OF CIRCUS ARTISTS<span class="lm-more"><i> &#10022; </i>OPEN TRAINING TO MEET NEW FRIENDS<i> &#10022; </i>PRIVATE LESSONS WITH EVERY COACH<i> &#10022; </i>TWO STUDIO SHOWCASES A YEAR<i> &#10022; </i>FIND YOUR PLACE IN OR ABOVE THE CIRCUS RING<i> &#10022; </i>IN ASHLAND SINCE 2018<i> &#10022; </i>280 E HERSEY ST</span></span></span></span></a>
+  <script>
+    /* AT LEVITY: the lines above roll by on a loop: a star closes the run, a second copy follows it so the seam is seamless,
+       and the speed matches the old strip (0.24s a character). Under reduced motion one run sits still, first three lines only. */
+    (function () {
+      var lm = document.getElementById('lv-marq'), run = document.getElementById('lm-run'); if (!lm || !run) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var one = run.firstElementChild, star = document.createElement('i'); star.textContent = ' ✦ '; one.appendChild(star);
+      run.appendChild(one.cloneNode(true));
+      run.style.setProperty('--dur', Math.max(18, one.textContent.length * 0.24).toFixed(1) + 's');
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { lm.classList.toggle('on', e.isIntersecting); }); }).observe(lm);
+      else lm.classList.add('on');
+    })();
+  </script>
 </div>
 <script>
   (function () {
@@ -1374,57 +1389,6 @@
       ['friday', 5, []],
       ['saturday', 6, [[open('10 am to noon', [3, 10, 17, 24, 31])]]]
     ];
-
-    /* COMING UP: the hero banner rolls the next classes by, straight from this calendar (C and DAYS), so it stays in sync */
-    (function () {
-      var lm = document.getElementById('lv-marq'), run = document.getElementById('lm-run'); if (!lm || !run) return;
-      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'], WD = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-      function start(t) { /* "5:30 to 6:30 pm" -> [17, 30]; "10 am to noon" -> [10, 0] */
-        var m = t.match(/^(\d+)(?::(\d+))?\s*(am|pm)?/i), end = t.match(/(am|pm|noon)\s*$/i), ap = (m[3] || (end ? end[1] : 'pm')).toLowerCase(), hh = +m[1];
-        if (ap === 'noon') ap = 'am';
-        if (ap === 'pm' && hh < 12) hh += 12; return [hh, +(m[2] || 0)];
-      }
-      function clock(t) { var m = t.match(/^(\d+(?::\d+)?)\s*(am|pm)?/i), end = t.match(/(am|pm)\s*$/i); return (m[1] + ' ' + (m[2] || (end ? end[1] : 'pm'))).toUpperCase(); }
-      function price(p) {
-        if (/^free/i.test(p)) return 'FREE';
-        var m = p.match(/\$(\d+) or \$\d+ a class/) || (/a class/.test(p) && p.match(/\$(\d+)/));
-        return m ? '$' + m[1] + ' A CLASS' : '';
-      }
-      var now = Date.now(), list = [];
-      DAYS.forEach(function (row) {
-        row[2].forEach(function (it) {
-          var c = typeof it[0] === 'string' ? C[it[0]] : it[0];
-          if (c.k === 'open' || !price(c.price)) return; /* open studio runs most days; a series already under way has no drop in */
-          c.dates.forEach(function (d) {
-            if (typeof d !== 'number') return;
-            var s = start(c.t), at = Date.UTC(2026, 9, d, s[0] + 7, s[1]); /* Ashland, Pacific daylight time in October */
-            if (at + 3600e3 > now) list.push({ c: c, d: d, at: at, wd: WD[new Date(Date.UTC(2026, 9, d)).getUTCDay()] });
-          });
-        });
-      });
-      list.sort(function (a, b) { return a.at - b.at; }); list = list.slice(0, still ? 3 : 8);
-      var STAR = '✦', parts = [];
-      list.forEach(function (x) { parts.push([x.c.n.toUpperCase(), x.wd + ' OCT ' + x.d, clock(x.c.t), price(x.c.price)]); });
-      parts.push(list.length ? ['OPEN STUDIO MOST DAYS', '280 E HERSEY ST, ASHLAND'] : ['NOVEMBER CALENDAR COMING SOON', '280 E HERSEY ST, ASHLAND']);
-      function paintRun(last) {
-        var sp = document.createElement('span');
-        parts.forEach(function (bits, k) {
-          bits.forEach(function (b, j) {
-            sp.appendChild(document.createTextNode(b));
-            if (!(last && k === parts.length - 1 && j === bits.length - 1)) { var i = document.createElement('i'); i.textContent = ' ' + STAR + ' '; sp.appendChild(i); }
-          });
-        });
-        return sp;
-      }
-      run.textContent = '';
-      for (var n = 0; n < (still ? 1 : 2); n++) run.appendChild(paintRun(still));
-      var len = parts.reduce(function (a, b) { return a + b.join(' + ').length + 3; }, 0);
-      run.style.setProperty('--dur', Math.max(18, len * 0.24).toFixed(1) + 's');
-      lm.setAttribute('aria-label', list.length ? 'Coming up at Levity: ' + list.slice(0, 4).map(function (x) { return x.c.n + ', ' + x.wd.charAt(0) + x.wd.slice(1).toLowerCase() + ' October ' + x.d + ' at ' + clock(x.c.t).toLowerCase(); }).join('; ') + '. See October’s calendar.' : 'November’s calendar is coming soon. See October’s calendar.');
-      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { lm.classList.toggle('on', e.isIntersecting); }); }).observe(lm);
-      else lm.classList.add('on');
-    })();
     var today = new Date(), mon = today.getFullYear() === 2026 && today.getMonth() === 9, dnum = mon ? today.getDate() : 0;
     var filter = 'all', openBtn = null;
     DAYS.forEach(function (row) {
@@ -1971,7 +1935,7 @@
   })();
 </script>
 <script>
-  /* mockup pills vs the Coming up strip: on a phone the strip sits right where the Light/Dark, "A mockup from Web Faery"
+  /* mockup pills vs the At Levity strip: on a phone the strip sits right where the Light/Dark, "A mockup from Web Faery"
      and See it as pills float. While the strip is behind them, all three ride just above it together (keeping their
      own spacing), so its tag and first show stay readable; they drop back once it scrolls past. */
   (function () {
