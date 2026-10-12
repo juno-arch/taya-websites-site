@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@600&family=Doto:wght@800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Neonderthaw&text=Welcome&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -218,6 +219,67 @@
   .their-words { border-left: 2px solid var(--brass-hi); padding: 4px 0 4px 18px; font-style: italic; font-size: 18px; color: var(--on-band); }
   .their-words small { display: block; font-style: normal; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 8px; color: rgba(237,231,216,0.7); }
   .min-box { border: 1px solid rgba(237,231,216,0.22); border-radius: 4px; padding: 16px 18px; }
+
+  /* the window sign (Oct 12 2026): a neon WALK-INS WELCOME hanging in the shop window. The shop takes walk-ins (North
+     Coast Journal's Humboldt Insider: "Nor Cal gladly accepts walk-ins"; their Google reviews say so too). A clear acrylic
+     panel on two brass chains, sea-glass teal channel capitals in the shop's own heading face, an oxblood red script
+     crossing them (their sign's teal and red), and two Y2K sparkles like the page's own bullets. Its job: it answers
+     "How do I book?" right where it's asked. It switches on once, with a short neon stutter, as it comes into view,
+     then holds steady (no loop). Lit and still under reduced motion, or with no script. */
+  #book { overflow-x: clip; }
+  .book-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 48px; align-items: end; }
+  .ws { display: grid; justify-items: center; margin-top: 58px; }
+  .ws-board { --ws: 76px; position: relative; display: block; padding: 20px 30px 16px; border-radius: 10px; rotate: -1.5deg; transform-origin: 50% 0;
+    background:
+      radial-gradient(circle, #e4e9e7 0 1.5px, #74807e 2.1px, rgba(0,0,0,0) 2.9px) left 8px top 8px / 8px 8px no-repeat,
+      radial-gradient(circle, #e4e9e7 0 1.5px, #74807e 2.1px, rgba(0,0,0,0) 2.9px) right 8px top 8px / 8px 8px no-repeat,
+      radial-gradient(circle, #e4e9e7 0 1.5px, #74807e 2.1px, rgba(0,0,0,0) 2.9px) left 8px bottom 8px / 8px 8px no-repeat,
+      radial-gradient(circle, #e4e9e7 0 1.5px, #74807e 2.1px, rgba(0,0,0,0) 2.9px) right 8px bottom 8px / 8px 8px no-repeat,
+      linear-gradient(158deg, rgba(169,220,216,0.15), rgba(169,220,216,0.04) 52%, rgba(169,220,216,0.09));
+    border: 1px solid rgba(169,220,216,0.26);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 0 0 5px rgba(169,220,216,0.035), 0 28px 40px -26px rgba(0,0,0,0.95); }
+  .ws-board::after { content: ""; position: absolute; inset: -34px -40px; z-index: -1; pointer-events: none;
+    background: radial-gradient(58% 46% at 46% 34%, rgba(57,211,196,0.17), rgba(57,211,196,0) 72%), radial-gradient(52% 44% at 58% 74%, rgba(255,72,56,0.15), rgba(255,72,56,0) 72%); }
+  .ws-chain { position: absolute; bottom: 100%; width: 6px; height: 58px; pointer-events: none; opacity: 0.85;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='16' viewBox='0 0 6 16'%3E%3Crect x='0.9' y='0.8' width='4.2' height='7.6' rx='2.1' fill='none' stroke='%23dcbb6b' stroke-width='1.2'/%3E%3Crect x='2.4' y='6.6' width='1.2' height='9.2' rx='0.6' fill='%23b48f3f'/%3E%3C/svg%3E") center bottom / 6px 16px repeat-y;
+    -webkit-mask-image: linear-gradient(0deg, #000 50%, rgba(0,0,0,0)); mask-image: linear-gradient(0deg, #000 50%, rgba(0,0,0,0)); }
+  .ws-chain.l { left: 32px; } .ws-chain.r { right: 32px; }
+  .ws-line { position: relative; display: block; line-height: 1; white-space: nowrap; }
+  .ws-line > span { display: block; }
+  .ws-line .ws-lit { position: absolute; inset: 0; }
+  .ws-walk { font-family: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif; font-weight: 900; font-size: var(--ws); letter-spacing: 0.05em; margin-right: -0.05em; text-transform: uppercase; text-align: center; }
+  .ws-walk .ws-glass { color: rgba(0,0,0,0); -webkit-text-stroke: 1.6px rgba(214,236,232,0.2); }
+  .ws-walk .ws-lit { color: rgba(0,0,0,0); -webkit-text-stroke: 1.9px #eafffb; filter: drop-shadow(0 0 1.5px #a8fff3) drop-shadow(0 0 5px #3fd6c7) drop-shadow(0 0 14px rgba(32,184,172,0.7)); }
+  .ws-wel { font-family: 'Neonderthaw', 'Brush Script MT', cursive; font-weight: 400; font-size: calc(var(--ws) * 1.2); margin: calc(var(--ws) * -0.3) 0 0 calc(var(--ws) * 0.8); rotate: -6deg; }
+  .ws-wel .ws-glass { color: rgba(240,214,208,0.2); }
+  .ws-wel .ws-lit { color: #fff1ed; text-shadow: 0 0 2px #fff, 0 0 5px #ff8e7f, 0 0 12px #ff4535, 0 0 26px rgba(222,42,30,0.75), 0 0 48px rgba(160,24,18,0.5); }
+  .ws-spark { position: absolute; width: 26px; height: 26px; overflow: visible; fill: none; stroke-width: 1.6; stroke-linejoin: round; }
+  .ws-spark .g { stroke: rgba(214,236,232,0.2); }
+  .ws-spark .t { stroke: #eafffb; filter: drop-shadow(0 0 1.5px #a8fff3) drop-shadow(0 0 5px #3fd6c7) drop-shadow(0 0 10px rgba(32,184,172,0.7)); }
+  .ws-spark.s1 { left: 12px; top: 14px; }
+  .ws-spark.s2 { right: 18px; bottom: 22px; width: 18px; height: 18px; }
+  .band .ws-cap { margin: 22px 0 0; font-size: 14px; text-align: center; color: rgba(237,231,216,0.78); max-width: 34ch; text-wrap: balance; }
+  .band .ws-cap a { color: var(--brass-hi); }
+  .ws.ws-wait .ws-lit, .ws.ws-wait .ws-spark .t, .ws.ws-wait .ws-board::after { opacity: 0; }
+  .ws.ws-on .ws-walk .ws-lit { animation: ws-flick-a 1.5s linear 0.15s both; }
+  .ws.ws-on .ws-wel .ws-lit { animation: ws-flick-b 1.3s linear 0.95s both; }
+  .ws.ws-on .ws-spark .t { animation: ws-pop 0.7s linear 2.1s both; }
+  .ws.ws-on .ws-spark.s2 .t { animation-delay: 2.35s; }
+  .ws.ws-on .ws-board::after { animation: ws-amb 2.4s ease-out 0.15s both; }
+  @keyframes ws-flick-a { 0% { opacity: 0; } 6% { opacity: 0.85; } 9% { opacity: 0.08; } 16% { opacity: 0.7; } 19% { opacity: 0.12; } 33% { opacity: 1; } 36% { opacity: 0.45; } 40%, 100% { opacity: 1; } }
+  @keyframes ws-flick-b { 0% { opacity: 0; } 10% { opacity: 0.7; } 14% { opacity: 0; } 30% { opacity: 1; } 33% { opacity: 0.3; } 38%, 100% { opacity: 1; } }
+  @keyframes ws-pop { 0% { opacity: 0; } 30% { opacity: 1; } 45% { opacity: 0.35; } 60%, 100% { opacity: 1; } }
+  @keyframes ws-amb { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .ws.ws-on .ws-lit, .ws.ws-on .ws-spark .t, .ws.ws-on .ws-board::after { animation: none; }
+    .ws.ws-wait .ws-lit, .ws.ws-wait .ws-spark .t, .ws.ws-wait .ws-board::after { opacity: 1; }
+  }
+  @media (max-width: 1100px) { .ws-board { --ws: 66px; } }
+  @media (max-width: 860px) {
+    .book-head { grid-template-columns: minmax(0, 1fr); }
+    .ws { justify-self: start; margin-top: 70px; }
+  }
+  @media (max-width: 560px) { .ws-board { --ws: min(60px, 12.4vw); padding-inline: 24px; } .ws-spark.s1 { width: 20px; height: 20px; left: 7px; top: 9px; } }
   .min-box b { font-family: 'Big Shoulders Display', sans-serif; font-size: 44px; font-weight: 900; line-height: 1; color: var(--brass-hi); display: block; }
   .min-box p { font-size: 15px; margin-top: 6px; }
 
@@ -809,9 +871,35 @@
 
 <section id="book" class="band gutter">
   <div class="wrap">
-    <svg class="flourish" viewBox="0 0 150 26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 13c20 0 26-9 40-9 9 0 12 8 5 9-6 1-7-6 0-6M146 13c-20 0-26 9-40 9-9 0-12-8-5-9 6-1 7 6 0 6M50 13h50"/><circle cx="75" cy="13" r="2.6" fill="currentColor" stroke="none"/></svg>
-    <p class="label with-pill"><span>Our most asked question</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">How do I <em>book a tattoo?</em></h2>
+    <div class="book-head">
+      <div>
+        <svg class="flourish" viewBox="0 0 150 26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 13c20 0 26-9 40-9 9 0 12 8 5 9-6 1-7-6 0-6M146 13c-20 0-26 9-40 9-9 0-12-8-5-9 6-1 7 6 0 6M50 13h50"/><circle cx="75" cy="13" r="2.6" fill="currentColor" stroke="none"/></svg>
+        <p class="label with-pill"><span>Our most asked question</span> <span class="tag" data-go="maiden">Every build</span></p>
+        <h2 class="reveal">How do I <em>book a tattoo?</em></h2>
+      </div>
+      <div class="ws" id="ws">
+        <div class="ws-board" role="img" aria-label="A neon sign in the window: Walk-ins welcome">
+          <span class="ws-chain l" aria-hidden="true"></span><span class="ws-chain r" aria-hidden="true"></span>
+          <span class="ws-line ws-walk" aria-hidden="true"><span class="ws-glass">Walk-ins</span><span class="ws-lit">Walk-ins</span></span>
+          <span class="ws-line ws-wel" aria-hidden="true"><span class="ws-glass">Welcome</span><span class="ws-lit">Welcome</span></span>
+          <svg class="ws-spark s1" viewBox="0 0 32 32" aria-hidden="true"><path class="g" d="M16 3c1.2 8.2 4.8 11.8 13 13-8.2 1.2-11.8 4.8-13 13-1.2-8.2-4.8-11.8-13-13 8.2-1.2 11.8-4.8 13-13Z"/><path class="t" d="M16 3c1.2 8.2 4.8 11.8 13 13-8.2 1.2-11.8 4.8-13 13-1.2-8.2-4.8-11.8-13-13 8.2-1.2 11.8-4.8 13-13Z"/></svg>
+          <svg class="ws-spark s2" viewBox="0 0 32 32" aria-hidden="true"><path class="g" d="M16 3c1.2 8.2 4.8 11.8 13 13-8.2 1.2-11.8 4.8-13 13-1.2-8.2-4.8-11.8-13-13 8.2-1.2 11.8-4.8 13-13Z"/><path class="t" d="M16 3c1.2 8.2 4.8 11.8 13 13-8.2 1.2-11.8 4.8-13 13-1.2-8.2-4.8-11.8-13-13 8.2-1.2 11.8-4.8 13-13Z"/></svg>
+        </div>
+        <p class="ws-cap">Tattoos and piercing, when an artist is free. Come by <a href="#visit">1618 G St</a>.</p>
+      </div>
+    </div>
+    <script>
+      /* the window sign switches on once as it comes into view (lit from the start under reduced motion or with no IntersectionObserver) */
+      (function () {
+        var ws = document.getElementById('ws'), board = ws && ws.querySelector('.ws-board');
+        if (!board || !('IntersectionObserver' in window) || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        ws.classList.add('ws-wait');
+        var io = new IntersectionObserver(function (es) {
+          for (var i = 0; i < es.length; i++) if (es[i].isIntersecting) { io.disconnect(); ws.classList.remove('ws-wait'); ws.classList.add('ws-on'); return; }
+        }, { threshold: 0.6 });
+        io.observe(board);
+      })();
+    </script>
     <ol class="steps">
       <li class="reveal"><span class="n">01</span><b>Find your artist</b><p>Tell us your idea, and we&rsquo;ll match you with the right artist.</p></li>
       <li class="reveal"><span class="n">02</span><b>Quick consult</b><p>Always free, and some designs don&rsquo;t need one.</p></li>
