@@ -480,8 +480,8 @@
   .steps h3 { font-size: 24px; line-height: 1.15; margin-bottom: 6px; }
   .steps p { font-size: 15.5px; color: var(--ink-soft); }
   .included { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 48px; margin-top: 64px; align-items: start; }
-  .inc-list { list-style: none; columns: 2; column-gap: 28px; }
-  .inc-list li { break-inside: avoid; position: relative; padding: 8px 0 8px 22px; border-bottom: 1px solid var(--hair); font-size: 15.5px; }
+  .inc-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); grid-auto-flow: column; column-gap: 28px; }
+  .inc-list li { position: relative; padding: 8px 0 8px 22px; border-bottom: 1px solid var(--hair); font-size: 15.5px; }
   .inc-list li::before { content: "\2726"; position: absolute; left: 0; top: 9px; font-size: 11px; }
   .policy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 40px; border-top: 1px solid var(--hair); }
   .policy div { padding: 18px 20px 18px 0; border-bottom: 1px solid var(--hair); }
@@ -674,7 +674,7 @@
     .sessions { grid-template-columns: minmax(0, 1fr); }
     .session + .session { border-left: 0; border-top: 1px solid var(--ink); }
     .review, .review:nth-child(even) { padding: 24px 0 22px; border-left: 0; }
-    .inc-list { columns: 1; }
+    .inc-list { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-auto-flow: row; }
     .foot-in { grid-template-columns: minmax(0, 1fr); }
     .film { aspect-ratio: 4 / 5; max-height: none; margin: 0 -20px; }
     .film.full { aspect-ratio: 1620 / 1080; }
