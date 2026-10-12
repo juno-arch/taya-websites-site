@@ -225,7 +225,11 @@
      panel on two brass chains, sea-glass teal channel capitals in the shop's own heading face, an oxblood red script
      crossing them (their sign's teal and red), and two Y2K sparkles like the page's own bullets. Its job: it answers
      "How do I book?" right where it's asked. It switches on once, with a short neon stutter, as it comes into view,
-     then holds steady (no loop). Lit and still under reduced motion, or with no script. */
+     then settles into a faint, uneven transformer hum: only the red script and the light it throws on the wall drift
+     a few percent, on two mismatched slow cycles so it doesn't read as a pulse (WALK-INS stays rock steady, and the
+     hum rests while the sign is off screen). Kept apart from Wild West's smooth 9s breathe on purpose. Under it, a
+     small hours line like the window decal: Mon to Sat (Google and the directories agree), times dotted until they
+     confirm (Google says 12 to 6, directories 12 to 7). Lit and still under reduced motion, or with no script. */
   #book { overflow-x: clip; }
   .book-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 48px; align-items: end; }
   .ws { display: grid; justify-items: center; margin-top: 58px; }
@@ -261,15 +265,20 @@
   .band .ws-cap { margin: 22px 0 0; font-size: 14px; text-align: center; color: rgba(237,231,216,0.78); max-width: 34ch; text-wrap: balance; }
   .band .ws-cap a { color: var(--brass-hi); }
   .ws.ws-wait .ws-lit, .ws.ws-wait .ws-spark .t, .ws.ws-wait .ws-board::after { opacity: 0; }
+  .band .ws-hrs { margin: 10px 0 0; font-size: 11.5px; line-height: 1.5; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; text-align: center; color: rgba(237,231,216,0.66); }
+  .band .ws-hrs .ph { text-transform: none; letter-spacing: 0.02em; font-size: 14px; font-weight: 500; margin-left: 0.4em; }
   .ws.ws-on .ws-walk .ws-lit { animation: ws-flick-a 1.5s linear 0.15s both; }
-  .ws.ws-on .ws-wel .ws-lit { animation: ws-flick-b 1.3s linear 0.95s both; }
+  .ws.ws-on .ws-wel .ws-lit { animation: ws-flick-b 1.3s linear 0.95s both, ws-hum-b 7.3s ease-in-out 2.4s infinite; }
   .ws.ws-on .ws-spark .t { animation: ws-pop 0.7s linear 2.1s both; }
   .ws.ws-on .ws-spark.s2 .t { animation-delay: 2.35s; }
-  .ws.ws-on .ws-board::after { animation: ws-amb 2.4s ease-out 0.15s both; }
+  .ws.ws-on .ws-board::after { animation: ws-amb 2.4s ease-out 0.15s both, ws-hum-amb 11.9s ease-in-out 2.6s infinite; }
+  .ws.ws-away .ws-wel .ws-lit, .ws.ws-away .ws-board::after { animation-play-state: paused; }
   @keyframes ws-flick-a { 0% { opacity: 0; } 6% { opacity: 0.85; } 9% { opacity: 0.08; } 16% { opacity: 0.7; } 19% { opacity: 0.12; } 33% { opacity: 1; } 36% { opacity: 0.45; } 40%, 100% { opacity: 1; } }
   @keyframes ws-flick-b { 0% { opacity: 0; } 10% { opacity: 0.7; } 14% { opacity: 0; } 30% { opacity: 1; } 33% { opacity: 0.3; } 38%, 100% { opacity: 1; } }
   @keyframes ws-pop { 0% { opacity: 0; } 30% { opacity: 1; } 45% { opacity: 0.35; } 60%, 100% { opacity: 1; } }
   @keyframes ws-amb { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes ws-hum-b { 0%, 100% { opacity: 1; } 36% { opacity: 0.93; } 52% { opacity: 0.985; } 71% { opacity: 0.94; } }
+  @keyframes ws-hum-amb { 0%, 100% { opacity: 1; } 17% { opacity: 0.9; } 33% { opacity: 0.97; } 51% { opacity: 0.85; } 66% { opacity: 0.95; } 83% { opacity: 0.89; } }
   @media (prefers-reduced-motion: reduce) {
     .ws.ws-on .ws-lit, .ws.ws-on .ws-spark .t, .ws.ws-on .ws-board::after { animation: none; }
     .ws.ws-wait .ws-lit, .ws.ws-wait .ws-spark .t, .ws.ws-wait .ws-board::after { opacity: 1; }
@@ -886,17 +895,22 @@
           <svg class="ws-spark s2" viewBox="0 0 32 32" aria-hidden="true"><path class="g" d="M16 3c1.2 8.2 4.8 11.8 13 13-8.2 1.2-11.8 4.8-13 13-1.2-8.2-4.8-11.8-13-13 8.2-1.2 11.8-4.8 13-13Z"/><path class="t" d="M16 3c1.2 8.2 4.8 11.8 13 13-8.2 1.2-11.8 4.8-13 13-1.2-8.2-4.8-11.8-13-13 8.2-1.2 11.8-4.8 13-13Z"/></svg>
         </div>
         <p class="ws-cap">Tattoos and piercing, when an artist is free. Come by <a href="#visit">1618 G St</a>.</p>
+        <p class="ws-hrs">Mon to Sat<span class="ph">your hours</span></p>
       </div>
     </div>
     <script>
-      /* the window sign switches on once as it comes into view (lit from the start under reduced motion or with no IntersectionObserver) */
+      /* the window sign switches on once as it comes into view, then hums; the hum rests while it's off screen
+         (lit and still from the start under reduced motion or with no IntersectionObserver) */
       (function () {
         var ws = document.getElementById('ws'), board = ws && ws.querySelector('.ws-board');
         if (!board || !('IntersectionObserver' in window) || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         ws.classList.add('ws-wait');
+        var lit = false;
         var io = new IntersectionObserver(function (es) {
-          for (var i = 0; i < es.length; i++) if (es[i].isIntersecting) { io.disconnect(); ws.classList.remove('ws-wait'); ws.classList.add('ws-on'); return; }
-        }, { threshold: 0.6 });
+          var e = es[es.length - 1];
+          if (!lit && e.isIntersecting && e.intersectionRatio >= 0.6) { lit = true; ws.classList.remove('ws-wait'); ws.classList.add('ws-on'); }
+          ws.classList.toggle('ws-away', !e.isIntersecting);
+        }, { threshold: [0, 0.6] });
         io.observe(board);
       })();
     </script>
