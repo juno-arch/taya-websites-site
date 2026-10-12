@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261010p">
+<link rel="stylesheet" href="portal.css?v=20261012a">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -97,7 +97,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261010p"></script>
+<script src="portal.js?v=20261012a"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -374,60 +374,165 @@
         <span class="empty-body">No gift certificates yet. They show up here once someone buys one.</span></p>
     </section>
 
-    <!-- your bookings (Oct 10 2026): only for a client whose booking runs on Web Faery's server -->
+    <!-- your bookings (Oct 10 2026; part 2 Oct 12 2026: tabs, a month view, days off, different hours on a date,
+         repeating blocks, their own calendars, questions, limits, settings): only for a client whose booking runs on
+         Web Faery's server. Each tab can be opened by its own address: #bookings-upcoming, #bookings-calendar,
+         #bookings-hours, #bookings-services, #bookings-calendars, #bookings-settings -->
     <section class="p-card" id="sec-bookings" aria-labelledby="h-bookings" hidden>
       <span class="kicker">Your booking</span>
       <h2 id="h-bookings" tabindex="-1">Bookings</h2>
       <p class="orders-test" id="bk-off" hidden>Booking isn’t switched on for your site yet. Taya turns it on with you once your hours and services look right.</p>
       <p class="orders-test" id="bk-test" hidden>Deposits are in test mode: no real money moves yet.</p>
       <p class="orders-fine" id="bk-zone"></p>
-      <h3 class="small-h">Coming up</h3>
-      <ul class="orders bks" id="bk-up"></ul>
-      <p class="empty" id="bk-up-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
-        <span class="empty-body">Nothing booked yet. New bookings show up here, and in your calendar if you add your link below.</span></p>
-      <details class="bk-past" id="bk-past-wrap" hidden>
-        <summary>Past and canceled <span class="opt-tag">(the last 60 days)</span></summary>
-        <ul class="orders bks" id="bk-past"></ul>
-      </details>
-
-      <h3 class="small-h">Time off</h3>
-      <p class="orders-fine">Block a day, a few days, or a few hours. Those times close for booking right away.</p>
-      <ul class="dcs" id="bk-off-list"></ul>
-      <form class="dc-form bk-off-form" id="f-bk-off" novalidate>
-        <div class="dc-dates">
-          <div><label class="field-label" for="in-bk-from">From</label><input id="in-bk-from" class="keeps" type="date" aria-describedby="bk-off-err"></div>
-          <div><label class="field-label" for="in-bk-to">To <span class="opt-tag">(optional, for more than one day)</span></label><input id="in-bk-to" class="keeps" type="date"></div>
-        </div>
-        <label class="dc-check"><input type="checkbox" id="in-bk-allday" checked> <span>All day</span></label>
-        <div class="dc-dates" id="bk-off-hours" hidden>
-          <div><label class="field-label" for="in-bk-start">Starting at</label><input id="in-bk-start" class="keeps" type="time" step="900"></div>
-          <div><label class="field-label" for="in-bk-end">Until</label><input id="in-bk-end" class="keeps" type="time" step="900"></div>
-        </div>
-        <label class="field-label" for="in-bk-offnote">A note for you <span class="opt-tag">(optional, only you see it)</span></label>
-        <input id="in-bk-offnote" class="keeps" type="text" maxlength="200" autocomplete="off" placeholder="Like: Trip to see family">
-        <p class="err" id="bk-off-err" hidden></p>
-        <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-off"><span>Add time off</span></button></div>
-      </form>
-
-      <h3 class="small-h">Your weekly hours</h3>
-      <p class="orders-fine">When people can book, each week. Bookings fit inside these hours.</p>
-      <form id="f-bk-hours" novalidate>
-        <div class="bk-week" id="bk-week"></div>
-        <p class="err" id="bk-hours-err" hidden></p>
-        <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-hours"><span>Save your hours</span></button></div>
-      </form>
-
-      <h3 class="small-h">Your services</h3>
-      <ul class="dcs" id="bk-svcs"></ul>
-      <p class="dc-new"><button type="button" class="pick" id="b-bk-svc-new">New service</button></p>
-
-      <h3 class="small-h">Your calendar</h3>
-      <p class="orders-fine">Copy your private calendar link and add it on your phone as a subscribed calendar. Every booking shows up there, with the address for home visits. Keep the link to yourself.</p>
-      <div class="dc-btns">
-        <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
-        <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
+      <div class="bk-tabs" role="tablist" aria-label="Bookings">
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-upcoming" data-tab="upcoming" aria-controls="bk-p-upcoming" aria-selected="true">Coming up</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-calendar" data-tab="calendar" aria-controls="bk-p-calendar" aria-selected="false" tabindex="-1">Calendar</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-hours" data-tab="hours" aria-controls="bk-p-hours" aria-selected="false" tabindex="-1">Hours</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-services" data-tab="services" aria-controls="bk-p-services" aria-selected="false" tabindex="-1">Services</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-calendars" data-tab="calendars" aria-controls="bk-p-calendars" aria-selected="false" tabindex="-1">Your calendars</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-settings" data-tab="settings" aria-controls="bk-p-settings" aria-selected="false" tabindex="-1">Settings</button>
       </div>
-      <p class="orders-fine" id="bk-feed-note" role="status"></p>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-upcoming" aria-labelledby="bk-tab-upcoming">
+        <h3 class="small-h">Coming up</h3>
+        <ul class="orders bks" id="bk-up"></ul>
+        <p class="empty" id="bk-up-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+          <span class="empty-body">Nothing booked yet. New bookings show up here, and each one comes to your email with a calendar file.</span></p>
+        <details class="bk-past" id="bk-past-wrap" hidden>
+          <summary>Past and canceled <span class="opt-tag">(the last 60 days)</span></summary>
+          <ul class="orders bks" id="bk-past"></ul>
+        </details>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-calendar" aria-labelledby="bk-tab-calendar" hidden>
+        <h3 class="small-h">Your month</h3>
+        <p class="orders-fine">Tap a day to see it, take it off, or give it different hours.</p>
+        <div class="bk-monthbar">
+          <button type="button" class="open-btn bk-mnav" id="b-bk-prev" aria-label="Last month">‹</button>
+          <h4 class="bk-month" id="bk-month" aria-live="polite"></h4>
+          <button type="button" class="open-btn bk-mnav" id="b-bk-next" aria-label="Next month">›</button>
+        </div>
+        <div class="bk-cal" id="bk-cal"></div>
+        <p class="orders-fine bk-cal-key">A day marked Off is closed for booking. A faded day is outside your usual hours. A small dot means you’re busy in your own calendar that day.</p>
+        <div class="bk-dayinfo" id="bk-dayinfo" hidden></div>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-hours" aria-labelledby="bk-tab-hours" hidden>
+        <h3 class="small-h">Your weekly hours</h3>
+        <p class="orders-fine">When people can book, each week. Bookings fit inside these hours.</p>
+        <form id="f-bk-hours" novalidate>
+          <div class="bk-week" id="bk-week"></div>
+          <p class="err" id="bk-hours-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-hours"><span>Save your hours</span></button></div>
+        </form>
+
+        <h3 class="small-h">Repeating blocks</h3>
+        <p class="orders-fine">Times you’re busy every week, or every other week. Those times close for booking.</p>
+        <ul class="dcs" id="bk-reps"></ul>
+        <p class="dc-new"><button type="button" class="pick" id="b-bk-rep-new">Add a repeating block</button></p>
+
+        <h3 class="small-h">Different hours on a date</h3>
+        <p class="orders-fine">Open a Saturday, finish early one day, or close a whole day. The month view does this too.</p>
+        <ul class="dcs" id="bk-ovr"></ul>
+        <form class="dc-form bk-off-form" id="f-bk-ovr" novalidate>
+          <div class="dc-dates">
+            <div><label class="field-label" for="in-bk-ovr-date">Date</label><input id="in-bk-ovr-date" class="keeps" type="date" aria-describedby="bk-ovr-err"></div>
+          </div>
+          <label class="dc-check"><input type="checkbox" id="in-bk-ovr-closed"> <span>Closed all day</span></label>
+          <div class="dc-dates" id="bk-ovr-hours">
+            <div><label class="field-label" for="in-bk-ovr-start">From</label><input id="in-bk-ovr-start" class="keeps" type="time" step="900"></div>
+            <div><label class="field-label" for="in-bk-ovr-end">Until</label><input id="in-bk-ovr-end" class="keeps" type="time" step="900"></div>
+          </div>
+          <p class="err" id="bk-ovr-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-ovr"><span>Save that date</span></button></div>
+        </form>
+
+        <h3 class="small-h">Time off</h3>
+        <p class="orders-fine">Block a day, a few days, or a few hours. Those times close for booking right away.</p>
+        <ul class="dcs" id="bk-off-list"></ul>
+        <form class="dc-form bk-off-form" id="f-bk-off" novalidate>
+          <div class="dc-dates">
+            <div><label class="field-label" for="in-bk-from">From</label><input id="in-bk-from" class="keeps" type="date" aria-describedby="bk-off-err"></div>
+            <div><label class="field-label" for="in-bk-to">To <span class="opt-tag">(optional, for more than one day)</span></label><input id="in-bk-to" class="keeps" type="date"></div>
+          </div>
+          <label class="dc-check"><input type="checkbox" id="in-bk-allday" checked> <span>All day</span></label>
+          <div class="dc-dates" id="bk-off-hours" hidden>
+            <div><label class="field-label" for="in-bk-start">Starting at</label><input id="in-bk-start" class="keeps" type="time" step="900"></div>
+            <div><label class="field-label" for="in-bk-end">Until</label><input id="in-bk-end" class="keeps" type="time" step="900"></div>
+          </div>
+          <label class="field-label" for="in-bk-offnote">A note for you <span class="opt-tag">(optional, only you see it)</span></label>
+          <input id="in-bk-offnote" class="keeps" type="text" maxlength="200" autocomplete="off" placeholder="Like: Trip to see family">
+          <p class="err" id="bk-off-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-off"><span>Add time off</span></button></div>
+        </form>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-services" aria-labelledby="bk-tab-services" hidden>
+        <h3 class="small-h">Your services</h3>
+        <ul class="dcs" id="bk-svcs"></ul>
+        <p class="dc-new"><button type="button" class="pick" id="b-bk-svc-new">New service</button></p>
+
+        <h3 class="small-h">Questions on the booking form</h3>
+        <p class="orders-fine">Anything you’d like to know before you meet. The answers come to you in the booking email and show here, and go nowhere else.</p>
+        <ul class="dcs" id="bk-qs"></ul>
+        <p class="dc-new"><button type="button" class="pick" id="b-bk-q-new">Add a question</button></p>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-calendars" aria-labelledby="bk-tab-calendars" hidden>
+        <h3 class="small-h">Busy times from your calendar</h3>
+        <p class="orders-fine">Connect the calendar you already keep, and the times you’re busy there close for booking here. Only the busy times are kept: no titles, places or notes.</p>
+        <ul class="dcs" id="bk-cals"></ul>
+        <form class="dc-form" id="f-bk-cal" novalidate>
+          <label class="field-label" for="in-bk-cal-url">Your calendar’s private address</label>
+          <input id="in-bk-cal-url" class="keeps" type="text" inputmode="url" autocomplete="off" spellcheck="false" maxlength="2000" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics" aria-describedby="bk-cal-err">
+          <label class="field-label" for="in-bk-cal-label">A name for it <span class="opt-tag">(optional, only you see it)</span></label>
+          <input id="in-bk-cal-label" class="keeps" type="text" maxlength="60" autocomplete="off" placeholder="Like: Personal">
+          <p class="err" id="bk-cal-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-cal"><span>Connect it</span></button></div>
+        </form>
+        <details class="bk-how">
+          <summary>Where to find that address</summary>
+          <div class="bk-how-body">
+            <p><strong>Google Calendar</strong> (on a computer): Settings, then your calendar’s name on the left, then Integrate calendar. Copy the “Secret address in iCal format”.</p>
+            <p><strong>Outlook</strong>: Settings, Calendar, Shared calendars, Publish a calendar. Pick your calendar and “Can view when I’m busy”, then copy the ICS link. That one shares only busy times.</p>
+            <p><strong>iPhone or Mac (iCloud)</strong>: in Calendar, share the calendar and turn on Public Calendar, then copy the link. Anyone with that link could see the calendar, so a calendar kept just for these busy times is a good idea.</p>
+            <p>Keep the address to yourself, like a password. If you ever share it by mistake, make a new one in your calendar and paste it here.</p>
+          </div>
+        </details>
+
+        <h3 class="small-h">Your bookings in your calendar</h3>
+        <p class="orders-fine">Each booking email to you has a calendar file. Open it to add the booking to your calendar; the emails when it moves or is canceled carry a file that moves or removes it.</p>
+        <p class="orders-fine">Or copy your private calendar link and add it as a subscribed calendar. It holds every booking, with the address for home visits. Calendars look for changes on their own schedule: an iPhone every so often (on a Mac you can pick every 5 minutes), Google every several hours, sometimes a day. The emails are the quick way. Keep the link to yourself.</p>
+        <div class="dc-btns">
+          <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
+          <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
+        </div>
+        <p class="orders-fine" id="bk-feed-note" role="status"></p>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-settings" aria-labelledby="bk-tab-settings" hidden>
+        <h3 class="small-h">How booking works for you</h3>
+        <form class="dc-form bk-set" id="f-bk-set" novalidate>
+          <label class="field-label" for="in-bk-notice">How soon someone can book</label>
+          <select id="in-bk-notice"></select>
+          <label class="field-label" for="in-bk-horizon">How far ahead</label>
+          <select id="in-bk-horizon"></select>
+          <label class="field-label" for="in-bk-buffer">A break between bookings</label>
+          <select id="in-bk-buffer"></select>
+          <label class="field-label" for="in-bk-window">People can change or cancel online until</label>
+          <select id="in-bk-window"></select>
+          <label class="field-label" for="in-bk-maxday">Most bookings in a day <span class="opt-tag">(optional)</span></label>
+          <input id="in-bk-maxday" class="keeps" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="No limit">
+          <label class="field-label" for="in-bk-maxweek">Most bookings in a week <span class="opt-tag">(optional, Monday to Sunday)</span></label>
+          <input id="in-bk-maxweek" class="keeps" type="text" inputmode="numeric" maxlength="3" autocomplete="off" placeholder="No limit">
+          <label class="field-label" for="in-bk-remind">A reminder email to them</label>
+          <select id="in-bk-remind"></select>
+          <label class="field-label" for="in-bk-step">Start times offered every</label>
+          <select id="in-bk-step"></select>
+          <p class="err" id="bk-set-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-set"><span>Save settings</span></button></div>
+        </form>
+      </div>
     </section>
 
     <section class="p-card" id="sec-list" aria-labelledby="h-list">

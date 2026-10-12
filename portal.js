@@ -1999,14 +1999,25 @@
     } finally { btn.removeAttribute('aria-busy'); }
   }
 
-  /* ---- your bookings (Oct 10 2026) ----
+  /* ---- your bookings (Oct 10 2026; part 2 Oct 12 2026) ----
      Only for a client whose booking runs on Web Faery's server (the server answers booking: null for everyone else,
-     and the section stays hidden). Coming up (move or cancel, which emails the person), past, time off, weekly hours,
-     services, and the private calendar link. Every call goes through bookCall, the one place this part signs in. */
+     and the section stays hidden). Six tabs, each with its own address (#bookings-upcoming, -calendar, -hours,
+     -services, -calendars, -settings): coming up (move or cancel, which emails the person), a month view (tap a day
+     to take it off or give it different hours), hours (weekly, repeating blocks, different hours on a date, time off),
+     services and the booking form's questions, their own calendars (busy times only) and the private calendar link,
+     settings. Every call goes through bookCall, the one place this part signs in. */
   let bk = null;             // the overview as the server last sent it (cleaned)
   let bkBusy = false;
+  let bkTab = 'upcoming';
+  let bkTabsReady = false;
+  let bkMonth = '';          // the month on show, 'YYYY-MM'
+  let bkMonthDays = [];
+  let bkDay = '';            // the day open under the month
+  const BK_TABS = ['upcoming', 'calendar', 'hours', 'services', 'calendars', 'settings'];
   const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
+  const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
+  const BK_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   async function loadBookings() {
     if (DEMO) { $('#sec-bookings').hidden = true; return; }
     if (bkBusy) return;
@@ -2014,6 +2025,7 @@
     try {
       bk = cleanBk(await bookCall('/overview'));
       renderBk();
+      if (bk && bkTab === 'calendar') loadMonth(bkMonth);
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       if (!bk) $('#sec-bookings').hidden = true;
@@ -2025,26 +2037,40 @@
       id: str(b.id, 20), when: str(b.when, 60), starts_at: str(b.starts_at, 30), service_name: str(b.service_name, 80), minutes: +b.minutes || 0,
       location: str(b.location, 10), where: str(b.where, 400), address: str(b.address, 400), name: str(b.name, 120), email: str(b.email, 200),
       phone: str(b.phone, 40), note: str(b.note, 1000), status: str(b.status, 12), group_index: +b.group_index || 1, group_size: +b.group_size || 1,
-      deposit: str(b.deposit, 20), paid: !!b.paid, canceled_by: str(b.canceled_by, 12)
+      deposit: str(b.deposit, 20), paid: !!b.paid, canceled_by: str(b.canceled_by, 12),
+      answers: arr(b.answers).slice(0, 12).map((a) => (a ? { label: str(a.label, 120), answer: str(a.answer, 1000) } : null)).filter((a) => a && a.label),
+      client_reason: str(b.client_reason, 600)
     };
   }
+  const cleanWins = (v) => arr(v).filter((w) => Array.isArray(w) && w.length === 2).map((w) => [str(w[0], 5), str(w[1], 5)]).slice(0, 4);
+  const cleanWeek = (h) => { const out = {}; BK_DAYS.forEach(([k]) => { out[k] = cleanWins(h && h[k]); }); return out; };
   function cleanBk(d) {
     d = d && typeof d === 'object' ? d : {};
     if (!d.booking || typeof d.booking !== 'object') return null;
     const o = d.booking;
-    const hours = {};
-    BK_DAYS.forEach(([k]) => { hours[k] = arr(o.hours && o.hours[k]).filter((w) => Array.isArray(w) && w.length === 2).map((w) => [str(w[0], 5), str(w[1], 5)]).slice(0, 4); });
     const svc = (s) => (s && str(s.id) ? {
       id: str(s.id, 20), name: str(s.name, 80), minutes: +s.minutes || 60, price_cents: +s.price_cents || 0, deposit_cents: +s.deposit_cents || 0,
-      description: str(s.description, 600), location: str(s.location, 10), package_count: Math.max(1, +s.package_count || 1), active: !!s.active
+      description: str(s.description, 600), location: str(s.location, 10), package_count: Math.max(1, +s.package_count || 1), active: !!s.active,
+      hours: s.hours && typeof s.hours === 'object' ? cleanWeek(s.hours) : null, max_per_day: +s.max_per_day || 0, max_per_week: +s.max_per_week || 0
     } : null);
+    const st = o.settings && typeof o.settings === 'object' ? o.settings : {};
     return {
-      owner: { name: str(o.name, 80), active: !!o.active, zone: str(o.zone, 20), hours, locations: arr(o.locations).map((x) => str(x, 10)).filter((x) => BK_WHERE[x]),
-        payments: !!o.payments, payments_test: !!o.payments_test, feed_url: safeUrl(o.feed_url) },
+      owner: { name: str(o.name, 80), active: !!o.active, zone: str(o.zone, 20), hours: cleanWeek(o.hours), locations: arr(o.locations).map((x) => str(x, 10)).filter((x) => BK_WHERE[x]),
+        payments: !!o.payments, payments_test: !!o.payments_test, feed_url: safeUrl(o.feed_url),
+        today: /^\d{4}-\d{2}-\d{2}$/.test(str(o.today)) ? str(o.today) : todayISO, now: str(o.now, 30),
+        settings: { notice_hours: +st.notice_hours || 0, horizon_days: +st.horizon_days || 60, buffer_min: +st.buffer_min || 0, cancel_window_hours: +st.cancel_window_hours || 0,
+          max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0 },
+        questions: arr(o.questions).slice(0, 10).map((q) => (q && str(q.id) ? { id: str(q.id, 10), label: str(q.label, 120), type: BK_QTYPE[q.type] ? q.type : 'text',
+          choices: arr(q.choices).map((c) => str(c, 60)).filter(Boolean).slice(0, 12), required: !!q.required, services: arr(q.services).map((x) => str(x, 20)).filter(Boolean) } : null)).filter(Boolean) },
       services: arr(d.services).slice(0, 40).map(svc).filter(Boolean),
       upcoming: arr(d.upcoming).slice(0, 500).map(cleanBkRow).filter(Boolean),
       past: arr(d.past).slice(0, 300).map(cleanBkRow).filter(Boolean),
-      time_off: arr(d.time_off).slice(0, 300).map((t) => (t && str(t.id) ? { id: str(t.id, 20), label: str(t.label, 80), note: str(t.note, 200) } : null)).filter(Boolean)
+      time_off: arr(d.time_off).slice(0, 300).map((t) => (t && str(t.id) ? { id: str(t.id, 20), label: str(t.label, 80), note: str(t.note, 200) } : null)).filter(Boolean),
+      overrides: arr(d.overrides).slice(0, 400).map((v) => (v && str(v.date) ? { date: str(v.date, 10), label: str(v.label, 40), hours_label: str(v.hours_label, 120), closed: !!v.closed, windows: cleanWins(v.windows) } : null)).filter(Boolean),
+      repeats: arr(d.repeats).slice(0, 30).map((r) => (r && str(r.id) ? { id: str(r.id, 20), label: str(r.label, 200), note: str(r.note, 200), days: arr(r.days).map((x) => str(x, 3)),
+        start: str(r.start, 5), end: str(r.end, 5), every_weeks: +r.every_weeks || 1, starts_on: str(r.starts_on, 10), ends_on: str(r.ends_on, 10) } : null)).filter(Boolean),
+      calendars: arr(d.calendars).slice(0, 5).map((c) => (c && str(c.id) ? { id: str(c.id, 20), label: str(c.label, 60), hint: str(c.hint, 120), active: !!c.active,
+        checked_at: str(c.checked_at, 30), ok_at: str(c.ok_at, 30), error: str(c.error, 40), busy_count: +c.busy_count || 0 } : null)).filter(Boolean)
     };
   }
   function renderBk() {
@@ -2061,9 +2087,48 @@
     $('#bk-past-wrap').hidden = !bk.past.length;
     $('#bk-past').replaceChildren(...bk.past.map((b) => bkRow(b, true)));
     $('#bk-off-list').replaceChildren(...bk.time_off.map(offRow));
-    if (!$('#f-bk-hours').contains(document.activeElement)) renderWeek(bk.owner.hours);
+    if (!$('#f-bk-hours').contains(document.activeElement)) buildWeek($('#bk-week'), bk.owner.hours, '');
     if (!sec.querySelector('#bk-svcs .bk-form')) $('#bk-svcs').replaceChildren(...bk.services.map(svcRow));
+    if (!sec.querySelector('#bk-reps .bk-form, #bk-p-hours > .bk-form')) $('#bk-reps').replaceChildren(...bk.repeats.map(repRow));
+    $('#bk-ovr').replaceChildren(...bk.overrides.map(ovrRow));
+    if (!sec.querySelector('#bk-qs .bk-form, #bk-p-services > .bk-form')) $('#bk-qs').replaceChildren(...bk.owner.questions.map(qRow));
+    $('#bk-cals').replaceChildren(...bk.calendars.map(calRow));
+    if (!$('#f-bk-set').contains(document.activeElement)) fillSettings();
+    if (!bkTabsReady) {
+      bkTabsReady = true;
+      const h = hashTab();
+      if (h) { selectTab(h, false, true); requestAnimationFrame(() => sec.scrollIntoView({ block: 'start' })); }
+    }
   }
+
+  // ---- the tabs
+  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); return m && BK_TABS.includes(m[1]) ? m[1] : ''; };
+  function selectTab(key, focus, fromHash) {
+    if (!BK_TABS.includes(key)) key = 'upcoming';
+    bkTab = key;
+    $$('#sec-bookings .bk-tab').forEach((t) => {
+      const on = t.dataset.tab === key;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    $$('#sec-bookings .bk-panel').forEach((p) => { p.hidden = p.id !== 'bk-p-' + key; });
+    if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#bookings-' + key); } catch (e) { /* fine */ } }
+    if (focus) focusEl($('#bk-tab-' + key));
+    if (key === 'calendar' && bk) loadMonth(bkMonth);
+  }
+  function onTabKey(ev) {
+    const i = BK_TABS.indexOf(bkTab);
+    let n = -1;
+    if (ev.key === 'ArrowRight') n = (i + 1) % BK_TABS.length;
+    else if (ev.key === 'ArrowLeft') n = (i + BK_TABS.length - 1) % BK_TABS.length;
+    else if (ev.key === 'Home') n = 0;
+    else if (ev.key === 'End') n = BK_TABS.length - 1;
+    if (n < 0) return;
+    ev.preventDefault();
+    selectTab(BK_TABS[n], true, false);
+  }
+
+  // ---- coming up
   function bkRow(b, past) {
     const li = make('li', 'order bk' + (b.status === 'canceled' ? ' bk-gone' : ''));
     li.dataset.booking = b.id;
@@ -2082,6 +2147,8 @@
     ship.append(make('p', 'o-addr', b.location === 'home' ? (b.address || 'Address not given') : b.where));
     li.append(ship);
     if (b.note) { const n = make('div', 'o-note'); n.append(make('span', 'o-label', 'Their note'), make('p', null, b.note)); li.append(n); }
+    b.answers.forEach((a) => { const n = make('div', 'o-note bk-ans'); n.append(make('span', 'o-label', a.label), make('p', null, a.answer)); li.append(n); });
+    if (b.client_reason) { const n = make('div', 'o-note'); n.append(make('span', 'o-label', b.status === 'canceled' ? 'Their note when they canceled' : 'Their note when they moved it'), make('p', null, b.client_reason)); li.append(n); }
     const bits = [];
     if (b.status === 'pending') bits.push('Waiting for the deposit (held 30 minutes)');
     if (b.deposit) bits.push(b.paid ? 'Deposit paid: ' + b.deposit : 'Deposit ' + b.deposit);
@@ -2158,7 +2225,7 @@
       return;
     }
     f.replaceChildren();
-    if (!days.length) { f.append(make('p', 'o-hint', 'No open times to move it to right now. Add hours above, or email them to sort it out.')); return; }
+    if (!days.length) { f.append(make('p', 'o-hint', 'No open times to move it to right now. Add hours, or email them to sort it out.')); return; }
     f.append(make('p', 'o-hint', 'Move ' + b.service_name + ' with ' + b.name + ' (now ' + b.when + '). They get an email with the new time.'));
     const dl = make('label', 'field-label', 'New day'); dl.htmlFor = 'in-bk-day-' + b.id;
     const ds = make('select'); ds.id = 'in-bk-day-' + b.id;
@@ -2201,8 +2268,270 @@
     if (e.code === 'slow_down') return 'Lots of changes just now. Try again in a few minutes.';
     if (e.code === 'not_found') return 'That’s not here anymore. Try refreshing the page.';
     if (e.status === 409) return 'That time isn’t open anymore, or the booking already changed. Refresh and try again.';
-    if (e.code === 'input') return e.why === 'no_payments' ? 'Deposits need your Stripe connected first. Email Taya and she’ll set it up.' : 'Something in there didn’t fit. Could you check it and try again?';
+    if (e.code === 'input') {
+      if (e.why === 'no_payments') return 'Deposits need your Stripe connected first. Email Taya and she’ll set it up.';
+      if (e.why === 'too_many') return 'That’s the most this can hold for now. Remove one first, or email Taya.';
+      return 'Something in there didn’t fit. Could you check it and try again?';
+    }
     return 'I can’t reach your bookings right now. Try again soon, or email me at ' + TAYA + '.';
+  }
+  const overlapNote = (hits, done) => {
+    const n = arr(hits).length;
+    return n ? done + ' ' + plural(n, 'booking is', 'bookings are') + ' already in that time: move or cancel ' + (n === 1 ? 'it' : 'them') + ' under Coming up.' : done;
+  };
+
+  // ---- the month
+  const monthKeyAdd = (m, n) => { const y = +m.slice(0, 4), mo = +m.slice(5, 7) - 1 + n; const d = new Date(Date.UTC(y, mo, 1)); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1); };
+  const monthName = (m) => BK_MONTHS[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4);
+  async function loadMonth(month) {
+    if (!bk) return;
+    const first = bk.owner.today.slice(0, 7), last = monthKeyAdd(first, 12);
+    let m = month && /^\d{4}-\d{2}$/.test(month) ? month : first;
+    if (m < first) m = first;
+    if (m > last) m = last;
+    bkMonth = m;
+    $('#bk-month').textContent = monthName(m);
+    $('#b-bk-prev').disabled = m <= first;
+    $('#b-bk-next').disabled = m >= last;
+    try {
+      const d = await bookCall('/month', { month: m });
+      if (bkMonth !== m) return;
+      bkMonthDays = arr(d && d.days).map(cleanDay).filter(Boolean);
+      renderMonth();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      $('#bk-cal').replaceChildren(make('p', 'err', bkWords(e)));
+    }
+  }
+  function cleanDay(x) {
+    if (!x || !/^\d{4}-\d{2}-\d{2}$/.test(str(x.date))) return null;
+    const list = (v) => arr(v).map((t) => str(t, 80)).filter(Boolean).slice(0, 20);
+    return { date: str(x.date, 10), label: str(x.label, 40), state: str(x.state, 16), override: !!x.override, hours_label: str(x.hours_label, 120), usual_label: str(x.usual_label, 120),
+      windows: cleanWins(x.windows), time_off: list(x.time_off), blocks: list(x.blocks), busy: list(x.busy), full: !!x.full,
+      bookings: arr(x.bookings).slice(0, 40).map((b) => (b ? { time: str(b.time, 20), name: str(b.name, 120), service_name: str(b.service_name, 80) } : null)).filter(Boolean) };
+  }
+  const dayWord = (d) => (d.state === 'closed' ? 'Off' : d.full ? 'Full' : '');
+  function dayAria(d) {
+    const bits = [d.label];
+    if (d.state === 'past') bits.push('past');
+    else if (d.state === 'closed') bits.push('off');
+    else if (d.state === 'usual_closed') bits.push('outside your usual hours');
+    else bits.push('open ' + d.hours_label + (d.override ? ' (just this day)' : ''));
+    if (d.full) bits.push('full');
+    if (d.bookings.length) bits.push(plural(d.bookings.length, 'booking', 'bookings'));
+    if (d.busy.length && d.state !== 'past') bits.push('busy in your calendar');
+    return bits.join(', ');
+  }
+  function renderMonth() {
+    const cal = $('#bk-cal');
+    const kids = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((w) => { const s = make('span', 'bk-dow', w); s.setAttribute('aria-hidden', 'true'); return s; });
+    if (bkMonthDays.length) {
+      const p = dayParts(bkMonthDays[0].date);
+      const lead = (new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay() + 6) % 7;
+      for (let i = 0; i < lead; i++) kids.push(make('span', 'bk-cd-blank'));
+    }
+    bkMonthDays.forEach((d) => {
+      const b = make('button', 'bk-cd bk-cd-' + d.state + (d.override ? ' bk-cd-own' : ''));
+      b.type = 'button';
+      b.dataset.date = d.date;
+      b.setAttribute('aria-pressed', d.date === bkDay ? 'true' : 'false');
+      b.setAttribute('aria-label', dayAria(d));
+      b.append(make('span', 'bk-cd-n', String(+d.date.slice(8, 10))));
+      const w = dayWord(d);
+      const count = d.bookings.length && d.state !== 'past' ? String(d.bookings.length) : '';
+      const line = make('span', 'bk-cd-w', w || (count ? count + ' ' : ''));
+      if (!w && count) line.append(make('span', 'bk-cd-long', 'booked'));
+      b.append(line);
+      if (d.busy.length && d.state !== 'past' && d.state !== 'closed') { const dot = make('span', 'bk-cd-busy'); dot.setAttribute('aria-hidden', 'true'); b.append(dot); }
+      b.addEventListener('click', () => { bkDay = d.date; renderMonth(); renderDayInfo(true); });
+      kids.push(b);
+    });
+    cal.replaceChildren(...kids);
+    if (bkDay && bkDay.slice(0, 7) === bkMonth) renderDayInfo(false); else $('#bk-dayinfo').hidden = true;
+  }
+  function renderDayInfo(focus) {
+    const d = bkMonthDays.find((x) => x.date === bkDay);
+    const box = $('#bk-dayinfo');
+    if (!d) { box.hidden = true; return; }
+    box.hidden = false;
+    const h = make('h4', 'small-h bk-day-h', d.label);
+    h.tabIndex = -1;
+    const kids = [h];
+    const line = (label, text) => { const p = make('p', 'bk-day-line'); p.append(make('span', 'o-label', label), make('span', null, text)); return p; };
+    if (d.state === 'closed') kids.push(line('Hours', d.override ? 'Off all day (just this date)' : 'Off all day'));
+    else if (d.state === 'usual_closed') kids.push(line('Hours', 'Closed on ' + DAYS[new Date(d.date + 'T12:00:00Z').getUTCDay()] + 's'));
+    else kids.push(line('Hours', d.hours_label + (d.override ? ' (just this date; usually ' + d.usual_label + ')' : '')));
+    if (d.time_off.length) kids.push(line('Time off', d.time_off.join(', ')));
+    if (d.blocks.length) kids.push(line('Repeating block', d.blocks.join(', ')));
+    if (d.busy.length) kids.push(line('Busy in your calendar', d.busy.join(', ')));
+    if (d.full) kids.push(line('Full', 'This day has as many bookings as your limit allows.'));
+    if (d.bookings.length) {
+      const ul = make('ul', 'bk-day-books');
+      d.bookings.forEach((b) => ul.append(make('li', null, b.time + ', ' + b.service_name + ' with ' + b.name)));
+      kids.push(make('span', 'o-label', 'Booked'), ul);
+    }
+    if (d.state !== 'past') {
+      const act = make('div', 'dc-btns bk-day-act');
+      const btn = (text, cls, fn) => { const b = make('button', cls, text); b.type = 'button'; b.addEventListener('click', () => fn(b)); act.append(b); return b; };
+      if (d.state === 'closed') btn(d.override || d.usual_label !== 'Closed' ? 'Open this day again' : 'Open this day', 'btn small', (b) => daySet(d.date, 'usual', null, b, 'Open again. People can book that day.'));
+      if (d.state === 'open') btn('Take this day off', 'btn small', (b) => daySet(d.date, 'closed', null, b, 'That day is off. It’s closed for booking.'));
+      if (d.state !== 'past') btn(d.state === 'usual_closed' ? 'Open this day' : 'Different hours this day', 'later', () => openDayHours(d, box));
+      if (d.override && d.state !== 'closed') btn('Back to your usual hours', 'later', (b) => daySet(d.date, 'usual', null, b, 'Back to your usual hours.'));
+      kids.push(act);
+      if (d.bookings.length && d.state === 'open') kids.push(make('p', 'orders-fine', 'Taking a day off keeps the bookings already there. Move or cancel them under Coming up.'));
+    }
+    box.replaceChildren(...kids);
+    if (focus) focusEl(h, true);
+  }
+  function openDayHours(d, box) {
+    closeBkForms(box);
+    const f = make('form', 'dc-form bk-form');
+    f.noValidate = true;
+    const wrap = make('div', 'bk-week');
+    buildWeek(wrap, { mon: d.windows.length ? d.windows : [['10:00', '16:00']] }, 'day', [['mon', d.label]]);
+    const err = make('p', 'err'); err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save hours for this day'));
+    const no = make('button', 'later', 'Cancel'); no.type = 'button';
+    no.addEventListener('click', () => { f.remove(); });
+    btns.append(go, no);
+    f.append(make('p', 'o-hint', 'Hours for ' + d.label + ' only. Your other days stay as they are.'), wrap, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const wins = collectWeek(wrap).mon || [];
+      if (!wins.length) { err.textContent = 'Add the hours you’re open, or use Take this day off.'; err.hidden = false; return; }
+      err.hidden = true;
+      await daySet(d.date, 'hours', wins, go, 'Saved. Those are the hours for that day.', err);
+    });
+    box.append(f);
+    focusEl(f.querySelector('input'));
+  }
+  async function daySet(date, mode, windows, btn, done, errEl) {
+    setBusy(btn, true, 'Saving…');
+    try {
+      const body = { date, mode };
+      if (windows) body.windows = windows;
+      const r = await bookCall('/day-set', body);
+      toast(overlapNote(r && r.overlaps, done), arr(r && r.overlaps).length ? 9000 : 0);
+      bkDay = date;
+      await loadBookings();
+      if (bkTab === 'calendar') { await loadMonth(date.slice(0, 7)); const b = $('#bk-cal [data-date="' + date + '"]'); if (b) focusEl(b, true); }
+    } catch (e) {
+      setBusy(btn, false);
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      const msg = e.code === 'input' && e.field === 'windows' ? 'Check the hours: each start comes before its end, in quarter hours, without overlapping.' : bkWords(e);
+      if (errEl) { errEl.textContent = msg; errEl.hidden = false; } else toast(msg);
+    }
+  }
+
+  // ---- different hours on a date (the list in Hours)
+  function ovrRow(v) {
+    const li = make('li', 'dc');
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'bk-off-label', v.label), make('span', 'dc-off', v.closed ? 'Closed' : ''));
+    li.append(head);
+    if (!v.closed) li.append(make('p', 'dc-meta', v.hours_label));
+    const act = make('div', 'o-act');
+    const rm = make('button', 'open-btn', 'Back to usual'); rm.type = 'button';
+    rm.setAttribute('aria-label', 'Back to your usual hours on ' + v.label);
+    rm.addEventListener('click', () => daySet(v.date, 'usual', null, rm, 'Back to your usual hours on ' + v.label + '.'));
+    act.append(rm);
+    li.append(act);
+    return li;
+  }
+  async function onBkOvr(ev) {
+    ev.preventDefault();
+    const err = $('#bk-ovr-err');
+    err.hidden = true;
+    const date = $('#in-bk-ovr-date').value;
+    if (!date) { err.textContent = 'Pick the date.'; err.hidden = false; focusEl($('#in-bk-ovr-date')); return; }
+    const closed = $('#in-bk-ovr-closed').checked;
+    const a = $('#in-bk-ovr-start').value, b = $('#in-bk-ovr-end').value;
+    if (!closed && (!a || !b)) { err.textContent = 'Add the hours you’re open that day, or tick Closed all day.'; err.hidden = false; focusEl($('#in-bk-ovr-start')); return; }
+    await daySet(date, closed ? 'closed' : 'hours', closed ? null : [[a, b]], $('#b-bk-ovr'), closed ? 'Saved. That day is closed for booking.' : 'Saved. Those are the hours for that day.', err);
+    if (err.hidden) { $('#in-bk-ovr-date').value = ''; $('#in-bk-ovr-start').value = ''; $('#in-bk-ovr-end').value = ''; $('#in-bk-ovr-closed').checked = false; $('#bk-ovr-hours').hidden = false; }
+  }
+
+  // ---- repeating blocks
+  function repRow(r) {
+    const li = make('li', 'dc');
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'bk-off-label', r.label));
+    li.append(head);
+    if (r.note) li.append(make('p', 'dc-meta', r.note));
+    const act = make('div', 'o-act o-act2');
+    const ed = make('button', 'open-btn', 'Change'); ed.type = 'button';
+    ed.setAttribute('aria-label', 'Change the block: ' + r.label);
+    ed.addEventListener('click', () => openRep(r, li));
+    const rm = make('button', 'open-btn', 'Remove'); rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove the block: ' + r.label);
+    rm.addEventListener('click', async () => {
+      setBusy(rm, true, 'Removing…');
+      try { await bookCall('/repeat-remove', { id: r.id }); toast('Removed. Those times are open again.'); await loadBookings(); focusEl($('#b-bk-rep-new'), true); } catch (e) {
+        setBusy(rm, false);
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        toast(bkWords(e));
+      }
+    });
+    act.append(ed, rm);
+    li.append(act);
+    return li;
+  }
+  function openRep(r, li) {
+    closeBkForms($('#bk-p-hours'));
+    const key = r ? r.id : 'new';
+    const f = make('form', 'dc-form bk-form');
+    f.noValidate = true;
+    const fs = make('fieldset', 'bk-daypick');
+    fs.append(make('legend', 'field-label', 'Which days'));
+    BK_DAYS.forEach(([k, name]) => {
+      const l = make('label', 'dc-check');
+      const c = make('input'); c.type = 'checkbox'; c.value = k; c.checked = r ? r.days.includes(k) : k === 'tue';
+      l.append(c, make('span', null, name));
+      fs.append(l);
+    });
+    const field = (label, el, opt) => { const l = make('label', 'field-label', label + ' '); l.htmlFor = el.id; if (opt) l.append(make('span', 'opt-tag', opt)); return [l, el]; };
+    const inp = (id, type, val) => { const i = make('input'); i.id = id + '-' + key; i.type = type; i.value = val; i.className = 'keeps'; if (type === 'time') i.step = 900; return i; };
+    const from = inp('in-bk-rep-a', 'time', r ? r.start : '10:00'), until = inp('in-bk-rep-b', 'time', r ? (r.end === '24:00' ? '23:45' : r.end) : '14:00');
+    const often = make('select'); often.id = 'in-bk-rep-every-' + key;
+    [[1, 'Every week'], [2, 'Every other week'], [3, 'Every 3 weeks'], [4, 'Every 4 weeks']].forEach(([v, t]) => { const o = make('option', null, t); o.value = String(v); often.append(o); });
+    often.value = String(r ? r.every_weeks : 1);
+    const starts = inp('in-bk-rep-from', 'date', r ? r.starts_on : bk.owner.today), ends = inp('in-bk-rep-to', 'date', r ? r.ends_on : '');
+    const note = inp('in-bk-rep-note', 'text', r ? r.note : ''); note.maxLength = 200; note.autocomplete = 'off'; note.placeholder = 'Like: Standing commitment';
+    const times = make('div', 'dc-dates'); const ta = make('div'); ta.append(...field('From', from)); const tb = make('div'); tb.append(...field('Until', until)); times.append(ta, tb);
+    const dates = make('div', 'dc-dates'); const da = make('div'); da.append(...field('Starting', starts)); const db = make('div'); db.append(...field('Ending', ends, '(optional)')); dates.append(da, db);
+    const err = make('p', 'err'); err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save the block'));
+    const no = make('button', 'later', 'Cancel'); no.type = 'button';
+    no.addEventListener('click', () => { f.remove(); focusEl(r ? li.querySelector('.open-btn') : $('#b-bk-rep-new')); });
+    btns.append(go, no);
+    f.append(make('h4', 'small-h', r ? 'Change the block' : 'A new repeating block'), fs, times, ...field('How often', often), dates, ...field('A note for you', note, '(optional, only you see it)'), err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      err.hidden = true;
+      const days = $$('input[type="checkbox"]', fs).filter((c) => c.checked).map((c) => c.value);
+      const bad = (msg, el) => { err.textContent = msg; err.hidden = false; focusEl(el); };
+      if (!days.length) return bad('Pick at least one day.', fs.querySelector('input'));
+      if (!from.value || !until.value || until.value <= from.value) return bad('Check the times: the end comes after the start.', from);
+      if (!starts.value) return bad('Pick the first day it starts.', starts);
+      if (ends.value && ends.value < starts.value) return bad('The ending date comes after the start.', ends);
+      setBusy(go, true, 'Saving…');
+      try {
+        const res = await bookCall('/repeat-save', { id: r ? r.id : '', days, start: from.value, end: until.value, every_weeks: +often.value, starts_on: starts.value, ends_on: ends.value || '', note: cleanLine(note.value, 200) });
+        f.remove();
+        toast(overlapNote(res && res.overlaps, 'Saved. Those times close for booking.'), arr(res && res.overlaps).length ? 9000 : 0);
+        await loadBookings();
+        focusEl($('#b-bk-rep-new'), true);
+      } catch (e) {
+        setBusy(go, false, 'Save the block');
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        err.textContent = e.code === 'input' && e.why !== 'too_many' ? 'Check the days, times and dates: times in quarter hours, the end after the start.' : bkWords(e);
+        err.hidden = false;
+      }
+    });
+    if (r) li.append(f); else $('#bk-reps').after(f);
+    focusEl(fs.querySelector('input'));
   }
 
   // ---- time off
@@ -2241,8 +2570,7 @@
     try {
       const r = await bookCall('/time-off-add', body);
       $('#in-bk-from').value = ''; $('#in-bk-to').value = ''; $('#in-bk-offnote').value = ''; $('#in-bk-start').value = ''; $('#in-bk-end').value = '';
-      const hits = arr(r && r.overlaps);
-      toast(hits.length ? 'Added. ' + plural(hits.length, 'booking is', 'bookings are') + ' already in that time: move or cancel ' + (hits.length === 1 ? 'it' : 'them') + ' below.' : 'Added. Those times are closed for booking.', hits.length ? 9000 : 0);
+      toast(overlapNote(r && r.overlaps, 'Added. Those times are closed for booking.'), arr(r && r.overlaps).length ? 9000 : 0);
       await loadBookings();
     } catch (e) {
       if (e.code === 'signed_out') { quietSignOut(false); return; }
@@ -2251,11 +2579,11 @@
     } finally { setBusy(btn, false, 'Add time off'); }
   }
 
-  // ---- weekly hours
+  // ---- weekly hours (the same editor for the week, a service's own times, and one day in the month view)
   function hoursRow(win) {
     const row = make('div', 'bk-win');
     const a = make('input'); a.type = 'time'; a.step = 900; a.value = win[0]; a.className = 'keeps'; a.setAttribute('aria-label', 'From');
-    const b = make('input'); b.type = 'time'; b.step = 900; b.value = win[1]; b.className = 'keeps'; b.setAttribute('aria-label', 'Until');
+    const b = make('input'); b.type = 'time'; b.step = 900; b.value = win[1] === '24:00' ? '23:45' : win[1]; b.className = 'keeps'; b.setAttribute('aria-label', 'Until');
     const rm = make('button', 'later', 'Remove'); rm.type = 'button';
     rm.addEventListener('click', () => { const day = row.parentElement; row.remove(); syncDay(day); });
     row.append(a, make('span', 'bk-to', 'to'), b, rm);
@@ -2273,16 +2601,15 @@
       r.querySelector('button').setAttribute('aria-label', 'Remove these ' + name + ' hours');
     });
   }
-  function renderWeek(hours) {
-    const week = $('#bk-week');
-    week.replaceChildren(...BK_DAYS.map(([k, name]) => {
+  function buildWeek(container, hours, closedWord, days) {
+    container.replaceChildren(...(days || BK_DAYS).map(([k, name]) => {
       const box = make('div', 'bk-day');
       box.dataset.day = k;
       box.dataset.name = name;
       box.append(make('span', 'bk-dayname', name));
       const list = make('div', 'bk-wins');
       (hours[k] || []).forEach((w) => list.append(hoursRow(w)));
-      box.append(list, make('span', 'bk-closed', 'Closed'));
+      box.append(list, make('span', 'bk-closed', closedWord === 'svc' ? 'Not offered' : 'Closed'));
       const add = make('button', 'later bk-add', 'Add hours'); add.type = 'button';
       add.setAttribute('aria-label', 'Add hours on ' + name);
       add.addEventListener('click', () => { const r = hoursRow(['10:00', '16:00']); list.append(r); syncDay(list); focusEl(r.querySelector('input')); });
@@ -2291,15 +2618,19 @@
       return box;
     }));
   }
+  function collectWeek(container) {
+    const hours = {};
+    $$('.bk-day', container).forEach((box) => {
+      hours[box.dataset.day] = $$('.bk-win', box).map((r) => $$('input', r).map((i) => i.value))
+        .filter((w) => w[0] && w[1]).sort((x, y) => (x[0] < y[0] ? -1 : 1));
+    });
+    return hours;
+  }
   async function onBkHours(ev) {
     ev.preventDefault();
     const err = $('#bk-hours-err');
     err.hidden = true;
-    const hours = {};
-    $$('#bk-week .bk-day').forEach((box) => {
-      hours[box.dataset.day] = $$('.bk-win', box).map((r) => $$('input', r).map((i) => i.value))
-        .filter((w) => w[0] && w[1]).sort((x, y) => (x[0] < y[0] ? -1 : 1));
-    });
+    const hours = collectWeek($('#bk-week'));
     const btn = $('#b-bk-hours');
     setBusy(btn, true, 'Saving…');
     try {
@@ -2323,6 +2654,8 @@
     const bits = [s.minutes + ' minutes', BK_WHERE[s.location] || '', s.package_count > 1 ? s.package_count + ' sessions, booked together' : '',
       s.deposit_cents ? '$' + dollars(s.deposit_cents) + ' deposit' : '', s.active ? 'On' : 'Off, not shown'].filter(Boolean);
     li.append(make('p', 'dc-meta', bits.join(' · ')));
+    const more = [s.hours ? 'Only at its own times' : '', s.max_per_day ? 'At most ' + s.max_per_day + ' a day' : '', s.max_per_week ? 'at most ' + s.max_per_week + ' a week' : ''].filter(Boolean);
+    if (more.length) li.append(make('p', 'dc-meta', more.join(', ')));
     if (s.description) li.append(make('p', 'dc-meta', s.description));
     const act = make('div', 'o-act');
     const ed = make('button', 'open-btn', 'Change'); ed.type = 'button';
@@ -2333,7 +2666,7 @@
     return li;
   }
   function openSvc(s, li) {
-    closeBkForms($('#bk-svcs'));
+    closeBkForms($('#bk-p-services'));
     const key = s ? s.id : 'new';
     const f = make('form', 'dc-form bk-form');
     f.noValidate = true;
@@ -2353,6 +2686,17 @@
     const depAmt = inp('in-bks-dep', 'text', s && s.deposit_cents ? dollars(s.deposit_cents) : '', 9); depAmt.inputMode = 'decimal';
     const depRow = make('div'); depRow.append(...field('Deposit, in dollars', depAmt)); depRow.hidden = !dep.checked;
     dep.addEventListener('change', () => { depRow.hidden = !dep.checked; });
+    // its own times (only offer it then), and its own limits
+    const ownWrap = make('label', 'dc-check');
+    const own = make('input'); own.type = 'checkbox'; own.checked = !!(s && s.hours);
+    ownWrap.append(own, make('span', null, 'Only offer it at certain times'));
+    const ownWeek = make('div', 'bk-week');
+    buildWeek(ownWeek, s && s.hours ? s.hours : bk.owner.hours, 'svc');
+    const ownRow = make('div'); ownRow.append(make('p', 'orders-fine', 'People can book it only inside these times, and only when you’re open.'), ownWeek); ownRow.hidden = !own.checked;
+    own.addEventListener('change', () => { ownRow.hidden = !own.checked; });
+    const mDay = inp('in-bks-mday', 'text', s && s.max_per_day ? String(s.max_per_day) : '', 2); mDay.inputMode = 'numeric'; mDay.placeholder = 'No limit';
+    const mWeek = inp('in-bks-mweek', 'text', s && s.max_per_week ? String(s.max_per_week) : '', 3); mWeek.inputMode = 'numeric'; mWeek.placeholder = 'No limit';
+    const lims = make('div', 'dc-dates'); const la = make('div'); la.append(...field('Most a day', mDay, '(optional)')); const lb = make('div'); lb.append(...field('Most a week', mWeek, '(optional)')); lims.append(la, lb);
     const onWrap = make('label', 'dc-check');
     const on = make('input'); on.type = 'checkbox'; on.checked = s ? s.active : true;
     onWrap.append(on, make('span', null, 'On, people can book it'));
@@ -2363,22 +2707,27 @@
     no.addEventListener('click', () => { f.remove(); focusEl(s ? li.querySelector('.open-btn') : $('#b-bk-svc-new')); });
     btns.append(go, no);
     f.append(make('h4', 'small-h', s ? 'Change ' + s.name : 'A new service'), ...field('Name', name), ...field('Length, in minutes', mins), ...field('Price shown', price, '(optional, in dollars)'),
-      ...field('Where', where), ...field('Sessions in a package', pk, '(1 for a single session)'), ...field('A short description', desc, '(optional)'), depWrap, depRow, onWrap, err, btns);
+      ...field('Where', where), ...field('Sessions in a package', pk, '(1 for a single session)'), ...field('A short description', desc, '(optional)'), depWrap, depRow, ownWrap, ownRow, lims, onWrap, err, btns);
     f.addEventListener('submit', async (ev) => {
       ev.preventDefault();
       err.hidden = true;
       const pc = toCents(price.value), dc = dep.checked ? toCents(depAmt.value) : 0;
       const m = Math.round(+mins.value), n = Math.round(+pk.value || 1);
+      const md = mDay.value.trim() ? +mDay.value.trim() : 0, mw = mWeek.value.trim() ? +mWeek.value.trim() : 0;
       const bad = (msg, el) => { err.textContent = msg; err.hidden = false; focusEl(el); };
       if (!cleanLine(name.value, 80)) return bad('Give it a name.', name);
       if (!(m >= 15 && m <= 480 && m % 5 === 0)) return bad('The length is in minutes, from 15 to 480 (in steps of 5).', mins);
       if (pc === null) return bad('The price is a dollar amount, like 90 or 92.50.', price);
       if (dep.checked && (!dc || dc < 100)) return bad('The deposit is a dollar amount, at least $1.', depAmt);
       if (!(n >= 1 && n <= 12)) return bad('Sessions in a package is 1 to 12.', pk);
+      if (!(Number.isInteger(md) && md >= 0 && md <= 50)) return bad('Most a day is a number from 1 to 50, or leave it empty.', mDay);
+      if (!(Number.isInteger(mw) && mw >= 0 && mw <= 200)) return bad('Most a week is a number from 1 to 200, or leave it empty.', mWeek);
+      const hours = own.checked ? collectWeek(ownWeek) : null;
+      if (hours && !BK_DAYS.some(([k]) => hours[k].length)) return bad('Add the times it’s offered, or untick Only offer it at certain times.', own);
       setBusy(go, true, 'Saving…');
       try {
         await bookCall('/service-save', { id: s ? s.id : '', name: cleanLine(name.value, 80), minutes: m, price_cents: pc, deposit_cents: dc, description: cleanText(desc.value, 600),
-          location: where.value, package_count: n, active: on.checked });
+          location: where.value, package_count: n, active: on.checked, hours, max_per_day: md, max_per_week: mw });
         f.remove();
         toast('Saved.');
         await loadBookings();
@@ -2386,11 +2735,241 @@
       } catch (e) {
         setBusy(go, false, 'Save the service');
         if (e.code === 'signed_out') { quietSignOut(false); return; }
-        err.textContent = bkWords(e); err.hidden = false;
+        err.textContent = e.code === 'input' && e.field === 'hours' ? 'Check its times: each start comes before its end, in quarter hours, without overlapping.' : bkWords(e);
+        err.hidden = false;
       }
     });
     if (s) li.append(f); else $('#bk-svcs').append(f);
     focusEl(name);
+  }
+
+  // ---- questions on the booking form
+  function qRow(q, i) {
+    const li = make('li', 'dc');
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'dc-name', q.label), make('span', 'dc-off', q.required ? 'Required' : 'Optional'));
+    li.append(head);
+    const names = q.services.map((id) => (bk.services.find((s) => s.id === id) || {}).name).filter(Boolean);
+    li.append(make('p', 'dc-meta', BK_QTYPE[q.type] + (q.type === 'choice' ? ': ' + q.choices.join(', ') : '') + ' · ' + (names.length ? 'For ' + names.join(', ') : 'Every service')));
+    const act = make('div', 'o-act o-act2');
+    const ed = make('button', 'open-btn', 'Change'); ed.type = 'button';
+    ed.setAttribute('aria-label', 'Change the question: ' + q.label);
+    ed.addEventListener('click', () => openQ(q, i, li));
+    const rm = make('button', 'open-btn', 'Remove'); rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove the question: ' + q.label);
+    rm.addEventListener('click', () => saveQs(bk.owner.questions.filter((_, k) => k !== i), rm, 'Removed. It’s off the booking form.'));
+    act.append(ed, rm);
+    li.append(act);
+    return li;
+  }
+  async function saveQs(list, btn, done, errEl) {
+    setBusy(btn, true, 'Saving…');
+    try {
+      await bookCall('/questions-save', { questions: list.map((q) => ({ id: q.id || '', label: q.label, type: q.type, choices: q.type === 'choice' ? q.choices : [], required: !!q.required, services: q.services })) });
+      toast(done);
+      closeBkForms($('#bk-p-services'));
+      await loadBookings();
+      focusEl($('#b-bk-q-new'), true);
+      return true;
+    } catch (e) {
+      setBusy(btn, false);
+      if (e.code === 'signed_out') { quietSignOut(false); return false; }
+      const msg = e.code === 'input' && e.field === 'choices' ? 'A pick one question needs at least two different choices, one on each line.' : bkWords(e);
+      if (errEl) { errEl.textContent = msg; errEl.hidden = false; } else toast(msg);
+      return false;
+    }
+  }
+  function openQ(q, i, li) {
+    if (!q && bk.owner.questions.length >= 10) { toast('Ten questions is the most for now.'); return; }
+    closeBkForms($('#bk-p-services'));
+    const key = q ? q.id : 'new';
+    const f = make('form', 'dc-form bk-form');
+    f.noValidate = true;
+    const field = (label, el, opt) => { const l = make('label', 'field-label', label + ' '); l.htmlFor = el.id; if (opt) l.append(make('span', 'opt-tag', opt)); return [l, el]; };
+    const label = make('input'); label.id = 'in-bkq-label-' + key; label.type = 'text'; label.maxLength = 120; label.autocomplete = 'off'; label.value = q ? q.label : '';
+    label.placeholder = 'Like: Any injuries or areas to avoid?';
+    const type = make('select'); type.id = 'in-bkq-type-' + key;
+    Object.keys(BK_QTYPE).forEach((k) => { const o = make('option', null, BK_QTYPE[k]); o.value = k; type.append(o); });
+    type.value = q ? q.type : 'text';
+    const choices = make('textarea', 'short'); choices.id = 'in-bkq-choices-' + key; choices.value = q ? q.choices.join('\n') : '';
+    const chRow = make('div'); chRow.append(...field('The choices', choices, '(one on each line)')); chRow.hidden = type.value !== 'choice';
+    type.addEventListener('change', () => { chRow.hidden = type.value !== 'choice'; });
+    const reqWrap = make('label', 'dc-check');
+    const req = make('input'); req.type = 'checkbox'; req.checked = q ? q.required : false;
+    reqWrap.append(req, make('span', null, 'They need to answer it'));
+    const fs = make('fieldset', 'bk-daypick');
+    fs.append(make('legend', 'field-label', 'Ask it for'));
+    const svcBoxes = bk.services.map((s) => {
+      const l = make('label', 'dc-check');
+      const c = make('input'); c.type = 'checkbox'; c.value = s.id; c.checked = !!(q && q.services.includes(s.id));
+      l.append(c, make('span', null, s.name));
+      fs.append(l);
+      return c;
+    });
+    fs.append(make('p', 'orders-fine', 'Tick none to ask it for every service.'));
+    const err = make('p', 'err'); err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save the question'));
+    const no = make('button', 'later', 'Cancel'); no.type = 'button';
+    no.addEventListener('click', () => { f.remove(); focusEl(q ? li.querySelector('.open-btn') : $('#b-bk-q-new')); });
+    btns.append(go, no);
+    f.append(make('h4', 'small-h', q ? 'Change the question' : 'A new question'), ...field('The question', label), ...field('How they answer', type), chRow, reqWrap, fs, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      err.hidden = true;
+      const text = cleanLine(label.value, 120);
+      if (!text) { err.textContent = 'Write the question.'; err.hidden = false; focusEl(label); return; }
+      const ch = choices.value.split('\n').map((c) => cleanLine(c, 60)).filter(Boolean);
+      if (type.value === 'choice' && ch.length < 2) { err.textContent = 'Add at least two choices, one on each line.'; err.hidden = false; focusEl(choices); return; }
+      const item = { id: q ? q.id : '', label: text, type: type.value, choices: type.value === 'choice' ? ch : [], required: req.checked, services: svcBoxes.filter((c) => c.checked).map((c) => c.value) };
+      const list = bk.owner.questions.slice();
+      if (q) list[i] = item; else list.push(item);
+      await saveQs(list, go, 'Saved. It’s on the booking form.', err);
+    });
+    if (q) li.append(f); else $('#bk-qs').after(f);
+    focusEl(label);
+  }
+
+  // ---- their own calendars
+  const CAL_WORDS = {
+    gone: 'That address doesn’t answer anymore. It may have been reset: copy the new one from your calendar and connect it again.',
+    private: 'That calendar is private at that address. Use the secret iCal address (Google) or a public link (iCloud).',
+    timeout: 'Your calendar was slow to answer. It tries again by itself every 15 minutes.',
+    unreachable: 'I couldn’t reach your calendar just now. It tries again by itself every 15 minutes.',
+    http: 'Your calendar didn’t answer properly just now. It tries again by itself every 15 minutes.',
+    too_big: 'That calendar is very big (over 5 MB). A calendar kept just for busy times works best.',
+    not_calendar: 'That address didn’t give back a calendar. Check that it’s the iCal (.ics) address.'
+  };
+  function ago(isoText) {
+    const t = Date.parse(isoText), n = Date.parse(bk && bk.owner.now) || Date.now();
+    if (!t) return '';
+    const m = Math.max(0, Math.round((n - t) / 60000));
+    if (m < 1) return 'just now';
+    if (m < 60) return plural(m, 'minute', 'minutes') + ' ago';
+    const h = Math.round(m / 60);
+    if (h < 48) return plural(h, 'hour', 'hours') + ' ago';
+    return plural(Math.round(h / 24), 'day', 'days') + ' ago';
+  }
+  function calRow(c) {
+    const li = make('li', 'dc');
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'dc-name', c.label || c.hint || 'Your calendar'));
+    li.append(head);
+    if (c.label && c.hint) li.append(make('p', 'dc-meta', c.hint));
+    const state = c.error ? CAL_WORDS[c.error] || CAL_WORDS.http : '';
+    if (state) li.append(make('p', 'dc-meta bk-cal-err', state + (c.ok_at ? ' The busy times it read ' + ago(c.ok_at) + ' still count.' : '')));
+    li.append(make('p', 'dc-meta', c.checked_at ? 'Checked ' + ago(c.checked_at) + (c.error ? '' : ' · ' + plural(c.busy_count, 'busy time', 'busy times') + ' ahead') : 'Not checked yet'));
+    const act = make('div', 'o-act o-act2');
+    const ck = make('button', 'open-btn', 'Check now'); ck.type = 'button';
+    ck.setAttribute('aria-label', 'Check ' + (c.label || c.hint || 'your calendar') + ' now');
+    ck.addEventListener('click', async () => {
+      setBusy(ck, true, 'Checking…');
+      try {
+        const r = await bookCall('/calendar-check', { id: c.id });
+        const e = r && r.calendar && r.calendar.error;
+        toast(e ? CAL_WORDS[e] || CAL_WORDS.http : 'Checked. Busy times are up to date.');
+        await loadBookings();
+      } catch (e) { setBusy(ck, false); if (e.code === 'signed_out') { quietSignOut(false); return; } toast(bkWords(e)); }
+    });
+    const rm = make('button', 'open-btn', 'Remove'); rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove ' + (c.label || c.hint || 'this calendar'));
+    rm.addEventListener('click', async () => {
+      setBusy(rm, true, 'Removing…');
+      try { await bookCall('/calendar-remove', { id: c.id }); toast('Removed. Its busy times no longer close anything.'); await loadBookings(); focusEl($('#in-bk-cal-url'), true); } catch (e) {
+        setBusy(rm, false); if (e.code === 'signed_out') { quietSignOut(false); return; } toast(bkWords(e));
+      }
+    });
+    act.append(ck, rm);
+    li.append(act);
+    return li;
+  }
+  async function onBkCal(ev) {
+    ev.preventDefault();
+    const err = $('#bk-cal-err');
+    err.hidden = true;
+    const url = $('#in-bk-cal-url').value.trim();
+    if (!url) { err.textContent = 'Paste your calendar’s private address first.'; err.hidden = false; focusEl($('#in-bk-cal-url')); return; }
+    const btn = $('#b-bk-cal');
+    setBusy(btn, true, 'Connecting…');
+    try {
+      const r = await bookCall('/calendar-add', { url, label: cleanLine($('#in-bk-cal-label').value, 60) });
+      $('#in-bk-cal-url').value = ''; $('#in-bk-cal-label').value = '';
+      const c = r && r.calendar;
+      toast(c && c.error ? 'Saved. ' + (CAL_WORDS[c.error] || CAL_WORDS.http) : 'Connected. ' + plural(+(c && c.busy_count) || 0, 'busy time', 'busy times') + ' ahead now close for booking.', 9000);
+      await loadBookings();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      const w = { format: 'That doesn’t look like a calendar address. It starts with https:// or webcal://.',
+        host: 'That address isn’t from a calendar I know yet (Google, iCloud, Outlook, Proton, Fastmail, Yahoo). Email Taya and she can add yours.',
+        too_many: 'Five calendars is the most for now.', already: 'That calendar is already connected.' };
+      err.textContent = e.code === 'input' && w[e.why] ? w[e.why] : bkWords(e);
+      err.hidden = false;
+      focusEl($('#in-bk-cal-url'));
+    } finally { setBusy(btn, false, 'Connect it'); }
+  }
+
+  // ---- settings
+  const hoursWords = (h, zero) => (!h ? zero : h % 168 === 0 ? plural(h / 168, 'week', 'weeks') : h % 24 === 0 ? plural(h / 24, 'day', 'days') : plural(h, 'hour', 'hours'));
+  const SET_OPTS = {
+    'in-bk-notice': { key: 'notice_hours', list: [0, 1, 2, 3, 4, 6, 8, 12, 24, 48, 72, 168], word: (v) => (v ? hoursWords(v) + ' ahead' : 'Right up to the start') },
+    'in-bk-horizon': { key: 'horizon_days', list: [7, 14, 30, 45, 60, 90, 120, 180], word: (v) => (v % 7 === 0 && v <= 14 ? plural(v / 7, 'week', 'weeks') : v + ' days') + ' ahead' },
+    'in-bk-buffer': { key: 'buffer_min', list: [0, 5, 10, 15, 20, 30, 45, 60, 90, 120], word: (v) => (v ? plural(v, 'minute', 'minutes') : 'No break') },
+    'in-bk-window': { key: 'cancel_window_hours', list: [0, 1, 2, 4, 12, 24, 48, 72, 168], word: (v) => (v ? hoursWords(v) + ' before' : 'Right up to the start') },
+    'in-bk-remind': { key: 'reminder_hours', list: [0, 1, 2, 4, 12, 24, 48], word: (v) => (v ? hoursWords(v) + ' before' : 'No reminder') },
+    'in-bk-step': { key: 'slot_step', list: [0, 15, 30, 60], word: (v) => (v ? 'Every ' + plural(v, 'minute', 'minutes') : 'Every 30 minutes (15 for short services)') }
+  };
+  function fillSettings() {
+    const st = bk.owner.settings;
+    Object.keys(SET_OPTS).forEach((id) => {
+      const o = SET_OPTS[id], sel = $('#' + id), cur = st[o.key] || 0;
+      const list = o.list.includes(cur) ? o.list : o.list.concat([cur]).sort((a, b) => a - b);
+      sel.replaceChildren(...list.map((v) => { const op = make('option', null, o.word(v)); op.value = String(v); return op; }));
+      sel.value = String(cur);
+    });
+    $('#in-bk-maxday').value = st.max_per_day ? String(st.max_per_day) : '';
+    $('#in-bk-maxweek').value = st.max_per_week ? String(st.max_per_week) : '';
+  }
+  async function onBkSet(ev) {
+    ev.preventDefault();
+    const err = $('#bk-set-err');
+    err.hidden = true;
+    const body = {};
+    Object.keys(SET_OPTS).forEach((id) => { body[SET_OPTS[id].key] = +$('#' + id).value; });
+    const md = $('#in-bk-maxday').value.trim(), mw = $('#in-bk-maxweek').value.trim();
+    body.max_per_day = md ? +md : 0; body.max_per_week = mw ? +mw : 0;
+    if (!(Number.isInteger(body.max_per_day) && body.max_per_day >= 0 && body.max_per_day <= 50)) { err.textContent = 'Most bookings in a day is a number from 1 to 50, or leave it empty.'; err.hidden = false; focusEl($('#in-bk-maxday')); return; }
+    if (!(Number.isInteger(body.max_per_week) && body.max_per_week >= 0 && body.max_per_week <= 200)) { err.textContent = 'Most bookings in a week is a number from 1 to 200, or leave it empty.'; err.hidden = false; focusEl($('#in-bk-maxweek')); return; }
+    const btn = $('#b-bk-set');
+    setBusy(btn, true, 'Saving…');
+    try {
+      await bookCall('/settings', body);
+      toast('Saved. New bookings follow these settings.');
+      await loadBookings();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      err.textContent = bkWords(e); err.hidden = false;
+    } finally { setBusy(btn, false, 'Save settings'); }
+  }
+  function wireBookings() {
+    $('#f-bk-off').addEventListener('submit', onBkOff);
+    $('#in-bk-allday').addEventListener('change', () => { $('#bk-off-hours').hidden = $('#in-bk-allday').checked; $('#in-bk-to').disabled = !$('#in-bk-allday').checked; });
+    $('#f-bk-hours').addEventListener('submit', onBkHours);
+    $('#b-bk-svc-new').addEventListener('click', () => { if (bk) openSvc(null, null); });
+    $('#b-bk-feed').addEventListener('click', () => copyFeed(false));
+    $('#b-bk-feed-new').addEventListener('click', () => copyFeed(true));
+    $$('#sec-bookings .bk-tab').forEach((t) => {
+      t.addEventListener('click', () => selectTab(t.dataset.tab, false, false));
+      t.addEventListener('keydown', onTabKey);
+    });
+    window.addEventListener('hashchange', () => { const h = hashTab(); if (h && bk) { selectTab(h, false, true); $('#sec-bookings').scrollIntoView({ block: 'start' }); } });
+    $('#b-bk-prev').addEventListener('click', () => loadMonth(monthKeyAdd(bkMonth, -1)));
+    $('#b-bk-next').addEventListener('click', () => loadMonth(monthKeyAdd(bkMonth, 1)));
+    $('#f-bk-ovr').addEventListener('submit', onBkOvr);
+    $('#in-bk-ovr-closed').addEventListener('change', () => { $('#bk-ovr-hours').hidden = $('#in-bk-ovr-closed').checked; });
+    $('#b-bk-rep-new').addEventListener('click', () => { if (bk) openRep(null, null); });
+    $('#b-bk-q-new').addEventListener('click', () => { if (bk) openQ(null, -1, null); });
+    $('#f-bk-cal').addEventListener('submit', onBkCal);
+    $('#f-bk-set').addEventListener('submit', onBkSet);
   }
 
   // ---- the calendar link
@@ -3310,12 +3889,7 @@
     $('#f-shop-set').addEventListener('submit', onShopSettings);
     wireProducts(); // the Products card (Oct 10 2026)
     $('#f-gift').addEventListener('submit', onGiftFind);
-    $('#f-bk-off').addEventListener('submit', onBkOff);
-    $('#in-bk-allday').addEventListener('change', () => { $('#bk-off-hours').hidden = $('#in-bk-allday').checked; $('#in-bk-to').disabled = !$('#in-bk-allday').checked; });
-    $('#f-bk-hours').addEventListener('submit', onBkHours);
-    $('#b-bk-svc-new').addEventListener('click', () => { if (bk) openSvc(null, null); });
-    $('#b-bk-feed').addEventListener('click', () => copyFeed(false));
-    $('#b-bk-feed-new').addEventListener('click', () => copyFeed(true));
+    wireBookings();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {

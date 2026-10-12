@@ -691,3 +691,62 @@ select[aria-invalid="true"], input[type="time"][aria-invalid="true"], input[type
   .bk-closed { grid-column: 2; }
 }
 @media (max-width: 420px) { .order.bk .o-act2 { flex-wrap: nowrap; } .order.bk .o-act2 .open-btn { width: auto; flex: 1 1 0; } }
+
+/* ---- bookings, part 2 (Oct 12 2026): tabs, the month, days, blocks, questions, calendars, settings.
+   Only the page's own tokens (--acc, --ink, --ink-soft, --hairline, --field, --card, --focus), so a restyle swaps them. */
+.bk-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 4px; margin: 14px 0 6px; border-bottom: 1px solid var(--hairline); }
+@media (min-width: 760px) { .bk-tabs { grid-template-columns: repeat(6, auto); justify-content: start; gap: 0 10px; } }
+.bk-tab {
+  min-height: 44px; padding: 8px 10px; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  color: var(--ink-soft); font-family: 'Spectral', Georgia, serif; font-size: 16px; line-height: 1.2; cursor: pointer; text-align: center; overflow-wrap: anywhere;
+}
+.bk-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--acc); font-weight: 600; }
+.bk-tab:hover { color: var(--ink); }
+.bk-tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 6px; }
+.bk-panel { min-width: 0; }
+.bk-panel > .small-h:first-child { margin-top: 10px; }
+.bk-monthbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 10px 0 8px; }
+.bk-month { margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 19px; text-align: center; }
+.bk-mnav { padding: 6px 14px; font-size: 20px; }
+.bk-mnav:disabled { opacity: 0.35; cursor: default; }
+.bk-cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.bk-dow { text-align: center; font-size: 13px; letter-spacing: 0.04em; color: var(--ink-soft); padding: 2px 0 4px; }
+.bk-cd {
+  position: relative; display: grid; align-content: start; justify-items: center; gap: 2px; min-width: 0; min-height: 54px; padding: 6px 2px 4px;
+  border-radius: 10px; border: 1px solid var(--hairline); background: var(--field); color: var(--ink); cursor: pointer; font: inherit;
+}
+.bk-cd:hover { border-color: var(--acc-line); }
+.bk-cd:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.bk-cd[aria-pressed="true"] { border-color: var(--acc); box-shadow: inset 0 0 0 1px var(--acc); }
+.bk-cd-n { font-size: 16px; line-height: 1.1; font-weight: 600; }
+.bk-cd-w { font-size: 12.5px; line-height: 1.2; color: var(--ink-soft); white-space: nowrap; overflow: hidden; max-width: 100%; }
+.bk-cd-long { display: none; }
+@media (min-width: 760px) { .bk-cd { min-height: 64px; } .bk-cd-long { display: inline; } .bk-cd-w { font-size: 13.5px; } }
+.bk-cd-busy { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-soft); }
+.bk-cd-past { opacity: 0.45; }
+.bk-cd-usual_closed { background: transparent; border-style: dashed; }
+.bk-cd-usual_closed .bk-cd-n { color: var(--ink-soft); font-weight: 400; }
+.bk-cd-closed { background: transparent; }
+.bk-cd-closed .bk-cd-n { color: var(--ink-soft); text-decoration: line-through; font-weight: 400; }
+.bk-cd-closed .bk-cd-w { color: var(--ink); }
+.bk-cd-own .bk-cd-n { text-decoration: underline; text-decoration-color: var(--acc-line); text-underline-offset: 3px; }
+.bk-cd-blank { min-height: 1px; }
+.bk-cal-key { margin-top: 10px; }
+.bk-dayinfo { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--hairline); background: var(--field); }
+.bk-dayinfo .bk-day-h { margin: 0 0 6px; padding-top: 0; border-top: 0; }
+.bk-day-line { margin: 6px 0 0; display: grid; gap: 2px; font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+.bk-day-books { margin: 4px 0 0; padding-left: 1.1em; font-size: 16px; line-height: 1.5; }
+.bk-day-act { flex-wrap: wrap; }
+.bk-daypick { border: 0; padding: 0; margin: 12px 0 0; min-width: 0; }
+.bk-daypick legend { padding: 0; }
+.bk-daypick .dc-check { margin-top: 0; }
+@media (min-width: 560px) { .bk-daypick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; } .bk-daypick legend, .bk-daypick .orders-fine { grid-column: 1 / -1; } }
+.bk-how { margin: 14px 0 0; }
+.bk-how summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-size: 16.5px; color: var(--acc); }
+.bk-how summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.bk-how-body p { margin: 8px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
+.bk-how-body strong { color: var(--ink); font-weight: 600; }
+.bk-cal-err { color: var(--ink); }
+#f-bk-cal input, .bk-set select, .bk-set input { width: 100%; max-width: 100%; }
+.bk-set .field-label { margin-top: 12px; }
+.bk .bk-ans .o-label { text-transform: none; letter-spacing: 0; }
