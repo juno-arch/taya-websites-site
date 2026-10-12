@@ -262,8 +262,12 @@
   .crew { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 32px; }
   .pro { display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 20px 20px 18px; }
   .pro-top { display: flex; align-items: center; gap: 14px; }
-  .pro-spot { flex: none; width: 60px; height: 60px; border-radius: 50%; box-sizing: border-box; border: 1.5px dashed var(--navy); background: var(--ground); display: grid; place-items: center; text-align: center; }
-  .pro-spot span { font-size: 8.5px; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--navy-deep); max-width: 7ch; }
+  .pro-top > div { min-width: 0; }
+  .pro-face { flex: none; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; display: block; background: var(--ground); box-shadow: 0 0 0 2px var(--ground-2), 0 0 0 3.5px var(--navy); }
+  .pro-mono { display: grid; place-items: center; background: var(--navy); color: var(--ground); font-family: 'Zilla Slab', Rockwell, Georgia, serif; font-weight: 600; font-size: 23px; letter-spacing: 0.04em; line-height: 1; }
+  .pro-ig { display: inline-block; margin-top: 3px; font-size: 13.5px; font-weight: 500; color: var(--navy-deep); text-decoration: none; overflow-wrap: anywhere; }
+  .pro-ig:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .pro-badge.closed::before { background: var(--ink-soft); }
   .pro h3 { font-size: 24px; line-height: 1.15; }
   .pro h3 .ph { font-size: 1em; }
   .pro-role { display: block; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin-top: 3px; }
@@ -274,7 +278,6 @@
   .pro-act { margin-top: auto; padding-top: 12px; }
   .pro-act .btn { padding: 11px 18px; font-size: 14px; }
   .pro-act .reach { margin-top: 0; }
-  .pro-act .hint { margin-top: 8px; font-size: 13px; }
   .pro-photo { grid-column: 3; grid-row: 1 / span 2; margin: 0; border-radius: 18px; min-height: 100%; }
   .pro-photo img { object-position: 55% 40%; }
   .walkin { background: var(--band); color: var(--on-band); border-color: transparent; }
@@ -946,7 +949,7 @@
     <div>
       <p class="label">The shop</p>
       <div class="fact reveal">5.0<small>on Booksy</small></div>
-      <p class="fact-note">from 530 reviews across the crew.</p>
+      <p class="fact-note">from 534 reviews on Booksy.</p>
       <figure class="reveal photo tall light">
         <img src="images/light.jpg" alt="A vintage barber chair in a wood-floored shop, lit by low sun through the front window" loading="lazy">
         <span class="sample-tag">Sample photo</span>
@@ -954,7 +957,7 @@
     </div>
     <div class="measure">
       <h2 class="reveal">Six pros, <em>one roof</em></h2>
-      <p style="margin-top:20px">Blades is a neighborhood barbershop at 1116 Main St in Fortuna. Four barbers, a hair stylist and a nail tech each keep their own book, so you can walk in and take the next open chair, or book ahead with the person who already knows your cut.</p>
+      <p style="margin-top:20px">Blades is a neighborhood barbershop at 1116 Main St in Fortuna. Four barbers, a hair stylist and a nail tech, each with their own chair and their own regulars, so you can walk in and take the next open chair, or book ahead with the person who already knows your cut.</p>
       <p>Classic barbering with a modern twist: clean fades, sharp beards, hot towel shaves, kids and seniors, perms, and color and nails down the row.</p>
       <div class="reveal chips" aria-label="What's on offer">
         <span class="lead"><b>Haircuts</b></span><span><b>Beards</b></span><span><b>Skin fades</b></span>
@@ -968,30 +971,28 @@
   <div class="wrap">
     <p class="label with-pill"><span>The chairs</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 class="reveal">Pick your <em>chair</em></h2>
-    <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Six pros, each with their own book. Tap <b>Book with</b> to land on their page and grab a time.</p>
+    <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Four barbers, a nail tech and a stylist. Tap <b>Book with</b> to land on their own Booksy page and grab a time.</p>
     <div class="crew">
       <div class="reveal pro">
         <div class="pro-top">
-          <div class="pro-spot" aria-hidden="true"><span>Photo spot</span></div>
-          <div><h3><span class="ph">Barber 1</span></h3><span class="pro-role">Lead barber</span></div>
+          <img class="pro-face" src="images/crew/roman.webp" width="176" height="176" alt="Roman, smiling, in front of white siding" loading="lazy" decoding="async">
+          <div><h3>Roman</h3><span class="pro-role">Precision barber</span><a class="pro-ig" href="https://www.instagram.com/fortunabarber/" target="_blank" rel="noopener">@fortunabarber<span class="vh"> on Instagram (opens in a new tab)</span></a></div>
         </div>
-        <p>Cuts, beards and perms. After-hours by request.</p>
+        <p>Cuts finished with a straight razor, beards, and partial or full perms. After hours by message, at a different rate.</p>
         <span class="pro-badge appt">Appointments only</span>
         <div class="pro-act">
-          <button type="button" class="btn book-pro" data-pro="Barber 1" data-kind="barber">Book with Barber 1</button>
-          <p class="hint pro-hint" role="status"></p>
+          <a class="btn book-pro" href="https://booksy.com/en-us/974926_roman-gonzalez-fortunabarber_barber-shop_134756_fortuna" target="_blank" rel="noopener" data-pro="Roman" data-kind="barber">Book with Roman<span class="vh"> on Booksy (opens in a new tab)</span></a>
         </div>
       </div>
       <div class="reveal pro">
         <div class="pro-top">
-          <div class="pro-spot" aria-hidden="true"><span>Photo spot</span></div>
-          <div><h3><span class="ph">Barber 2</span></h3><span class="pro-role">Barber</span></div>
+          <img class="pro-face" src="images/crew/chris.webp" width="176" height="176" alt="Chris, smiling, in a black and white portrait" loading="lazy" decoding="async">
+          <div><h3>Chris</h3><span class="pro-role">Barber</span><a class="pro-ig" href="https://www.instagram.com/elevatebychris/" target="_blank" rel="noopener">@elevatebychris<span class="vh"> on Instagram (opens in a new tab)</span></a></div>
         </div>
-        <p>Cuts and fades, classic to modern.</p>
-        <span class="pro-badge">Walk in or book ahead</span>
+        <p>Tapers, curls and freestyle designs, plus beards. Students, kids and seniors too.</p>
+        <span class="pro-badge">Book online or DM</span>
         <div class="pro-act">
-          <button type="button" class="btn book-pro" data-pro="Barber 2" data-kind="barber">Book with Barber 2</button>
-          <p class="hint pro-hint" role="status"></p>
+          <a class="btn book-pro" href="https://booksy.com/en-us/1720944_elevate-by-chris_barber-shop_134756_fortuna" target="_blank" rel="noopener" data-pro="Chris" data-kind="barber">Book with Chris<span class="vh"> on Booksy (opens in a new tab)</span></a>
         </div>
       </div>
       <figure class="reveal photo pro-photo">
@@ -1000,51 +1001,44 @@
       </figure>
       <div class="reveal pro">
         <div class="pro-top">
-          <div class="pro-spot" aria-hidden="true"><span>Photo spot</span></div>
-          <div><h3><span class="ph">Barber 3</span></h3><span class="pro-role">Barber</span></div>
+          <img class="pro-face" src="images/crew/eric.webp" width="176" height="176" alt="Eric, taking a mirror selfie" loading="lazy" decoding="async">
+          <div><h3>Eric</h3><span class="pro-role">Barber</span><a class="pro-ig" href="https://www.instagram.com/ericb.bl3ndz/" target="_blank" rel="noopener">@ericb.bl3ndz<span class="vh"> on Instagram (opens in a new tab)</span></a></div>
         </div>
-        <p>Cuts, skin fades, hot towel shaves and line-ups.</p>
-        <span class="pro-badge">Walk in or book ahead</span>
+        <p>Skin fades, line-ups and designs, eyebrows, and hot towel shaves.</p>
+        <span class="pro-badge">Walk-ins welcome</span>
         <div class="pro-act">
-          <button type="button" class="btn book-pro" data-pro="Barber 3" data-kind="barber">Book with Barber 3</button>
-          <p class="hint pro-hint" role="status"></p>
+          <a class="btn book-pro" href="https://booksy.com/en-us/1721044_eric-blends_barber-shop_134756_fortuna" target="_blank" rel="noopener" data-pro="Eric" data-kind="barber">Book with Eric<span class="vh"> on Booksy (opens in a new tab)</span></a>
         </div>
       </div>
       <div class="reveal pro">
         <div class="pro-top">
-          <div class="pro-spot" aria-hidden="true"><span>Photo spot</span></div>
-          <div><h3><span class="ph">Barber 4</span></h3><span class="pro-role">Barber</span></div>
+          <span class="pro-face pro-mono" aria-hidden="true">OT</span>
+          <div><h3>Oscar</h3><span class="pro-role">Barber, OT Trimz</span><a class="pro-ig" href="https://www.instagram.com/ot.trimz_/" target="_blank" rel="noopener">@ot.trimz_<span class="vh"> on Instagram (opens in a new tab)</span></a></div>
         </div>
-        <p>Cuts and beards. House calls by request.</p>
-        <span class="pro-badge">Walk in or book ahead</span>
+        <p>Fades, razor head shaves, hot towel shaves and beards.</p>
+        <span class="pro-badge">House calls too</span>
         <div class="pro-act">
-          <button type="button" class="btn book-pro" data-pro="Barber 4" data-kind="barber">Book with Barber 4</button>
-          <p class="hint pro-hint" role="status"></p>
+          <a class="btn book-pro" href="https://booksy.com/en-us/1821585_ot-trimz_barber-shop_134756_fortuna" target="_blank" rel="noopener" data-pro="Oscar" data-kind="barber">Book with Oscar<span class="vh"> on Booksy (opens in a new tab)</span></a>
         </div>
       </div>
       <div class="reveal pro">
         <div class="pro-top">
-          <div class="pro-spot" aria-hidden="true"><span>Photo spot</span></div>
-          <div><h3><span class="ph">Hair stylist</span></h3><span class="pro-role">Stylist</span></div>
+          <img class="pro-face" src="images/crew/judith.webp" width="176" height="176" alt="Judith, in a selfie" loading="lazy" decoding="async">
+          <div><h3>Judith</h3><span class="pro-role">Nail tech</span><a class="pro-ig" href="https://www.instagram.com/jp4nails/" target="_blank" rel="noopener">@jp4nails<span class="vh"> on Instagram (opens in a new tab)</span></a></div>
         </div>
-        <p>Women&rsquo;s cuts, color, highlights, root touch-ups and perms.</p>
-        <span class="pro-badge">Book ahead for color</span>
+        <p>Manicures, pedicures, acrylic fills and full sets, and perms too.</p>
+        <span class="pro-badge">Taking new clients</span>
         <div class="pro-act">
-          <button type="button" class="btn book-pro" data-pro="the stylist" data-kind="stylist">Book with the stylist</button>
-          <p class="hint pro-hint" role="status"></p>
+          <a class="btn book-pro" href="https://booksy.com/en-us/1166439_jp4nail_nail-salon_134756_fortuna" target="_blank" rel="noopener" data-pro="Judith" data-kind="nails">Book with Judith<span class="vh"> on Booksy (opens in a new tab)</span></a>
         </div>
       </div>
       <div class="reveal pro">
         <div class="pro-top">
-          <div class="pro-spot" aria-hidden="true"><span>Photo spot</span></div>
-          <div><h3><span class="ph">Nail tech</span></h3><span class="pro-role">Nails</span></div>
+          <span class="pro-face pro-mono" aria-hidden="true">E</span>
+          <div><h3>Esme</h3><span class="pro-role">Hair stylist</span><a class="pro-ig" href="https://www.instagram.com/paintedhair_by_esme/" target="_blank" rel="noopener">@paintedhair_by_esme<span class="vh"> on Instagram (opens in a new tab)</span></a></div>
         </div>
-        <p>Manicures, pedicures, acrylics and fills, down the row from the chairs.</p>
-        <span class="pro-badge">Walk in or book ahead</span>
-        <div class="pro-act">
-          <button type="button" class="btn book-pro" data-pro="the nail tech" data-kind="nails">Book with the nail tech</button>
-          <p class="hint pro-hint" role="status"></p>
-        </div>
+        <p>Custom color, blondes and brunettes, and haircuts.</p>
+        <span class="pro-badge closed">Not taking new clients right now</span>
       </div>
       <div class="reveal pro walkin">
         <div><h3>Next <em>open chair</em></h3><span class="pro-role">Not picky?</span></div>
@@ -1054,7 +1048,7 @@
         </div>
       </div>
     </div>
-    <p class="crew-foot mock-note"><span data-show="maiden mother all"><b style="color:var(--ink)">What you see:</b> each button opens that pro&rsquo;s own Booksy page, so your reviews and your books stay exactly where they are. The names, photos and badges are yours to fill in: appointments only, walk-ins welcome, house calls. I can follow your socials and update as you post, or you can email me.</span><span data-show="crone" hidden><b style="color:var(--ink)">What you see:</b> once your site is In Bloom, each button books right here on your site, with that pro&rsquo;s own hours and calendar. Try it below.</span></p>
+    <p class="crew-foot mock-note"><span data-show="maiden mother all"><b style="color:var(--ink)">What you see:</b> each Book with button opens that pro&rsquo;s real Booksy page, so your reviews and your books stay exactly where they are. The names, photos, services and badges come from everyone&rsquo;s own Booksy and Instagram (checked Oct 12), so tell me anything that should change. Oscar has his initials for now, and a photo goes in whenever he wants one. I can follow your socials and update as you post, or you can email me.</span><span data-show="crone" hidden><b style="color:var(--ink)">What you see:</b> once your site is In Bloom, each button books right here on your site, with that pro&rsquo;s own hours and calendar. Try it below.</span></p>
   </div>
 </section>
 
@@ -1172,7 +1166,7 @@
         <figcaption>Marcus, Rio Dell</figcaption>
       </figure>
     </div>
-    <p class="review-note mock-note"><span class="tag" data-go="maiden">Every build</span><span><b style="color:var(--ink)">What you see:</b> your shop already has 530 reviews on Booksy at a perfect 5.0. On your real site these are real ones, with a link back to the rest.</span></p>
+    <p class="review-note mock-note"><span class="tag" data-go="maiden">Every build</span><span><b style="color:var(--ink)">What you see:</b> your shop already has 534 reviews on Booksy, rated 5.0. On your real site these are real ones, with a link back to the rest.</span></p>
   </div>
 </section>
 
@@ -1190,12 +1184,11 @@
         <div id="tb-s1">
           <p class="bk-q" id="tb-who-q">Who</p>
           <div class="bk-pros" role="group" aria-labelledby="tb-who-q" id="tb-pros">
-            <button type="button" class="bk-pro" data-pro="Barber 1" data-kind="barber" aria-pressed="false">Barber 1</button>
-            <button type="button" class="bk-pro" data-pro="Barber 2" data-kind="barber" aria-pressed="false">Barber 2</button>
-            <button type="button" class="bk-pro" data-pro="Barber 3" data-kind="barber" aria-pressed="false">Barber 3</button>
-            <button type="button" class="bk-pro" data-pro="Barber 4" data-kind="barber" aria-pressed="false">Barber 4</button>
-            <button type="button" class="bk-pro" data-pro="the stylist" data-kind="stylist" aria-pressed="false">Hair stylist</button>
-            <button type="button" class="bk-pro" data-pro="the nail tech" data-kind="nails" aria-pressed="false">Nail tech</button>
+            <button type="button" class="bk-pro" data-pro="Roman" data-kind="barber" aria-pressed="false">Roman</button>
+            <button type="button" class="bk-pro" data-pro="Chris" data-kind="barber" aria-pressed="false">Chris</button>
+            <button type="button" class="bk-pro" data-pro="Eric" data-kind="barber" aria-pressed="false">Eric</button>
+            <button type="button" class="bk-pro" data-pro="Oscar" data-kind="barber" aria-pressed="false">Oscar</button>
+            <button type="button" class="bk-pro" data-pro="Judith" data-kind="nails" aria-pressed="false">Judith, nails</button>
             <button type="button" class="bk-pro" data-pro="the first open barber" data-kind="barber" aria-pressed="false">First open barber</button>
           </div>
           <p class="bk-q" id="tb-what-q">What</p>
@@ -1238,8 +1231,7 @@
       <p class="label with-pill"><span>Book online</span> <span class="tag" data-go="maiden">Planted + Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> from $300</span></span></p>
       <h2>Find a time <em>that suits you</em></h2>
       <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Every chair has its own booking page on Booksy. Pick your pro up in The chairs and tap Book with, or start from the shop page here.</p>
-      <div class="cta-row"><button type="button" class="btn" id="bn-go">Book on Booksy<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></button></div>
-      <p class="hint" id="bn-hint" role="status"></p>
+      <div class="cta-row"><a class="btn" id="bn-go" href="https://booksy.com/en-us/974746_blades-barber-studio_barber-shop_134756_fortuna" target="_blank" rel="noopener">Book on Booksy<span class="vh"> (opens in a new tab)</span><svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></a></div>
       <p class="demo-note">With Planted or Tended, this button opens your shop&rsquo;s Booksy page, and each Book with button opens that pro&rsquo;s own.</p>
     </div>
 
@@ -1342,7 +1334,7 @@
       </details>
       <details>
         <summary>Nails too?</summary>
-        <div class="ans"><p>Yes. Our nail tech does manicures, pedicures, acrylics and fills, right down the row.</p></div>
+        <div class="ans"><p>Yes. Judith does manicures, pedicures, acrylics and fills, right down the row.</p></div>
       </details>
       <details>
         <summary>I&rsquo;m running late. What happens?</summary>
@@ -2105,20 +2097,14 @@
     document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('button.tag[data-go]'); if (t) setView(t.getAttribute('data-go'), t); });
 
     
-    var bn = $('bn-go'), bnHint = $('bn-hint');
-    if (bn && bnHint) bn.addEventListener('click', function () { bnHint.textContent = 'Preview: on your real site, this opens your shop’s Booksy page.'; });
 
     
     document.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('.book-pro'); if (!b) return;
-      var hint = b.parentElement.querySelector('.pro-hint');
-      if (view === 'crone') {
-        if (hint) hint.textContent = '';
-        try { document.dispatchEvent(new CustomEvent('blades:pick', { detail: { pro: b.dataset.pro } })); } catch (err) {}
-        var t = $('own-booking'); if (t) t.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
-        return;
-      }
-      if (hint) hint.textContent = 'Preview: on your real site this opens ' + b.dataset.pro + '’s own Booksy page.';
+      if (view !== 'crone') return;   /* Planted and Tended: the link opens that pro's real Booksy page */
+      e.preventDefault();
+      try { document.dispatchEvent(new CustomEvent('blades:pick', { detail: { pro: b.dataset.pro } })); } catch (err) {}
+      var t = $('own-booking'); if (t) t.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
     });
 
     root.setAttribute('data-view', view);
