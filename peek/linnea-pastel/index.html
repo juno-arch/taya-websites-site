@@ -743,6 +743,16 @@
   .reveal.in { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1); }
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
+  /* zig-zag (Pollen, Oct 12: "flip the card so they're not all on the same side, put Book a tattoo on the right"):
+     side-by-side rows take turns down the page. A .flip row moves its last piece (the card, the slot machine, the
+     visit words, the drop alerts box) to the left. Phones stack in the same order as before. */
+  @media (min-width: 761px) {
+    .flip > :last-child { order: -1; }
+    .bk-here.flip { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+    .visit-grid.flip { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); }
+    .visit-grid.flip > .photo { width: 100%; justify-self: end; }
+    .news-wrap.flip .stk { left: var(--xr, auto); right: var(--x, auto); } /* the stickers stay on the drop alerts box's corners */
+  }
   @media (max-width: 960px) { .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 760px) {
     .two, .slot-grid, .about, .visit-grid, .consent, .pol, .found, .ig-foot, .shop-foot, .news-wrap { grid-template-columns: minmax(0, 1fr); }
@@ -1142,7 +1152,7 @@
       <p class="tier-note mock-note wf-note">Your deposit and shipping rate are dotted. What are they, and do you offer pickup?</p>
     </div>
   </div>
-  <div class="wrap bk-here" id="bk-here" tabindex="-1" data-show="crone all" data-fold data-thing="booking right on your site">
+  <div class="wrap bk-here flip" id="bk-here" tabindex="-1" data-show="crone all" data-fold data-thing="booking right on your site">
     <div>
       <p class="label with-pill"><span>Book right here</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom</span></p>
       <h2 class="reveal">Book <em>a tattoo</em></h2>
@@ -1243,7 +1253,7 @@
 </section>
 
 <section id="lucky" class="band gutter">
-  <div class="wrap slot-grid">
+  <div class="wrap slot-grid flip">
     <div>
       <p class="label with-pill"><span>Pastel Slots</span> <span class="tag" data-go="maiden" style="background:#241c33;color:#d4c4f7;border-color:#3d3155">Every build</span></p>
       <h2 class="reveal">pastel <em>pastel pastel</em></h2>
@@ -1508,7 +1518,7 @@
 
 <section id="visit" class="gutter sec sc g-butter">
   <div class="art" aria-hidden="true"><img class="peek" src="images/p-pr-glitch.webp" width="640" height="1005" alt="" loading="lazy" style="--xr:9%;--r:-3deg;--py:62%;--c:var(--blue)"></div>
-  <div class="wrap visit-grid">
+  <div class="wrap visit-grid flip">
     <figure class="reveal photo flash"><img src="images/ig-studio.webp" width="480" height="640" alt="A studio with pink walls, a rainbow striped ceiling, a lime green chair and a black and white swirl painted floor" loading="lazy"></figure>
     <div>
       <p class="label with-pill"><span>Location</span> <span class="tag" data-go="maiden">Every build</span></p>
@@ -1553,7 +1563,7 @@
 </section>
 
 <section id="letters" class="gutter sec sc g-blue" data-show="mother crone all" data-fold>
-  <div class="wrap news-wrap">
+  <div class="wrap news-wrap flip">
     <div class="art over" aria-hidden="true"><img class="stk" src="images/stk-dryer.svg" width="120" height="122" alt="" loading="lazy" style="--xr:-1.5%;--y:-34px;--w:54px;--r:14deg"><img class="stk hide-s" src="images/stk-daisy.svg" width="72" height="76" alt="" loading="lazy" style="--xr:44%;--y:-26px;--w:44px;--r:-8deg"><img class="stk hide-s" src="images/stk-leaf.svg" width="58" height="132" alt="" loading="lazy" style="--xr:-2%;--yb:-62px;--w:32px;--r:10deg"></div>
     <div>
       <h2 class="reveal">First <em>to know</em></h2>
