@@ -242,27 +242,14 @@
 
   /* ---------- the spotlight (signature) ---------- */
   .ring { background: var(--band); color: var(--on-band); border-top: 0 !important; position: relative; overflow: hidden; padding-block: 70px 0; }
-  .ring-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 40px; align-items: end; }
+  .ring-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 40px; align-items: center; }
   .ring .label { color: #c7d0f6; }
   .ring h2 { color: var(--on-band); }
   .ring h2 em { color: #ffd9a8; }
   .ring p { color: rgba(243, 238, 230, 0.86); margin-top: 16px; }
-  .ring .copy { padding-bottom: 80px; }
-  .stage { display: block; width: 100%; height: auto; overflow: visible; }
-  .stage .tw { animation: twinkle var(--t, 5s) ease-in-out var(--d, 0s) infinite; }
-  @keyframes twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
-  .stage .flyer { animation: levity 18s cubic-bezier(.45, 0, .35, 1) infinite; transform-box: view-box; }
-  .stage .sway { animation: sway 4.5s ease-in-out infinite alternate; transform-origin: 300px 64px; transform-box: view-box; }
-  .stage .pool { animation: pool 18s cubic-bezier(.45, 0, .35, 1) infinite; transform-origin: 300px 392px; transform-box: view-box; }
-  .stage .beam { animation: beam 18s ease-in-out infinite; }
-  @keyframes levity { 0%, 8% { transform: translateY(200px); } 46%, 62% { transform: translateY(0); } 100% { transform: translateY(200px); } }
-  @keyframes sway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
-  @keyframes pool { 0%, 8% { opacity: 1; transform: scale(1); } 46%, 62% { opacity: 0.45; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-  @keyframes beam { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) {
-    .stage .tw, .stage .flyer, .stage .sway, .stage .pool, .stage .beam { animation: none; }
-    .stage .flyer { transform: translateY(80px); }
-  }
+  .ring .copy { padding-bottom: 64px; }
+  .ring-photo { aspect-ratio: 4 / 5; width: min(100%, 460px); justify-self: center; margin-bottom: 64px; }
+  .ring-photo img { object-position: 58% 40%; }
   .ring-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; border-top: 1px solid rgba(243, 238, 230, 0.18); padding-block: 26px 40px; margin-top: 0; }
   .ring-facts b { display: block; font-family: 'Raleway', sans-serif; font-weight: 200; font-size: clamp(40px, 5vw, 58px); line-height: 1; color: #ffd9a8; font-variant-numeric: tabular-nums; }
   .ring-facts span { display: block; margin-top: 6px; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; color: #c7d0f6; }
@@ -935,33 +922,7 @@
       <h2 id="ring-h">Anyone can find a place <em>in the circus</em></h2>
       <p>Learn, train, then perform. Instruction and open training go together here, because it takes a lot of repetitions to reach a goal, and it&rsquo;s more fun with friends who share the joy and the struggle. Twice a year the studio puts on a showcase, so everyone gets a turn under the lights.</p>
     </div>
-    <svg class="stage" viewBox="0 0 600 430" role="img" aria-label="A little aerialist, like the one in the Levity logo, hangs from a star and floats slowly up a spotlight, then drifts back down to the ring">
-      <defs>
-        <linearGradient id="st-beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d6" stop-opacity=".04"/><stop offset=".7" stop-color="#fff1d6" stop-opacity=".2"/><stop offset="1" stop-color="#fff1d6" stop-opacity=".34"/></linearGradient>
-        <radialGradient id="st-pool"><stop offset="0" stop-color="#d7defb"/><stop offset=".6" stop-color="#a9b6e8" stop-opacity=".7"/><stop offset="1" stop-color="#6476c2" stop-opacity="0"/></radialGradient>
-        <radialGradient id="st-star"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff6e3" stop-opacity=".9"/><stop offset="1" stop-color="#fff1d6" stop-opacity="0"/></radialGradient>
-      </defs>
-      <g fill="#e6e9fa">
-        <circle class="tw" cx="80" cy="60" r="3" style="--t:5s;--d:-1s"/><circle class="tw" cx="150" cy="130" r="2" style="--t:7s;--d:-3s"/><circle class="tw" cx="110" cy="230" r="2.4" style="--t:6s;--d:-2s"/>
-        <circle class="tw" cx="470" cy="70" r="2.6" style="--t:6.5s;--d:-4s"/><circle class="tw" cx="530" cy="170" r="3.2" style="--t:5.5s;--d:-1.5s"/><circle class="tw" cx="430" cy="250" r="1.8" style="--t:8s;--d:-5s"/>
-        <circle class="tw" cx="40" cy="160" r="1.6" style="--t:7.5s"/><circle class="tw" cx="560" cy="300" r="1.8" style="--t:6s;--d:-2.5s"/><circle class="tw" cx="210" cy="40" r="1.6" style="--t:9s;--d:-6s"/><circle class="tw" cx="390" cy="30" r="2" style="--t:5s;--d:-2s"/>
-      </g>
-      <path class="beam" d="M282 0 L318 0 L408 392 L192 392Z" fill="url(#st-beam)"/>
-      <path d="M0 392 Q300 362 600 392 L600 430 L0 430Z" fill="#4c5ca8" opacity=".55"/>
-      <ellipse class="pool" cx="300" cy="392" rx="120" ry="20" fill="url(#st-pool)"/>
-      <g class="flyer">
-        <g class="sway">
-          <circle cx="300" cy="64" r="26" fill="url(#st-star)"/>
-          <circle cx="300" cy="64" r="9" fill="#fff"/>
-          <g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M300 72 L301 96"/>
-            <path d="M303 112 L301 146 L293 176 M301 146 L311 174"/>
-            <path d="M302 118 L288 134"/>
-          </g>
-          <circle cx="305" cy="104" r="7" fill="#fff"/>
-        </g>
-      </g>
-    </svg>
+    <figure class="photo ring-photo reveal"><img src="images/sunset-silhouette.jpg" alt="An aerialist on a rope rig at sunset, one leg reaching long in an arabesque, her lace skirt trailing" loading="lazy"></figure>
   </div>
   <div class="wrap ring-facts">
     <div class="reveal"><b>2018</b><span>founded by four friends</span></div>
