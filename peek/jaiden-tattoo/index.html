@@ -178,8 +178,8 @@
     -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 5%, #000 95%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 5%, #000 95%, rgba(0,0,0,0)); }
   .mq-track { display: flex; width: max-content; }
   .mq.run .mq-track { animation: mq-drift var(--mq-dur) linear infinite; will-change: transform; }
-  .mq.paused .mq-track, .mq.off .mq-track, .mq:focus-within .mq-track { animation-play-state: paused; }
-  @media (hover: hover) { .mq:hover .mq-track { animation-play-state: paused; } }
+  .mq.paused .mq-track, .mq.off .mq-track, .mq-view:focus-within .mq-track { animation-play-state: paused; }
+  @media (hover: hover) { .mq-view:hover .mq-track { animation-play-state: paused; } }
   @keyframes mq-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
   .mq-list { flex: none; display: flex; align-items: center; gap: var(--mq-gap); margin: 0; padding: 0 var(--mq-gap) 0 0; list-style: none; }
   .mq-pc { flex: none; }
