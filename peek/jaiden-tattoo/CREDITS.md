@@ -18,3 +18,4 @@ Every photo, the logo and the film are Jaiden Sky's own (jaidentattoo.com and @j
 
 ## Portfolio (jaidentattoo.com/portfolio)
 - `pf-*.jpg` (18 files) and `fresh-books.jpg`: from her Portfolio page gallery, resized to 1400 px tall. Skipped on purpose: one sternum piece (nudity) and one piece still showing purple stencil lines.
+- `mq-*.jpg` (8 files): smaller copies (480 px tall) of pf-victory, pf-owl-fern, pf-rose-serpent, pf-greek-face, pf-frog, pf-guadalupe, pf-poppies and pf-cherub, for the slow moving banner under the hero.

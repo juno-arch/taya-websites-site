@@ -168,6 +168,47 @@
     .mark img { width: 38px; height: 38px; }
   }
 
+  /* ---------- THE SLOW BANNER: her pieces drift by, under the hero ----------
+     Her own tattoos, big and one at a time, with her own words between them. One loop takes 90 seconds.
+     It stops while you hover or focus it, while it's offscreen, and with its Pause tab. Under reduced motion it
+     stands still as a row you can swipe. The books line reads the banner, like the jackalope does. */
+  .mq { --mq-h: clamp(150px, 15vw, 224px); --mq-gap: clamp(30px, 3.8vw, 58px); --mq-dur: 90s;
+    position: relative; z-index: 4; background: var(--night); color: var(--on-night); border-block: 1px solid rgba(238,236,232,0.14); }
+  .mq-view { overflow: hidden; padding-block: clamp(28px, 3.2vw, 44px);
+    -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 5%, #000 95%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 5%, #000 95%, rgba(0,0,0,0)); }
+  .mq-track { display: flex; width: max-content; }
+  .mq.run .mq-track { animation: mq-drift var(--mq-dur) linear infinite; will-change: transform; }
+  .mq.paused .mq-track, .mq.off .mq-track, .mq:focus-within .mq-track { animation-play-state: paused; }
+  @media (hover: hover) { .mq:hover .mq-track { animation-play-state: paused; } }
+  @keyframes mq-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+  .mq-list { flex: none; display: flex; align-items: center; gap: var(--mq-gap); margin: 0; padding: 0 var(--mq-gap) 0 0; list-style: none; }
+  .mq-pc { flex: none; }
+  .mq-pc img { display: block; height: var(--mq-h); width: auto; background: #1c1c1b; outline: 1px solid rgba(238,236,232,0.3); outline-offset: 5px;
+    filter: grayscale(1) contrast(1.06); transition: filter 1s ease; }
+  @media (hover: hover) { .mq-pc:hover img { filter: grayscale(0.1) contrast(1.02); } }
+  .mq-w { flex: none; white-space: nowrap; font-family: 'Libre Caslon Display', 'Didot', Georgia, serif; font-size: clamp(34px, 4.3vw, 62px); line-height: 1.05; letter-spacing: -0.01em; color: #fff; }
+  .mq-w em, .mq-w.it, .mq-l { font-family: 'Libre Caslon Text', Georgia, serif; font-style: italic; font-weight: 400; }
+  .mq-w em { font-size: 0.84em; color: rgba(238,236,232,0.8); }
+  .mq-w.it, .mq-l { font-size: clamp(28px, 3.4vw, 48px); color: rgba(238,236,232,0.88); }
+  .mq-w.duo { display: grid; justify-items: start; gap: 12px; }
+  .mq-k { display: inline-flex; align-items: center; gap: 9px; font-family: 'Geist', sans-serif; font-size: 11.5px; line-height: 1.2; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(238,236,232,0.92); }
+  .mq-k::before { content: "\2726"; content: "\2726" / ""; font-size: 9px; letter-spacing: 0; }
+  .mq-pause { position: absolute; top: 100%; right: calc(20px + max(0px, (100% - 1160px) / 2)); display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; margin: 0; padding: 7px 12px 8px; cursor: pointer; -webkit-appearance: none; appearance: none;
+    font-family: 'Geist', sans-serif; font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+    color: var(--on-night); background: var(--night); border: 1px solid rgba(238,236,232,0.14); border-top: 0; border-radius: 0 0 6px 6px; }
+  .mq-pause:hover { background: #1c1c1b; }
+  .mq + .views { padding-top: 46px; }
+  .mq-pause:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .mq-pause svg { flex: none; display: block; }
+  .mq-pause .i-play, .mq.paused .mq-pause .i-pause { display: none; }
+  .mq.paused .mq-pause .i-play { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .mq.run .mq-track { animation: none; will-change: auto; }
+    .mq-view { overflow-x: auto; overscroll-behavior-x: contain; padding-inline: 20px; -webkit-mask-image: none; mask-image: none; scrollbar-width: thin; scrollbar-color: #55534f transparent; }
+    .mq-list[aria-hidden="true"], .mq-pause { display: none; }
+    .mq + .views { padding-top: 22px; }
+  }
+
   /* ---------- STATUS STRIP ---------- */
   .status { position: relative; z-index: 5; }
   .status-strip { margin: 0; background: var(--night); color: var(--on-night); text-align: center; font-size: 13px; line-height: 1.4; border-bottom: 1px solid #222; }
@@ -808,6 +849,32 @@
   })();
 </script>
 
+<div class="mq" id="mq">
+  <div class="mq-view">
+    <div class="mq-track">
+      <ul class="mq-list" aria-label="A few of my tattoos">
+        <li class="mq-pc"><img src="images/mq-victory.jpg" width="360" height="480" alt="The Winged Victory of Samothrace in soft black and grey realism on a thigh" loading="lazy" decoding="async"></li>
+        <li class="mq-w">Classical art</li>
+        <li class="mq-pc"><img src="images/mq-owl-fern.jpg" width="360" height="480" alt="A barred owl among fern fronds and blossoms on a thigh" loading="lazy" decoding="async"></li>
+        <li class="mq-w duo mq-books"><span class="mq-k">Books are open</span><span class="mq-l">for 2026</span></li>
+        <li class="mq-pc"><img src="images/mq-rose-serpent.jpg" width="480" height="480" alt="A full rose with a snake winding through its leaves, on an upper arm" loading="lazy" decoding="async"></li>
+        <li class="mq-w">Botanicals</li>
+        <li class="mq-pc"><img src="images/mq-greek-face.jpg" width="360" height="480" alt="A classical marble face split in two, the eyes floating above, on a forearm" loading="lazy" decoding="async"></li>
+        <li class="mq-w it">Black &amp; grey</li>
+        <li class="mq-pc"><img src="images/mq-frog.jpg" width="360" height="480" alt="A little tree frog sitting on a toadstool with tiny mushrooms, on a calf" loading="lazy" decoding="async"></li>
+        <li class="mq-w">Folklore <em>&amp;</em> creatures</li>
+        <li class="mq-pc"><img src="images/mq-guadalupe.jpg" width="360" height="480" alt="The Virgin of Guadalupe with a halo of rays and a starry cloak, down a forearm" loading="lazy" decoding="async"></li>
+        <li class="mq-w duo"><span class="mq-k">One client a day</span><span class="mq-l">and the day is yours</span></li>
+        <li class="mq-pc"><img src="images/mq-poppies.jpg" width="360" height="480" alt="Poppies, buds and seed heads in fine line and grey wash up a forearm" loading="lazy" decoding="async"></li>
+        <li class="mq-w it">Fine line &amp; realism</li>
+        <li class="mq-pc"><img src="images/mq-cherub.jpg" width="480" height="480" alt="A dreamy cherub resting its chin on a full rose, on the back of an arm" loading="lazy" decoding="async"></li>
+        <li class="mq-w duo"><span class="mq-k">Grants Pass, Oregon</span><span class="mq-l">since 2018</span></li>
+      </ul>
+    </div>
+  </div>
+  <button type="button" class="mq-pause" id="mq-pause"><svg class="i-pause" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2v8H2zM6 1h2v8H6z" fill="currentColor"/></svg><svg class="i-play" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 1 9 5 2.5 9z" fill="currentColor"/></svg><span id="mq-pause-t">Pause</span><span class="vh"> the moving tattoos</span></button>
+</div>
+
 <div class="views gutter" id="views" hidden>
   <div class="wrap views-card">
     <div class="views-head">
@@ -1446,6 +1513,28 @@
       t = setTimeout(function () { pet.classList.remove('boing'); }, scr.getAttribute('data-state') === 'closed' ? 1600 : 650);
     });
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { fig.classList.toggle('off', !e.isIntersecting); }); }).observe(fig);
+  })();
+
+  /* the slow banner: a second copy of the row (hidden from screen readers) makes the loop seamless. It loads its pictures
+     together as it nears the screen, rests offscreen, and its books line follows the banner. */
+  (function () {
+    var mq = document.getElementById('mq'); if (!mq) return;
+    var track = mq.querySelector('.mq-track'), list = track.querySelector('.mq-list'), btn = document.getElementById('mq-pause'), btnT = document.getElementById('mq-pause-t');
+    var dupe = list.cloneNode(true); dupe.setAttribute('aria-hidden', 'true'); dupe.removeAttribute('aria-label');
+    [].forEach.call(dupe.querySelectorAll('img'), function (im) { im.alt = ''; });
+    track.appendChild(dupe);
+    var BOOKS = { open: ['Books are open', 'for 2026'], event: ['Discounted designs', 'available'], closed: ['Books are closed', 'for now'] };
+    document.addEventListener('ex:books', function (e) {
+      var t = BOOKS[e.detail && e.detail.state]; if (!t) return;
+      [].forEach.call(mq.querySelectorAll('.mq-books'), function (el) { el.querySelector('.mq-k').textContent = t[0]; el.querySelector('.mq-l').textContent = t[1]; });
+    });
+    btn.addEventListener('click', function () { var p = mq.classList.toggle('paused'); btnT.textContent = p ? 'Play' : 'Pause'; });
+    mq.classList.add('run');
+    if (!('IntersectionObserver' in window)) return;
+    var imgs = [].slice.call(mq.querySelectorAll('img'));
+    var near = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { imgs.forEach(function (im) { im.loading = 'eager'; }); near.disconnect(); } }, { rootMargin: '900px 0px' });
+    near.observe(mq);
+    new IntersectionObserver(function (es) { es.forEach(function (e) { mq.classList.toggle('off', !e.isIntersecting); }); }).observe(mq);
   })();
 
   /* the Book button (every build): opens the booking app she already uses */
