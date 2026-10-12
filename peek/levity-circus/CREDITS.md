@@ -17,7 +17,7 @@ Every photo on this page is the collective's own, from their Squarespace site, l
 - juggling.jpg: Screen Shot 2026-03-27 at 3.34.28 PM.png, Ty juggling three red balls (767 px original, gallery tile only). The red balls inspired the Easter egg.
 
 ## Their logo
-- The navy round logo (spotlight, stars, a little figure as the I in LEVITY, "circus collective" on a periwinkle arc) is redrawn as inline SVG after LevityLogoLargeBlueT.png and the logo on their October calendar.
+- The navy round logo (night sky, slanted spotlight, the ring, LEVITY with an aerialist hanging from the dot of the i as the I, "circus collective" on the periwinkle arc) is traced as inline SVG straight from LevityLogoLargeBlueT.png (2500 px), so the stars, letters, figure and lettering are their own shapes, not a redraw. In the ring section the aerialist swings gently from the dot (Oct 12).
 
 ## Not used
 - The class flyers (Silks 1, Silks 2, Rope Strong, Sling, Handstands, Juggle Jam, Intro to Silks) and the October Calendar image: they have text on them. Their facts are on the page as real text instead.
