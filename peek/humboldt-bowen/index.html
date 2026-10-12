@@ -135,16 +135,14 @@
   .btn.quiet:hover { background: var(--ground-2); }
   .btn svg { margin-left: 8px; vertical-align: -1px; }
 
-  /* THE HERO: late light in a calm room (stock, Unsplash, Archee Lal): a lamp, a plant, warm shadows on a honey wall.
+  /* THE HERO: a massage room in late light (stock, Pexels, Anna Tarazevich): a dressed massage table, honey light through wooden blinds.
      The photo sits on the right and melts into a honey ground where the words rest. In dark mode the ground turns to
      a lamplit evening brown around it, and the photo itself stays exactly as bright. */
   .hero { position: relative; overflow: hidden; min-height: 92vh; min-height: 92svh; display: flex; flex-direction: column;
     background: var(--hero-ground); color: var(--hero-ink); }
   .hero-photo { position: absolute; inset: 0 0 0 38%; z-index: 0; margin: 0;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 4%, #000 36%); mask-image: linear-gradient(90deg, transparent 0, transparent 4%, #000 36%); }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 50%; display: block; }
-  /* desktop: the photo is mirrored so the bed sits on the far right, away from the words (the phone crop already has it on the right) */
-  @media (min-width: 761px) { .hero-photo img { transform: scaleX(-1); object-position: 30% 50%; } }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 35% 50%; display: block; }
   .hero .sample { left: auto; right: 12px; }
   .hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 72%, transparent) 0, transparent 150px); }
@@ -180,13 +178,13 @@
   @keyframes hero-rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
 
-  /* phones: the lamplit room is a sharp band up top (under the header), melting into honey, and the words rest below */
+  /* phones: the massage room is a sharp band up top (under the header), melting into honey, and the words rest below */
   @media (max-width: 760px) {
     .hero { min-height: 0; }
     .hero-photo { inset: 0 0 auto 0; height: min(86vw, 480px); -webkit-mask-image: none; mask-image: none; }
     .hero-photo img { object-position: 50% 50%; }
     .hero::after { background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 82%, transparent) 0, transparent 120px),
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 90%, transparent) 0, color-mix(in srgb, var(--hero-ground) 72%, transparent) 110px, transparent 175px),
       linear-gradient(180deg, transparent calc(min(86vw, 480px) - 150px), var(--hero-ground) min(86vw, 480px)); }
     .hero-main { padding-block: calc(min(86vw, 480px) - 150px) 40px; }
     .hero h1 { text-shadow: 0 1px 18px color-mix(in srgb, var(--hero-ground) 90%, transparent); }
@@ -745,7 +743,7 @@
     <picture>
       <source type="image/webp" media="(max-width: 760px)" srcset="images/hero-room-m.webp">
       <source type="image/webp" srcset="images/hero-room.webp">
-      <img src="images/hero-room.jpg" width="1600" height="1280" alt="A calm room in late golden light: a soft pillow, a hanging lamp and a leafy plant against a warm honey wall" fetchpriority="high">
+      <img src="images/hero-room.jpg" width="1600" height="1280" alt="A quiet massage room in late golden light: a massage table dressed in soft linens with a folded towel, honey light glowing through wooden blinds, a small plant by the basin" fetchpriority="high">
     </picture>
   </figure>
   <span class="sample">Sample photo</span>
