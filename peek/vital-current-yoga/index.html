@@ -330,6 +330,7 @@
   /* ---------- HEATHER ---------- */
   .about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 54px; align-items: start; }
   .portrait { position: relative; }
+  @media (min-width: 761px) { .portrait { position: sticky; top: 96px; } }
   .portrait .photo { aspect-ratio: 4 / 5; max-width: 400px; border-radius: 200px 200px 18px 18px; }
   .portrait figcaption { font-size: 13.5px; color: var(--ink-soft); margin-top: 10px; max-width: 400px; }
   .bio blockquote { margin-top: 18px; padding-left: 18px; border-left: 3px solid var(--lav); font-size: 18.5px; line-height: 1.6; }
@@ -1160,7 +1161,6 @@
       player.src = 'https://www.youtube-nocookie.com/embed/3DLuCk4wjFo?autoplay=1&rel=0&playsinline=1';
       player.title = 'Settling for Uncertainty, a somatic yoga class with Heather Carpenter';
       player.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
-      player.setAttribute('allowfullscreen', '');
       player.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
       frame.appendChild(player);
       fig.classList.add('full');

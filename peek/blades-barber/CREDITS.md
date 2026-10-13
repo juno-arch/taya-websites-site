@@ -1,6 +1,8 @@
 # Photo credits: Blades Barber Studio mockup
 
-All photos are free stock photos from Unsplash. Each photo page was checked again on Sep 30 2026 and reads "Free to use under the Unsplash License" (none are Unsplash+ photos). None show a clear face (the clippers close-up shows the back and side of a head, turned down). Every one carries a "Sample photo" chip in the mockup; the shop's own photos replace them on a real site.
+Two kinds of photos. The scene photos in the table below are free stock photos from Unsplash; none show a clear face. The crew photos on the chair cards are the pros' own pictures from their own Booksy pages (see The crew, further down).
+
+Scene photos: each photo page was checked again on Sep 30 2026 and reads "Free to use under the Unsplash License" (none are Unsplash+ photos). None show a clear face (the clippers close-up shows the back and side of a head, turned down). Every one carries a "Sample photo" chip in the mockup; the shop's own photos replace them on a real site.
 
 | File | Used for | Photo | Photographer |
 |---|---|---|---|
@@ -24,11 +26,11 @@ Names, services, badges and Book with links come from each pro's own Booksy page
 
 | Card | Booksy page | Instagram | Photo |
 |---|---|---|---|
-| Roman | booksy.com/en-us/974926_roman-gonzalez-fortunabarber_barber-shop_134756_fortuna ("Roman Gonzalez @Fortunabarber", 479 reviews) | @fortunabarber | images/crew/roman.webp: the cover photo on his own Booksy page (a man in front of white siding), cropped to a circle. No caption names him, but it is the only portrait on his page. |
+| Roman | booksy.com/en-us/974926_roman-gonzalez-fortunabarber_barber-shop_134756_fortuna ("Roman Gonzalez @Fortunabarber", 479 reviews) | @fortunabarber (bio, checked Oct 12: "Precision barber" and "appointments only", the sources of his title and his Appointments only badge) | images/crew/roman.webp: the cover photo on his own Booksy page (a man in front of white siding), cropped to a circle. No caption names him, but it is the only portrait on his page. |
 | Chris | booksy.com/en-us/1720944_elevate-by-chris_barber-shop_134756_fortuna ("Elevate By Chris", reviews list Christopher Louie) | @elevatebychris | images/crew/chris.webp: the black and white headshot that is the cover photo on his own Booksy page, cropped. No caption names him. |
 | Eric | booksy.com/en-us/1721044_eric-blends_barber-shop_134756_fortuna ("Eric Blends") | @ericb.bl3ndz | images/crew/eric.webp: his own Booksy profile picture (a mirror selfie), cropped. His Booksy cover is not used: it is a business card with personal phone numbers. |
-| Oscar | booksy.com/en-us/1821585_ot-trimz_barber-shop_134756_fortuna ("OT Trimz") | @ot.trimz_ | None, on purpose: his initials instead, and no last name. His Booksy profile picture mostly hides his face, and his cover shows clients' faces. |
+| Oscar | booksy.com/en-us/1821585_ot-trimz_barber-shop_134756_fortuna ("OT Trimz"; his first name is from the reviews on that page) | @ot.trimz_ | None, on purpose: his initials instead, and no last name. His Booksy profile picture mostly hides his face, and his cover shows clients' faces. |
 | Judith | booksy.com/en-us/1166439_jp4nail_nail-salon_134756_fortuna ("Jp4nail", reviews list Judith Pucheta) | @jp4nails | images/crew/judith.webp: her own Booksy profile picture (a selfie), cropped. |
-| Esme | none: her Booksy business was deleted and her Instagram bio says she is not taking new clients | @paintedhair_by_esme | None: her initial instead. No Book with button. |
+| Esme | none: her Booksy business was deleted and her Instagram bio says "NOT TAKING NEW CLIENTS" (checked Oct 12), so the menu intro and the FAQ say she does color and cuts for her regulars right now | @paintedhair_by_esme | None: her initial instead. No Book with button. |
 
 Photos were saved at full size from Booksy (d2zdpiztbgorvt.cloudfront.net), cropped square and saved as 176 px webp. They are the pros' own photos on their own business pages, shown here so the shop can see their real crew; each pro can swap or remove theirs.
