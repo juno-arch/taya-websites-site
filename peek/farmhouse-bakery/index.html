@@ -469,12 +469,13 @@
   .views-note { margin: 0 2px; font-size: 15.5px; line-height: 1.55; color: var(--ink-soft); }
   .views-note b { font-weight: 700; color: var(--ink); }
   .views-next { font: inherit; font-weight: 700; color: var(--crust); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
-  @media (min-width: 761px) {
+  @media (min-width: 901px) { /* side by side only from here, where every tier name fits inside its button; narrower, the picker sits under its heading */
     .views-card { grid-template-columns: max-content minmax(0, 1fr); column-gap: 26px; align-items: center; padding: 16px 16px 15px 22px; }
     .views-head { flex-direction: column; align-items: flex-start; }
     .views-note { grid-column: 1 / -1; }
   }
-  @media (max-width: 560px) { .vseg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .vseg { grid-template-columns: repeat(2, minmax(0, 1fr)); } } /* 2 across until all four names fit 4 across */
+  @media (max-width: 359px) { .vseg b { font-size: 16px; } } /* the narrowest phones: names a touch smaller, so Everything stays inside its button */
   @media (prefers-reduced-motion: reduce) { .vseg button { transition: none; } }
   .vp { position: fixed; z-index: 21; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column-reverse; align-items: flex-end; gap: 8px; transition: opacity 0.3s ease, translate 0.3s ease; }
   .vp.off { opacity: 0; translate: 0 8px; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, translate 0.3s ease, visibility 0s linear 0.3s; }

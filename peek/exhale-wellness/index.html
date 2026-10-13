@@ -441,6 +441,7 @@
   .ig-grid .reveal.in:nth-child(2) { transition-delay: 0.06s; } .ig-grid .reveal.in:nth-child(3) { transition-delay: 0.12s; }
   .ig-grid .reveal.in:nth-child(4) { transition-delay: 0.18s; } .ig-grid .reveal.in:nth-child(5) { transition-delay: 0.24s; } .ig-grid .reveal.in:nth-child(6) { transition-delay: 0.3s; }
   .ig-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 24px; }
+  .ig-head h2 em { overflow-wrap: anywhere; } /* the long handle wraps on a narrow phone instead of pushing the page sideways */
   .ig-foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; margin-top: 22px; }
 
   
@@ -725,7 +726,7 @@
   .views-next { font: inherit; font-weight: 500; color: var(--teal-deep); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap;
     text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .views-next:hover { text-decoration-thickness: 2px; }
-  @media (min-width: 761px) {
+  @media (min-width: 861px) { /* side by side only from here, where every tier name fits inside its button; narrower, the picker sits under its heading */
     .views-card { grid-template-columns: max-content minmax(0, 1fr); column-gap: 26px; row-gap: 12px; align-items: center; padding: 16px 16px 15px 22px; }
     .views-head { flex-direction: column; align-items: flex-start; }
     .views-note { grid-column: 1 / -1; }
@@ -1258,7 +1259,7 @@
     <div class="ig-head">
       <div>
         <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-        <h2 class="reveal">Fresh from <em>@exhale_wellness_spa</em></h2>
+        <h2 class="reveal">Fresh from <em>@exhale_<wbr>wellness_spa</em></h2>
       </div>
       <span class="reach"><a href="https://www.instagram.com/exhale_wellness_spa/" target="_blank" rel="noopener" aria-label="Follow @exhale_wellness_spa on Instagram (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>Follow along</a></span>
     </div>

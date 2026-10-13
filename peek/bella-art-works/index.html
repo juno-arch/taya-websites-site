@@ -95,6 +95,7 @@
     background: repeating-conic-gradient(var(--check) 0 25%, transparent 0 50%) 0 0 / 10px 10px; }
   .label.with-pill::before { margin-right: 0; }
   .label.with-pill { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .label.with-pill .tag { flex-shrink: 1; white-space: normal; text-align: left; } .label.with-pill .tag-p { white-space: nowrap; } /* a long tag wraps its words onto two lines on a narrow phone (the price stays on the right) instead of pushing the page sideways */
   p { margin: 0; text-wrap: pretty; }
   p + p { margin-top: 14px; }
   .nw { white-space: nowrap; }
@@ -581,7 +582,7 @@
   .views-note { margin: 0 2px; font-size: 15.5px; line-height: 1.55; color: var(--ink-soft); }
   .views-note b { font-weight: 500; color: var(--ink); }
   .views-next { font: inherit; font-weight: 500; color: var(--aqua-ink); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
-  @media (min-width: 761px) {
+  @media (min-width: 841px) { /* side by side only from here, where every tier name fits inside its button; narrower, the picker sits under its heading */
     .views-card { grid-template-columns: max-content minmax(0, 1fr); column-gap: 26px; align-items: center; padding: 16px 16px 15px 22px; }
     .views-head { flex-direction: column; align-items: flex-start; }
     .views-note { grid-column: 1 / -1; }
