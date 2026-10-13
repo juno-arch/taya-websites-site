@@ -33,7 +33,7 @@
 <script src="portal-myc.js?v=20261001f"></script>
 <script src="mycelium.js?v=20261001f" defer></script>
 <link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261012a">
+<link rel="stylesheet" href="portal.css?v=20261012b">
 <!--
   portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
   They sign in with a one-time code sent to their email (no passwords), then see:
@@ -97,7 +97,7 @@
 </header>
 <!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
      like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261012a"></script>
+<script src="portal.js?v=20261012b"></script>
 
 <main class="gutter" id="main" tabindex="-1"><div class="wrap">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -531,6 +531,119 @@
           <select id="in-bk-step"></select>
           <p class="err" id="bk-set-err" hidden></p>
           <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-set"><span>Save settings</span></button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- your newsletter (Oct 12 2026): only for a client whose newsletter runs on Web Faery's server. Four tabs, each with
+         its own address: #newsletter-write, #newsletter-sent, #newsletter-people, #newsletter-settings. Its code is the
+         "your newsletter" block in portal.js; the server side is hub DEPLOY.md section 64. -->
+    <section class="p-card" id="sec-news" aria-labelledby="h-news" hidden>
+      <span class="kicker">Your newsletter</span>
+      <h2 id="h-news" tabindex="-1">Newsletter</h2>
+      <p class="orders-test" id="nl-not-ready" hidden></p>
+      <p class="orders-fine" id="nl-from" hidden></p>
+      <div class="bk-tabs nl-tabs" role="tablist" aria-label="Newsletter">
+        <button type="button" role="tab" class="bk-tab nl-tab" id="nl-tab-write" data-tab="write" aria-controls="nl-p-write" aria-selected="true">Write</button>
+        <button type="button" role="tab" class="bk-tab nl-tab" id="nl-tab-sent" data-tab="sent" aria-controls="nl-p-sent" aria-selected="false" tabindex="-1">Sent</button>
+        <button type="button" role="tab" class="bk-tab nl-tab" id="nl-tab-people" data-tab="people" aria-controls="nl-p-people" aria-selected="false" tabindex="-1">People</button>
+        <button type="button" role="tab" class="bk-tab nl-tab" id="nl-tab-settings" data-tab="settings" aria-controls="nl-p-settings" aria-selected="false" tabindex="-1">Settings</button>
+      </div>
+
+      <div class="bk-panel nl-panel" role="tabpanel" id="nl-p-write" aria-labelledby="nl-tab-write">
+        <div id="nl-list-view">
+          <div class="dc-btns nl-new"><button class="btn small" type="button" id="b-nl-new"><span>Write a newsletter</span></button></div>
+          <h3 class="small-h">Drafts and coming up</h3>
+          <ul class="orders nls" id="nl-working"></ul>
+          <p class="empty" id="nl-working-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+            <span class="empty-body">No drafts yet. Write one whenever you have news: a new class, a sale, a little hello.</span></p>
+        </div>
+        <form class="nl-editor" id="f-nl" novalidate hidden>
+          <h3 class="small-h" id="nl-ed-h" tabindex="-1">A new newsletter</h3>
+          <label class="field-label" for="in-nl-subject">Subject</label>
+          <input id="in-nl-subject" class="keeps" type="text" maxlength="150" autocomplete="off" placeholder="Like: New fall classes start Monday" aria-describedby="nl-subject-err">
+          <p class="err" id="nl-subject-err" hidden></p>
+          <label class="field-label" for="in-nl-pre">Preview line <span class="opt-tag">(optional: the short line inboxes show after the subject)</span></label>
+          <input id="in-nl-pre" class="keeps" type="text" maxlength="150" autocomplete="off" placeholder="Like: Plus a little thank you for being here">
+          <label class="field-label" for="in-nl-body">Your words</label>
+          <p class="orders-fine nl-how" id="nl-how">Leave a blank line between paragraphs. Start a line with # for a heading, or with - for a list. Web addresses turn into links, and [your words](https://your-link) puts a link on those words.</p>
+          <textarea id="in-nl-body" class="keeps nl-body" maxlength="20000" rows="14" aria-describedby="nl-how nl-body-count nl-body-err" placeholder="Like: Hi friends! Here’s what’s new this month."></textarea>
+          <p class="count" id="nl-body-count" aria-live="polite"></p>
+          <p class="err" id="nl-body-err" hidden></p>
+          <p class="orders-fine nl-saved" id="nl-saved" role="status"></p>
+          <div class="dc-btns">
+            <button class="btn small" type="submit" id="b-nl-save"><span>Save draft</span></button>
+            <button class="open-btn" type="button" id="b-nl-preview">Preview</button>
+            <button class="open-btn" type="button" id="b-nl-test">Send me a test</button>
+            <button class="later" type="button" id="b-nl-close">Back to drafts</button>
+          </div>
+          <div class="nl-preview" id="nl-preview" tabindex="-1" hidden></div>
+          <div class="nl-send">
+            <h3 class="small-h">Send it</h3>
+            <p class="orders-fine" id="nl-send-who"></p>
+            <fieldset class="dc-kind nl-when">
+              <legend class="field-label">When</legend>
+              <label class="dc-radio nl-radio"><input type="radio" name="nl-when" value="now" checked> <span>Now</span></label>
+              <label class="dc-radio nl-radio"><input type="radio" name="nl-when" value="later"> <span>At a time I pick</span></label>
+            </fieldset>
+            <div id="nl-later" hidden>
+              <label class="field-label" for="in-nl-at">Day and time <span class="opt-tag">(your time)</span></label>
+              <input id="in-nl-at" class="keeps" type="datetime-local">
+            </div>
+            <p class="err" id="nl-send-err" tabindex="-1" hidden></p>
+            <div class="dc-btns"><button class="btn small" type="button" id="b-nl-send"><span>Send…</span></button></div>
+            <div class="nl-confirm" id="nl-confirm" hidden>
+              <p id="nl-confirm-text"></p>
+              <div class="dc-btns">
+                <button class="btn small" type="button" id="b-nl-yes"><span>Yes, send it</span></button>
+                <button class="later" type="button" id="b-nl-no">Not yet</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="bk-panel nl-panel" role="tabpanel" id="nl-p-sent" aria-labelledby="nl-tab-sent" hidden>
+        <h3 class="small-h">Sent</h3>
+        <ul class="orders nls" id="nl-sent"></ul>
+        <p class="empty" id="nl-sent-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+          <span class="empty-body">Nothing sent yet. Your newsletters show up here once they go out, with how many people they reached.</span></p>
+      </div>
+
+      <div class="bk-panel nl-panel" role="tabpanel" id="nl-p-people" aria-labelledby="nl-tab-people" hidden>
+        <h3 class="small-h">Your list</h3>
+        <p class="orders-fine" id="nl-counts"></p>
+        <label class="field-label" for="in-nl-which">Show</label>
+        <select id="in-nl-which">
+          <option value="on">On your list</option>
+          <option value="waiting">Waiting to confirm</option>
+          <option value="left">Left the list</option>
+          <option value="unreachable">Can’t be reached</option>
+        </select>
+        <ul class="nl-people" id="nl-people"></ul>
+        <p class="empty" id="nl-people-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
+          <span class="empty-body" id="nl-people-empty-text">No one here yet.</span></p>
+        <div class="dc-btns nl-pager" id="nl-pager" hidden>
+          <button class="open-btn" type="button" id="b-nl-prev">Back</button>
+          <span class="orders-fine" id="nl-page"></span>
+          <button class="open-btn" type="button" id="b-nl-next">More</button>
+        </div>
+        <p class="nl-csv"><button type="button" class="later" id="b-nl-csv">Download your list (CSV)</button></p>
+        <p class="orders-fine">Your list is yours to keep. People join from the sign-up box on your site and confirm by email, and every newsletter has a link to leave.</p>
+      </div>
+
+      <div class="bk-panel nl-panel" role="tabpanel" id="nl-p-settings" aria-labelledby="nl-tab-settings" hidden>
+        <h3 class="small-h">Who it comes from</h3>
+        <p class="orders-fine" id="nl-set-from"></p>
+        <form class="dc-form nl-set" id="f-nl-set" novalidate>
+          <label class="field-label" for="in-nl-reply">Replies go to</label>
+          <input id="in-nl-reply" class="keeps" type="email" maxlength="200" autocomplete="email" aria-describedby="nl-reply-err">
+          <p class="err" id="nl-reply-err" hidden></p>
+          <label class="field-label" for="in-nl-postal">Your mailing address</label>
+          <p class="orders-fine" id="nl-postal-why">The law asks every newsletter to show a mailing address. A PO box or a mailbox at a shipping store works too, if you’d rather not share your home.</p>
+          <textarea id="in-nl-postal" class="keeps short" maxlength="300" rows="3" aria-describedby="nl-postal-why nl-postal-err" placeholder="Like: PO Box 12, Arcata, CA 95521"></textarea>
+          <p class="err" id="nl-postal-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-nl-set"><span>Save</span></button></div>
         </form>
       </div>
     </section>

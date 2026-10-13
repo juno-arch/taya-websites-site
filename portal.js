@@ -32,6 +32,8 @@
    and three for gift certificates (Oct 10 2026, never in the preview): giftOwner, giftLookup, giftRedeem
    and the Products card's own door, prodDoor (Oct 10 2026, never in the preview): /products, /product-save,
    /product-photo, /product-photos
+   and the Newsletter card's own door, newsCall (Oct 12 2026, never in the preview): /overview, /issue, /save, /remove,
+   /preview, /test, /send, /stop, /people, /export, /settings (hub API.md section 18)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -53,6 +55,7 @@
   const SHOP = SERVER + '/api/webfaery/shop';         // a shop's orders (Oct 8 2026): only clients with a shop get any
   const GIFT = SERVER + '/api/webfaery/gift';         // gift certificates (Oct 10 2026): only clients whose site sells them
   const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
+  const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -412,6 +415,8 @@
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
   // if the sign-in changes (the private links door), only this line changes.
   const bookCall = (path, body) => postJSON(path, body || {}, token, BOOKINGS);
+  // a client's own newsletter (Oct 12 2026): the one place that part signs in, the same way
+  const newsCall = (path, body) => postJSON(path, body || {}, token, NEWS);
 
   // what people read when something goes sideways
   const words = (err, where) => {
@@ -515,6 +520,14 @@
     $('#in-gift-code').value = '';
     bk = null;
     $('#sec-bookings').hidden = true;
+    nl = null;
+    nlEdit = null;
+    nlPeopleShown = false;
+    $('#sec-news').hidden = true;
+    $('#f-nl').hidden = true;
+    $('#nl-list-view').hidden = false;
+    $('#in-nl-subject').value = ''; $('#in-nl-pre').value = ''; $('#in-nl-body').value = '';
+    $('#nl-people').replaceChildren();
     heroSignedOut();
     const n = $('#email-notice');
     n.textContent = notice || '';
@@ -676,6 +689,7 @@
       loadOrders();
       loadGifts();
       loadBookings();
+      loadNews();
       if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
     } catch (err) {
@@ -697,11 +711,13 @@
       loadOrders();
       loadGifts();
       loadBookings();
+      loadNews();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
     $$('#v-project textarea, #v-project input[type="text"]:not(.keeps)').some((t) => t.value.trim()) ||
-    !!document.querySelector('#v-project .ship-form') || !$('#f-dc').hidden || !!document.querySelector('#sec-bookings .bk-form');
+    !!document.querySelector('#v-project .ship-form') || !$('#f-dc').hidden || !!document.querySelector('#sec-bookings .bk-form') ||
+    !$('#f-nl').hidden || $('#f-nl-set').contains(document.activeElement);
 
   // Back from Stripe (its "after payment" link can be portal.html?paid=deposit, or ?paid=1): note it, so the
   // pay button turns into a thank-you instead of asking again while Taya waits to see it land.
@@ -3583,6 +3599,480 @@
     $('#in-what').focus();
   }
 
+  /* ---- your newsletter (Oct 12 2026) ----
+     Only for a client whose newsletter runs on Web Faery's server (the server answers news: null for everyone else, and
+     the section stays hidden). Four tabs, each with its own address (#newsletter-write, -sent, -people, -settings):
+     write (drafts, a preview, a test to their own email, send now or at a time), sent (how many it reached), people
+     (who is on the list, a CSV that is theirs), settings (where replies go, the mailing address the law asks for).
+     Every call goes through newsCall, the one place this part signs in. The server side: hub DEPLOY.md section 64. */
+  let nl = null;              // the overview as the server last sent it (cleaned)
+  let nlBusy = false;
+  let nlTab = 'write';
+  let nlTabsReady = false;
+  let nlEdit = null;          // the newsletter open in the editor: { id, status } (id '' until it is first saved)
+  let nlDirty = false;
+  let nlWhich = 'on';
+  let nlPage = 1;
+  let nlPeopleShown = false;
+  const NL_TABS = ['write', 'sent', 'people', 'settings'];
+  const NL_STATES = ['draft', 'scheduled', 'sending', 'sent', 'stopped'];
+  const nlNum = (v) => Math.max(0, Math.floor(+v || 0));
+  async function loadNews() {
+    if (DEMO) { $('#sec-news').hidden = true; return; }
+    if (nlBusy) return;
+    nlBusy = true;
+    try {
+      nl = cleanNl(await newsCall('/overview'));
+      renderNl();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!nl) $('#sec-news').hidden = true;
+    } finally { nlBusy = false; }
+  }
+  function cleanNlRow(r) {
+    if (!r || typeof r !== 'object' || !str(r.id) || !NL_STATES.includes(r.status)) return null;
+    return { id: str(r.id, 20), subject: cleanLine(r.subject, 150), status: r.status, at: str(r.at, 30), total: nlNum(r.total), sent: nlNum(r.sent),
+      failed: nlNum(r.failed), skipped: nlNum(r.skipped), by: r.by === 'taya' ? 'taya' : 'owner', wait: str(r.wait, 20), tested: str(r.tested, 30) };
+  }
+  function cleanNl(d) {
+    d = d && typeof d === 'object' ? d : {};
+    if (!d.news || typeof d.news !== 'object') return null;
+    const n = d.news, l = n.list && typeof n.list === 'object' ? n.list : {}, c = n.counts && typeof n.counts === 'object' ? n.counts : {};
+    const lim = n.limits && typeof n.limits === 'object' ? n.limits : {};
+    return {
+      list: { name: cleanLine(l.name, 120), business: cleanLine(l.business, 120), from: cleanLine(l.from, 300), reply_to: cleanLine(l.reply_to, 200),
+        postal_address: cleanText(l.postal_address, 300), ready: !!l.ready, why: str(l.why, 20), address_missing: !!l.address_missing },
+      counts: { on: nlNum(c.on), waiting: nlNum(c.waiting), left: nlNum(c.left), unreachable: nlNum(c.unreachable) },
+      limits: { sends_left: nlNum(lim.sends_left), sends_7d: nlNum(lim.sends_7d) || 4, max_send: nlNum(lim.max_send) },
+      working: arr(n.working).slice(0, 60).map(cleanNlRow).filter(Boolean),
+      sent: arr(n.sent).slice(0, 30).map(cleanNlRow).filter(Boolean)
+    };
+  }
+  // dates and times from the server (ISO), in this computer's own time
+  const nlDate = (s) => { const t = Date.parse(str(s, 30)); return isNaN(t) ? null : new Date(t); };
+  const nlDay = (s) => { const d = nlDate(s); return d ? MON[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== now.getFullYear() ? ', ' + d.getFullYear() : '') : ''; };
+  const nlTime = (d) => { const h = d.getHours(); return (h % 12 || 12) + ':' + pad(d.getMinutes()) + ' ' + (h < 12 ? 'AM' : 'PM'); };
+  const nlWhen = (s) => { const d = nlDate(s); return d ? DAYS[d.getDay()].slice(0, 3) + ', ' + nlDay(s) + ', ' + nlTime(d) : ''; };
+  const NL_WAIT = {
+    day_cap: ' It reached today’s sending limit and picks up by itself tomorrow.',
+    throttle: ' Taking a short breather. It picks up in a minute.',
+    paused: ' Paused for now. I’ve been told, and it picks up by itself once it’s sorted.',
+    creds: ' Paused for now. I’ve been told, and it picks up by itself once it’s sorted.',
+    sandbox: ' Paused for now. I’ve been told, and it picks up by itself once it’s sorted.',
+    server: ' Paused for now. I’ve been told, and it picks up by itself once it’s sorted.',
+    off: ' Paused for now. I’ve been told, and it picks up by itself once it’s sorted.',
+    not_on: ' Waiting on your sending address. I’m on it.',
+    domain: ' Waiting on your sending address. I’m on it.',
+    address: ' Waiting for your mailing address (in Settings).'
+  };
+  function nlLine(r) {
+    const wait = NL_WAIT[r.wait] || '';
+    if (r.status === 'draft') return 'Draft, saved ' + nlDay(r.at) + '.' + (r.tested ? ' Test sent ' + nlDay(r.tested) + '.' : '');
+    if (r.status === 'scheduled') return 'Goes out ' + nlWhen(r.at) + '.' + wait;
+    if (r.status === 'sending') return 'Sending now: ' + r.sent + ' of ' + r.total + ' so far.' + wait;
+    if (r.status === 'stopped') return 'Stopped ' + nlDay(r.at) + ' after ' + r.sent + ' of ' + r.total + '.';
+    return 'Sent ' + nlDay(r.at) + ' to ' + plural(r.sent, 'person', 'people') + '.' +
+      (r.failed ? ' ' + plural(r.failed, 'email', 'emails') + ' could not be delivered.' : '');
+  }
+  function renderNl() {
+    const sec = $('#sec-news');
+    if (!nl) { sec.hidden = true; return; }
+    sec.hidden = false;
+    const l = nl.list;
+    const note = $('#nl-not-ready');
+    note.textContent = l.ready ? '' : l.why === 'address'
+      ? 'Add your mailing address in Settings before your first send. The law asks for one in every newsletter.'
+      : 'Sending opens once I finish setting up your sending address. You can write and save drafts now.';
+    note.hidden = l.ready;
+    $('#nl-from').textContent = l.from ? 'Your newsletter comes from ' + l.from + '.' : '';
+    $('#nl-from').hidden = !l.from;
+    if (!$('#nl-working .nl-sure')) {
+      $('#nl-working').replaceChildren(...nl.working.map((r) => nlRow(r, false)));
+      $('#nl-working-empty').hidden = nl.working.length > 0;
+    }
+    $('#nl-sent').replaceChildren(...nl.sent.map((r) => nlRow(r, true)));
+    $('#nl-sent-empty').hidden = nl.sent.length > 0;
+    const c = nl.counts;
+    $('#nl-counts').textContent = plural(c.on, 'person', 'people') + ' on your list.' +
+      (c.waiting ? ' ' + c.waiting + ' waiting to confirm.' : '') + (c.left ? ' ' + c.left + ' left.' : '') +
+      (c.unreachable ? ' ' + c.unreachable + ' can’t be reached.' : '');
+    $('#nl-set-from').textContent = l.from ? l.from + '. I set up this address with you; email me to change it.' : 'I set up the address it comes from with you, on your own web address.';
+    if (!$('#f-nl-set').contains(document.activeElement)) {
+      $('#in-nl-reply').value = l.reply_to;
+      $('#in-nl-postal').value = l.postal_address;
+    }
+    if (!$('#f-nl').hidden) nlSendWho();
+    if (nlTab === 'people' && !nlPeopleShown) loadPeople(nlWhich, nlPage);
+    if (!nlTabsReady) {
+      nlTabsReady = true;
+      const h = nlHashTab();
+      if (h) { selectNlTab(h, false, true); requestAnimationFrame(() => sec.scrollIntoView({ block: 'start' })); }
+    }
+  }
+  function nlRow(r, sent) {
+    const li = make('li', 'order nl-row');
+    li.dataset.issue = r.id;
+    const head = make('div', 'o-head');
+    head.append(make('span', 'o-what nl-subj', r.subject || 'No subject yet'));
+    if (r.by === 'taya') head.append(make('span', 'o-date', 'From Taya'));
+    li.append(head, make('p', 'o-opt nl-line', nlLine(r)));
+    const act = make('div', 'o-act o-act2');
+    const btn = (label, fn) => { const b = make('button', 'open-btn', label); b.type = 'button'; b.addEventListener('click', () => fn(b)); act.append(b); return b; };
+    if (!sent && (r.status === 'draft' || r.status === 'scheduled')) btn(r.status === 'draft' ? 'Open' : 'Open and change', () => openNl(r.id));
+    if (!sent && r.status === 'scheduled') sureBtn(btn, 'Don’t send it', 'Yes, back to drafts', () => nlStop(r, 'It won’t go out. It’s back in your drafts.'));
+    if (!sent && r.status === 'sending') sureBtn(btn, 'Stop sending', 'Yes, stop it', () => nlStop(r, 'Stopped. Whoever didn’t get it yet won’t.'));
+    if (!sent && r.status === 'draft') sureBtn(btn, 'Delete', 'Yes, delete it', () => nlRemove(r));
+    if (act.childNodes.length) li.append(act);
+    return li;
+  }
+  // a button that asks once more before it acts (the second tap does it; it settles back after a few seconds)
+  function sureBtn(btn, label, sure, fn) {
+    let armed = 0;
+    const b = btn(label, async (el) => {
+      if (!armed) {
+        el.textContent = sure; el.classList.add('nl-sure');
+        armed = setTimeout(() => { armed = 0; el.textContent = label; el.classList.remove('nl-sure'); }, 6000);
+        return;
+      }
+      clearTimeout(armed); armed = 0;
+      el.setAttribute('aria-busy', 'true');
+      try { await fn(); } finally { el.removeAttribute('aria-busy'); el.classList.remove('nl-sure'); el.textContent = label; }
+    });
+    return b;
+  }
+  async function nlStop(r, said) {
+    try { await newsCall('/stop', { id: r.id }); toast(said); await loadNews(); } catch (e) { if (e.code === 'signed_out') { quietSignOut(true); return; } toast(nlWords(e)); }
+  }
+  async function nlRemove(r) {
+    try { await newsCall('/remove', { id: r.id }); toast('Deleted.'); await loadNews(); focusEl($('#b-nl-new'), true); } catch (e) { if (e.code === 'signed_out') { quietSignOut(true); return; } toast(nlWords(e)); }
+  }
+
+  // ---- the tabs
+  const nlHashTab = () => { const m = /^#newsletter-([a-z]+)$/.exec(location.hash || ''); return m && NL_TABS.includes(m[1]) ? m[1] : ''; };
+  function selectNlTab(key, focus, fromHash) {
+    if (!NL_TABS.includes(key)) key = 'write';
+    nlTab = key;
+    $$('#sec-news .nl-tab').forEach((t) => {
+      const on = t.dataset.tab === key;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    $$('#sec-news .nl-panel').forEach((p) => { p.hidden = p.id !== 'nl-p-' + key; });
+    if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#newsletter-' + key); } catch (e) { /* fine */ } }
+    if (focus) focusEl($('#nl-tab-' + key));
+    if (key === 'people' && nl) loadPeople(nlWhich, nlPage);
+  }
+  function onNlTabKey(ev) {
+    const i = NL_TABS.indexOf(nlTab);
+    let n = -1;
+    if (ev.key === 'ArrowRight') n = (i + 1) % NL_TABS.length;
+    else if (ev.key === 'ArrowLeft') n = (i + NL_TABS.length - 1) % NL_TABS.length;
+    else if (ev.key === 'Home') n = 0;
+    else if (ev.key === 'End') n = NL_TABS.length - 1;
+    if (n < 0) return;
+    ev.preventDefault();
+    selectNlTab(NL_TABS[n], true, false);
+  }
+
+  // ---- what people read when something goes sideways here
+  function nlWords(e) {
+    const w = e && e.why;
+    if (e && e.code === 'input' && e.field === 'postal_address') return 'Add your full mailing address, with the street number or PO box.';
+    if (e && e.code === 'input' && e.field === 'reply_to') return 'That email doesn’t look quite right. Check for a little typo?';
+    if (w === 'not_ready') return 'Sending opens once I finish setting up your sending address. Your draft is saved.';
+    if (w === 'address') return 'Add your mailing address in Settings first. The law asks for one in every newsletter.';
+    if (w === 'no_people') return 'No one has confirmed yet, so there’s no one to send to. Once people sign up on your site, it’s ready.';
+    if (w === 'limit') return 'That’s ' + ((nl && nl.limits.sends_7d) || 4) + ' sends this week already. Need one more? Email me at ' + TAYA + ' and I’ll send it for you.';
+    if (w === 'too_many') return 'Your list is bigger than one send can take here. Email me at ' + TAYA + ' and I’ll send it for you.';
+    if (w === 'not_draft' || w === 'not_sending') return 'That one has already gone out. Try refreshing the page.';
+    if (w === 'too_many_drafts') return 'That’s a lot of drafts. Delete one you don’t need, then try again.';
+    if (w === 'not_sent') return 'The test didn’t go out. Try again in a little while.';
+    if (w === 'no_email') return 'I don’t have an email for you to send the test to. Email me and I’ll fix that.';
+    if (e && e.code === 'input' && e.field === 'subject') return e.why === 'too_long' ? 'That subject is a bit long. Keep it under 150 letters.' : 'Add a subject first.';
+    if (e && e.code === 'input' && e.field === 'body') return e.why === 'too_long' ? 'That’s more words than one newsletter can hold. Try splitting it in two.' : 'Add your words first.';
+    if (e && e.code === 'input' && e.field === 'at') return 'Choose a day and time from now up to 60 days ahead.';
+    return words(e);
+  }
+
+  // ---- the editor
+  const nlFields = () => ({ subject: cleanLine($('#in-nl-subject').value, 150), preheader: cleanLine($('#in-nl-pre').value, 150), body: cleanText($('#in-nl-body').value, 20000) });
+  function nlErr(id, text) {
+    const p = $('#nl-' + id + '-err');
+    if (!p) return;
+    p.textContent = text || '';
+    p.hidden = !text;
+    const input = { subject: '#in-nl-subject', body: '#in-nl-body', send: null, reply: '#in-nl-reply', postal: '#in-nl-postal' }[id];
+    if (input) { if (text) $(input).setAttribute('aria-invalid', 'true'); else $(input).removeAttribute('aria-invalid'); }
+  }
+  function nlBodyCount() {
+    const n = $('#in-nl-body').value.length;
+    $('#nl-body-count').textContent = n > 16000 ? (20000 - n) + ' letters left' : '';
+    $('#nl-body-count').classList.toggle('near', n > 18000);
+  }
+  function nlSendWho() {
+    const n = nl ? nl.counts.on : 0;
+    $('#nl-send-who').textContent = n ? 'It goes to the ' + plural(n, 'person', 'people') + ' on your list, each with their own link to leave.' : 'No one has confirmed yet. Once people sign up on your site, you can send.';
+  }
+  async function openNl(id) {
+    ['subject', 'body', 'send'].forEach((k) => nlErr(k, ''));
+    $('#nl-preview').hidden = true;
+    $('#nl-confirm').hidden = true;
+    $('#nl-saved').textContent = '';
+    if (id) {
+      try {
+        const d = await newsCall('/issue', { id });
+        const r = d && d.issue ? d.issue : null;
+        if (!r) throw fail('not_found');
+        $('#in-nl-subject').value = cleanLine(r.subject, 150);
+        $('#in-nl-pre').value = cleanLine(r.preheader, 150);
+        $('#in-nl-body').value = cleanText(r.body, 20000);
+        nlEdit = { id: str(r.id, 20), status: str(r.status, 12) };
+      } catch (e) { if (e.code === 'signed_out') { quietSignOut(true); return; } toast(nlWords(e)); return; }
+    } else {
+      $('#in-nl-subject').value = ''; $('#in-nl-pre').value = ''; $('#in-nl-body').value = '';
+      nlEdit = { id: '', status: 'draft' };
+    }
+    nlDirty = false;
+    $('input[name="nl-when"][value="now"]').checked = true;
+    $('#nl-later').hidden = true;
+    $('#nl-ed-h').textContent = id ? 'Your newsletter' : 'A new newsletter';
+    nlBodyCount();
+    nlSendWho();
+    $('#nl-list-view').hidden = true;
+    $('#f-nl').hidden = false;
+    focusEl($('#nl-ed-h'));
+  }
+  function closeNl() {
+    $('#f-nl').hidden = true;
+    $('#nl-list-view').hidden = false;
+    nlEdit = null;
+    nlDirty = false;
+    loadNews();
+    focusEl($('#b-nl-new'), true);
+  }
+  // Save what is in the editor (quietly before a test or a send). -> true when saved
+  async function nlSave(quiet) {
+    if (!nlEdit) return false;
+    nlErr('subject', ''); nlErr('body', '');
+    const f = nlFields();
+    const d = await newsCall('/save', Object.assign(nlEdit.id ? { id: nlEdit.id } : {}, f));
+    const r = d && d.issue ? d.issue : null;
+    if (!r || !str(r.id)) throw fail('server');
+    nlEdit = { id: str(r.id, 20), status: str(r.status, 12) };
+    nlDirty = false;
+    if (!quiet) $('#nl-saved').textContent = 'Saved. It’s in your drafts until you send it.';
+    return true;
+  }
+  async function onNlSave(ev) {
+    ev.preventDefault();
+    const btn = $('#b-nl-save');
+    setBusy(btn, true, 'Saving…');
+    try { await nlSave(false); loadNews(); }
+    catch (e) { nlShowErr(e); }
+    finally { setBusy(btn, false); }
+  }
+  function nlShowErr(e) {
+    if (e.code === 'signed_out') { quietSignOut(true); return; }
+    const t = nlWords(e);
+    if (e.field === 'subject') { nlErr('subject', t); focusEl($('#in-nl-subject')); }
+    else if (e.field === 'body') { nlErr('body', t); focusEl($('#in-nl-body')); }
+    else { nlErr('send', t); }
+  }
+  async function onNlPreview() {
+    const btn = $('#b-nl-preview');
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const d = await newsCall('/preview', nlFields());
+      renderPreview(d && d.preview);
+      focusEl($('#nl-preview'));
+    } catch (e) { nlShowErr(e); }
+    finally { btn.removeAttribute('aria-busy'); }
+  }
+  // the preview: built from the server's blocks with text only (no HTML from anywhere reaches the page)
+  function renderPreview(p) {
+    const box = $('#nl-preview');
+    if (!p || typeof p !== 'object') { box.hidden = true; return; }
+    const acc = /^#[0-9a-f]{6}$/i.test(str(p.accent, 7)) ? str(p.accent, 7) : '';  // their color, already checked to read on white
+    const runs = (rs, el) => {
+      arr(rs).slice(0, 200).forEach((r) => {
+        if (!r || typeof r.x !== 'string') return;
+        const u = safeUrl(r.u);
+        if (u) { const a = make('a', null, r.x.slice(0, 1500)); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer'; if (acc) a.style.color = acc; el.append(a); }
+        else el.append(r.x.slice(0, 4000));
+      });
+      return el;
+    };
+    const head = make('div', 'nl-pv-head');
+    head.append(make('p', 'nl-pv-meta', 'From: ' + cleanLine(p.from, 300)), make('p', 'nl-pv-meta', 'Subject: ' + (cleanLine(p.subject, 150) || 'No subject yet')));
+    if (p.preheader) head.append(make('p', 'nl-pv-meta nl-pv-pre', 'Preview line: ' + cleanLine(p.preheader, 150)));
+    const card = make('div', 'nl-pv-card');
+    const biz = make('p', 'nl-pv-biz', cleanLine(p.business, 120));
+    if (acc) biz.style.color = acc;
+    card.append(biz);
+    arr(p.blocks).slice(0, 400).forEach((b) => {
+      if (!b || typeof b !== 'object') return;
+      if (b.t === 'h') card.append(runs(b.runs, make('h4', 'nl-pv-h')));
+      else if (b.t === 'ul') { const ul = make('ul', 'nl-pv-ul'); arr(b.items).slice(0, 200).forEach((i) => ul.append(runs(i, make('li')))); card.append(ul); }
+      else if (b.t === 'p') {
+        const para = make('p', 'nl-pv-p');
+        arr(b.lines).slice(0, 200).forEach((ln, i) => { if (i) para.append(make('br')); runs(ln, para); });
+        card.append(para);
+      }
+    });
+    if (!arr(p.blocks).length) card.append(make('p', 'nl-pv-p nl-pv-empty', 'Your words show up here.'));
+    const f = p.footer && typeof p.footer === 'object' ? p.footer : {};
+    const foot = make('div', 'nl-pv-foot');
+    foot.append(make('p', null, cleanLine(f.reason, 400)), make('p', null, cleanLine(f.address, 400)), make('p', 'nl-pv-leave', cleanLine(f.leave, 40)));
+    card.append(foot);
+    box.replaceChildren(make('h4', 'small-h nl-pv-title', 'Preview'), head, card);
+    box.hidden = false;
+  }
+  async function onNlTest() {
+    const btn = $('#b-nl-test');
+    btn.setAttribute('aria-busy', 'true');
+    nlErr('send', '');
+    try {
+      await nlSave(true);
+      const d = await newsCall('/test', { id: nlEdit.id });
+      toast('Test sent to ' + cleanLine(d && d.to, 200) + '. It can take a minute to arrive.');
+      $('#nl-saved').textContent = 'Saved, and a test is on its way to you.';
+    } catch (e) { nlShowErr(e); }
+    finally { btn.removeAttribute('aria-busy'); }
+  }
+  const nlLater = () => { const r = document.querySelector('input[name="nl-when"]:checked'); return !!r && r.value === 'later'; };
+  function nlAt() {
+    if (!nlLater()) return '';
+    const v = $('#in-nl-at').value;
+    const t = v ? new Date(v) : null;
+    return t && !isNaN(t.getTime()) ? t.toISOString() : 'bad';
+  }
+  function onNlSendAsk() {
+    nlErr('send', '');
+    const f = nlFields();
+    if (!f.subject) { nlErr('subject', 'Add a subject first.'); focusEl($('#in-nl-subject')); return; }
+    if (!f.body) { nlErr('body', 'Add your words first.'); focusEl($('#in-nl-body')); return; }
+    const at = nlAt();
+    if (at === 'bad') { nlErr('send', 'Choose a day and a time.'); focusEl($('#in-nl-at')); return; }
+    const n = nl ? nl.counts.on : 0;
+    $('#nl-confirm-text').textContent = 'Send “' + f.subject + '” to ' + plural(n, 'person', 'people') + (at ? ' on ' + nlWhen(at) : ' now') + '?';
+    $('#nl-confirm').hidden = false;
+    focusEl($('#b-nl-yes'));
+  }
+  async function onNlSend() {
+    const btn = $('#b-nl-yes');
+    setBusy(btn, true, 'Sending…');
+    try {
+      await nlSave(true);
+      const at = nlAt();
+      const d = await newsCall('/send', at && at !== 'bad' ? { id: nlEdit.id, at } : { id: nlEdit.id });
+      const r = d && d.issue ? cleanNlRow(d.issue) : null;
+      toast(at && r ? 'Scheduled. It goes out ' + nlWhen(r.at) + '.' : 'On its way! It goes out over the next few minutes.', 7000);
+      $('#nl-confirm').hidden = true;
+      closeNl();
+    } catch (e) { $('#nl-confirm').hidden = true; nlShowErr(e); focusEl($('#nl-send-err')); }
+    finally { setBusy(btn, false); }
+  }
+
+  // ---- people
+  async function loadPeople(which, page) {
+    nlWhich = which; nlPage = page;
+    try {
+      const d = await newsCall('/people', { which, page });
+      const ppl = arr(d && d.people).slice(0, 100).map((p) => (p && typeof p.email === 'string' ? { email: cleanLine(p.email, 200), since: str(p.since, 30), why: str(p.why, 12) } : null)).filter(Boolean);
+      const pages = Math.max(1, nlNum(d && d.pages)), pg = Math.min(pages, Math.max(1, nlNum(d && d.page)));
+      nlPage = pg;
+      nlPeopleShown = true;
+      const verb = { on: 'joined', waiting: 'signed up', left: 'left', unreachable: '' }[which] || '';
+      $('#nl-people').replaceChildren(...ppl.map((p) => {
+        const li = make('li', 'nl-person');
+        li.append(make('span', 'nl-p-email', p.email));
+        const when = p.why === 'complaint' ? 'marked a newsletter as spam' : p.why === 'bounce' ? 'their inbox turned it away' : (verb ? verb + ' ' + nlDay(p.since) : '');
+        if (when) li.append(make('span', 'nl-p-when', when));
+        return li;
+      }));
+      $('#nl-people-empty').hidden = ppl.length > 0;
+      $('#nl-people-empty-text').textContent = { on: 'No one on your list yet. People join from the sign-up box on your site.', waiting: 'No one is waiting to confirm.', left: 'No one has left. Lovely.', unreachable: 'Everyone can be reached.' }[which] || '';
+      $('#nl-pager').hidden = pages < 2;
+      $('#nl-page').textContent = 'Page ' + pg + ' of ' + pages;
+      $('#b-nl-prev').disabled = pg <= 1;
+      $('#b-nl-next').disabled = pg >= pages;
+    } catch (e) { if (e.code === 'signed_out') { quietSignOut(true); return; } toast(nlWords(e)); }
+  }
+  async function onNlCsv() {
+    const btn = $('#b-nl-csv');
+    if (btn.getAttribute('aria-busy')) return;
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const res = await post('/export', {}, token, NEWS);
+      if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'newsletter-list-' + todayISO + '.csv';
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    } catch (e) { if (e.code === 'signed_out') { quietSignOut(true); return; } toast(nlWords(e)); }
+    finally { btn.removeAttribute('aria-busy'); }
+  }
+
+  // ---- settings
+  async function onNlSet(ev) {
+    ev.preventDefault();
+    nlErr('reply', ''); nlErr('postal', '');
+    const reply = cleanLine($('#in-nl-reply').value, 200);
+    const postal = cleanText($('#in-nl-postal').value, 300);
+    if (reply && !EMAIL_RE.test(reply)) { nlErr('reply', 'That email doesn’t look quite right. Check for a little typo?'); focusEl($('#in-nl-reply')); return; }
+    const btn = $('#b-nl-set');
+    setBusy(btn, true, 'Saving…');
+    try {
+      await newsCall('/settings', { reply_to: reply, postal_address: postal });
+      toast('Saved.');
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      await loadNews();
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(true); return; }
+      if (e.field === 'reply_to') { nlErr('reply', nlWords(e)); focusEl($('#in-nl-reply')); }
+      else if (e.field === 'postal_address') { nlErr('postal', nlWords(e)); focusEl($('#in-nl-postal')); }
+      else toast(nlWords(e));
+    } finally { setBusy(btn, false); }
+  }
+
+  function wireNews() {
+    $$('#sec-news .nl-tab').forEach((t) => {
+      t.addEventListener('click', () => selectNlTab(t.dataset.tab, false, false));
+      t.addEventListener('keydown', onNlTabKey);
+    });
+    window.addEventListener('hashchange', () => { const h = nlHashTab(); if (h && nl) { selectNlTab(h, false, true); $('#sec-news').scrollIntoView({ block: 'start' }); } });
+    $('#b-nl-new').addEventListener('click', () => { if (nl) openNl(''); });
+    $('#b-nl-close').addEventListener('click', closeNl);
+    $('#f-nl').addEventListener('submit', onNlSave);
+    $('#b-nl-preview').addEventListener('click', onNlPreview);
+    $('#b-nl-test').addEventListener('click', onNlTest);
+    $('#b-nl-send').addEventListener('click', onNlSendAsk);
+    $('#b-nl-yes').addEventListener('click', onNlSend);
+    $('#b-nl-no').addEventListener('click', () => { $('#nl-confirm').hidden = true; focusEl($('#b-nl-send')); });
+    ['#in-nl-subject', '#in-nl-pre', '#in-nl-body'].forEach((s) => $(s).addEventListener('input', () => { nlDirty = true; $('#nl-saved').textContent = ''; }));
+    $('#in-nl-body').addEventListener('input', nlBodyCount);
+    $$('input[name="nl-when"]').forEach((r) => r.addEventListener('change', () => {
+      $('#nl-later').hidden = !nlLater();
+      if (nlLater()) {
+        const t = new Date(Date.now() + 60 * 60000);
+        const local = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+        $('#in-nl-at').min = local(new Date());
+        $('#in-nl-at').max = local(new Date(Date.now() + 59 * 86400000));
+        if (!$('#in-nl-at').value) $('#in-nl-at').value = local(t);
+      }
+    }));
+    $('#in-nl-which').addEventListener('change', () => loadPeople($('#in-nl-which').value, 1));
+    $('#b-nl-prev').addEventListener('click', () => loadPeople(nlWhich, nlPage - 1));
+    $('#b-nl-next').addEventListener('click', () => loadPeople(nlWhich, nlPage + 1));
+    $('#b-nl-csv').addEventListener('click', onNlCsv);
+    $('#f-nl-set').addEventListener('submit', onNlSet);
+  }
+
   /* ---- gift certificates (Oct 10 2026) ----
      Only for a client whose site sells gift certificates through Web Faery's server (the server answers gifts: null
      for everyone else, and the section stays hidden). Look up a code, see what is left on it, record what was used
@@ -3890,6 +4380,7 @@
     wireProducts(); // the Products card (Oct 10 2026)
     $('#f-gift').addEventListener('submit', onGiftFind);
     wireBookings();
+    wireNews();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {
