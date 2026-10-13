@@ -51,7 +51,7 @@
     --hold: #ffb627;        /* on hold amber, ink on it 10.4 */
     --sold: #e0127a;        /* SOLD stamp, white Bagel: 4.6 */
     --hair: rgba(255, 244, 230, 0.16);
-    --grout: #07081c;
+    --grout: rgba(7, 8, 28, 0.62);   /* a little see-through, so the lamp glows up between the tiles */
     --tile: #1d1e4c;        /* a tile with nothing to say */
     --char: #0a0a18;        /* a tile that cooled off */
     --rest: 90%;            /* a resting tile is almost pure color: the floor reads as a light-up floor before any tap */
@@ -77,7 +77,7 @@
     --btn: #c23a0c;         /* deep lava, white words 5.4 */
     --btn-ink: #ffffff;
     --btn-hover: #a32f08;
-    --link: #0e7186;        /* teal, 5.2 */
+    --link: #0a5e6f;        /* deep teal, 6.8 (still 4.5 or more on the palest wax) */
     --focus: #b0126e;
     --word: #b0126e;        /* magenta small words, 6.1 */
     --sold: #c40f6b;        /* 5.8 */
@@ -91,8 +91,9 @@
     --shadow: 0 18px 36px -24px rgba(60, 30, 20, 0.45);
     color-scheme: light;
   }
+  /* the night (or the cream) lives on html, and body stays clear, so the lamp's wax can glow between them */
   html { background: var(--bg); scroll-behavior: smooth; scroll-padding-top: calc(var(--sn-h) + 16px); }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Epilogue', system-ui, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  body { margin: 0; background: transparent; color: var(--text); font-family: 'Epilogue', system-ui, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
   a { color: var(--link); text-underline-offset: 3px; }
   a:hover { text-decoration-thickness: 2px; }
   :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
@@ -123,6 +124,8 @@
   /* decoration only: the 70s stripe, and mirror-tile strips (a disco ball laid flat; the tiles are drawn by the script) */
   .stripe { height: 10px; background: var(--stripe); }
   .mirror { height: 24px; background: linear-gradient(100deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.32) 44%, rgba(255, 255, 255, 0) 58%), var(--tiles, var(--chrome)); background-size: 100% 100%, auto 24px; box-shadow: 0 0 22px -6px rgba(255, 201, 60, 0.5); }
+  /* the lamp: glowing wax behind the whole shop, on one fixed canvas the script draws small and the browser stretches */
+  .lamp { position: fixed; left: 0; top: 0; z-index: -1; display: block; width: 100%; height: 100vh; height: 100lvh; pointer-events: none; }
 
   /* the molten wordmark: fat bubbly letters, a molten fill, one thin cream outline and a soft lava glow */
   .molten { display: inline-block; background: var(--molten); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1.5px #fff4e6; filter: drop-shadow(0 0 18px rgba(255, 106, 43, 0.55)); padding: 0 0.04em; }
@@ -137,7 +140,7 @@
   .snav-links a { color: #fff4e6; text-decoration: none; font-weight: 700; font-size: 15.5px; padding: 10px 12px; border-radius: 999px; }
   .snav-links a:hover { background: rgba(255, 244, 230, 0.12); }
   .snav .on-photo { color: #fff4e6; text-shadow: 0 1px 2px rgba(5, 5, 20, 0.6); }
-  .snav.solid { background: var(--nav-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 10px 26px -20px rgba(0, 0, 0, 0.8); }
+  .snav.solid { background: var(--nav-bg); box-shadow: 0 10px 26px -20px rgba(0, 0, 0, 0.8); }
   .snav.solid::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: var(--stripe); opacity: 0.9; }
   .snav.solid .snav-links a, .snav.solid .on-photo { color: var(--text); text-shadow: none; }
   .snav.solid .snav-links a:hover { background: var(--raised); }
@@ -198,6 +201,8 @@
   /* ---------- Taya's sticky notes (mockup only) ---------- */
   .wf-note { position: relative; border: 1.5px dashed var(--word); border-radius: 16px; padding: 20px 18px 16px; color: var(--muted); font-size: 15.5px; line-height: 1.55; background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); --slat: rgba(255, 156, 207, 0.06); }
   :root[data-lights="up"] .wf-note { --slat: rgba(176, 18, 110, 0.05); }
+  /* Lights up: my notes sit on solid cream, so the pastel wax glowing behind them never thins their words */
+  :where(:root[data-lights="up"]) .wf-note { background-color: #fff4e6; }
   .wf-note b { color: var(--text); }
   .wf-note a { font-weight: 700; }
   .wf-note::after { content: "note for you"; position: absolute; top: -12px; right: 16px; z-index: 2; pointer-events: none; font-family: 'Caveat', cursive; font-weight: 600; font-size: 16px; line-height: 1; color: #5b2a3a; white-space: nowrap; background: #f6dde2; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(20, 14, 10, 0.25); }
@@ -564,7 +569,8 @@
   }
   /* ---------- phones ---------- */
   @media (max-width: 760px) {
-    :root { --gut: 16px; --sn-h: 56px; }
+    /* phones: the floor's grout is mostly see-through, so the lamp glows up between the tiles like an under-lit disco floor */
+    :root { --gut: 16px; --sn-h: 56px; --grout: rgba(7, 8, 28, 0.3); }
     html { scroll-padding-top: 76px; }
     html:has(.floor.has-size) { scroll-padding-top: 136px; }
     html:has(body.on-piece) { scroll-padding-bottom: 84px; }
@@ -611,7 +617,7 @@
     .cats::-webkit-scrollbar { display: none; }
     .cat { flex: none; }
     .tools { justify-content: space-between; }
-    .dancefloor { padding: 6px; border-radius: 14px; margin-left: calc(var(--gut) * -0.5); margin-right: calc(var(--gut) * -0.5); }
+    .dancefloor { padding: 10px; border-radius: 14px; margin-left: calc(var(--gut) * -0.5); margin-right: calc(var(--gut) * -0.5); }
     .grid, .pv-more .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
     .tile { padding: 7px; }
     .card { border-radius: 13px; }
@@ -647,7 +653,7 @@
     .pv-gal { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 8px; padding: 0 var(--gut); scroll-padding: 0 var(--gut); scrollbar-width: none; }
     .pv-gal::-webkit-scrollbar { display: none; }
     .pv-shot, .pv-shot:first-child { flex: 0 0 86%; aspect-ratio: 4 / 4.4; scroll-snap-align: center; }
-    .buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; display: none; align-items: center; gap: 12px; padding: 10px var(--gut) calc(10px + env(safe-area-inset-bottom, 0px)); background: var(--nav-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 -10px 24px -18px rgba(0, 0, 0, 0.8); }
+    .buybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; display: none; align-items: center; gap: 12px; padding: 10px var(--gut) calc(10px + env(safe-area-inset-bottom, 0px)); background: var(--nav-bg); box-shadow: 0 -10px 24px -18px rgba(0, 0, 0, 0.8); }
     .buybar::before { content: ""; position: absolute; left: 0; right: 0; top: -3px; height: 3px; background: var(--stripe); }
     body.on-piece .buybar.show { display: flex; }
     .buybar .ticket { flex: none; }
@@ -674,10 +680,11 @@
     .floor.has-size .tile.lit { outline: 3px solid #fff4e6; outline-offset: -3px; }
     .bagbtn.bump { animation: none; }
   }
-  @media print { .snav-wrap, .wf-note, .bagpanel, .scrim, .buybar { display: none !important; } }
+  @media print { .snav-wrap, .wf-note, .bagpanel, .scrim, .buybar, .lamp { display: none !important; } }
 </style>
 </head>
 <body>
+<canvas class="lamp" id="lamp" aria-hidden="true"></canvas>
 <a class="skip" href="#floor">Skip to the shop</a>
 
 <div class="snav-wrap" id="snav-wrap">
@@ -1085,6 +1092,231 @@
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   onScroll();
+
+  /* ---------- the lamp: glowing wax behind the whole shop ----------
+     Big soft blobs of wax drift behind everything, melt into each other and pinch apart like a real lava lamp, rise as
+     you scroll and stretch into drops when you scroll fast. Their glow takes the colors of the part of the shop you're in,
+     so the color tells you where you are. Lights down: hot pink up top, disco blue and violet on the floor, hot red at the
+     drop, violet with Taya, green for questions, magenta by the mirror ball, and a piece's own color on its page. Lights
+     up tells the same story in pastel wax: rose and butter, sky and lilac, coral, lilac, mint, rose.
+     How: one fixed canvas drawn small (one wax pixel is 4 to 9 screen pixels) and stretched to fill the screen. Each blob
+     adds a soft field; where the fields add up past a line, that's wax, so two blobs that drift close melt into one.
+     Behind words the wax stays dim enough (Lights down) or light enough (Lights up) that every line keeps AA contrast.
+     Phones get six blobs scattered so they often meet; wider screens get eight in three lanes, where a slow blob and a
+     fast one share a lane, so scrolling makes them catch up, melt together and pinch apart.
+     Kind to batteries: at most about 60 draws a second while things move and 15 while the wax only drifts; after 20
+     seconds with no scroll or touch it settles and stops until you're back. It rests when the tab is hidden, when the
+     hero fills the screen, and under the open bag on phones or the photo viewer. Reduced motion: a still glow that only
+     changes color, drawn only when the color changes. */
+  (function () {
+    var cv = $('#lamp'), ctx = cv && cv.getContext && window.Float32Array ? cv.getContext('2d') : null;
+    if (!ctx) return;
+    /* each blob: x where it lives across the screen (0 left, 1 right), y where it starts (0 top, 1 bottom), r its size,
+       k how much it rises as you scroll, v its own slow rise (+) or sink (-) in px a second, c which of the section's
+       colors it takes (the first is the section's own, so it gets the most blobs) */
+    var PHONE_WAX = [
+      { x: 0.12, y: 0.10, r: 1.15, k: 0.34, v: 9, c: 0 },
+      { x: 0.86, y: 0.32, r: 1.00, k: 0.22, v: -6, c: 0 },
+      { x: 0.55, y: 0.78, r: 0.85, k: 0.46, v: 12, c: 1 },
+      { x: 0.90, y: 0.90, r: 1.20, k: 0.28, v: 5, c: 1 },
+      { x: 0.30, y: 0.52, r: 0.72, k: 0.52, v: -9, c: 2 },
+      { x: 0.68, y: 0.04, r: 0.95, k: 0.18, v: 7, c: 0 }
+    ];
+    /* wider screens: three lanes (left, middle, right); in each, slow and fast blobs take turns catching each other,
+       spaced so that wherever the page shows the night, about a quarter of it is wax and something is melting */
+    var WIDE_WAX = [
+      { x: 0.20, y: 0.95, r: 1.10, k: 0.20, v: 6, c: 0 },
+      { x: 0.22, y: 0.71, r: 0.78, k: 0.55, v: 10, c: 1 },
+      { x: 0.17, y: 0.70, r: 0.90, k: 0.36, v: -5, c: 2 },
+      { x: 0.50, y: 0.26, r: 1.00, k: 0.22, v: -7, c: 0 },
+      { x: 0.53, y: 0.90, r: 0.70, k: 0.58, v: 9, c: 2 },
+      { x: 0.80, y: 0.28, r: 1.20, k: 0.24, v: 5, c: 1 },
+      { x: 0.78, y: 0.34, r: 0.76, k: 0.52, v: 12, c: 0 },
+      { x: 0.83, y: 0.93, r: 0.88, k: 0.40, v: -8, c: 0 }
+    ];
+    /* Lights down: colors that glow on the night. No gold or orange here: dimmed enough to keep words readable, they
+       turn khaki and brick, so the drop glows hot red and magenta instead. */
+    var GLOW = {
+      top: ['#ff4fa8', '#e0127a', '#ff3b3b'],     /* the hero's hot pink wax, carried on down */
+      floor: ['#2fd3e8', '#9a6bff', '#ff4fa8'],   /* disco lights over the dance floor */
+      next: ['#ff3b3b', '#e0127a', '#ff4fa8'],    /* hot red at the drop */
+      about: ['#9a6bff', '#ff4fa8', '#c77dff'],   /* violet velvet, with Taya */
+      faq: ['#3fe0a5', '#2fd3e8', '#9a6bff'],     /* cool green for little questions */
+      foot: ['#e0127a', '#9a6bff', '#ff4fa8']     /* magenta night by the mirror ball */
+    };
+    /* Lights up: pastel wax, its own color for each part of the shop */
+    var ROSE = '#ffc9df', BUTTER = '#ffe3a0', SKY = '#c4eef5', LILAC = '#ddd0ff', CORAL = '#ffcfc4', MINT = '#cdf3e2';
+    var PASTEL = {
+      top: [ROSE, BUTTER, ROSE], floor: [SKY, LILAC, SKY], next: [CORAL, BUTTER, CORAL],
+      about: [LILAC, ROSE, LILAC], faq: [MINT, SKY, MINT], foot: [ROSE, LILAC, ROSE]
+    };
+    var SECS = ['top', 'floor', 'next', 'about', 'faq', 'foot'];
+    /* behind words, the wax mixed onto the night is at most this bright (the small pink kicker words keep 4.7:1), and
+       mixed onto cream at least this light (the small magenta kicker words keep 4.7:1, muted words 5.4:1) */
+    var NIGHT_MAX = 0.065, CREAM_MIN = 0.70;
+    var T = 0.3, EDGE = 0.03, HALO = 0.26;   /* where the wax's edge sits in the field, how soft it is, its glow */
+    var TALL = 1.18;                          /* resting wax is a little taller than wide: a drop, not a bubble */
+
+    var home = $('#home'), frame$ = $('#pv-frame'), panel = $('#bagpanel'), lb = null;
+    var wax = PHONE_WAX, vw = 0, vh = 0, n = 0, u = 104, W = 0, H = 0, kx = 1, ky = 1, F, R, G, B, A, img, px, side;
+    var t = 0, pace = 1, last = 0, lastInput = 0, ys = 0, yp = 0, yRaw = 0, vel = 0, raf = 0, timer = 0;
+    var lights = '', tops = [], heroEnd = 0, covers = false, dirty = true, stale = false;
+    var cur = WIDE_WAX.map(function () { return [0, 0, 0, 0]; }), tints = {};
+
+    function lin(c) { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    /* a wax color ready to mix: premultiplied by the strongest glow it may have on this background */
+    function tint(hex, up) {
+      var key = hex + up; if (tints[key]) return tints[key];
+      var v = parseInt(hex.slice(1), 16), c = [v >> 16, v >> 8 & 255, v & 255], bg = up ? [255, 244, 230] : [17, 18, 46], lo = 0, hi = 1;
+      for (var i = 0; i < 14; i++) {
+        var a = (lo + hi) / 2, m = [0, 1, 2].map(function (k) { return Math.round(a * c[k] + (1 - a) * bg[k]); });
+        var L = 0.2126 * lin(m[0]) + 0.7152 * lin(m[1]) + 0.0722 * lin(m[2]);
+        if (up ? L >= CREAM_MIN : L <= NIGHT_MAX) lo = a; else hi = a;
+      }
+      return (tints[key] = [c[0] * lo, c[1] * lo, c[2] * lo, lo]);
+    }
+    function measure() {
+      var y = window.pageYOffset || 0;
+      tops = SECS.map(function (id) { var el = document.getElementById(id); return shown(el) ? el.getBoundingClientRect().top + y : Infinity; });
+      var hero = $('#top'); heroEnd = shown(hero) ? hero.getBoundingClientRect().bottom + y : 0;
+    }
+    function fit() {
+      var w = cv.clientWidth, h = cv.clientHeight;
+      if (w !== vw || h !== vh) {
+        vw = w; vh = h; wax = vw <= 760 ? PHONE_WAX : WIDE_WAX; n = wax.length; dirty = true;
+        u = Math.min(Math.max(vw * 0.28, 104), 200);
+        /* screen px per wax px: about 36,000 wax pixels at most, and the biggest blob at most 64 wax pixels tall, so
+           tablets and big screens cost no more than a phone */
+        var big = 0; wax.forEach(function (b) { big = Math.max(big, b.r); });
+        var S = Math.max(4, Math.sqrt(vw * vh / 36000), u * big * 1.07 * 1.74 * TALL / 64), N;
+        W = Math.max(1, Math.ceil(vw / S)); H = Math.max(1, Math.ceil(vh / S)); N = W * H;
+        cv.width = W; cv.height = H; kx = W / vw; ky = H / vh;
+        F = new Float32Array(N); R = new Float32Array(N); G = new Float32Array(N); B = new Float32Array(N); A = new Float32Array(N);
+        img = ctx.createImageData(W, H); px = img.data;
+        /* how far each column sits out in the empty margins past the words (big screens only): 0 at the words, rising
+           smoothly to 1 at the screen's edge, so a blob crossing over brightens evenly instead of in a stripe */
+        var edge = (vw - Math.min(vw, 1200)) / 2 + 24 - 10;
+        side = new Float32Array(W);
+        if (edge > 40) for (var x = 0; x < W; x++) { var cx = (x + 0.5) / kx, z = Math.min(1, Math.max(0, Math.max(edge - cx, cx - (vw - edge)) / edge)); side[x] = z * z * (3 - 2 * z); }
+      }
+      measure();
+    }
+    /* the colors for where you are: the section under the middle of the screen, or the piece's own color on its page */
+    function palette(mid, up) {
+      if (home.hidden) {
+        var c = (frame$.style.getPropertyValue('--tc') || '#ff4fa8').trim();
+        if (up) return [c, c, ROSE];
+        c = c === '#ff6a2b' ? '#ff3b3b' : c === '#ffc93c' ? '#ff4fa8' : c;   /* orange and gold pieces glow red and pink */
+        return [c, c, '#e0127a'];
+      }
+      var name = 'top';
+      for (var i = 0; i < SECS.length; i++) if (mid >= tops[i]) name = SECS[i];
+      return (up ? PASTEL : GLOW)[name];
+    }
+    /* one blob's place and shape right now, in wax px */
+    function blob(i, still) {
+      var b = wax[i];
+      var r = u * b.r * (still ? 1 : 1 + 0.07 * Math.sin(t * (0.33 + i * 0.05) + i));   /* it breathes */
+      var reach = r * 1.74, far = u * b.r * 1.74 * TALL * 1.45, span = vh + 2 * far;   /* it wraps around out of sight */
+      var y = still ? b.y * span - far : ((b.y * span - ys * b.k - t * b.v) % span + span) % span - far;
+      var x = vw * (b.x + (still ? 0 : 0.045 * Math.sin(t * (0.17 + i * 0.023) + i * 1.7)));   /* and sways */
+      /* moving wax stretches into a drop: round on top, a tail behind it (rising wax keeps a small one) */
+      var s = still ? 0 : Math.max(-0.42, Math.min(0.42, vel / 2600 * (0.6 + 0.8 * b.k) + (b.v > 0 ? 0.05 : -0.05)));
+      var a = Math.abs(s), tail = 1 + a * 1.5, head = 1 + a * 0.3, ry = reach * TALL * ky;
+      return [x * kx, y * ky, reach * kx / (1 + a * 0.45), ry * (s > 0 ? head : tail), ry * (s > 0 ? tail : head)];
+    }
+    function draw(still, up) {
+      var boost = up ? 0 : 0.45;   /* on the night the empty margins of big screens glow up to about 1.45x */
+      F.fill(0); R.fill(0); G.fill(0); B.fill(0); A.fill(0);
+      for (var i = 0; i < n; i++) {
+        var g = blob(i, still), C = cur[i], cx = g[0], cy = g[1], ix = 1 / g[2], iu = 1 / g[3], id = 1 / g[4];
+        var y0 = Math.max(0, Math.floor(cy - g[3])), y1 = Math.min(H, Math.ceil(cy + g[4]));
+        for (var y = y0; y < y1; y++) {
+          var dy = y + 0.5 - cy; dy *= dy > 0 ? id : iu;
+          var dy2 = dy * dy; if (dy2 >= 1) continue;
+          var hw = Math.sqrt(1 - dy2) * g[2], x0 = Math.max(0, Math.floor(cx - hw)), x1 = Math.min(W, Math.ceil(cx + hw)), row = y * W;
+          for (var x = x0; x < x1; x++) {
+            var dx = (x + 0.5 - cx) * ix, q = dx * dx + dy2;
+            if (q < 1) { var k = 1 - q, j = row + x; k = k * k * k; F[j] += k; R[j] += k * C[0]; G[j] += k * C[1]; B[j] += k * C[2]; A[j] += k * C[3]; }
+          }
+        }
+      }
+      for (var yy = 0, p = 0; yy < H; yy++) {
+        for (var xx = 0; xx < W; xx++, p++) {
+          var f = F[p], o = p * 4;
+          if (f < 0.01 || A[p] <= 0) { px[o + 3] = 0; continue; }
+          /* inside the edge it's wax, brighter toward its heart; just outside, a soft glow */
+          var h = f < T ? f / T : 1, z = (f - T + EDGE) / (2 * EDGE), body = z <= 0 ? 0 : z >= 1 ? 1 : z * z * (3 - 2 * z);
+          var heart = f > T ? Math.min(1, (f - T) * 1.6) : 0, ia = 1 / A[p];
+          h = h * h * h * HALO;
+          px[o] = R[p] * ia; px[o + 1] = G[p] * ia; px[o + 2] = B[p] * ia;
+          px[o + 3] = Math.min(235, A[p] / f * (h + (1 - h) * body) * (0.66 + 0.34 * heart) * (1 + boost * side[xx]) * 255);
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    function frame(now) {
+      raf = 0;
+      if (covers) return;   /* the open bag (phones) or the photo viewer hides the whole screen; closing it wakes the lamp */
+      /* 90 and 120 Hz screens: about 60 draws a second at most; reduced motion only fades colors, 30 a second is plenty */
+      if (last && now - last < (RM.matches ? 30 : 13)) { raf = requestAnimationFrame(frame); return; }
+      var dt = last ? Math.min(0.1, (now - last) / 1000) : 1 / 60, first = !last; last = now;
+      var still = RM.matches, up = root.getAttribute('data-lights') === 'up', y = window.pageYOffset || 0;
+      var snap = lights !== (up ? 'up' : 'down'); lights = up ? 'up' : 'down';
+      /* the wax trails the page a touch, so it feels liquid, but never more than a screen behind; only a real jump
+         (opening a piece's page, coming back from one) cuts straight to the new spot */
+      if (still || first || Math.abs(y - yRaw) > vh * 1.5) ys = yp = y;
+      else {
+        var lag = y - ys, over = lag > vh ? lag - vh : lag < -vh ? lag + vh : 0;
+        ys += over; yp += over;   /* moved along with the page, so it doesn't count as speed */
+        ys += (y - ys) * (1 - Math.exp(-dt / 0.12));
+      }
+      yRaw = y;
+      vel = still ? 0 : vel + ((ys - yp) / dt - vel) * (1 - Math.exp(-dt / 0.35)); yp = ys;
+      /* the drift: full speed while you're around, settling to a stop after 20 seconds with no scroll or touch */
+      var want = still || now - lastInput > 20000 ? 0 : 1;
+      pace = still ? 0 : pace + (want - pace) * Math.min(1, dt / 1.2); if (Math.abs(want - pace) < 0.01) pace = want;
+      t += dt * pace;
+      var pal = palette(y + vh * 0.5, up), easing = false, changed = false;
+      for (var i = 0; i < n; i++) {
+        var to = tint(pal[wax[i].c], up), C = cur[i], e = snap ? 1 : 1 - Math.exp(-dt / (0.45 + 0.05 * i)), near = true;
+        for (var k = 0; k < 4; k++) { if (C[k] !== to[k]) changed = true; C[k] += (to[k] - C[k]) * e; if (Math.abs(to[k] - C[k]) > (k < 3 ? 3 : 0.01)) near = false; }
+        if (near) for (k = 0; k < 4; k++) C[k] = to[k]; else easing = true;
+      }
+      var moving = !still && (Math.abs(y - ys) > 0.5 || Math.abs(vel) > 20);
+      var need = snap || dirty || changed || stale || (!still && (moving || pace > 0));
+      if (!home.hidden && y + vh <= heroEnd + 1) { stale = need; return; }   /* the hero's own wax photo fills the screen; a scroll wakes it */
+      if (need) { draw(still, up); dirty = stale = false; }
+      if (moving || easing) raf = requestAnimationFrame(frame);
+      else if (pace > 0) timer = setTimeout(kick, 66);   /* only drifting: about 15 a second */
+      /* otherwise the wax is still: a scroll, a touch, a resize or the lights wake it */
+    }
+    function kick() { clearTimeout(timer); timer = 0; if (!raf && !document.hidden && !covers) raf = requestAnimationFrame(frame); }
+    function wake() { lastInput = performance.now(); if (!raf && !timer) kick(); }
+    /* the bag fills a phone's whole screen, and the photo viewer every screen: no lamp under them */
+    function cover() {
+      if (!lb) { lb = $('.lb'); if (lb && mo) mo.observe(lb, { attributes: true, attributeFilter: ['hidden'] }); }
+      covers = !!(lb && !lb.hidden) || !!(panel && panel.classList.contains('on') && (PHONE.matches || vw <= 474));
+      if (!covers) kick();
+    }
+    var mo = window.MutationObserver ? new MutationObserver(cover) : null;
+
+    fit();
+    lastInput = performance.now();
+    window.addEventListener('scroll', function () { lastInput = performance.now(); kick(); }, { passive: true });
+    ['pointerdown', 'pointermove', 'keydown'].forEach(function (type) { window.addEventListener(type, wake, { passive: true }); });
+    window.addEventListener('resize', function () { fit(); cover(); kick(); });
+    window.addEventListener('hashchange', function () { setTimeout(function () { measure(); kick(); }, 0); });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; clearTimeout(timer); timer = 0; } else { last = 0; kick(); } });
+    if (window.ResizeObserver) new ResizeObserver(function () { measure(); kick(); }).observe(document.body);
+    if (mo) {
+      new MutationObserver(kick).observe(root, { attributes: true, attributeFilter: ['data-lights'] });
+      if (panel) mo.observe(panel, { attributes: true, attributeFilter: ['class'] });
+      new MutationObserver(function () { if (!lb) cover(); }).observe(document.body, { childList: true });
+    }
+    if (RM.addEventListener) RM.addEventListener('change', function () { dirty = true; kick(); });
+    kick();
+  })();
 
   /* ---------- the floor ---------- */
   var floor = $('#floor'), grid = $('#grid');
