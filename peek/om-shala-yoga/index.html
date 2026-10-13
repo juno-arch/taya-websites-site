@@ -129,7 +129,9 @@
   .hero-band > .own-tag { position: absolute; }
   header.top { display: flex; justify-content: space-between; align-items: center; gap: 14px 24px; flex-wrap: wrap; padding-block: 22px 0; }
   .wordmark { display: inline-flex; align-items: center; gap: 2px; color: #f6f3ee; text-decoration: none; font-family: 'Gilda Display', Georgia, serif; font-size: 19px; letter-spacing: 0.2em; text-transform: uppercase; text-shadow: 0 1px 12px rgba(10, 14, 14, 0.5); }
-  .wordmark svg { flex: none; margin-right: -12px; }
+  /* the crescent between Om and Shala: the hero's slim crescent and tilt at nav size (Oct 12, Pollen: "here as well"), set so
+     its bright edge sits where the old single stroke did, the words unmoved */
+  .wordmark svg { flex: none; margin: 0 -10px 0 -11px; overflow: visible; }
   .wordmark .om { margin-right: 10px; }
   nav.top-nav { display: flex; gap: 0 6px; flex-wrap: wrap; font-size: 14px; margin: -10px -8px; }
   nav.top-nav a { color: rgba(246, 243, 238, 0.9); text-decoration: none; padding: 10px 8px; letter-spacing: 0.06em; text-shadow: 0 1px 10px rgba(10, 14, 14, 0.6); }
@@ -315,8 +317,10 @@
   .quote p em { font-style: normal; color: var(--red); }
   .quote cite { display: block; margin-top: 16px; font-style: normal; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-soft); }
   .mission { list-style: none; display: grid; gap: 16px; margin-top: 22px; }
-  .mission li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; color: var(--ink-soft); }
-  .mission li svg { margin-top: 5px; color: var(--red); }
+  .mission li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: baseline; color: var(--ink-soft); }
+  /* each line starts with the slim crescent from the hero, the small fuller cut like the tags (Oct 12, Pollen: "and here"),
+     in their red, its foot on the first line's baseline (the grid lines the moon's bottom up with the words) */
+  .mission li svg { margin-left: 2px; color: var(--red); overflow: visible; }
   .since { display: flex; align-items: baseline; gap: 16px; margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--hair); }
   .since b { font-family: 'Gilda Display', Georgia, serif; font-weight: 400; font-size: 56px; line-height: 1; color: var(--slate); }
   .since span { color: var(--ink-soft); font-size: 15px; max-width: 32ch; }
@@ -711,7 +715,7 @@
 <div class="snav-wrap" id="snav-wrap">
 <header class="snav" id="snav">
   <div class="snav-in">
-    <a class="wordmark" href="#classes" aria-label="Om Shala Yoga"><span class="om">Om</span><svg width="22" height="40" viewBox="0 0 22 40" aria-hidden="true"><path d="M2 1.5c11 3 17 10.5 17 18.5S13 35.5 2 38.5" fill="none" stroke="#d2433b" stroke-width="1.8" stroke-linecap="round"/></svg><span>&nbsp;&nbsp;Shala Yoga</span></a>
+    <a class="wordmark" href="#classes" aria-label="Om Shala Yoga"><span class="om">Om</span><svg width="31" height="40" viewBox="-52 -97 154 199" aria-hidden="true"><defs><linearGradient id="snMoon" x1="0.62" y1="0" x2="0.38" y2="1"><stop offset="0" stop-color="#ec8473"/><stop offset="0.5" stop-color="#da4a40"/><stop offset="1" stop-color="#c4302c"/></linearGradient></defs><g transform="rotate(24)"><path d="M-10 -99.5A100 100 0 1 1 -10 99.5A100 100 0 0 0 -10 -99.5Z" fill="url(#snMoon)"/></g></svg><span>&nbsp;&nbsp;Shala Yoga</span></a>
     <button type="button" class="snav-btn" id="snav-btn" aria-expanded="false" aria-controls="snav-links"><span>Menu</span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4h10M2 7h10M2 10h10"/></svg></button>
     <nav class="snav-links top-nav" id="snav-links" aria-label="Sections">
           <a href="#classes">Classes</a>
@@ -859,9 +863,9 @@
     <div>
       <p class="label">Our mission</p>
       <ul class="mission">
-        <li class="reveal"><svg width="14" height="22" viewBox="0 0 12 22" aria-hidden="true"><path d="M1 1c6 1.6 9.5 5.6 9.5 10S7 19.4 1 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Offering the highest quality instruction, by experienced and compassionate instructors.</span></li>
-        <li class="reveal"><svg width="14" height="22" viewBox="0 0 12 22" aria-hidden="true"><path d="M1 1c6 1.6 9.5 5.6 9.5 10S7 19.4 1 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Maintaining an inclusive, safe and supportive space which encourages long term, effective practice.</span></li>
-        <li class="reveal"><svg width="14" height="22" viewBox="0 0 12 22" aria-hidden="true"><path d="M1 1c6 1.6 9.5 5.6 9.5 10S7 19.4 1 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Building a cooperative community atmosphere through special events and service initiatives.</span></li>
+        <li class="reveal"><svg width="11" height="14" viewBox="-55 -98 156 199" aria-hidden="true"><path d="M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z" fill="currentColor"/></svg><span>Offering the highest quality instruction, by experienced and compassionate instructors.</span></li>
+        <li class="reveal"><svg width="11" height="14" viewBox="-55 -98 156 199" aria-hidden="true"><path d="M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z" fill="currentColor"/></svg><span>Maintaining an inclusive, safe and supportive space which encourages long term, effective practice.</span></li>
+        <li class="reveal"><svg width="11" height="14" viewBox="-55 -98 156 199" aria-hidden="true"><path d="M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z" fill="currentColor"/></svg><span>Building a cooperative community atmosphere through special events and service initiatives.</span></li>
       </ul>
       <div class="since reveal"><b>2008</b><span>A home for yoga in Arcata since 2008, with a dozen teachers and classes every day but Wednesday.</span></div>
     </div>
