@@ -399,7 +399,7 @@
   .cone-key { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; margin-top: 12px; max-width: 46em; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
   .cone-key .tag { margin-left: 4px; }
   .lg-sub + .off, .cone-key + .off { border-top: 0; padding-top: 6px; }
-  .cone-key .spy { height: 30px; padding: 0 7px 2px; }
+  .cone-key .spy { height: 30px; padding: 0 7px 2px; gap: 4px; }
   .cone-key .spy .cone { width: 10px; height: 25px; }
   .type-h { margin-top: 64px; font-size: clamp(30px, 3.6vw, 40px); scroll-margin-top: calc(var(--sn-h) + 16px); }
   .type-h:first-child { margin-top: 34px; }
@@ -461,11 +461,15 @@
   /* THE SIGNATURE, fired: every class time has a little spy hole into the kiln, shaped like the arch in their logo.
      Each spot is a witness cone. When the time scrolls into view the floor of the kiln heats up, then the taken
      spots bend over at their two joints, one after another, and cool to ash. What stays standing and glowing is
-     what's open. A full class's window goes cold. Cone 10 rows glow white hot, cone 6 rows gold. */
-  .spy { --heat: #ffb03a; position: relative; isolation: isolate; display: inline-flex; align-items: flex-end; gap: 1px; height: 36px; padding: 0 9px 3px; flex: none; overflow: hidden;
+     what's open. A full class's window goes cold. Cone 10 rows glow white hot, cone 6 rows gold.
+     The cones stand 5px apart (Pollen, Oct 13: "space them apart a tad so you can tell more what they are"), so a bent
+     cone's tip lands short of the next cone instead of hooking into it. The 12 spot packs (Phoenix handbuilding)
+     stand 3px apart so "7 of 12 left" stays on one line beside them. */
+  .spy { --heat: #ffb03a; position: relative; isolation: isolate; display: inline-flex; align-items: flex-end; gap: 5px; height: 36px; padding: 0 9px 3px; flex: none; overflow: hidden;
     border-radius: 50% 50% 5px 5px / 16px 16px 5px 5px; background: #1d100a; box-shadow: inset 0 0 0 1.5px #6a412b, inset 0 2px 0 2px #2a1810; }
   .spy::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(120% 75% at 50% 112%, color-mix(in srgb, var(--heat) 72%, transparent) 0, rgba(224, 48, 14, 0.38) 45%, rgba(224, 48, 14, 0) 76%); }
   .spy.c10 { --heat: #fff1b8; }
+  .spy.many { gap: 3px; }
   .spy.full { background: #1c1714; box-shadow: inset 0 0 0 1.5px #4a3b33, inset 0 2px 0 2px #241d19; }
   .spy.full::before { opacity: 0; }
   .spy .cone { width: 12px; height: 30px; overflow: visible; flex: none; filter: drop-shadow(0 0 2.5px var(--heat)) saturate(1) brightness(1); transition: filter 0.9s ease; }
@@ -1613,7 +1617,7 @@
     function spy(cap, left, hot, small) {
       var s = '';
       for (var i = 0; i < cap; i++) { var taken = i >= left; s += '<svg class="cone' + (taken ? ' taken' : '') + '" viewBox="0 0 16 30" style="--i:' + Math.max(0, i - left) + '">' + PARTS + '</svg>'; }
-      return '<span class="spy' + (hot ? ' c10' : '') + (left < 1 ? ' full' : '') + '" aria-hidden="true">' + s + '</span>';
+      return '<span class="spy' + (hot ? ' c10' : '') + (left < 1 ? ' full' : '') + (cap > 9 ? ' many' : '') + '" aria-hidden="true">' + s + '</span>';
     }
     function clayPin(c) {
       var p = PLACE[places(c)[0]];

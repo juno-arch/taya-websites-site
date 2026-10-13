@@ -805,7 +805,8 @@
   /* ---------- ART: her merch prints, used like stickers on a flash sheet ----------
      The peach checkerboard, the memphis cars and the two tribal prints come off her windbreakers (images/pat-*, stk-*).
      House rule for all of it: words sit on a solid pastel ground or on a panel. Patterns only live behind panels,
-     in bands and ribbons, and around photos. Nothing here moves. Dark mode swaps in deep tinted twins. */
+     in bands and ribbons, and around photos. Nothing here moves but the checker ribbon at the foot of the hero, which
+     rolls slowly like her other banners (Pollen, Oct 13 2026). Dark mode swaps in deep tinted twins. */
   :root {
     --g-pink: #fbcfe2; --g-butter: #fdef9f; --g-blue: #cfe3fa; --g-mint: #c9eedc; --g-lav: #e0d2fa;
     --pat-lilac: #c9a7f2; --pat-white: #fdf9ff; --night-a: #2a1d4a; --night-b: #46337a;
@@ -850,9 +851,18 @@
     background: var(--bw-base); border-block: 2px solid var(--line); }
   .tr::after { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: -24px; height: 22px; pointer-events: none; background: var(--bw-ink);
     -webkit-mask: url('images/pat-bw-tribal-mask.webp') 0 -78px / 152px 198px repeat-x; mask: url('images/pat-bw-tribal-mask.webp') 0 -78px / 152px 198px repeat-x; }
-  .rb { z-index: 2; }
-  .rb::before { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: -40px; height: 40px; box-sizing: border-box; pointer-events: none;
-    border-block: 2px solid var(--line); background: var(--checker-sm) 0 0 / 144px 144px; }
+  /* the checker ribbon rolls slowly left (Pollen, Oct 13 2026: "can you make this banner rotate like the other banners"): one 144px
+     tile every 4s, about 36px a second, the pace of the other mockups' banners, starting as the hero settles. It runs one tile wider
+     than the page so the loop has no seam, and the page clips it (no sideways scroll). It holds still while the pointer rests on it
+     (the script after #views), for keyboard focus in the panel under it, and off screen; under reduced motion it sits still.
+     Clicks still pass through it to the hero, so notes left on it land where they did. */
+  .rb { z-index: 2; overflow-x: clip; }
+  .rb::before { content: ""; position: absolute; z-index: 3; left: 0; right: -144px; top: -40px; height: 40px; box-sizing: border-box; pointer-events: none;
+    border-block: 2px solid var(--line); background: var(--checker-sm) 0 0 / 144px 144px; animation: rb-roll 4s linear 3.8s infinite; }
+  @keyframes rb-roll { to { transform: translateX(-144px); } }
+  .rb.rb-hold::before, .rb.rb-off::before { animation-play-state: paused; }
+  .rb:has(:focus-visible)::before { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) { .rb::before { animation: none; right: 0; } }
 
   /* the art layers: .art sits over the ground and under the words, .over sits on top (stickers), both ignore the pointer */
   .art { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
@@ -1097,6 +1107,21 @@
   </div>
   <p class="vh" role="status" id="views-live"></p>
 </div>
+<script>
+  /* the checker ribbon on top of this panel rolls in CSS (.rb::before). It lets clicks through, so it can't feel a hover itself:
+     this holds it still while a mouse rests on it, and while it's off screen. */
+  (function () {
+    var v = document.getElementById('views');
+    if (!v || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { v.classList.toggle('rb-off', !e.isIntersecting); }); }, { rootMargin: '0px 0px 40px 0px' }).observe(v);
+    var y = -1, q = 0;
+    function check() { q = 0; var t = v.getBoundingClientRect().top; v.classList.toggle('rb-hold', y >= 0 && y >= t - 40 && y < t); }
+    function soon() { if (!q) q = requestAnimationFrame(check); }
+    addEventListener('pointermove', function (e) { if (e.pointerType === 'touch') return; y = e.clientY; soon(); }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function () { y = -1; soon(); });
+    addEventListener('scroll', function () { if (y >= 0) soon(); }, { passive: true });
+  })();
+</script>
 
 <section id="sign" class="gutter sign-sec sec sc sign-pat" aria-labelledby="sign-h">
   <div class="art over" aria-hidden="true"><img class="stk hide-s" src="images/stk-smiley.svg" width="96" height="96" alt="" loading="lazy" style="--x:15%;--y:70px;--w:64px;--r:-10deg"><img class="stk hide-s" src="images/stk-flower.svg" width="96" height="96" alt="" loading="lazy" style="--xr:14%;--y:110px;--w:60px;--r:9deg"><img class="stk" src="images/stk-yinyang.svg" width="96" height="96" alt="" loading="lazy" style="--x:5%;--yb:26px;--w:52px;--r:8deg"><img class="stk" src="images/stk-cherry.svg" width="96" height="96" alt="" loading="lazy" style="--xr:5%;--yb:32px;--w:54px;--r:-7deg"></div>

@@ -137,27 +137,16 @@
   nav.top-nav a { color: rgba(246, 243, 238, 0.9); text-decoration: none; padding: 10px 8px; letter-spacing: 0.06em; text-shadow: 0 1px 10px rgba(10, 14, 14, 0.6); }
   nav.top-nav a:hover { color: #fff; }
   .hero-band a:focus-visible, .hero-band button:focus-visible { outline-color: #f6f3ee; }
-  .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 60px 72px; }
+  .hero-main { --hero-pt: 60px; flex: 1; display: flex; align-items: flex-end; padding-block: var(--hero-pt) 72px; }
   .hero-copy { position: relative; max-width: 640px; padding-left: clamp(18px, 4vw, 44px); }
-  /* the crescent moon beside the words (Oct 12, Pollen: "redraw the moon as a slim crescent"): a thin three day moon, the lit
-     circle minus the same circle shifted a little left, so it tapers to two sharp horns. Tilted like an evening moon, lit side
-     toward the set sun, in their crescent red with a faint glow and two small stars. Nothing behind it, so it reads as a crescent. */
-  .hero-arc { position: absolute; left: calc(100% - 6px); top: 50%; width: clamp(132px, 14.6vw, 194px); height: auto; pointer-events: none; overflow: visible;
-    filter: drop-shadow(0 0 7px rgba(210, 67, 59, 0.42));
-    /* on wider screens it rises up and right with the photo, so it hangs on the plain wall between the door and the window,
-       just above a student's raised hand, and off everyone's faces (the photo scales with the screen, so the offset does too;
-       it stops short of the menu on short screens) */
-    translate: clamp(-120px, calc(max(13.89vw, 19.58vh - 8px) - 164px - max(0px, 540px - 50vw)), 240px) calc(-56% + clamp(min(-105px, 601px - 94vh), calc(418px - max(56.4vh - 24px, 399px) - max(10vw, 14.1vh - 6px, 99.75px) - max(0px, 165px - 15vw)), 0px)); }
-  /* up to 940 (tablets and phones) the moon sits small at the right of the heading, level with "Just come, as you are.",
-     out of the flow, so it adds no height to the hero and stays well clear of the menu. On tall tablets there is room
-     above the words, so it hangs there instead, on the same plain wall as on wider screens */
-  @media (max-width: 940px) { .hero-arc { --mw: 88px; left: auto; right: 0; top: auto; translate: none; width: var(--mw); margin-top: calc(clamp(46px, 8.4vw, 92px) - 0.733 * var(--mw) - var(--lift, 48px)); } }
-  @media (max-width: 940px) and (min-width: 561px) and (min-height: 860px) { .hero-arc { bottom: 100%; margin: 0 0 12px;
-    right: clamp(min(-8px, 706px - 100vw), calc(min(100vw - 20px, 694px) - 46vw - 25.2vh - 74px), 0px); translate: 0 calc(-1 * clamp(0px, 60vh - 540px, 260px)); } }
-  @media (max-width: 560px) { .hero-arc { --mw: 70px; --lift: 40px; } }
-  @media (max-width: 374px) { .hero-arc { --lift: 0px; } }   /* narrow phones and 515 to 629: the label reaches under where a lifted moon */
-  @media (min-width: 515px) and (max-width: 629px) { .hero-arc { --lift: 0px; --mw: 76px; } }   /* would be, so it stays level with the heading */
-  @media (max-width: 360px) { .hero-arc { --mw: 56px; right: -10px; } }
+  /* the crescent moon above the words (Oct 13, Pollen: "move the moon above the words"; Oct 12: "redraw the moon as a slim
+     crescent"): a thin three day moon, the lit circle minus the same circle shifted a little left, so it tapers to two sharp
+     horns. Tilted like an evening moon, lit side toward the set sun, in their crescent red with a faint glow and two small stars.
+     It sits in the flow right above "Yoga · Aerial ...", lined up with the words, at every width. Its top (mostly the stars'
+     headroom) may rise into the hero's top padding, so it adds as little height as it can and stays clear of the menu. It sizes
+     by width and by screen height, so short laptops get a smaller moon and the hero stays close to one screen. */
+  .hero-arc { display: block; width: clamp(60px, min(11vw, 15vh), 160px); height: auto; margin: calc(-0.7 * var(--hero-pt, 60px)) 0 clamp(8px, 1.1vw, 16px) -0.035em;
+    pointer-events: none; overflow: visible; filter: drop-shadow(0 0 7px rgba(210, 67, 59, 0.42)); }
   .hm-lit { fill: url(#hmLit); }
   .hm-star { fill: #f6ead9; transform-box: fill-box; transform-origin: center; }
   .hero-band .label { color: rgba(246, 243, 238, 0.88); text-shadow: 0 1px 10px rgba(10, 14, 14, 0.7); margin-bottom: 18px; }
@@ -644,7 +633,7 @@
   }
   @media (max-width: 560px) {
     nav.top-nav { display: none; }
-    .hero-main { padding-block: 40px 64px; }
+    .hero-main { --hero-pt: 40px; padding-block: var(--hero-pt) 64px; }
     .hero-band .cta-row .btn { flex: 1 1 100%; justify-content: center; }
     .facts { grid-template-columns: minmax(0, 1fr); }
     .fld-row { grid-template-columns: minmax(0, 1fr); }
@@ -737,13 +726,13 @@
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
-        <p class="label">Yoga &middot; Aerial &middot; Sound baths &middot; Meditation <span class="nw">&middot; Arcata</span></p>
         <svg class="hero-arc" viewBox="-56 -150 208 254" aria-hidden="true">
           <defs><linearGradient id="hmLit" x1="0.62" y1="0" x2="0.38" y2="1"><stop offset="0" stop-color="#ea7d6c"/><stop offset="0.45" stop-color="#d9493f"/><stop offset="1" stop-color="#b3201f"/></linearGradient></defs>
           <g transform="rotate(24)"><path class="hm-lit" id="hm-lit" d="M-10 -99.5A100 100 0 1 1 -10 99.5A100 100 0 0 0 -10 -99.5Z"/></g>
           <path class="hm-star" d="M96 -146Q96 -132 108 -132Q96 -132 96 -118Q96 -132 84 -132Q96 -132 96 -146Z"/>
           <path class="hm-star hm-star2" d="M142 -70Q142 -62 149 -62Q142 -62 142 -54Q142 -62 135 -62Q142 -62 142 -70Z"/>
         </svg>
+        <p class="label">Yoga &middot; Aerial &middot; Sound baths &middot; Meditation <span class="nw">&middot; Arcata</span></p>
         <h1>Just come, <em>as you are.</em></h1>
         <p class="lede">Drop ins are welcome at Om Shala, a bright little studio at 101 H St. Classes run on a sliding scale, so yoga stays open to everyone.</p>
         <div class="cta-row">

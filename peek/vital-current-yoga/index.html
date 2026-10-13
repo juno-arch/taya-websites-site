@@ -126,13 +126,16 @@
   nav a { color: #fff; text-decoration: none; padding: 10px 6px; line-height: 24px; font-weight: 600; text-shadow: 0 1px 3px rgba(20, 24, 30, 0.75), 0 0 14px rgba(20, 24, 30, 0.5); }
   nav a:hover { color: #f3e2ff; }
 
-  .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #27333a; color: #fff; }
+  /* the purple overlay (Oct 13 2026, Pollen's note): their flyer violet laid over the whole photo. The tint multiplies into the photo,
+     so the beach, Heather and Humbug Mountain stay sharp, and the veil behind the words is a dusk of the same violet (not slate). */
+  .hero-band { --hero-tint: #b494db; --hero-dusk: 44, 24, 72; position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column; background: #2c1848; color: #fff; }
   .hero-band > .gutter { position: relative; z-index: 3; }
-  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: url('images/hero.webp') var(--hero-pos, 46% 62%) / cover no-repeat; }
-  /* the veil stays the same in dark mode: never darken a daylight photo */
+  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(var(--hero-tint), var(--hero-tint)), url('images/hero.webp') var(--hero-pos, 46% 62%) / cover no-repeat; background-blend-mode: multiply, normal; }
+  /* the overlay and veil stay the same in dark mode: never darken a daylight photo */
   .hero-band::after { content: ""; position: absolute; inset: 0; z-index: 1; background:
-      linear-gradient(rgba(24, 30, 38, 0.5) 0, rgba(24, 30, 38, 0) 160px),
-      linear-gradient(-14deg, rgba(22, 28, 34, 0.86) 0%, rgba(22, 28, 34, 0.62) 28%, rgba(22, 28, 34, 0.12) 50%, rgba(22, 28, 34, 0) 60%); }
+      linear-gradient(rgba(var(--hero-dusk), 0.55) 0, rgba(var(--hero-dusk), 0) 170px),
+      radial-gradient(560px 460px at 70% calc(100% - 330px), rgba(var(--hero-dusk), 0.56) 0%, rgba(var(--hero-dusk), 0.46) 50%, rgba(var(--hero-dusk), 0) 100%),
+      linear-gradient(-14deg, rgba(var(--hero-dusk), 0.88) 0%, rgba(var(--hero-dusk), 0.68) 28%, rgba(var(--hero-dusk), 0.34) 48%, rgba(var(--hero-dusk), 0) 62%); }
   .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 40px 76px; }
   .hero-copy { max-width: 470px; margin-left: auto; text-align: right; }
   .hero-band .lede { margin-left: auto; }
@@ -145,7 +148,7 @@
   .hero-band .lede { margin-top: 14px; font-size: clamp(16.5px, 2.1vw, 18.5px); color: rgba(255, 255, 255, 0.95); max-width: 46ch; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); }
   .hero-band .btn { background: #fff; border-color: #fff; color: #3f2268; }
   .hero-band .btn:hover { background: #f1e8fb; border-color: #f1e8fb; }
-  .hero-band .btn.quiet { background: rgba(20, 26, 32, 0.32); color: #fff; border-color: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .hero-band .btn.quiet { background: rgba(var(--hero-dusk), 0.36); color: #fff; border-color: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .hero-band a:focus-visible { outline-color: #fff; }
 
   /* the slow fade-in: photo first, then the words */
@@ -163,10 +166,10 @@
 
   @media (max-width: 760px) {
     .hero-band { min-height: 0; }
-    .hero-band::before { bottom: auto; height: min(70svh, 560px); background-image: url('images/hero-sm.webp'); --hero-pos: 50% 60%; }
+    .hero-band::before { bottom: auto; height: min(70svh, 560px); background-image: linear-gradient(var(--hero-tint), var(--hero-tint)), url('images/hero-sm.webp'); --hero-pos: 50% 60%; }
     .hero-band::after { background:
-      linear-gradient(rgba(24, 30, 38, 0.5) 0, rgba(24, 30, 38, 0) 130px),
-      linear-gradient(rgba(39, 51, 58, 0) 0, rgba(39, 51, 58, 0) calc(min(70svh, 560px) - 200px), #27333a min(70svh, 560px)); }
+      linear-gradient(rgba(var(--hero-dusk), 0.6) 0, rgba(var(--hero-dusk), 0.38) 80px, rgba(var(--hero-dusk), 0) 150px),
+      linear-gradient(rgba(var(--hero-dusk), 0) 0, rgba(var(--hero-dusk), 0) calc(min(70svh, 560px) - 200px), #2c1848 min(70svh, 560px)); }
     .hero-main { padding-block: calc(min(70svh, 560px) - 120px) 50px; }
     .hero-copy { margin-left: 0; text-align: left; }
     .hero-band .lede { margin-left: 0; }
@@ -568,7 +571,7 @@
 
 <style id="wf-snav">
   /* ---------- STICKY NAV (Oct 7 2026): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; styled from this page's own colors and fonts ---------- */
-  :root { --sn-h: 60px; --sn-bg: #27333a; --sn-fg: #ffffff; }
+  :root { --sn-h: 60px; --sn-bg: #2c1848; --sn-fg: #ffffff; }
   [id] { scroll-margin-top: calc(var(--sn-h) + 16px); }
   #top, .snav-gap { scroll-margin-top: 0; }
   .snav-wrap { position: sticky; top: 0; height: 0; z-index: 26; }
