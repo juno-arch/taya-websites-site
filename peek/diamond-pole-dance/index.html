@@ -17,7 +17,7 @@
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;300;400;600;700&family=Golos+Text:wght@400;500;600;700&family=Patrick+Hand+SC&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;300;400;600;700&family=Golos+Text:wght@400;500;600;700&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
@@ -142,6 +142,38 @@
   @keyframes hero-rise-lg { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 
+  /* AT DIAMOND (Pollen, Oct 13: "add a rotating banner"): a slim after hours strip along the foot of the hero, the fire
+     hairline on top, her studio's own lines rolling slowly by in the thin wide caps of her logo, each one closed by a small
+     gem that throws one color of the fire. Lines that stay true all year (her home, classes and scheduling pages), no
+     dates, so it can't go stale. Seven short lines, so the moving strip stays light on a phone. Tap it to jump to the classes. Stops while you hover or focus it, and off screen; under
+     reduced motion it sits still and wraps. */
+  .dm-marq { position: relative; z-index: 3; display: flex; align-items: stretch; text-decoration: none; color: #f2eff8; overflow: hidden;
+    background: rgba(12, 10, 20, 0.8); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .dm-marq::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--fire); opacity: 0.75; pointer-events: none; }
+  .dm-tag { flex: none; display: flex; align-items: center; gap: 8px; padding: 0 24px 0 18px; position: relative; z-index: 1; background: #3b2394; color: #fff;
+    font-family: 'League Spartan', sans-serif; font-weight: 600; font-size: 11.5px; letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); }
+  .dm-tag svg { width: 20px; height: 16px; flex: none; }
+  .dm-win { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; padding: 13px 0 12px 16px; font-family: 'League Spartan', sans-serif; font-weight: 300;
+    font-size: 15px; line-height: 1.25; letter-spacing: 0.22em; text-transform: uppercase; }
+  .dm-run { display: inline-flex; animation: dm-scroll var(--dur, 80s) linear infinite; } /* no padding on the run itself, so -50% lands exactly on the copy's seam */
+  .dm-run > span { white-space: pre; }
+  .dm-run i { font-style: normal; display: inline-block; width: 6px; height: 6px; margin: 0 22px 0 18px; vertical-align: 2px; transform: rotate(45deg); background: #c9b8ff; }
+  .dm-run i.f1 { background: #ff6fb5; } .dm-run i.f2 { background: #ffb35c; } .dm-run i.f3 { background: #6ff0c8; } .dm-run i.f4 { background: #5cb8ff; } .dm-run i.f5 { background: #a98bff; }
+  @keyframes dm-scroll { to { transform: translateX(-50%); } }
+  .dm-marq:not(.on) .dm-run, .dm-marq:hover .dm-run, .dm-marq:focus .dm-run, .dm-marq:focus-within .dm-run { animation-play-state: paused; }
+  .dm-marq:hover .dm-win { color: #fff; }
+  .dm-marq:hover .dm-tag { background: #4a22b8; }
+  .dm-marq:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+  .hero-band.wait .dm-marq { opacity: 0; }
+  .hero-band.go .dm-marq { animation: hero-rise 2s cubic-bezier(.22,1,.36,1) 3.9s both; }
+  @media (max-width: 560px) { .dm-tag { padding: 0 20px 0 14px; font-size: 10.5px; letter-spacing: 0.2em; } .dm-tag span { display: none; } .dm-win { font-size: 13.5px; letter-spacing: 0.2em; padding: 12px 0 11px 12px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .dm-run { animation: none; display: inline; padding-left: 0; } .dm-run > span { white-space: normal; }
+    .dm-win { white-space: normal; padding-inline: 14px; line-height: 1.6; }
+    .dm-more { display: none; } /* sitting still, the first three lines are plenty */
+  }
+
   section { padding-block: 84px; }
   section + section { border-top: 1px solid var(--hair); }
 
@@ -169,7 +201,8 @@
   .rs-grid { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 28px 40px; margin-top: 36px; align-items: start; }
   .rs-grid > * { min-width: 0; }
 
-  /* the planner page: AT-A-GLANCE paper, printed in slate blue, written in her marker caps */
+  /* the planner page: AT-A-GLANCE paper, printed in slate blue; the classes are set in clean printed caps (Pollen, Oct 13: no handwriting),
+     so the planner feel comes from the paper, the ruled grid, the slate print, her slash on days off and the event red */
   .planner { background: #f7f7f4; color: #1b1b1d; border-radius: 6px; padding: 16px 14px 14px; box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.06);
     position: relative; }
   .pl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 2px 10px; }
@@ -184,8 +217,9 @@
     background: transparent; color: inherit; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 1px; cursor: pointer; -webkit-appearance: none; appearance: none; border-radius: 0; }
   .pl-day.blank { cursor: default; }
   .pl-n { align-self: flex-end; font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1; color: #46484f; }
-  .pl-line { font-family: 'Patrick Hand SC', 'Comic Sans MS', cursive; font-size: 13.5px; line-height: 1.15; color: #17171a; white-space: normal; overflow: hidden; }
-  .pl-line.ev { white-space: normal; color: #a3122f; }
+  .pl-line { font-family: 'League Spartan', sans-serif; font-weight: 400; font-size: 11.5px; line-height: 1.3; color: #46484f; font-variant-numeric: tabular-nums; white-space: normal; overflow: hidden; }
+  .pl-line b { font-weight: 600; color: #17171a; }
+  .pl-line.ev { white-space: normal; color: #a3122f; font-weight: 600; }
   .pl-marks { display: none; gap: 3px; flex-wrap: wrap; margin-top: auto; }
   .pl-marks i { width: 6px; height: 6px; transform: rotate(45deg); background: #17171a; }
   .pl-marks i.o { background: transparent; box-shadow: inset 0 0 0 1.5px #17171a; }
@@ -193,7 +227,7 @@
   /* her slash: days with no classes get a corner to corner line, the way she crosses them off in the planner */
   .pl-day.x::after { content: ""; position: absolute; inset: 0; pointer-events: none;
     background: linear-gradient(to top right, rgba(0, 0, 0, 0) calc(50% - 0.75px), #3b3d44 calc(50% - 0.75px), #3b3d44 calc(50% + 0.75px), rgba(0, 0, 0, 0) calc(50% + 0.75px)); opacity: 0.7; }
-  .pl-x-note { font-family: 'Patrick Hand SC', cursive; font-size: 12.5px; line-height: 1.15; text-transform: uppercase; color: #3b3d44; position: relative; z-index: 1; background: #f7f7f4; align-self: flex-start; padding: 0 2px; }
+  .pl-x-note { font-family: 'League Spartan', sans-serif; font-weight: 400; font-size: 11px; line-height: 1.3; color: #3b3d44; position: relative; z-index: 1; background: #f7f7f4; align-self: flex-start; padding: 0 2px; }
   .pl-day.past { opacity: 0.4; cursor: default; }
   .pl-day.past:not(.x)::after { content: ""; position: absolute; inset: 0; pointer-events: none;
     background: linear-gradient(to top right, rgba(0, 0, 0, 0) calc(50% - 0.75px), #3b3d44 calc(50% - 0.75px), #3b3d44 calc(50% + 0.75px), rgba(0, 0, 0, 0) calc(50% + 0.75px)); }
@@ -201,6 +235,7 @@
   .pl-day:not(.past):not(.x):not(.blank):hover { background: #ecebf6; }
   .pl-day[aria-pressed="true"] { background: #e6defc; box-shadow: inset 0 0 0 2px #5a2fd0; }
   .pl-day:focus-visible { outline: 2px solid #5a2fd0; outline-offset: -3px; }
+  @media (min-width: 961px) and (max-width: 1100px) { .pl-day { padding-inline: 3px; } .pl-line, .pl-x-note { font-size: 10.5px; } } /* the narrow two column range: the printed words still fit their day */
   .pl-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; margin-top: 10px; font-size: 13px; color: #4b4f58; padding: 0 2px; }
   .pl-foot b { color: #1b1b1d; }
 
@@ -211,16 +246,16 @@
     font: inherit; color: var(--on-band); background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px; padding: 10px 14px; }
   .sess:hover { border-color: rgba(201, 184, 255, 0.6); }
   .sess[aria-pressed="true"] { background: rgba(185, 162, 255, 0.16); border-color: #c9b8ff; box-shadow: inset 0 0 0 1px #c9b8ff; }
-  .sess .t { font-family: 'Patrick Hand SC', cursive; font-size: 19px; line-height: 1; min-width: 3.4em; color: #fff; }
+  .sess .t { font-family: 'League Spartan', sans-serif; font-weight: 400; font-size: 19px; line-height: 1; min-width: 3.6em; color: #fff; font-variant-numeric: tabular-nums; }
   .sess b { display: block; font-weight: 600; font-size: 16px; line-height: 1.25; }
   .sess small { display: block; font-size: 13.5px; color: var(--on-band-soft); }
-  .sess .where { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: #c9b8ff; white-space: nowrap; }
+  .sess .where { display: block; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: #c9b8ff; white-space: nowrap; }
   .sess-none { font-size: 15.5px; color: var(--on-band-soft); }
 
   /* the studio: mirror ball, six chrome poles, a marble floor; the lights land on the poles for the class you pick */
   .studio { background: linear-gradient(#141126, #0b0a12); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 16px 16px 20px; position: relative; }
   .st-cap { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 14px; }
-  .st-when { font-family: 'Patrick Hand SC', cursive; font-size: 22px; line-height: 1.15; color: #fff; }
+  .st-when { font-family: 'League Spartan', sans-serif; font-weight: 400; font-size: 21px; line-height: 1.2; color: #fff; }
   .st-room { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: #c9b8ff; }
   .st-svg { display: block; width: 100%; height: auto; margin: 10px 0 4px; overflow: visible; }
   .st-svg .facets { animation: none; }
@@ -388,7 +423,7 @@
   .ev-list { list-style: none; display: grid; gap: 0; }
   .ev-list li { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 4px 18px; padding: 18px 0; border-top: 1px solid var(--hair); }
   .ev-list li:last-child { border-bottom: 1px solid var(--hair); }
-  .ev-date { font-family: 'Patrick Hand SC', cursive; font-size: 20px; line-height: 1.1; color: var(--violet); }
+  .ev-date { font-family: 'League Spartan', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.2; color: var(--violet); }
   .ev-list b { display: block; font-size: 18px; }
   .ev-list span { color: var(--ink-soft); font-size: 15.5px; }
   .ev-list .past { opacity: 0.5; }
@@ -764,6 +799,26 @@
       </div>
     </div>
   </div>
+  <a class="dm-marq" id="dm-marq" href="#classes" aria-label="At Diamond: comfort comes first. Ten X-Poles in two studios. Showcases, parties and freestyle nights. In Medford since 2021. Every level, beginner to advanced. Five or six people a class. Each person on their own X-Pole. See the classes."><span class="dm-tag" aria-hidden="true"><svg viewBox="0 0 40 32" fill="none" stroke="currentColor" stroke-linejoin="round"><path d="M8.5 2h23L39 11 20 30 1 11Z" stroke-width="2"/><path d="M1 11h38M8.5 2 13 11l7 19M31.5 2 27 11l-7 19M13 11l7-9 7 9" stroke-width="1.3" opacity=".8"/></svg><span>at diamond</span></span><span class="dm-win" aria-hidden="true"><span class="dm-run" id="dm-run"><span>Comfort comes first<i></i>Ten X&#8209;Poles in two studios<i></i>Showcases, parties and freestyle nights<span class="dm-more"><i></i>In Medford since 2021<i></i>Every level, beginner to advanced<i></i>Five or six people a class<i></i>Each person on their own X&#8209;Pole</span></span></span></span></a>
+  <script>
+    /* AT DIAMOND: the lines above roll slowly by on a loop: a gem closes the run, a second copy follows it so the seam is
+       seamless, and each gem takes the next color of the fire. Slow and steady, about 40px a second, whatever the screen.
+       Under reduced motion one run sits still, first three lines only. */
+    (function () {
+      var mq = document.getElementById('dm-marq'), run = document.getElementById('dm-run'); if (!mq || !run) return;
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var one = run.firstElementChild;
+      if (!still) { one.appendChild(document.createElement('i')); run.appendChild(one.cloneNode(true)); }
+      [].forEach.call(run.querySelectorAll('i'), function (g, n) { g.className = 'f' + (n % 5 + 1); });
+      if (still) return;
+      var pace = function () { var w = one.getBoundingClientRect().width; if (w > 0) run.style.setProperty('--dur', Math.max(30, w / 40).toFixed(1) + 's'); };
+      pace(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(pace);
+      /* the run waits until the strip has risen in, so the first line is read from its start */
+      var seen = true, up = false, set = function () { mq.classList.toggle('on', up && seen); }, rise = function () { if (!up) { up = true; set(); } };
+      mq.addEventListener('animationend', function (e) { if (e.target === mq) rise(); }); setTimeout(rise, 6500);
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { seen = e.isIntersecting; set(); }); }).observe(mq);
+    })();
+  </script>
 </div>
 <script>
   (function () {
@@ -1343,24 +1398,24 @@
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
     var Y = 2026, M = 9, MONTH = 'October', DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], DOW3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     var K = {
-      pole: { n: 'Pole', short: 'POLE', room: 'A', sub: 'Tricks and transitions, all levels', what: 'Tricks and transitions for every level, beginner to advanced. One hour.', bring: 'stretchy short shorts and a sports bra or fitted top, water, socks for cool down, and grip if you like.' },
-      dancer: { n: 'Dancer 101', short: 'DANCER', room: 'A', sub: 'Dance on and around the pole', what: 'For dancers and anyone who wants to dance: edgework, clacks, slinky movement and smooth transitions. Some experience needed. One hour.', bring: 'pole heels and a cute outfit. Knee pads suggested.' },
-      open: { n: 'Open Pole', short: 'OPEN', room: 'B', sub: 'Your own practice, no instruction', what: 'No instruction, just your own practice time. An hour and a half.', bring: 'water, and grip if you like.' }
+      pole: { n: 'Pole', short: 'Pole', room: 'A', sub: 'Tricks and transitions, all levels', what: 'Tricks and transitions for every level, beginner to advanced. One hour.', bring: 'stretchy short shorts and a sports bra or fitted top, water, socks for cool down, and grip if you like.' },
+      dancer: { n: 'Dancer 101', short: 'Dancer', room: 'A', sub: 'Dance on and around the pole', what: 'For dancers and anyone who wants to dance: edgework, clacks, slinky movement and smooth transitions. Some experience needed. One hour.', bring: 'pole heels and a cute outfit. Knee pads suggested.' },
+      open: { n: 'Open Pole', short: 'Open', room: 'B', sub: 'Your own practice, no instruction', what: 'No instruction, just your own practice time. An hour and a half.', bring: 'water, and grip if you like.' }
     };
     function S(k, t) { return { k: k, t: t }; }
     var WEEK = function (late) { return [S('open', '5:20 pm'), S('pole', '5:30 pm'), S(late || 'pole', '6:40 pm')]; };
     /* her October 2026 planner page, exactly as written */
     var D = {
       1: [S('open', '3:00 pm')],
-      2: { x: 'out' }, 3: { x: 'of' }, 4: { x: 'town' },
+      2: { x: 'Out' }, 3: { x: 'of' }, 4: { x: 'town' },
       5: WEEK(), 7: WEEK('dancer'), 8: [S('open', '3:00 pm')], 9: WEEK('dancer'), 10: [S('open', '4:00 pm')],
       11: [S('open', '12:00 pm'), S('pole', '12:00 pm')],
       12: WEEK(), 14: WEEK(), 15: [S('open', '3:00 pm')], 16: WEEK(), 17: [S('open', '4:00 pm')],
-      18: { ev: 'Showcase rehearsal', short: 'REHEARSAL', t: '7:30 pm', where: 'Liquid Lounge', what: 'For the showcase performers: rehearsal at Liquid Lounge, 7:30 pm. No classes today.' },
-      19: WEEK(), 22: [S('open', '3:00 pm')], 23: { x: 'rogue x halloween event' },
-      25: { ev: 'Halloween Showcase', short: 'SHOWCASE', t: '6:30 pm', where: 'Liquid Lounge', what: 'Dress up, gather together, and enjoy the fright. Doors at 6, show at 6:30, at Liquid Lounge.' },
-      26: { ev: 'Studio Halloween party', short: 'HALLOWEEN PARTY', t: '5:00 pm', where: 'the studio', what: 'For every Diamond student, with a costume contest. Make sure your costume is pole friendly!' },
-      28: WEEK(), 29: [S('open', '3:00 pm')], 30: WEEK(), 31: { x: 'happy halloween!', noslash: true }
+      18: { ev: 'Showcase rehearsal', short: 'Rehearsal', t: '7:30 pm', where: 'Liquid Lounge', what: 'For the showcase performers: rehearsal at Liquid Lounge, 7:30 pm. No classes today.' },
+      19: WEEK(), 22: [S('open', '3:00 pm')], 23: { x: 'Rogue X Halloween event' },
+      25: { ev: 'Halloween Showcase', short: 'Showcase', t: '6:30 pm', where: 'Liquid Lounge', what: 'Dress up, gather together, and enjoy the fright. Doors at 6, show at 6:30, at Liquid Lounge.' },
+      26: { ev: 'Studio Halloween party', short: 'Halloween party', t: '5:00 pm', where: 'the studio', what: 'For every Diamond student, with a costume contest. Make sure your costume is pole friendly!' },
+      28: WEEK(), 29: [S('open', '3:00 pm')], 30: WEEK(), 31: { x: 'Happy Halloween!', noslash: true }
     };
     var now = new Date(), inMonth = now.getFullYear() === Y && now.getMonth() === M;
     var todayN = inMonth ? now.getDate() : 0;   /* outside October nothing is crossed off: the page shows as a sample month */
@@ -1390,7 +1445,7 @@
       var marks = document.createElement('span'); marks.className = 'pl-marks'; marks.setAttribute('aria-hidden', 'true');
       var words = [];
       if (isList) info.forEach(function (s) {
-        var l = document.createElement('span'); l.className = 'pl-line'; l.setAttribute('aria-hidden', 'true'); l.textContent = K[s.k].short + ' ' + s.t.replace(/ [ap]m$/, ''); el.appendChild(l);
+        var l = document.createElement('span'); l.className = 'pl-line'; l.setAttribute('aria-hidden', 'true'); var kb = document.createElement('b'); kb.textContent = K[s.k].short; l.appendChild(kb); l.appendChild(document.createTextNode(' ' + s.t.replace(/ [ap]m$/, ''))); el.appendChild(l);
         var m = document.createElement('i'); if (s.k === 'open') m.className = 'o'; marks.appendChild(m);
         words.push(K[s.k].n + ' ' + s.t);
       });
@@ -1896,12 +1951,47 @@
     function place() {
       q = false; t.style.bottom = ''; if (!vp || vp.hidden) return;
       var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect(); if (!b.width || !b.height) return;
-      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8) + 'px';
+      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8 - (parseFloat(t.style.marginBottom) || 0)) + 'px';
     }
     function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
     addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
     if (vp && window.MutationObserver) new MutationObserver(soon).observe(vp, { attributes: true, subtree: true, childList: true });
     place();
+  })();
+</script>
+<script>
+  /* mockup pills vs the At Diamond strip: the strip sits right where the Light/Dark, "A mockup from Web Faery" and See it as
+     pills float. While the strip is behind them, all three ride just above it together (keeping their own spacing), so its
+     tag and first line stay readable; they drop back once it scrolls past. (The same helper as Levity's At Levity strip.) */
+  (function () {
+    var m = document.getElementById('dm-marq'); if (!m) return;
+    var pills = [document.querySelector('.ribbon'), document.getElementById('theme-tab'), document.getElementById('vp')].filter(Boolean);
+    var lift = 0, q = false;
+    function place() {
+      q = false;
+      var b = m.getBoundingClientRect(), mr = { top: b.top, bottom: b.bottom, left: b.left, right: b.right, height: b.height }, need = 0;
+      var tf = getComputedStyle(m).transform;   /* measure where the strip lands, not where its rise-in starts */
+      if (tf && tf !== 'none' && window.DOMMatrixReadOnly) { var dy = new DOMMatrixReadOnly(tf).m42; mr.top -= dy; mr.bottom -= dy; }
+      if (mr.height && mr.bottom > 0 && mr.top < innerHeight) {
+        var low = -Infinity, hit = false;
+        pills.forEach(function (p) {
+          if (p.hidden) return;
+          var r = p.getBoundingClientRect(); if (!r.width || !r.height) return;
+          var top = r.top + (p._wfLift || 0), bottom = r.bottom + (p._wfLift || 0);   /* where it sits with no lift */
+          if (bottom > low) low = bottom;
+          if (top < mr.bottom && bottom > mr.top && r.left < mr.right && r.right > mr.left) hit = true;
+        });
+        if (hit) need = Math.max(0, Math.ceil(low - mr.top + 8));
+      }
+      lift = need;
+      pills.forEach(function (p) { var v = lift; if ((p._wfLift || 0) === v) return; p._wfLift = v; p.style.marginBottom = v ? v + 'px' : ''; });
+    }
+    function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
+    addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon); addEventListener('load', soon);
+    if (window.MutationObserver) { var mo = new MutationObserver(soon); pills.forEach(function (p) { mo.observe(p, { attributes: true }); }); }
+    if (window.ResizeObserver) new ResizeObserver(soon).observe(m);
+    m.addEventListener('animationend', function (e) { if (e.target === m) soon(); });
+    soon(); setTimeout(soon, 600); setTimeout(soon, 2000);
   })();
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=5";s.defer=true;document.head.appendChild(s);}</script>
