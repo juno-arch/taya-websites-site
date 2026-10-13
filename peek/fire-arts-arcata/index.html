@@ -79,7 +79,7 @@
   input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--ember); outline-offset: 1px; }
   [tabindex="-1"]:focus { outline: none; }
 
-  h1, h2, h3, h4, .serif { font-family: 'Gelasio', 'Times New Roman', Georgia, serif; font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+  h1, h2, h3, h4, h5, .serif { font-family: 'Gelasio', 'Times New Roman', Georgia, serif; font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
   h2 { font-size: clamp(32px, 5vw, 50px); line-height: 1.08; }
   h2 em, h1 em, h3 em { font-style: italic; font-weight: 500; color: var(--ember); }
   .label { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin: 0 0 14px; text-wrap: balance; }
@@ -164,6 +164,72 @@
   #classes { border-top: 0; padding-top: 64px; }
   .session { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 22px; font-size: 15px; color: var(--ink-soft); }
   .session b { color: var(--ink); font-weight: 600; }
+  /* classes are booked by where they meet: each place has its own clay and its own list, so the place comes first (tabs) */
+  .studios { margin-top: 30px; display: grid; gap: 12px; }
+  .studios-q { font-size: 15.5px; color: var(--ink-soft); text-wrap: pretty; }
+  .studios-q b { color: var(--ink); font-weight: 600; }
+  .studios-hint { font-size: 14.5px; color: var(--ink-soft); text-wrap: pretty; margin-top: -6px; }
+  .studio-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 4px; }
+  .studio { font: inherit; text-align: left; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: start; align-items: baseline; gap: 2px 12px; padding: 14px 16px; min-height: 44px; border-radius: 10px;
+    background: var(--ground-2); color: var(--ink); border: 1px solid color-mix(in srgb, var(--ink) 22%, var(--ground-2)); border-top: 4px solid var(--taken); }
+  /* hover: the sides warm up, the top bar stays put (the red top bar means picked) */
+  .studio[aria-selected="false"]:hover { border-color: var(--ember); border-top-color: var(--taken); background: var(--ground); }
+  .studio b { grid-column: 1; grid-row: 1; font-family: 'Gelasio', Georgia, serif; font-size: 19px; line-height: 1.2; font-weight: 600; text-wrap: balance; }
+  .studio .st-n { grid-column: 2; grid-row: 1; font-size: 13.5px; color: var(--ink-soft); text-align: right; white-space: nowrap; }
+  .studio .st-meta { grid-column: 1 / -1; display: grid; gap: 4px; }
+  .studio .st-at { font-size: 14px; color: var(--ink-soft); }
+  .studio .st-dot { display: none; }
+  .studio .st-clay { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+  .studio[aria-selected="true"] { background: var(--ink); color: var(--ground); border-color: var(--ink); border-top-color: var(--ember); cursor: default; }
+  .studio[aria-selected="true"] .st-at, .studio[aria-selected="true"] .st-clay, .studio[aria-selected="true"] .st-n { color: var(--ground); opacity: 0.86; }
+  .studio:focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; }
+  /* a place with nothing that fits the filters stays clickable, just quieter: no fill, a dashed edge */
+  .studio.zero[aria-selected="false"] { background: transparent; border-style: dashed; border-top-style: solid; }
+  /* tablets: name and count, then address and clay on one line */
+  @media (max-width: 900px) {
+    .studio { padding: 11px 14px 12px; }
+    .studio b { font-size: 17px; }
+    .studio .st-n { grid-column: 1 / -1; grid-row: auto; text-align: left; }
+    .studio .st-meta { display: block; font-size: 14px; color: var(--ink-soft); }
+    .studio .st-at { display: block; }
+    .studio .st-clay { font-size: 14px; letter-spacing: 0; text-transform: none; font-weight: 400; }
+  }
+  /* phones: three tabs side by side, short names (the address is in the card right below) */
+  @media (max-width: 560px) {
+    .studio-row { gap: 6px; }
+    .studio { grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 10px 9px 11px; border-top-width: 4px; }
+    .studio b { font-size: 15px; }
+    .studio .st-long, .studio .st-at { display: none !important; }
+    .studio .st-n { font-size: 13px; }
+    .studio .st-clay { font-size: 13px; }
+  }
+  /* the place card: name, address and a map link, then what is different about this place */
+  .st-panel:focus { outline: none; }
+  .place { margin-top: 14px; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 16px 44px; padding: 20px 22px 22px; border-radius: 10px; background: var(--ground-2); border-top: 4px solid var(--ember); }
+  .place-name { font-size: 26px; line-height: 1.15; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+  .place-name small { font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; font-size: 14px; color: var(--ink-soft); letter-spacing: 0; }
+  .place-sub { margin-top: 6px; font-size: 15px; color: var(--ink-soft); text-wrap: pretty; }
+  .place-at { margin-top: 10px; font-size: 15.5px; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; }
+  .place-map { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; font-weight: 600; text-underline-offset: 3px; }
+  .place-map svg { flex: none; }
+  .place-facts { display: grid; gap: 10px; font-size: 15px; align-content: start; }
+  .place-facts div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; }
+  .place-facts dt { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); padding-top: 2px; }
+  .place-facts dd { text-wrap: pretty; }
+  .place-facts a { font-weight: 600; text-underline-offset: 3px; white-space: nowrap; }
+  @media (max-width: 760px) {
+    .place { grid-template-columns: minmax(0, 1fr); padding: 16px 16px 18px; gap: 14px; }
+    .place-name { font-size: 22px; }
+    .place-facts div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  }
+  /* Planted: no tabs, the whole list one place after another */
+  .st-group + .st-group { margin-top: 64px; }
+  .st-group > .place { margin-top: 40px; }
+  .st-group > .place + .daygroup { margin-top: 28px; }
+  /* the end of a place's list points to the other two */
+  .st-more { margin-top: 40px; padding-top: 14px; border-top: 1px dashed var(--hair); display: grid; gap: 2px; font-size: 15px; color: var(--ink-soft); text-wrap: pretty; }
+  .st-more b { color: var(--ink); font-weight: 600; }
+  .st-more .linkish { padding-block: 6px; }
   .finder { margin-top: 34px; display: grid; gap: 14px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .chips-q { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin-right: 4px; min-width: 52px; }
@@ -193,8 +259,8 @@
   .linkish { font: inherit; color: var(--ember-deep); background: none; border: 0; padding: 10px 2px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 
   .daygroup { margin-top: 40px; }
-  .daygroup h3 { font-size: 26px; display: flex; align-items: baseline; gap: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
-  .daygroup h3 small { font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; font-size: 14px; color: var(--ink-soft); letter-spacing: 0; }
+  .daygroup h4 { font-size: 26px; display: flex; align-items: baseline; gap: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+  .daygroup h4 small { font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; font-size: 14px; color: var(--ink-soft); letter-spacing: 0; }
   .cls-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
   .cls { position: relative; display: flex; flex-direction: column; gap: 10px; background: var(--ground); border: 1px solid var(--hair); border-radius: 10px; padding: 20px 20px 18px; }
   .cls.full { background: var(--ground-2); }
@@ -207,7 +273,7 @@
   .lvl.kids { color: #8a5a00; }
   :root[data-theme="dark"] .lvl.kids { color: #e9c06a; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .lvl.kids { color: #e9c06a; } }
-  .cls h4 { font-size: 22px; line-height: 1.2; }
+  .cls h5 { font-size: 22px; line-height: 1.2; }
   .cls-who { font-size: 15px; color: var(--ink-soft); margin-top: -4px; }
   .cls-facts { display: grid; gap: 4px; font-size: 15px; }
   .cls-facts div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; }
@@ -247,6 +313,7 @@
   .cone-key { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 14px; color: var(--ink-soft); }
   .cone-key .pack { padding: 2px 6px 2px; }
   .none { margin-top: 30px; padding: 26px; text-align: center; border: 1px dashed var(--hair); border-radius: 10px; color: var(--ink-soft); }
+  .none .linkish { padding-inline: 0; }
 
   .bk-note { border-left: 2px solid var(--ember); padding: 4px 0 4px 14px; font-size: 14.5px; color: var(--ink-soft); text-wrap: pretty; }
   .bk-note b { display: block; color: var(--ink); font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2px; font-weight: 600; }
@@ -704,8 +771,8 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list with a Register button to your Square shop, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class calendar people can sort by type, level and day, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list, grouped by studio, with a Register button to your Square shop, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class calendar people can sort by studio, type, level and day, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class card, with spots left, the level check, the waiver signed in the form, gift certificates and a real waitlist, paid into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
@@ -732,6 +799,19 @@
       <span>Adults 18 and over, unless it says kids</span>
     </div>
 
+    <div class="studios" id="studios">
+      <p class="studios-q"><b>Start with where your class meets.</b> Each place has its own clay, so each has its own list: cone 10 at the main studio, cone 6 at Studio #10 and at Phoenix, the clay shop next door.</p>
+      <p class="studios-hint">New to clay? All three have classes open to beginners, and your teacher tells you which clay to buy.</p>
+      <div class="studio-row" role="tablist" aria-label="Where your class meets" data-show="mother crone all">
+        <button type="button" role="tab" class="studio" id="st-tab-main" data-where="main" aria-selected="true" aria-controls="st-panel" tabindex="0"><b>Main studio</b><span class="st-n">15 classes</span><span class="st-meta"><span class="st-at">520 South G Street</span><span class="st-dot" aria-hidden="true"> &middot; </span><span class="st-clay">Cone 10 clay</span></span></button>
+        <button type="button" role="tab" class="studio" id="st-tab-s10" data-where="s10" aria-selected="false" aria-controls="st-panel" tabindex="-1"><b>Studio #10</b><span class="st-n">8 classes</span><span class="st-meta"><span class="st-at">550 South G Street #10</span><span class="st-dot" aria-hidden="true"> &middot; </span><span class="st-clay">Cone 6 clay</span></span></button>
+        <button type="button" role="tab" class="studio" id="st-tab-px" data-where="px" aria-selected="false" aria-controls="st-panel" tabindex="-1"><b>Phoenix<span class="st-long"> Ceramic &amp; Fire Supply</span></b><span class="st-n">2 classes</span><span class="st-meta"><span class="st-at">550 South G Street #35</span><span class="st-dot" aria-hidden="true"> &middot; </span><span class="st-clay">Cone 6 clay</span></span></button>
+      </div>
+    </div>
+
+    <div class="st-panel" id="st-panel" role="tabpanel" aria-labelledby="st-tab-main">
+    <div id="st-place" data-show="mother crone all"></div>
+
     <div class="finder" id="finder" data-show="mother crone all" data-thing="class calendar with filters">
       <div class="chips" role="group" aria-labelledby="f-type-q"><span class="chips-q" id="f-type-q">Type</span>
         <button type="button" class="chip" data-f="type" data-v="" aria-pressed="true">All</button>
@@ -753,7 +833,7 @@
         <span class="week-key" id="week-key">Tap a day to see just that day. The bars are mornings, afternoons and evenings.</span>
         <span>
           <label data-show="crone all"><input type="checkbox" id="f-open"> Only classes with open spots</label>
-          <button type="button" class="linkish" id="f-clear" hidden>Show every class</button>
+          <button type="button" class="linkish" id="f-clear" hidden>Clear the filters</button>
         </span>
       </div>
       <p class="vh" role="status" id="f-live"></p>
@@ -766,10 +846,11 @@
     </div>
 
     <div id="cls-list"></div>
+    </div>
     <noscript><p class="none">See the full class list on <a href="https://www.fireartsarcata.com/shop/classes/9">our class page</a>.</p></noscript>
 
     <div class="notes3 mock-note wf-note">
-      <div class="bk-note"><b>What you see</b>Your real Fall classes, teachers, times and prices. The spots left are made up for the demo, so you can try a full class and its waitlist. When the Winter schedule is out, I swap it in, and you don&rsquo;t touch a thing.</div>
+      <div class="bk-note"><b>What you see</b>Your real Fall classes, teachers, times and prices, split by where they meet, the way your schedule marks them, each place with its clay, its map and its glaze room. The spots left are made up for the demo, so you can try a full class and its waitlist. When the Winter schedule is out, I swap it in, and you don&rsquo;t touch a thing.</div>
       <div class="bk-note" data-show="maiden mother" hidden><b>Register buttons</b><span data-show="maiden">Planted: every Register button opens your class page on Square, the way it works now, just easier to find.</span><span data-show="mother" hidden>Tended: each class&rsquo;s Register button opens that exact class on your Square shop, so nobody scrolls 25 look-alike tiles.</span></div>
       <div class="bk-note" data-show="crone all"><b>Sign up right here</b>In Bloom: one short form on the card. It asks the level question for intermediate classes, takes the waiver, takes a gift certificate number, and pays into your own Stripe, or Square if you&rsquo;d rather keep it (Square&rsquo;s Payment Links make a checkout button for any site). A cart can&rsquo;t lose your spot.</div>
       <div class="bk-note"><b>Full classes</b><span data-show="maiden mother" hidden>A full class says so on its card, with the waitlist email right there, class number filled in.</span><span data-show="crone all">A full class turns into a waitlist button. When someone drops, the next person gets an email right away. No more emailing the class number.</span></div>
@@ -948,11 +1029,11 @@
     <h2 class="reveal">Find us <em>on South G Street</em></h2>
     <figure class="photo reveal" style="aspect-ratio:16/7;margin-top:30px" data-lightbox><img src="images/sale-tables-640.webp" srcset="images/sale-tables-640.webp 640w, images/sale-tables.webp 1500w" sizes="100vw" data-full="images/sale-tables.webp" width="1500" height="2000" alt="Out back on a sunny sale day: tables of glazed bowls, jars and fused glass under the shelves" loading="lazy" style="object-position:50% 62%"></figure>
     <div class="where">
-      <div class="reveal"><b>Main studio</b>520 South G Street<br>Arcata, CA 95521<br><span class="soft" style="font-size:14px">Cone 10 clay</span></div>
-      <div class="reveal"><b>Studio #10, our mid range studio</b>550 South G Street #10<br>Arcata, CA 95521<br><span class="soft" style="font-size:14px">Cone 6 clay</span></div>
+      <div class="reveal"><b>Main studio</b>520 South G Street<br>Arcata, CA 95521<br><span class="soft" style="font-size:14px">Cone 10 clay</span><br><a class="place-map" href="https://www.google.com/maps/search/?api=1&amp;query=520+South+G+Street+Arcata+CA+95521" target="_blank" rel="noopener">Map<span class="vh"> to the main studio (opens in a new tab)</span><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5h5v5M9.5 2.5 3 9"/></svg></a></div>
+      <div class="reveal"><b>Studio #10, our mid range studio</b>550 South G Street #10<br>Arcata, CA 95521<br><span class="soft" style="font-size:14px">Cone 6 clay</span><br><a class="place-map" href="https://www.google.com/maps/search/?api=1&amp;query=550+South+G+Street+%2310+Arcata+CA+95521" target="_blank" rel="noopener">Map<span class="vh"> to Studio #10 (opens in a new tab)</span><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5h5v5M9.5 2.5 3 9"/></svg></a></div>
+      <div class="reveal"><b>Classes at Phoenix</b>Phoenix Ceramic &amp; Fire Supply<br>550 South G Street #35, Arcata<br><span class="soft" style="font-size:14px">Our neighbors&rsquo; clay and tool shop, where two handbuilding classes meet</span><br><a class="place-map" href="https://www.google.com/maps/search/?api=1&amp;query=550+South+G+Street+%2335+Arcata+CA+95521" target="_blank" rel="noopener">Map<span class="vh"> to Phoenix Ceramic and Fire Supply (opens in a new tab)</span><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5h5v5M9.5 2.5 3 9"/></svg></a></div>
       <div class="reveal"><b>Gallery hours</b>Every day, 10 to 4<br><span class="soft" style="font-size:14px">Members: 6 am to midnight</span></div>
-      <div class="reveal"><b>Call</b><a class="tel" href="tel:+17078261445">(707) 826-1445</a></div>
-      <div class="reveal"><b>Email</b><a href="mailto:director@fireartsarcata.com">director@fireartsarcata.com</a></div>
+      <div class="reveal"><b>Call or email</b><a class="tel" href="tel:+17078261445">(707) 826-1445</a><br><a href="mailto:director@fireartsarcata.com">director@fireartsarcata.com</a></div>
       <div class="reveal"><b>Follow</b><span class="reach" style="margin-top:2px"><a href="https://www.instagram.com/firearts_arcata" target="_blank" rel="noopener">@firearts_arcata<span class="vh"> on Instagram (opens in a new tab)</span></a><a href="https://www.facebook.com/fireartsarcata" target="_blank" rel="noopener">Facebook<span class="vh"> (opens in a new tab)</span></a></span></div>
     </div>
     <p class="park">Parking: please don&rsquo;t leave your car in the Fire Arts lot when you&rsquo;re not here. If it&rsquo;s full, use the lot to the south, and keep the bike lane clear.</p>
@@ -1076,8 +1157,8 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list with a Register button to your Square shop, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class calendar people can sort by type, level and day, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list, grouped by studio, with a Register button to your Square shop, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class calendar people can sort by studio, type, level and day, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class card, with spots left, the level check, the waiver signed in the form, gift certificates and a real waitlist, paid into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
@@ -1119,7 +1200,7 @@
     { n: '19', t: 'Handbuilding for Beginners & Intermediates', who: 'Jenna Santangelo', type: 'hand', lvl: 'both', day: 7, time: '2 to 4:30 pm', start: 14, dates: 'Sept 20 to Nov 8', len: '8 weeks', where: 'main', cap: 8, left: 2, price: 325, u: '-19-hand-building-for-beginners-intermediates-jenna-santangelo/23', d: 'Slab, coil, pinch and more, with very few tools: vessels, sculpture and surface treatments, to set you up to create and express your own ideas.' },
     { n: '20', t: 'Lava Glaze Workshop', who: 'Jonah Simmons', type: 'glaze', lvl: 'some', pre: 'member', day: 7, time: '10 am to 12 pm (Oct 18 until 1)', start: 10, dates: 'Sept 27, Oct 18 and Nov 8', len: '3 sessions', where: 's10', cap: 8, left: 5, price: 135, u: '', d: 'The dramatic, cratered surfaces of lava glazes, in a hands-on cone 6 workshop: the science behind the eruptive textures, and a few glaze variations on your own work.' },
     { n: '21', t: 'Glazed and Confused', who: 'Bob Raymond', type: 'glaze', lvl: 'some', pre: 'wheel', day: 1, time: '10 am to 12:30 pm', start: 10, dates: 'Sept 14 to Nov 2', len: '8 weeks', where: 'main', cap: 9, left: 4, price: 325, u: '-21-glazed-and-confused-bob-raymond/61', d: 'Glazing is where your pottery comes to life! Pouring, dipping, brushing and spraying, new combinations, wax resist, and planning your glaze while you make. Bring bisqued pieces if you have them.' },
-    { n: '22', t: 'Raku Workshop', who: 'Kristin Dalziel', type: 'glaze', lvl: 'some', pre: 'member', day: 1, time: '1:30 to 4:30 pm', start: 13.5, dates: 'Oct 12 and Oct 26', len: '2 sessions', where: 'main', cap: 5, left: 2, price: 125, u: '-22-raku-workshop-kristin-dalziel/KCXI3DVEDJEV3DUMW2MR5ZDH', d: 'Glaze your pieces with raku glazes in the first session. In the second, they come straight out of the hot kiln and into reduction, for crackles, colors and metallic lusters. Cone 6 and cone 10 clay both work.' },
+    { n: '22', t: 'Raku Workshop', who: 'Kristin Dalziel', type: 'glaze', lvl: 'some', pre: 'member', day: 1, time: '1:30 to 4:30 pm', start: 13.5, dates: 'Oct 12 and Oct 26', len: '2 sessions', where: 'main', clay: 'both', cap: 5, left: 2, price: 125, u: '-22-raku-workshop-kristin-dalziel/KCXI3DVEDJEV3DUMW2MR5ZDH', d: 'Glaze your pieces with raku glazes in the first session. In the second, they come straight out of the hot kiln and into reduction, for crackles, colors and metallic lusters. Cone 6 and cone 10 clay both work.' },
     { n: '24', t: 'Mid Range Glaze Deep Dive', who: 'Jessica Swan', type: 'glaze', lvl: 'some', pre: 'glaze', day: 6, time: '10 am to 2 pm, then 12 to 2', start: 10, dates: 'Oct 17 and Oct 24', len: '2 sessions', where: 's10', cap: 8, left: 3, price: 125, u: '-24-mid-range-glaze-deep-dive-jessica-swan/SZPM6CAIXFGEGFENBTKWPMXL', d: 'Get to know the personality of each of our mid range glazes, with tips and tricks for the results you want.' },
     { n: '25', t: 'Ceramics for Kids, ages 8 to 12', who: 'Amanda Steinebach', type: 'kids', lvl: 'kids', day: 2, time: '3:30 to 5:30 pm', start: 15.5, dates: 'Sept 15 to Oct 13', len: '5 weeks', where: 'main', cap: 8, left: 0, price: 220, u: '-25-ceramics-for-kids-ages-8-12-amanda-steinebach/28', d: 'Craftsmanship and ceramics words, while making pinch pots, coils and slab work with their own creative flair. It’s right after school, so you may want to pack a snack.' },
     { n: '26', t: 'Ceramics for Kids, ages 8 to 12', who: 'Amanda Steinebach', type: 'kids', lvl: 'kids', day: 2, time: '3:30 to 5:30 pm', start: 15.5, dates: 'Oct 20 to Nov 17', len: '5 weeks', where: 'main', cap: 8, left: 4, price: 220, u: '-26-ceramics-for-kids-ages-8-12-amanda-steinebach/4LDSKXCIKU2BYOKLFFOZW5A5', d: 'Craftsmanship and ceramics words, while making pinch pots, coils and slab work with their own creative flair. It’s right after school, so you may want to pack a snack.' }
@@ -1136,16 +1217,49 @@
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var DAYS = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday' };
     var SHORT = { 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat', 7: 'Sun' };
-    var WHERE = { main: 'Main studio, 520 S. G St. &middot; cone 10 clay', s10: 'Studio #10, 550 S. G St. &middot; cone 6 clay', px: 'At Phoenix Ceramic &amp; Fire, 550 S. G St. #35 &middot; cone 6 clay' };
     var LVL = { new: ['new', 'New to clay'], both: ['both', 'All levels'], some: ['some', 'Some experience'], kids: ['kids', 'Kids 8 to 12'] };
+    /* where classes meet: their two studios, and Phoenix Ceramic & Fire Supply, the clay and tool shop next door (its own
+       business), where two handbuilding classes meet. One clay per place (Studio Guidelines: no cone 6 at the main studio).
+       The glaze room bookings match their Setmore page: Glaze Slot #1 and #2 (main studio), and the Studio #10 Glaze Room. */
+    var SETMORE = 'https://booking.setmore.com/scheduleappointment/6a47fe74-6473-4342-a17f-ac04b7d16818';
+    var NEWTAB = '<span class="vh"> (opens in a new tab)</span>';
+    var TEL = '<a href="tel:+17078261445">(707) 826-1445</a>';
+    var PLACE = {
+      main: { name: 'Main studio', short: 'the main studio', at: '520 South G Street', st: '520 S. G St.', clay: 'cone 10 clay', six: 'cone 10',
+        sub: 'The office is here: ' + TEL,
+        facts: [['Clay', 'Cone 10 only. Cone 6 clay stays out of the main studio.'],
+          ['Glaze room', 'Students and members book Glaze Slot #1 or #2. Two people can share the room, so book both slots to have it to yourself. <a href="' + SETMORE + '" target="_blank" rel="noopener">Book on Setmore' + NEWTAB + '</a>'],
+          ['Parking', 'Park in the Fire Arts lot while you&rsquo;re here. If it&rsquo;s full, use the lot to the south, and keep the bike lane clear.']] },
+      s10: { name: 'Studio #10', short: 'Studio #10', at: '550 South G Street #10', st: '550 S. G St. #10', clay: 'cone 6 clay', six: 'cone 6',
+        sub: 'Our mid range studio, also called the Annex',
+        facts: [['Clay', 'Cone 6 only, fired in its own kilns.'],
+          ['Glaze room', 'It has its own. Students and members book the Studio #10 Glaze Room. <a href="' + SETMORE + '" target="_blank" rel="noopener">Book on Setmore' + NEWTAB + '</a>'],
+          ['Office', 'At the main studio, 520 South G Street: ' + TEL]] },
+      px: { name: 'Phoenix Ceramic &amp; Fire Supply', short: 'Phoenix', at: '550 South G Street #35', st: '550 S. G St. #35', clay: 'cone 6 clay', six: 'cone 6',
+        sub: 'Our neighbors&rsquo; clay and tool shop, a business of its own. Two handbuilding classes meet here.',
+        facts: [['Clay', 'Cone 6, for both classes here.'],
+          ['Shop', 'Where students buy clay and tools for their classes.'],
+          ['Office', 'Ours is at the main studio, 520 South G Street: ' + TEL]] }
+    };
+    var SPOTS = ['main', 's10', 'px'];
+    var MAPI = '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5h5v5M9.5 2.5 3 9"/></svg>';
+    function mapUrl(w) { return 'https://www.google.com/maps/search/?api=1&amp;query=' + encodeURIComponent(PLACE[w].at + ', Arcata, CA 95521').replace(/%20/g, '+'); }
+    /* a class can list more than one place (where: ['main', 's10']); it then shows under each, and signs up for the one you picked */
+    function places(c) { return [].concat(c.where); }
+    function at(c, w) { return places(c).indexOf(w) > -1; }
+    function clayOf(c, w) { return c.clay === 'both' ? 'cone 6 or cone 10 clay' : PLACE[w].clay; }
+    function whereText(c, w) { w = w || places(c)[0]; return PLACE[w].name + ', ' + PLACE[w].st + ' &middot; ' + clayOf(c, w); }
+    function shortAt(c) { var w = places(c)[0]; return (w === 'main' ? 'Main studio' : PLACE[w].short) + ', ' + (c.clay === 'both' ? 'cone 6 or 10' : PLACE[w].six); }
+    function upper(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
     var SHOP = 'https://www.fireartsarcata.com/shop/classes/9';
-    var f = { type: '', lvl: '', day: 0, open: false };
+    var f = { type: '', lvl: '', day: 0, open: false, where: 'main' };
     var list = $('cls-list'), week = $('week');
     function byNo(n) { for (var i = 0; i < C.length; i++) if (C[i].n === n) return C[i]; return null; }
     function view() { return root.getAttribute('data-view') || 'all'; }
     function bloom() { var v = view(); return v === 'crone' || v === 'all'; }
     function part(c) { return c.start < 12 ? 0 : c.start < 17 ? 1 : 2; }
-    function fits(c, skipDay) {
+    function fits(c, skipDay, skipWhere) {
+      if (!skipWhere && !at(c, f.where)) return false;
       if (f.type && c.type !== f.type) return false;
       if (f.lvl === 'new' && !(c.lvl === 'new' || c.lvl === 'both' || c.lvl === 'kids')) return false;
       if (f.lvl === 'some' && !(c.lvl === 'some' || c.lvl === 'both')) return false;
@@ -1158,7 +1272,7 @@
       if (c.len === '8 weeks') { a.push('8 classes, 2.5 hours each'); a.push('Up to 6 hours a week of studio practice between classes'); a.push('The glaze room by appointment, and up to 3 cubic feet of firing a month'); }
       else if (c.type === 'kids') { a.push('5 classes, 2 hours each, right after school'); }
       else { a.push(c.len + ': ' + c.dates); a.push('Glazes and the firing'); }
-      if (c.type !== 'kids') a.push(c.lvl === 'new' || c.lvl === 'both' ? 'Clay and tools are extra. Your teacher brings clay to the first class and tells you what to buy next door.' : 'Clay and tools are extra, from Phoenix Ceramic & Fire next door.');
+      if (c.type !== 'kids') a.push(at(c, 'px') ? 'Clay and tools are extra. Your teacher brings clay to the first class, and Phoenix, where you meet, sells what you need next.' : c.lvl === 'new' || c.lvl === 'both' ? 'Clay and tools are extra. Your teacher brings clay to the first class and tells you what to buy next door.' : 'Clay and tools are extra, from Phoenix Ceramic & Fire Supply next door.');
       if (c.pre === 'wheel') a.push('For students with wheel experience: you can center about 2 lbs of clay and pull up an even cylinder.');
       if (c.pre === 'member') a.push('For members and students in another class, with 2 or 3 bisque fired pieces ready.');
       if (c.pre === 'glaze') a.push('For students who know glazing basics, with ready to glaze bisqueware.');
@@ -1170,24 +1284,25 @@
       return s;
     }
     function spotsText(c) { return c.left < 1 ? 'Full, waitlist open' : c.left === 1 ? '1 spot left of ' + c.cap : c.left + ' of ' + c.cap + ' spots left'; }
-    function card(c) {
+    function card(c, w) {
       var lv = LVL[c.lvl], full = c.left < 1;
       return '<article class="cls' + (full ? ' full' : '') + '" id="c-' + c.n + '" aria-labelledby="ct-' + c.n + '">' +
         '<div class="cls-top"><span class="cls-no">#' + c.n + '</span><span class="lvl ' + lv[0] + '">' + lv[1] + '</span></div>' +
-        '<h4 id="ct-' + c.n + '">' + esc(c.t) + '</h4><p class="cls-who">with ' + esc(c.who) + '</p>' +
-        '<dl class="cls-facts"><div><dt>When</dt><dd>' + DAYS[c.day] + 's, ' + esc(c.time) + '</dd></div><div><dt>Dates</dt><dd>' + esc(c.dates) + ' &middot; ' + c.len + '</dd></div><div><dt>Where</dt><dd>' + WHERE[c.where] + '</dd></div></dl>' +
+        '<h5 id="ct-' + c.n + '">' + esc(c.t) + '</h5><p class="cls-who">with ' + esc(c.who) + '</p>' +
+        '<dl class="cls-facts"><div><dt>When</dt><dd>' + DAYS[c.day] + 's, ' + esc(c.time) + '</dd></div><div><dt>Dates</dt><dd>' + esc(c.dates) + ' &middot; ' + c.len + '</dd></div><div><dt>Where</dt><dd>' + whereText(c, w) + '</dd></div></dl>' +
         '<div class="spots" data-bloom><span class="pack" aria-hidden="true">' + cones(c) + '</span><span class="spots-t' + (c.left > 0 && c.left < 3 ? ' few' : '') + '">' + spotsText(c) + '</span></div>' +
         '<details class="cls-more"><summary>About the class, and what&rsquo;s included</summary><div class="ans"><p>' + esc(c.d) + '</p><ul>' + included(c).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div></details>' +
-        '<div class="cls-buy"><span class="cls-price">$' + c.price + '<small>' + (c.type === 'kids' ? '5 weeks' : c.len) + '</small></span><span class="cls-act" data-n="' + c.n + '"></span></div>' +
+        '<div class="cls-buy"><span class="cls-price">$' + c.price + '<small>' + (c.type === 'kids' ? '5 weeks' : c.len) + '</small></span><span class="cls-act" data-n="' + c.n + '" data-at="' + (w || places(c)[0]) + '"></span></div>' +
         '</article>';
     }
-    function act(c) {
+    function act(c, w) {
       var v = view();
+      if (!c.u && (v === 'maiden' || v === 'mother')) return '<a class="cls-go" href="mailto:director@fireartsarcata.com?subject=' + encodeURIComponent('Class #' + c.n + ', ' + c.t) + '">Ask about #' + c.n + '<span class="vh">, ' + esc(c.t) + ', by email</span></a>';
       if (v === 'maiden') return '<a class="cls-go" href="' + SHOP + '" target="_blank" rel="noopener">Register<span class="vh"> for #' + c.n + ' on our Square shop (opens in a new tab)</span></a>';
       if (v === 'mother') return '<a class="cls-go" href="' + (c.u ? 'https://www.fireartsarcata.com/product/' + c.u : SHOP) + '" target="_blank" rel="noopener">Register<span class="vh"> for #' + c.n + ' on our Square shop (opens in a new tab)</span></a>';
       return c.left < 1
-        ? '<button type="button" class="cls-go wait" data-wait="' + c.n + '">Join the waitlist<span class="vh"> for #' + c.n + '</span></button>'
-        : '<button type="button" class="cls-go" data-su="' + c.n + '">Sign up<span class="vh"> for #' + c.n + ', ' + esc(c.t) + '</span></button>';
+        ? '<button type="button" class="cls-go wait" data-wait="' + c.n + '" data-at="' + w + '">Join the waitlist<span class="vh"> for #' + c.n + '</span></button>'
+        : '<button type="button" class="cls-go" data-su="' + c.n + '" data-at="' + w + '">Sign up<span class="vh"> for #' + c.n + ', ' + esc(c.t) + '</span></button>';
     }
     var io = (!reduce && 'IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { [].forEach.call(e.target.querySelectorAll('.cone.taken'), function (k) { k.classList.add('down'); }); io.unobserve(e.target); } });
@@ -1202,26 +1317,101 @@
       week.innerHTML = h;
     }
     function paintActs() {
-      [].forEach.call(list.querySelectorAll('.cls-act'), function (s) { s.innerHTML = act(byNo(s.getAttribute('data-n'))); });
+      [].forEach.call(list.querySelectorAll('.cls-act'), function (s) { s.innerHTML = act(byNo(s.getAttribute('data-n')), s.getAttribute('data-at')); });
       var b = bloom();
       [].forEach.call(list.querySelectorAll('[data-bloom]'), function (s) { s.hidden = !b; });
     }
-    function paint(announce) {
-      var shown = C.filter(function (c) { return fits(c); }), h = '';
+    function count(n) { return n + (n === 1 ? ' class' : ' classes'); }
+    function matchAt(w) { return C.filter(function (c) { return at(c, w) && fits(c, false, true); }).length; }
+    var tabs = [].slice.call(document.querySelectorAll('#studios [role="tab"]')), panel = $('st-panel'), placeBox = $('st-place');
+    function paintStudios() {
+      tabs.forEach(function (b) {
+        var w = b.getAttribute('data-where'), n = matchAt(w), on = w === f.where;
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        b.setAttribute('tabindex', on ? '0' : '-1');
+        b.classList.toggle('zero', !n);
+        b.querySelector('.st-n').textContent = count(n);
+      });
+    }
+    function placeCard(w, n) {
+      var p = PLACE[w];
+      return '<div class="place" data-where="' + w + '"><div class="place-id">' +
+        '<h3 class="place-name">' + p.name + (n != null ? ' <small>' + count(n) + '</small>' : '') + '</h3>' +
+        '<p class="place-sub">' + p.sub + '</p>' +
+        '<p class="place-at"><span>' + p.at + ', Arcata, CA 95521</span><a class="place-map" href="' + mapUrl(w) + '" target="_blank" rel="noopener">Map<span class="vh"> to ' + p.name + ' (opens in a new tab)</span>' + MAPI + '</a></p></div>' +
+        '<dl class="place-facts">' + p.facts.map(function (x) { return '<div><dt>' + x[0] + '</dt><dd>' + x[1] + '</dd></div>'; }).join('') + '</dl></div>';
+    }
+    function dayGroups(arr, w, where) {
+      var h = '';
       for (var d = 1; d <= 7; d++) {
-        var g = shown.filter(function (c) { return c.day === d; }).sort(function (a, b) { return a.start - b.start; });
+        var g = arr.filter(function (c) { return c.day === d; }).sort(function (a, b) { return a.start - b.start; });
         if (!g.length) continue;
-        h += '<div class="daygroup"><h3>' + DAYS[d] + 's <small>' + g.length + (g.length === 1 ? ' class' : ' classes') + '</small></h3><div class="cls-grid">' + g.map(card).join('') + '</div></div>';
+        h += '<div class="daygroup"><h4>' + DAYS[d] + 's <small>' + count(g.length) + (where ? ' at ' + PLACE[w].short : '') + '</small></h4><div class="cls-grid">' + g.map(function (c) { return card(c, w); }).join('') + '</div></div>';
       }
-      if (!shown.length) h = '<p class="none">Nothing matches all of those. <button type="button" class="linkish" data-clear>Show every class</button></p>';
+      return h;
+    }
+    /* the end of one place's list: the other two, and the Raku Workshop for cone 6 folks (it takes either clay) */
+    function moreHtml() {
+      var others = SPOTS.filter(function (w) { return w !== f.where && matchAt(w); }).map(function (w) { return '<button type="button" class="linkish" data-where="' + w + '">' + count(matchAt(w)) + ' at ' + PLACE[w].short + '</button>'; });
+      var both = f.where === 'main' ? [] : C.filter(function (c) { return c.clay === 'both' && !at(c, f.where) && fits(c, false, true); });
+      if (!others.length && !both.length) return '';
+      return '<div class="st-more">' + both.map(function (c) { var w = places(c)[0]; return '<p>Cone 6 clay works in the <b>' + esc(c.t) + ' (#' + c.n + ')</b> too. It meets at ' + PLACE[w].short + '. <button type="button" class="linkish" data-where="' + w + '" data-to="' + c.n + '">See #' + c.n + '</button></p>'; }).join('') +
+        (others.length ? '<p>Also on South G Street: ' + others.join(' and ') + '.</p>' : '') + '</div>';
+    }
+    function paint(announce) {
+      var shown, h = '', planted = view() === 'maiden';
+      if (planted) {
+        /* Planted: the whole list, one place after another, no tabs or sorting (those come with Tended) */
+        shown = C;
+        h = SPOTS.map(function (w) { var g = C.filter(function (c) { return at(c, w); }); return '<div class="st-group">' + placeCard(w, g.length) + dayGroups(g, w, false) + '</div>'; }).join('');
+        panel.removeAttribute('role'); panel.removeAttribute('aria-labelledby');
+        placeBox.innerHTML = ''; placeBox.removeAttribute('data-where');
+      } else {
+        shown = C.filter(function (c) { return fits(c); });
+        h = dayGroups(shown, f.where, true);
+        if (!shown.length) {
+          var others = SPOTS.filter(function (w) { return w !== f.where && matchAt(w); });
+          h = '<p class="none">Nothing at ' + PLACE[f.where].short + ' matches all of those. ' + (others.length ? 'Try ' + others.map(function (w) { return '<button type="button" class="linkish" data-where="' + w + '">' + count(matchAt(w)) + ' at ' + PLACE[w].short + '</button>'; }).join(' or ') + ', or <button type="button" class="linkish" data-clear>clear the filters</button>.' : '<button type="button" class="linkish" data-clear>Clear the filters</button>') + '</p>';
+        } else h += moreHtml();
+        panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', 'st-tab-' + f.where);
+        if (placeBox.getAttribute('data-where') !== f.where) { placeBox.innerHTML = placeCard(f.where, null); placeBox.setAttribute('data-where', f.where); }
+      }
       list.innerHTML = h;
-      paintActs(); paintWeek();
+      paintActs(); paintWeek(); paintStudios();
       $('f-clear').hidden = !(f.type || f.lvl || f.day || f.open);
       if (io) [].forEach.call(list.querySelectorAll('.cls'), function (el) { io.observe(el); });
       else [].forEach.call(list.querySelectorAll('.cone.taken'), function (k) { k.classList.add('down'); });
-      if (announce) $('f-live').textContent = shown.length + (shown.length === 1 ? ' class' : ' classes') + ' showing.';
+      if (announce) $('f-live').textContent = (announce === true ? '' : upper(PLACE[f.where].short) + (announce === 'where-day' ? ', all days' : '') + ': ') + count(shown.length) + ' showing.';
     }
-    function clear() { f = { type: '', lvl: '', day: 0, open: false }; $('f-open').checked = false; [].forEach.call(document.querySelectorAll('.chip'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === '' ? 'true' : 'false'); }); paint(true); }
+    function goStudio(w) {
+      if (!PLACE[w]) return;
+      f.where = w;
+      /* a day picked at one place may have nothing at the next one; let the day go (and say so) rather than show an empty list */
+      var dropped = false;
+      if (f.day && !C.some(function (c) { return fits(c); })) { f.day = 0; dropped = true; }
+      paint(dropped ? 'where-day' : 'where');
+    }
+    function toTabs() {
+      var sb = $('st-tab-' + f.where);
+      $('studios').scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+      quietFocus(sb);
+    }
+    function resetChips() { $('f-open').checked = false; [].forEach.call(document.querySelectorAll('.chip'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === '' ? 'true' : 'false'); }); }
+    function clear() { f = { type: '', lvl: '', day: 0, open: false, where: f.where }; resetChips(); paint(true); }
+    $('studios').addEventListener('click', function (e) { var b = e.target.closest('[role="tab"]'); if (!b) return; goStudio(b.getAttribute('data-where')); });
+    /* tabs: Left and Right move between places, Home and End jump to the first and last */
+    $('studios').addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(e.target), j = null;
+      if (i < 0) return;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') j = (i + tabs.length - 1) % tabs.length;
+      else if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = tabs.length - 1;
+      if (j === null) return;
+      e.preventDefault();
+      goStudio(tabs[j].getAttribute('data-where'));
+      tabs[j].focus();
+    });
     document.querySelectorAll('.chip').forEach(function (b) {
       b.addEventListener('click', function () {
         var k = b.getAttribute('data-f'); f[k] = b.getAttribute('data-v');
@@ -1232,15 +1422,29 @@
     week.addEventListener('click', function (e) { var b = e.target.closest('.day'); if (!b || b.disabled) return; var d = +b.getAttribute('data-day'); f.day = f.day === d ? 0 : d; paint(true); var nb = week.querySelector('[data-day="' + d + '"]'); if (nb) quietFocus(nb); });
     $('f-open').addEventListener('change', function () { f.open = this.checked; paint(true); });
     $('f-clear').addEventListener('click', clear);
-    list.addEventListener('click', function (e) { if (e.target.closest('[data-clear]')) clear(); });
-    document.addEventListener('ex:view', function () { if (!bloom()) f.open = false; paint(false); });
+    list.addEventListener('click', function (e) {
+      if (e.target.closest('[data-clear]')) { clear(); return; }
+      var w = e.target.closest('.none [data-where], .st-more [data-where]');
+      if (!w) return;
+      var to = w.getAttribute('data-to');
+      goStudio(w.getAttribute('data-where'));
+      var card = to && $('c-' + to);
+      if (card) { card.setAttribute('tabindex', '-1'); card.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); quietFocus(card); }
+      else toTabs();
+    });
+    document.addEventListener('ex:view', function () {
+      /* Planted has no filters, so filters set in Tended or In Bloom must not quietly carry into it; the place stays */
+      if (view() === 'maiden') { f = { type: '', lvl: '', day: 0, open: false, where: f.where }; resetChips(); }
+      else if (!bloom()) { f.open = false; $('f-open').checked = false; }
+      paint(false);
+    });
     paint(false);
 
     /* ---------- the sign-up sheet (In Bloom) ---------- */
     var dlg = $('su'), body = $('su-body'), opener = null;
     var S = null;
-    function fresh(c, mode) { return { c: c, mode: mode, step: 1, name: 'Maya R.', mail: 'maya@example.com', kid: 'June', age: '9', pre: '', bisque: false, glz: false, waiver: 'yes', ecName: '', ecPhone: '', sig: '', agree: false, gc: '', gcOn: false, wname: 'Maya R.', wmail: 'maya@example.com' }; }
-    function classLine(c) { return '<div class="su-class"><b>#' + c.n + ' ' + esc(c.t) + '</b> with ' + esc(c.who) + '<br>' + DAYS[c.day] + 's, ' + esc(c.time) + ' &middot; ' + esc(c.dates) + '<br><span class="soft">' + WHERE[c.where] + '</span></div>'; }
+    function fresh(c, mode, w) { return { c: c, at: w && at(c, w) ? w : places(c)[0], mode: mode, step: 1, name: 'Maya R.', mail: 'maya@example.com', kid: 'June', age: '9', pre: '', bisque: false, glz: false, waiver: 'yes', ecName: '', ecPhone: '', sig: '', agree: false, gc: '', gcOn: false, wname: 'Maya R.', wmail: 'maya@example.com' }; }
+    function classLine(c) { return '<div class="su-class"><b>#' + c.n + ' ' + esc(c.t) + '</b> with ' + esc(c.who) + '<br>' + DAYS[c.day] + 's, ' + esc(c.time) + ' &middot; ' + esc(c.dates) + '<br><span class="soft">' + whereText(c, S && S.c === c ? S.at : null) + '</span></div>'; }
     function steps() {
       var names = ['About you', 'Pay'];
       return '<p class="bk-steps" role="group" aria-label="Steps">' + names.map(function (n, i) {
@@ -1249,15 +1453,20 @@
       }).join('<span aria-hidden="true">&rsaquo;</span>') + '</p>';
     }
     function alts(c) {
-      /* a better fit, ordered: same day first, then any day, with open spots */
+      /* a better fit, ordered: same studio (same clay) first, then same day, then any day, with open spots */
       var want = c.pre === 'member' ? function (x) { return x.len === '8 weeks' && x.type !== 'kids'; } : function (x) { return x.type === 'wheel' && (x.lvl === 'new' || x.lvl === 'both'); };
-      var a = C.filter(function (x) { return x !== c && x.left > 0 && want(x); }).sort(function (x, y) { return (x.day === c.day ? 0 : 1) - (y.day === c.day ? 0 : 1) || x.day - y.day || x.start - y.start; });
+      var a = C.filter(function (x) { return x !== c && x.left > 0 && want(x); }).sort(nearest(c));
       return a.slice(0, 2);
     }
+    function nearest(c) {
+      function same(x) { return places(x).some(function (w) { return at(c, w); }) ? 0 : 1; }
+      return function (x, y) { return same(x) - same(y) || (x.day === c.day ? 0 : 1) - (y.day === c.day ? 0 : 1) || x.day - y.day || x.start - y.start; };
+    }
+    function altLine(x) { return '<span><b>#' + x.n + ' ' + esc(x.t) + '</b><br>' + DAYS[x.day] + 's, ' + esc(x.time) + ' &middot; ' + shortAt(x) + ' &middot; ' + spotsText(x).toLowerCase() + '</span>'; }
     function altHtml(c, lead) {
       var a = alts(c);
       return '<div class="redirect" role="status"><span>' + lead + '</span>' + a.map(function (x) {
-        return '<div class="alt"><span><b>#' + x.n + ' ' + esc(x.t) + '</b><br>' + DAYS[x.day] + 's, ' + esc(x.time) + ' &middot; ' + spotsText(x).toLowerCase() + '</span><button type="button" class="bk-go small" data-switch="' + x.n + '">Switch to #' + x.n + '</button></div>';
+        return '<div class="alt">' + altLine(x) + '<button type="button" class="bk-go small" data-switch="' + x.n + '">Switch to #' + x.n + '</button></div>';
       }).join('') + '</div>';
     }
     function preHtml() {
@@ -1301,10 +1510,10 @@
             '<div class="fld-row"><label class="fld">Your name<input id="su-wname" autocomplete="off" value="' + esc(S.wname) + '"></label><label class="fld">Email<input id="su-wmail" type="email" autocomplete="off" value="' + esc(S.wmail) + '"></label></div>' +
             '<p class="hint" id="su-hint" role="status"></p><div class="bk-nav"><button type="submit" class="bk-go">Join the waitlist</button></div></form>';
         } else {
-          var a = C.filter(function (x) { return x !== c && x.left > 0 && x.type === c.type && (x.lvl === c.lvl || (x.lvl === 'new' && c.lvl === 'both') || (x.lvl === 'both' && c.lvl === 'new')); }).sort(function (x, y) { return (x.day === c.day ? 0 : 1) - (y.day === c.day ? 0 : 1) || x.day - y.day || x.start - y.start; }).slice(0, 2);
+          var a = C.filter(function (x) { return x !== c && x.left > 0 && x.type === c.type && (x.lvl === c.lvl || (x.lvl === 'new' && c.lvl === 'both') || (x.lvl === 'both' && c.lvl === 'new')); }).sort(nearest(c)).slice(0, 2);
           h = '<p class="label with-pill" style="margin-bottom:8px"><span>Waitlist</span> <span class="bk-demo">preview</span></p><h2 id="su-h" tabindex="-1">You&rsquo;re #2 on the list, ' + esc(S.wname.split(/\s+/)[0]) + '</h2>' + classLine(c) +
             '<div class="pane"><p>If a spot opens in #' + c.n + ', an email goes to <b style="overflow-wrap:anywhere">' + esc(S.wmail) + '</b> right away. The waitlist is for this session only.</p>' +
-            (a.length ? '<div class="redirect"><span>Or, open right now:</span>' + a.map(function (x) { return '<div class="alt"><span><b>#' + x.n + ' ' + esc(x.t) + '</b><br>' + DAYS[x.day] + 's, ' + esc(x.time) + ' &middot; ' + spotsText(x).toLowerCase() + '</span><button type="button" class="bk-go small" data-switch="' + x.n + '">Sign up for #' + x.n + '</button></div>'; }).join('') + '</div>' : '') +
+            (a.length ? '<div class="redirect"><span>Or, open right now:</span>' + a.map(function (x) { return '<div class="alt">' + altLine(x) + '<button type="button" class="bk-go small" data-switch="' + x.n + '">Sign up for #' + x.n + '</button></div>'; }).join('') + '</div>' : '') +
             '<p class="demo-note">Preview only: nothing was sent. On your real site the list lives with your sign-ups, and the email goes out by itself.</p>' +
             '<div class="bk-nav"><button type="button" class="bk-go ghost" data-back="1">Change something</button><button type="button" class="bk-go ghost" data-close>Close</button></div></div>';
         }
@@ -1329,7 +1538,7 @@
         var first = (c.type === 'kids' ? S.kid : S.name).split(/\s+/)[0];
         h = '<p class="label with-pill" style="margin-bottom:8px"><span>Signed up</span> <span class="bk-demo">preview</span></p><h2 id="su-h" tabindex="-1">' + (c.type === 'kids' ? esc(first) + '&rsquo;s in!' : 'You&rsquo;re in, ' + esc(first) + '!') + '</h2>' + classLine(c) +
           '<div class="pane"><p>The first class is ' + DAYS[c.day] + ', ' + esc(c.dates.split(/ to |,| and /)[0]) + ', ' + esc(c.time.split(' (')[0].split(', then')[0]) + '. A copy is on its way to <b style="overflow-wrap:anywhere">' + esc(S.mail) + '</b>.</p>' +
-          '<ul class="done-list">' + (c.lvl === 'new' || c.lvl === 'both' ? '<li>Bring nothing to the first class: your teacher has clay, and will tell you what to buy next door.</li>' : '<li>Bring your clay and tools, from Phoenix Ceramic &amp; Fire next door.</li>') +
+          '<ul class="done-list"><li>Class meets at ' + PLACE[S.at].name + ', ' + PLACE[S.at].at + '. <a href="' + mapUrl(S.at) + '" target="_blank" rel="noopener">Map' + NEWTAB + '</a></li>' + (at(c, 'px') ? '<li>Bring nothing to the first class: your teacher has clay, and Phoenix, where you meet, sells what you need next.</li>' : c.lvl === 'new' || c.lvl === 'both' ? '<li>Bring nothing to the first class: your teacher has clay, and will tell you what to buy next door.</li>' : '<li>Bring your clay and tools, from Phoenix Ceramic &amp; Fire Supply next door.</li>') +
           (c.type === 'kids' ? '<li>It&rsquo;s right after school, so pack a snack.</li>' : '<li>Come practice up to 6 hours a week between classes.</li>') +
           '<li>' + (S.waiver === 'sign' ? 'Your waiver is signed and on file, so there&rsquo;s nothing to print.' : 'Your 2026 waiver is already on file.') + '</li></ul>' +
           '<p class="demo-note">Preview only: nothing was charged or sent. On your real site, the class roster updates by itself, and the spot count on the card goes down by one.</p>' +
@@ -1377,7 +1586,7 @@
     }
     function open(n, mode, from) {
       var c = byNo(n); if (!c) return;
-      opener = from || opener; S = fresh(c, mode); render();
+      opener = from || opener; S = fresh(c, mode, from && from.getAttribute('data-at')); render();
       if (!dlg.open) { if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', ''); }
     }
     list.addEventListener('click', function (e) {
@@ -1398,7 +1607,7 @@
       if (t.hasAttribute('data-switch')) { var keep = S; var nc = byNo(t.getAttribute('data-switch')); S = fresh(nc, 'su'); S.name = keep.mode === 'wait' ? keep.wname : keep.name; S.mail = keep.mode === 'wait' ? keep.wmail : keep.mail; render(); return; }
       if (t.hasAttribute('data-step')) { read(); var k = +t.getAttribute('data-step'); if (k < S.step) { S.step = k; render(); } return; }
       if (t.hasAttribute('data-back')) { S.step = 1; render(); return; }
-      if (t.hasAttribute('data-again')) { S = fresh(S.c, S.mode); render(); return; }
+      if (t.hasAttribute('data-again')) { S = fresh(S.c, S.mode, S.at); render(); return; }
       if (t.hasAttribute('data-close')) { dlg.close(); return; }
       if (t.id === 'su-gc-go') {
         if (S.gcOn) { S.gcOn = false; S.gc = ''; render('#su-gc'); return; }
@@ -1567,8 +1776,8 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your whole class list (each class with its day, time, teacher, place and price, and a Register button to your Square shop), memberships, firing rates, the gallery, kind words, and how to find you.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus the class calendar people can sort by type, level and day, a Register button on each class that opens that exact class on Square, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed.', next: 'crone' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your whole class list, grouped by studio (each class with its day, time, teacher, place and price, and a Register button to your Square shop), memberships, firing rates, the gallery, kind words, and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus the class calendar people can sort by studio, type, level and day, a Register button on each class that opens that exact class on Square, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed.', next: 'crone' },
       crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus sign-up right on each class card: spots left as a cone pack, a level check that points people to the right class, the waiver signed in the form, gift certificate numbers taken right there, and a waitlist that emails the next person when a spot opens. Paid into your own Stripe, or Square if you’d rather keep it. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
