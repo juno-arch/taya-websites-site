@@ -15,7 +15,7 @@ All got a gentle UnsharpMask (1.4, 75, 2), no upscaling.
 - ig-jacoby.webp: inside the Jacoby Storehouse (reel cover, 360 x 640). Shown small in Visit, framed, never stretched.
 
 ## Drawn, not photos
-- The resting figure with five sprouts, moon and stars: redrawn as SVG after THEIR logo (child's pose figure with sprouts, on their site and Square cover image). Oct 7: redrawn again so the figure drapes over a darker purple bolster with her head resting on it and arms reaching forward, like the logo (the logo has a dark navy bolster; here it is a deeper violet, #4a2d72).
+- The resting figure with five sprouts, moon and stars: redrawn as SVG after THEIR logo (child's pose figure with sprouts, on their site and Square cover image). Oct 7: redrawn again so the figure drapes over a darker purple bolster with her head resting on it and arms reaching forward, like the logo (the logo has a dark navy bolster; here it is a deeper violet, #4a2d72). Oct 12: the arms redrawn fuller and stretched out long like the logo (the near arm wraps down over the bolster, elbow on the floor, and both hands reach far forward along the floor with the fingers spread), the back lengthened and level like the logo's, and the bolster's rounded front end under her resting face.
 
 ## Not used, on purpose
 - Their Instagram quote cards (vintage botanical and bird plates with words on them): text on photo.
