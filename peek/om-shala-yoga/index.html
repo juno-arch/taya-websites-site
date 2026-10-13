@@ -570,7 +570,10 @@
   .news .bk-go.ghost { color: var(--on-band); border-color: rgba(239, 235, 227, 0.5); margin-top: 14px; }
   .news .hint { color: #f2b9a3; }
   .news .demo-note { color: var(--band-soft); }
-  .news-moon { position: absolute; right: -30px; top: -30px; width: 130px; opacity: 0.5; pointer-events: none; }
+  /* the corner moon: the hero's slim crescent, whole inside the corner so it reads as a moon (it used to hang off the edge, a lone
+     curve; Oct 12, Pollen: "make this a crescent moon and anywhere else it shows up on the site") */
+  .news-moon { position: absolute; right: 14px; top: 12px; width: 50px; height: auto; opacity: 0.55; pointer-events: none; overflow: visible; }
+  @media (max-width: 384px) { .news-moon { width: 30px; right: 10px; top: 8px; } }   /* small phones: the price pill fills its row, so the moon sits smaller, above it */
   .news > *:not(.news-moon) { position: relative; }
 
   /* ===== find us ===== */
@@ -612,6 +615,7 @@
   footer { padding: 54px 20px 96px; border-top: 1px solid var(--hair); color: var(--ink-soft); font-size: 14px; }
   .foot-top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
   .foot-moon { flex: none; display: inline-grid; place-items: center; width: 54px; height: 54px; border: 0; padding: 0; background: none; cursor: pointer; color: var(--red); border-radius: 50%; }
+  .foot-moon svg, .serp-fav svg { overflow: visible; }   /* both the slim crescent, like the hero and the menu bar */
   .foot-name { font-family: 'Gilda Display', Georgia, serif; font-size: 20px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); }
   .legend { margin-top: 22px; font-size: 13px; line-height: 2.15; padding: 14px 18px 12px !important; }
   .legend button.tag::after { inset: -3px -2px; }
@@ -1163,7 +1167,7 @@
       </div>
     </div>
     <aside class="news" aria-labelledby="nl-h" data-thing="newsletter signup">
-      <svg class="news-moon" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 6c30 6 50 24 50 44S60 88 30 94" fill="none" stroke="#c4302c" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <svg class="news-moon" viewBox="-52 -97 154 199" aria-hidden="true"><defs><linearGradient id="nwMoon" x1="0.62" y1="0" x2="0.38" y2="1"><stop offset="0" stop-color="#ea7d6c"/><stop offset="0.5" stop-color="#d9493f"/><stop offset="1" stop-color="#c4302c"/></linearGradient></defs><g transform="rotate(24)"><path d="M-10 -99.5A100 100 0 1 1 -10 99.5A100 100 0 0 0 -10 -99.5Z" fill="url(#nwMoon)"/></g></svg>
       <p class="label with-pill"><span>Studio notes</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h3 id="nl-h">Notes from <em>the shala</em></h3>
       <p style="margin-top:10px">New classes, sound baths, workshops and retreats, now and then.</p>
@@ -1207,7 +1211,7 @@
         <figcaption>In a search</figcaption>
         <div class="serp">
           <div class="serp-q"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>yoga Arcata</div>
-          <div class="serp-site"><span class="serp-fav" aria-hidden="true"><svg width="10" height="18" viewBox="0 0 12 22"><path d="M1 1c6 1.6 9.5 5.6 9.5 10S7 19.4 1 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>Om Shala Yoga</b><small>omshalayoga.com</small></span></div>
+          <div class="serp-site"><span class="serp-fav" aria-hidden="true"><svg width="12.5" height="16" viewBox="-55 -98 156 199"><path d="M26.5 -96.4A100 100 0 1 1 -53.9 84.2A100 100 0 0 0 26.5 -96.4Z" fill="currentColor"/></svg></span><span><b>Om Shala Yoga</b><small>omshalayoga.com</small></span></div>
           <p class="serp-title">Om Shala Yoga | Yoga, Aerial Yoga and Sound Baths in Arcata</p>
           <p class="serp-desc">Yoga for every body at 101 H St, Arcata. Aerial yoga, sound baths and meditation. Sliding scale classes, and drop ins are welcome.</p>
         </div>
@@ -1227,7 +1231,7 @@
 <footer>
   <div class="wrap">
     <div class="foot-top">
-      <button type="button" class="foot-moon" id="foot-moon" aria-label="Om Shala crescent"><svg width="30" height="52" viewBox="0 0 12 22" aria-hidden="true"><path d="M1 1c6 1.6 9.5 5.6 9.5 10S7 19.4 1 21" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></button>
+      <button type="button" class="foot-moon" id="foot-moon" aria-label="Om Shala crescent"><svg width="34" height="44" viewBox="-52 -97 154 199" aria-hidden="true"><g transform="rotate(24)"><path d="M-10 -99.5A100 100 0 1 1 -10 99.5A100 100 0 0 0 -10 -99.5Z" fill="currentColor"/></g></svg></button>
       <div><span class="foot-name">Om Shala Yoga</span><br><span class="nw">101 H St. &middot; Arcata, California</span> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/omshalayoga/" target="_blank" rel="noopener">@omshalayoga</a></div>
     </div>
     <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"> <span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span> (full site, with Book buttons to your Punchpass), <span class="tag" data-go="crone">In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling right on your site). The banner up top and the class schedule come with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
