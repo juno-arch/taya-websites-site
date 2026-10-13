@@ -996,7 +996,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list, sorted by what people want to make and then by level, with a Register button to your Square shop, your fused glass, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class list in tabs by what people want to make, narrowed by day and place, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates and a real waitlist, paid into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates, a real waitlist, and your own back end with every class list. Sign-ups pay into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">No build fee: it&rsquo;s a class trade. Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. I follow your socials and update your site and Google profile as you post, or you can email me any change, and it&rsquo;s done: the new schedule, a new teacher, a sale weekend. Hosting and backups included, and you&rsquo;d keep fireartsarcata.com: I can hold and renew it for you so it&rsquo;s one less thing to remember (it stays legally yours), or you can keep it where it is. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1098,6 +1098,326 @@
       <div class="bk-note" data-show="maiden mother" hidden><b>Register buttons</b><span data-show="maiden">Planted: every Register button opens your class page on Square, the way it works now, just easier to find.</span><span data-show="mother" hidden>Tended: each class&rsquo;s Register button opens that exact class on your Square shop, so nobody scrolls 24 look-alike tiles.</span></div>
       <div class="bk-note" data-show="crone all"><b>Sign up right here</b>In Bloom: one short form on the class time. It asks the level question for intermediate classes, takes the waiver, takes a gift certificate number, and pays into your own Stripe, or Square if you&rsquo;d rather keep it (Square&rsquo;s Payment Links make a checkout button for any site). A cart can&rsquo;t lose your spot. When your next schedule goes in, every Sign up button says when it opens, and turns on by itself at 9 am on registration day.</div>
       <div class="bk-note"><b>Full classes</b><span data-show="maiden mother" hidden>A class you tell me is full says Full, with the waitlist email right there, class number filled in.</span><span data-show="crone all">A full class turns into a waitlist button, and its little kiln window goes cold. When someone drops, the next person gets an email right away. No more emailing the class number.</span></div>
+    </div>
+  </div>
+</section>
+
+<style id="wf-backend">
+  /* ---------- WHERE YOUR SIGN-UPS GO (In Bloom, Oct 13 2026): a framed, working preview of their own back end ----------
+     The section around it wears the page's own colors. Inside the frame it's Web Faery's client back end, the light
+     look (Pollen, Oct 12: tabs and short pages, not one long scroll; light, not black): paper sheets, ledger rows,
+     text tabs with an underline, color only with meaning (moss = done, honey = the one main button and "new").
+     Fonts come from webfaery.love itself (/fonts), the same files the back end uses. In dark mode the page goes to
+     soot and the back end stays light, a little dimmer, the way a lit screen sits in a dark room. */
+  @font-face { font-family: 'WF Gloock'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/gloock-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'WF Lexend'; font-style: normal; font-weight: 300 600; font-display: swap; src: url('/fonts/lexend-latin.woff2') format('woff2'); }
+
+  .be-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; margin-top: 34px; }
+  @media (min-width: 1100px) { .be-layout { grid-template-columns: minmax(0, 1fr) 280px; gap: 40px; align-items: start; } .be-layout > .be-note { margin-top: 18px; } }
+  .be-note { margin-top: 0; }
+  .be-try { display: block; margin-top: 10px; color: var(--ink); }
+
+  /* the frame: a plain browser window, in the page's own colors */
+  .be-frame { border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid var(--hair-2);
+    box-shadow: 0 2px 6px rgba(20, 10, 6, 0.06), 0 34px 60px -38px rgba(20, 10, 6, 0.6); }
+  .be-bar { display: flex; align-items: center; gap: 12px; padding: 9px 14px; background: var(--card-hi); border-bottom: 1px solid var(--hair); }
+  .be-dots { display: inline-flex; gap: 6px; flex: none; }
+  .be-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--hair-2); }
+  .be-url { flex: 1 1 auto; min-width: 0; max-width: 360px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 4px 12px; font-size: 12.5px; line-height: 1.4; color: var(--ink-soft); background: var(--ground); border: 1px solid var(--hair); border-radius: 999px; white-space: nowrap; overflow: hidden; }
+  .be-url svg { flex: none; }
+  .be-url span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .be-bar::after { content: ""; width: 42px; flex: none; }
+  @media (max-width: 440px) { .be-bar { gap: 10px; padding-inline: 12px; } .be-bar::after { display: none; } }
+  @media (max-width: 380px) { .be-dots { gap: 5px; } .be-dots i { width: 8px; height: 8px; } .be-url { gap: 5px; padding: 4px 10px; font-size: 12px; } }
+
+  /* ---------- inside: their back end ---------- */
+  .be-app {
+    --bm-mist: #f7f4e8; --bm-paper: #fffdf6; --bm-well: #f1eddc; --bm-rule: #e4dec8; --bm-edge: #948f78;
+    --bm-ink: #25301f; --bm-soft: #535c4a; --bm-moss: #2f5f2b; --bm-leaf: #6f9f45; --bm-leaf-tint: #e8f0d8;
+    --bm-honey: #eeb04a; --bm-honey-hi: #f4c068; --bm-honey-edge: #c98a24; --bm-honey-tint: #fbefd2; --bm-honey-deep: #8a5a10; --bm-coral: #a8432f;
+    --bm-shadow: 0 1px 2px rgba(37, 48, 31, 0.06), 0 6px 22px -10px rgba(37, 48, 31, 0.18);
+    --bm-glow: radial-gradient(70% 40% at 15% 0%, rgba(232, 240, 216, 0.9), transparent 70%), radial-gradient(50% 30% at 100% 0%, rgba(251, 239, 210, 0.8), transparent 70%);
+    position: relative; container: be / inline-size; color-scheme: light;
+    background: var(--bm-glow), var(--bm-mist); color: var(--bm-ink);
+    font: 300 15.5px/1.55 'WF Lexend', 'Geologica', system-ui, sans-serif; font-synthesis: none; text-align: left;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .be-app {
+      --bm-mist: #e3ddcb; --bm-paper: #f0ebde; --bm-well: #e4ddc8; --bm-rule: #d2c9b0; --bm-leaf-tint: #dce5c8; --bm-honey-tint: #f1e1bc; --bm-honey-deep: #7a4f0c;
+      --bm-shadow: 0 1px 2px rgba(20, 16, 10, 0.12), 0 8px 24px -12px rgba(20, 16, 10, 0.35);
+      --bm-glow: radial-gradient(70% 40% at 15% 0%, rgba(214, 224, 196, 0.55), transparent 70%), radial-gradient(50% 30% at 100% 0%, rgba(236, 220, 184, 0.5), transparent 70%);
+    }
+  }
+  :root[data-theme="dark"] .be-app {
+    --bm-mist: #e3ddcb; --bm-paper: #f0ebde; --bm-well: #e4ddc8; --bm-rule: #d2c9b0; --bm-leaf-tint: #dce5c8; --bm-honey-tint: #f1e1bc; --bm-honey-deep: #7a4f0c;
+    --bm-shadow: 0 1px 2px rgba(20, 16, 10, 0.12), 0 8px 24px -12px rgba(20, 16, 10, 0.35);
+    --bm-glow: radial-gradient(70% 40% at 15% 0%, rgba(214, 224, 196, 0.55), transparent 70%), radial-gradient(50% 30% at 100% 0%, rgba(236, 220, 184, 0.5), transparent 70%);
+  }
+  .be-app b, .be-app strong { font-weight: 500; }
+  .be-app h3, .be-app h4 { font-family: 'WF Gloock', Georgia, serif; font-weight: 400; letter-spacing: 0; color: var(--bm-ink); text-wrap: balance; }
+  .be-app a { color: var(--bm-moss); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .be-app :focus-visible { outline: 2px solid var(--bm-moss); outline-offset: 2px; }
+  .be-app button { font: inherit; color: inherit; -webkit-appearance: none; appearance: none; }
+  .be-app input { font: 300 16px/1.4 'WF Lexend', 'Geologica', system-ui, sans-serif; color: var(--bm-ink); background: #fff; border: 1px solid var(--bm-edge); border-radius: 10px; padding: 9px 12px; min-height: 44px; min-width: 0; color-scheme: light; }
+
+  .be-top { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 14px 20px 6px; }
+  .be-brand { display: inline-flex; align-items: center; gap: 8px; font: 400 21px/1.2 'WF Gloock', Georgia, serif; color: var(--bm-ink); }
+  .be-brand svg { width: 20px; height: 20px; flex: none; }
+  .be-via { font-size: 13px; color: var(--bm-soft); }
+  .be-sample { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 4px; font-size: 11.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--bm-honey-deep); background: var(--bm-honey-tint); border: 1px dashed #d4ac5c; border-radius: 999px; white-space: nowrap; }
+
+  /* tabs: one row; on a phone it scrolls sideways (like the real back end), with a soft edge where there's more */
+  .be-tabs-wrap { position: relative; border-bottom: 1px solid var(--bm-rule); }
+  .be-tabs { position: relative; display: flex; flex-wrap: nowrap; gap: 2px; padding: 0 12px; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .be-tabs::-webkit-scrollbar { display: none; }
+  .be-tabs-wrap.more-r .be-tabs { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent); }
+  .be-tabs-wrap.more-l .be-tabs { -webkit-mask-image: linear-gradient(90deg, transparent, #000 48px); mask-image: linear-gradient(90deg, transparent, #000 48px); }
+  .be-tabs-wrap.more-l.more-r .be-tabs { -webkit-mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
+  .be-tab { position: relative; flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 46px; margin: 0; padding: 10px 10px 11px; cursor: pointer; white-space: nowrap;
+    background: none; border: 0; color: var(--bm-soft); font-size: 15px; font-weight: 400; line-height: 1.2; }
+  .be-tab svg { width: 18px; height: 18px; flex: none; opacity: 0.85; }
+  .be-tab:hover { color: var(--bm-ink); }
+  .be-tab[aria-selected="true"] { color: var(--bm-ink); font-weight: 500; }
+  .be-tab[aria-selected="true"]::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--bm-moss); }
+  .be-tab:focus-visible { outline-offset: -3px; border-radius: 8px; }
+  .be-cnt { font-size: 12.5px; font-weight: 400; color: var(--bm-soft); font-variant-numeric: tabular-nums; }
+  .be-tab .be-new { font-size: 12px; font-weight: 500; color: var(--bm-honey-deep); }
+  .be-new::before, .be-fresh-tag::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 5px; border-radius: 50%; vertical-align: 1px; background: var(--bm-honey); box-shadow: 0 0 0 3px var(--bm-honey-tint); }
+
+  .be-test { margin: 0 0 16px; padding: 7px 12px; border: 1px dashed #d4ac5c; border-radius: 10px; background: var(--bm-honey-tint); color: #6a440c; font-size: 13.5px; line-height: 1.45; }
+  .be-page { padding: 20px 22px 28px; }
+  @container be (min-width: 740px) { .be-page { padding: 24px 30px 34px; min-height: 600px; } }
+  .be-page:focus { outline: none; }
+  @media (prefers-reduced-motion: no-preference) { .be-page.be-in { animation: be-in 0.35s ease both; } }
+  @keyframes be-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+  .be-head { margin: 2px 0 14px; }
+  .be-kicker { margin: 0 0 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bm-moss); }
+  .be-h { font-size: clamp(28px, 3.4vw, 36px); line-height: 1.08; }
+  .be-h:focus { outline: none; }
+  .be-meta { margin-top: 6px; font-size: 14.5px; color: var(--bm-soft); }
+  .be-fine { margin: 0 0 14px; font-size: 14.5px; color: var(--bm-soft); }
+  .be-foot { margin: 16px 2px 0; font-size: 14.5px; color: var(--bm-soft); }
+  .be-sh { font-size: 20px; line-height: 1.2; margin: 0 0 8px; }
+  .be-out { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; margin: 24px 0 10px; }
+  .be-aside { font: 300 14px/1.4 'WF Lexend', 'Geologica', sans-serif; color: var(--bm-soft); }
+  .be-mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: 0.04em; font-weight: 400; }
+
+  .be-sheet { margin: 0 0 16px; padding: 16px 18px; background: var(--bm-paper); border: 1px solid var(--bm-rule); border-radius: 16px; box-shadow: var(--bm-shadow); }
+  .be-sheet > :last-child { margin-bottom: 0; }
+
+  .be-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 14px 0 0; }
+  .be-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin: 0; padding: 9px 20px; cursor: pointer; border-radius: 999px;
+    border: 1px solid var(--bm-honey-edge); background: var(--bm-honey); color: #2b1a07; font-weight: 500; font-size: 15px; line-height: 1.2; text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 16px -9px rgba(201, 138, 36, 0.75); }
+  .be-btn:hover { background: var(--bm-honey-hi); }
+  .be-btn.ghost { background: transparent; border-color: var(--bm-moss); box-shadow: none; }
+  .be-app .be-btn { color: #2b1a07; font-weight: 500; }
+  .be-app .be-btn.ghost { color: var(--bm-moss); }
+  .be-btn.ghost:hover { background: var(--bm-leaf-tint); }
+  .be-btn.sm { min-height: 40px; padding: 7px 15px; font-size: 14.5px; }
+  .be-btn svg { width: 16px; height: 16px; flex: none; }
+  .be-lnk { display: inline-flex; align-items: center; min-height: 40px; margin: 0; padding: 4px 2px; cursor: pointer; background: none; border: 0; color: var(--bm-moss);
+    font-size: 14.5px; font-weight: 400; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .be-app .be-lnk { color: var(--bm-moss); }
+  .be-lnk:hover { text-decoration-thickness: 2px; }
+  .be-back { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; margin: -6px 0 8px -2px; padding: 4px 2px; cursor: pointer; background: none; border: 0; color: var(--bm-moss); font-size: 14.5px; font-weight: 500; }
+  .be-back:hover span { text-decoration: underline; text-underline-offset: 3px; }
+  .be-status { margin: 10px 0 0; font-size: 14px; color: var(--bm-honey-deep); }
+  .be-status:empty { display: none; }
+
+  /* at a glance: three numbers with thin rules between them */
+  .be-glance { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 14px 0 0; }
+  .be-glance > div { min-width: 0; padding: 2px 10px 2px 0; }
+  .be-glance > div + div { padding-left: 14px; border-left: 1px solid var(--bm-rule); }
+  .be-glance dt { font-size: 13px; color: var(--bm-soft); }
+  .be-glance dd { margin: 2px 0 0; font: 400 28px/1.1 'WF Gloock', Georgia, serif; color: var(--bm-ink); font-variant-numeric: tabular-nums; }
+  .be-glance dd.d { margin-top: 2px; font: 300 12.5px/1.35 'WF Lexend', 'Geologica', sans-serif; color: var(--bm-soft); }
+
+  /* quiet text toggles with an underline (days of the week) */
+  .be-days { display: flex; flex-wrap: wrap; gap: 0 18px; margin: 20px 0 14px; border-bottom: 1px solid var(--bm-rule); }
+  .be-days button { position: relative; min-height: 42px; margin: 0; padding: 8px 0 10px; cursor: pointer; background: none; border: 0; color: var(--bm-soft); font-size: 15px; white-space: nowrap; }
+  .be-days button[aria-pressed="true"] { color: var(--bm-ink); font-weight: 500; }
+  .be-days button[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--bm-ink); }
+  .be-days .n { margin-left: 4px; font-weight: 300; color: var(--bm-soft); font-variant-numeric: tabular-nums; }
+  .be-days .td { display: block; position: absolute; left: 50%; top: 2px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--bm-honey); }
+  .be-list-h { margin: 0 0 8px 2px; font: 500 13px/1.3 'WF Lexend', 'Geologica', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bm-moss); }
+
+  /* ledger rows */
+  .be-ledger { list-style: none; margin: 0; padding: 0; background: var(--bm-paper); border: 1px solid var(--bm-rule); border-radius: 16px; box-shadow: var(--bm-shadow); overflow: hidden; }
+  .be-ledger > li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 12px 16px; border-top: 1px solid var(--bm-rule); }
+  .be-ledger > li:first-child { border-top: 0; }
+  .be-what { flex: 1 1 12em; min-width: 0; }
+  .be-what b { display: block; color: var(--bm-ink); overflow-wrap: anywhere; }
+  .be-what small { display: block; margin-top: 1px; font-size: 13.5px; line-height: 1.45; color: var(--bm-soft); }
+  .be-num { flex: none; width: 22px; text-align: right; font: 400 17px/1 'WF Gloock', Georgia, serif; color: var(--bm-soft); font-variant-numeric: tabular-nums; }
+  .be-acts { flex: none; display: flex; align-items: center; gap: 10px; }
+  .be-fresh { background: linear-gradient(90deg, var(--bm-honey-tint), rgba(251, 239, 210, 0) 80%); }
+  .be-fresh-tag { display: inline-block; margin-left: 6px; font-size: 12px; font-weight: 500; color: var(--bm-honey-deep); white-space: nowrap; }
+
+  /* a class: tap it to open its list */
+  .be-cls > li { padding: 0; }
+  .be-row { display: flex; align-items: center; gap: 8px 16px; width: 100%; margin: 0; padding: 12px 14px 12px 16px; cursor: pointer; text-align: left; background: none; border: 0; }
+  .be-row:hover { background: var(--bm-well); }
+  .be-row:hover .be-what b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .be-row:focus-visible { outline-offset: -3px; border-radius: 14px; }
+  .be-spots { flex: none; width: 150px; display: grid; gap: 4px; }
+  .be-spots .sp { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; color: var(--bm-soft); white-space: nowrap; }
+  .be-spots .sp b { font-weight: 500; color: var(--bm-ink); font-variant-numeric: tabular-nums; }
+  .be-meter { display: block; height: 6px; border-radius: 6px; background: var(--bm-well); box-shadow: inset 0 0 0 1px var(--bm-rule); overflow: hidden; }
+  .be-meter i { display: block; height: 100%; width: calc(var(--f, 0) * 100%); border-radius: inherit; background: var(--bm-leaf); }
+  .be-meter.full i { background: var(--bm-moss); }
+  .be-chev { flex: none; color: var(--bm-moss); font-size: 20px; line-height: 1; }
+
+  /* a class's list */
+  .be-roster-note { margin: 18px 2px 8px; font-size: 14px; color: var(--bm-soft); }
+  .be-facts { flex: none; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 14px; max-width: 52%; font-size: 13.5px; line-height: 1.45; color: var(--bm-soft); text-align: right; }
+  .be-ok { display: inline-flex; align-items: center; gap: 4px; color: var(--bm-moss); white-space: nowrap; }
+  .be-ok svg { width: 14px; height: 14px; flex: none; }
+  .be-paid { color: var(--bm-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .be-paid small { display: block; font-size: 12.5px; line-height: 1.35; color: var(--bm-soft); }
+  /* wide: the three facts line up in columns, row after row */
+  @container be (min-width: 740px) { .be-facts { flex-wrap: nowrap; max-width: none; } .be-facts .be-ok { min-width: 9em; } .be-facts > span:not(.be-ok):not(.be-paid) { min-width: 9.6em; text-align: left; } .be-facts .be-paid { min-width: 10.8em; text-align: right; } .be-person .be-what { flex-basis: 8em; } }
+
+  /* the list, the way it prints for the teacher */
+  .be-paper { margin: 4px 0 0; padding: 20px 20px 16px; background: #fff; color: #222; border: 1px solid #ddd8ca; border-radius: 6px; box-shadow: 0 10px 26px -16px rgba(37, 48, 31, 0.45); }
+  .be-pp-k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #5d5a55; }
+  .be-paper h4 { margin-top: 4px; font-size: 22px; color: #222; }
+  .be-pp-m { margin-top: 4px; font-size: 13.5px; color: #5d5a55; }
+  .be-pp-scroll { margin-top: 14px; overflow-x: auto; }
+  .be-pp-t { width: 100%; border-collapse: collapse; font-size: 13.5px; line-height: 1.3; }
+  .be-pp-t th { font-weight: 500; font-size: 12px; color: #5d5a55; text-align: left; padding: 0 4px 6px; border-bottom: 1.5px solid #333; white-space: nowrap; }
+  .be-pp-t th.c, .be-pp-t td.c { text-align: center; }
+  .be-pp-t td { padding: 7px 4px; border-bottom: 1px solid #e3e0da; }
+  .be-pp-t td.nm { min-width: 9.5em; }
+  .be-pp-t td.nm small { display: block; font-size: 11.5px; line-height: 1.3; color: #5d5a55; }
+  .be-pp-t td.box span { display: inline-block; width: 15px; height: 15px; border: 1px solid #8a867d; border-radius: 3px; vertical-align: middle; }
+  .be-pp-f { margin-top: 10px; font-size: 12.5px; color: #5d5a55; }
+
+  /* the waitlist */
+  .be-ledger > li.be-wl-h { display: block; padding: 12px 16px 6px; border-top: 1px solid var(--bm-rule); background: var(--bm-well); }
+  .be-ledger > li.be-wl-h:first-child { border-top: 0; }
+  .be-wl-h b { font-weight: 500; }
+  .be-wl-h small { display: block; font-size: 13.5px; color: var(--bm-soft); }
+  .be-ledger > li.be-wl-h + li { border-top: 0; }
+  .be-next { font-size: 13.5px; color: var(--bm-soft); white-space: nowrap; }
+  .be-ledger > li.be-mail { display: block; padding: 4px 16px 16px; border-top: 0; }
+  .be-mail-in { padding: 14px 16px 12px; background: #fff; border: 1px solid #ddd8ca; border-radius: 12px; color: #222; font: 400 15px/1.55 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+  .be-mail-in:focus { outline: none; }
+  .be-mail-hd { margin: 0; font-size: 13.5px; color: #5d5a55; overflow-wrap: anywhere; }
+  .be-mail-hd span { display: inline-block; min-width: 4.4em; color: #8a867d; }
+  .be-mail-bd { margin-top: 10px; padding-top: 10px; border-top: 1px solid #eeeae4; display: grid; gap: 10px; }
+  .be-mail-btn { display: inline-block; padding: 8px 16px; border-radius: 8px; background: #1a100b; color: #ffe08a; font-weight: 600; font-size: 14.5px; }
+  .be-mail-ft { margin: 10px 0 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 14px; font-size: 13.5px; color: var(--bm-honey-deep); }
+
+  /* waivers and gift certificates: find someone, or a certificate */
+  .be-find { margin: 0 0 12px; }
+  .be-find label { display: block; margin: 0 0 6px; font-weight: 500; font-size: 14.5px; }
+  .be-look { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+  .be-look input { flex: 1 1 180px; max-width: 320px; }
+  .be-find input[type="search"] { width: 100%; max-width: 380px; }
+  .be-count { margin: 0 2px 8px; font-size: 14px; color: var(--bm-soft); }
+  .be-ledger > li.be-wv-more { display: block; padding: 0 16px 14px; border-top: 0; }
+  .be-wv-card { padding: 10px 14px; background: var(--bm-well); border-radius: 10px; font-size: 14px; line-height: 1.5; display: grid; gap: 2px; }
+  .be-wv-card span { color: var(--bm-soft); }
+  .be-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; margin: 12px 2px 0; font-size: 14px; color: var(--bm-soft); }
+  .be-amt { flex: none; text-align: right; font: 400 17px/1.2 'WF Gloock', Georgia, serif; white-space: nowrap; color: var(--bm-ink); }
+  .be-amt small { display: block; font: 300 12.5px/1.3 'WF Lexend', 'Geologica', sans-serif; color: var(--bm-soft); }
+  .be-dim .be-what b, .be-dim .be-amt { color: var(--bm-soft); }
+  .be-gcard { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--bm-rule); border-radius: 12px; background: var(--bm-mist); }
+  .be-gcard:focus { outline: none; }
+  .be-gcard-hd { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; }
+  .be-gcard-hd b { font-size: 17px; }
+  .be-state { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bm-moss); }
+  .be-left { margin: 8px 0 0; font: 400 32px/1.1 'WF Gloock', Georgia, serif; }
+  .be-left small { font: 300 14.5px/1.4 'WF Lexend', 'Geologica', sans-serif; color: var(--bm-soft); }
+  .be-gwho { margin: 4px 0 0; font-size: 13.5px; color: var(--bm-soft); }
+  .be-gnote { margin: 10px 0 0; font-size: 14px; color: var(--bm-ink); }
+  .be-uh { margin: 14px 0 0; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bm-moss); }
+  .be-uses { margin: 4px 0 0; display: grid; gap: 2px; font-size: 14px; color: var(--bm-soft); }
+  .be-take { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 12px; }
+  .be-take label { flex-basis: 100%; margin-bottom: -4px; font-size: 14px; font-weight: 500; }
+  .be-take-row { display: inline-flex; align-items: center; gap: 6px; font-size: 16px; }
+  .be-take input { width: 7.5em; }
+  .be-take-btns { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+  .be-miss { margin-top: 12px; font-size: 14.5px; color: var(--bm-soft); }
+
+  /* registration day */
+  .be-big { font: 400 clamp(30px, 4vw, 40px)/1.1 'WF Gloock', Georgia, serif; color: var(--bm-ink); }
+  .be-when { margin-top: 4px; font-size: 14.5px; color: var(--bm-moss); font-weight: 500; }
+  .be-line { margin-top: 10px; font-size: 16px; }
+  .be-edit { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 12px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--bm-rule); }
+  .be-edit label { display: grid; gap: 4px; font-size: 14px; font-weight: 500; }
+  .be-steps > li { align-items: flex-start; }
+  .be-steps .be-num { padding-top: 2px; }
+
+  @container be (max-width: 739px) {
+    .be-via { display: none; }
+    .be-tab svg { display: none; }
+    .be-tab { padding-inline: 8px; }
+    .be-tabs { padding-inline: 8px; }
+    .be-top { padding: 12px 16px 4px; }
+    .be-page { padding: 18px 16px 24px; }
+    .be-sheet { padding: 14px 14px; }
+    .be-ledger > li { padding: 12px 14px; }
+    .be-row { flex-wrap: wrap; padding: 12px 14px; }
+    .be-row .be-what { flex-basis: calc(100% - 30px); }
+    .be-row .be-chev { order: 2; }
+    .be-row .be-spots { order: 3; width: 100%; max-width: 280px; }
+    .be-person { flex-wrap: wrap; }
+    .be-person .be-what { flex-basis: calc(100% - 36px); }
+    .be-person .be-facts { flex-basis: 100%; max-width: none; justify-content: flex-start; padding-left: 36px; text-align: left; }
+    .be-days { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-bottom: 0; }
+    .be-days button { border-bottom: 1px solid var(--bm-rule); text-align: center; }
+    .be-glance dd { font-size: 25px; }
+    .be-wait .be-what { flex-basis: calc(100% - 36px); }
+    .be-wait .be-acts { flex-basis: 100%; padding-left: 36px; }
+    .be-paper { padding: 16px 12px 12px; }
+    .be-pp-t { font-size: 13px; }
+    .be-pp-t th, .be-pp-t td { padding-left: 2px; padding-right: 2px; }
+    .be-pp-t td.nm { min-width: 0; }
+    .be-pp-t td.box span { width: 13px; height: 13px; }
+    .be-ledger > li.be-wv-more { padding: 0 14px 12px; }
+    .be-ledger > li.be-mail { padding: 2px 14px 14px; }
+    .be-ledger > li.be-wl-h { padding: 12px 14px 6px; }
+  }
+  @container be (max-width: 379px) { .be-sample { margin-left: 0; } }
+  /* the smallest phones: the waiver column steps aside (the line under the sheet says they're all signed), so all 8 boxes fit */
+  @container be (max-width: 314px) { .be-pp-t .wv { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .be-page.be-in { animation: none; } }
+</style>
+<section id="backend" class="gutter alt be-sec" tabindex="-1" aria-labelledby="be-h" data-show="crone all" data-fold data-thing="your own back end: class lists, the waitlist, waivers and gift certificates">
+  <div class="wrap">
+    <p class="not-site"><span class="bk-demo">Just for you</span> Not on your site. Only you can open your back end, from your own private link.</p>
+    <div class="sec-head">
+      <div>
+        <p class="label"><span>Your back end</span> <span class="tag" data-go="crone">In Bloom</span></p>
+        <h2 id="be-h" class="reveal">Where your <em>sign-ups go</em></h2>
+      </div>
+      <p class="intro">This is where every sign-up lands. It works, so tap around.<span class="be-try" data-js hidden>Sign up for a class above, and you&rsquo;ll show up in its list here.</span></p>
+    </div>
+    <div class="be-layout">
+      <div class="be-frame">
+        <div class="be-bar" aria-hidden="true"><span class="be-dots"><i></i><i></i><i></i></span><span class="be-url"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"/></svg><span>Your back end, private to you</span></span></div>
+        <div class="be-app" id="be-app" role="region" aria-label="Your back end, a working preview with sample names">
+          <div class="be-top">
+            <span class="be-brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 28V15a7 7 0 0 1 14 0v13z" fill="#ff7a1a"/><path d="M8 28V14a8 8 0 0 1 16 0v14" fill="none" stroke="#25301f" stroke-width="2.6"/></svg>Fire Arts Center</span>
+            <span class="be-via">from Web Faery</span>
+            <span class="be-sample">Sample names</span>
+          </div>
+          <div class="be-tabs-wrap" id="be-tabs-wrap"><div class="be-tabs" id="be-tabs" role="tablist" aria-label="Your back end"></div></div>
+          <div id="be-panel" role="tabpanel" aria-labelledby="be-tab-classes">
+            <div class="be-page">
+              <p class="be-test">A preview with sample names. Nothing here is saved or sent.</p>
+              <p class="be-fine">Your class lists, waitlist, waivers and gift certificates show up here.</p>
+            </div>
+          </div>
+          <p class="vh" role="status" id="be-live"></p>
+        </div>
+      </div>
+      <p class="tier-note mock-note wf-note be-note">Every sign-up lands here, in your own back end: who&rsquo;s in each class, their waivers, and the waitlist in order. Print the list for the teacher before the first class. Payments go straight into your own Stripe, or Square if you keep it. With Planted or Tended, sign-ups stay in Square, the way it works now.</p>
     </div>
   </div>
 </section>
@@ -1482,7 +1802,7 @@
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list, sorted by what people want to make and then by level, with a Register button to your Square shop, your fused glass, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class list in tabs by what people want to make, narrowed by day and place, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates and a real waitlist, paid into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="0" data-tier-founding="0" data-tier-build="A class trade, no build fee" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates, a real waitlist, and your own back end with every class list. Sign-ups pay into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>class trade</strong>, no&nbsp;build&nbsp;fee</span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">No build fee: it&rsquo;s a class trade. Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. I follow your socials and update your site and Google profile as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep fireartsarcata.com: I can hold and renew it for you (it stays legally yours). If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1821,7 +2141,7 @@
     /* ---------- the sign-up sheet (In Bloom) ---------- */
     var dlg = $('su'), body = $('su-body'), opener = null;
     var S = null;
-    function fresh(c, mode, w) { return { c: c, at: w && at(c, w) ? w : places(c)[0], mode: mode, step: 1, name: 'Maya R.', mail: 'maya@example.com', kid: 'June', age: '9', pre: '', bisque: false, glz: false, waiver: c.lvl === 'new' || c.type === 'kids' ? 'sign' : '', ecName: '', ecPhone: '', sig: '', agree: false, gc: '', gcOn: false, wname: 'Maya R.', wmail: 'maya@example.com' }; }
+    function fresh(c, mode, w) { return { c: c, at: w && at(c, w) ? w : places(c)[0], mode: mode, step: 1, name: 'Maya R.', mail: 'maya@example.com', kid: 'June', age: '9', pre: '', bisque: false, glz: false, waiver: c.lvl === 'new' || c.type === 'kids' ? 'sign' : '', ecName: '', ecPhone: '', sig: '', agree: false, gc: '', gcOn: false, gcOff: 0, wname: 'Maya R.', wmail: 'maya@example.com' }; }
     /* the class's dates, as real days (the session's year), so the done screen can say the right thing on any day */
     var MON = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, June: 5, Jun: 5, July: 6, Jul: 6, Aug: 7, Sept: 8, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
     var WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -1924,13 +2244,13 @@
           preHtml() + waiverHtml() +
           '<p class="hint" id="su-hint" role="status"></p><div class="bk-nav pin"><button type="submit" class="bk-go">Next: pay</button></div></form>';
       } else if (S.step === 2) {
-        var off = S.gcOn ? 50 : 0, tot = Math.max(0, c.price - off);
+        var off = S.gcOn ? S.gcOff : 0, tot = Math.max(0, c.price - off);
         h = kick('Sign up') + '<h2 id="su-h" tabindex="-1">' + esc(c.t) + '</h2>' + classLine(c, false) +
           '<div class="pane-in">' + steps() +
           '<div class="sum"><div><span>#' + c.n + ' &middot; ' + c.len + '</span><span>$' + c.price + '</span></div>' + (S.gcOn ? '<div><span>Gift certificate ' + esc(S.gc) + '</span><span>&minus;$' + off + '</span></div>' : '') + '<div class="tot"><span>Total</span><span>$' + tot + '</span></div></div>' +
-          '<div class="gc"><label class="fld">Gift certificate number, if you have one<input id="su-gc" autocomplete="off" value="' + esc(S.gc) + '" placeholder="FA 0000"></label><button type="button" class="bk-go ghost small" id="su-gc-go">' + (S.gcOn ? 'Remove' : 'Apply') + '</button></div>' +
+          '<div class="gc"><label class="fld">Gift certificate number, if you have one<input id="su-gc" autocomplete="off" value="' + esc(S.gc) + '" placeholder="Like: ABCD-EFGH-JK"></label><button type="button" class="bk-go ghost small" id="su-gc-go">' + (S.gcOn ? 'Remove' : 'Apply') + '</button></div>' +
           '<p class="hint" id="su-hint" role="status"></p>' +
-          '<p class="demo-note">Nothing is charged in this preview. On your real site, payment goes straight into your own Stripe (or Square), and your spot is saved the moment it&rsquo;s paid, not while it sits in a cart.</p>' +
+          '<p class="demo-note">Nothing is charged in this preview. On your real site, payment goes straight into your own Stripe (or Square), and your spot is saved the moment it&rsquo;s paid, not while it sits in a cart.' + (window.FA_giftTry ? ' To try a gift certificate here, use <b style="white-space:nowrap">' + window.FA_giftTry + '</b>.' : '') + '</p>' +
           '<div class="bk-nav pin"><button type="button" class="bk-go ghost" data-back="1">Back</button><button type="button" class="bk-go" id="su-pay">Pay $' + tot + ' (preview)</button></div></div>';
       } else {
         var first = (c.type === 'kids' ? S.kid : S.name).split(/\s+/)[0];
@@ -1984,6 +2304,14 @@
       }
       return true;
     }
+    /* the back end preview under the classes hears about each finished try, in memory only (nothing is sent) */
+    function tell() {
+      try {
+        var c = S.c, w = S.mode === 'wait', kid = !w && c.type === 'kids';
+        document.dispatchEvent(new CustomEvent('fa:signup', { detail: { n: c.n, mode: S.mode, name: w ? S.wname : S.name, mail: w ? S.wmail : S.mail,
+          kid: kid ? S.kid : '', age: kid ? S.age : '', pre: S.pre, waiver: S.waiver, sig: S.waiver === 'sign' ? S.sig : '', gc: S.gcOn ? S.gc : '', paid: Math.max(0, c.price - (S.gcOn ? S.gcOff : 0)) } }));
+      } catch (e) {}
+    }
     function open(n, mode, from) {
       var c = byNo(n); if (!c) return;
       opener = from || opener; S = fresh(c, mode, from && from.getAttribute('data-at')); render();
@@ -2000,7 +2328,7 @@
     });
     body.addEventListener('submit', function (e) {
       e.preventDefault(); read(); if (!check()) return;
-      S.step = 2; render();
+      S.step = 2; render(); if (S.mode === 'wait') tell();
     });
     body.addEventListener('click', function (e) {
       var t = e.target.closest('button'); if (!t) return;
@@ -2010,12 +2338,15 @@
       if (t.hasAttribute('data-again')) { S = fresh(S.c, S.mode, S.at); render(); return; }
       if (t.hasAttribute('data-close')) { dlg.close(); return; }
       if (t.id === 'su-gc-go') {
-        if (S.gcOn) { S.gcOn = false; S.gc = ''; render('#su-gc'); return; }
+        if (S.gcOn) { S.gcOn = false; S.gc = ''; S.gcOff = 0; render('#su-gc'); return; }
         S.gc = $('su-gc').value.trim();
-        if (S.gc.length < 3) { $('su-hint').textContent = 'Type the number printed on the gift certificate.'; $('su-gc').focus(); return; }
-        S.gcOn = true; render('#su-gc-go'); $('su-hint').textContent = 'Applied: $50 off (a demo amount; your real certificates are checked against your own list).'; return;
+        if (S.gc.length < 3) { $('su-hint').textContent = 'Type the code from your gift certificate.'; $('su-gc').focus(); return; }
+        var gk = window.FA_giftCheck ? window.FA_giftCheck(S.gc, S.c.price, S.c.n) : { ok: true, code: S.gc, off: Math.min(50, S.c.price), left: 0 };
+        if (!gk.ok) { $('su-hint').textContent = gk.msg; $('su-gc').focus(); return; }
+        S.gc = gk.code; S.gcOff = gk.off; S.gcOn = true; render('#su-gc-go');
+        $('su-hint').textContent = 'Applied: $' + gk.off + ' off' + (gk.left > 0 ? ', and $' + gk.left + ' stays on it for next time.' : '.'); return;
       }
-      if (t.id === 'su-pay') { S.step = 3; render(); return; }
+      if (t.id === 'su-pay') { S.step = 3; render(); tell(); return; }
     });
     $('su-x').addEventListener('click', function () { dlg.close(); });
     dlg.addEventListener('click', function (e) {
@@ -2023,6 +2354,545 @@
       if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close();
     });
     dlg.addEventListener('close', function () { if (opener && document.contains(opener)) quietFocus(opener); });
+  })();
+</script>
+
+<script>
+  /* Where your sign-ups go (In Bloom): a working preview of their own back end, inside a plain browser frame.
+     Their real classes from FA_CLASSES (Fall 2026 now): each class's spots taken match the cones on its time (cap minus left).
+     Every name is made up, from a fixed seed, so the lists read the same on every visit. Nothing is stored or sent.
+     A try in the page's own sign-up sheet arrives here as the fa:signup event (one small hook in the sign-up script)
+     and joins that class's list, or its waitlist, in memory only. Tabs, and short pages under each one.
+     It follows what Web Faery's server already runs: waivers (the signed copy, with a PDF, goes to the owner's email,
+     which is the record; this list is only who signed and when, from the sign-up) and gift certificates (codes like
+     ABCD-EFGH-JK, sold on their site through their own Stripe; the list shows the last 4). The class lists, the waitlist
+     and registration day get built when they say yes. */
+  (function () {
+    var C = window.FA_CLASSES, SES = window.FA_SESSION || {};
+    function $(id) { return document.getElementById(id); }
+    var app = $('be-app'), panel = $('be-panel'), tabsBox = $('be-tabs'), tabsWrap = $('be-tabs-wrap'), live = $('be-live');
+    if (!C || !C.length || !app || !panel || !tabsBox) return;
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var DAYS = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday' };
+    var SHORT = { 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat', 7: 'Sun' };
+    var PLACE = { main: 'Main studio', s10: 'Studio #10', px: 'Phoenix' };
+    var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+    var MI = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, June: 5, Jun: 5, July: 6, Jul: 6, Aug: 7, Sept: 8, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+    var WAIVER_PDF = 'https://www.fireartsarcata.com/uploads/b/180db440-c854-11ea-b698-51f5bc6e21c3/604fc9f0-3f63-11f1-84b6-0f03aba73c12.pdf';
+    var ICON = {
+      classes: '<path d="M5.5 9.5h13l-1.4 8.1a2 2 0 0 1-2 1.7H8.9a2 2 0 0 1-2-1.7Z M4.5 9.5h15 M9 9.5c0-2.6 1.3-4.6 3-4.6s3 2 3 4.6"/>',
+      wait: '<path d="M9.5 6.5h10M9.5 12h10M9.5 17.5h10"/><path d="M4.5 6.5h1.5M4.5 12h1.5M4.5 17.5h1.5" stroke-width="2.4"/>',
+      waivers: '<path d="M4 19.5h16M6 16c2.2-4.6 3.9-9.8 5.4-9.5 1.8.4-1.7 8.9.2 9.2 1.3.2 2.4-3.4 3.6-3.2 1 .2.4 2.6 1.4 2.8.7.1 1.4-.6 2-1.4"/>',
+      gifts: '<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3.5 9h17M12 9v11M12 9C10 5 6.5 5 6.5 7.2S10 9 12 9Zm0 0c2-4 5.5-4 5.5-1.8S14 9 12 9Z"/>',
+      reg: '<rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M12 13.2v2.6l1.8 1.1"/>'
+    };
+    function icon(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + ICON[k] + '</svg>'; }
+    var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
+
+    /* ---------- the session: sample sign-ups start the moment its registration opened (FA_SESSION.opens, Pacific) ---------- */
+    var SP = (function (m) { return m ? { y: +m[1], mo: +m[2], d: +m[3], date: m[1] + '-' + m[2] + '-' + m[3], time: m[4] + ':' + m[5], mins: (+m[4]) * 60 + (+m[5]) } : null; })(String(SES.opens || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/));
+    var BASE = SP ? Date.UTC(SP.y, SP.mo - 1, SP.d) : Date.UTC(2026, 7, 24), OPEN_AT = SP ? SP.mins : 540, YEAR = SES.year || new Date(BASE).getUTCFullYear();
+    var OPENS = Date.parse(SES.opens || '') || 0, NOT_YET = !!OPENS && Date.now() < OPENS;
+    /* the next registration day: this session's own while it's still ahead (a new schedule just went in); otherwise
+       window.FA_NEXT, if set ({ name: 'Spring 2027', date: 'YYYY-MM-DD', time: 'HH:MM' }); otherwise Winter 2027
+       (Mon, Nov 16, 9 am) while that's still after this session's opening; otherwise not set yet */
+    var NEXT = NOT_YET && SP ? { name: SES.name || 'This session', date: SP.date, time: SP.time, same: true }
+      : window.FA_NEXT && window.FA_NEXT.date ? window.FA_NEXT
+      : Date.UTC(2026, 10, 16) > BASE ? { name: 'Winter 2027', date: '2026-11-16', time: '09:00' }
+      : { name: 'Your next session', date: SP ? SP.date : '2026-11-16', time: SP ? SP.time : '09:00', unknown: true };
+
+    /* ---------- time: minutes after the opening day at midnight, Pacific ---------- */
+    function dayOf(m) { return new Date(BASE + Math.floor(m / 1440) * 864e5); }
+    function dateTxt(d) { return MON[d.getUTCMonth()] + ' ' + d.getUTCDate(); }
+    function clock(mins) { var h = Math.floor(mins / 60), mm = mins % 60, pm = h >= 12, h12 = h % 12 || 12; return h12 + (mm ? ':' + (mm < 10 ? '0' : '') + mm : '') + (pm ? ' pm' : ' am'); }
+    function clockFull(mins) { var h = Math.floor(mins / 60), mm = mins % 60, pm = h >= 12, h12 = h % 12 || 12; return h12 + ':' + (mm < 10 ? '0' : '') + mm + (pm ? ' pm' : ' am'); }
+    function minsOf(m) { return ((m % 1440) + 1440) % 1440; }
+    function stamp(m) { return dateTxt(dayOf(m)) + ', ' + clockFull(minsOf(m)); }
+    function day(m) { return dateTxt(dayOf(m)); }
+    function whenFull(m) { var d = dayOf(m); return dateTxt(d) + ', ' + d.getUTCFullYear() + ', ' + clockFull(minsOf(m)); }
+    function todayLA() {
+      try { var p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
+      catch (e) { var d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); }
+    }
+    var TODAY = todayLA(), TODAY_DOW = new Date(TODAY).getUTCDay() || 7, OPEN_DAYS = Math.floor((TODAY - BASE) / 864e5);
+    function firstDay(c) { var m = String(c.dates).match(/(Jan|Feb|Mar|Apr|May|June|Jun|July|Jul|Aug|Sept|Sep|Oct|Nov|Dec)[a-z]* (\d{1,2})/); return m ? Math.round((Date.UTC(YEAR, MI[m[1]], +m[2]) - BASE) / 864e5) : 30; }
+    function sessions(c) { var m = String(c.len).match(/^(\d+)/); return m ? +m[1] : 8; }
+    function firstWord(s) { return String(s || '').split(/\s+/)[0]; }
+
+    /* ---------- the sample people: friendly made-up names, pottery words for surnames ---------- */
+    var FIRST = ['Juniper', 'Wren', 'Hazel', 'Rowan', 'Clover', 'Sage', 'Fern', 'Linden', 'Maple', 'Robin', 'Iris', 'Aspen', 'Willow', 'Briar', 'Cedar', 'Laurel', 'Marigold', 'Basil', 'Olive', 'Tansy', 'Yarrow', 'Sorrel', 'Lark', 'Finch', 'Ivy', 'Jasper', 'Opal', 'Indigo', 'Hollis', 'Arden', 'Bay', 'Garnet', 'Quinn', 'Reed', 'Sparrow', 'Heath', 'Dove', 'Rue', 'Sunny', 'Wilder'];
+    var LAST = ['Slip', 'Coil', 'Slipwell', 'Bisque', 'Glaze', 'Kiln', 'Wedge', 'Conepack', 'Clayfoot', 'Celadon', 'Tenmoku', 'Grog', 'Burnish', 'Crackle', 'Slipcast', 'Spout', 'Mudlark', 'Underglaze', 'Greenware', 'Kilnsworth', 'Wheelhead', 'Banding', 'Ashglaze', 'Leatherhard'];
+    var KIDS = ['Pip', 'Tilly', 'Otto', 'Nell', 'Milo', 'Bea', 'Ollie', 'Kit', 'Rosie', 'Theo', 'Lou', 'Fig', 'Pearl', 'Hugo', 'Wally', 'Mabel'];
+    /* days earlier in the year when some people signed for an earlier class (a waiver is good for the calendar year) */
+    var FILED = [[0, 9], [1, 2], [2, 30], [3, 6], [3, 13], [4, 4], [5, 8], [5, 29], [6, 6], [6, 20]];
+    var OKF = FILED.filter(function (fd) { return Date.UTC(YEAR, fd[0], fd[1]) < BASE; });
+    function rng(seed) { return function () { seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+    function pick(r, a) { return a[Math.floor(r() * a.length)]; }
+    function mailOf(f, l) { return (f + '.' + l).toLowerCase() + '@example.com'; }
+    /* in one class, nobody shares a first name or a surname (easier to read), as long as the lists allow it */
+    function person(r, taken) {
+      for (var i = 0; i < 160; i++) {
+        var f = pick(r, FIRST), l = pick(r, LAST), k = f + ' ' + l;
+        if (taken[k] || (i < 120 && (taken['f:' + f] || taken['l:' + l]))) continue;
+        taken[k] = taken['f:' + f] = taken['l:' + l] = 1;
+        return { first: f, last: l, name: k, mail: mailOf(f, l) };
+      }
+      return { first: 'Sage', last: 'Kiln', name: 'Sage Kiln', mail: 'sage.kiln@example.com' };
+    }
+    /* members-and-students workshops: "In class #" names an 8 week class on the same clay (cone 6 at Studio #10 and
+       Phoenix, cone 10 at the main studio), or any of them when the workshop takes both */
+    var EIGHT = C.filter(function (c) { return c.len === '8 weeks' && c.type !== 'kids'; });
+    function coneOf(c) { var w = [].concat(c.where)[0]; return c.clay === 'both' ? 'both' : w === 'main' ? 10 : 6; }
+    function levelOf(c, r) {
+      if (c.pre === 'wheel') return c.type === 'glaze' ? 'Has thrown before' : 'Can center 2 lbs';
+      if (c.pre === 'member') {
+        if (r() < 0.5) return 'Member';
+        var k = coneOf(c), o = EIGHT.filter(function (x) { return x.n !== c.n && (k === 'both' || coneOf(x) === k); });
+        return 'In class #' + pick(r, o.length ? o : EIGHT).n;
+      }
+      if (c.pre === 'glaze') return 'Knows glazing basics';
+      return '';
+    }
+
+    var R = {}, W = {}, BYNO = {};
+    C.forEach(function (c) {
+      BYNO[c.n] = c;
+      var r = rng(+c.n * 7919 + 101), taken = Math.max(0, c.cap - c.left), names = {}, list = [];
+      /* the later sign-ups land on a day after opening and before both the first class and today */
+      var lastDay = Math.max(1, Math.min(firstDay(c) - 2, 49, OPEN_DAYS - 1)), t = OPEN_AT, quick = c.left < 1 ? taken : Math.ceil(taken * 0.55);
+      for (var i = 0; i < taken; i++) {
+        var m;
+        if (i < quick) { t += 1 + Math.floor(r() * (c.left < 1 ? 5 : 9)); m = t; }
+        else m = (1 + Math.floor(r() * lastDay)) * 1440 + 420 + Math.floor(r() * 900);
+        var p = person(r, names);
+        if (c.type === 'kids') { var kf = pick(r, KIDS); for (var k = 0; k < 20 && names['k:' + kf]; k++) kf = pick(r, KIDS); names['k:' + kf] = 1; p.kid = kf + ' ' + p.last; p.age = 8 + Math.floor(r() * 5); }
+        p.m = m; p.cls = c.n;
+        var signNow = c.lvl === 'new' || c.type === 'kids' || r() < 0.72 || !OKF.length;
+        if (signNow) p.wm = m; else { var fd = OKF[Math.floor(r() * OKF.length)]; p.wm = Math.round((Date.UTC(YEAR, fd[0], fd[1]) - BASE) / 864e5) * 1440 + 480 + Math.floor(r() * 600); p.filed = true; }
+        p.level = levelOf(c, r);
+        p.paid = c.price;
+        /* two draws kept so every list reads the same as before (the emergency contact lives in the signed copy, not here) */
+        r(); r();
+        list.push(p);
+      }
+      list.sort(function (a, b) { return a.m - b.m; });
+      R[c.n] = list;
+      W[c.n] = [];
+      if (c.left < 1) { var w = person(r, names); w.m = (list.length ? list[list.length - 1].m : OPEN_AT) + 15 + Math.floor(r() * 600); W[c.n].push(w); }
+    });
+
+    /* ---------- gift certificates: the way Web Faery's server runs them. Bought on their site, paid into their own Stripe;
+       codes are 10 letters and numbers (ABCD-EFGH-JK, no I, L, O, U, 0 or 1); the owner's list shows the last 4,
+       a look up shows the whole code, and they record what was used. Three came off Fall sign-ups. ---------- */
+    var gr = rng(4242), gnames = {};
+    function gpUse(n, i, code, amt) { var p = R[n] && R[n][i]; if (p) { p.paid = Math.max(0, p.paid - amt); p.gc = code; } return p; }
+    var u08 = gpUse('08', 2, 'R4DM-Q8ZS-7K', 50), u16 = gpUse('16', 1, 'P6YF-2KVA-8M', 50), u12 = gpUse('12', 4, 'W3NB-5HTX-9C', 325);
+    function useTxt(p, n) { return p ? day(p.m) + ': $' + (BYNO[n].price - p.paid) + ', #' + n + ' sign-up (' + esc(p.name) + ')' : ''; }
+    var G = [
+      { code: 'HJ7K-M2PQ-4R', amt: 150, left: 150, bought: 'Oct 9', by: person(gr, gnames).name, to: person(gr, gnames).name, uses: [] },
+      { code: 'T9WC-6XBN-3F', amt: 75, left: 55, bought: 'Sept 30', by: person(gr, gnames).name, uses: ['Oct 4: $20, in the gallery'] },
+      { code: 'R4DM-Q8ZS-7K', amt: 100, left: 50, bought: 'Aug 2', by: person(gr, gnames).name, to: person(gr, gnames).name, uses: [useTxt(u08, '08')] },
+      { code: 'W3NB-5HTX-9C', amt: 325, left: 0, bought: 'July 1', by: person(gr, gnames).name, uses: [useTxt(u12, '12')] },
+      { code: 'P6YF-2KVA-8M', amt: 50, left: 0, bought: 'June 14', by: person(gr, gnames).name, uses: [useTxt(u16, '16')] }
+    ];
+    G.forEach(function (g) { g.uses = g.uses.filter(Boolean); g.demoUse = 0; g.demoTxt = []; });
+    /* typed in any case, with or without spaces and dashes */
+    function norm(s) { var t = String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); return t.length === 10 ? t.slice(0, 4) + '-' + t.slice(4, 8) + '-' + t.slice(8) : ''; }
+    function gl(g) { return Math.max(0, g.left - (g.demoUse || 0)); }
+    function gState(g) { var left = gl(g); return left < 1 ? 'Used up' : left < g.amt ? 'Partly used' : 'Not used yet'; }
+    function giftOf(code) { return G.filter(function (x) { return x.code === code; })[0] || null; }
+    /* every try in this visit that used a certificate (one per class) comes off it, in class order */
+    function syncGifts() {
+      G.forEach(function (g) { g.demoUse = 0; g.demoTxt = []; });
+      C.forEach(function (c) {
+        R[c.n].forEach(function (p) {
+          if (!p.demo || !p.gc) return;
+          var g = giftOf(p.gc); if (!g) return;
+          var a = Math.min(Math.max(0, c.price - p.paid), gl(g));
+          if (a > 0) { g.demoUse += a; g.demoTxt.push('Just now: $' + a + ', #' + c.n + ' sign-up (your try)'); }
+        });
+      });
+    }
+    /* the page's sign-up sheet asks here when someone applies a code: what comes off, or why not (in memory only) */
+    window.FA_giftTry = 'R4DM-Q8ZS-7K';
+    window.FA_giftCheck = function (code, price, n) {
+      var k = norm(code);
+      if (!k) return { ok: false, msg: 'A gift certificate code has 10 letters and numbers, like ABCD-EFGH-JK.' };
+      var g = giftOf(k);
+      if (!g) return { ok: false, msg: 'We can’t find that code. Check it against your certificate, or give us a call.' };
+      var used = 0;
+      C.forEach(function (c) { if (c.n === n) return; R[c.n].forEach(function (p) { if (p.demo && p.gc === k) used += Math.max(0, c.price - p.paid); }); });
+      var left = Math.max(0, g.left - used);
+      if (left < 1) return { ok: false, msg: 'That gift certificate is all used up.' };
+      var off = Math.min(left, Math.max(0, +price || 0));
+      return { ok: true, code: k, off: off, left: left - off };
+    };
+
+    /* ---------- counts ---------- */
+    function takenOf(c) { return R[c.n].length; }
+    function leftOf(c) { return Math.max(0, c.cap - takenOf(c)); }
+    function waitingAll() { var n = 0; C.forEach(function (c) { n += W[c.n].length; }); return n; }
+    /* one waiver per person a year; a parent's waiver for their child is its own */
+    function wvKey(p) { return p.mail + (p.kid ? '|' + p.kid : ''); }
+    function waivers() {
+      var seen = {}, out = [];
+      C.forEach(function (c) { R[c.n].forEach(function (p) { var k = wvKey(p); if (seen[k]) return; seen[k] = 1; out.push(p); }); });
+      return out.sort(function (a, b) { return (b.demo ? 1 : 0) - (a.demo ? 1 : 0) || (a.filed ? 1 : 0) - (b.filed ? 1 : 0) || b.wm - a.wm; });
+    }
+    function placeOf(c) { var w = [].concat(c.where)[0]; return PLACE[w] + ', ' + (c.clay === 'both' ? 'cone 6 or 10 bisque' : w === 'main' ? 'cone 10' : 'cone 6'); }
+    function timeShort(c) { return String(c.time).split(' (')[0].split(', then')[0]; }
+    function byNo(n) { return BYNO[n] || null; }
+
+    /* ---------- state ---------- */
+    var dayHas = {}; C.forEach(function (c) { dayHas[c.day] = (dayHas[c.day] || 0) + 1; });
+    var S = { tab: 'classes', day: dayHas[TODAY_DOW] ? TODAY_DOW : 0, cls: null, print: false, offer: null, q: '', shown: 6, open: null, gq: window.FA_giftTry, gfound: null, gmiss: '', reg: { edit: false, set: false, date: NEXT.date, time: NEXT.time } };
+    var FRESH = {};
+    var TABS = [
+      { k: 'classes', t: 'Classes' }, { k: 'wait', t: 'Waitlist' }, { k: 'waivers', t: 'Waivers' }, { k: 'gifts', t: 'Gift certificates' }, { k: 'reg', t: 'Registration day' }
+    ];
+    function cnt(k) { return k === 'classes' ? C.length : k === 'wait' ? waitingAll() : k === 'waivers' ? waivers().length : null; }
+    /* on a phone the tabs sit in one row that scrolls sideways (the real back end does the same), with a soft edge
+       where there's more, and the open tab always slides into view */
+    function edges() {
+      if (!tabsWrap) return;
+      var s = tabsBox.scrollLeft, m = tabsBox.scrollWidth - tabsBox.clientWidth;
+      tabsWrap.classList.toggle('more-r', m > 2 && s < m - 2);
+      tabsWrap.classList.toggle('more-l', m > 2 && s > 2);
+    }
+    function showTab() {
+      var b = $('be-tab-' + S.tab); if (!b) return;
+      var l = b.offsetLeft, r = l + b.offsetWidth, s = tabsBox.scrollLeft, w = tabsBox.clientWidth, to = null;
+      if (l < s + 8) to = Math.max(0, l - 28); else if (r > s + w - 8) to = r - w + 28;
+      if (to !== null) { try { tabsBox.scrollTo({ left: to, behavior: reduce ? 'auto' : 'smooth' }); } catch (e) { tabsBox.scrollLeft = to; } }
+      edges();
+    }
+    function paintTabs() {
+      tabsBox.innerHTML = TABS.map(function (x) {
+        var on = x.k === S.tab, n = cnt(x.k);
+        return '<button type="button" role="tab" class="be-tab" id="be-tab-' + x.k + '" data-tab="' + x.k + '" aria-selected="' + on + '" aria-controls="be-panel" tabindex="' + (on ? 0 : -1) + '">' + icon(x.k) + '<span>' + x.t + '</span>' +
+          (FRESH[x.k] ? '<span class="be-new">New</span>' : n != null ? '<span class="be-cnt">' + n + '</span>' : '') + '</button>';
+      }).join('');
+      showTab();
+    }
+    tabsBox.addEventListener('scroll', edges, { passive: true });
+    window.addEventListener('resize', edges);
+    function head(kicker, title) { return '<div class="be-head"><p class="be-kicker">' + kicker + '</p><h3 class="be-h" id="be-vh" tabindex="-1">' + title + '</h3></div>'; }
+    function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+    var TEST = '<p class="be-test">A preview with sample names. Nothing here is saved or sent.</p>';
+
+    /* ---------- Classes ---------- */
+    function clsRow(c) {
+      var tk = takenOf(c), lf = leftOf(c), full = lf < 1, w = W[c.n].length, fresh = R[c.n].some(function (p) { return p.demo; });
+      return '<li' + (fresh ? ' class="be-fresh"' : '') + '><button type="button" class="be-row" data-cls="' + c.n + '">' +
+        '<span class="be-what"><b>#' + c.n + ' ' + esc(c.t) + (fresh ? '<span class="be-fresh-tag">You</span>' : '') + '</b><small>' + esc(c.who) + ' &middot; ' + SHORT[c.day] + ' ' + esc(timeShort(c)) + ' &middot; ' + PLACE[[].concat(c.where)[0]] + '</small></span>' +
+        '<span class="be-spots"><span class="sp"><b>' + tk + ' of ' + c.cap + '</b><span>' + (full ? 'Full' + (w ? ', ' + w + ' waiting' : '') : lf === 1 ? '1 spot left' : lf + ' spots left') + '</span></span>' +
+        '<span class="be-meter' + (full ? ' full' : '') + '" style="--f:' + Math.min(1, tk / c.cap).toFixed(3) + '"><i></i></span></span>' +
+        '<span class="be-chev" aria-hidden="true">&rsaquo;</span></button></li>';
+    }
+    function classesHtml() {
+      var all = 0, left = 0, full = 0;
+      C.forEach(function (c) { all += takenOf(c); left += leftOf(c); if (leftOf(c) < 1) full++; });
+      var rows = C.filter(function (c) { return !S.day || c.day === S.day; });
+      var days = [0, 1, 2, 3, 4, 5, 6, 7].map(function (d) {
+        var n = d ? dayHas[d] || 0 : C.length, on = S.day === d;
+        /* the spoken name starts with what the button shows, so "tap Tue 5" works with voice control */
+        return '<button type="button" data-day="' + d + '" aria-pressed="' + on + '"' + (d && !n ? ' disabled' : '') + ' aria-label="' + (d ? SHORT[d] + ' ' + n + ', ' + DAYS[d] + 's' + (d === TODAY_DOW ? ', today' : '') : 'All ' + n + ', every class') + '">' +
+          (d === TODAY_DOW ? '<span class="td" aria-hidden="true"></span>' : '') + '<span aria-hidden="true">' + (d ? SHORT[d] : 'All') + '<span class="n">' + n + '</span></span></button>';
+      }).join('');
+      return TEST + head(esc(SES.name || 'Fall 2026') + ', your class lists', 'Classes') +
+        (NOT_YET ? '<p class="be-fine">Registration opens ' + esc(SES.opensText || '') + '. These sample lists show how it looks once it does.</p>' : '') +
+        '<dl class="be-glance"><div><dt>Signed up</dt><dd>' + all + '</dd></div><div><dt>Spots left</dt><dd>' + left + '</dd></div><div><dt>Full</dt><dd>' + full + '</dd><dd class="d">' + waitingAll() + ' on waitlists</dd></div></dl>' +
+        '<div class="be-days" role="group" aria-label="Show the classes on">' + days + '</div>' +
+        '<p class="be-list-h">' + (S.day ? DAYS[S.day] + 's' + (S.day === TODAY_DOW ? ', today' : '') : 'Every class') + '</p>' +
+        '<ul class="be-ledger be-cls">' + rows.map(clsRow).join('') + '</ul>' +
+        '<p class="be-foot">Tap a class to see who&rsquo;s in it.</p>';
+    }
+    function factHtml(c, p) {
+      var f = [], gift = p.gc ? Math.max(0, c.price - p.paid) : 0;
+      f.push('<span class="be-ok">' + CHECK + (p.filed ? 'Waiver on file' : c.type === 'kids' ? 'Waiver, by parent' : 'Waiver signed') + '</span>');
+      if (p.level) f.push('<span>' + esc(p.level) + '</span>');
+      f.push('<span class="be-paid">' + (p.gc ? (p.paid ? '$' + p.paid + ' paid<span class="vh">, </span><small>$' + gift + ' by gift certificate</small>' : 'Paid by gift certificate') : '$' + p.paid + ' paid') + '</span>');
+      return '<span class="be-facts">' + f.join('') + '</span>';
+    }
+    function personRow(c, p, i) {
+      var kid = c.type === 'kids';
+      return '<li class="be-person' + (p.demo ? ' be-fresh' : '') + '"' + (p.demo ? ' id="be-you"' : '') + '><span class="be-num">' + (i + 1) + '</span>' +
+        '<span class="be-what"><b>' + esc(kid ? p.kid + (p.age ? ', ' + p.age : '') : p.name) + (p.demo ? '<span class="be-fresh-tag">You</span>' : '') + '</b><small>' +
+        (kid ? 'Parent: ' + esc(p.name) + ' &middot; ' : '') + (p.demo ? 'Signed up just now' : 'Signed up ' + stamp(p.m)) + '</small></span>' + factHtml(c, p) + '</li>';
+    }
+    function detailHtml(c) {
+      var tk = takenOf(c), lf = leftOf(c), w = W[c.n].length, signed = R[c.n].length;
+      var back = '<button type="button" class="be-back" data-back><span aria-hidden="true">&lsaquo;</span><span>' + (S.day ? DAYS[S.day] + ' classes' : 'All classes') + '</span></button>';
+      if (S.print) return printHtml(c);
+      var why = c.pre === 'wheel' ? 'Each one answered the level check: ' + (c.type === 'glaze' ? 'they&rsquo;ve thrown on the wheel before.' : 'they can center about 2 lbs of clay and pull up an even cylinder.')
+        : c.pre === 'member' ? 'Workshops are for members and students in another class, so each one says which.' : c.pre === 'glaze' ? 'Each one said they know glazing basics and will bring bisqueware.' : c.type === 'kids' ? 'Each waiver is signed by a parent or guardian.' : 'No level check for this class.';
+      return back + head('Class #' + c.n + ' &middot; ' + placeOf(c), esc(c.t)) +
+        '<p class="be-meta">' + esc(c.who) + ' &middot; ' + DAYS[c.day] + 's, ' + esc(c.time) + ' &middot; ' + esc(c.dates) + '</p>' +
+        '<dl class="be-glance"><div><dt>Signed up</dt><dd>' + tk + ' of ' + c.cap + '</dd></div><div><dt>Waivers</dt><dd>' + signed + '</dd><dd class="d">all signed</dd></div>' +
+        (lf < 1 ? '<div><dt>Waitlist</dt><dd>' + w + '</dd><dd class="d">' + (w === 1 ? 'person' : 'people') + ' waiting</dd></div>' : '<div><dt>Spots left</dt><dd>' + lf + '</dd></div>') + '</dl>' +
+        '<div class="be-btns"><button type="button" class="be-btn" data-print>Print the list</button><button type="button" class="be-btn ghost" data-csv>Download (CSV)</button>' +
+        (lf < 1 ? '<button type="button" class="be-lnk" data-seewait="' + c.n + '">See the waitlist</button>' : '') + '</div>' +
+        '<p class="be-status" id="be-st" role="status"></p>' +
+        '<p class="be-roster-note">' + why + ' Each one paid when they signed up.</p>' +
+        '<ol class="be-ledger be-roster">' + R[c.n].map(function (p, i) { return personRow(c, p, i); }).join('') + '</ol>';
+    }
+    function printHtml(c) {
+      var n = sessions(c), kid = c.type === 'kids';
+      var list = R[c.n].slice().sort(function (a, b) { var x = kid ? a.kid : a.first + a.last, y = kid ? b.kid : b.first + b.last; return x < y ? -1 : x > y ? 1 : 0; });
+      var hd = '<tr><th scope="col">' + (kid ? 'Student, age' : 'Student') + '</th><th scope="col" class="c wv">Waiver</th>' + Array.apply(null, Array(n)).map(function (x, i) { return '<th scope="col" class="c">' + (i + 1) + '</th>'; }).join('') + '</tr>';
+      var rows = list.map(function (p) {
+        /* kids: the parent's name under the child's, for pickup */
+        return '<tr><td class="nm">' + esc(kid ? p.kid + (p.age ? ', ' + p.age : '') : p.name) + (kid ? '<small>Parent: ' + esc(p.name) + '</small>' : '') + '</td><td class="c wv">&#10003;</td>' + Array.apply(null, Array(n)).map(function () { return '<td class="c box"><span></span></td>'; }).join('') + '</tr>';
+      }).join('');
+      return '<button type="button" class="be-back" data-unprint><span aria-hidden="true">&lsaquo;</span><span>Back to the list</span></button>' +
+        head('Print the list', 'For the teacher') +
+        '<div class="be-paper"><p class="be-pp-k">Fire Arts Center &middot; ' + esc(SES.name || 'Fall 2026') + '</p><h4>#' + c.n + ' ' + esc(c.t) + '</h4>' +
+        '<p class="be-pp-m">' + esc(c.who) + ' &middot; ' + DAYS[c.day] + 's, ' + esc(c.time) + ' &middot; ' + placeOf(c) + ' &middot; ' + esc(c.dates) + '</p>' +
+        '<div class="be-pp-scroll"><table class="be-pp-t"><caption class="vh">Class list with a box for each class meeting</caption><thead>' + hd + '</thead><tbody>' + rows + '</tbody></table></div>' +
+        '<p class="be-pp-f">' + list.length + (list.length === 1 ? ' student' : ' students') + ', ' + (kid ? 'each waiver signed by a parent' : 'each with a signed waiver') + ' &middot; printed ' + dateTxt(new Date(TODAY)) + '</p></div>' +
+        '<p class="be-foot">Preview only: on your real back end, this prints as one page, with a box for each class to mark who came.</p>';
+    }
+
+    /* ---------- Waitlist ---------- */
+    function waitHtml() {
+      var full = C.filter(function (c) { return W[c.n].length || leftOf(c) < 1; });
+      var rows = full.map(function (c) {
+        var h = '<li class="be-wl-h"><b>#' + c.n + ' ' + esc(c.t) + '</b><small>' + SHORT[c.day] + ' ' + esc(timeShort(c)) + ' &middot; ' + PLACE[[].concat(c.where)[0]] + ' &middot; ' + esc(c.who) + '</small></li>';
+        if (!W[c.n].length) return h + '<li><span class="be-what"><small>Nobody waiting yet.</small></span></li>';
+        W[c.n].forEach(function (p, i) {
+          var first = i === 0, open = S.offer === c.n && first;
+          h += '<li class="be-wait' + (p.demo ? ' be-fresh' : '') + '"><span class="be-num">' + (i + 1) + '</span><span class="be-what"><b>' + esc(p.name) + (p.demo ? '<span class="be-fresh-tag">You</span>' : '') + '</b><small>Joined ' + (p.demo ? 'just now' : stamp(p.m)) + '</small></span>' +
+            '<span class="be-acts">' + (first ? '<button type="button" class="be-btn ghost sm" data-offer="' + c.n + '" aria-expanded="' + open + '">' + (open ? 'Hide the email' : 'Offer the spot') + '</button>' : '<span class="be-next">Next after ' + esc(W[c.n][i - 1].first || firstWord(W[c.n][i - 1].name)) + '</span>') + '</span></li>';
+          if (open) h += mailHtml(c, p);
+        });
+        return h;
+      }).join('');
+      return TEST + head(esc(SES.name || 'Fall 2026'), 'Waitlist') +
+        '<p class="be-fine">In the order people joined. When someone drops, the first person waiting gets an email by itself. You can also offer a spot yourself.</p>' +
+        '<ul class="be-ledger">' + rows + '</ul>' +
+        '<p class="be-foot">Waitlists end with the session, so the next one starts fresh.</p>';
+    }
+    function mailHtml(c, p) {
+      var first = p.first || firstWord(p.name), w = [].concat(c.where)[0];
+      var where = w === 'main' ? 'at the main studio' : w === 's10' ? 'at Studio #10' : 'at Phoenix Ceramic &amp; Fire Supply';
+      return '<li class="be-mail"><div class="be-mail-in" id="be-mail" tabindex="-1" role="group" aria-label="The email that would go to ' + esc(first) + '">' +
+        '<p class="be-mail-hd"><span>To</span>' + esc(p.mail) + '</p><p class="be-mail-hd"><span>Subject</span>A spot opened in #' + c.n + ', ' + esc(c.t) + '</p>' +
+        '<div class="be-mail-bd"><p>Hi ' + esc(first) + ',</p><p>A spot just opened in ' + esc(c.t) + ' with ' + esc(c.who) + ', ' + DAYS[c.day] + 's ' + esc(timeShort(c)) + ' ' + where + '. It&rsquo;s yours if you&rsquo;d like it.</p>' +
+        '<p><span class="be-mail-btn">Sign up for #' + c.n + '</span></p><p>If you can&rsquo;t take it, just reply, and we&rsquo;ll offer it to the next person on the list.</p><p>Fire Arts Center<br>(707) 826-1445</p></div></div>' +
+        '<p class="be-mail-ft" role="status"><span>Preview only: nothing was sent.</span><button type="button" class="be-lnk" data-offer="' + c.n + '">Close</button></p></li>';
+    }
+
+    /* ---------- Waivers: who signed and when, from the sign-ups. The signed copy itself goes to their email. ---------- */
+    function wvRow(p) {
+      var c = byNo(p.cls), kid = c && c.type === 'kids', open = S.open === wvKey(p), kf = kid ? esc(firstWord(p.kid)) : '';
+      var who = kid ? esc(p.name) + ', for ' + kf + (p.age ? ' (' + esc(p.age) + ')' : '') : esc(p.name);
+      var when = p.filed ? 'On file from an earlier class this year' : p.demo ? 'Signed just now' : 'Signed ' + day(p.wm);
+      var h = '<li class="' + (p.demo ? 'be-fresh' : '') + '"><span class="be-what"><b>' + who + (p.demo ? '<span class="be-fresh-tag">You</span>' : '') + '</b><small>' + when + ' &middot; #' + esc(p.cls) + '</small></span>' +
+        (p.filed ? '' : '<span class="be-acts"><button type="button" class="be-lnk" data-wv="' + esc(wvKey(p)) + '" aria-expanded="' + open + '">' + (open ? 'Hide' : 'View') + '<span class="vh"> the waiver ' + (kid ? 'for ' + kf + ', signed by ' : 'signed by ') + esc(p.name) + '</span></button></span>') + '</li>';
+      if (open && !p.filed) h += '<li class="be-wv-more"><div class="be-wv-card"><div><span>Signed by</span> ' + esc(p.sig || p.name) + (kid ? ', parent or guardian, for ' + kf : '') + '</div>' +
+        '<div><span>When</span> ' + (p.demo ? 'Just now' : whenFull(p.wm)) + '</div>' +
+        '<div><span>Agreed to</span> your release, waiver and medical release, and the Studio Guidelines</div>' +
+        '<div><span>Signed copy</span> in your email, with a PDF. ' + esc(firstWord(p.sig || p.name)) + ' got one too.</div></div></li>';
+      return h;
+    }
+    function wvMatches() {
+      var q = S.q.trim().toLowerCase(), all = waivers();
+      return q ? all.filter(function (p) { return (p.name + ' ' + (p.kid || '') + ' #' + p.cls).toLowerCase().indexOf(q) > -1; }) : all;
+    }
+    function wvListHtml() {
+      var m = wvMatches(), show = m.slice(0, S.shown), all = waivers(), online = all.filter(function (p) { return !p.filed; }).length, onfile = all.length - online;
+      return '<p class="be-count" id="be-wv-n">' + (S.q.trim() ? m.length + (m.length === 1 ? ' match' : ' matches') + ' of ' + all.length : online + ' signed in the form' + (onfile ? ', ' + onfile + ' on file from an earlier class' : '')) + '</p>' +
+        (show.length ? '<ul class="be-ledger">' + show.map(wvRow).join('') + '</ul>' : '<p class="be-fine">Nobody by that name yet. Try a first name.</p>') +
+        (m.length > show.length ? '<div class="be-pager"><span>Showing ' + show.length + ' of ' + m.length + '</span><button type="button" class="be-btn ghost sm" data-more>Show ' + Math.min(6, m.length - show.length) + ' more</button></div>' : '');
+    }
+    function waiversHtml() {
+      return TEST + head(esc(SES.name || 'Fall 2026'), 'Waivers') +
+        '<div class="be-sheet"><h4 class="be-sh">Release, waiver and medical release</h4><p class="be-fine">Your own waiver, with the Studio Guidelines, signed right in the sign-up form (by a parent for kids). Each signed copy goes to your email as a PDF, and to the person who signed. Keep those emails: they&rsquo;re your record. This list shows who signed, and when.</p>' +
+        '<p class="be-btns" style="margin-top:0"><a class="be-lnk" href="' + WAIVER_PDF + '" target="_blank" rel="noopener">Read your waiver (PDF)<span class="vh"> (opens in a new tab)</span></a></p></div>' +
+        '<form class="be-find" id="be-wv-form" role="search" novalidate><label for="be-q">Find someone</label><input id="be-q" type="search" autocomplete="off" spellcheck="false" placeholder="A name, or a class number" value="' + esc(S.q) + '"></form>' +
+        '<div id="be-wv-out">' + wvListHtml() + '</div>';
+    }
+
+    /* ---------- Gift certificates ---------- */
+    function gRow(g) {
+      var left = gl(g), fresh = g.demoUse > 0;
+      return '<li class="' + (left < 1 ? 'be-dim' : '') + (fresh ? ' be-fresh' : '') + '"><span class="be-what"><b class="be-mono"><span aria-hidden="true">&bull;&bull;&bull;&bull;</span><span class="vh">Code ending in </span>' + g.code.replace(/-/g, '').slice(-4) + (fresh ? '<span class="be-fresh-tag">You</span>' : '') + '</b><small>' +
+        [g.bought, g.to ? 'For ' + esc(g.to) : 'Bought by ' + esc(g.by), gState(g)].join(' &middot; ') + '</small></span>' +
+        '<span class="be-amt">$' + left + '<small>left of $' + g.amt + '</small></span></li>';
+    }
+    function gCard(g) {
+      if (!g) return '';
+      var left = gl(g), uses = g.uses.concat(g.demoTxt || []);
+      var who = [g.to ? 'For ' + esc(g.to) : '', 'From ' + esc(g.by), 'Bought ' + g.bought, 'No expiry date'].filter(Boolean).join(' &middot; ');
+      return '<div class="be-gcard" id="be-gcard" tabindex="-1"><div class="be-gcard-hd"><b class="be-mono">' + esc(g.code) + '</b><span class="be-state">' + gState(g) + '</span></div>' +
+        '<p class="be-left">$' + left + ' <small>left of $' + g.amt + '</small></p><p class="be-gwho">' + who + '</p>' +
+        (left > 0 && left < 15 ? '<p class="be-gnote">Under $15 left: in California they can ask for it in cash instead. If you pay it out, record it here as used.</p>' : '') +
+        (left > 0 ? '<form class="be-take" id="be-take" novalidate><label for="be-take-amt">Amount they used</label><span class="be-take-row"><span aria-hidden="true">$</span><input id="be-take-amt" inputmode="decimal" autocomplete="off" value="' + Math.min(20, left) + '"></span>' +
+          '<span class="be-take-btns"><button type="submit" class="be-btn sm">Record it</button><button type="button" class="be-lnk" data-useall>Use all of it ($' + left + ')</button></span></form>' : '<p class="be-gnote">This one is used up.</p>') +
+        '<p class="be-status" id="be-gst" role="status"></p>' +
+        (uses.length ? '<p class="be-uh">Used so far</p><div class="be-uses">' + uses.slice().reverse().map(function (x) { return '<span>' + x + '</span>'; }).join('') + '</div>' : '') + '</div>';
+    }
+    function giftsHtml() {
+      var still = 0; G.forEach(function (g) { still += gl(g); });
+      var found = S.gfound ? giftOf(S.gfound) : null;
+      return TEST + head('Your own list', 'Gift certificates') +
+        '<div class="be-sheet"><p class="be-fine">People buy them on your site, paid into your own Stripe, and the code comes by email. When someone brings one to the gallery, look up the code and record what they used. What&rsquo;s left stays on it for next time. With sign-up on your site, a code typed in the form comes off by itself.</p>' +
+        '<form class="be-find" id="be-gift-form" novalidate><label for="be-gq">The code</label><div class="be-look"><input id="be-gq" class="be-mono" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Like: ABCD-EFGH-JK" value="' + esc(S.gq) + '"><button type="submit" class="be-btn ghost sm">Look it up</button></div></form>' +
+        (found ? gCard(found) : S.gmiss ? '<p class="be-miss" role="status">' + S.gmiss + '</p>' : '') + '</div>' +
+        '<h4 class="be-sh be-out">Recent <span class="be-aside">Still to be used, in all: $' + still + '</span></h4>' +
+        '<ul class="be-ledger">' + G.map(gRow).join('') + '</ul>';
+    }
+
+    /* ---------- Registration day ---------- */
+    function regParts() {
+      var d = S.reg.date.split('-'), t = S.reg.time.split(':'), utc = Date.UTC(+d[0], +d[1] - 1, +d[2]), mins = (+t[0]) * 60 + (+t[1] || 0);
+      var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(utc).getUTCDay()];
+      return { utc: utc, mins: mins, text: wd + ', ' + dateTxt(new Date(utc)) + ', ' + clock(mins), at: clock(mins) };
+    }
+    function regHtml() {
+      var p = regParts(), days = Math.round((p.utc - TODAY) / 864e5), unk = NEXT.unknown && !S.reg.set;
+      var when = days > 1 ? days + ' days from today' : days === 1 ? 'Tomorrow' : days === 0 ? 'Today' : 'Registration is open';
+      var next = NEXT.unknown ? 'next' : esc(firstWord(NEXT.name));
+      var foot = NEXT.same ? 'Your ' + esc(firstWord(SES.name)) + ' classes are in, and they all wait for this time.'
+        : [SES.opensText ? esc(SES.name || 'Fall 2026') + ' opened ' + esc(SES.opensText) + '.' : '', unk ? '' : 'Your ' + next + ' classes go in once your schedule is ready, and they all wait for this time.'].filter(Boolean).join(' ');
+      return TEST + head(esc(NEXT.name), 'Registration day') +
+        '<div class="be-sheet"><p class="be-kicker" style="margin-bottom:6px">Registration opens</p><p class="be-big">' + (unk ? 'Not set yet' : p.text) + '</p><p class="be-when">' + (unk ? 'Set it once your next schedule is ready.' : when) + '</p>' +
+        '<p class="be-line">You set it once. Every class opens by itself at ' + (unk ? 'that time' : p.at) + '.</p>' +
+        (S.reg.edit ? '<form class="be-edit" id="be-reg-form" novalidate><label>Day<input type="date" id="be-rd" value="' + S.reg.date + '"></label><label>Time<input type="time" id="be-rt" step="900" value="' + S.reg.time + '"></label>' +
+          '<button type="submit" class="be-btn sm">Save</button><button type="button" class="be-lnk" data-reg-cancel>Cancel</button></form>'
+          : '<p class="be-btns"><button type="button" class="be-btn ghost sm" data-reg-edit>' + (unk ? 'Set the day and time' : 'Change the day or time') + '</button></p>') +
+        '<p class="be-status" id="be-rst" role="status"></p></div>' +
+        '<h4 class="be-sh be-out">How the day goes</h4>' +
+        '<ol class="be-ledger be-steps"><li><span class="be-num">1</span><span class="be-what">Until then, every Sign up button on your site says ' + (unk ? 'when it opens' : '<b style="display:inline">Opens ' + esc(p.text) + '</b>') + '.</span></li>' +
+        '<li><span class="be-num">2</span><span class="be-what">At ' + (unk ? 'that time' : p.at) + ', they all turn on at once, so it&rsquo;s fair for everyone.</span></li>' +
+        '<li><span class="be-num">3</span><span class="be-what">Your registration reminder list gets one email that morning.</span></li>' +
+        '<li><span class="be-num">4</span><span class="be-what">Sign-ups land in Classes, the waitlists fill in order, and you can print each list.</span></li></ol>' +
+        (foot ? '<p class="be-foot">' + foot + '</p>' : '');
+    }
+
+    /* ---------- paint ---------- */
+    function render(focus, animate) {
+      var h = S.tab === 'classes' ? (S.cls ? detailHtml(byNo(S.cls)) : classesHtml()) : S.tab === 'wait' ? waitHtml() : S.tab === 'waivers' ? waiversHtml() : S.tab === 'gifts' ? giftsHtml() : regHtml();
+      panel.innerHTML = '<div class="be-page' + (animate && !reduce ? ' be-in' : '') + '">' + h + '</div>';
+      panel.setAttribute('aria-labelledby', 'be-tab-' + S.tab);
+      if (focus) quietFocus(typeof focus === 'string' ? panel.querySelector(focus) : focus);
+    }
+    function keepInView(el) {
+      if (!el) return; var r = el.getBoundingClientRect(), top = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sn-h')) || 60;
+      if (r.top < top + 8 || r.top > window.innerHeight - 80) el.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+    }
+    function go(tab, focusTab) {
+      if (tab !== S.tab) { S.print = false; S.offer = null; }
+      S.tab = tab; if (FRESH[tab]) FRESH[tab] = false;
+      paintTabs(); render(null, true);
+      if (focusTab) quietFocus($('be-tab-' + tab));
+    }
+
+    tabsBox.addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (!b) return; var k = b.getAttribute('data-tab'); if (k === 'classes' && S.tab === 'classes') { S.cls = null; S.print = false; } go(k, true); });
+    tabsBox.addEventListener('keydown', function (e) {
+      var i = -1; TABS.forEach(function (x, j) { if (x.k === S.tab) i = j; }); var j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % TABS.length; else if (e.key === 'ArrowLeft') j = (i + TABS.length - 1) % TABS.length; else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = TABS.length - 1;
+      if (j === null) return; e.preventDefault(); go(TABS[j].k, true);
+    });
+
+    panel.addEventListener('click', function (e) {
+      var t = e.target.closest('button, a'); if (!t || !panel.contains(t)) return;
+      if (t.hasAttribute('data-day')) { S.day = +t.getAttribute('data-day'); render(); var nb = panel.querySelector('[data-day="' + S.day + '"]'); quietFocus(nb); say((S.day ? DAYS[S.day] + 's' : 'Every class') + ': ' + panel.querySelectorAll('.be-cls > li').length + ' classes'); return; }
+      if (t.hasAttribute('data-cls')) { S.cls = t.getAttribute('data-cls'); S.print = false; render('#be-vh', true); keepInView($('be-vh')); return; }
+      if (t.hasAttribute('data-back')) { var was = S.cls; S.cls = null; S.print = false; render(null, true); quietFocus(panel.querySelector('[data-cls="' + was + '"]')); keepInView(panel.querySelector('[data-cls="' + was + '"]')); return; }
+      if (t.hasAttribute('data-print')) { S.print = true; render('#be-vh', true); keepInView($('be-vh')); return; }
+      if (t.hasAttribute('data-unprint')) { S.print = false; render(null, true); quietFocus(panel.querySelector('[data-print]')); return; }
+      if (t.hasAttribute('data-csv')) { $('be-st').textContent = 'Preview only: on your real back end, this saves the list as a spreadsheet (CSV) that opens in Excel or Google Sheets.'; return; }
+      if (t.hasAttribute('data-seewait')) { S.offer = null; go('wait'); quietFocus($('be-vh')); return; }
+      if (t.hasAttribute('data-offer')) { var n = t.getAttribute('data-offer'), opening = S.offer !== n; S.offer = opening ? n : null; render(); if (opening) { quietFocus($('be-mail')); keepInView($('be-mail')); } else quietFocus(panel.querySelector('[data-offer="' + n + '"]')); return; }
+      if (t.hasAttribute('data-wv')) { var k = t.getAttribute('data-wv'); S.open = S.open === k ? null : k; $('be-wv-out').innerHTML = wvListHtml(); quietFocus(panel.querySelector('[data-wv="' + (window.CSS && CSS.escape ? CSS.escape(k) : k.replace(/"/g, '')) + '"]')); return; }
+      if (t.hasAttribute('data-more')) { S.shown += 6; $('be-wv-out').innerHTML = wvListHtml(); var rows = $('be-wv-out').querySelectorAll('.be-ledger > li:not(.be-wv-more)'); var to = rows[Math.max(0, S.shown - 6)]; if (to && !to.querySelector('button')) to.setAttribute('tabindex', '-1'); quietFocus(to && (to.querySelector('button') || to)); return; }
+      if (t.hasAttribute('data-useall')) { var ug = giftOf(S.gfound); if (ug) { $('be-take-amt').value = gl(ug); quietFocus($('be-take-amt')); } return; }
+      if (t.hasAttribute('data-reg-edit')) { S.reg.edit = true; render('#be-rd'); return; }
+      if (t.hasAttribute('data-reg-cancel')) { S.reg.edit = false; render('[data-reg-edit]'); return; }
+    });
+    panel.addEventListener('input', function (e) {
+      if (e.target.id === 'be-q') { S.q = e.target.value; S.shown = 6; S.open = null; $('be-wv-out').innerHTML = wvListHtml(); }
+      if (e.target.id === 'be-gq') S.gq = e.target.value;
+    });
+    panel.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target;
+      if (f.id === 'be-wv-form') return;
+      if (f.id === 'be-gift-form') {
+        var code = norm($('be-gq').value), g = code ? giftOf(code) : null;
+        S.gq = $('be-gq').value; S.gfound = g ? g.code : null;
+        S.gmiss = g ? '' : !code ? 'A code has 10 letters and numbers, like ABCD-EFGH-JK.' : 'That code isn&rsquo;t one of your certificates. Check the letters, and ask to see the email it came in.';
+        render(g ? '#be-gcard' : '#be-gq'); return;
+      }
+      if (f.id === 'be-take') {
+        var gg = giftOf(S.gfound), amt = Math.round(parseFloat(String($('be-take-amt').value).replace(/[^0-9.]/g, '')) || 0);
+        if (!gg) return;
+        if (amt <= 0) { $('be-gst').textContent = 'How much they used, in dollars, like 20.'; quietFocus($('be-take-amt')); return; }
+        if (amt > gl(gg)) { $('be-gst').textContent = 'That’s more than is left ($' + gl(gg) + ').'; quietFocus($('be-take-amt')); return; }
+        gg.left -= amt; gg.uses = gg.uses.concat(['Just now: $' + amt + ', in the gallery']);
+        render('#be-gcard'); $('be-gst').textContent = '$' + amt + ' recorded, $' + gl(gg) + ' left. Preview only: changed in this preview, nowhere else.'; return;
+      }
+      if (f.id === 'be-reg-form') {
+        var d = $('be-rd').value, tm = $('be-rt').value;
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !/^\d{2}:\d{2}/.test(tm)) { $('be-rst').textContent = 'Pick a day and a time.'; return; }
+        S.reg = { edit: false, set: true, date: d, time: tm.slice(0, 5) }; render('[data-reg-edit]');
+        $('be-rst').textContent = 'Preview only: changed in this preview, nowhere else.'; return;
+      }
+    });
+    panel.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.key === 'Esc') && S.offer) { var n = S.offer; S.offer = null; render(); quietFocus(panel.querySelector('[data-offer="' + n + '"]')); } });
+
+    /* ---------- a try in the page's own sign-up sheet joins the list, in memory only ---------- */
+    document.addEventListener('fa:signup', function (e) {
+      var d = e.detail || {}, c = byNo(d.n); if (!c || !d.mail) return;
+      var nm = String(d.name || 'You').trim() || 'You', f = firstWord(nm), wait = d.mode === 'wait';
+      var p = { demo: true, first: f, name: nm, mail: String(d.mail).trim(), cls: c.n, m: 1e9 };
+      if (wait) {
+        W[c.n] = W[c.n].filter(function (x) { return !x.demo; }).concat([p]);
+        FRESH.wait = true;
+      } else {
+        if (c.type === 'kids') { p.kid = String(d.kid || '').trim() || 'Your child'; p.age = d.age || ''; }
+        p.level = c.pre === 'wheel' ? (c.type === 'glaze' ? 'Has thrown before' : 'Can center 2 lbs') : c.pre === 'member' ? (d.pre === 'member' ? 'Member' : 'In another class') : c.pre === 'glaze' ? 'Knows glazing basics' : '';
+        p.filed = d.waiver !== 'sign'; p.sig = p.filed ? '' : String(d.sig || '').trim(); p.wm = 1e9; p.paid = Math.max(0, +d.paid || 0); p.gc = d.gc ? norm(d.gc) : '';
+        if (p.gc && !giftOf(p.gc)) p.gc = '';
+        R[c.n] = R[c.n].filter(function (x) { return !x.demo; }).concat([p]);
+        FRESH.classes = true; FRESH.waivers = true;
+        syncGifts();
+        if (p.gc) FRESH.gifts = true;
+      }
+      if (S.tab === 'classes' && !S.print) { if (!S.cls || S.cls === c.n) render(); }
+      else if (S.tab === 'wait' || S.tab === 'waivers' || S.tab === 'gifts') render();
+      paintTabs();
+      /* in the sign-up sheet's last screen, its "Preview only" line also points here (one line, not two) */
+      var bodyEl = $('su-body'), pane = bodyEl && bodyEl.querySelector('.pane-in');
+      if (pane) {
+        var who = c.type === 'kids' && !wait && d.kid ? firstWord(String(d.kid).trim()) : f;
+        var notes = pane.querySelectorAll('.demo-note'), line = pane.querySelector('.be-tell') || notes[notes.length - 1];
+        if (!line) { line = document.createElement('p'); var nav = pane.querySelector('.bk-nav'); pane.insertBefore(line, nav || null); }
+        line.className = 'demo-note be-tell';
+        line.innerHTML = (wait ? 'Preview only: nothing was sent. On your real site, the email goes out by itself. ' : 'Preview only: nothing was charged or sent. On your real site, one more cone bends over on that class time. ') +
+          esc(who) + ' is now on the #' + c.n + (wait ? ' waitlist' : ' list') + ' in your back end preview below. <button type="button" class="linkish" data-be-see="' + c.n + '" data-be-mode="' + (wait ? 'wait' : 'su') + '">See it</button>';
+      }
+    });
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-be-see]'); if (!b) return;
+      var n = b.getAttribute('data-be-see'), wait = b.getAttribute('data-be-mode') === 'wait', dlg = $('su');
+      if (dlg && dlg.open) dlg.close();
+      if (wait) { S.offer = null; S.tab = 'wait'; FRESH.wait = false; } else { S.tab = 'classes'; S.cls = n; S.print = false; S.day = 0; FRESH.classes = false; }
+      paintTabs(); render(null, true);
+      var target = (wait ? panel.querySelector('.be-wait.be-fresh') : $('be-you')) || $('be-vh');
+      var frame = app.closest('.be-frame') || app;
+      setTimeout(function () {
+        frame.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+        quietFocus($('be-vh'));
+        if (target && target.getBoundingClientRect().bottom > window.innerHeight) setTimeout(function () { target.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); }, reduce ? 0 : 450);
+        say(wait ? 'Your back end, Waitlist: you are on the #' + n + ' waitlist.' : 'Your back end, class #' + n + ': you are on the list.');
+      }, 30);
+    });
+
+    paintTabs(); render();
   })();
 </script>
 
@@ -2229,7 +3099,7 @@
     var V = {
       maiden: { name: 'Planted', price: 'a class trade', what: 'one page, planted and kept healthy, with your whole class list sorted by what people want to make and then by level (each class written once, with every time, teacher, place and clay under it, and a Register button to your Square shop), your fused glass, memberships, firing rates, the gallery, kind words, and how to find you.', next: 'mother' },
       mother: { name: 'Tended', price: 'a class trade', what: 'a full site, tended as the seasons change, with everything in Planted plus the class list in tabs by what people want to make, narrowed by day and place, a Register button on each class that opens that exact class on Square, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: 'a class trade', what: 'your site in full bloom, with everything in Tended plus sign-up right on each class time: spots left as witness cones in a little kiln window, a level check that points people to the right class, the waiver signed in the form, gift certificate numbers taken right there, and a waitlist that emails the next person when a spot opens. Paid into your own Stripe, or Square if you’d rather keep it. That’s every piece on this page.' },
+      crone: { name: 'In Bloom', price: 'a class trade', what: 'your site in full bloom, with everything in Tended plus sign-up right on each class time: spots left as witness cones in a little kiln window, a level check that points people to the right class, the waiver signed in the form, gift certificate numbers taken right there, a waitlist that emails the next person when a spot opens, and your own back end with the class lists, waitlist, waivers and gift certificates. Sign-ups pay into your own Stripe, or Square if you’d rather keep it. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
