@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Licensed and insured house cleaning from Trinidad to Rio Dell: regular housekeeping, deep cleans, move-in and move-out cleans, Airbnb turnovers and one-time cleans. Free quotes: (707) 845-3895.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a2326'/%3E%3Cg transform='rotate(28 16 16)'%3E%3Crect x='14.6' y='2' width='2.8' height='15' rx='1.4' fill='%23f3b6c8'/%3E%3Crect x='12.8' y='16' width='6.4' height='3' rx='1' fill='%23e2a68e'/%3E%3Cpath d='M12.8 19h6.4l4.6 10.5q-7.8 2-15.6 0z' fill='%23c95a77'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="preload" as="image" href="images/hero-floor.webp" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" imagesrcset="images/hero-kitchen-800.webp 800w, images/hero-kitchen-1400.webp 1400w, images/hero-kitchen-2400.webp 2400w" imagesizes="(max-width: 760px) 134vw, max(60vw, 158vh)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..700&family=Funnel+Sans:ital,wght@0,300..700;1,400&family=Birthstone+Bounce:wght@500&family=Caveat:wght@600&display=swap">
@@ -138,13 +138,13 @@
   .btn.quiet:hover { background: var(--ground-2); }
   .btn .heart { color: #f3b6c8; font-size: 14px; }
 
-  /* THE HERO: their own cover photo, a kitchen floor gleaming after a clean, melting into blush on the left */
+  /* THE HERO: a sunny kitchen sink in daylight (a free Unsplash sample photo, Oct 13, at Taya's note; tagged "Sample photo"), melting into blush on the left */
   .hero { position: relative; overflow: hidden; min-height: 92vh; min-height: 92svh; display: flex; flex-direction: column; background: var(--hero-ground); color: var(--hero-ink); }
   /* the photo's left edge is a soft dry brush edge, like the blush strokes on their flyer: painted on, then melting into blush */
   .hero-photo { position: absolute; inset: 0 0 0 40%; z-index: 0; margin: 0;
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cfilter id='s' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Cg filter='url(%23s)' fill='black'%3E%3Cpath d='M180 -40H1040V1040H170C150 950 196 890 172 830 150 770 194 712 174 650 154 590 200 530 178 470 158 410 198 350 176 290 156 230 198 170 178 110 164 60 186 20 180 -40Z'/%3E%3Cpath d='M180 150C150 146 124 151 100 157 126 163 152 168 180 170Z'/%3E%3Cpath d='M176 372C144 368 118 374 92 380 120 386 146 391 176 393Z'/%3E%3Cpath d='M174 566C148 563 126 568 106 572 128 577 150 581 174 583Z'/%3E%3Cpath d='M172 776C144 772 118 778 96 783 120 789 146 794 172 796Z'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, linear-gradient(90deg, transparent 0, #000 24%); -webkit-mask-composite: source-in;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cfilter id='s' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Cg filter='url(%23s)' fill='black'%3E%3Cpath d='M180 -40H1040V1040H170C150 950 196 890 172 830 150 770 194 712 174 650 154 590 200 530 178 470 158 410 198 350 176 290 156 230 198 170 178 110 164 60 186 20 180 -40Z'/%3E%3Cpath d='M180 150C150 146 124 151 100 157 126 163 152 168 180 170Z'/%3E%3Cpath d='M176 372C144 368 118 374 92 380 120 386 146 391 176 393Z'/%3E%3Cpath d='M174 566C148 563 126 568 106 572 128 577 150 581 174 583Z'/%3E%3Cpath d='M172 776C144 772 118 778 96 783 120 789 146 794 172 796Z'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, linear-gradient(90deg, transparent 0, #000 24%); mask-composite: intersect; }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 58% 55%; display: block; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; display: block; }
   .hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 70%, transparent) 0, transparent 150px); }
   .hero > .gutter { position: relative; z-index: 3; }
@@ -161,10 +161,22 @@
   .hero-trust { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 26px; list-style: none; font-size: 14.5px; color: var(--hero-soft); }
   .hero-trust li { display: inline-flex; align-items: center; gap: 7px; }
   .hero-trust li::before { content: "\2726"; content: "\2726" / ""; color: var(--rose-logo); font-size: 11px; }
+  /* mid widths: the photo's brush edge starts near 45% of the width, so the lede and the trust line wrap before it
+     and stay on blush (Oct 13; "Trinidad to Rio Dell" sat on the photo at 761 to 960) */
+  @media (min-width: 761px) and (max-width: 1179px) {
+    .hero .lede { max-width: min(38ch, calc(45vw - 40px)); }
+    .hero-trust { max-width: calc(45vw - 40px); }
+  }
+  /* "Sample photo" chip: stock fills this one spot until they send a photo they love; charcoal like their flyer swash */
+  .sample-tag { position: absolute; z-index: 2; right: max(20px, env(safe-area-inset-right, 0px)); bottom: 20px; pointer-events: none;
+    font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+    color: #fbeff0; background: rgba(42, 35, 38, 0.76); border: 1px solid rgba(251, 239, 240, 0.22);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); padding: 6px 10px 6px 11px; border-radius: 999px; white-space: nowrap; }
 
-  .hero.wait .hero-photo, .hero.wait::after, .hero.wait .label, .hero.wait h1, .hero.wait .tagline, .hero.wait .lede, .hero.wait .cta-row, .hero.wait .hero-trust { opacity: 0; }
+  .hero.wait .hero-photo, .hero.wait::after, .hero.wait .sample-tag, .hero.wait .label, .hero.wait h1, .hero.wait .tagline, .hero.wait .lede, .hero.wait .cta-row, .hero.wait .hero-trust { opacity: 0; }
   .hero.go .hero-photo { animation: hero-photo 3.8s cubic-bezier(.22,1,.36,1) both; }
   .hero.go::after { animation: hero-fade 2.2s ease 0.6s both; }
+  .hero.go .sample-tag { animation: hero-fade 1.6s ease 2.6s both; }
   .hero.go .label { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.4s both; }
   .hero.go h1 { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 1.7s both; }
   .hero.go .tagline { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 2.4s both; }
@@ -179,21 +191,29 @@
   @media (max-width: 760px) {
     .hero { min-height: 0; }
     .hero-photo { inset: 0 0 auto 0; height: min(78vw, 440px); -webkit-mask: none; mask: none; }
-    .hero-photo img { object-position: 55% 55%; }
+    .hero-photo img { object-position: 52% 50%; }
+    .sample-tag { top: calc(min(78vw, 440px) - 158px); bottom: auto; right: max(16px, env(safe-area-inset-right, 0px)); }
     .hero::after { background:
       linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 94%, transparent) 0, color-mix(in srgb, var(--hero-ground) 78%, transparent) 120px, transparent 185px),
       linear-gradient(180deg, transparent calc(min(78vw, 440px) - 120px), var(--hero-ground) min(78vw, 440px)); }
     .hero-main { padding-block: calc(min(78vw, 440px) - 120px) 44px; }
   }
-  /* dark mode keeps the daylight photo bright: a lighter scrim behind the phone nav */
+  /* dark mode keeps the daylight photo bright: only the band behind the nav gets a dark scrim, deep enough that the light
+     nav words stay AA over the bright kitchen wall (Oct 13 stock hero) */
+  @media (min-width: 761px) {
+    :root[data-theme="dark"] .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 66%, transparent) 112px, transparent 200px); }
+  }
+  @media (min-width: 761px) and (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 66%, transparent) 112px, transparent 200px); }
+  }
   @media (max-width: 760px) {
     :root[data-theme="dark"] .hero::after { background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 78%, transparent) 0, color-mix(in srgb, var(--hero-ground) 40%, transparent) 105px, transparent 170px),
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 60%, transparent) 110px, transparent 180px),
       linear-gradient(180deg, transparent calc(min(78vw, 440px) - 120px), var(--hero-ground) min(78vw, 440px)); }
   }
   @media (max-width: 760px) and (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .hero::after { background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 78%, transparent) 0, color-mix(in srgb, var(--hero-ground) 40%, transparent) 105px, transparent 170px),
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 60%, transparent) 110px, transparent 180px),
       linear-gradient(180deg, transparent calc(min(78vw, 440px) - 120px), var(--hero-ground) min(78vw, 440px)); }
   }
 
@@ -783,10 +803,11 @@
 <div class="hero" id="top">
   <figure class="hero-photo">
     <picture>
-      <source type="image/webp" srcset="images/hero-floor.webp">
-      <img src="images/hero-floor.jpg" width="938" height="703" alt="A wood kitchen floor gleaming after a Hadley&rsquo;s clean, with oak cabinets along the edge and the ceiling lights reflected in the shine" fetchpriority="high">
+      <source type="image/webp" srcset="images/hero-kitchen-800.webp 800w, images/hero-kitchen-1400.webp 1400w, images/hero-kitchen-2400.webp 2400w" sizes="(max-width: 760px) 134vw, max(60vw, 158vh)">
+      <img src="images/hero-kitchen-1400.jpg" srcset="images/hero-kitchen-800.jpg 800w, images/hero-kitchen-1400.jpg 1400w, images/hero-kitchen-2400.jpg 2400w" sizes="(max-width: 760px) 134vw, max(60vw, 158vh)" width="2400" height="1401" alt="Sample photo: a sunny kitchen window over a white farmhouse sink with the tap running, sunflowers and oranges on the wood counters" fetchpriority="high">
     </picture>
   </figure>
+  <span class="sample-tag" aria-hidden="true">Sample photo</span>
   <div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
@@ -965,7 +986,7 @@
       </div>
       <p class="vh" role="status" id="s-live"></p>
     </div>
-    <p class="tier-note mock-note wf-note scrub-note">Every pair here is your own before and after, from your Facebook. I can follow your socials and add new ones as you post, or you can email me the photos.</p>
+    <p class="tier-note mock-note wf-note scrub-note">Every pair here is your own before and after, from your Facebook. I can follow your socials and add new ones as you post, or you can email me the photos. The big photo up top is a stand-in until you send me one you love.</p>
   </div>
 </section>
 
