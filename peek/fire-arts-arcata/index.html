@@ -489,6 +489,90 @@
   @keyframes floor-cool { 0% { opacity: 0; transform: translateY(45%); } 30% { opacity: 0.85; transform: none; } 100% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .spy::before, .spy .cone, .spy .j1, .spy .j2 { animation: none !important; transition: none !important; } .spy.full::before { opacity: 0; } }
 
+  /* ---------- the head of the class list (Oct 13 2026): a session already running, or registration not open yet,
+     with the next registration day and its calendar buttons. Taya's note under it starts the registration day demo. ---------- */
+  .ses-head { margin-top: 30px; display: grid; gap: 22px; }
+  .sh-card { padding: 20px 20px 18px; background: var(--card); border: 1px solid var(--hair); border-radius: 14px; }
+  .sh-h { display: flex; align-items: center; gap: 10px; font-size: clamp(25px, 2.6vw, 30px); line-height: 1.15; }
+  .sh-p { margin-top: 6px; font-size: 15.5px; color: var(--ink-soft); max-width: 46em; }
+  .sh-p b { color: var(--ink); font-weight: 600; }
+  /* the kiln door's lamp, small: lit = firing now (a session in session) */
+  .lampdot { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle, #fff3c4 0 30%, #ffc23a 55%, #e0300e 100%); box-shadow: 0 0 10px 2px rgba(255, 150, 40, 0.55); }
+  .sh-note, .sh-demo { display: grid; gap: 6px; font-size: 14.5px; color: var(--ink-soft); }
+  .sh-note b, .sh-demo b { color: var(--ink); font-weight: 600; }
+  .sh-note .linkish { padding: 4px 2px; }
+  /* the classes still to start, each a link to its time in the list */
+  .sh-later { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 2px 12px; margin: 4px 0 0; padding: 0; list-style: none; font-size: 15.5px; color: var(--ink-soft); }
+  .sh-later li { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: baseline; }
+  @supports not (grid-template-columns: subgrid) { .sh-later li { grid-template-columns: 6.4em minmax(0, 1fr); column-gap: 10px; } }
+  .sh-later .sh-d { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sh-later .linkish { justify-self: start; padding: 4px 1px; text-align: left; }
+  .sh-demo { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 16px; }
+  .sh-demo p:focus { outline: none; }
+  @media (max-width: 560px) { .sh-demo { grid-template-columns: minmax(0, 1fr); } .sh-demo .bk-go { justify-self: start; } }
+  .demo-end { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 30px; font-size: 14.5px; color: var(--ink-soft); }
+  /* a class time already running: no button, just since when (full ones still say Full) */
+  .ses-on { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--ink-soft); text-align: right; }
+  .ses-on .lampdot { width: 8px; height: 8px; box-shadow: 0 0 7px 1px rgba(255, 150, 40, 0.5); }
+  .ses-on.ended { font-weight: 500; }
+  .slot.closed { background: transparent; }
+  /* phones: the time keeps its line, and "In session since" sits under the teacher and dates */
+  .slot.closed, .no-bloom .slot.closed { grid-template-areas: "when when" "who who" "act act"; }
+  .slot.closed.full, .no-bloom .slot.closed.full { grid-template-areas: "when spots" "who who" "act act"; }
+  .slot.closed.full .s-spots { justify-self: end; min-height: 0; margin: 0; }
+  .slot.closed .s-act { justify-self: start; margin-top: 2px; }
+  .slot.closed .ses-on { min-height: 0; text-align: left; }
+  @media (min-width: 900px) {
+    .slot.closed, .slot.closed.full, .no-bloom .slot.closed, .no-bloom .slot.closed.full { grid-template-columns: 170px minmax(0, 1fr) auto minmax(190px, auto); grid-template-areas: "when who spots act"; }
+    .slot.closed .s-act { justify-self: end; margin-top: 0; }
+    .slot.closed .ses-on { min-height: 44px; text-align: right; }
+  }
+  /* phones, before registration opens: "Opens Mon, Nov 16, 9 am" gets its own line under the teacher and dates, so the time keeps its line */
+  @media (max-width: 899.98px) {
+    .slot.soon { grid-template-areas: "when when" "who who" "spots spots" "act act"; }
+    .no-bloom .slot.soon { grid-template-areas: "when when" "who who" "act act"; }
+    .no-bloom .slot.soon.full { grid-template-areas: "when spots" "who who" "act act"; }
+    .slot.soon .s-act { justify-self: start; margin-top: 4px; }
+  }
+  /* a later class, picked from the list head: a soft ring for a moment, so the eye lands on it */
+  .slot.hl { box-shadow: 0 0 0 2.5px var(--word); transition: box-shadow 0.6s ease; }
+  @media (prefers-reduced-motion: reduce) { .slot.hl { transition: none; } }
+
+  /* ---------- registration day, in your calendar: iPhone or Mac (a calendar file), Android or Google (Google Calendar),
+     or subscribe to every registration day ---------- */
+  .cal { display: grid; gap: 10px; margin-top: 16px; }
+  .cal-q { font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--ink); }
+  .cal-q svg { display: inline-block; vertical-align: -3px; margin-right: 8px; color: var(--word); }
+  .cal-q .tag { margin-left: 6px; }
+  .cal-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cal-btn { flex: 1 1 140px; max-width: 240px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 14px; border-radius: 10px;
+    font: 600 15px/1.2 'Geologica', sans-serif; text-decoration: none; text-align: center; color: var(--line-ink); background: var(--card); box-shadow: inset 0 0 0 1.5px var(--line-bd); transition: background-color 0.2s ease; }
+  .cal-btn:hover { background: var(--card-hi); }
+  .cal-sub > summary { display: inline-flex; align-items: flex-start; gap: 7px; min-height: 40px; padding-top: 8px; line-height: 1.45; cursor: pointer; list-style: none; font-size: 15px; font-weight: 600; color: var(--link); }
+  .cal-sub > summary::-webkit-details-marker { display: none; }
+  .cal-sub > summary span { text-decoration: underline; text-underline-offset: 3px; }
+  .cal-sub > summary svg { flex: none; margin-top: 5px; transition: rotate 0.2s ease; }
+  .cal-sub[open] > summary svg { rotate: 45deg; }
+  .cal-sub-in { display: grid; gap: 10px; padding: 2px 0 4px; }
+  .cal-p { font-size: 14.5px; color: var(--ink-soft); max-width: 40em; }
+  @media (prefers-reduced-motion: reduce) { .cal-btn, .cal-sub > summary svg { transition: none; } }
+  /* phones: the two buttons side by side, and the label keeps its tag */
+  @media (max-width: 560px) {
+    .ses-head { gap: 16px; }
+    .sh-card { padding: 18px 16px 16px; }
+    .cal-btn { max-width: none; padding: 8px 10px; font-size: 14.5px; }
+  }
+  /* in the reminder card (always dark) */
+  .news .cal { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(251, 238, 221, 0.16); }
+  .news .nl-done .cal { margin-top: 16px; padding-top: 0; border-top: 0; }
+  .news .cal-q { color: #fbeedd; }
+  .news .cal-q svg { color: #ffc23a; }
+  .news .cal-btn { color: #fbeedd; background: transparent; box-shadow: inset 0 0 0 1.5px rgba(251, 238, 221, 0.6); }
+  .news .cal-btn:hover { background: rgba(251, 238, 221, 0.08); }
+  .news .cal-sub > summary { color: #ffd99a; }
+  .news .cal-p { color: #e7d3bd; }
+  .news .cal a:focus-visible, .news .cal-sub > summary:focus-visible { outline-color: #ffc23a; }
+
   .empty { margin-top: 26px; padding: 22px; border: 1.5px dashed var(--hair-2); border-radius: 12px; color: var(--ink-soft); }
   .where-fold { margin-top: 48px; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
   .where-fold > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; cursor: pointer; list-style: none; font-family: 'Eczar', Georgia, serif; font-size: 23px; font-weight: 600; line-height: 1.2; }
@@ -1017,8 +1101,8 @@
       <img class="door-cap" src="images/kiln-door-arch.svg" width="600" height="70" alt="">
       <div class="door-body">
         <ul class="ses">
-          <li><span class="lamp" aria-hidden="true"></span><span><b>Fall 2026</b><span class="d">Sept 14 to Nov 7</span></span><span class="n">Firing now: the classes on this page</span></li>
-          <li><span class="lamp cold" id="win-lamp" aria-hidden="true"></span><span><b>Winter 2027</b><span class="d">Jan 4 to Mar 8</span></span><span class="n" id="win-n"><span id="win-soon">Schedule out in early November.<span data-show="mother crone all"> <a href="#news">Get a reminder</a> <span class="tag" data-go="mother">Tended</span></span></span><span id="win-now" hidden></span></span></li>
+          <li><span class="lamp" id="fall-lamp" aria-hidden="true"></span><span><b>Fall 2026</b><span class="d">Sept 14 to Nov 7</span></span><span class="n" id="fall-n">Firing now: the classes on this page</span></li>
+          <li><span class="lamp cold" id="win-lamp" aria-hidden="true"></span><span><b>Winter 2027</b><span class="d">Jan 4 to Mar 8</span></span><span class="n" id="win-n"><span id="win-soon"><span id="win-soon-t">Schedule out in early November.</span><span data-show="mother crone all"> <a href="#news">Get a reminder</a> <span class="tag" data-go="mother">Tended</span></span></span><span id="win-now" hidden></span></span></li>
         </ul>
         <div class="heatup" id="heatup">
           <p class="heat-t" id="heat-t">Registration opens <b>Mon, Nov 16 at 9 am</b></p>
@@ -1029,6 +1113,22 @@
     </div>
 
     <div class="pick" id="pick">
+    <div class="ses-head" id="ses-head" hidden>
+      <div class="sh-card" id="sh-card">
+        <h3 class="sh-h" id="sh-h"></h3>
+        <p class="sh-p" id="sh-p"></p>
+        <ul class="sh-later" id="sh-later" hidden></ul>
+        <div class="cal" data-cal data-cal-tag></div>
+      </div>
+      <div class="sh-note mock-note wf-note" id="sh-note">
+        <p><b>Want to see how registration day works?</b> <button type="button" class="linkish" id="sh-try">Try it here</button></p>
+        <p>On your real site, Subscribe lives at your own address and updates by itself when the next dates go in.</p>
+      </div>
+      <div class="sh-demo mock-note wf-note" id="sh-demo" hidden>
+        <p id="sh-demo-p" tabindex="-1"><span class="bk-demo">demo</span> <b>Registration day:</b> the list the moment registration opens.</p>
+        <button type="button" class="bk-go ghost small" id="sh-back">Back to today</button>
+      </div>
+    </div>
     <p class="make-q" id="make-q" data-show="mother crone all">What do you want to make?<small>Pick one, then a time. Every place and level is in each list.</small></p>
     <div class="ttabs" id="ttabs" data-show="mother crone all" data-thing="class tabs by what people want to make">
       <div class="ttabs-in" id="ttabs-in">
@@ -1094,7 +1194,7 @@
     </details>
 
     <div class="notes3 mock-note wf-note">
-      <div class="bk-note"><b>What you see</b>Your real Fall classes, teachers, times and prices, sorted the way people choose: what they want to make, then their level, then a time that fits. Each class is written once, with all its times under it, and every time says where it meets and which clay. The spots left are made up for the demo, so you can try a full class and its waitlist. When the Winter schedule is out, I swap it in, and you don&rsquo;t touch a thing.</div>
+      <div class="bk-note"><b>What you see</b>Your real Fall classes, teachers, times and prices, sorted the way people choose: what they want to make, then their level, then a time that fits. Each class is written once, with all its times under it, and every time says where it meets and which clay. A class that has started says so, with no button. The spots left are made up for the demo, and Try it here, at the top of the list, shows registration day, so you can try a full class and its waitlist. When the Winter schedule is out, I swap it in, and you don&rsquo;t touch a thing.</div>
       <div class="bk-note" data-show="maiden mother" hidden><b>Register buttons</b><span data-show="maiden">Planted: every Register button opens your class page on Square, the way it works now, just easier to find.</span><span data-show="mother" hidden>Tended: each class&rsquo;s Register button opens that exact class on your Square shop, so nobody scrolls 24 look-alike tiles.</span></div>
       <div class="bk-note" data-show="crone all"><b>Sign up right here</b>In Bloom: one short form on the class time. It asks the level question for intermediate classes, takes the waiver, takes a gift certificate number, and pays into your own Stripe, or Square if you&rsquo;d rather keep it (Square&rsquo;s Payment Links make a checkout button for any site). A cart can&rsquo;t lose your spot. When your next schedule goes in, every Sign up button says when it opens, and turns on by itself at 9 am on registration day.</div>
       <div class="bk-note"><b>Full classes</b><span data-show="maiden mother" hidden>A class you tell me is full says Full, with the waitlist email right there, class number filled in.</span><span data-show="crone all">A full class turns into a waitlist button, and its little kiln window goes cold. When someone drops, the next person gets an email right away. No more emailing the class number.</span></div>
@@ -1736,9 +1836,11 @@
         <div class="nl-row"><input id="nl-mail" type="email" autocomplete="off" value="maya@example.com"><button type="submit" class="bk-go">Remind me</button></div>
         <p class="hint" id="nl-hint" role="status"></p>
       </form>
+      <div class="cal" id="nl-cal" data-cal data-lead="Or put registration day in your calendar"></div>
       <div class="nl-done fade-in" id="nl-done" hidden>
         <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
         <p>The Winter reminder will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
+        <div class="cal" data-cal data-lead="Put it in your calendar too"></div>
         <p class="demo-note" style="margin-top:8px">Preview only: nothing was sent. On your real site, sign-ups go to your own Buttondown list.</p>
         <button type="button" class="bk-go ghost" id="nl-again">Try it again</button>
       </div>
@@ -1821,7 +1923,8 @@
 <script>
   /* the class list: their real Fall 2026 classes (schedule PDF + Square pages). Spots left are demo numbers.
      FA_SESSION: when registration opens (Pacific time). Before then, every class time says when it opens instead of Sign up or Register.
-     When the Winter schedule goes in: name 'Winter 2027', year 2027, opens '2026-11-16T09:00:00-08:00', opensText 'Mon, Nov 16, 9 am'. */
+     When the Winter schedule goes in: name 'Winter 2027', year 2027, opens '2026-11-16T09:00:00-08:00', opensText 'Mon, Nov 16, 9 am'.
+     The list head, the kiln door rows, the banner and the back end follow by themselves. */
   window.FA_SESSION = { name: 'Fall 2026', year: 2026, opens: '2026-08-24T09:00:00-07:00', opensText: 'Mon, Aug 24, 9 am' };
   window.FA_CLASSES = [
     { n: '01', t: 'Wheel Throwing for Beginners', who: 'Lacey Pipher', type: 'wheel', lvl: 'new', day: 1, time: '5:30 to 8 pm', start: 17.5, dates: 'Sept 14 to Nov 2', len: '8 weeks', where: 's10', cap: 8, left: 2, price: 325, u: '-01-wheel-throwing-for-beginners-cone-6-lacey-pipher/31', d: 'For beginning wheel throwing students. Basic wheel throwing techniques, and the steps to make mugs, bowls and other forms. Glazing is covered too.' },
@@ -1850,6 +1953,71 @@
     { n: '25', t: 'Ceramics for Kids, ages 8 to 12', who: 'Amanda Steinebach', type: 'kids', lvl: 'kids', day: 2, time: '3:30 to 5:30 pm', start: 15.5, dates: 'Sept 15 to Oct 13', len: '5 weeks', where: 'main', cap: 8, left: 0, price: 220, u: '-25-ceramics-for-kids-ages-8-12-amanda-steinebach/28', d: 'Craftsmanship and ceramics words, while making pinch pots, coils and slab work with their own creative flair. It’s right after school, so you may want to pack a snack.' },
     { n: '26', t: 'Ceramics for Kids, ages 8 to 12', who: 'Amanda Steinebach', type: 'kids', lvl: 'kids', day: 2, time: '3:30 to 5:30 pm', start: 15.5, dates: 'Oct 20 to Nov 17', len: '5 weeks', where: 'main', cap: 8, left: 4, price: 220, u: '-26-ceramics-for-kids-ages-8-12-amanda-steinebach/4LDSKXCIKU2BYOKLFFOZW5A5', d: 'Craftsmanship and ceramics words, while making pinch pots, coils and slab work with their own creative flair. It’s right after school, so you may want to pack a snack.' }
   ];
+  /* Registration days, for the calendar buttons. "iPhone or Mac" opens the day's own calendar file (one event; the file
+     asks for an alert the evening before and 15 minutes before, and a calendar that subscribes to it instead of adding it
+     can leave those off), "Android or Google" opens Google Calendar with the event filled in, and Subscribe adds
+     registration-days.ics, every registration day in one calendar. When the next date is out, add it here, give it its
+     own .ics like winter-2027-registration.ics, and add it to registration-days.ics (CRLF line endings, lines folded at
+     75 octets, a new DTSTAMP and LAST-MODIFIED). The back end's Registration day tab reads the next one from here too
+     (as window.FA_NEXT). Still written for Winter, by hand, for the Spring date: the banner's words and its auto-open
+     date ("the status banner" script), the kiln door rows (#sessions) and its REG date ("the kiln door" script), the FAQ
+     "When can I sign up?" and the text bubble in the share card. */
+  window.FA_REG = [
+    { name: 'Winter 2027', opens: '2026-11-16T09:00:00-08:00', opensText: 'Mon, Nov 16 at 9 am', begins: 'Mon, Jan 4', ics: 'winter-2027-registration.ics' }
+  ];
+  window.FA_PAGE = 'https://webfaery.love/peek/fire-arts-arcata/';
+  window.FA_FEED = window.FA_PAGE + 'registration-days.ics';
+  (function () {
+    var R = window.FA_REG, now = Date.now();
+    for (var i = 0; i < R.length; i++) {
+      var m = String(R[i].opens).match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})/);
+      if (m && Date.parse(R[i].opens) > now) { if (!window.FA_NEXT) window.FA_NEXT = { name: R[i].name, date: m[1], time: m[2] }; break; }
+    }
+  })();
+</script>
+
+<script>
+  /* registration day, in your calendar: fills every [data-cal] box with the next registration day (or, when none is set
+     yet, just Subscribe). Apple: the .ics file, and webcal:// to subscribe. Google: an event link, and its add by URL link
+     (subscribing in Google works from a computer, not the phone app). */
+  (function () {
+    var REG = window.FA_REG || [], PAGE = window.FA_PAGE || '', FEED = window.FA_FEED || '';
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function next() { var now = Date.now(); for (var i = 0; i < REG.length; i++) if (Date.parse(REG[i].opens) > now) return REG[i]; return null; }
+    function z(t) { return new Date(t).toISOString().replace(/\.\d+Z$/, 'Z').replace(/[-:]/g, ''); }
+    function google(r) {
+      var a = Date.parse(r.opens), s = r.name.split(' ')[0];
+      return 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent('Fire Arts ' + s + ' registration opens') +
+        '&dates=' + z(a) + '%2F' + z(a + 30 * 60000) +
+        '&details=' + encodeURIComponent(s + ' classes begin ' + r.begins + '. Registration is online only, and it opens at 9 am Pacific.\nFind your class: ' + PAGE + '#classes') +
+        '&location=' + encodeURIComponent('Online');
+    }
+    var WEBCAL = FEED.replace(/^https?:/, 'webcal:');
+    var ICON = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+    var PLUS = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 2v8M2 6h8"/></svg>';
+    var TAG = ' <button type="button" class="tag" data-go="maiden">Every build<span class="vh">: see your site as Planted</span></button>';
+    function subRow() {
+      return '<div class="cal-row"><a class="cal-btn" href="' + esc(WEBCAL) + '">iPhone or Mac<span class="vh">: subscribe in Apple Calendar</span></a>' +
+        '<a class="cal-btn" href="https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(WEBCAL) + '" target="_blank" rel="noopener">Google, on a computer<span class="vh">: subscribe in Google Calendar (opens in a new tab)</span></a></div>' +
+        '<p class="cal-p">On iPhone or Mac, turn on the calendar&rsquo;s alerts to get a nudge.</p>';
+    }
+    function fill(box) {
+      var r = next(), tag = box.hasAttribute('data-cal-tag') ? TAG : '';
+      if (!r) {
+        box.innerHTML = '<p class="cal-q">' + ICON + 'Get each new registration day in your calendar' + tag + '</p><p class="cal-p">Subscribe, and the next one shows up when its dates are out.</p>' + subRow();
+        return;
+      }
+      var s = esc(r.name.split(' ')[0]);
+      box.innerHTML = '<p class="cal-q">' + ICON + esc(box.getAttribute('data-lead') || 'Put it in your calendar') + tag + '</p>' +
+        '<div class="cal-row"><a class="cal-btn" href="' + esc(r.ics) + '">iPhone or Mac<span class="vh">: add ' + s + ' registration day to Apple Calendar</span></a>' +
+        '<a class="cal-btn" href="' + esc(google(r)) + '" target="_blank" rel="noopener">Android or Google<span class="vh">: add ' + s + ' registration day in Google Calendar (opens in a new tab)</span></a></div>' +
+        '<details class="cal-sub"><summary>' + PLUS + '<span>Or subscribe to every registration day</span></summary><div class="cal-sub-in">' +
+        '<p class="cal-p">Each new one shows up in your calendar as the dates come out.</p>' + subRow() + '</div></details>';
+    }
+    [].forEach.call(document.querySelectorAll('[data-cal]'), fill);
+    window.FA_cal = { next: next };
+  })();
 </script>
 
 <script>
@@ -1948,9 +2116,40 @@
     function spotsShort(c) { return c.left < 1 ? 'Full' : c.left === 1 ? '1 spot left' : c.left + ' of ' + c.cap + ' left'; }
     var SES = window.FA_SESSION || {}, OPENS = Date.parse(SES.opens || '') || 0;
     function notYet() { return OPENS && Date.now() < OPENS; }
+    /* a class time that has started says so in place of Sign up or Register, by the clock in Arcata (for every visitor,
+       in any time zone), and after its last class it says when it ended. The registration day demo (Taya's note at the
+       top of the list) shows the list the way it looks the moment sign-ups open. */
+    var DEMO = false, MO = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+    function meets(c) {
+      var y = SES.year || new Date(Date.now()).getFullYear(), prev = -1, out = [];
+      String(c.dates).replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* (\d{1,2})\b/g, function (m, mo, d) {
+        var k = MO[mo]; if (k < prev) y++; prev = k; out.push({ y: y, m: k, d: +d, s: m }); return m;
+      });
+      return out;
+    }
+    function clockLA() {
+      var now = new Date(Date.now());
+      try {
+        var p = {}; new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).formatToParts(now).forEach(function (x) { p[x.type] = +x.value; });
+        return Date.UTC(p.year, p.month - 1, p.day, p.hour % 24, p.minute);
+      } catch (e) { return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()); }
+    }
+    function stateOf(c) {
+      if (DEMO) return '';
+      var ds = meets(c); if (!ds.length) return '';
+      var a = ds[0], z = ds[ds.length - 1], now = clockLA(), h = +c.start || 0;
+      if (now >= Date.UTC(z.y, z.m, z.d + 1)) return 'ended';
+      return now >= Date.UTC(a.y, a.m, a.d, Math.floor(h), Math.round((h % 1) * 60)) ? 'on' : '';
+    }
+    function sesOn(c, st) {
+      var ds = meets(c);
+      return st === 'on' ? '<span class="ses-on"><i class="lampdot" aria-hidden="true"></i>In session since ' + esc(ds[0].s) + '<span class="vh"> for #' + c.n + '</span></span>'
+        : '<span class="ses-on ended">Ended ' + esc(ds[ds.length - 1].s) + '<span class="vh"> for #' + c.n + '</span></span>';
+    }
     function act(c, w) {
-      var v = view(), full = c.left < 1;
-      if (notYet()) return '<span class="go line soon-go" aria-disabled="true">Opens ' + esc(SES.opensText || '') + '<span class="vh"> for #' + c.n + '</span></span>';
+      var v = view(), full = c.left < 1, st = stateOf(c);
+      if (st) return sesOn(c, st);
+      if (notYet() && !DEMO) return '<span class="go line soon-go" aria-disabled="true">Opens ' + esc(SES.opensText || '') + '<span class="vh"> for #' + c.n + '</span></span>';
       if (v === 'maiden' || v === 'mother') {
         /* Planted and Tended don't count spots; a class you tell me is full says so, with the waitlist email filled in */
         if (full) return '<a class="go line" href="mailto:director@fireartsarcata.com?subject=' + encodeURIComponent('Waitlist: class #' + c.n + ', ' + c.t) + '&amp;body=' + encodeURIComponent('Name:\nPhone:\nEmail:\nClass #' + c.n + ', ' + DAYS[c.day] + 's ' + c.time) + '">Email to join the waitlist<span class="vh"> for #' + c.n + '</span></a>';
@@ -1963,11 +2162,11 @@
         : '<button type="button" class="go hot" data-su="' + c.n + '" data-at="' + w + '">Sign up<span class="vh"> for #' + c.n + ', ' + esc(c.t) + ', ' + DAYS[c.day] + 's</span></button>';
     }
     function row(c) {
-      var b = bloom(), full = c.left < 1, w = places(c)[0];
-      return '<li class="slot' + (full ? ' full' : '') + '" id="c-' + c.n + '">' +
+      var b = bloom(), full = c.left < 1, w = places(c)[0], st = stateOf(c);
+      return '<li class="slot' + (full ? ' full' : '') + (st ? ' closed' : notYet() && !DEMO ? ' soon' : '') + '" id="c-' + c.n + '">' +
         '<p class="s-when"><b><span class="ds">' + SHORT[c.day] + '</span><span class="dl">' + DAYS[c.day] + 's</span></b>' + esc(c.time) + '</p>' +
         '<p class="s-who"><span class="g1"><span class="t">' + esc(c.who) + '</span><span class="sep" aria-hidden="true">&middot;</span>' + clayPin(c) + '</span><span class="g2">' + esc(c.dates) + '<span class="sep" aria-hidden="true">&middot;</span><span class="no">#' + c.n + '</span></span></p>' +
-        (b ? '<div class="s-spots">' + spy(c.cap, c.left, w === 'main') + '<span class="sp-t' + (full ? ' full' : c.left < 3 ? ' few' : '') + '">' + spotsShort(c) + '</span></div>'
+        (st ? (full ? '<div class="s-spots"><span class="flag-full">Full</span></div>' : '') : b ? '<div class="s-spots">' + spy(c.cap, c.left, w === 'main') + '<span class="sp-t' + (full ? ' full' : c.left < 3 ? ' few' : '') + '">' + spotsShort(c) + '</span></div>'
            : (full ? '<div class="s-spots"><span class="flag-full">Full</span></div>' : '')) +
         '<div class="s-act">' + act(c, w) + '</div></li>';
     }
@@ -1989,10 +2188,15 @@
       var bring = rows.filter(function (c) { return c.bring; })[0];
       var len = c0.type === 'kids' ? '5 weeks' : c0.len;
       var id = 'o-' + c0.n;
+      /* how many times: all of them while none has started; once some have, only the ones still to start */
+      var sts = rows.map(stateOf), ahead = sts.filter(function (s) { return !s; }).length, many = rows.length, times = '';
+      if (many > 1) times = ahead === many ? many + ' times to choose from'
+        : !ahead ? many + ' times, all ' + (sts.every(function (s) { return s === 'ended'; }) ? 'ended' : sts.every(function (s) { return s === 'on'; }) ? 'in session' : 'started')
+        : ahead + ' of ' + many + ' times ' + (ahead === 1 ? 'starts' : 'start') + ' later';
       return '<article class="off" aria-labelledby="' + id + '"><div class="off-top">' +
         '<h4 class="off-h" id="' + id + '">' + esc(t) + '</h4>' +
         '<p class="off-sum">' + esc(SUM[t] || '') + '</p>' +
-        '<p class="off-meta"><span class="p">$' + c0.price + ' <small>&middot; ' + esc(len) + '</small></span>' + (rows.length > 1 ? '<span class="soft">' + rows.length + ' times to choose from</span>' : '') + '</p>' +
+        '<p class="off-meta"><span class="p">$' + c0.price + ' <small>&middot; ' + esc(len) + '</small></span>' + (times ? '<span class="soft">' + times + '</span>' : '') + '</p>' +
         '<details class="off-more"><summary>About this class<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 2v8M2 6h8"/></svg></summary><div class="ans">' + about +
         '<ul>' + included(c0).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
         (bring ? '<p><b>Before you come:</b> ' + esc(bring.bring) + '</p>' : '') + '</div></details>' +
@@ -2002,14 +2206,16 @@
       return '<p class="cone-key">' + spy(3, 2, false) + '<span>Each cone is a spot: standing and glowing is open, bent and cooled is taken. <button type="button" class="tag" data-go="crone">In Bloom<span class="vh">: see your site as In Bloom</span></button></span></p>';
     }
     function groupHtml(rows, type, first) {
-      var h = '';
+      var h = '', key = first && bloom();
       ORDER.forEach(function (g) {
         var inG = rows.filter(function (c) { return grp(c) === g; });
         if (!inG.length) return;
         var titles = [], sub = subOf(g, type);
         inG.slice().sort(function (a, b) { return a.n < b.n ? -1 : 1; }).forEach(function (c) { if (titles.indexOf(c.t) < 0) titles.push(c.t); });
-        h += '<div class="lg"><div class="lg-hrow"><h3 class="lg-h">' + GROUPS[g].h + '</h3></div>' + (sub ? '<p class="lg-sub">' + sub + '</p>' : '') + (first && bloom() ? coneKey() : '');
-        first = false;
+        /* the cone key goes with the first group that has a class still to start (only those show cones) */
+        var withKey = key && inG.some(function (c) { return !stateOf(c); });
+        if (withKey) key = false;
+        h += '<div class="lg"><div class="lg-hrow"><h3 class="lg-h">' + GROUPS[g].h + '</h3></div>' + (sub ? '<p class="lg-sub">' + sub + '</p>' : '') + (withKey ? coneKey() : '');
         titles.forEach(function (t) { h += offering(t, inG.filter(function (c) { return c.t === t; }).sort(sortRows)); });
         h += '</div>';
       });
@@ -2019,7 +2225,7 @@
       if (c.type !== f.type) return false;
       if (skip !== 'day' && f.day && c.day !== f.day) return false;
       if (skip !== 'where' && f.where && !at(c, f.where)) return false;
-      if (f.open && bloom() && c.left < 1) return false;
+      if (f.open && bloom() && (c.left < 1 || stateOf(c))) return false;
       return true;
     }
     function paintList() {
@@ -2034,7 +2240,7 @@
         h = rows.length ? groupHtml(rows, f.type, true) : '<p class="empty">Nothing here matches all of those. <button type="button" class="linkish" data-clear>Clear the filters</button></p>';
         list.setAttribute('role', 'tabpanel'); list.setAttribute('aria-labelledby', 'tt-' + f.type);
       }
-      list.innerHTML = h;
+      list.innerHTML = h + (DEMO ? '<p class="demo-end"><span class="bk-demo">demo</span><span>Registration day, as a demo.</span> <button type="button" class="linkish" data-demo-off>Back to today</button></p>' : '');
       [].forEach.call(list.querySelectorAll('.slot .spy, .cone-key .spy'), function (s) {
         if (io) { s.classList.add('pre'); io.observe(s); } else fire(s);
       });
@@ -2076,7 +2282,67 @@
       $('np-show').textContent = shown ? 'Show ' + count(shown, 'time', 'times') : 'Nothing matches yet';
       $('np-show').disabled = !shown;
     }
-    function paint() { paintTabs(); paintNarrow(); paintList(); }
+    function paint() { paintTabs(); paintNarrow(); paintList(); paintHead(); }
+    /* the head of the list: a session already running, or registration not open yet, with the next registration day
+       (its calendar buttons fill in from FA_REG). Taya's note under it starts the registration day demo. */
+    var hd = $('ses-head');
+    function regAt(t) { var R = window.FA_REG || []; for (var i = 0; i < R.length; i++) if (Date.parse(R[i].opens) === t) return R[i]; return null; }
+    /* a newer registration day that has already opened, while this page still shows the session before it
+       (the new schedule isn't in yet): the list head sends people to the class page on Square for now */
+    function openedSince() { var R = window.FA_REG || [], now = Date.now(), o = null; R.forEach(function (r) { var t = Date.parse(r.opens); if (t <= now && t > OPENS) o = r; }); return o; }
+    /* the classes still to start, by name, each a link to its time in the list */
+    var NUM = ['', 'One', 'Two', 'Three', 'Four'];
+    function firstDay(c) { var d = meets(c)[0]; return d ? Date.UTC(d.y, d.m, d.d) : 0; }
+    function laterLine(L) {
+      var n = L.length;
+      if (n > 4) return { p: n + ' classes start later and still take sign-ups.', li: '' };
+      return { p: n === 1 ? 'One still takes sign-ups:' : NUM[n] + ' still take sign-ups:',
+        li: L.map(function (c) { return '<li><span class="sh-d">' + SHORT[c.day] + ', ' + esc(meets(c)[0].s) + '</span><button type="button" class="linkish" data-jump="' + c.n + '">' + esc(c.t.replace(/, ages .*$/, '')) + '<span class="vh">, #' + c.n + ', in the list below</span></button></li>'; }).join('') };
+    }
+    function paintHead() {
+      if (!hd) return;
+      $('sh-card').hidden = DEMO; $('sh-note').hidden = DEMO; $('sh-demo').hidden = !DEMO;
+      if (DEMO) { hd.hidden = false; return; }
+      var sea = String(SES.name || '').split(' ')[0] || 'This session', on = 0, done = 0, h, p = [], li = '', lt;
+      C.forEach(function (c) { var s = stateOf(c); if (s) on++; if (s === 'ended') done++; });
+      var later = C.filter(function (c) { return !stateOf(c) && c.left > 0; }).sort(function (a, b) { return firstDay(a) - firstDay(b) || a.start - b.start; });
+      var nx = window.FA_cal ? window.FA_cal.next() : null, op = openedSince();
+      if (op) {
+        var os = esc(op.name.split(' ')[0]);
+        h = os + ' registration is open';
+        p.push('Find your ' + os + ' class on <a href="' + SHOP + '" target="_blank" rel="noopener">our class page' + NEWTAB + '</a>. The list below is ' + esc(sea) + '.');
+        if (nx) p.push(esc(nx.name.split(' ')[0]) + ' registration opens <b>' + esc(nx.opensText) + '</b>, online.');
+        if (later.length) { lt = laterLine(later); p.push(lt.p); li = lt.li; }
+      } else if (on) {
+        h = (done === C.length ? '' : '<i class="lampdot" aria-hidden="true"></i>') + esc(sea) + (done === C.length ? ' classes are done' : ' is underway');
+        if (nx) p.push(esc(nx.name.split(' ')[0]) + ' registration opens <b>' + esc(nx.opensText) + '</b>, online.');
+        if (later.length) { lt = laterLine(later); p.push(lt.p); li = lt.li; }
+      } else if (notYet()) {
+        var r = regAt(OPENS);
+        h = esc(sea) + ' registration opens ' + esc(r ? r.opensText : SES.opensText || '');
+        p.push('Online only. Until then, each class says when it opens.');
+      } else { hd.hidden = true; return; }
+      hd.hidden = false; $('sh-h').innerHTML = h; $('sh-p').innerHTML = p.join(' '); $('sh-p').hidden = !p.length;
+      $('sh-later').innerHTML = li; $('sh-later').hidden = !li;
+    }
+    function demo(on) {
+      DEMO = !!on; paint();
+      live(on ? 'Registration day demo.' : 'Back to today.');
+      if (on) quietFocus($('sh-demo-p')); else if (!hd.hidden) $('sh-try').focus();
+    }
+    /* a later class named in the list head: its tab (Tended and In Bloom), then its time, with focus on its button */
+    var hlT = 0;
+    function jump(n) {
+      var c = byNo(n); if (!c) return;
+      var tabbed = view() !== 'maiden' && f.type !== c.type;
+      if (view() !== 'maiden') { f.type = c.type; f.day = 0; f.where = ''; if (f.open && (c.left < 1 || stateOf(c))) f.open = false; paint(); }
+      var r = $('c-' + n); if (!r) return;
+      r.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+      quietFocus(r.querySelector('.s-act .go') || r);
+      [].forEach.call(list.querySelectorAll('.slot.hl'), function (x) { x.classList.remove('hl'); });
+      r.classList.add('hl'); clearTimeout(hlT); hlT = setTimeout(function () { r.classList.remove('hl'); }, 2600);
+      if (tabbed) live();
+    }
     paint();
 
     /* when the tabs are stuck under the nav, a new pick brings the top of its list back into view */
@@ -2106,6 +2372,10 @@
     }
     function clear() { f.day = 0; f.where = ''; f.open = false; paintNarrow(); paintList(); live(); }
     $('classes').addEventListener('click', function (e) {
+      if (e.target.closest('#sh-try')) { demo(true); return; }
+      if (e.target.closest('#sh-back, [data-demo-off]')) { demo(false); return; }
+      var jb = e.target.closest('[data-jump]');
+      if (jb) { jump(jb.getAttribute('data-jump')); return; }
       var t = e.target.closest('[data-type]');
       if (t) { pick(t.getAttribute('data-type'), true); return; }
       var d = e.target.closest('.day');
@@ -2172,7 +2442,7 @@
       /* a better fit, ordered: same studio (same clay) first, then same day, then any day, with open spots.
          Workshops point to an 8 week class that's open to beginners (no level check of its own). */
       var want = c.pre === 'member' ? function (x) { return x.len === '8 weeks' && x.type !== 'kids' && !x.pre; } : function (x) { return x.type === 'wheel' && (x.lvl === 'new' || x.lvl === 'both'); };
-      var a = C.filter(function (x) { return x !== c && x.left > 0 && want(x); }).sort(nearest(c));
+      var a = C.filter(function (x) { return x !== c && x.left > 0 && !stateOf(x) && want(x); }).sort(nearest(c));
       return a.slice(0, 2);
     }
     function nearest(c) {
@@ -2228,7 +2498,7 @@
             '<div class="fld-row"><label class="fld">Your name<input id="su-wname" autocomplete="off" value="' + esc(S.wname) + '"></label><label class="fld">Email<input id="su-wmail" type="email" autocomplete="off" value="' + esc(S.wmail) + '"></label></div>' +
             '<p class="hint" id="su-hint" role="status"></p><div class="bk-nav pin"><button type="submit" class="bk-go">Join the waitlist</button></div></form>';
         } else {
-          var a = C.filter(function (x) { return x !== c && x.left > 0 && x.type === c.type && (x.lvl === c.lvl || (x.lvl === 'new' && c.lvl === 'both') || (x.lvl === 'both' && c.lvl === 'new')); }).sort(nearest(c)).slice(0, 2);
+          var a = C.filter(function (x) { return x !== c && x.left > 0 && !stateOf(x) && x.type === c.type && (x.lvl === c.lvl || (x.lvl === 'new' && c.lvl === 'both') || (x.lvl === 'both' && c.lvl === 'new')); }).sort(nearest(c)).slice(0, 2);
           h = kick('Waitlist') + '<h2 id="su-h" tabindex="-1">You&rsquo;re #2 on the list, ' + esc(S.wname.split(/\s+/)[0]) + '</h2>' + classLine(c, true) +
             '<div class="pane-in"><p>If a spot opens in #' + c.n + ', an email goes to <b style="overflow-wrap:anywhere">' + esc(S.wmail) + '</b> right away. The waitlist is for this session only.</p>' +
             (a.length ? '<div class="redirect"><span>Or, open right now:</span>' + a.map(function (x) { return '<div class="alt">' + altLine(x) + '<button type="button" class="bk-go small" data-switch="' + x.n + '">Sign up for #' + x.n + '</button></div>'; }).join('') + '</div>' : '') +
@@ -2909,15 +3179,26 @@
       catch (e) { var d = new Date(); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); }
     }
     var REGT = '<b>Mon, Nov 16 at 9 am</b>', winSoon = $('win-soon'), winNow = $('win-now');
+    /* the two rows follow the schedule on the page (FA_SESSION) and the date in Arcata: Fall is firing until its last
+       class (kids #26, Nov 17), then done; Winter is "schedule out in early November" until its classes go in, then
+       they're the classes on this page */
+    var WIN_IN = /^Winter 2027/.test((window.FA_SESSION || {}).name || ''), FALL_END = Date.UTC(2026, 10, 17), WIN_START = Date.UTC(2027, 0, 4);
+    var fallN = $('fall-n'), fallLamp = $('fall-lamp'), winT = $('win-soon-t');
+    if (fallN && fallLamp) {
+      var fallDone = todayLA() > FALL_END;
+      fallN.textContent = fallDone ? 'Done for the season' : WIN_IN ? 'Firing now' : 'Firing now: the classes on this page';
+      if (fallDone) fallLamp.className = 'lamp cold';
+    }
+    if (winT && WIN_IN) winT.textContent = 'The classes on this page.';
     function set(state) {
       var p, txt;
-      if (winSoon && winNow) { winSoon.hidden = state !== 'soon'; winNow.hidden = state === 'soon'; winNow.innerHTML = state === 'open' ? 'Registration is open. <a href="#pick">Find your class</a>' : state === 'full' ? 'Filling up. <a href="#pick">See what&rsquo;s open</a>' : ''; }
+      if (winSoon && winNow) { winSoon.hidden = state !== 'soon'; winNow.hidden = state === 'soon'; winNow.innerHTML = state === 'open' ? (WIN_IN && todayLA() >= WIN_START ? 'Firing now: the classes on this page' : 'Registration is open. <a href="#pick">Find your class</a>') : state === 'full' ? 'Filling up. <a href="#pick">See what&rsquo;s open</a>' : ''; }
       if (state === 'open') { p = 1; txt = 'Winter registration is <b>open now</b>'; }
       else if (state === 'full') { p = 1; txt = 'Winter classes are <b>filling up</b>'; }
       else {
         var days = Math.round((REG - todayLA()) / 864e5);
         p = Math.max(0.03, Math.min(1, (todayLA() - START) / (REG - START)));
-        txt = days > 1 ? 'Registration opens ' + REGT + ' &middot; ' + days + ' days to go' : days === 1 ? 'Registration opens tomorrow, ' + REGT : days === 0 ? 'Registration opens today at 9 am' : 'Registration opens ' + REGT;
+        txt = days > 1 ? 'Registration opens ' + REGT + ' &middot; ' + days + ' days to go' : days === 1 ? 'Registration opens tomorrow, ' + REGT : days === 0 ? 'Registration opens today at 9 am' : 'Registration opened ' + REGT;
         if (days < 0) p = 1;
       }
       t.innerHTML = txt;
@@ -2970,6 +3251,8 @@
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('ex:view', function () { setState(current, false); });
+    /* once Winter registration has opened (Mon, Nov 16 at 9 am Pacific), the banner starts out on Open by itself */
+    if (Date.now() >= Date.parse('2026-11-16T09:00:00-08:00')) setState('open', false);
     function openPanel(o) { panel.hidden = !o; tryBtn.setAttribute('aria-expanded', o ? 'true' : 'false'); }
     tryBtn.addEventListener('click', function () { openPanel(panel.hidden); });
     panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); tryBtn.focus(); openPanel(false); } });
@@ -3030,9 +3313,9 @@
       nl.addEventListener('submit', function (e) {
         e.preventDefault(); var m = $('nl-mail').value.trim();
         if (!isEmail(m)) { $('nl-hint').textContent = 'Add an email address, like name@example.com.'; $('nl-mail').focus(); return; }
-        $('nl-hint').textContent = ''; $('nl-to').textContent = m; nl.hidden = true; $('nl-done').hidden = false; quietFocus($('nl-done-h'));
+        $('nl-hint').textContent = ''; $('nl-to').textContent = m; nl.hidden = true; $('nl-cal').hidden = true; $('nl-done').hidden = false; quietFocus($('nl-done-h'));
       });
-      $('nl-again').addEventListener('click', function () { nl.hidden = false; $('nl-done').hidden = true; quietFocus($('nl-mail')); });
+      $('nl-again').addEventListener('click', function () { nl.hidden = false; $('nl-cal').hidden = false; $('nl-done').hidden = true; quietFocus($('nl-mail')); });
     }
   })();
 </script>
