@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Licensed and insured house cleaning from Trinidad to Rio Dell: regular housekeeping, deep cleans, move-in and move-out cleans, Airbnb turnovers and one-time cleans. Free quotes: (707) 845-3895.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a2326'/%3E%3Cg transform='rotate(28 16 16)'%3E%3Crect x='14.6' y='2' width='2.8' height='15' rx='1.4' fill='%23f3b6c8'/%3E%3Crect x='12.8' y='16' width='6.4' height='3' rx='1' fill='%23e2a68e'/%3E%3Cpath d='M12.8 19h6.4l4.6 10.5q-7.8 2-15.6 0z' fill='%23c95a77'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="preload" as="image" type="image/webp" imagesrcset="images/hero-kitchen-800.webp 800w, images/hero-kitchen-1400.webp 1400w, images/hero-kitchen-2400.webp 2400w" imagesizes="(max-width: 760px) 134vw, max(60vw, 158vh)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" imagesrcset="images/hero-kitchen-800.webp 800w, images/hero-kitchen-1400.webp 1400w, images/hero-kitchen-2400.webp 2400w" imagesizes="(max-width: 760px) calc(134vw + 308px), max(100vw, 158vh)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..700&family=Funnel+Sans:ital,wght@0,300..700;1,400&family=Birthstone+Bounce:wght@500&family=Caveat:wght@600&display=swap">
@@ -37,7 +37,8 @@
     --copper: #9a5843;      /* rose gold for words */
     --rg1: #b9765f; --rg2: #e7b29a; --rg3: #a3563f;  /* rose gold gradient for the script */
     --btn: #2a2326; --btn-ink: #fdf8f7; --btn-hover: #463a3e;
-    --hero-ground: #fbf0ef; --hero-ink: #2a2326; --hero-soft: #5e5054; --hero-em: #a8456a;
+    --hero-ground: #fbf0ef; --hero-ink: #2a2326; --hero-soft: #43373b; --hero-em: #8e3858; --hero-tag: #8a4c39;
+    --hero-veil: 50%; --hero-veil-edge: 68%; --hero-veil-rim: 66%;  /* the see-through veil: blush over the photo, a little denser at the far left and along its brush edge */
     --band: #2a2326; --band-2: #362c30; --on-band: #fbeff0;
     --hair: #efdfe1;
     --tag-bg: #f8e6e9; --tag-ink: #8e3858; --tag-line: #ecd2d7;
@@ -51,7 +52,7 @@
       --ground: #1b1517; --ground-2: #261d20; --swash: #3a2a30; --paper: #241c1f; --ink: #f6e9ea; --ink-soft: #c9b8bc;
       --rose: #f0a3bd; --rose-deep: #f6bfd0; --copper: #e2a68e; --rg1: #e8b49c; --rg2: #f6d4c4; --rg3: #d99479;
       --btn: #f0a3bd; --btn-ink: #1b1517; --btn-hover: #f6bfd0;
-      --hero-ground: #1b1517; --hero-ink: #f6e9ea; --hero-soft: #d6c5c8; --hero-em: #f3b6c8;
+      --hero-ground: #1b1517; --hero-ink: #f6e9ea; --hero-soft: #d6c5c8; --hero-em: #f3b6c8; --hero-tag: #e2a68e; --hero-veil: 68%; --hero-veil-edge: 68%; --hero-veil-rim: 80%; --hero-veil-phone: 72%;
       --band: #120e10; --band-2: #1f181b; --on-band: #f6e9ea; --hair: #382b30;
       --tag-bg: #2e2226; --tag-ink: #f6bfd0; --tag-line: #4a363d; --slat: rgba(240, 163, 189, 0.06); --water: #22252b; --water-line: #353a42; --err: #ff9aa5;
       color-scheme: dark;
@@ -61,7 +62,7 @@
     --ground: #1b1517; --ground-2: #261d20; --swash: #3a2a30; --paper: #241c1f; --ink: #f6e9ea; --ink-soft: #c9b8bc;
     --rose: #f0a3bd; --rose-deep: #f6bfd0; --copper: #e2a68e; --rg1: #e8b49c; --rg2: #f6d4c4; --rg3: #d99479;
     --btn: #f0a3bd; --btn-ink: #1b1517; --btn-hover: #f6bfd0;
-    --hero-ground: #1b1517; --hero-ink: #f6e9ea; --hero-soft: #d6c5c8; --hero-em: #f3b6c8;
+    --hero-ground: #1b1517; --hero-ink: #f6e9ea; --hero-soft: #d6c5c8; --hero-em: #f3b6c8; --hero-tag: #e2a68e; --hero-veil: 68%; --hero-veil-edge: 68%; --hero-veil-rim: 80%; --hero-veil-phone: 72%;
     --band: #120e10; --band-2: #1f181b; --on-band: #f6e9ea; --hair: #382b30;
     --tag-bg: #2e2226; --tag-ink: #f6bfd0; --tag-line: #4a363d; --slat: rgba(240, 163, 189, 0.06); --water: #22252b; --water-line: #353a42; --err: #ff9aa5;
     color-scheme: dark;
@@ -138,13 +139,29 @@
   .btn.quiet:hover { background: var(--ground-2); }
   .btn .heart { color: #f3b6c8; font-size: 14px; }
 
-  /* THE HERO: a sunny kitchen sink in daylight (a free Unsplash sample photo, Oct 13, at Taya's note; tagged "Sample photo"), melting into blush on the left */
+  /* THE HERO: a sunny kitchen sink in daylight (a free Unsplash sample photo, Oct 13, at Taya's note; tagged "Sample photo"), seen through a blush veil on the left */
   .hero { position: relative; overflow: hidden; min-height: 92vh; min-height: 92svh; display: flex; flex-direction: column; background: var(--hero-ground); color: var(--hero-ink); }
-  /* the photo's left edge is a soft dry brush edge, like the blush strokes on their flyer: painted on, then melting into blush */
-  .hero-photo { position: absolute; inset: 0 0 0 40%; z-index: 0; margin: 0;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cfilter id='s' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Cg filter='url(%23s)' fill='black'%3E%3Cpath d='M180 -40H1040V1040H170C150 950 196 890 172 830 150 770 194 712 174 650 154 590 200 530 178 470 158 410 198 350 176 290 156 230 198 170 178 110 164 60 186 20 180 -40Z'/%3E%3Cpath d='M180 150C150 146 124 151 100 157 126 163 152 168 180 170Z'/%3E%3Cpath d='M176 372C144 368 118 374 92 380 120 386 146 391 176 393Z'/%3E%3Cpath d='M174 566C148 563 126 568 106 572 128 577 150 581 174 583Z'/%3E%3Cpath d='M172 776C144 772 118 778 96 783 120 789 146 794 172 796Z'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, linear-gradient(90deg, transparent 0, #000 24%); -webkit-mask-composite: source-in;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cfilter id='s' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Cg filter='url(%23s)' fill='black'%3E%3Cpath d='M180 -40H1040V1040H170C150 950 196 890 172 830 150 770 194 712 174 650 154 590 200 530 178 470 158 410 198 350 176 290 156 230 198 170 178 110 164 60 186 20 180 -40Z'/%3E%3Cpath d='M180 150C150 146 124 151 100 157 126 163 152 168 180 170Z'/%3E%3Cpath d='M176 372C144 368 118 374 92 380 120 386 146 391 176 393Z'/%3E%3Cpath d='M174 566C148 563 126 568 106 572 128 577 150 581 174 583Z'/%3E%3Cpath d='M172 776C144 772 118 778 96 783 120 789 146 794 172 796Z'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, linear-gradient(90deg, transparent 0, #000 24%); mask-composite: intersect; }
+  /* see-through (Oct 14, Taya's note on the words: "make this see through"): the photo now runs edge to edge, and the blush
+     panel behind the words is a frosted blush veil over it, so the kitchen shows softly behind the words. The veil's right edge
+     keeps the soft dry brush edge, like the blush strokes on their flyer (a touch denser along the edge, like a watercolour wash;
+     no loose bristle streaks over the photo, so nothing reads as a smudge on their window).
+     Strengths: --hero-veil / -edge / -rim, light and dark; the hero words got a notch deeper and a soft halo so they stay AA */
+  .hero { --veil-w: 58%; --veil-blur: 14px;
+    --veil-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'%3E%3Cfilter id='s' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='8'/%3E%3C/filter%3E%3Cg filter='url(%23s)' fill='black'%3E%3Cpath d='M-40 -40H872C880 40 902 70 884 130 866 190 912 230 896 300 880 370 858 400 878 470 898 540 916 580 890 650 864 720 900 770 886 840 872 910 896 960 880 1040H-40Z'/%3E%3C/g%3E%3C/svg%3E"); }
+  .hero-photo { position: absolute; inset: 0; z-index: 0; margin: 0; }
   .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; display: block; }
+  .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--hero-ground) var(--hero-veil-edge), transparent) 0 14%, color-mix(in srgb, var(--hero-ground) var(--hero-veil), transparent) 26% 44%, color-mix(in srgb, var(--hero-ground) var(--hero-veil-rim), transparent) 51%);
+    -webkit-backdrop-filter: blur(var(--veil-blur)); backdrop-filter: blur(var(--veil-blur));
+    -webkit-mask: var(--veil-edge) 0 0 / var(--veil-w) 100% no-repeat; mask: var(--veil-edge) 0 0 / var(--veil-w) 100% no-repeat; }
+  /* no frosted blur in this browser: the veil gets a little denser instead; and a browser too old for color-mix gets a plain
+     strong veil, so the words never land on the bare photo */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .hero::before { box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--hero-ground) 24%, transparent); }
+  }
+  @supports not (background: color-mix(in srgb, red 50%, transparent)) {
+    .hero::before { background: var(--hero-ground); opacity: 0.84; }
+  }
   .hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 70%, transparent) 0, transparent 150px); }
   .hero > .gutter { position: relative; z-index: 3; }
@@ -153,16 +170,18 @@
   .hero-copy { max-width: 560px; }
   .hero .label { margin-bottom: 20px; }
   .hero h1 { font-size: clamp(44px, 6vw, 80px); line-height: 1.02; font-weight: 400; color: var(--hero-ink); letter-spacing: -0.025em;
-    text-shadow: 0 1px 26px color-mix(in srgb, var(--hero-ground) 85%, transparent); }
+    text-shadow: 0 0 6px color-mix(in srgb, var(--hero-ground) 60%, transparent), 0 1px 26px color-mix(in srgb, var(--hero-ground) 85%, transparent); }
   .hero h1 em { color: var(--hero-em); }
-  .hero .tagline { display: block; margin: 24px 0 8px; font-size: clamp(30px, 4.6vw, 40px); line-height: 1; color: var(--copper); }
+  .hero .tagline { display: block; margin: 24px 0 8px; font-size: clamp(30px, 4.6vw, 40px); line-height: 1; color: var(--hero-tag); }
   .hero .lede { margin: 6px 0 0; font-size: clamp(17px, 4.2vw, 19px); color: var(--hero-soft); max-width: 38ch; }
   .hero .btn.quiet { background: color-mix(in srgb, var(--hero-ground) 70%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .hero-trust { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 26px; list-style: none; font-size: 14.5px; color: var(--hero-soft); }
   .hero-trust li { display: inline-flex; align-items: center; gap: 7px; }
+  /* a soft blush halo hugs the smaller words, so they stay crisp over the see-through veil */
+  .hero .tagline, .hero .lede, .hero-trust { text-shadow: 0 0 2px color-mix(in srgb, var(--hero-ground) 80%, transparent), 0 0 6px color-mix(in srgb, var(--hero-ground) 70%, transparent), 0 0 16px color-mix(in srgb, var(--hero-ground) 90%, transparent); }
   .hero-trust li::before { content: "\2726"; content: "\2726" / ""; color: var(--rose-logo); font-size: 11px; }
-  /* mid widths: the photo's brush edge starts near 45% of the width, so the lede and the trust line wrap before it
-     and stay on blush (Oct 13; "Trinidad to Rio Dell" sat on the photo at 761 to 960) */
+  /* mid widths: the veil's brush edge sits near half the width, so the lede and the trust line wrap before it
+     and stay on the veil (Oct 13; "Trinidad to Rio Dell" sat on the bare photo at 761 to 960) */
   @media (min-width: 761px) and (max-width: 1179px) {
     .hero .lede { max-width: min(38ch, calc(45vw - 40px)); }
     .hero-trust { max-width: calc(45vw - 40px); }
@@ -190,13 +209,18 @@
 
   @media (max-width: 760px) {
     .hero { min-height: 0; }
-    .hero-photo { inset: 0 0 auto 0; height: min(78vw, 440px); -webkit-mask: none; mask: none; }
-    .hero-photo img { object-position: 52% 50%; }
-    .sample-tag { top: calc(min(78vw, 440px) - 158px); bottom: auto; right: max(16px, env(safe-area-inset-right, 0px)); }
+    /* phones: the photo reaches 180px further down, behind the headline; clear up top, then the blush veil comes in softly
+       just above the words, and the photo melts away under the tagline */
+    .hero { --m-photo: min(78vw, 440px); }
+    .hero-photo { inset: 0 0 auto 0; height: calc(var(--m-photo) + 180px);
+      -webkit-mask: linear-gradient(180deg, #000 calc(100% - 140px), transparent); mask: linear-gradient(180deg, #000 calc(100% - 140px), transparent); }
+    .hero-photo img { object-position: 44% 50%; }
+    .hero::before { background: color-mix(in srgb, var(--hero-ground) var(--hero-veil-phone, var(--hero-veil)), transparent);
+      -webkit-mask: linear-gradient(180deg, transparent calc(var(--m-photo) - 110px), #000 calc(var(--m-photo) - 30px)); mask: linear-gradient(180deg, transparent calc(var(--m-photo) - 110px), #000 calc(var(--m-photo) - 30px)); }
+    .sample-tag { top: calc(var(--m-photo) - 158px); bottom: auto; right: max(16px, env(safe-area-inset-right, 0px)); }
     .hero::after { background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 94%, transparent) 0, color-mix(in srgb, var(--hero-ground) 78%, transparent) 120px, transparent 185px),
-      linear-gradient(180deg, transparent calc(min(78vw, 440px) - 120px), var(--hero-ground) min(78vw, 440px)); }
-    .hero-main { padding-block: calc(min(78vw, 440px) - 120px) 44px; }
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 94%, transparent) 0, color-mix(in srgb, var(--hero-ground) 78%, transparent) 120px, transparent 185px); }
+    .hero-main { padding-block: calc(var(--m-photo) - 120px) 44px; }
   }
   /* dark mode keeps the daylight photo bright: only the band behind the nav gets a dark scrim, deep enough that the light
      nav words stay AA over the bright kitchen wall (Oct 13 stock hero) */
@@ -208,13 +232,11 @@
   }
   @media (max-width: 760px) {
     :root[data-theme="dark"] .hero::after { background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 60%, transparent) 110px, transparent 180px),
-      linear-gradient(180deg, transparent calc(min(78vw, 440px) - 120px), var(--hero-ground) min(78vw, 440px)); }
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 60%, transparent) 110px, transparent 180px); }
   }
   @media (max-width: 760px) and (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .hero::after { background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 60%, transparent) 110px, transparent 180px),
-      linear-gradient(180deg, transparent calc(min(78vw, 440px) - 120px), var(--hero-ground) min(78vw, 440px)); }
+      linear-gradient(180deg, color-mix(in srgb, var(--hero-ground) 86%, transparent) 0, color-mix(in srgb, var(--hero-ground) 60%, transparent) 110px, transparent 180px); }
   }
 
   /* photo frames */
@@ -803,8 +825,8 @@
 <div class="hero" id="top">
   <figure class="hero-photo">
     <picture>
-      <source type="image/webp" srcset="images/hero-kitchen-800.webp 800w, images/hero-kitchen-1400.webp 1400w, images/hero-kitchen-2400.webp 2400w" sizes="(max-width: 760px) 134vw, max(60vw, 158vh)">
-      <img src="images/hero-kitchen-1400.jpg" srcset="images/hero-kitchen-800.jpg 800w, images/hero-kitchen-1400.jpg 1400w, images/hero-kitchen-2400.jpg 2400w" sizes="(max-width: 760px) 134vw, max(60vw, 158vh)" width="2400" height="1401" alt="Sample photo: a sunny kitchen window over a white farmhouse sink with the tap running, sunflowers and oranges on the wood counters" fetchpriority="high">
+      <source type="image/webp" srcset="images/hero-kitchen-800.webp 800w, images/hero-kitchen-1400.webp 1400w, images/hero-kitchen-2400.webp 2400w" sizes="(max-width: 760px) calc(134vw + 308px), max(100vw, 158vh)">
+      <img src="images/hero-kitchen-1400.jpg" srcset="images/hero-kitchen-800.jpg 800w, images/hero-kitchen-1400.jpg 1400w, images/hero-kitchen-2400.jpg 2400w" sizes="(max-width: 760px) calc(134vw + 308px), max(100vw, 158vh)" width="2400" height="1401" alt="Sample photo: a sunny kitchen window over a white farmhouse sink with the tap running, sunflowers and oranges on the wood counters" fetchpriority="high">
     </picture>
   </figure>
   <span class="sample-tag" aria-hidden="true">Sample photo</span>
