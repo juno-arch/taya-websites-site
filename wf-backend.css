@@ -45,6 +45,7 @@ button, input, select, textarea { font: inherit; color: inherit; letter-spacing:
   background: var(--wf-gold); color: var(--wf-on-gold); font-weight: 500; text-decoration: none;
 }
 .skip-link:focus { top: 12px; }
+.skip-link:focus-visible { outline-color: var(--wf-b-bar-gold); } /* it shows over the night bar: a gold ring reads there */
 main:focus { outline: none; }
 
 /* ============ the top bar: the wordmark on a slim painted strip, then the tabs ============ */
@@ -78,6 +79,9 @@ main:focus { outline: none; }
   content: ""; position: absolute; inset: 0; background: radial-gradient(circle, #fffaf0 0 14%, #ffd98f 34%, var(--wf-gold) 70%);
   clip-path: polygon(50% 0, 59% 41%, 100% 50%, 59% 59%, 50% 100%, 41% 59%, 0 50%, 41% 41%);
 }
+/* signed in: their business name leads the bar, in the wordmark's type */
+.biz { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 23px/1.15 var(--wf-font-display); letter-spacing: .005em; }
+.brand.is-biz { flex: 0 1 auto; min-width: 0; max-width: 100%; }
 /* whose page it is, beside the name (signed in; wider screens) */
 .via { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--wf-b-bar-ink); font-size: 14px; }
 .via:empty { display: none; }
@@ -87,14 +91,15 @@ main:focus { outline: none; }
   background: none; border: 0; cursor: pointer; color: var(--wf-b-bar-ink); font-weight: 400; font-size: 15px; text-decoration: none; white-space: nowrap;
 }
 .top-nav a:hover, .top-nav button:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
-.top-nav a:focus-visible, .top-nav button:focus-visible, .brand:focus-visible, .ask:focus-visible { outline: 2px solid var(--wf-b-bar-gold); outline-offset: 2px; border-radius: 8px; }
-/* "Ask Taya": the one bar button (buttons may be pills) */
-.ask {
+.top-nav a:focus-visible, .top-nav button:focus-visible, .top .brand:focus-visible, .ask:focus-visible { outline: 2px solid var(--wf-b-bar-gold); outline-offset: 2px; border-radius: 8px; }
+/* "Ask Taya": the one bar button (buttons may be pills). It sits inside the bar's nav, so its rules name .top-nav too,
+   or the plain nav link look would win */
+.ask, .top-nav .ask {
   display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 6px 14px 6px 12px; border-radius: var(--wf-r-pill);
   background: rgb(var(--wf-ground-rgb) / .5); border: 1px solid rgb(255 224 160 / .38); color: var(--wf-b-bar-gold);
   font-weight: 500; font-size: 15px; text-decoration: none; white-space: nowrap; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
-.ask:hover { color: #fff; background: rgb(var(--wf-ground-rgb) / .72); }
+.ask:hover, .top-nav .ask:hover { color: #fff; background: rgb(var(--wf-ground-rgb) / .72); text-decoration: none; }
 .ask svg { width: 19px; height: 19px; flex: none; }
 
 /* the tabs: one short page per area, a gold line under the one you're on */
@@ -138,9 +143,9 @@ main:focus { outline: none; }
 .dock { display: none; }
 @media (max-width: 760px) {
   .tabs, .via { display: none; }
-  .wm { font-size: 21px; }
+  .wm, .biz { font-size: 21px; }
   .top-nav a, .top-nav button { font-size: 14px; padding: 0 6px; }
-  .ask { padding: 6px 12px 6px 10px; font-size: 14.5px; }
+  .ask, .top-nav .ask { padding: 6px 12px 6px 10px; font-size: 14.5px; }
   .dock {
     display: flex; position: fixed; z-index: 30; left: 0; right: 0; bottom: 0;
     padding: 6px 6px max(8px, env(safe-area-inset-bottom));
@@ -306,7 +311,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--wf-b-link); }
 /* ============ the footer ============ */
 .site-foot { margin-top: 40px; padding: 0 var(--wf-b-gut) 36px; color: var(--wf-b-ink-soft); font-size: 15px; }
 .site-foot .foot-in {
-  max-width: var(--wf-wrap); margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  max-width: calc(var(--wf-wrap) - 2 * var(--wf-b-gut)); margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
   gap: 8px 28px; padding-top: 20px; border-top: 1px solid var(--wf-b-rule);
 }
 .site-foot .brand { color: var(--wf-b-ink); }

@@ -720,6 +720,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   .wfm-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: linear-gradient(90deg, #41578e, #948bcc 38%, #eea5b6 70%, #f6c56f); }
   .wfm-card.narrow { width: min(470px, 100%); }
   .wfm-card h2 { margin: 0 0 8px; font: 400 clamp(26px, 4.6vw, 34px)/1.12 var(--wfm-display); color: var(--wfm-ink); text-wrap: balance; }
+  .wfm-card h2:focus { outline: none; }
   .wfm-card .lead { margin: 0 0 20px; font-size: 16px; line-height: 1.55; color: var(--wfm-soft); max-width: 64ch; }
   .wfm-builds { display: grid; gap: 12px; grid-template-columns: 1fr; }
   @media (min-width: 720px) { .wfm-builds { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; } }
@@ -1162,7 +1163,8 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     card.dataset.picker = '1';
     card.addEventListener('click', (e) => { if (e.target === card && canMark()) closeCard(); }); // a pick first
     document.body.appendChild(card);
-    const first = grid.querySelector('.wfm-build'); if (first) first.focus({ preventScroll: true });
+    // the question takes focus, not a build, so none of them looks already picked (Tab goes to the first build)
+    h.tabIndex = -1; h.focus({ preventScroll: true });
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && card && !busy && !(card.dataset.picker && !canMark())) closeCard(); });
 

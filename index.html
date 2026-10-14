@@ -8,10 +8,25 @@
 <link rel="canonical" href="https://webfaery.love/">
 <meta name="theme-color" content="#272c66">
 <meta name="color-scheme" content="dark">
-<script>document.documentElement.classList.add('js');</script>
-<link rel="preload" as="image" type="image/webp" href="images/door.webp" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="images/hero-phone.webp" media="(max-aspect-ratio: 3/4)">
-<link rel="preload" as="image" type="image/webp" href="images/hero-wide.webp" media="not all and (max-aspect-ratio: 3/4)">
+<script>
+  /* Will the door show? Once per visit in a tab, and not for a link into the page (#prices...) or ?door=0.
+     Decided here, before anything loads, so the door's painting is fetched first only when it will show;
+     otherwise the hero's painting goes first. */
+  (function () {
+    var seen = false;
+    document.documentElement.classList.add('js');
+    try { seen = sessionStorage.getItem('wf-door-seen') === '1'; } catch (e) {}
+    var deep = location.hash && location.hash.length > 1 && location.hash !== '#top';
+    window.wfDoorShow = !deep && !seen && !/[?&]door=0\b/.test(location.search);
+    if (window.wfDoorShow) {
+      var l = document.createElement('link');
+      l.rel = 'preload'; l.as = 'image'; l.type = 'image/webp'; l.href = 'images/door.webp'; l.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(l);
+    }
+  })();
+</script>
+<link rel="preload" as="image" type="image/webp" href="images/hero-phone.webp" media="(max-aspect-ratio: 3/4)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="images/hero-wide.webp" media="not all and (max-aspect-ratio: 3/4)" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="fonts/gloock-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/spectral-400-italic-latin.woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
@@ -74,7 +89,7 @@
   <div class="door-stage" id="door-stage">
     <picture>
       <source type="image/webp" srcset="images/door.webp">
-      <img class="door-art" id="door-art" src="images/door.jpg" width="1456" height="816" alt="" fetchpriority="high" decoding="async">
+      <img class="door-art" id="door-art" src="images/door.jpg" width="1456" height="816" alt="" loading="lazy" decoding="async">
     </picture>
     <div class="door-glow" aria-hidden="true"></div>
   </div>
@@ -92,10 +107,7 @@
      door steps aside by itself once the page has loaded, so it can't hold anyone outside. */
   (function () {
     var root = document.documentElement, d = document.getElementById('door');
-    var deep = location.hash && location.hash.length > 1 && location.hash !== '#top';
-    var seen = false;
-    try { seen = sessionStorage.getItem('wf-door-seen') === '1'; } catch (e) {}
-    if (!deep && !seen && !/[?&]door=0\b/.test(location.search)) {
+    if (window.wfDoorShow) {
       d.hidden = false;
       root.classList.add('door-up');
       try { sessionStorage.setItem('wf-door-seen', '1'); } catch (e) {}
@@ -245,8 +257,8 @@
       <article class="tier maiden card" aria-labelledby="t-planted">
         <figure class="tier-art">
           <picture>
-            <source type="image/webp" srcset="images/tier-planted.webp">
-            <img src="images/tier-planted.jpg" width="960" height="1200" alt="" loading="lazy" decoding="async">
+            <source type="image/webp" srcset="images/tier-planted-320.webp 320w, images/tier-planted-640.webp 640w, images/tier-planted.webp 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)">
+            <img src="images/tier-planted.jpg" srcset="images/tier-planted-640.jpg 640w, images/tier-planted.jpg 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)" width="960" height="1200" alt="" loading="lazy" decoding="async">
           </picture>
           <h3 id="t-planted">Planted</h3>
         </figure>
@@ -273,8 +285,8 @@
       <article class="tier mother card" aria-labelledby="t-tended">
         <figure class="tier-art">
           <picture>
-            <source type="image/webp" srcset="images/tier-tended.webp">
-            <img src="images/tier-tended.jpg" width="960" height="1200" alt="" loading="lazy" decoding="async">
+            <source type="image/webp" srcset="images/tier-tended-320.webp 320w, images/tier-tended-640.webp 640w, images/tier-tended.webp 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)">
+            <img src="images/tier-tended.jpg" srcset="images/tier-tended-640.jpg 640w, images/tier-tended.jpg 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)" width="960" height="1200" alt="" loading="lazy" decoding="async">
           </picture>
           <h3 id="t-tended">Tended</h3>
         </figure>
@@ -302,8 +314,8 @@
       <article class="tier crone card" aria-labelledby="t-inbloom">
         <figure class="tier-art">
           <picture>
-            <source type="image/webp" srcset="images/tier-inbloom.webp">
-            <img src="images/tier-inbloom.jpg" width="960" height="1200" alt="" loading="lazy" decoding="async">
+            <source type="image/webp" srcset="images/tier-inbloom-320.webp 320w, images/tier-inbloom-640.webp 640w, images/tier-inbloom.webp 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)">
+            <img src="images/tier-inbloom.jpg" srcset="images/tier-inbloom-640.jpg 640w, images/tier-inbloom.jpg 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)" width="960" height="1200" alt="" loading="lazy" decoding="async">
           </picture>
           <h3 id="t-inbloom">In Bloom</h3>
         </figure>
@@ -548,8 +560,10 @@
      The three notes are samples, each tagged "sample". Nothing is sent anywhere yet: the guestbook script at the
      bottom of the page has LIVE = false (and says how to switch it on). When it's live, the script swaps the
      samples for the notes Taya has approved; delete the three samples then too, so visitors without JavaScript
-     don't see them. -->
-<section class="field guestbook" id="guestbook" aria-labelledby="gb-title">
+     don't see them.
+     Hidden for now (the hidden on the section below): signing it would show a thank-you while the note goes nowhere.
+     To bring it back, take hidden off the section, and switch LIVE on at the same time. -->
+<section class="field guestbook" id="guestbook" aria-labelledby="gb-title" hidden>
   <!-- the three stamps, drawn once and used everywhere below. To use Taya's own drawings, replace what's
        inside each <symbol> (keep the ids), or put an <image href="stamps/fern.png" width="24" height="24"/> in it -->
   <svg class="gb-sprite" aria-hidden="true" focusable="false">

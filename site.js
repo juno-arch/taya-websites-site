@@ -212,6 +212,14 @@
       home.appendChild(el);
     });
   });
+  /* a card out of sight holds its shimmer and glints still (no work for the phone where nobody can see it);
+     they carry on where they were as it comes back into view */
+  if ('IntersectionObserver' in window) {
+    var seen = new IntersectionObserver(function (list) {
+      list.forEach(function (e) { e.target.classList.toggle('out-of-view', !e.isIntersecting); });
+    }, { rootMargin: '120px 0px' });
+    $$('.card, .faq details').forEach(function (card) { card.classList.add('out-of-view'); seen.observe(card); });
+  }
 
   onScroll();
 })();

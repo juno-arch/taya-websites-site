@@ -47,7 +47,7 @@ a shop lives on Cloudflare Pages.
 
 | File | What it is |
 |---|---|
-| `index.html`, `site.css`, `site.js` | Home page: the faery door, the redwood hero melting into the twilight, the price cards, the guestbook, and the mailbox at the bottom. `site.js` runs the door, the hero's slow fade-in, the faery dust and the card glints |
+| `index.html`, `site.css`, `site.js` | Home page: the faery door, the redwood hero melting into the twilight, the price cards, the guestbook (hidden until it's switched on), and the mailbox at the bottom. `site.js` runs the door, the hero's slow fade-in, the faery dust and the card glints |
 | `quiz.html` | Which-build quiz (which build fits, the subscription that comes with it, and every cost) |
 | `welcome.html` | What happens after you reach out |
 | `domain.html` | How your web address works: held for you, legally yours, renewed by the subscription; pointing or moving one you already have |

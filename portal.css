@@ -16,7 +16,7 @@ html.framed main, html.framed .toast { display: none; }
 #v-project > [data-page] { scroll-margin-top: 72px; }
 
 /* ============ the greeting (on the sign-in steps and Home) ============ */
-.hello .lede .moon { width: .85em; height: .85em; margin-right: .3em; vertical-align: -.08em; color: var(--wf-b-leaf); }
+.hello .lede .build-sign { margin-right: .3em; font-size: .95em; }
 /* where we are, in one line under the name (the first screen answers "where are we?") */
 .hello .lede .now-line {
   display: block; margin-top: 8px; font-weight: 500; font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--wf-b-link);
@@ -132,6 +132,10 @@ input.code-input {
 
 /* ============ loading: soft placeholder cards that breathe ============ */
 .loading { padding-top: 4px; }
+/* a saved sign-in, while the project is on its way (portal.js): the page keeps the footer below the first screen,
+   and on wider screens the bar keeps the room its tabs will take, so nothing jumps when the project arrives */
+html.wf-arriving .page { min-height: 100vh; min-height: 100svh; }
+@media (min-width: 761px) { html.wf-arriving .top { padding-bottom: 48px; } }
 .ghost i { display: block; height: 16px; border-radius: 8px; background: var(--wf-b-well); margin-top: 14px; animation: ghost 1.6s ease-in-out infinite alternate; }
 .ghost i:first-child { width: 34%; height: 12px; margin-top: 0; }
 .ghost i.short { width: 62%; }

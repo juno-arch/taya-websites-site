@@ -170,7 +170,7 @@ html.door-up .site-head { visibility: hidden; opacity: 0; }
 .hero-mirror { transform: translateY(100%) scaleY(-1); }
 .hero-veil { z-index: -2;
   background:
-    linear-gradient(90deg, rgb(var(--wf-ground-rgb) / .8) 0%, rgb(var(--wf-ground-rgb) / .66) 30%, rgb(var(--wf-ground-rgb) / .3) 50%, rgb(var(--wf-ground-rgb) / 0) 64%),
+    linear-gradient(90deg, rgb(var(--wf-ground-rgb) / .8) 0%, rgb(var(--wf-ground-rgb) / .66) max(30%, 380px), rgb(var(--wf-ground-rgb) / .3) max(50%, 660px), rgb(var(--wf-ground-rgb) / 0) max(64%, 840px)),
     linear-gradient(180deg, rgb(var(--wf-ground-rgb) / .25) 0%, rgb(var(--wf-ground-rgb) / 0) 22%); }
 /* the soft blur: two still layers at the hero's foot, the lower one stronger, so the trees soften as they fade */
 .hero-melt { position: absolute; left: 0; right: 0; bottom: 0; height: var(--fade-h); z-index: -1; pointer-events: none; }
@@ -213,8 +213,8 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
   .hero-art { object-position: 50% 0%; }
   /* the words' veil is measured on the first screen (the hero less the melt), as approved; past it, it holds */
   .hero-veil { --s: calc(100% - var(--wf-melt)); background:
-    linear-gradient(180deg, rgb(var(--wf-ground-rgb) / .5) 0, rgb(var(--wf-ground-rgb) / .52) calc(var(--s) * .22), rgb(var(--wf-ground-rgb) / .56) calc(var(--s) * .46),
-      rgb(var(--wf-ground-rgb) / .5) calc(var(--s) * .68), rgb(var(--wf-ground-rgb) / .24) calc(var(--s) * .84), rgb(var(--wf-ground-rgb) / .12) calc(var(--s) * .9), rgb(var(--wf-ground-rgb) / .12) 100%); }
+    linear-gradient(180deg, rgb(var(--wf-ground-rgb) / .56) 0, rgb(var(--wf-ground-rgb) / .6) calc(var(--s) * .22), rgb(var(--wf-ground-rgb) / .62) calc(var(--s) * .46),
+      rgb(var(--wf-ground-rgb) / .56) calc(var(--s) * .68), rgb(var(--wf-ground-rgb) / .24) calc(var(--s) * .84), rgb(var(--wf-ground-rgb) / .12) calc(var(--s) * .9), rgb(var(--wf-ground-rgb) / .12) 100%); }
   .hero-text { text-align: center; padding-top: calc(var(--wf-head-h) + 28px); }
   .hero-text > * { margin-inline: auto; }
   .hero-cta, .hero .btns { justify-content: center; }
@@ -286,6 +286,8 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .glint.g2 { left: 20px; top: calc(100% - 20px); }
 .glint.g3 { left: 34%; top: 1px; width: 12px; height: 12px; margin: -6px 0 0 -6px; }
 .faq .glint.g1 { left: calc(100% - 66px); top: 14px; }
+/* out of sight (site.js): held still until it comes back into view */
+.out-of-view::before, .out-of-view .glint { animation-play-state: paused; }
 @keyframes wf-twinkle {
   0%, 100% { opacity: .2; transform: scale(.5) rotate(0deg); }
   45% { opacity: 1; transform: scale(1) rotate(12deg); }
@@ -406,6 +408,9 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .faq details { padding: 0 clamp(18px, 2.2vw, 28px); border-radius: var(--wf-r-sheet); }
 .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 2px; min-height: var(--wf-tap); font: 400 21px/1.3 var(--wf-font-display); color: var(--wf-c-ink); }
 .faq summary::-webkit-details-marker { display: none; }
+/* the question line fills its card, so its focus ring sits just inside the card's edge (outside, it would fall on
+   the twilight, where the dark ring can't be seen) */
+.faq summary:focus-visible { outline-offset: -3px; border-radius: 12px; }
 .faq summary::after { content: '+'; flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; font: 400 22px/1 var(--wf-font-read); color: var(--wf-c-gold); border: 1px solid rgb(201 138 36 / .55); background: rgb(246 197 111 / .14); }
 .faq details[open] summary::after { content: '\2212'; }
 .faq summary:hover { color: var(--wf-c-rose); }
@@ -418,7 +423,7 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
    The old personal-site guestbook, done softly: little cream notes resting on the twilight, each with the stamp
    its writer picked, and a small form on a card. The stamps are line drawings kept as <symbol>s at the top of
    the section, so they can be swapped for Taya's own drawings in one place. */
-.guestbook [hidden] { display: none !important; }
+.guestbook[hidden], .guestbook [hidden] { display: none !important; }
 .gb-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .gb-grid { display: grid; gap: clamp(48px, 6vw, 64px); margin-top: clamp(44px, 6vw, 68px); align-items: start; }
 /* a stamp: a little square of colored paper with a perforated edge (a mask cuts the notches, 3px round, every

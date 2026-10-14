@@ -37,6 +37,7 @@
   --band: var(--wf-cream-2); --band-text: var(--wf-c-ink); --band-soft: var(--wf-c-soft);
   --focus: var(--wf-c-link); --err: #b03a3a; --ok: #2b6a6c; --field-edge: var(--wf-c-ghost-edge);
   color: var(--wf-c-text);
+  color-scheme: light; /* ticks, dots and fields drawn light on the cream, though the page around is twilight */
 }
 
 * { box-sizing: border-box; }
@@ -96,8 +97,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .page-hero::after {
   content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
   background:
-    radial-gradient(ellipse 72% 58% at 50% 72%, rgba(var(--veil), 0.5), rgba(var(--veil), 0) 76%),
-    linear-gradient(180deg, rgba(var(--veil), 0.62) 0%, rgba(var(--veil), 0.3) 30%, rgba(var(--veil), 0.46) 58%, rgba(var(--veil), 0.7) 100%);
+    radial-gradient(ellipse 80% 66% at 50% 68%, rgba(var(--veil), 0.7), rgba(var(--veil), 0) 78%),
+    linear-gradient(180deg, rgba(var(--veil), 0.72) 0%, rgba(var(--veil), 0.3) 30%, rgba(var(--veil), 0.46) 58%, rgba(var(--veil), 0.7) 100%);
 }
 .page-hero .bar {
   display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap;
@@ -113,8 +114,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .page-hero .brand, .page-hero nav a { text-shadow: 0 1px 2px rgba(var(--veil), 0.7), 0 0 12px rgba(var(--veil), 0.6); }
 .page-hero nav { display: flex; gap: 4px 16px; flex-wrap: wrap; margin-left: auto; justify-content: flex-end; }
 .page-hero nav a {
-  font-family: var(--wf-font-read); font-weight: 500; font-size: 13px; letter-spacing: 0.14em;
-  text-transform: uppercase; text-decoration: none; color: var(--on-photo);
+  font-family: var(--wf-font-read); font-weight: 500; font-size: 17px; letter-spacing: .04em;
+  text-decoration: none; color: var(--on-photo);
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 44px; min-width: 44px; padding: 0 4px; text-align: center;
 }
@@ -284,12 +285,12 @@ footer.site-foot { margin-top: 56px; color: var(--ink-soft); padding: 0 22px 40p
   .page-hero .brand { font-size: 19px; gap: 7px; }
   .page-hero .brand svg { width: 17px; height: 17px; }
   .page-hero nav { gap: 4px 8px; }
-  .page-hero nav a { font-size: 12px; letter-spacing: 0.1em; padding-inline: 3px; }
+  .page-hero nav a { font-size: 16px; padding-inline: 3px; }
 }
 @media (max-width: 345px) {
   .page-hero .brand { font-size: 17.5px; gap: 6px; }
   .page-hero .brand svg { width: 15px; height: 15px; }
-  .page-hero nav a { font-size: 11px; letter-spacing: 0.08em; }
+  .page-hero nav a { font-size: 15px; }
 }
 
 /* print: everything shown, nothing waiting for a scroll or an intro that never comes */

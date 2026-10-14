@@ -51,7 +51,7 @@
   visitor's own device as they go (localStorage), and one button sends it all to Taya.
 
   Pricing (Oct 5 2026, web-faery-kit/pricing-oct2026.md): Planted / Tended / In Bloom (internal keys
-  maiden / mother / crone), builds $600 / $1,200 / $1,800 paid once (founding: half off the build only),
+  maiden / mother / crone), builds $600 / $1,200 / $1,800 (founding: half off the build only),
   and care is part of every site, monthly only, matching the build: $12 / $45 / $90 a month, starting
   after the 30 days of settling in. There's no care choice on this page. Clients reach Taya by email only.
 
@@ -207,7 +207,8 @@
   .love-it b { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 22px; color: var(--gold); display: block; margin-bottom: 4px; }
   .made-from { margin: 10px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   /* "Change" sits inline at the end of the sentence, like a link */
-  .made-from .later, .from-qc .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 2px 2px; margin: 0 0 0 2px; vertical-align: baseline; }
+  /* inside a sentence: the line stays as it is, but the tap area reaches 44px (padding out, the same margin back in) */
+  .made-from .later, .from-qc .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 10px 4px; margin: -10px -2px -10px 0; vertical-align: baseline; }
   .promises { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
   .promises li { display: grid; grid-template-columns: 30px 1fr; align-content: start; gap: 14px; font-size: 17px; line-height: 1.5; color: var(--ink-soft); }
   .promises b { display: block; color: var(--ink); font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17.5px; margin-bottom: 2px; }
@@ -366,7 +367,7 @@
   .opt b { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
   .sub-legend { display: block; margin: 22px 0 8px; }
 
-  /* ============ the build: the three moons ============ */
+  /* ============ the build: the three paintings (bud, watering can, glade, as on the home page's price cards) ============ */
   .builds { display: grid; gap: 12px; margin-top: 4px; }
   .build {
     position: relative; display: grid; grid-template-columns: 78px 1fr; cursor: pointer;
@@ -377,8 +378,11 @@
   .build input, .switch input {
     position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none;
   }
-  .b-sky { display: grid; place-items: center; background: radial-gradient(ellipse 110% 50% at 50% 120%, var(--hill)), var(--night); }
-  .b-sky svg { width: 36px; height: 36px; overflow: visible; filter: drop-shadow(0 0 8px var(--moonglow)) drop-shadow(0 0 18px rgba(239, 230, 214, 0.16)); }
+  .b-sky { position: relative; display: block; overflow: hidden; min-height: 88px; background: var(--night); }
+  .b-sky picture, .b-sky img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .b-sky img { object-fit: cover; object-position: 50% 52%; }
+  [data-build="mother"] .b-sky img, .b-sky[data-build="mother"] img { object-position: 38% 64%; }
+  [data-build="crone"] .b-sky img, .b-sky[data-build="crone"] img { object-position: 46% 58%; }
   .b-body { display: grid; gap: 3px; padding: 14px 44px 16px 16px; align-content: start; }
   .b-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 22px; line-height: 1.15; letter-spacing: -0.01em; }
   .b-does { font-size: 15.5px; line-height: 1.45; color: var(--ink-soft); }
@@ -406,15 +410,13 @@
       grid-template-columns: 1fr; grid-template-rows: 96px 1fr; text-align: center;
       border-radius: 140px 140px 18px 18px / 84px 84px 18px 18px;
     }
-    .b-sky { background: radial-gradient(ellipse 80% 54% at 50% 124%, var(--hill)), var(--night); }
-    .b-sky svg { width: 44px; height: 44px; margin-top: -4px; }
     .b-body { justify-items: center; padding: 16px 14px 20px; }
     .b-price { justify-content: center; }
     .b-check { top: auto; bottom: 14px; right: 14px; }
   }
 
-  /* the moon cards, matching the home page: an arched window with a fine gold keyline, a calm night sky,
-     the moon rising over a thin thread with a little honey light, the name and price centered below */
+  /* the build cards, matching the home page: an arched window with a fine gold keyline holding the build's
+     painting, the name and price centered below */
   @media (min-width: 720px) {
     .build {
       --foot: 18px; --key: 7px; --moon-y: 25cqw; --rise: calc(25cqw + 36px);
@@ -435,12 +437,9 @@
     .build:hover::before { border-color: rgba(var(--acc-glow), 0.5); }
     .build:has(input:checked), .build.on { box-shadow: none; border-color: transparent; }
     .build:has(input:checked)::before, .build.on::before { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc), 0 0 44px -8px rgba(var(--acc-glow), 0.5), 0 30px 60px -30px rgba(38, 42, 94, 0.28); }
-    .b-sky { position: relative; display: block; height: 46cqw; border-radius: 50cqw 50cqw 0 0; background: radial-gradient(ellipse 80% 54% at 50% 124%, var(--hill)), var(--night); }
-    .b-sky svg { position: absolute; left: 50%; top: var(--moon-y); width: 44px; height: 44px; margin: -22px 0 0 -22px; }
-    .b-sky::before { content: ""; position: absolute; left: 14%; right: 14%; top: var(--rise); height: 1px;
-      background: linear-gradient(90deg, rgba(236, 230, 218, 0), rgba(236, 230, 218, 0.55) 30%, rgba(242, 199, 124, 0.9) 50%, rgba(236, 230, 218, 0.55) 70%, rgba(236, 230, 218, 0)); }
-    .b-sky::after { content: ""; position: absolute; left: 50%; top: var(--rise); width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%;
-      background: #f8e2b4; box-shadow: 0 0 5px 1px rgba(242, 199, 124, 0.6), 0 0 16px 5px rgba(242, 199, 124, 0.16); }
+    .b-sky { height: 46cqw; margin: var(--key) var(--key) 0; border-radius: calc(50cqw - var(--key)) calc(50cqw - var(--key)) 0 0; }
+    /* the painting melts into the card below it */
+    .b-sky::after { content: ""; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(180deg, rgb(255 255 255 / 0), var(--card)); }
     .b-name { font-size: 28px; }
     .b-price strong { font-size: 34px; }
     /* easier reading: more room inside the keyline, brighter and roomier words, every price on one line at the bottom */
@@ -470,13 +469,10 @@
     background: var(--field); border: 1px solid var(--acc);
     box-shadow: 0 0 0 1px var(--acc), 0 0 40px -8px rgba(var(--acc-glow), 0.5);
   }
-  .confirm .b-sky { background: radial-gradient(ellipse 120% 34% at 50% 108%, var(--hill)), var(--night); }
-  .confirm .b-sky svg { width: 38px; height: 38px; margin-top: -18px; }
-  /* the chooser's tall moonrise sky (its container rule sizes every .b-sky) must not stretch this card: here the sky is just a side strip as tall as the words */
-  .confirm .b-sky { display: grid; place-items: center; height: auto; }
-  .confirm .b-sky svg { position: static; margin: -18px 0 0; }
-  .confirm .b-sky::before, .confirm .b-sky::after { content: none; }
-  @media (min-width: 720px) { .confirm { grid-template-columns: 104px 1fr; } .confirm .b-sky svg { width: 44px; height: 44px; } }
+  /* here the painting is a side strip as tall as the words */
+  .confirm .b-sky { height: auto; margin: 0; border-radius: 0; }
+  .confirm .b-sky::after { content: none; }
+  @media (min-width: 720px) { .confirm { grid-template-columns: 104px 1fr; } }
   .cf-body { padding: 16px 18px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
   .cf-k { margin: 0; font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc); }
   .cf-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 14px; }
@@ -490,8 +486,7 @@
   .cf-body .later { justify-self: start; margin-top: 4px; font-size: 15.5px; padding: 0 2px; }
   @media (max-width: 420px) {
     .confirm { grid-template-columns: 1fr; }
-    .confirm .b-sky { min-height: 72px; background: radial-gradient(ellipse 80% 60% at 50% 130%, var(--hill)), var(--night); }
-    .confirm .b-sky svg { margin-top: -6px; }
+    .confirm .b-sky { min-height: 96px; }
   }
   .from-qc { margin: 16px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--link-wash); font-size: 16px; line-height: 1.5; }
   .from-qc b { font-weight: 500; color: var(--ink); }
@@ -694,7 +689,7 @@
   /* what Taya's link already told us, said back in one line instead of fields to fill (with a quiet Change) */
   .known { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--link-wash); font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
   .known b { color: var(--ink); font-weight: 500; }
-  .known .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 2px 2px; margin: 0 0 0 2px; vertical-align: baseline; }
+  .known .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 10px 4px; margin: -10px -2px -10px 0; vertical-align: baseline; }
 
   /* ============ the deposit, and what happens next ============ */
   .pay-card {
@@ -776,7 +771,7 @@
   .open-list { list-style: none; margin: 16px auto 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 36em; }
   .open-list:empty { display: none; }
   .open-list a {
-    display: inline-flex; align-items: center; min-height: 40px; padding: 6px 14px; border-radius: 999px;
+    display: inline-flex; align-items: center; min-height: 44px; padding: 6px 14px; border-radius: 999px;
     background: var(--field); border: 1px solid var(--hairline); color: var(--ink); text-decoration: none; font-size: 15px;
   }
   .open-list a:hover { border-color: var(--acc); }
@@ -867,7 +862,6 @@
     .step-body { padding: 4px 14px 20px; }
     .b-body { padding: 12px 40px 14px 14px; }
     .build { grid-template-columns: 64px 1fr; }
-    .b-sky svg { width: 30px; height: 30px; }
     .pay-amt { font-size: 40px; }
     .p-moons li { width: 14px; height: 14px; }
   }
@@ -904,8 +898,7 @@
   details.how .stuck, .tap-sign .tap-hint, .agreement-doc .copy-note, .main .opt-tag { font-style: normal; }
   .sign input.sig, .tap-sign .signed-as { font-family: var(--wf-font-read); }
   .confirm .b-sky { border-radius: 0; }
-  /* the moons: cream in the little twilight skies, lavender on paper, teal once it's sent */
-  .b-sky svg { color: #f3ead9; }
+  /* the moons: lavender on paper, teal once it's sent */
   .receipt h3 svg, .send-sec .moon-big { color: var(--wf-b-leaf); filter: none; }
   .done-head .moon-big { color: var(--wf-b-done); filter: none; }
   /* the top: the greeting under the painted strip, on the mist */
@@ -913,7 +906,9 @@
   .hello .kicker { margin-bottom: 8px; }
   .hello h1 { font-size: clamp(34px, 6vw, 48px); }
   .hello .lede { max-width: 36em; }
-  .qc { margin-left: 0; margin-right: 0; }
+  .qc { margin-left: 0; margin-right: 0; max-width: none; }
+  /* the page holds a full screen while the script draws it, so the footer doesn't jump down */
+  #main { min-height: 100vh; min-height: 100svh; }
 </style>
 </head>
 <body>
@@ -1030,7 +1025,7 @@
 
         <!-- when Taya's link picked the build: a card to confirm it (the script fills it in) -->
         <div class="confirm" id="build-confirm" data-if="build-confirm" role="group" aria-labelledby="cf-k">
-          <span class="b-sky" aria-hidden="true"><svg><use id="cf-moon" href="#i-full"/></svg></span>
+          <span class="b-sky" id="cf-sky" aria-hidden="true"><picture id="cf-art" hidden><source type="image/webp" id="cf-art-webp" sizes="(min-width: 720px) 260px, 104px"><img id="cf-art-img" width="640" height="800" alt="" decoding="async"></picture></span>
           <div class="cf-body">
             <p class="cf-k" id="cf-k">Your build</p>
             <div class="cf-top"><p class="cf-name" id="cf-name">Tended</p><span class="b-price" id="cf-price"></span></div>
@@ -1046,7 +1041,7 @@
           <div class="builds">
             <label class="build" data-build="maiden">
               <input type="radio" name="build" value="maiden">
-              <span class="b-sky" aria-hidden="true"><svg><use href="#i-wax"/></svg></span>
+              <span class="b-sky" aria-hidden="true"><picture><source type="image/webp" srcset="images/tier-planted-320.webp 320w, images/tier-planted-640.webp 640w" sizes="(min-width: 720px) 260px, 104px"><img src="images/tier-planted-640.jpg" width="640" height="800" alt="" loading="lazy" decoding="async"></picture></span>
               <span class="b-body">
                 <span class="b-name">Planted</span>
                 <span class="b-does">One page with who you are, what you offer and how to reach you (a tap to call, text or email, and a Book now button to the booking app you already use, if you have one), planted and kept healthy.</span>
@@ -1058,7 +1053,7 @@
             </label>
             <label class="build" data-build="mother">
               <input type="radio" name="build" value="mother">
-              <span class="b-sky" aria-hidden="true"><svg><use href="#i-full"/></svg></span>
+              <span class="b-sky" aria-hidden="true"><picture><source type="image/webp" srcset="images/tier-tended-320.webp 320w, images/tier-tended-640.webp 640w" sizes="(min-width: 720px) 260px, 104px"><img src="images/tier-tended-640.jpg" width="640" height="800" alt="" loading="lazy" decoding="async"></picture></span>
               <span class="b-body">
                 <span class="b-name">Tended</span>
                 <span class="b-does">A full site with a contact form, newsletter sign-up and a Book now button that opens your booking page (the app you use now, or a free Cal.com), tended as the seasons change.</span>
@@ -1070,7 +1065,7 @@
             </label>
             <label class="build" data-build="crone">
               <input type="radio" name="build" value="crone">
-              <span class="b-sky" aria-hidden="true"><svg><use href="#i-wan"/></svg></span>
+              <span class="b-sky" aria-hidden="true"><picture><source type="image/webp" srcset="images/tier-inbloom-320.webp 320w, images/tier-inbloom-640.webp 640w" sizes="(min-width: 720px) 260px, 104px"><img src="images/tier-inbloom-640.jpg" width="640" height="800" alt="" loading="lazy" decoding="async"></picture></span>
               <span class="b-body">
                 <span class="b-name">In Bloom</span>
                 <span class="b-does">Everything in Tended, plus booking right on your site, payments or a small shop (up to about 20 items) in your own accounts: your site in full bloom, doing business for you.</span>
@@ -1859,7 +1854,7 @@
      a web address, booking and a newsletter):
        start.html?name=Wren&build=crone&have=brandkit&sell=1
      And one that knows nearly everything (About you is one line, and signing is one tap):
-       start.html?name=Paul&build=mother&founding=1&mockup=the-record&have=logo,no-kit,photos,domain&booking=no-need&sell=0&newsletter=1&biz=The%20Record&site=therecordpointarena.com#full=Paul&email=therecordpa%40gmail.com
+       start.html?name=Juniper&build=mother&founding=1&mockup=fern-and-clay&have=logo,no-kit,photos,domain&booking=no-need&sell=0&newsletter=1&biz=Fern%20and%20Clay&site=fernandclay.example#full=Juniper%20Hale&email=juniper%40example.com
 
    ---- WHEN THIS GOES LIVE (set LIVE = true below) ----
    "Send it to Taya" creates one record in the PocketBase collection "webfaery_intake" on
@@ -2334,7 +2329,7 @@
     };
   }
 
-  // the build, paid once, then care at the build's monthly price (no care choice: it's part of every site)
+  // the build, then care at the build's monthly price (no care choice: it's part of every site)
   function priceModel(c) {
     const m = { build: c.build, founding: c.founding, rows: [], after: [], total: '' };
     const b = BUILDS[c.build];
@@ -2673,7 +2668,14 @@
     if (md.confirm) {
       const b = BUILDS[c.build];
       $('#cf-name').textContent = b ? b.name : 'Not sure yet';
-      $('#cf-moon').setAttribute('href', '#i-' + ({ maiden: 'wax', mother: 'full', crone: 'wan' }[c.build] || 'full'));
+      // its painting, as on the price cards: the bud (Planted), the watering can (Tended), the glade (In Bloom)
+      const art = { maiden: 'planted', mother: 'tended', crone: 'inbloom' }[c.build];
+      $('#cf-art').hidden = !art;
+      if (art) {
+        $('#cf-sky').dataset.build = c.build;
+        $('#cf-art-webp').srcset = 'images/tier-' + art + '-320.webp 320w, images/tier-' + art + '-640.webp 640w';
+        $('#cf-art-img').src = 'images/tier-' + art + '-640.jpg';
+      }
       const pr = $('#cf-price');
       pr.textContent = '';
       if (b) {

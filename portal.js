@@ -69,7 +69,8 @@
   const SAFE_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
 
   const BUILDS = { maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }; // keys stay; only the words changed (Oct 5 2026)
-  const BUILD_MOON = { maiden: 'i-wax', mother: 'i-full', crone: 'i-wan' };
+  // each build's little sign, the same three as the price cards and answers on webfaery.love (a bud, a fern, a bloom)
+  const BUILD_SIGN = { maiden: '🌱', mother: '🌿', crone: '🌸' };
   // what care does for each build, in the garden words of its name (the care row under Payments); one short line
   // each, from "What care includes" in pricing-oct2026.md (the full lists are on webfaery.love's price cards)
   const CARE_SAY = {
@@ -228,6 +229,9 @@
     set(t) { try { box().setItem(STORE_KEY, JSON.stringify({ token: t })); } catch (e) { /* no storage: signed in for this visit only */ } },
     clear() { try { box().removeItem(STORE_KEY); } catch (e) { /* nothing kept anyway */ } }
   };
+  // a saved sign-in: the project is on its way, so the page holds its room (the tabs' row, and the footer below
+  // the first screen) until it arrives, and nothing jumps when it does (portal.css html.wf-arriving)
+  if (!framed && store.get()) document.documentElement.classList.add('wf-arriving');
   const readJSON = (bx, key) => { try { const o = JSON.parse(bx.getItem(key) || 'null'); return o && typeof o === 'object' ? o : null; } catch (e) { return null; } };
   const writeJSON = (bx, key, o) => { try { if (o) bx.setItem(key, JSON.stringify(o)); else bx.removeItem(key); } catch (e) { /* fine: a convenience only */ } };
   const tab = () => window.sessionStorage;
@@ -431,13 +435,14 @@
   const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project'];
   const show = (id) => {
     VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
+    if (id !== 'v-loading') document.documentElement.classList.remove('wf-arriving');
     const inside = id === 'v-project';
     $('#foot-out').hidden = !inside;
     $('#b-signout-top').hidden = !inside;
-    $('#nav-home').hidden = inside;        // signed in, "Home" is their own Home tab (the name still goes to webfaery.love)
+    $('#nav-home').hidden = inside;        // signed in, "Home" is their own Home tab (their name in the bar goes there too)
     if (!inside) {
       $('#nav-start').hidden = true;       // only signed in, and only once Taya opens it
-      $('#top-via').textContent = '';
+      setBrand('');
       hideTabs();
     }
     $('#hello').hidden = inside && page !== 'home';
@@ -480,13 +485,27 @@
     if (em) h.append(make('em', null, em));
     const l = $('#hero-lede');
     l.textContent = '';
-    // their build's moon (waxing Planted, full Tended, waning In Bloom) sits just before its name
+    // their build's little sign (a bud for Planted, a fern for Tended, a bloom for In Bloom) sits just before its name
     const parts = lede.split('\u0001');
     l.append(parts[0]);
-    if (parts.length > 1) { if (moon) l.append(icon(moon, 'moon')); l.append(parts[1]); }
+    if (parts.length > 1) {
+      if (moon) { const sign = make('span', 'build-sign', moon); sign.setAttribute('aria-hidden', 'true'); l.append(sign); }
+      l.append(parts[1]);
+    }
     // and where we are, in one line, so the first screen answers "where are we?"
     if (nowLine) l.append(make('span', 'now-line', nowLine));
   };
+  // the bar: signed in with a business name, their name leads ("your site, from Web Faery" beside it, on wider
+  // screens) and goes to their Home; signed out, or no name yet, the Web Faery wordmark, going to webfaery.love
+  function setBrand(biz) {
+    const b = $('#top-brand');
+    $('#top-biz').textContent = biz;
+    $('#top-biz').hidden = !biz;
+    $('#top-wm').hidden = !!biz;
+    b.classList.toggle('is-biz', !!biz);
+    b.setAttribute('href', biz ? '#home' : 'index.html');
+    $('#top-via').textContent = biz ? 'your site, from Web Faery' : '';
+  }
   const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email. No passwords to remember.');
 
   /* ================= the pages (Oct 14 2026): one short page per area, with tabs =================
@@ -535,9 +554,19 @@
     const t = taps.mine();
     n.project = me.list.open.filter((x) => x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key])).length;
     n.payments = me.pay.filter((x) => x.state === 'due' && x.url && !t[x.key]).length;
-    if (shop) n.orders = shop.orders.filter((o) => !o.packed_on).length;
+    if (shop) n.orders = countedOrders().filter((o) => !o.packed_on).length;
     return n;
   }
+  // the orders that count on Home and the tab: once a shop is live, its old practice orders (Stripe test mode) stay
+  // in the list but aren't real money or real parcels; while the shop is still in test mode, every order is practice
+  function countedOrders() {
+    if (!shop) return [];
+    return shop.shop.test ? shop.orders : shop.orders.filter((o) => !o.test);
+  }
+  // a booking still waiting for its deposit (held 30 minutes) isn't a booking yet
+  const realBooking = (b) => b.status !== 'canceled' && b.status !== 'pending';
+  // set hidden only when it changes: the page watches hidden on its sections, and a same-value set still counts
+  const setHidden = (el, v) => { if (el.hidden !== v) el.hidden = v; };
   function tabLink(p, n, inDock) {
     const a = make('a');
     a.href = '#' + p.id;
@@ -663,17 +692,22 @@
     requestAnimationFrame(() => { pagesQueued = false; if (me) { renderNeeds(); syncPages(); } });
   }
   function wirePages() {
-    new MutationObserver((recs) => { if (recs.some((r) => r.target.parentElement === $('#v-project'))) pagesSoon(); })
-      .observe($('#v-project'), { attributes: true, attributeFilter: ['hidden'], subtree: true });
-    window.addEventListener('hashchange', () => {
+    // only a real change counts (setting hidden to what it already was still makes a record)
+    new MutationObserver((recs) => {
+      if (recs.some((r) => r.target.parentElement === $('#v-project') && (r.oldValue !== null) !== r.target.hasAttribute('hidden'))) pagesSoon();
+    }).observe($('#v-project'), { attributes: true, attributeFilter: ['hidden'], attributeOldValue: true, subtree: true });
+    // the address changed (a tab, Back or Forward): open the page it names; no # at all is Home
+    const followAddress = () => {
       closeMore(false);
       if (!me || $('#v-project').hidden) return;
-      const want = hashPage();
+      const want = hashPage() || ((location.hash || '').length <= 1 ? 'home' : '');
       if (!want || want === page) return;
       openPage(want, { scroll: true });
       focusEl($('#main'), true);
       announce(pageInfo(page).label);
-    });
+    };
+    window.addEventListener('hashchange', followAddress);
+    window.addEventListener('popstate', followAddress);
     $('#tabs').addEventListener('scroll', tabsEdges, { passive: true });
     window.addEventListener('resize', tabsEdges);
     $('#more-close').addEventListener('click', () => closeMore(true));
@@ -696,62 +730,75 @@
     return li;
   }
   // numbers at a glance: their bookings this coming week, their orders this month, what's still on gift certificates
+  let glanceSig = null;
   function renderGlance() {
     const sec = $('#sec-glance');
     const cells = [];
-    const cell = (label, big, small) => {
-      const d = make('div');
-      d.append(make('dt', null, label), make('dd', null, big));
-      if (small) d.append(make('dd', 'd', small));
-      return d;
-    };
     if (bk) {
       const week = Date.now() + 7 * 24 * 3600 * 1000;
-      const n = bk.upcoming.filter((b) => b.status !== 'canceled' && Date.parse(b.starts_at) < week).length;
-      cells.push(cell('Bookings', String(n), 'the next 7 days'));
+      const n = bk.upcoming.filter((b) => realBooking(b) && Date.parse(b.starts_at) < week).length;
+      cells.push(['Bookings', String(n), 'the next 7 days']);
     }
     if (shop) {
       const month = todayISO.slice(0, 7);
-      const these = shop.orders.filter((o) => o.day.slice(0, 7) === month);
+      const these = countedOrders().filter((o) => o.day.slice(0, 7) === month);
       const cents = these.reduce((sum, o) => sum + (toCents(o.total) || 0), 0);
-      cells.push(cell('Orders this month', '$' + Math.round(cents / 100).toLocaleString('en-US'), plural(these.length, 'order', 'orders')));
+      // a shop still in test mode: say so, it's practice money
+      cells.push([shop.shop.test ? 'Practice orders this month' : 'Orders this month', '$' + Math.round(cents / 100).toLocaleString('en-US'), plural(these.length, 'order', 'orders')]);
     }
-    if (gifts && gifts.outstanding) cells.push(cell('Gift certificates', gifts.outstanding, 'still to be used'));
-    $('#glance').replaceChildren(...cells);
-    sec.hidden = !cells.length;
+    // what's still on their gift certificates (the server sends it as money, "$0.00" when nothing is left)
+    if (gifts && (toCents(gifts.outstanding) || 0) > 0) cells.push(['Gift certificates', gifts.outstanding, 'still to be used']);
+    // draw only when something changed (Needs you and the tabs call this often)
+    const sig = JSON.stringify(cells);
+    if (sig !== glanceSig) {
+      glanceSig = sig;
+      $('#glance').replaceChildren(...cells.map(([label, big, small]) => {
+        const d = make('div');
+        d.append(make('dt', null, label), make('dd', null, big));
+        if (small) d.append(make('dd', 'd', small));
+        return d;
+      }));
+    }
+    setHidden(sec, !cells.length);
   }
+  let needsSig = null;
   function renderNeeds() {
     const sec = $('#sec-needs');
-    if (!me) { sec.hidden = true; return; }
+    if (!me) { setHidden(sec, true); return; }
     const t = taps.mine();
-    const rows = [];
+    const rows = []; // [page, due, title, small words]
     const open = me.list.open.filter((x) => x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key]));
-    open.slice(0, 4).forEach((x) => rows.push(needRow(x.kind === 'pay' ? 'payments' : 'project', true, x.title, x.detail)));
-    if (open.length > 4) rows.push(needRow('project', false, plural(open.length - 4, 'more thing', 'more things') + ' on your list', ''));
+    open.slice(0, 4).forEach((x) => rows.push([x.kind === 'pay' ? 'payments' : 'project', true, x.title, x.detail]));
+    if (open.length > 4) rows.push(['project', false, plural(open.length - 4, 'more thing', 'more things') + ' on your list', '']);
     if (shop) {
-      const toPack = shop.orders.filter((o) => !o.packed_on);
+      const toPack = countedOrders().filter((o) => !o.packed_on);
       if (toPack.length) {
         const o = toPack[0];
         const first = o.items[0] ? o.items[0].title + (o.items.length > 1 ? ' and more' : '') : '';
         const where = [o.city, o.state].filter(Boolean).join(', ');
-        rows.push(needRow('orders', true, plural(toPack.length, 'order', 'orders') + ' to pack',
-          [first, where ? 'to ' + where : '', shortDate(o.day)].filter(Boolean).join(' · ')));
+        rows.push(['orders', true, plural(toPack.length, 'order', 'orders') + ' to pack',
+          [first, where ? 'to ' + where : '', shortDate(o.day)].filter(Boolean).join(' · ')]);
       }
     }
     if (bk) {
-      const next = bk.upcoming.find((b) => b.status !== 'canceled');
+      const next = bk.upcoming.find(realBooking);
       if (next) {
         const at = Date.parse(next.starts_at);
         const soon = !isNaN(at) && at - Date.now() < 36 * 3600 * 1000;
-        rows.push(needRow('bookings', soon, 'Next: ' + next.when, [next.service_name, next.name].filter(Boolean).join(' · ')));
+        rows.push(['bookings', soon, 'Next: ' + next.when, [next.service_name, next.name].filter(Boolean).join(' · ')]);
       }
     }
     renderGlance();
-    $('#needs').replaceChildren(...rows);
-    $('#needs').hidden = !rows.length;
+    // draw the rows only when they changed, so a row being pressed or focused stays put under the finger
+    const sig = JSON.stringify(rows);
+    if (sig !== needsSig) {
+      needsSig = sig;
+      $('#needs').replaceChildren(...rows.map((r) => needRow(r[0], r[1], r[2], r[3])));
+    }
+    setHidden($('#needs'), !rows.length);
     // nothing waiting: a calm line, unless their turn on the mockup is right above it
-    $('#needs-calm').hidden = rows.length > 0;
-    sec.hidden = !rows.length && !$('#sec-turn').hidden;
+    setHidden($('#needs-calm'), rows.length > 0);
+    setHidden(sec, !rows.length && !$('#sec-turn').hidden);
   }
 
   /* ================= signing in ================= */
@@ -1140,9 +1187,9 @@
     const c = me.client;
     const build = BUILDS[c.build] || c.build_label;
     hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
-      (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_MOON[c.build], nowLine());
+      (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_SIGN[c.build], nowLine());
     $('#me-email').textContent = c.email || 'you';
-    $('#top-via').textContent = c.business || '';
+    setBrand(c.business || '');
     // forget "I tapped Pay" once Taya has marked it
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
     // the header's "Getting started" only while that page is still theirs to fill in
