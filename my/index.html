@@ -13,28 +13,39 @@
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0e0e0c">
-<meta name="color-scheme" content="dark">
-<link rel="stylesheet" href="/fonts/fonts.css?v=20261001f">
-<link rel="stylesheet" href="/soil.css?v=20261001f">
-<link rel="stylesheet" href="/pages.css?v=20261001f">
-<link rel="stylesheet" href="/portal.css?v=20261008a">
+<meta name="theme-color" content="#2e3271">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="/wf-tokens.css?v=20261014a">
+<link rel="stylesheet" href="/wf-backend.css?v=20261014a">
+<link rel="stylesheet" href="/portal.css?v=20261014a">
 <!--
   my/index.html: the door (Oct 10 2026). Every client's one private link is https://webfaery.love/my/#wf=<their key>.
   door.js takes the key out of the address bar, asks the server where they belong now, and opens it. With no key:
   "Lost your link?" (link-again.js). Not in sitemap.xml, not linked from other pages.
+  The look (Oct 14 2026): the back ends' light twilight (wf-backend.css), one paper card on the lavender mist under
+  the painted strip; the cards borrow portal.css's sign-in card.
 -->
 <style>
-  main { padding-block: clamp(48px, 12vh, 120px) 64px; }
-  .door .lede { color: var(--ink-soft); }
+  main { padding-block: clamp(32px, 9vh, 96px) 48px; }
+  .door { margin-top: 0; }
+  .door h2 { font-size: clamp(26px, 4vw, 32px); }
+  .door .lede { color: var(--wf-b-ink-soft); }
   .door .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 20px; }
-  .door .linkish { appearance: none; background: none; border: 0; padding: 0; color: var(--link); font: inherit; text-decoration: underline; cursor: pointer; }
-  .door .key-line { margin-top: 18px; font-size: 15.5px; color: var(--ink-soft); }
+  .door .linkish { appearance: none; background: none; border: 0; padding: 0 2px; min-height: 44px; color: var(--wf-b-link); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .door .key-line { margin-top: 18px; font-size: 15px; color: var(--wf-b-ink-soft); }
   .door .la-done { margin-top: 14px; }
 </style>
 </head>
 <body>
-<div class="soil" aria-hidden="true"></div>
+<header class="top">
+  <div class="top-art" aria-hidden="true">
+    <picture><source type="image/webp" srcset="/images/admin-strip.webp"><img src="/images/admin-strip.jpg" width="1456" height="300" alt="" decoding="async"></picture>
+  </div>
+  <div class="top-in">
+    <a class="brand" href="/"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
+  </div>
+</header>
 <main class="gutter" id="main"><div class="wrap">
   <noscript><div class="p-card"><p>Your link needs JavaScript to open. No problem at all: just email me at
     <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p></div></noscript>

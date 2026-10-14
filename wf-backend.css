@@ -1,0 +1,328 @@
+/* Web Faery back ends: the shared look (Oct 14 2026, the twilight redesign).
+   A client's own page (portal.html), the door (my/), getting started (start.html) and private sessions (book.html)
+   load fonts/fonts.css, then wf-tokens.css, then this sheet, then their own.
+
+   The light look: lavender mist, paper sheets, ink words, and a night bar across the top with a slim strip of the
+   hero painting under a twilight veil. Ledgers read best light. Color only with meaning: lantern gold = needs you
+   (and the one main button), teal = done, red = trouble, twilight blue = links, labels and the current tab.
+   No pills except buttons. Every color comes from wf-tokens.css (--wf-b-*), so the twilight dark look is one
+   attribute away (data-wf-dark="auto" on <html>), with nothing here to change.
+
+   What's here: the base (type, links, focus), the top bar (wordmark, painted strip, tabs), the phone dock and its
+   More sheet, buttons, fields, sheets, ledger rows, quiet filters, sub-tabs, the toast and the footer.
+   Phones first: one column, 44px taps, nothing wider than the screen from 320 up. */
+
+/* ============ base ============ */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html {
+  -webkit-text-size-adjust: 100%; color-scheme: light; background: var(--wf-b-bg);
+  font-synthesis: none; /* Gloock has one weight: no fake bold, no fake italic */
+  scroll-padding-top: 16px;
+}
+body {
+  margin: 0; position: relative; color: var(--wf-b-ink);
+  font-family: var(--wf-font-work); font-weight: 300; font-size: var(--wf-b-text); line-height: var(--wf-b-line); letter-spacing: .005em;
+}
+/* the soft lavender and pink glow at the top of the mist (it stays at the top as the page scrolls) */
+body::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: min(1100px, 100%); z-index: -1; pointer-events: none; background: var(--wf-b-bg-glow); }
+@media (max-width: 760px) { body { font-size: var(--wf-b-text-sm); } }
+img { max-width: 100%; display: block; }
+b, strong { font-weight: 500; }
+p, li { text-wrap: pretty; }
+h1, h2, h3, h4 { font-family: var(--wf-font-display); font-weight: 400; line-height: 1.12; margin: 0; text-wrap: balance; color: var(--wf-b-ink); }
+h1 em, h2 em, h3 em { font-family: var(--wf-font-read); font-style: italic; font-weight: 400; color: var(--wf-b-accent); }
+a { color: var(--wf-b-link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--wf-b-focus); outline-offset: 3px; }
+::selection { background: rgb(246 197 111 / .45); color: var(--wf-b-ink); }
+button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.nowrap { white-space: nowrap; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.skip-link {
+  position: absolute; left: 12px; top: -80px; z-index: 80; padding: 10px 16px; border-radius: 10px;
+  background: var(--wf-gold); color: var(--wf-on-gold); font-weight: 500; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+main:focus { outline: none; }
+
+/* ============ the top bar: the wordmark on a slim painted strip, then the tabs ============ */
+.top {
+  position: relative; z-index: 20; isolation: isolate; overflow: hidden;
+  background: var(--wf-b-bar); color: var(--wf-b-bar-ink);
+  box-shadow: 0 10px 28px -18px rgb(38 42 94 / .8);
+}
+/* the pink sky between the redwoods (images/admin-strip.*, from the hero painting), under a twilight veil */
+.top-art { position: absolute; inset: 0; z-index: -2; }
+.top-art picture, .top-art img { width: 100%; height: 100%; }
+.top-art img { object-fit: cover; object-position: 50% 42%; }
+.top::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--wf-b-strip-veil); }
+.top-in {
+  max-width: var(--wf-wrap); margin: 0 auto; min-height: 60px; padding: 8px var(--wf-b-gut);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px;
+}
+.top .brand, .top .via, .top-nav a, .top-nav button, .tabs a, .top .ask {
+  text-shadow: 0 1px 10px rgb(30 26 80 / .8), 0 0 2px rgb(30 26 80 / .5);
+}
+/* the wordmark: "Web Faery" with one tiny gold sparkle (the logo slot sits just before it, for when there is one) */
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #fff; text-decoration: none; flex: none; }
+.brand .logo { height: 36px; width: auto; }
+.wm { position: relative; padding-right: 14px; font: 400 23px/1 var(--wf-font-display); letter-spacing: .01em; white-space: nowrap; }
+.wm > span { font-family: var(--wf-font-read); font-style: italic; color: var(--wf-italic); }
+.wm-spark {
+  position: absolute; right: 0; top: -5px; width: 13px; height: 13px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 214 140 / .55), rgb(247 182 207 / .18) 60%, transparent);
+}
+.wm-spark::before {
+  content: ""; position: absolute; inset: 0; background: radial-gradient(circle, #fffaf0 0 14%, #ffd98f 34%, var(--wf-gold) 70%);
+  clip-path: polygon(50% 0, 59% 41%, 100% 50%, 59% 59%, 50% 100%, 41% 59%, 0 50%, 41% 41%);
+}
+/* whose page it is, beside the name (signed in; wider screens) */
+.via { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--wf-b-bar-ink); font-size: 14px; }
+.via:empty { display: none; }
+.top-nav { display: flex; align-items: center; gap: 2px 6px; margin-left: auto; flex: none; }
+.top-nav a, .top-nav button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 8px;
+  background: none; border: 0; cursor: pointer; color: var(--wf-b-bar-ink); font-weight: 400; font-size: 15px; text-decoration: none; white-space: nowrap;
+}
+.top-nav a:hover, .top-nav button:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+.top-nav a:focus-visible, .top-nav button:focus-visible, .brand:focus-visible, .ask:focus-visible { outline: 2px solid var(--wf-b-bar-gold); outline-offset: 2px; border-radius: 8px; }
+/* "Ask Taya": the one bar button (buttons may be pills) */
+.ask {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 6px 14px 6px 12px; border-radius: var(--wf-r-pill);
+  background: rgb(var(--wf-ground-rgb) / .5); border: 1px solid rgb(255 224 160 / .38); color: var(--wf-b-bar-gold);
+  font-weight: 500; font-size: 15px; text-decoration: none; white-space: nowrap; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.ask:hover { color: #fff; background: rgb(var(--wf-ground-rgb) / .72); }
+.ask svg { width: 19px; height: 19px; flex: none; }
+
+/* the tabs: one short page per area, a gold line under the one you're on */
+.tabs {
+  position: relative; max-width: var(--wf-wrap); margin: 0 auto; padding: 0 var(--wf-b-gut);
+  display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a {
+  position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 10px 12px 12px;
+  white-space: nowrap; color: var(--wf-b-bar-ink); text-decoration: none; font-weight: 400; font-size: 15.5px;
+}
+.tabs a svg { width: 19px; height: 19px; flex: none; opacity: .85; }
+.tabs a:hover { color: #fff; }
+.tabs a[aria-current="page"] { color: #fff; font-weight: 500; }
+.tabs a[aria-current="page"]::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0;
+  background: var(--wf-gold); box-shadow: 0 0 10px rgb(246 197 111 / .8);
+}
+.tabs a:focus-visible { outline: 2px solid var(--wf-b-bar-gold); outline-offset: -4px; border-radius: 10px; }
+/* a small gold count: this many need you */
+.cnt { font-size: 12.5px; font-weight: 500; color: var(--wf-b-bar-gold); }
+.cnt::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 4px; border-radius: 50%; background: var(--wf-gold); vertical-align: 2px; }
+/* wide screens: the tabs stay in reach as the page scrolls (the strip above them slides away) */
+@media (min-width: 761px) {
+  .top-in { height: 64px; padding-block: 0; flex-wrap: nowrap; }
+  .top.has-tabs { position: sticky; top: -64px; }
+  html.wf-tabs { scroll-padding-top: 64px; }
+}
+/* a laptop or tablet with many tabs: the words alone, so they all fit */
+@media (min-width: 761px) and (max-width: 1199px) {
+  .tabs a { padding-inline: 10px; }
+  .tabs a svg { display: none; }
+}
+
+/* ============ phones: the tabs move to a dock at the bottom ============ */
+.dock { display: none; }
+@media (max-width: 760px) {
+  .tabs, .via { display: none; }
+  .wm { font-size: 21px; }
+  .top-nav a, .top-nav button { font-size: 14px; padding: 0 6px; }
+  .ask { padding: 6px 12px 6px 10px; font-size: 14.5px; }
+  .dock {
+    display: flex; position: fixed; z-index: 30; left: 0; right: 0; bottom: 0;
+    padding: 6px 6px max(8px, env(safe-area-inset-bottom));
+    background: rgb(46 50 113 / .97); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: 0 -8px 24px -16px rgb(38 42 94 / .8);
+  }
+  .dock a, .dock button {
+    flex: 1 1 0; min-width: 0; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 54px; padding: 6px 2px; background: none; border: 0; cursor: pointer;
+    color: var(--wf-ink-soft); text-decoration: none; font-weight: 400; font-size: 12px; line-height: 1.2;
+  }
+  .dock .lbl { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dock svg { width: 24px; height: 24px; flex: none; }
+  .dock [aria-current="page"] { color: #fff; font-weight: 500; }
+  .dock [aria-current="page"]::before {
+    content: ""; position: absolute; top: -6px; left: 30%; right: 30%; height: 3px; border-radius: 0 0 3px 3px; background: var(--wf-gold);
+  }
+  .dock a:focus-visible, .dock button:focus-visible { outline: 2px solid var(--wf-b-bar-gold); outline-offset: -3px; border-radius: 10px; }
+  .dock .cnt {
+    position: absolute; top: 2px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+    background: var(--wf-gold); color: var(--wf-on-gold); font-size: 11px; line-height: 18px; text-align: center;
+  }
+  .dock .cnt::before { display: none; }
+  html.wf-tabs { scroll-padding-bottom: 84px; }
+  body.wf-tabs { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+}
+/* small phones: Sign out lives in the footer, so the bar keeps the name and Ask Taya on one line */
+@media (max-width: 400px) { .top-nav .nav-out { display: none; } }
+/* "More" on a phone: the rest of the tabs, in a sheet from the bottom */
+.more-sheet { position: fixed; inset: 0; z-index: 40; display: flex; align-items: flex-end; background: var(--wf-b-scrim); }
+.more-in {
+  width: 100%; max-height: 80vh; overflow-y: auto; background: var(--wf-b-sheet); border-radius: 22px 22px 0 0;
+  padding: 18px var(--wf-b-gut) max(20px, env(safe-area-inset-bottom)); box-shadow: 0 -10px 30px rgb(38 42 94 / .22);
+}
+.more-in ul { list-style: none; margin: 4px 0 8px; padding: 0; }
+.more-in li a {
+  display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 10px 4px; border-top: 1px solid var(--wf-b-rule);
+  color: var(--wf-b-ink); text-decoration: none; font-size: 17px;
+}
+.more-in li a[aria-current="page"] { font-weight: 500; }
+.more-in li a svg { width: 22px; height: 22px; flex: none; color: var(--wf-b-link); }
+
+/* ============ the page ============ */
+.page { max-width: var(--wf-b-wrap); margin: 0 auto; padding: 26px var(--wf-b-gut) 64px; }
+.gutter { padding-inline: var(--wf-b-gut); }
+.wrap { max-width: 680px; margin: 0 auto; }
+.kicker, .eyebrow {
+  display: block; margin: 0 0 6px; font-family: var(--wf-font-work); font-weight: 500; font-size: var(--wf-b-kicker-size);
+  letter-spacing: .14em; text-transform: uppercase; color: var(--wf-b-link); text-wrap: balance;
+}
+.lede { color: var(--wf-b-ink-soft); }
+.fine { color: var(--wf-b-ink-soft); font-size: 15px; }
+/* the greeting at the top of a page */
+.hello { margin: 4px 0 22px; }
+.hello h1 { font-size: var(--wf-b-h1); }
+.hello .lede { margin: 10px 0 0; font-size: 17px; line-height: 1.5; max-width: 40em; }
+
+/* ============ buttons: lantern gold for the one main thing, a quiet outline for the rest ============ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 22px;
+  border-radius: var(--wf-r-pill); border: 1px solid var(--wf-btn-edge); background: var(--wf-btn-bg); color: var(--wf-btn-ink);
+  font-family: var(--wf-font-work); font-weight: 500; font-size: 16px; line-height: 1.2; text-align: center; text-decoration: none; text-wrap: balance;
+  cursor: pointer; box-shadow: var(--wf-shadow-btn-card); transition: transform var(--wf-dur-quick) ease, box-shadow var(--wf-dur-quick) ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgb(255 255 255 / .55), 0 10px 24px -8px rgb(224 169 78 / .9); text-decoration: none; }
+.btn svg { width: 17px; height: 17px; flex: none; }
+.btn.secondary, .btn.ghost { background: transparent; border: 1.5px solid currentColor; color: var(--wf-b-link); box-shadow: none; }
+.btn.secondary:hover, .btn.ghost:hover { background: var(--wf-b-sheet); box-shadow: none; }
+.btn.small { min-height: 44px; padding: 8px 18px; font-size: 15px; }
+.btn.wide { width: 100%; }
+@media (min-width: 560px) { .btn.wide { width: auto; min-width: 14em; } }
+/* busy (sending) or not yet: an empty dashed outline with soft words */
+.btn:disabled, .btn:disabled:hover, .btn[aria-disabled="true"], .btn[aria-disabled="true"]:hover {
+  background: transparent; border-style: dashed; border-color: var(--wf-b-edge); color: var(--wf-b-ink-soft); box-shadow: none; transform: none; cursor: not-allowed;
+}
+.btn:disabled[aria-busy="true"] { cursor: wait; }
+/* a quiet link-like button */
+.lnk {
+  background: none; border: 0; padding: 0 4px; min-height: 44px; cursor: pointer; color: var(--wf-b-link);
+  font-weight: 400; text-align: left; text-decoration: underline; text-underline-offset: 3px;
+}
+
+/* ============ fields ============ */
+.field-label { display: block; margin: 18px 0 7px; font-weight: 500; font-size: 15.5px; line-height: 1.35; color: var(--wf-b-ink); }
+.opt-tag { font-weight: 300; font-size: 14.5px; color: var(--wf-b-ink-soft); }
+input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], input[type="search"],
+input[type="date"], input[type="time"], input[type="datetime-local"], textarea, select {
+  width: 100%; max-width: 100%; min-height: 48px; padding: 10px 12px;
+  background: var(--wf-b-field); color: var(--wf-b-ink); border: 1px solid var(--wf-b-edge); border-radius: var(--wf-r-input);
+  font-family: var(--wf-font-work); font-weight: 400; font-size: 16.5px; line-height: 1.45;
+  transition: border-color .2s ease;
+}
+textarea { min-height: 120px; resize: vertical; display: block; }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--wf-b-focus); outline-offset: 2px; border-color: var(--wf-b-link); }
+input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--wf-b-trouble); }
+::placeholder { color: #69679a; opacity: 1; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--wf-b-link); }
+.err { margin: 8px 0 0; color: var(--wf-b-trouble); font-size: 15px; line-height: 1.45; }
+
+/* ============ sheets and ledger rows ============ */
+.sheet {
+  background: var(--wf-b-sheet); border: 1px solid var(--wf-b-rule); border-radius: var(--wf-r-sheet);
+  padding: 20px 22px; margin: 0 0 18px; box-shadow: var(--wf-b-shadow);
+}
+.sh { font-family: var(--wf-font-display); font-size: 21px; margin: 0 0 10px; }
+.ledger {
+  list-style: none; margin: 0; padding: 0; background: var(--wf-b-sheet); border: 1px solid var(--wf-b-rule);
+  border-radius: var(--wf-r-sheet); box-shadow: var(--wf-b-shadow); overflow: hidden;
+}
+.sheet .ledger { border: 0; box-shadow: none; border-radius: 0; margin: 0 -22px -20px; background: none; }
+.ledger > li { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-top: 1px solid var(--wf-b-rule); }
+.ledger > li:first-child { border-top: 0; }
+.sheet .ledger > li:first-child { border-top: 1px solid var(--wf-b-rule); }
+.ledger .what { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.ledger .what b { color: var(--wf-b-ink); }
+.ledger .what small { display: block; margin-top: 2px; color: var(--wf-b-ink-soft); font-size: 14px; }
+.ledger .acts { display: flex; align-items: center; gap: 10px; flex: none; }
+.row-link { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 44px; color: inherit; text-decoration: none; }
+.row-link .go { flex: none; color: var(--wf-b-link); font-size: 14.5px; font-weight: 500; }
+.row-link .go::after { content: " \203A"; }
+.row-link:hover .what b { text-decoration: underline; text-underline-offset: 3px; }
+/* a small round mark at the start of a row: gold when it needs you, an empty ring otherwise */
+.mark { flex: none; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--wf-b-leaf); }
+.mark.due { border: 0; background: var(--wf-b-due); box-shadow: 0 0 0 4px var(--wf-b-due-tint), 0 0 10px 2px rgb(238 176 74 / .45); }
+.mark.done { border: 0; background: var(--wf-b-done); }
+@media (max-width: 760px) {
+  .sheet { padding: 18px 16px; }
+  .sheet .ledger { margin: 0 -16px -18px; }
+  .ledger > li { padding: 14px 16px; }
+}
+/* numbers at a glance */
+.glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; margin: 0; }
+.glance div { padding: 6px 14px 6px 0; }
+.glance div + div { padding-left: 16px; border-left: 1px solid var(--wf-b-rule); }
+.glance dt { font-size: 13.5px; color: var(--wf-b-ink-soft); }
+.glance dd { margin: 2px 0 0; font-family: var(--wf-font-display); font-size: 30px; line-height: 1.1; }
+/* filters: quiet words with an underline, not pills */
+.filters { display: flex; flex-wrap: wrap; gap: 2px 20px; margin: 0 0 14px; border-bottom: 1px solid var(--wf-b-rule); }
+.filters button { position: relative; min-height: 44px; padding: 8px 0 10px; background: none; border: 0; cursor: pointer; color: var(--wf-b-ink-soft); font-size: 15px; }
+.filters button[aria-selected="true"] { color: var(--wf-b-ink); font-weight: 500; }
+.filters button[aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--wf-b-ink); }
+/* sub-tabs inside a page: a calm segmented strip */
+.subtabs { display: flex; gap: 4px; padding: 4px; margin: 0 0 18px; background: var(--wf-b-well); border-radius: 14px; overflow-x: auto; scrollbar-width: none; }
+.subtabs > * {
+  flex: 1 0 auto; min-height: 44px; padding: 9px 14px; border: 0; border-radius: 10px; background: none; cursor: pointer;
+  color: var(--wf-b-ink-soft); font-size: 15px; text-align: center; text-decoration: none; white-space: nowrap;
+}
+.subtabs > [aria-current="page"], .subtabs > [aria-selected="true"] {
+  background: var(--wf-b-sheet); color: var(--wf-b-ink); font-weight: 500; box-shadow: 0 1px 3px rgb(38 42 94 / .14);
+}
+
+/* ============ the toast: a small word that comes and goes ============ */
+.toast {
+  position: fixed; z-index: 60; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom));
+  margin: 0 auto; max-width: 460px; padding: 12px 16px; border-radius: 14px;
+  background: var(--wf-b-sheet); border: 1px solid var(--wf-b-rule); color: var(--wf-b-ink);
+  font-size: 15.5px; line-height: 1.45; box-shadow: 0 18px 40px -12px rgb(38 42 94 / .45);
+  animation: wf-toast-in .4s cubic-bezier(.2, .7, .3, 1) both;
+}
+@media (max-width: 760px) { body.wf-tabs .toast { bottom: calc(80px + env(safe-area-inset-bottom)); } }
+@keyframes wf-toast-in { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
+
+/* ============ the footer ============ */
+.site-foot { margin-top: 40px; padding: 0 var(--wf-b-gut) 36px; color: var(--wf-b-ink-soft); font-size: 15px; }
+.site-foot .foot-in {
+  max-width: var(--wf-wrap); margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 8px 28px; padding-top: 20px; border-top: 1px solid var(--wf-b-rule);
+}
+.site-foot .brand { color: var(--wf-b-ink); }
+.site-foot .wm { font-size: 21px; }
+.site-foot .wm > span { color: var(--wf-b-accent); }
+.site-foot .wm-spark { background: none; }
+.site-foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 22px; }
+.site-foot a:not(.brand) { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; }
+.site-foot .fine { width: 100%; margin: 0; }
+
+/* ============ calm for those who ask for it ============ */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn:hover { transition: none; transform: none; }
+  .toast { animation: none; }
+}
+
+/* ============ print: just the words, on white paper ============ */
+@media print {
+  html, body { background: #fff; }
+  body::before, .top, .dock, .more-sheet, .toast, .skip-link { display: none !important; }
+  body.wf-tabs { padding-bottom: 0; }
+  .sheet, .ledger { box-shadow: none; border-color: #ccc; background: #fff; }
+}

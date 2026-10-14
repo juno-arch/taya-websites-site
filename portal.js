@@ -137,31 +137,6 @@
   try { framed = window.top !== window.self; } catch (e) { framed = true; }
   if (framed && !DEMO) document.documentElement.classList.add('framed');
 
-  /* ================= 1. the photo's slow intro (the same as every page) =================
-     This part runs right away, before the first paint; the rest waits for the page. */
-  (function heroIntro() {
-    const h = document.querySelector('.page-hero');
-    if (!h || reduceMotion) return;
-    const ph = h.querySelector('.photo');
-    if (!ph) return;
-    h.classList.add('wait');
-    // play the intro only once the photo has fully arrived; if it's still on its way after 4 seconds
-    // (a slow connection), show everything at rest so a half-loaded photo never animates
-    let settled = false;
-    const rest = () => { if (settled) return; settled = true; h.classList.remove('wait'); };
-    const go = () => { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
-    const ready = () => { if (ph.decode) ph.decode().then(go, go); else go(); };
-    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
-    let queued = false;
-    window.addEventListener('scroll', () => {
-      if (queued) return; queued = true;
-      requestAnimationFrame(() => {
-        queued = false;
-        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
-      });
-    }, { passive: true });
-  })();
-
   /* ================= little helpers ================= */
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
@@ -455,9 +430,16 @@
   const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project'];
   const show = (id) => {
     VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
-    $('#foot-out').hidden = id !== 'v-project';
-    $('#b-signout-top').hidden = id !== 'v-project';
-    if (id !== 'v-project') $('#nav-start').hidden = true; // only signed in, and only once Taya opens it
+    const inside = id === 'v-project';
+    $('#foot-out').hidden = !inside;
+    $('#b-signout-top').hidden = !inside;
+    $('#nav-home').hidden = inside;        // signed in, "Home" is their own Home tab (the name still goes to webfaery.love)
+    if (!inside) {
+      $('#nav-start').hidden = true;       // only signed in, and only once Taya opens it
+      $('#top-via').textContent = '';
+      hideTabs();
+    }
+    $('#hello').hidden = inside && page !== 'home';
   };
   const announce = (text) => {
     const l = $('#live');
@@ -489,7 +471,7 @@
     if (input) { if (text) $(input).setAttribute('aria-invalid', 'true'); else $(input).removeAttribute('aria-invalid'); }
   };
 
-  /* ================= the words in the photo ================= */
+  /* ================= the greeting at the top (on the sign-in steps and Home) ================= */
   const hero = (eyebrow, before, em, lede, moon, nowLine) => {
     $('#hero-eyebrow').textContent = eyebrow;
     const h = $('#hero-title');
@@ -505,6 +487,260 @@
     if (nowLine) l.append(make('span', 'now-line', nowLine));
   };
   const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email. No passwords to remember.');
+
+  /* ================= the pages (Oct 14 2026): one short page per area, with tabs =================
+     Every section in #v-project says which page it belongs to (data-page). A page shows in the tabs when any of its
+     sections is there for this client (hidden on a section still means "they don't have it"); the page that's open
+     shows its sections and the others step aside (.off-page). The address names the page (#orders, #payments), and
+     Bookings and Newsletter keep their own sub-tab addresses (#bookings-hours, #newsletter-sent), so a link or a
+     reload opens the same place. On a phone the tabs sit in a dock at the bottom: up to five, or the first four
+     and More. Ask Taya (asking for a change) is the bar's own button. */
+  const PAGES = [
+    { id: 'home', label: 'Home', icon: 'i-home' },
+    { id: 'project', label: 'Your project', short: 'Project', icon: 'i-path' },
+    { id: 'orders', label: 'Orders', icon: 'i-box' },
+    { id: 'products', label: 'Products', icon: 'i-leaf' },
+    { id: 'codes', label: 'Codes', icon: 'i-tag' },
+    { id: 'bookings', label: 'Bookings', icon: 'i-cal' },
+    { id: 'gifts', label: 'Gift certificates', short: 'Gifts', icon: 'i-gift' },
+    { id: 'newsletter', label: 'Newsletter', icon: 'i-mail' },
+    { id: 'payments', label: 'Payments', icon: 'i-receipt' },
+    { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
+  ];
+  const SHOP_PAGES = ['orders', 'products', 'codes', 'bookings', 'gifts', 'newsletter'];
+  let page = 'home';
+  let pagesSig = '';
+  const pageInfo = (id) => PAGES.find((x) => x.id === id) || PAGES[0];
+  const pageHas = (id) => id === 'home' || $$('#v-project > [data-page="' + id + '"]').some((el) => !el.hidden);
+  // the order: while we build, their project comes right after Home; once the site is live, their own shop,
+  // booking or newsletter comes first (that's what they'll open most)
+  function pageList() {
+    const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
+    const order = live ? ['home'].concat(SHOP_PAGES, ['project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['payments', 'ask']);
+    return order.filter(pageHas).map(pageInfo);
+  }
+  // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
+  function hashPage() {
+    const h = (location.hash || '').slice(1);
+    if (/^bookings(?:-[a-z]+)?$/.test(h)) return 'bookings';
+    if (/^newsletter(?:-[a-z]+)?$/.test(h)) return 'newsletter';
+    if (/^sec-[a-z]+$/.test(h)) { const el = document.getElementById(h); return el && el.dataset.page ? el.dataset.page : ''; }
+    return PAGES.some((x) => x.id === h) ? h : '';
+  }
+  // a little gold count on a tab: how many things there need them
+  function pageCounts() {
+    const n = {};
+    if (!me) return n;
+    const t = taps.mine();
+    n.project = me.list.open.filter((x) => x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key])).length;
+    n.payments = me.pay.filter((x) => x.state === 'due' && x.url && !t[x.key]).length;
+    if (shop) n.orders = shop.orders.filter((o) => !o.packed_on).length;
+    return n;
+  }
+  function tabLink(p, n, inDock) {
+    const a = make('a');
+    a.href = '#' + p.id;
+    a.dataset.page = p.id;
+    a.append(icon(p.icon));
+    if (inDock) a.append(make('span', 'lbl', p.short || p.label)); else a.append(p.label);
+    if (n) {
+      const c = make('span', 'cnt', String(n));
+      c.append(make('span', 'sr-only', ' to do'));
+      if (!inDock) a.append(' ');
+      a.append(c);
+    }
+    return a;
+  }
+  function hideTabs() {
+    pagesSig = '';
+    $('#tabs').hidden = true;
+    $('#dock').hidden = true;
+    $('#more').hidden = true;
+    $('#top').classList.remove('has-tabs');
+    document.documentElement.classList.remove('wf-tabs');
+    document.body.classList.remove('wf-tabs');
+    const ask = $('#top-ask');
+    if (ask) ask.remove();
+    $$('#v-project > [data-page]').forEach((el) => el.classList.remove('off-page'));
+  }
+  // draw the tabs again when what this client has changes (their orders, bookings or newsletter come in a moment
+  // after the project), then open the page the address asks for once it's there
+  function syncPages() {
+    if (!me || $('#v-project').hidden) return;
+    const list = pageList();
+    const tabs = list.filter((x) => x.id !== 'ask');
+    const counts = pageCounts();
+    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (pageHas('ask') ? '|ask' : '');
+    if (sig !== pagesSig) {
+      pagesSig = sig;
+      $('#tabs').replaceChildren(...tabs.map((x) => tabLink(x, counts[x.id] || 0, false)));
+      const dockN = tabs.length <= 5 ? tabs.length : 4;
+      const inDock = tabs.slice(0, dockN), inMore = tabs.slice(dockN);
+      const dockKids = inDock.map((x) => tabLink(x, counts[x.id] || 0, true));
+      if (inMore.length) {
+        const more = make('button');
+        more.type = 'button';
+        more.id = 'more-btn';
+        more.setAttribute('aria-haspopup', 'dialog');
+        more.setAttribute('aria-controls', 'more');
+        more.dataset.pages = inMore.map((x) => x.id).join(' ');
+        more.append(icon('i-more'), make('span', 'lbl', 'More'));
+        const waiting = inMore.reduce((sum, x) => sum + (counts[x.id] || 0), 0);
+        if (waiting) { const c = make('span', 'cnt', String(waiting)); c.append(make('span', 'sr-only', ' to do')); more.append(c); }
+        more.addEventListener('click', openMore);
+        dockKids.push(more);
+      }
+      $('#dock').replaceChildren(...dockKids);
+      $('#more-list').replaceChildren(...inMore.map((x) => { const li = make('li'); li.append(tabLink(x, counts[x.id] || 0, false)); return li; }));
+      // Ask Taya: the bar's button, when they can ask for a change
+      let ask = $('#top-ask');
+      if (pageHas('ask')) {
+        if (!ask) {
+          ask = make('a', 'ask');
+          ask.id = 'top-ask';
+          ask.href = '#ask';
+          ask.dataset.page = 'ask';
+          ask.append(icon('i-ask'), make('span', null, 'Ask Taya'));
+          $('#top-nav').prepend(ask);
+        }
+      } else if (ask) ask.remove();
+    }
+    $('#tabs').hidden = false;
+    $('#dock').hidden = false;
+    $('#top').classList.add('has-tabs');
+    document.documentElement.classList.add('wf-tabs');
+    document.body.classList.add('wf-tabs');
+    const want = hashPage();
+    if (want && want !== page && list.some((x) => x.id === want)) openPage(want, { scroll: true });
+    else if (!list.some((x) => x.id === page)) openPage('home', { scroll: true });
+    else openPage(page, { scroll: false });
+  }
+  function openPage(id, how) {
+    how = how || {};
+    if (!pageList().some((x) => x.id === id)) id = 'home';
+    page = id;
+    $$('#v-project > [data-page]').forEach((el) => el.classList.toggle('off-page', el.dataset.page !== id));
+    $('#hello').hidden = !$('#v-project').hidden && id !== 'home';
+    $$('#tabs a, #dock a, #more-list a, #top-ask').forEach((a) => {
+      if (a.dataset.page === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    const more = $('#more-btn');
+    if (more) { if (more.dataset.pages.split(' ').includes(id)) more.setAttribute('aria-current', 'page'); else more.removeAttribute('aria-current'); }
+    document.title = (id === 'home' ? 'Your project' : pageInfo(id).label) + ' · Web Faery';
+    if (how.scroll) window.scrollTo(0, 0);
+  }
+  // from a button inside the page (See payments, a Needs you row): the address follows, like a tab
+  function goPage(id) {
+    if (hashPage() !== id) { try { history.pushState(null, '', location.pathname + location.search + '#' + id); } catch (e) { /* fine */ } }
+    openPage(id, { scroll: true });
+  }
+  function openMore() {
+    $('#more').hidden = false;
+    const first = $('#more-list a');
+    if (first) first.focus();
+  }
+  function closeMore(back) {
+    if ($('#more').hidden) return;
+    $('#more').hidden = true;
+    if (back) focusEl($('#more-btn'));
+  }
+  // a section shown or hidden (their orders, bookings and the rest arrive a moment after the project, and a quiet
+  // refresh can change what they have): draw Needs you and the tabs again, once per frame at most
+  let pagesQueued = false;
+  function pagesSoon() {
+    if (pagesQueued) return;
+    pagesQueued = true;
+    requestAnimationFrame(() => { pagesQueued = false; if (me) { renderNeeds(); syncPages(); } });
+  }
+  function wirePages() {
+    new MutationObserver((recs) => { if (recs.some((r) => r.target.parentElement === $('#v-project'))) pagesSoon(); })
+      .observe($('#v-project'), { attributes: true, attributeFilter: ['hidden'], subtree: true });
+    window.addEventListener('hashchange', () => {
+      closeMore(false);
+      if (!me || $('#v-project').hidden) return;
+      const want = hashPage();
+      if (!want || want === page) return;
+      openPage(want, { scroll: true });
+      focusEl($('#main'), true);
+      announce(pageInfo(page).label);
+    });
+    $('#more-close').addEventListener('click', () => closeMore(true));
+    $('#more').addEventListener('click', (e) => { if (e.target === $('#more') || e.target.closest('a')) closeMore(false); });
+    $('#more').addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMore(true); });
+  }
+
+  /* ---- Needs you (Home): the few things waiting on them right now, each a row that opens its page ---- */
+  function needRow(pageId, due, title, sub) {
+    const li = make('li');
+    const a = make('a', 'row-link');
+    a.href = '#' + pageId;
+    const mk = make('span', 'mark' + (due ? ' due' : ''));
+    mk.setAttribute('aria-hidden', 'true');
+    const what = make('span', 'what');
+    what.append(make('b', null, title));
+    if (sub) what.append(make('small', null, sub));
+    a.append(mk, what, make('span', 'go', pageInfo(pageId).label));
+    li.append(a);
+    return li;
+  }
+  // numbers at a glance: their bookings this coming week, their orders this month, what's still on gift certificates
+  function renderGlance() {
+    const sec = $('#sec-glance');
+    const cells = [];
+    const cell = (label, big, small) => {
+      const d = make('div');
+      d.append(make('dt', null, label), make('dd', null, big));
+      if (small) d.append(make('dd', 'd', small));
+      return d;
+    };
+    if (bk) {
+      const week = Date.now() + 7 * 24 * 3600 * 1000;
+      const n = bk.upcoming.filter((b) => b.status !== 'canceled' && Date.parse(b.starts_at) < week).length;
+      cells.push(cell('Bookings', String(n), 'the next 7 days'));
+    }
+    if (shop) {
+      const month = todayISO.slice(0, 7);
+      const these = shop.orders.filter((o) => o.day.slice(0, 7) === month);
+      const cents = these.reduce((sum, o) => sum + (toCents(o.total) || 0), 0);
+      cells.push(cell('Orders this month', '$' + Math.round(cents / 100).toLocaleString('en-US'), plural(these.length, 'order', 'orders')));
+    }
+    if (gifts && gifts.outstanding) cells.push(cell('Gift certificates', gifts.outstanding, 'still to be used'));
+    $('#glance').replaceChildren(...cells);
+    sec.hidden = !cells.length;
+  }
+  function renderNeeds() {
+    const sec = $('#sec-needs');
+    if (!me) { sec.hidden = true; return; }
+    const t = taps.mine();
+    const rows = [];
+    const open = me.list.open.filter((x) => x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key]));
+    open.slice(0, 4).forEach((x) => rows.push(needRow(x.kind === 'pay' ? 'payments' : 'project', true, x.title, x.detail)));
+    if (open.length > 4) rows.push(needRow('project', false, plural(open.length - 4, 'more thing', 'more things') + ' on your list', ''));
+    if (shop) {
+      const toPack = shop.orders.filter((o) => !o.packed_on);
+      if (toPack.length) {
+        const o = toPack[0];
+        const first = o.items[0] ? o.items[0].title + (o.items.length > 1 ? ' and more' : '') : '';
+        const where = [o.city, o.state].filter(Boolean).join(', ');
+        rows.push(needRow('orders', true, plural(toPack.length, 'order', 'orders') + ' to pack',
+          [first, where ? 'to ' + where : '', shortDate(o.day)].filter(Boolean).join(' · ')));
+      }
+    }
+    if (bk) {
+      const next = bk.upcoming.find((b) => b.status !== 'canceled');
+      if (next) {
+        const at = Date.parse(next.starts_at);
+        const soon = !isNaN(at) && at - Date.now() < 36 * 3600 * 1000;
+        rows.push(needRow('bookings', soon, 'Next: ' + next.when, [next.service_name, next.name].filter(Boolean).join(' · ')));
+      }
+    }
+    renderGlance();
+    $('#needs').replaceChildren(...rows);
+    $('#needs').hidden = !rows.length;
+    // nothing waiting: a calm line, unless their turn on the mockup is right above it
+    $('#needs-calm').hidden = rows.length > 0;
+    sec.hidden = !rows.length && !$('#sec-turn').hidden;
+  }
 
   /* ================= signing in ================= */
   function toEmailStep(notice, moveFocus) {
@@ -529,6 +765,7 @@
     $('#in-nl-subject').value = ''; $('#in-nl-pre').value = ''; $('#in-nl-body').value = '';
     $('#nl-people').replaceChildren();
     heroSignedOut();
+    page = 'home';
     const n = $('#email-notice');
     n.textContent = notice || '';
     n.hidden = !notice;
@@ -684,13 +921,13 @@
       const data = await api.me();
       me = clean(data);
       lastLoad = Date.now();
+      show('v-project');   // (shown and drawn in the same moment, so nothing paints half done)
       render();
-      show('v-project');
       loadOrders();
       loadGifts();
       loadBookings();
       loadNews();
-      if (fromSignIn) focusEl($('#sec-note').hidden ? $('#h-list') : $('#h-note'));
+      if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(fromSignIn !== null); return; }
@@ -731,6 +968,7 @@
     }
     const row = me.pay.find((p) => p.key === key);
     if (row && row.state !== 'paid' && row.state !== 'active') { taps.set(key); renderList(); renderPay(); }
+    goPage('payments');
     toast('Thank you! It shows here once I see it land, usually within a day. No need to pay again.', 9000);
   }
 
@@ -891,6 +1129,7 @@
     hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
       (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_MOON[c.build], nowLine());
     $('#me-email').textContent = c.email || 'you';
+    $('#top-via').textContent = c.business || '';
     // forget "I tapped Pay" once Taya has marked it
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
     // the header's "Getting started" only while that page is still theirs to fill in
@@ -904,29 +1143,18 @@
     renderTexts();
     renderPay();
     renderChange();
-    placeChange();
+    renderNeeds();
+    syncPages();
     if (firstShow) {
       firstShow = false;
       if (!reduceMotion) {
-        $$('#v-project > .p-card:not([hidden])').forEach((el, i) => {
+        $$('#v-project > .p-card:not([hidden]):not(.off-page)').forEach((el, i) => {
           el.style.setProperty('--i', String(i));
           el.classList.add('rise');
           el.addEventListener('animationend', () => el.classList.remove('rise'), { once: true });
         });
       }
     }
-  }
-
-  // Care clients mostly come back to ask for a change: once they're in care (or have nothing left on
-  // their list), "Ask for a change" moves up, right under the note and the list.
-  function placeChange() {
-    const proj = $('#v-project');
-    const sec = $('#sec-change');
-    const cur = me.timeline.current;
-    const up = me.care.can_ask && (cur === 'care' || !me.list.open.length);
-    const before = up ? (me.list.open.length ? $('#sec-where') : $('#sec-list')) : null;
-    if (before) { if (sec.nextElementSibling !== before) proj.insertBefore(sec, before); }
-    else if (proj.lastElementChild !== sec) proj.append(sec);
   }
 
   /* ---- texts: sign in with a text (Oct 2 2026). The words match the server's SMS_CONSENT exactly. ---- */
@@ -1133,9 +1361,9 @@
       b.type = 'button';
       b.addEventListener('click', () => {
         const sec = $('#sec-pay');
-        sec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        goPage('payments');
         const target = item.pay_key && $('#pay-' + item.pay_key + ' .btn, #pay-' + item.pay_key + ' a');
-        setTimeout(() => focusEl(target || sec), reduceMotion ? 0 : 450);
+        focusEl(target || sec);
       });
       act.append(b);
     }
@@ -1989,6 +2217,7 @@
       cb.checked = !!o.packed_on;
       word.textContent = o.packed_on ? 'Packed ' + shortDate(o.packed_on) : 'Packed';
       li.classList.toggle('packed', !!o.packed_on);
+      pagesSoon();
       announce(o.packed_on ? 'Marked packed.' : 'Packed tick taken off.');
     } catch (err) {
       cb.checked = !want;
@@ -2113,7 +2342,7 @@
     if (!bkTabsReady) {
       bkTabsReady = true;
       const h = hashTab();
-      if (h) { selectTab(h, false, true); requestAnimationFrame(() => sec.scrollIntoView({ block: 'start' })); }
+      if (h) selectTab(h, false, true);
     }
   }
 
@@ -2977,7 +3206,7 @@
       t.addEventListener('click', () => selectTab(t.dataset.tab, false, false));
       t.addEventListener('keydown', onTabKey);
     });
-    window.addEventListener('hashchange', () => { const h = hashTab(); if (h && bk) { selectTab(h, false, true); $('#sec-bookings').scrollIntoView({ block: 'start' }); } });
+    window.addEventListener('hashchange', () => { const h = hashTab(); if (h && bk) selectTab(h, false, true); });
     $('#b-bk-prev').addEventListener('click', () => loadMonth(monthKeyAdd(bkMonth, -1)));
     $('#b-bk-next').addEventListener('click', () => loadMonth(monthKeyAdd(bkMonth, 1)));
     $('#f-bk-ovr').addEventListener('submit', onBkOvr);
@@ -3706,7 +3935,7 @@
     if (!nlTabsReady) {
       nlTabsReady = true;
       const h = nlHashTab();
-      if (h) { selectNlTab(h, false, true); requestAnimationFrame(() => sec.scrollIntoView({ block: 'start' })); }
+      if (h) selectNlTab(h, false, true);
     }
   }
   function nlRow(r, sent) {
@@ -4045,7 +4274,7 @@
       t.addEventListener('click', () => selectNlTab(t.dataset.tab, false, false));
       t.addEventListener('keydown', onNlTabKey);
     });
-    window.addEventListener('hashchange', () => { const h = nlHashTab(); if (h && nl) { selectNlTab(h, false, true); $('#sec-news').scrollIntoView({ block: 'start' }); } });
+    window.addEventListener('hashchange', () => { const h = nlHashTab(); if (h && nl) selectNlTab(h, false, true); });
     $('#b-nl-new').addEventListener('click', () => { if (nl) openNl(''); });
     $('#b-nl-close').addEventListener('click', closeNl);
     $('#f-nl').addEventListener('submit', onNlSave);
@@ -4381,6 +4610,7 @@
     $('#f-gift').addEventListener('submit', onGiftFind);
     wireBookings();
     wireNews();
+    wirePages();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
     document.addEventListener('visibilitychange', () => {

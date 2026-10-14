@@ -11,56 +11,56 @@
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Tell me about you: the getting-started questions">
 <meta property="og:description" content="About ten minutes, no wrong answers, and sending them doesn’t commit you to anything.">
-<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg?v=20261014">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta property="og:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tell me about you: the getting-started questions">
 <meta name="twitter:description" content="About ten minutes, no wrong answers, and sending them doesn’t commit you to anything.">
-<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
-<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg?v=20261014">
+<meta name="twitter:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0e0e0c">
+<meta name="theme-color" content="#272c66">
 <meta name="color-scheme" content="dark">
-<link rel="stylesheet" href="fonts/fonts.css?v=20261001f">
-<link rel="stylesheet" href="soil.css?v=20261001f">
-<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
-<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
-<script src="mycelium.js?v=20261001f" defer></script>
-<link rel="stylesheet" href="pages.css?v=20261001f">
-<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
-<link rel="stylesheet" href="faery.css?v=20261001f">
-<script src="faery.js?v=20261001f" defer></script>
+<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="wf-tokens.css?v=20261014a">
+<link rel="stylesheet" href="soil.css?v=20261014a">
+<link rel="stylesheet" href="pages.css?v=20261014a">
 <style>
   .plan-note {
     margin: 30px 0 0; padding: 14px 18px; border-left: 3px solid var(--acc);
     background: var(--card); border-radius: 0 10px 10px 0; font-size: 17px;
   }
+  /* each group of questions sits on a lavender-cream card (the .cream class in pages.css turns the words to ink) */
   fieldset {
-    border: 1px solid var(--hairline); border-radius: 16px; background: var(--card);
+    border: 0; border-radius: var(--wf-r-card); background: var(--wf-card-bg); box-shadow: var(--wf-shadow-card);
     padding: 24px 24px 26px; margin: 26px 0 0; min-width: 0;
   }
   legend {
-    font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); padding-inline: 8px;
+    float: left; width: 100%; margin: 0 0 6px; padding: 0;
+    font-family: var(--wf-font-read); font-size: 12.5px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--wf-c-rose);
   }
+  legend + * { clear: both; }
+  /* the page is twilight (color-scheme dark), but the cards are light: their ticks and dots are drawn light too */
+  fieldset.cream, .rescue.cream { color-scheme: light; }
   .q { margin-top: 20px; }
   .q:first-of-type { margin-top: 6px; }
-  .main { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
+  .main { display: block; font-family: var(--wf-font-display); font-weight: 400; font-size: 17px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
   .hint { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 10px; font-style: italic; line-height: 1.5; }
-  .req { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 15px; font-style: italic; color: var(--ink-soft); }
+  .req { font-family: var(--wf-font-read); font-weight: 400; font-size: 15px; font-style: italic; color: var(--ink-soft); }
   input[type="text"], input[type="email"], textarea, select {
     width: 100%; background: var(--paper); color: var(--ink);
     border: 1px solid var(--field-edge); border-radius: 8px;
-    font-family: 'Spectral', Georgia, serif; font-size: 17px; padding: 11px 13px; min-height: 46px;
+    font-family: var(--wf-font-read); font-size: 17px; padding: 11px 13px; min-height: 46px;
   }
   textarea { min-height: 92px; resize: vertical; }
   input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--err); }
   input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-  ::placeholder { color: var(--ink-soft); opacity: 1; }
+  ::placeholder { color: #69679a; opacity: 1; }
 
   .opts { display: grid; gap: 8px; }
   .opt {
@@ -73,7 +73,7 @@
   .opt input { margin-top: 5px; accent-color: var(--btn); flex-shrink: 0; }
   .opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
   .opt small { display: block; color: var(--ink-soft); font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
-  .opt b { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
+  .opt b { font-family: var(--wf-font-display); font-weight: 400; }
   .opt .moon { font-size: 17px; margin-right: 6px; }
 
   #booking-extra { display: none; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--hairline); }
@@ -82,7 +82,7 @@
   .next-note { margin: 30px 0 0; font-size: 16.5px; color: var(--ink-soft); }
   .send-row { margin-top: 18px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
   button.send {
-    cursor: pointer; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px;
+    cursor: pointer; font-family: var(--wf-font-display); font-weight: 400; font-size: 17px;
     min-height: 50px; padding: 12px 30px; border-radius: 999px;
     background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn);
   }
@@ -99,15 +99,15 @@
 
   /* shown when the answers can't be sent: everything in one box, ready to copy */
   .rescue {
-    margin-top: 22px; background: var(--card); border: 2px solid var(--acc); border-radius: 14px;
-    padding: 20px 22px 22px;
+    margin-top: 22px; background: var(--wf-card-bg); border: 2px solid var(--wf-gold); border-radius: var(--wf-r-sheet);
+    padding: 20px 22px 22px; box-shadow: var(--wf-shadow-card);
   }
-  .rescue-title { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; margin: 0; }
+  .rescue-title { font-family: var(--wf-font-display); font-weight: 400; font-size: 17px; margin: 0; }
   .rescue .note-line { font-size: 16px; margin: 4px 0 12px; }
   .rescue textarea { min-height: 220px; font-size: 15px; line-height: 1.5; }
   .rescue-row { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
   button.copy {
-    cursor: pointer; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px;
+    cursor: pointer; font-family: var(--wf-font-display); font-weight: 400; font-size: 16px;
     padding: 10px 24px; border-radius: 999px; min-height: 50px;
     background: transparent; color: var(--link); border: 1px solid var(--acc);
   }
@@ -127,12 +127,15 @@
 </style>
 </head>
 <body>
-<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<!-- the twilight behind everything (soil.css): decoration only -->
 <div class="soil" aria-hidden="true"></div>
 <header class="page-hero short">
-  <picture><source type="image/webp" srcset="images/hero.webp"><img class="photo" src="images/hero.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 50% 45%"></picture>
+  <picture>
+    <source type="image/webp" srcset="images/contact.webp">
+    <img class="photo" src="images/contact.jpg" width="1456" height="816" alt="" fetchpriority="high" decoding="async" style="object-position: 46% 52%">
+  </picture>
   <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
   <div class="words">
@@ -175,7 +178,7 @@
 
     <!-- hidden until the script below is running, so nobody fills it in on a page that can’t send it -->
     <form id="intake" novalidate hidden>
-      <fieldset>
+      <fieldset class="cream">
         <legend>You</legend>
         <div class="q">
           <label class="main" for="f-name">Your name <span class="req" aria-hidden="true">(needed)</span></label>
@@ -197,7 +200,7 @@
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset class="cream">
         <legend>Your build</legend>
         <div class="q">
           <p class="main" id="l-build">Which build are you leaning toward?</p>
@@ -277,7 +280,7 @@
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset class="cream">
         <legend>After launch</legend>
         <div class="q">
           <p class="main" id="l-care">How your subscription works</p>
@@ -292,7 +295,7 @@
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset class="cream">
         <legend>The feel of it</legend>
         <div class="q">
           <p class="main" id="l-moods">Which moods feel like you?</p>
@@ -317,7 +320,7 @@
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset class="cream">
         <legend>Raw materials</legend>
         <div class="q">
           <p class="main" id="l-photos">Photos of you and your work?</p>
@@ -347,7 +350,7 @@
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset class="cream">
         <legend>Reaching you</legend>
         <div class="q">
           <label class="main" for="f-email">Best email <span class="req" aria-hidden="true">(needed)</span></label>
@@ -366,7 +369,7 @@
       </div>
     </form>
 
-    <div class="rescue" id="rescue" hidden>
+    <div class="rescue cream" id="rescue" hidden>
       <p class="rescue-title" id="rescue-title">All your answers, ready to copy</p>
       <p class="note-line">Paste them into an email to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I&rsquo;ll take it from there.</p>
       <textarea id="rescue-text" readonly aria-labelledby="rescue-title"></textarea>
@@ -386,7 +389,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <ul>
       <li><a href="quiz.html">Which build?</a></li>
       <li><a href="intake.html" aria-current="page">Getting started</a></li>

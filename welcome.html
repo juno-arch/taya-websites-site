@@ -11,29 +11,24 @@
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="What happens next: from hello to a live site">
 <meta property="og:description" content="Each step, the few things I’ll need from you, and what you pay and when. No surprises.">
-<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg?v=20261014">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta property="og:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What happens next: from hello to a live site">
 <meta name="twitter:description" content="Each step, the few things I’ll need from you, and what you pay and when. No surprises.">
-<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
-<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg?v=20261014">
+<meta name="twitter:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0e0e0c">
+<meta name="theme-color" content="#272c66">
 <meta name="color-scheme" content="dark">
-<link rel="stylesheet" href="fonts/fonts.css?v=20261001f">
-<link rel="stylesheet" href="soil.css?v=20261001f">
-<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
-<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
-<script src="mycelium.js?v=20261001f" defer></script>
-<link rel="stylesheet" href="pages.css?v=20261001f">
-<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
-<link rel="stylesheet" href="faery.css?v=20261001f">
-<script src="faery.js?v=20261001f" defer></script>
+<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="wf-tokens.css?v=20261014a">
+<link rel="stylesheet" href="soil.css?v=20261014a">
+<link rel="stylesheet" href="pages.css?v=20261014a">
 <style>
   .intro-line { margin: 34px 0 0; font-size: 19px; }
 
@@ -44,7 +39,7 @@
   .tl-dot i {
     width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
     display: grid; place-items: center; font-style: normal;
-    font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 15px;
+    font-family: var(--wf-font-display); font-weight: 400; font-size: 15px;
     background: var(--btn); color: var(--on-btn);
   }
   .tl-dot i::before { content: counter(step); }
@@ -52,9 +47,9 @@
   .tl-step:last-child .tl-dot::after { display: none; }
   .tl-step .body { padding-bottom: 24px; }
   .tl-step:last-child .body { padding-bottom: 0; }
-  .tl-step b { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; line-height: 1.3; text-wrap: balance; }
+  .tl-step b { display: block; font-family: var(--wf-font-display); font-weight: 400; font-size: 18px; line-height: 1.3; text-wrap: balance; }
   .tl-step .when {
-    display: block; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em;
+    display: block; font-family: var(--wf-font-read); font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--acc); margin-top: 2px;
   }
   .tl-step p { margin: 6px 0 0; font-size: 16.5px; color: var(--ink-soft); }
@@ -64,7 +59,7 @@
     background: var(--paper); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 14px 12px; text-align: center;
   }
-  .ready b { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 18px; }
+  .ready b { display: block; font-family: var(--wf-font-display); font-weight: 400; font-size: 18px; }
   .ready b .moon { margin-right: 6px; }
   .ready span { font-size: 15.5px; color: var(--ink-soft); }
   .ready + .note { margin-top: 10px; }
@@ -75,9 +70,6 @@
   .more-links { list-style: none; margin: 10px 0 0; padding: 0; }
   .more-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 16.5px; }
 
-  /* the sun in this photo sits where the small capitals go on narrow phones: slide it aside there */
-  .page-hero .photo { object-position: 70% 40%; }
-  @media (max-width: 400px) { .page-hero .photo { object-position: 22% 40%; } }
 
   .promise {
     margin: 24px 0 0; font-style: italic; font-size: 19px; color: var(--link);
@@ -101,12 +93,18 @@
 </style>
 </head>
 <body>
-<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<!-- the twilight behind everything (soil.css): decoration only -->
 <div class="soil" aria-hidden="true"></div>
 <header class="page-hero">
-  <picture><source type="image/webp" srcset="images/forest-800.webp 800w, images/forest-1200.webp 1200w, images/forest.webp 1600w" sizes="100vw"><img class="photo" src="images/forest.jpg" srcset="images/forest-1200.jpg 1200w, images/forest.jpg 1600w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></picture>
+  <!-- the lantern path on tall phones, the redwoods at twilight on wider screens: the way from hello to a live site -->
+  <picture>
+    <source media="(max-aspect-ratio: 3/4)" type="image/webp" srcset="images/path.webp">
+    <source media="(max-aspect-ratio: 3/4)" srcset="images/path.jpg">
+    <source type="image/webp" srcset="images/hero-wide.webp">
+    <img class="photo" src="images/hero-wide.jpg" width="1456" height="816" alt="" fetchpriority="high" decoding="async" style="object-position: 58% 40%">
+  </picture>
   <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
   <div class="words">
@@ -316,7 +314,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <ul>
       <li><a href="quiz.html">Which build?</a></li>
       <li><a href="intake.html">Getting started</a></li>

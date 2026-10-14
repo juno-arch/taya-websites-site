@@ -11,23 +11,19 @@
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Welcome in: your getting-started page">
 <meta property="og:description" content="A one-minute check, then a short list with only what you need. Stop anytime; your answers are saved as you go.">
-<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg?v=20261014">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta property="og:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0e0e0c">
-<meta name="color-scheme" content="dark">
-<link rel="preload" as="image" href="images/mushrooms.webp" type="image/webp" fetchpriority="high">
-<link rel="stylesheet" href="fonts/fonts.css?v=20261001f">
-<link rel="stylesheet" href="soil.css?v=20261001f">
-<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
-<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
-<script src="mycelium.js?v=20261001f" defer></script>
-<link rel="stylesheet" href="pages.css?v=20261001f">
+<meta name="theme-color" content="#2e3271">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="wf-tokens.css?v=20261014a">
+<link rel="stylesheet" href="wf-backend.css?v=20261014a">
 <!--
   start.html: the getting-started page for a client who has said yes (Sep 30, 2026).
   It takes the place of the plain questions page (intake.html) once someone is ready to begin.
@@ -70,24 +66,41 @@
 
   Words: warm but plain, no dashes, curly quotes. Taya doesn't make logos: with no logo, the client's
   name set in a lovely font (a simple wordmark, chosen with their site) is the answer, and a logo or
-  brand designer can make a real one anytime. The page shares soil.css (the charcoal soil and its mycelium)
-  and pages.css (the photo band, fonts, footer) with the other small pages.
+  brand designer can make a real one anytime. The look (Oct 14 2026): the back ends' light twilight, shared with
+  the client's own page (portal.html) so the two feel like one place: wf-tokens.css (the colors, type and sizes),
+  wf-backend.css (the painted strip, buttons, fields, the footer), and the page's own parts below, whose old
+  token names now point at the twilight tokens.
 -->
 <style>
-  /* ============ tokens: the main page's chanterelle accent and the moon cards' amber hill ============ */
+  /* ============ tokens: the old names, pointed at the twilight back-end tokens (wf-tokens.css) ============
+     Lines and labels in twilight blue, gold only for what needs them now (the step that's open, the deposit),
+     teal for done. Inner panels are white on the paper card. The build cards keep a small twilight sky. */
   :root {
-    --acc: #f0b867;
-    --acc-fill: #e6a852;        /* filled gold (step numbers, checks, their answers) with dark ink on it, 8.8 to 1 */
-    --on-acc: #1c1209;
-    --acc-glow: 230, 168, 82;
-    --acc-line: rgba(240, 184, 103, 0.55);
-    --edge: rgba(240, 184, 103, 0.22);
-    --link-wash: rgba(242, 199, 124, 0.09);   /* a soft gold wash behind a kind note */
-    --field: #121210;           /* inputs and inner panels, a shade deeper than the cards */
-    --field-2: #282622;         /* a raised panel on a card (her chat bubbles, the little icon tiles) */
-    --gold: #f2c77c;
-    --hill: #cf9240, #a86f2b 48%, #83531d 70%, rgba(131, 83, 29, 0.45) 78%, rgba(131, 83, 29, 0) 88%;
-    --night: radial-gradient(ellipse 80% 90% at 50% 75%, #302e29 0%, #201f1c 60%, #161513 100%);
+    --card: var(--wf-b-sheet);
+    --ink: var(--wf-b-ink);
+    --ink-soft: var(--wf-b-ink-soft);
+    --hairline: var(--wf-b-rule);
+    --field-edge: var(--wf-b-edge);
+    --focus: var(--wf-b-focus);
+    --link: var(--wf-b-link);
+    --candle: var(--wf-b-link);
+    --err: var(--wf-b-trouble);
+    --ok: var(--wf-b-done);
+    --moonlight: var(--wf-b-done);           /* done: teal */
+    --moonglow: rgb(43 106 108 / .22);
+    --acc: var(--wf-b-link);                 /* labels, lines and small marks */
+    --acc-fill: var(--wf-gold);              /* filled gold with dark words on it: the step that's open */
+    --on-acc: var(--wf-on-gold);
+    --acc-glow: 60, 74, 150;                 /* twilight blue, for soft lines: rgba(var(--acc-glow), a) */
+    --gold-glow: 246, 197, 111;              /* lantern gold, for the glow around what needs them */
+    --acc-line: rgb(60 74 150 / .4);
+    --edge: var(--wf-b-rule);
+    --link-wash: var(--wf-b-well);           /* a soft wash behind a kind note */
+    --field: var(--wf-b-field);              /* inputs and inner panels */
+    --field-2: var(--wf-b-well);             /* a raised panel (the little icon tiles) */
+    --gold: var(--wf-b-due-ink);             /* gold words: the price that's due */
+    --hill: #eea5b6, #c995be 48%, #948bcc 70%, rgb(148 139 204 / .45) 78%, rgb(148 139 204 / 0) 88%;
+    --night: radial-gradient(ellipse 80% 90% at 50% 75%, #41578e 0%, #30347a 60%, #272c66 100%);
     --sticky-gap: 104px;        /* room above a step for the sticky progress bar when we scroll to it */
   }
   [hidden] { display: none !important; }
@@ -105,7 +118,7 @@
   .qc {
     margin: 40px auto 0; max-width: 660px; background: var(--card); border: 1px solid var(--edge); border-radius: 24px;
     padding: 24px 24px 18px; scroll-margin-top: 16px;
-    box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 30px 60px -34px rgba(38, 42, 94, 0.3);
   }
   .qc-head { display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; }
   .qc-face {
@@ -120,7 +133,7 @@
   .qc-list { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: none; }
   .qc-q { display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: 10px; padding: 16px 0 18px; border-top: 1px solid rgba(var(--acc-glow), 0.12); }
   .qc-q:first-child { border-top: 0; padding-top: 6px; }
-  .qc-n { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 14px; line-height: 1.75; color: var(--acc); font-variant-numeric: lining-nums; }
+  .qc-n { font-family: var(--wf-font-work); font-weight: 500; font-size: 14px; line-height: 1.75; color: var(--acc); font-variant-numeric: lining-nums; }
   .qc-body { min-width: 0; }
   .qc-qt { margin: 0; font-size: 17.5px; line-height: 1.4; text-wrap: pretty; }
   .qc-small { display: block; color: var(--ink-soft); font-size: 15px; margin-top: 1px; }
@@ -131,7 +144,7 @@
     font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 16px; line-height: 1.3; text-wrap: balance;
     transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
   }
-  .qc-a:hover { border-color: var(--acc); background: #1a1917; }
+  .qc-a:hover { border-color: var(--acc); background: var(--wf-b-leaf-tint); }
   .qc-a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 14px; }
   .qc-a[aria-checked="true"] { background: var(--acc-fill); color: var(--on-acc); border-color: var(--acc); }
   .qc-answers.apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -149,7 +162,7 @@
   .qc-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 16px; margin-top: 14px; padding-top: 8px; }
   .qc-foot .later { font-size: 15px; font-weight: 500; color: var(--ink-soft); }
   .qc-foot .later:hover { color: var(--link); }
-  .qc-saved { margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .qc-saved { margin: 0; font-family: var(--wf-font-work); font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
   .qc-new { animation: qc-in 0.45s cubic-bezier(.2, .7, .3, 1) both; }
   @keyframes qc-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @media (max-width: 600px) {
@@ -164,7 +177,7 @@
   .intro {
     margin-top: 40px; background: var(--card); border: 1px solid var(--edge); border-radius: 24px;
     padding: 24px 24px 22px; scroll-margin-top: 16px;
-    box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 30px 60px -34px rgba(38, 42, 94, 0.3);
   }
   .qc[hidden] + .intro { margin-top: 40px; }
   .qc:not([hidden]) + .intro { margin-top: 18px; }
@@ -173,11 +186,11 @@
   .list-head h2 { font-size: clamp(24px, 4vw, 30px); font-weight: 400; line-height: 1.15; }
   .list-head h2:focus { outline: none; }
   .list-head h2 .sum { color: var(--gold); }
-  .build.fits .b-name::after { content: "fits your answers"; display: block; margin: 4px 0 0; font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold, #e3b860); vertical-align: middle; }
+  .build.fits .b-name::after { content: "fits your answers"; display: block; margin: 4px 0 0; font-family: var(--wf-font-work); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold, #e3b860); vertical-align: middle; }
   .fit-line { margin: 14px 0 0; font-family: 'Gloock', Georgia, serif; font-size: 22px; line-height: 1.3; color: var(--ink); }
   .fit-line b { color: var(--gold); font-weight: 400; }
   .fit-card { margin: 0 0 20px; padding: 18px 20px; border-radius: 16px; background: rgba(var(--acc-glow), 0.1); border: 1px solid var(--acc-line); text-align: center; }
-  .fit-k { margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); }
+  .fit-k { margin: 0; font-family: var(--wf-font-work); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); }
   .fit-h { margin: 6px 0 0; font-family: 'Gloock', Georgia, serif; font-size: 30px; line-height: 1.15; }
   .fit-h span { color: var(--gold); }
   .fit-why { margin: 8px auto 0; max-width: 34em; font-size: 16.5px; line-height: 1.5; color: var(--ink-soft); }
@@ -192,15 +205,6 @@
   .magic-it b { color: var(--gold); font-weight: 600; }
   .love-it p { margin: 0 0 12px; font-size: 18px; line-height: 1.45; }
   .love-it b { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 22px; color: var(--gold); display: block; margin-bottom: 4px; }
-  /* a mossy floor under the whole page, as if the photo at the top keeps going (Pollen, Oct 1) */
-  .moss-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    background: linear-gradient(rgba(14, 14, 12, 0.55), rgba(14, 14, 12, 0.35) 40%, rgba(14, 14, 12, 0.6)),
-                url('images/moss-bg.jpg') center / cover no-repeat;
-    background: linear-gradient(rgba(14, 14, 12, 0.55), rgba(14, 14, 12, 0.35) 40%, rgba(14, 14, 12, 0.6)),
-                image-set(url('images/moss-bg.webp') type('image/webp'), url('images/moss-bg.jpg') type('image/jpeg')) center / cover no-repeat; }
-  @media print { .moss-bg { display: none; } }
-  /* just the moss on this page: no soil and no mycelium over it (Pollen, Oct 2) */
-  .soil { display: none !important; }
   .made-from { margin: 10px 0 0; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   /* "Change" sits inline at the end of the sentence, like a link */
   .made-from .later, .from-qc .later { font-size: 15.5px; min-height: 0; line-height: inherit; padding: 2px 2px; margin: 0 0 0 2px; vertical-align: baseline; }
@@ -224,13 +228,13 @@
     position: sticky; top: 8px; z-index: 20; margin: 26px 0 0;
     background: var(--card); border: 1px solid rgba(var(--acc-glow), 0.3); border-radius: 18px;
     padding: 12px 18px 14px;
-    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 12px 30px -12px rgba(38, 42, 94, 0.35);
   }
   .p-row { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 14px; flex-wrap: wrap; }
   .p-text { margin: 0; font-size: 15.5px; line-height: 1.4; color: var(--ink-soft); }
   .p-text b { font-family: 'Gloock', Georgia, serif; font-weight: 400; color: var(--ink); }
   .p-saved {
-    margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0; font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--ink-soft); display: inline-flex; align-items: center; gap: 6px; transition: color 0.4s ease;
   }
   .p-saved svg { width: 13px; height: 13px; color: var(--acc); }
@@ -253,12 +257,12 @@
   }
   .p-moons li {
     position: relative; width: 16px; height: 16px; border-radius: 50%;
-    background: var(--card); box-shadow: inset 0 0 0 1.5px rgba(236, 227, 211, 0.4);
+    background: var(--card); box-shadow: inset 0 0 0 1.5px var(--wf-b-leaf);
     transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
   }
-  .p-moons li.now { box-shadow: inset 0 0 0 2px var(--acc), 0 0 0 4px rgba(var(--acc-glow), 0.18); }
+  .p-moons li.now { background: var(--acc-fill); box-shadow: 0 0 0 4px rgba(var(--gold-glow), 0.3); }
   .p-moons li.skip { background: linear-gradient(90deg, var(--card) 50%, var(--moonlight) 50%); box-shadow: inset 0 0 0 1.5px var(--moonlight); }
-  .p-moons li.done { background: var(--moonlight); box-shadow: 0 0 10px var(--moonglow), 0 0 22px rgba(236, 227, 211, 0.18); }
+  .p-moons li.done { background: var(--moonlight); box-shadow: none; }
 
   /* ============ the steps ============ */
   .steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
@@ -269,7 +273,7 @@
   }
   .step.open {
     border-color: rgba(var(--acc-glow), 0.6);
-    box-shadow: 0 0 0 1px rgba(var(--acc-glow), 0.22), 0 0 46px -12px rgba(var(--acc-glow), 0.4), 0 30px 60px -34px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 1px rgba(var(--acc-glow), 0.22), 0 18px 40px -22px rgba(38, 42, 94, 0.35);
   }
   .step-h { margin: 0; font-size: inherit; font-weight: inherit; line-height: inherit; }
   .step-toggle {
@@ -285,15 +289,15 @@
     transition: background 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
   }
   .num svg { display: none; width: 20px; height: 20px; }
-  .step.open .num { background: var(--acc-fill); color: var(--on-acc); box-shadow: 0 0 0 5px rgba(var(--acc-glow), 0.16); }
+  .step.open .num { background: var(--acc-fill); color: var(--on-acc); box-shadow: 0 0 0 5px rgba(var(--gold-glow), 0.25); }
   /* a finished step becomes a full moon */
-  .step.done .num { background: var(--moonlight); color: #1c1209; box-shadow: 0 0 12px var(--moonglow), 0 0 26px rgba(236, 227, 211, 0.16); }
+  .step.done .num { background: var(--moonlight); color: #fff; box-shadow: 0 0 0 4px var(--moonglow); }
   .step.done .num span { display: none; }
   .step.done .num svg { display: block; }
   .step-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
   .step-meta {
     grid-column: 2; margin-top: 3px;
-    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft);
+    font-family: var(--wf-font-work); font-weight: 500; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft);
   }
   .step-meta .state { color: var(--acc); }
   .step-meta .state:not(:empty)::before { content: "\00b7"; content: "\00b7" / ""; margin: 0 8px; color: var(--ink-soft); }
@@ -324,19 +328,19 @@
   /* ============ questions ============ */
   .q { margin-top: 26px; }
   .main { display: block; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17.5px; line-height: 1.35; margin: 0 0 6px; text-wrap: pretty; }
-  .main .opt-tag { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-style: italic; font-size: 15px; color: var(--ink-soft); }
+  .main .opt-tag { font-family: var(--wf-font-work); font-weight: 400; font-style: italic; font-size: 15px; color: var(--ink-soft); }
   .hint { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 10px; font-style: italic; line-height: 1.5; }
   input[type="text"], input[type="email"], input[type="tel"], textarea {
     width: 100%; background: var(--field); color: var(--ink);
     border: 1px solid var(--field-edge); border-radius: 10px;
-    font-family: 'Spectral', Georgia, serif; font-size: 17px; line-height: 1.5; padding: 11px 13px; min-height: 48px;
+    font-family: var(--wf-font-work); font-size: 17px; line-height: 1.5; padding: 11px 13px; min-height: 48px;
     transition: border-color 0.2s ease;
   }
   textarea { min-height: 112px; resize: vertical; display: block; }
   textarea.short { min-height: 84px; }
   input:focus-visible, textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-color: var(--acc); }
   input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--err); }
-  ::placeholder { color: #8f8a7f; opacity: 1; }
+  ::placeholder { color: #69679a; opacity: 1; }
   .err { margin: 8px 0 0; color: var(--err); font-size: 15.5px; line-height: 1.45; }
   .err::before { content: "\2740  "; content: "\2740  " / ""; }
   .pair { display: grid; gap: 0 18px; }
@@ -355,7 +359,7 @@
     transition: border-color 0.2s ease, background 0.2s ease;
   }
   .opt:hover { border-color: rgba(var(--acc-glow), 0.45); }
-  .opt:has(:checked), .opt.on { border-color: var(--acc); background: #1f1d19; }
+  .opt:has(:checked), .opt.on { border-color: var(--acc); background: var(--wf-b-leaf-tint); }
   .opt input { margin: 4px 0 0; accent-color: var(--acc-fill); flex-shrink: 0; width: 18px; height: 18px; }
   .opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
   .opt small { display: block; color: var(--ink-soft); font-size: 15px; line-height: 1.45; margin-top: 3px; }
@@ -378,7 +382,7 @@
   .b-body { display: grid; gap: 3px; padding: 14px 44px 16px 16px; align-content: start; }
   .b-name { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 22px; line-height: 1.15; letter-spacing: -0.01em; }
   .b-does { font-size: 15.5px; line-height: 1.45; color: var(--ink-soft); }
-  .b-ready { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--acc); margin-top: 4px; }
+  .b-ready { font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--acc); margin-top: 4px; }
   .b-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 10px; margin-top: 6px; font-family: 'Gloock', Georgia, serif; }
   .b-price strong { font-size: 27px; font-weight: 400; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; line-height: 1.1; }
   .b-price .was { font-size: 14.5px; color: var(--ink-soft); }
@@ -424,14 +428,14 @@
         radial-gradient(38cqw 8cqw at 50% var(--rise), rgba(242, 199, 124, 0.13), rgba(242, 199, 124, 0)),
         radial-gradient(circle at 50% var(--moon-y), rgba(236, 227, 211, 0.08), rgba(236, 227, 211, 0.03) 14cqw, rgba(236, 227, 211, 0) 30cqw),
         var(--card);
-      box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 24px 44px -28px rgba(38, 42, 94, 0.45);
     }
     .build::after { inset: var(--key); border: 1px solid rgba(var(--acc-glow), 0.28); border-radius: calc(50cqw - var(--key)) calc(50cqw - var(--key)) calc(var(--foot) - var(--key)) calc(var(--foot) - var(--key)); }
     .build:hover { border-color: transparent; }
     .build:hover::before { border-color: rgba(var(--acc-glow), 0.5); }
     .build:has(input:checked), .build.on { box-shadow: none; border-color: transparent; }
-    .build:has(input:checked)::before, .build.on::before { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc), 0 0 44px -8px rgba(var(--acc-glow), 0.5), 0 30px 60px -30px rgba(0, 0, 0, 0.55); }
-    .b-sky { position: relative; display: block; height: 46cqw; background: none; }
+    .build:has(input:checked)::before, .build.on::before { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc), 0 0 44px -8px rgba(var(--acc-glow), 0.5), 0 30px 60px -30px rgba(38, 42, 94, 0.28); }
+    .b-sky { position: relative; display: block; height: 46cqw; border-radius: 50cqw 50cqw 0 0; background: radial-gradient(ellipse 80% 54% at 50% 124%, var(--hill)), var(--night); }
     .b-sky svg { position: absolute; left: 50%; top: var(--moon-y); width: 44px; height: 44px; margin: -22px 0 0 -22px; }
     .b-sky::before { content: ""; position: absolute; left: 14%; right: 14%; top: var(--rise); height: 1px;
       background: linear-gradient(90deg, rgba(236, 230, 218, 0), rgba(236, 230, 218, 0.55) 30%, rgba(242, 199, 124, 0.9) 50%, rgba(236, 230, 218, 0.55) 70%, rgba(236, 230, 218, 0)); }
@@ -442,7 +446,7 @@
     /* easier reading: more room inside the keyline, brighter and roomier words, every price on one line at the bottom */
     .b-sky { height: 45cqw; }
     .b-body { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 4px 22px 30px; }
-    .b-does { margin-top: 10px; font-size: 16px; line-height: 1.6; color: #ddd5c6; }
+    .b-does { margin-top: 10px; font-size: 16px; line-height: 1.6; color: var(--ink-soft); }
     .b-ready { margin-top: auto; padding-top: 16px; font-size: 11.5px; letter-spacing: 0.05em; white-space: nowrap; }
     .b-price { margin-top: 8px; }
     .build.fits .b-name::after { margin-top: 6px; }
@@ -474,7 +478,7 @@
   .confirm .b-sky::before, .confirm .b-sky::after { content: none; }
   @media (min-width: 720px) { .confirm { grid-template-columns: 104px 1fr; } .confirm .b-sky svg { width: 44px; height: 44px; } }
   .cf-body { padding: 16px 18px 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
-  .cf-k { margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc); }
+  .cf-k { margin: 0; font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc); }
   .cf-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 14px; }
   .cf-name { margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; }
   .cf-top .b-price { margin: 0; }
@@ -500,7 +504,7 @@
   }
   .wordmark .wm-mark {
     width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--field-2);
-    font-family: 'Spectral', Georgia, serif; font-style: italic; font-size: 19px; color: var(--gold);
+    font-family: var(--wf-font-work); font-style: italic; font-size: 19px; color: var(--gold);
   }
   .wordmark p { margin: 0; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
   .wordmark p b { color: var(--ink); font-weight: 500; }
@@ -514,7 +518,7 @@
   .switch .sw-text { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17.5px; }
   .track {
     flex: none; position: relative; width: 48px; height: 28px; border-radius: 999px;
-    background: #2e2c27; border: 1px solid var(--field-edge); transition: background 0.3s ease, border-color 0.3s ease;
+    background: var(--wf-b-well); border: 1px solid var(--field-edge); transition: background 0.3s ease, border-color 0.3s ease;
   }
   .track::after {
     content: ""; position: absolute; top: 4px; left: 4px; width: 18px; height: 18px; border-radius: 50%;
@@ -550,7 +554,7 @@
   /* ============ the price: a calm little receipt that follows every choice ============ */
   .receipt {
     margin-top: 30px; border-radius: 20px; padding: 22px 22px 18px;
-    background: linear-gradient(180deg, #262420 0%, #1e1d1a 100%);
+    background: var(--wf-b-note-bg);
     border: 1px solid rgba(var(--acc-glow), 0.4);
     box-shadow: 0 0 44px -16px rgba(var(--acc-glow), 0.35);
   }
@@ -561,14 +565,14 @@
   .r-row:last-child { border-bottom: 0; }
   .r-row dt { font-size: 16.5px; line-height: 1.4; }
   .r-row dd { margin: 0; font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .r-row .r-note { grid-column: 1 / -1; font-size: 14.5px; line-height: 1.45; color: var(--ink-soft); font-family: 'Spectral', Georgia, serif; font-weight: 400; text-align: left; white-space: normal; }
+  .r-row .r-note { grid-column: 1 / -1; font-size: 14.5px; line-height: 1.45; color: var(--ink-soft); font-family: var(--wf-font-work); font-weight: 400; text-align: left; white-space: normal; }
   .r-row.big dt { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
   .r-row.big dd { font-size: 28px; color: var(--gold); line-height: 1.1; }
   .r-label {
     margin: 20px 0 0; padding-top: 16px; border-top: 1px solid rgba(var(--acc-glow), 0.3);
-    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acc);
+    font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acc);
   }
-  .r-total { margin: 12px 0 0; padding: 12px 14px; border-radius: 12px; background: rgba(14, 14, 12, 0.5); font-size: 16.5px; line-height: 1.5; }
+  .r-total { margin: 12px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--wf-b-well); font-size: 16.5px; line-height: 1.5; }
   .r-total b { font-family: 'Gloock', Georgia, serif; font-weight: 400; color: var(--gold); }
   .r-empty { margin: 10px 0 0; color: var(--ink-soft); font-size: 16.5px; }
   .r-fine { margin: 14px 0 0; font-size: 14px; color: var(--ink-soft); font-style: italic; }
@@ -582,7 +586,7 @@
     position: relative; margin-top: 4px; border: 1.5px dashed rgba(var(--acc-glow), 0.5); border-radius: 16px;
     background: var(--field); padding: 22px 18px; text-align: center; transition: border-color 0.2s ease, background 0.2s ease;
   }
-  .drop.over { border-color: var(--acc); background: #22211d; }
+  .drop.over { border-color: var(--acc); background: var(--wf-b-leaf-tint); }
   .drop input[type="file"] { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
   .pick {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; cursor: pointer;
@@ -600,7 +604,7 @@
   .thumbs .doc svg { width: 26px; height: 26px; color: var(--acc); }
   .thumbs button {
     position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border-radius: 50%; border: 0; cursor: pointer;
-    background: rgba(14, 14, 12, 0.82); color: var(--ink); display: grid; place-items: center;
+    background: rgb(39 44 102 / .82); color: #fff; display: grid; place-items: center;
   }
   .thumbs button svg { width: 14px; height: 14px; }
   .thumbs button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
@@ -615,7 +619,7 @@
   .acct-ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--field-2); color: var(--acc); }
   .acct-ico svg { width: 20px; height: 20px; }
   .acct h3 { font-size: 18.5px; font-weight: 400; line-height: 1.3; }
-  .acct .t { display: block; margin-top: 2px; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--acc); }
+  .acct .t { display: block; margin-top: 2px; font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--acc); }
   .acct p { margin: 8px 0 0; font-size: 16.5px; color: var(--ink-soft); }
   .acct p b { color: var(--ink); font-weight: 500; }
   .acct .q { margin-top: 14px; }
@@ -627,7 +631,7 @@
   .ticks { display: grid; gap: 4px; margin-top: 8px; }
   .tick { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 16.5px; }
   .tick input { width: 20px; height: 20px; accent-color: var(--acc-fill); flex: none; margin: 0; }
-  .helper { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 0.88em; letter-spacing: 0.01em; color: var(--ink); white-space: nowrap; }
+  .helper { font-family: var(--wf-font-work); font-weight: 500; font-size: 0.88em; letter-spacing: 0.01em; color: var(--ink); white-space: nowrap; }
   .never-pw { margin: 18px 0 0; font-size: 15.5px; color: var(--ink-soft); font-style: italic; }
   /* what I set up for them (Buttondown, Cal.com): a short list under the note */
   .made-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
@@ -641,7 +645,7 @@
   .clip video { display: block; width: 100%; height: 100%; object-fit: cover; }
   .clip-play {
     position: absolute; right: 8px; top: 8px; min-width: 44px; height: 44px; padding: 0 14px; border-radius: 22px; border: 0; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 8px; background: rgba(14, 14, 12, 0.82); color: var(--ink);
+    display: inline-flex; align-items: center; gap: 8px; background: rgb(39 44 102 / .82); color: #fff;
     font: inherit; font-size: 15px;
   }
   .clip-play svg { width: 14px; height: 14px; flex: none; }
@@ -658,7 +662,7 @@
   .in-short { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 0; }
   .in-short li { display: grid; grid-template-columns: 8.2em 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px dotted rgba(var(--acc-glow), 0.28); font-size: 16.5px; line-height: 1.5; }
   .in-short li:last-child { border-bottom: 0; }
-  .in-short .k { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc); padding-top: 4px; }
+  .in-short .k { font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acc); padding-top: 4px; }
   @media (max-width: 560px) { .in-short li { grid-template-columns: 1fr; gap: 2px; } }
   details.full-text { margin-top: 10px; }
   .agreement-doc {
@@ -676,9 +680,9 @@
   }
   .sign .tick { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; }
   .sign input.sig { font-style: italic; font-size: 24px; min-height: 56px; padding: 8px 14px; letter-spacing: 0.01em; }
-  .sign .dated { margin: 10px 0 0; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .sign .dated { margin: 10px 0 0; font-family: var(--wf-font-work); font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
   .sign .opt-line { margin-top: 12px; padding-top: 10px; border-top: 1px dotted rgba(var(--acc-glow), 0.25); }
-  .sign .opt-line .tick { font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 16px; color: var(--ink-soft); }
+  .sign .opt-line .tick { font-family: var(--wf-font-work); font-weight: 400; font-size: 16px; color: var(--ink-soft); }
   /* signing with one tap, when Taya's link already gave their name (no typing it again) */
   .tap-sign { margin-top: 14px; }
   .tap-sign .btn { margin-top: 2px; }
@@ -716,12 +720,12 @@
   .next-path li::after { content: ""; position: absolute; left: 14px; top: 32px; bottom: 4px; width: 1.5px; background: rgba(var(--acc-glow), 0.3); transform: translateX(-50%); }
   .next-path li:last-child { padding-bottom: 0; }
   .next-path li:last-child::after { display: none; }
-  .small-h { margin: 26px 0 0; font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc); }
+  .small-h { margin: 26px 0 0; font-family: var(--wf-font-work); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc); }
 
   /* ============ inside a step: small headings, the kind note, and "together over email" ============ */
   .sub-h {
     margin: 34px 0 0; padding-top: 22px; border-top: 1px solid rgba(var(--acc-glow), 0.18);
-    font-family: 'Spectral', Georgia, serif; font-size: 12px; font-weight: 500; line-height: 1.4;
+    font-family: var(--wf-font-work); font-size: 12px; font-weight: 500; line-height: 1.4;
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc);
   }
   .sub-hint { margin: 8px 0 0; }
@@ -787,9 +791,9 @@
   .status { margin: 14px auto 0; min-height: 1.5em; font-size: 16px; max-width: 32em; }
   .status.err { color: var(--err); }
   .preview-pill {
-    display: inline-block; margin: 6px 0 0; padding: 4px 12px; border-radius: 999px;
-    border: 1px solid rgba(242, 199, 124, 0.5); color: var(--gold);
-    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11.5px; letter-spacing: 0.06em;
+    display: inline-block; margin: 6px 0 0; padding: 4px 12px; border-radius: 8px;
+    border: 1px dashed var(--wf-b-due-edge); background: var(--wf-b-due-tint); color: var(--gold);
+    font-family: var(--wf-font-work); font-weight: 500; font-size: 11.5px; letter-spacing: 0.06em;
   }
   .send-sec .fine { margin: 18px auto 0; font-size: 14.5px; color: var(--ink-soft); max-width: 34em; }
   /* the honeypot: out of sight and out of the tab order; people never see it, bots fill it in */
@@ -804,7 +808,7 @@
   .done-head p { margin: 12px auto 0; max-width: 32em; color: var(--ink-soft); }
   .preview-flag {
     display: block; margin: 0 auto 18px; width: fit-content; max-width: 100%; padding: 8px 16px; border-radius: 12px;
-    border: 1px solid rgba(242, 199, 124, 0.55); background: rgba(242, 199, 124, 0.08); color: var(--gold); font-size: 15px; text-align: center;
+    border: 1px dashed var(--wf-b-due-edge); background: var(--wf-b-due-tint); color: var(--gold); font-size: 15px; text-align: center;
   }
   .summary { margin-top: 30px; display: grid; gap: 14px; }
   .sum-card { background: var(--card); border: 1px solid var(--edge); border-radius: 18px; padding: 20px 22px; }
@@ -827,7 +831,7 @@
   /* checkboxes and radio dots, drawn to match: a soft outline, the accent when chosen */
   input[type="checkbox"], input[type="radio"] {
     -webkit-appearance: none; appearance: none; flex: none; cursor: pointer;
-    width: 20px; height: 20px; margin: 3px 0 0; border: 1.5px solid var(--field-edge); background: #0f0f0d;
+    width: 20px; height: 20px; margin: 3px 0 0; border: 1.5px solid var(--field-edge); background: var(--wf-b-field);
     display: inline-grid; place-content: center; transition: background 0.2s ease, border-color 0.2s ease;
   }
   input[type="checkbox"] { border-radius: 6px; }
@@ -882,17 +886,37 @@
 
   /* ============ print: only the summary, on white paper ============ */
   @media print {
-    body.sent .page-hero, body.sent .qc, body.sent .intro, body.sent .progress, body.sent form, body.sent .done-actions,
+    body.sent .top, body.sent .hello, body.sent .qc, body.sent .intro, body.sent .progress, body.sent form, body.sent .done-actions,
     body.sent footer, body.sent .skip-link, body.sent noscript { display: none !important; }
     .sum-card, .preview-flag { border-color: #ccc; background: #fff; }
     .done-head .moon-big { filter: none; }
   }
+
+  /* ============ the back-end look (Oct 14 2026): Lexend for everything read, tapped and typed; Gloock for
+     headings, names, numbers and prices (this replaces readable.css on this page) ============ */
+  .qc-a, .later, .pick, .toggle-more, .main, .switch .sw-text, .sign .tick, .opt b, .acct h3 + .t,
+  details.more summary, details.how summary, details.full-text summary, details.every summary, .helper {
+    font-family: var(--wf-font-work); font-weight: 500;
+  }
+  .later { font-weight: 400; text-decoration-color: var(--acc-line); text-underline-offset: 3px; }
+  .qc-a { font-weight: 400; }
+  .hint, .opt-tag, .qc-sub, .qc-reply, .foot-hint, .soft-note, .never-pw, .r-fine, .clip figcaption, .open-note,
+  details.how .stuck, .tap-sign .tap-hint, .agreement-doc .copy-note, .main .opt-tag { font-style: normal; }
+  .sign input.sig, .tap-sign .signed-as { font-family: var(--wf-font-read); }
+  .confirm .b-sky { border-radius: 0; }
+  /* the moons: cream in the little twilight skies, lavender on paper, teal once it's sent */
+  .b-sky svg { color: #f3ead9; }
+  .receipt h3 svg, .send-sec .moon-big { color: var(--wf-b-leaf); filter: none; }
+  .done-head .moon-big { color: var(--wf-b-done); filter: none; }
+  /* the top: the greeting under the painted strip, on the mist */
+  .hello { margin: clamp(22px, 5vw, 40px) 0 0; }
+  .hello .kicker { margin-bottom: 8px; }
+  .hello h1 { font-size: clamp(34px, 6vw, 48px); }
+  .hello .lede { max-width: 36em; }
+  .qc { margin-left: 0; margin-right: 0; }
 </style>
-<link rel="stylesheet" href="readable.css?v=20261002a">
 </head>
 <body>
-<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
-<div class="soil" aria-hidden="true"></div>
 <a class="skip-link" href="#steps">Skip to the steps</a>
 
 <!-- little drawings used more than once: the three moons, a check, a chevron -->
@@ -901,9 +925,9 @@
     <mask id="m-wax"><rect width="24" height="24" fill="white"/><circle cx="7.6" cy="12" r="9" fill="black"/></mask>
     <mask id="m-wan"><rect width="24" height="24" fill="white"/><circle cx="16.4" cy="12" r="9" fill="black"/></mask>
   </defs>
-  <symbol id="i-wax" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#ece3d3" mask="url(#m-wax)"/></symbol>
-  <symbol id="i-full" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#ece3d3"/></symbol>
-  <symbol id="i-wan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#ece3d3" mask="url(#m-wan)"/></symbol>
+  <symbol id="i-wax" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" mask="url(#m-wax)"/></symbol>
+  <symbol id="i-full" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor"/></symbol>
+  <symbol id="i-wan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" mask="url(#m-wan)"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8.5 8.5M17 13.5V18a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -911,45 +935,23 @@
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z M14 3v5h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
 </svg>
 
-<div class="moss-bg" aria-hidden="true"></div>
-<header class="page-hero short">
-  <picture><source type="image/webp" srcset="images/mushrooms.webp"><img class="photo" src="images/mushrooms.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 36% 55%"></picture>
-  <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
-    <nav aria-label="Site"><a href="index.html">Home</a><a href="mailto:taya@webfaery.love">Email Taya</a></nav>
+<header class="top">
+  <div class="top-art" aria-hidden="true">
+    <picture><source type="image/webp" srcset="images/admin-strip.webp"><img src="images/admin-strip.jpg" width="1456" height="300" alt="" decoding="async"></picture>
   </div>
-  <div class="words">
-    <span class="eyebrow">Your getting-started page</span>
+  <div class="top-in">
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
+    <nav class="top-nav" aria-label="Site"><a href="index.html">Home</a><a href="mailto:taya@webfaery.love">Email Taya</a></nav>
+  </div>
+</header>
+
+<main class="gutter" id="main"><div class="wrap wide">
+  <div class="hello">
+    <span class="kicker">Your getting-started page</span>
     <h1 id="hello">Welcome <em>in.</em></h1>
     <p class="lede">You said yes, and I’m so glad. Everything we need to start your site is right here,
        and you don’t have to do it in one sitting.</p>
   </div>
-</header>
-<script>
-  (function () {
-    var h = document.querySelector('.page-hero');
-    if (!h || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var ph = h.querySelector('.photo');
-    h.classList.add('wait');
-    // play the intro only once the photo has fully arrived; if it's still on its way after
-    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
-    var settled = false;
-    var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
-    var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
-    var ready = function () { if (ph.decode) ph.decode().then(go, go); else go(); };
-    if (ph.complete && ph.naturalWidth) ready(); else { ph.addEventListener('load', ready); ph.addEventListener('error', rest); setTimeout(rest, 4000); }
-    var queued = false;
-    window.addEventListener('scroll', function () {
-      if (queued) return; queued = true;
-      requestAnimationFrame(function () {
-        queued = false;
-        ph.style.translate = '0 ' + (Math.min(window.scrollY, h.offsetHeight) * 0.12).toFixed(1) + 'px';
-      });
-    }, { passive: true });
-  })();
-</script>
-
-<main class="gutter" id="main"><div class="wrap wide">
   <noscript><div class="card"><p>This page needs JavaScript to save your answers and send them. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out together over email.</p></div></noscript>
 
@@ -1780,7 +1782,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="quiz.html">Which build?</a></li>
