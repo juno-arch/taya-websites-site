@@ -1,47 +1,126 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Tera's site preview on webfaery.love: a copy of her real site (clients/tera/site) with Web Faery's notes bar
+     added (the loader and note-motion.js at the bottom). Change her real site first, then copy it here. -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* =====================================================================================
+   TERA'S DETAILS: the one place to change them.
+   Anything still in [BRACKETS] shows on the page as a dashed placeholder, so nothing
+   made up can pass for real. Each one is listed in TODO.md (a working note, not
+   published). Before launch, none should be left.
+   ===================================================================================== */
+var SITE = {
+
+  /* Her business name: the name on her Wix site, her logo and her Google profile (TODO.md, 2).
+     This is the only spot: the menu, the footer and Google's business details all read it.
+     nameItalic: the ending shown in her brand's light italic (like Wild Rose *Massage*).
+     With nameItalic empty, a name with " by " in it gets the italic ending (Massage *by Tera*). */
+  name: 'Wild Rose Massage',
+  nameItalic: 'Massage',
+
+  /* ---- From her old Wix site ---- */
+
+  /* Sessions and rates. When filled, a list, one line per session, for example:
+       sessions: [
+         { name: 'Deep tissue', length: '60 minutes', rate: '$0', note: 'One short line, in her words' },
+       ],
+     Filled Oct 14 2026 from her Wix Bookings (wix-export.md, section 2): 1 hr, 1 hr 30 min and 2 hr there.
+     Her own descriptions from her two Wix service pages, word for word except "in the deeper layers"
+     (was "in deeper layers"). Studio only on Wix. */
+  sessions: [
+    { name: 'Swedish Massage', length: '1 hour', rate: '$115',
+      note: 'Experience a soothing Swedish massage designed to promote relaxation and relieve tension. I use gentle techniques to enhance circulation and ease stress, helping you achieve a state of deep calm.' },
+    { name: 'Swedish Massage', length: '1½ hours', rate: '$145' },
+    { name: 'Deep Tissue Massage', length: '1 hour', rate: '$125',
+      note: 'For those needing targeted relief, my advanced deep tissue massage focuses on hitting trigger points in the deeper layers of muscles and connective tissue. Ideal for chronic aches and tension, this therapy offers intensive therapeutic benefits.' },
+    { name: 'Deep Tissue Massage', length: '1½ hours', rate: '$155' },
+    { name: 'Deep Tissue Massage', length: '2 hours', rate: '$185' }
+  ],
+  /* Wix has no written payment, cancellation or other policies (wix-export.md, section 2), so these stay
+     placeholders until she approves her own (TODO.md). */
+  payment: '[How you take payment]',
+  cancellation: '[Your cancellation policy]',
+  /* Any other policies (late arrivals, age, health notes). A list of lines, or [] for none. */
+  morePolicies: '[Any other policies, or none]',
+
+  /* Hours. When filled, a list of [day, hours], for example:
+       hours: [['Mon', '10 to 6'], ['Tue', 'Closed']],
+     From her verified Google profile (Oct 14 2026): Mon 9 to 5, Thu 9 to 5, Sat 10 to 4; closed Tue, Wed, Fri
+     and Sun (left off the list). Saturdays are every other week. Still to confirm with her, then change them
+     here and in Bookings > Hours together (TODO.md). */
+  hours: [['Mon', '9 to 5'], ['Thu', '9 to 5'], ['Sat', '10 to 4']],
+  hoursNote: 'Saturdays are every other week. Need a different day or time? Call, text or email to ask.',   /* optional line under the hours */
+
+  studioAddress: '735 12th St, Suite G',          /* street line only; Arcata, California is already shown (from Taya, Oct 14) */
+  studioZip: '95521',
+  /* Home visits (from Tera, Oct 14 2026): by request only, not booked online. She talks with the person
+     first and works out the situation before saying yes, mostly for older folks and people who feel more
+     comfortable at home. Online booking stays studio only. No travel fee or service area is shown; if she
+     ever wants one, add a row to the Home visits card (TODO.md, 5). */
+  homeVisits: 'Call, text or email first',        /* how to ask for a home visit, shown in the Home visits card */
+  /* No online intake or waiver (Pollen, Oct 14 2026): massage therapists don't usually use them; she may do
+     an intake in person. Keep this empty so the link stays hidden. A printable form for in-person use is in
+     ../drafts/intake-form.pdf, only if she wants it (TODO.md, 1). */
+  intakeForm: '',
+
+  /* ---- For launch ---- */
+  email: 'teranansen@gmail.com',                   /* the email on her Wix site (Oct 14 2026) */
+  /* The line at the bottom of the footer, exactly as she'd like it shown: her CAMTC name and certificate
+     number (for example 'Tera Nansen, CAMTC certificate 12345'), or her local massage permit (TODO.md, 5). */
+  certification: '[Your CAMTC name and number, or your local massage permit]',
+  webAddress: 'wildrosemassage.co',                /* hers, bought through Wix, renews Aug 27 2027 (TODO.md, Launch) */
+  googleProfile: '',                               /* her Google Business Profile link, once it's in her name */
+
+  /* ---- Web Faery booking and gift certificates (bookings.gardenfaery.love) ----
+     Leave these empty until each one is switched on (TODO.md). While empty, the
+     call and text lines inside each box stay, and nothing is loaded from the server. */
+  bookingId: '',                                   /* her owner row is ip1cgbd49wj5b75: put it here only once it's switched on */
+  giftId: '',                                      /* no gift settings row yet: it needs her own Stripe first (TODO.md, 6) */
+
+  /* The thin banner at the very top. Set to null to hide it. */
+  banner: { text: 'Now welcoming new clients', link: 'Book a session', href: '#book' }
+};
+</script>
 <meta name="robots" content="noindex, nofollow">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Massage by Tera | Deep Tissue Massage in Arcata</title>
-<meta property="og:title" content="Massage by Tera | Deep Tissue Massage in Arcata">
+<title>Tera Nansen | Deep Tissue and Swedish Massage in Arcata</title>
+<meta name="description" content="Tera Nansen, Holistic Health Practitioner. Deep tissue and Swedish massage for body, mind and soul, in her own studio in Arcata. Call or text 707-932-0037.">
+<meta name="theme-color" content="#28312a">
 <meta property="og:type" content="website">
+<meta property="og:title" content="Tera Nansen | Deep Tissue and Swedish Massage in Arcata">
+<meta property="og:description" content="Body, mind and soul integration, with a deep tissue focus. In Tera&rsquo;s own studio in Arcata.">
 <meta property="og:url" content="https://webfaery.love/peek/tera/">
 <meta property="og:image" content="https://webfaery.love/peek/tera/share-preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="860">
+<meta property="og:image:alt" content="Tera&rsquo;s site on a laptop and a phone: her misty forest photo and &ldquo;As deep as you&rsquo;re ready to go.&rdquo;">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2328312a'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23c9a94f' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%23c9a94f' opacity='.55'/%3E%3C/svg%3E">
-<meta name="description" content="Massage by Tera, Holistic Health Practitioner, CMT. Body, mind and soul integration, with a deep tissue focus. Studio in Arcata, or mobile massage at your home. Call or text 707-932-0037.">
-<link rel="preload" as="image" href="images/coast.jpg" fetchpriority="high">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="preload" as="image" href="images/forest-mist.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@400;500;600&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Karla:wght@400;500;600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure { margin: 0; }
   ol, ul { margin: 0; padding: 0; }
-  [hidden] { display: none !important; }
   :root {
-    --ground: #eef0e6;      
-    --ground-2: #e2e6d6;    
-    --ink: #33291f;         
+    --ground: #eef0e6;
+    --ground-2: #e2e6d6;
+    --ink: #33291f;
     --ink-soft: #5f5646;
     --moss: #56633a;
     --moss-deep: #414b2b;
-    --fern-band: #28312a;   
+    --fern-band: #28312a;
     --on-band: #e9ecdf;
-    --yarrow: #c9a94f;      
+    --yarrow: #c9a94f;
     --hair: #cfd5c0;
-    --ring: rgba(86, 99, 58, 0.22);
-    --tag-bg: #dde2cc;      
-    --tag-ink: #414b2b;
-    --tag-line: #c9d0b4;
-    --dusk: #c98a68;        
+    --dusk: #c98a68;
     --dusk-glow: rgba(214, 150, 112, 0.14);
-    
     --breath-card: var(--ground-2);
     --breath-core: rgba(255, 250, 230, 0.92);
     --breath-gold: rgba(247, 233, 186, 0.62);
@@ -49,36 +128,21 @@
     --breath-line: rgba(255, 252, 238, 0.95);
     --breath-halo: rgba(214, 180, 92, 0.2);
     --breath-inner: rgba(226, 198, 112, 0.14);
-    --slat: rgba(86, 99, 58, 0.07);   
     --lb-veil: rgba(22, 27, 23, 0.95); --lb-ink: #eef0e6; --lb-accent: #c9a94f; --lb-caption-font: 'Petrona', Georgia, serif;
     color-scheme: light;
   }
-  
+  /* Her brand comes in light and dark (her card is dark), so the site follows each visitor's phone setting. */
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+    :root {
       --ground: #161716; --ground-2: #202220; --ink: #ebece6; --ink-soft: #babdb4;
       --moss: #a9c08e; --moss-deep: #c6d9ae; --fern-band: #13201a; --on-band: #e4e9de;
-      --yarrow: #dcc274; --hair: #333633; --ring: rgba(169, 192, 142, 0.20);
-      --tag-bg: #1c2a22; --tag-ink: #c6d9ae; --tag-line: #2e4337;
+      --yarrow: #dcc274; --hair: #333633;
       --dusk: #e3ab89; --dusk-glow: rgba(227, 171, 137, 0.045);
-      --slat: rgba(169, 192, 142, 0.06);
       --breath-card: var(--fern-band);
       --breath-core: rgba(226, 198, 112, 0.24); --breath-gold: rgba(201, 169, 79, 0.13); --breath-sage: rgba(168, 185, 138, 0.06);
       --breath-line: rgba(214, 224, 186, 0.2); --breath-halo: rgba(201, 169, 79, 0.1); --breath-inner: rgba(214, 224, 186, 0.06);
       color-scheme: dark;
     }
-  }
-  :root[data-theme="dark"] {
-    --ground: #161716; --ground-2: #202220; --ink: #ebece6; --ink-soft: #babdb4;
-    --moss: #a9c08e; --moss-deep: #c6d9ae; --fern-band: #13201a; --on-band: #e4e9de;
-    --yarrow: #dcc274; --hair: #333633; --ring: rgba(169, 192, 142, 0.20);
-    --tag-bg: #1c2a22; --tag-ink: #c6d9ae; --tag-line: #2e4337;
-    --dusk: #e3ab89; --dusk-glow: rgba(227, 171, 137, 0.045);
-    --slat: rgba(169, 192, 142, 0.06);
-    --breath-card: var(--fern-band);
-    --breath-core: rgba(226, 198, 112, 0.24); --breath-gold: rgba(201, 169, 79, 0.13); --breath-sage: rgba(168, 185, 138, 0.06);
-    --breath-line: rgba(214, 224, 186, 0.2); --breath-halo: rgba(201, 169, 79, 0.1); --breath-inner: rgba(214, 224, 186, 0.06);
-    color-scheme: dark;
   }
 
   body {
@@ -92,79 +156,111 @@
   a { color: var(--moss-deep); }
   a:focus-visible, .btn:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
   button:focus-visible, summary:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
-  input:focus-visible, textarea:focus-visible { outline: 2px solid var(--moss); outline-offset: 1px; }
   [tabindex="-1"]:focus { outline: none; }
 
   h1, h2, h3, .serif { font-family: 'Petrona', Georgia, 'Times New Roman', serif; font-weight: 400; text-wrap: balance; margin: 0; }
   h2 { font-size: clamp(30px, 5vw, 44px); line-height: 1.12; color: var(--ink); }
   h2 em, h1 em, h3 em { font-style: italic; font-weight: 300; color: var(--moss); }
   .label { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; color: var(--moss); margin: 0 0 14px; text-wrap: balance; }
-  .label.with-pill { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
   p { margin: 0; text-wrap: pretty; }
   p + p { margin-top: 16px; }
   .nw { white-space: nowrap; }
+  .soft { color: var(--ink-soft); }
+  .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-  
-  .ph { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 400; color: var(--moss-deep); font-size: 1.04em;
-    text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--moss); }
+  /* A detail still waiting for her real info: dashed and plain, so it can't pass for the real thing */
+  .slot { display: inline-block; max-width: 100%; box-sizing: border-box; vertical-align: baseline; overflow-wrap: anywhere; text-wrap: balance;
+    font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-style: normal; font-weight: 600; font-size: 12px; line-height: 1.45; letter-spacing: 0.08em;
+    color: var(--moss-deep); background: var(--ground); border: 1.5px dashed var(--moss); border-radius: 8px; padding: 2px 8px; }
+  .band .slot, .hero-band .slot { color: var(--on-band); background: transparent; border-color: var(--yarrow); }
 
-  
-  .tag { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; flex: none;
-    font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-style: normal;
-    font-size: 10.5px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
-    color: var(--tag-ink); background: var(--tag-bg); border: 1px solid var(--tag-line);
-    padding: 5px 10px 5px 9px; border-radius: 999px; white-space: nowrap; }
-  .tag::before { content: "\2726"; content: "\2726" / ""; font-size: 8px; letter-spacing: 0; opacity: 0.75; }
-
-  
-  .ribbon { position: fixed; left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 20;
-    background: var(--ground); color: var(--moss-deep); border: 1px solid var(--moss);
-    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    padding: 6px 12px; border-radius: 999px; }
-
-  
-  header.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 22px 0; }
-  .mark { font-family: 'Petrona', Georgia, serif; font-size: 22px; letter-spacing: 0.01em; }
-  .mark span { font-style: italic; font-weight: 300; color: var(--moss); }
-  nav { display: flex; gap: 0 10px; flex-wrap: wrap; font-size: 14px; margin: -10px -6px; }
-  nav a { color: var(--ink-soft); text-decoration: none; padding: 10px 6px; line-height: 24px; }
-  nav a:hover { color: var(--moss-deep); }
+  .skip { position: absolute; left: 12px; top: -60px; z-index: 40; padding: 10px 16px; border-radius: 999px;
+    background: var(--ground); color: var(--moss-deep); font-weight: 600; text-decoration: none; border: 1px solid var(--moss); }
+  .skip:focus { top: 12px; }
 
   .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; align-items: center; }
   .btn { display: inline-block; text-decoration: none; font-weight: 600; font-size: 15px; padding: 14px 26px; border-radius: 999px;
     background: var(--moss); color: var(--ground); border: 1px solid var(--moss); }
-  button.btn { font-family: inherit; line-height: inherit; cursor: pointer; }
   .btn:hover { background: var(--moss-deep); border-color: var(--moss-deep); }
   .btn.quiet { background: transparent; color: var(--moss-deep); }
   .btn.quiet:hover { background: var(--ground-2); color: var(--moss-deep); }
 
-  
-  .hero-band {
-    position: relative; overflow: hidden;
-    min-height: 94vh; min-height: 94svh;
-    display: flex; flex-direction: column;
-    background: var(--fern-band); color: var(--on-band);
+  /* ---------- the banner up top ---------- */
+  .status { position: relative; z-index: 5; }
+  .status-strip { margin: 0; background: var(--moss); color: var(--ground); text-align: center; font-size: 13px; line-height: 1.4; }
+  .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; color: inherit; text-decoration: none; }
+  .status-strip b { text-transform: uppercase; letter-spacing: 0.14em; font-size: 11.5px; font-weight: 600; }
+  .status-strip em { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 400; font-size: 15px; text-wrap: balance;
+    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, currentColor 55%, transparent); }
+  .status-strip a:hover em { text-decoration-color: currentColor; }
+  .status-strip a:focus-visible { outline: 2px solid var(--ground); outline-offset: -4px; border-radius: 6px; }
+  @media (max-width: 560px) {
+    .status-strip a { padding: 8px 12px; gap: 0 8px; }
+    .status-strip b { font-size: 11px; letter-spacing: 0.11em; }
+    .status-strip em { font-size: 14.5px; }
   }
-  .hero-band > .gutter, .hero-band > .hero-center { position: relative; z-index: 1; }
-  .hero-band > .gutter:not(.hero-center) { z-index: 2; }
-  /* Oct 10 2026: the hero is Tera's own photo, the coast she posted in September ("I am so in love with this land").
-     It is a 720 x 1280 phone frame, so it is not stretched: full screen on phones, the right half on wider screens
-     (at most 720px wide, about 1:1), with her fern band holding the words on the left. */
-  .hero-band.has-photo::before { content: ""; position: absolute; inset: 0; z-index: 0;
-    background: url('images/coast.jpg') var(--hero-pos, 50% 46%) / cover no-repeat; }
-  .hero-band.has-photo::after { content: ""; position: absolute; inset: 0; z-index: 0;
+
+  /* ---------- sticky nav: stays at the top; a Menu button on phones; tucks up on the way down ---------- */
+  :root { --sn-h: 60px; --sn-bg: #28312a; --sn-fg: #e9ecdf; }
+  [id] { scroll-margin-top: calc(var(--sn-h) + 16px); }
+  #top, .snav-gap { scroll-margin-top: 0; }
+  .snav-wrap { position: sticky; top: 0; height: 0; z-index: 26; }
+  .snav { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; transition: transform 0.35s cubic-bezier(.3,.8,.3,1), background-color 0.25s ease, box-shadow 0.25s ease; }
+  .snav-gap { height: 96px; }
+  .snav-in { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; max-width: 1020px; margin: 0 auto; padding: 50px 20px 0; }
+  .snav .mark, .snav-btn, .snav-links { pointer-events: auto; }
+  .mark { font-family: 'Petrona', Georgia, serif; font-size: 22px; letter-spacing: 0.01em; }
+  .mark span { font-style: italic; font-weight: 300; }
+  .snav .mark { display: inline-flex; align-items: center; min-height: 44px; white-space: nowrap; min-width: 0; color: var(--sn-fg); text-decoration: none; text-shadow: 0 1px 2px rgba(10, 12, 10, 0.5), 0 0 14px rgba(10, 12, 10, 0.45); }
+  .snav .mark span { color: #b9c99b; margin-left: 0.26em; }   /* the name's space, which the flex row would otherwise drop */
+  /* her rose (from her logo) on a small cream seal, so its wine color reads on the fern band and in dark mode */
+  .mark .rose { display: inline-block; flex: none; box-sizing: border-box; width: 36px; height: 36px; padding: 7px 6px 6px; margin-right: 10px;
+    border-radius: 50%; background: #f4f0e8; object-fit: contain; vertical-align: middle; }
+  .snav .mark .rose { box-shadow: 0 1px 8px rgba(10, 12, 10, 0.35); }
+  footer .mark .rose { width: 30px; height: 30px; padding: 6px 5px 5px; margin-right: 8px; position: relative; top: -2px; box-shadow: 0 0 0 1px var(--hair); }
+  .snav-links { position: relative; display: flex; gap: 0 10px; flex-wrap: wrap; font-size: 14px; margin: -10px -6px; }
+  .snav-links a { text-decoration: none; padding: 10px 6px; line-height: 24px; }
+  .snav-btn { display: none; align-items: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; line-height: 1; color: var(--sn-fg); background: rgba(20, 25, 21, 0.35); border: 1px solid currentColor; border-radius: 999px; -webkit-appearance: none; appearance: none; }
+  .snav nav a { color: rgba(233, 236, 223, 0.9); text-shadow: 0 1px 2px rgba(10, 12, 10, 0.6), 0 0 14px rgba(10, 12, 10, 0.55); }
+  .snav nav a:hover, .snav nav a:focus-visible { color: #fff; }
+  .snav.solid, .snav.open { background: color-mix(in srgb, var(--sn-bg) 95%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 10px 26px -18px rgba(0, 0, 0, 0.7); pointer-events: auto; }
+  .snav.solid .snav-in, .snav.open .snav-in { padding-top: 0; min-height: var(--sn-h); }
+  .snav.solid .mark, .snav.solid nav a, .snav.open .mark, .snav.open nav a { text-shadow: none; }
+  .snav.solid .snav-btn, .snav.open .snav-btn { background: transparent; }
+  .snav.tuck { transform: translateY(-110%); }
+  .snav a:focus-visible, .snav button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  @media (max-width: 900px) and (min-width: 761px) { .snav-links { gap: 0 2px; font-size: 13.5px; } }
+  @media (max-width: 760px) {
+    :root { --sn-h: 54px; }
+    .snav-gap { height: 104px; }
+    .snav-in { gap: 10px; }
+    .snav-btn { display: inline-flex; }
+    .snav nav.snav-links { margin: 0; width: auto; justify-content: flex-start; }
+    .snav-js .snav-links { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0; padding: 6px 20px 12px; background: var(--sn-bg); box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.7); }
+    .snav-js.snav-open .snav-links, .snav.open .snav-links { display: flex; }
+    html:not(.snav-js) .snav-links { width: 100%; flex-wrap: wrap; }
+    .snav .snav-links a:not([hidden]) { display: block; min-width: 0; padding: 13px 4px; font-size: 18px; line-height: 24px; text-align: left; text-shadow: none; border-bottom: 1px solid rgba(233, 236, 223, 0.16); }
+    .snav .snav-links a:last-of-type { border-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } }
+  @media print { .snav-wrap { position: static; } .snav { position: static; } .snav-btn { display: none; } }
+
+  /* ---------- hero: her own photo of sun through the fog over the firs (the hero on her Wix site) ---------- */
+  .hero-band { position: relative; overflow: hidden; min-height: 94vh; min-height: 94svh; display: flex; flex-direction: column;
+    background: var(--fern-band); color: var(--on-band); }
+  .status ~ .hero-band { min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); }
+  .hero-band > .hero-center { position: relative; z-index: 1; }
+  /* Her photo is 2400 x 1800 (from her 4032 x 3024 original): full screen on phones, framed on the firs and the
+     light coming through the fog, and the right half on wider screens, with her fern band holding the words on the left. */
+  .hero-band::before { content: ""; position: absolute; inset: 0; z-index: 0;
+    background: url('images/forest-mist.jpg') var(--hero-pos, 66% 50%) / cover no-repeat; }
+  .hero-band::after { content: ""; position: absolute; inset: 0; z-index: 0;
     background:
       radial-gradient(70% 46% at 50% 52%, rgba(20, 25, 21, 0.34) 0%, rgba(20, 25, 21, 0) 100%),
       linear-gradient(rgba(20, 25, 21, 0.5) 0, rgba(20, 25, 21, 0.2) 170px, rgba(20, 25, 21, 0.24) 55%, rgba(20, 25, 21, 0.62) 100%); }
-  .hero-band .mark { color: var(--on-band); }
-  .hero-band .mark span { color: #a8b98a; }
-  .hero-band nav a { color: rgba(233, 236, 223, 0.86); }
-  .hero-band nav a:hover, .hero-band nav a:focus-visible { color: var(--on-band); }
   .hero-band a:focus-visible { outline-color: var(--on-band); }
-
   .hero-center { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding-block: 64px 96px; }
   .hero-copy { position: relative; max-width: 780px; }
-  
   .hero-copy::before { content: ""; position: absolute; z-index: -1; pointer-events: none;
     left: 50%; top: 20%; width: min(124%, 100vw); height: 100%; translate: -50% -50%;
     background: radial-gradient(closest-side, rgba(20, 25, 21, 0.56) 0%, rgba(20, 25, 21, 0.48) 48%, rgba(20, 25, 21, 0.2) 80%, rgba(20, 25, 21, 0) 100%); }
@@ -172,15 +268,13 @@
   .hero-band h1 { font-size: clamp(42px, 7.2vw, 76px); line-height: 1.04; letter-spacing: -0.01em; color: var(--on-band); max-width: 15ch; margin-inline: auto; text-shadow: 0 2px 30px rgba(10, 12, 10, 0.35); }
   .hero-band h1 em { color: var(--yarrow); }
   .hero-band .lede { margin: 22px auto 0; font-size: clamp(18px, 4.2vw, 20px); color: rgba(233, 236, 223, 0.9); max-width: 40ch; text-shadow: 0 1px 18px rgba(10, 12, 10, 0.4); }
-  
   .hero-band .tagline { display: block; margin-bottom: 8px; font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 400;
     font-size: clamp(22px, 5vw, 26px); line-height: 1.3; letter-spacing: 0.005em; color: #f1cdb2; text-wrap: balance; }
   .hero-band .cta-row { justify-content: center; margin-top: 34px; }
   .hero-band .btn.quiet { color: var(--on-band); border-color: rgba(233, 236, 223, 0.55); }
   .hero-band .btn.quiet:hover { background: rgba(233, 236, 223, 0.1); border-color: var(--on-band); }
-
-  
-  .hero-band.wait::before, .hero-band.wait::after, .hero-band.wait .hero-copy::before, .hero-band.wait .sample-tag,
+  /* her slow fade-in: the photo settles, then the words rise */
+  .hero-band.wait::before, .hero-band.wait::after, .hero-band.wait .hero-copy::before,
   .hero-band.wait .label, .hero-band.wait h1, .hero-band.wait .lede, .hero-band.wait .cta-row { opacity: 0; }
   .hero-band.go::before { animation: hero-photo 3.4s cubic-bezier(.22,1,.36,1) both; }
   .hero-band.go::after, .hero-band.go .hero-copy::before { animation: hero-fade 2.4s ease 0.8s both; }
@@ -188,14 +282,13 @@
   .hero-band.go h1 { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 1.9s both; }
   .hero-band.go .lede { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 2.7s both; }
   .hero-band.go .cta-row { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.3s both; }
-  .hero-band.go .sample-tag { animation: hero-fade 1.6s ease 2.6s both; }
   @keyframes hero-photo { from { opacity: 0; transform: scale(1.2); } 20% { opacity: 1; } to { opacity: 1; transform: none; } }
   @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hero-rise { from { opacity: 0; transform: translateY(64px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
   @media (min-width: 900px) {
-    .hero-band.has-photo::before { left: auto; width: min(50%, 720px); --hero-pos: 50% 44%; }
-    .hero-band.has-photo::after { left: auto; width: min(50%, 720px);
+    .hero-band::before { left: auto; width: 50%; --hero-pos: 82% 50%; }
+    .hero-band::after { left: auto; width: 50%;
       background:
         linear-gradient(90deg, var(--fern-band) 0, rgba(40, 49, 42, 0.55) 60px, rgba(40, 49, 42, 0) 200px),
         linear-gradient(rgba(20, 25, 21, 0.42) 0, rgba(20, 25, 21, 0) 150px, rgba(20, 25, 21, 0) 80%, rgba(20, 25, 21, 0.3) 100%); }
@@ -208,64 +301,60 @@
     .hero-band .label .sep { display: none; }
     .hero-band .label .place { display: block; margin-top: 4px; }
   }
+  @media (prefers-color-scheme: dark) and (min-width: 900px) {
+    .hero-band::after { background:
+      linear-gradient(90deg, var(--fern-band) 0, rgba(19, 32, 26, 0.55) 60px, rgba(19, 32, 26, 0) 200px),
+      linear-gradient(rgba(20, 25, 21, 0.42) 0, rgba(20, 25, 21, 0) 150px, rgba(20, 25, 21, 0) 80%, rgba(20, 25, 21, 0.3) 100%); }
+  }
 
-  
+  /* ---------- photos: they settle from a slight zoom and drift a few pixels as you scroll ---------- */
   .photo { position: relative; margin: 0; overflow: hidden; border-radius: 22px; max-width: 100%; background: var(--ground-2); isolation: isolate; }
   .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
-    box-shadow: inset 0 0 70px rgba(20, 25, 21, 0.16); }
-  
+  .photo::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; box-shadow: inset 0 0 70px rgba(20, 25, 21, 0.16); }
   .photo img { scale: 1.08; translate: 0 var(--drift, 0px); transition: scale 1.8s cubic-bezier(.2,.7,.3,1); }
   .photo.reveal.pre:not(.in) img { scale: 1.15; }
   @media (prefers-reduced-motion: reduce) { .photo img, .photo.reveal.pre:not(.in) img { scale: 1; translate: none; transition: none; } }
-  .photo.wide { aspect-ratio: 4 / 3; width: 100%; margin-top: 28px; }
-  .photo.wide img { object-position: 58% 45%; }
-  .photo.own { aspect-ratio: 4 / 5; max-width: 420px; }
+  .photo.own { aspect-ratio: 4 / 5; width: 100%; max-width: 420px; margin-top: 28px; }
   .photo.own img { object-position: 50% 40%; }
+  .photo.portrait img { object-position: 50% 24%; }
+  .photo.garden { max-width: 340px; }
+  .table-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; margin-top: 44px; }
+  .table-pair .her-words { margin-top: 0; }
+  .photo.at-work { aspect-ratio: 4 / 5; width: 100%; max-width: 440px; justify-self: end; background: #3a2b22; }
+  .photo.at-work img { object-position: 50% 30%; }
   .photo-cap { position: absolute; z-index: 2; left: 16px; bottom: 14px; right: 16px; margin: 0; pointer-events: none;
     font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.3; color: #f6f4ec;
     text-shadow: 0 1px 2px rgba(10, 12, 10, 0.75), 0 0 14px rgba(10, 12, 10, 0.6); }
-  .photo.pano { aspect-ratio: 16 / 7; width: 100%; margin-top: 40px; }
-  .photo.hands { aspect-ratio: 2 / 1; background: #d9c3a8; }
-  .photo.hands img { object-position: 50% 57%; }
-  .garden-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 40px; }
+  .garden-pair, .creek-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 40px; max-width: 720px; }
   .photo.pair { aspect-ratio: 4 / 5; }
   .pair-cap { grid-column: 1 / -1; margin: 2px 2px 0; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 16px; color: var(--ink-soft); }
-  
-  .sample-tag { position: absolute; right: 14px; bottom: 14px; z-index: 2; pointer-events: none;
-    font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    color: #eef0e6; background: rgba(28, 33, 29, 0.56); border: 1px solid rgba(238, 240, 230, 0.2);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    padding: 6px 10px 6px 11px; border-radius: 999px; white-space: nowrap; }
-  .hero-band .sample-tag { right: max(16px, env(safe-area-inset-right, 0px)); bottom: 16px; }
-  
 
-  
+  /* ---------- sections ---------- */
   section { padding-block: 72px; border-top: 1px solid var(--hair); }
   .two { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; }
   .roots { background: var(--ground-2); border-top: none; }
-  .modalities { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-  .modalities span { border: 1px solid var(--hair); background: var(--ground); border-radius: 999px; padding: 7px 16px; font-size: 14px; color: var(--ink-soft); }
-  .modalities span b { color: var(--moss-deep); font-weight: 600; }
-  .modalities span.lead { background: var(--moss); border-color: var(--moss); color: var(--ground); }
-  .modalities span.lead b { color: var(--ground); }
   .fact { font-family: 'Petrona', Georgia, serif; font-size: clamp(56px, 9vw, 88px); line-height: 1; color: var(--moss); font-variant-numeric: tabular-nums; }
   .fact-note { color: var(--ink-soft); font-size: 15px; margin-top: 8px; max-width: 30ch; }
+  .trained { margin-top: 26px; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+  .modalities { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .modalities li { border: 1px solid var(--hair); background: var(--ground); border-radius: 999px; padding: 7px 16px; font-size: 14px; color: var(--ink-soft); }
+  .modalities li b { color: var(--moss-deep); font-weight: 600; }
+  .modalities li.lead { background: var(--moss); border-color: var(--moss); color: var(--ground); }
+  .modalities li.lead b { color: var(--ground); }
 
-  
   .band { background: var(--fern-band); color: var(--on-band); border-top: none; }
   .band h2, .band .label { color: var(--on-band); }
   .band .label { opacity: 0.75; }
   .band h2 em { color: var(--yarrow); }
   .band p { color: var(--on-band); opacity: 0.9; }
-  .steps { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 28px; margin-top: 36px; }
-  .steps div { border-top: 1px solid rgba(233, 236, 223, 0.25); padding-top: 16px; }
+  .steps { list-style: none; display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 28px; margin-top: 36px; }
+  .steps li { border-top: 1px solid rgba(233, 236, 223, 0.25); padding-top: 16px; }
+  .steps h3 { font-size: 21px; margin-bottom: 6px; }
   .her-words { margin: 44px 0 0; max-width: 46ch; border-left: 2px solid var(--yarrow); padding: 2px 0 2px 22px; }
   .her-words p { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 300; font-size: clamp(21px, 2.6vw, 26px); line-height: 1.4; color: var(--on-band); opacity: 1; }
-  .her-words cite { display: block; margin-top: 10px; font-style: normal; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yarrow); }
-  .steps b { display: block; font-family: 'Petrona', Georgia, serif; font-weight: 400; font-size: 21px; margin-bottom: 6px; }
+  .her-words figcaption { margin-top: 10px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yarrow); }
 
-  
+  /* ---------- sessions, with the breathing ring ---------- */
   .sessions-card { position: relative; isolation: isolate; overflow: hidden; box-sizing: border-box;
     background: var(--breath-card); border: 1px solid var(--hair); border-radius: 28px; padding: clamp(30px, 5vw, 56px);
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
@@ -276,7 +365,7 @@
     background: radial-gradient(closest-side, var(--breath-core) 0%, var(--breath-gold) 38%, var(--breath-sage) 74%, rgba(0, 0, 0, 0) 100%);
     box-shadow: 0 0 80px var(--breath-halo), 0 0 22px var(--breath-halo), inset 0 0 56px var(--breath-inner);
     transform: scale(0.72); opacity: 0.55; animation: breath 10s infinite; will-change: transform, opacity; }
-  /* Easter egg (Oct 10 2026): tap the sessions card five times and the ring takes one long, slow breath with you */
+  /* tap the sessions card five times and the ring takes one long, slow breath with you */
   .breath-ring.deep { animation: deep-breath 11s ease-in-out 1; }
   @keyframes deep-breath { 0% { transform: scale(0.72); opacity: 0.55; } 40% { transform: scale(1.12); opacity: 1; } 55% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(0.72); opacity: 0.55; } }
   .egg-line { margin: 14px 0 0; min-height: 1.5em; text-align: center; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 17px; color: var(--moss-deep); opacity: 0; transition: opacity 1.2s ease; }
@@ -286,21 +375,27 @@
     40%  { transform: scale(1);    opacity: 1;    animation-timing-function: cubic-bezier(.4, 0, .6, 1); }
     100% { transform: scale(0.72); opacity: 0.55; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .breath-ring { animation: none; transform: scale(0.9); opacity: 0.85; }
-  }
-
-  
+  @media (prefers-reduced-motion: reduce) { .breath-ring { animation: none; transform: scale(0.9); opacity: 0.85; } }
   .rates { width: 100%; border-collapse: collapse; margin-top: 26px; font-variant-numeric: tabular-nums; }
-  .rates th, .rates td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--hair); text-wrap: balance; }
+  .rates th, .rates td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--hair); text-wrap: balance; vertical-align: top; }
   .rates th { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
-  .rates td:last-child, .rates th:last-child { text-align: right; padding-left: 16px; }
+  .rates td:last-child, .rates th:last-child { text-align: right; padding-left: 16px; white-space: nowrap; }
+  .rates td.all { text-align: left; white-space: normal; padding-left: 0; }
+  .rates td b { font-weight: 600; color: var(--moss-deep); }
   .rates td small { display: block; font-size: 13px; line-height: 1.4; color: var(--ink-soft); margin-top: 1px; }
-  .rates .focus-row td:first-child { font-weight: 600; color: var(--moss-deep); }
-  .rates .focus-row small { font-weight: 400; }
-  .rates .focus-row small b { font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; color: var(--moss); }
+  .terms { display: grid; gap: 8px; margin: 18px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .terms div { display: grid; gap: 2px; }
+  .terms dt { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; }
+  .terms dd { margin: 0; color: var(--ink); }
+  /* her two creek photos (her Wix session photos): under the words on wide screens, after the rates on phones */
+  .sessions-card .creek-pair { margin-top: 0; max-width: none; }
+  @media (min-width: 761px) {
+    .sessions-card .sessions-rates { grid-column: 2; grid-row: 1 / span 2; }
+    .sessions-card .creek-pair { grid-column: 1; grid-row: 2; align-self: end; }
+  }
+  .more-policies { list-style: none; display: grid; gap: 4px; margin-top: 8px; font-size: 14px; color: var(--ink-soft); }
 
-  
+  /* ---------- where: the studio, and home visits by request ---------- */
   .come { background: radial-gradient(90% 80% at 100% 0%, var(--dusk-glow) 0%, rgba(0, 0, 0, 0) 70%), var(--ground); }
   .horizon { display: block; position: relative; width: 96px; height: 24px; margin: 0 0 16px; }
   .horizon::before { content: ""; position: absolute; left: 50%; bottom: 1px; width: 32px; height: 16px; translate: -50% 0;
@@ -316,117 +411,43 @@
   .come-facts { margin: auto 0 0; padding-top: 14px; border-top: 1px solid var(--hair); display: grid; gap: 6px; font-size: 15px; }
   .come-facts div { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 2px 16px; }
   .come-facts dt { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
-  .come-facts dd { margin: 0 0 0 auto; text-align: right; }  
+  .come-facts dd { margin: 0 0 0 auto; text-align: right; min-width: 0; }
   .come-foot { margin-top: 24px; color: var(--ink-soft); }
 
-  
   .reach { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-  .reach a { display: inline-flex; align-items: center; gap: 7px; min-height: 42px; box-sizing: border-box; padding: 0 16px; border: 1px solid var(--hair); border-radius: 999px;
+  .reach a { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; box-sizing: border-box; padding: 0 16px; border: 1px solid var(--hair); border-radius: 999px;
     background: var(--ground); color: var(--moss-deep); text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1; }
   .reach a:hover { border-color: var(--moss); }
   .reach svg { flex: none; color: var(--moss); }
-  .where .num { font-size: 19px; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
   .tel { position: relative; color: var(--moss-deep); white-space: nowrap; }
-  .tel::after { content: ""; position: absolute; inset: -11px -4px; }  
-  .fine { font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
+  .tel::after { content: ""; position: absolute; inset: -11px -4px; }
 
-  
-  .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  /* ---------- kind words ---------- */
+  .reviews { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 30px; }
   .review { display: flex; flex-direction: column; gap: 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 22px clamp(18px, 2.2vw, 22px) 20px; }
-  .words-h { margin-bottom: 30px; }
-  .reviews.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stars { font-size: 14px; letter-spacing: 0.18em; color: var(--yarrow); }
-  .words-note { margin-top: 18px; }
-  .review-sample { font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+  @media (prefers-color-scheme: light) { .stars { color: #9a7d2e; } }
   .review blockquote p { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 300; font-size: clamp(19px, 2.2vw, 21px); line-height: 1.4; color: var(--ink); }
   .review figcaption { margin-top: auto; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
   .reviews .reveal.in:nth-child(2) { transition-delay: 0.12s; }
-  .reviews .reveal.in:nth-child(3) { transition-delay: 0.24s; }
+  .on-google { margin-top: 22px; }
 
-  
-  .book { text-align: left; }
-  .book-head { display: grid; grid-template-columns: minmax(0, 620px) minmax(116px, 1fr); column-gap: 44px; align-items: start; }
-  .book-head > * { grid-column: 1; }
-  
-  .portrait-spot { grid-column: 2; grid-row: 1 / span 4; align-self: center; justify-self: end; margin-right: 8px;
-    width: 116px; height: 116px; border-radius: 50%; box-sizing: border-box;
-    border: 1.5px dashed var(--moss); box-shadow: 0 0 0 8px rgba(86, 99, 58, 0.08);
-    background: radial-gradient(circle at 50% 40%, var(--ground) 0%, var(--ground-2) 100%);
-    display: grid; place-items: center; text-align: center; }
-  .portrait-spot span { font-size: 9.5px; line-height: 1.55; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: var(--moss-deep); max-width: 9ch; }
-  .where { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 30px; }
-  @media (min-width: 761px) and (max-width: 900px) { .where { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; } }
-  .where div { border-left: 2px solid var(--moss); padding-left: 14px; }
-  .where b { display: block; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
-  .where .copy { user-select: all; }
+  /* ---------- booking and gift boxes (Web Faery's own, styled with her colors) ---------- */
+  .book-box, .gift-box { margin-top: 30px; max-width: 46rem; box-sizing: border-box;
+    --wf-book-accent: var(--moss); --wf-book-accent-text: var(--ground); --wf-book-radius: 14px; --wf-book-line: var(--hair); --wf-book-field-bg: var(--ground);
+    --wf-gift-accent: var(--moss); --wf-gift-accent-text: var(--ground); --wf-gift-radius: 14px; --wf-gift-line: var(--hair); --wf-gift-field-bg: var(--ground); }
+  .fallback { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 22px 22px 20px; }
+  .fallback p { color: var(--ink-soft); }
+  .fallback .reach { margin-top: 14px; }
+  .gift { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 48px; align-items: start; }
+  .gift .gift-box { margin-top: 0; }
 
-  footer { padding-block: 40px 90px; border-top: 1px solid var(--hair); color: var(--ink-soft); font-size: 14px; text-wrap: balance; }
-  .legend { margin-top: 12px; font-size: 13px; line-height: 1.9; }
-  .foot-reach { margin-top: 4px; }
-  .foot-reach a { display: inline-block; padding-block: 9px; }
-  .legend .tag { margin-inline: 1px; }
-
-  
-  .fld { font-size: 13px; color: var(--ink-soft); display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
-  .fld input, .fld textarea, .nl-row input { font: inherit; font-size: 16px; line-height: 1.5; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px;
-    border: 1px solid var(--hair); border-radius: 14px; background: var(--ground); color: var(--ink); }
-  .fld textarea { resize: vertical; min-height: 108px; }
-  .fld-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .hint { font-size: 14px; color: var(--moss-deep); font-weight: 600; margin: 10px 0 0; }
-  .hint:empty { margin: 0; }
-  .bk-go.ghost { background: transparent; color: var(--moss-deep); }
-  .bk-go:focus-visible { outline-offset: 3px; }
-  .demo-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
-  .fade-in { animation: fade-in 0.5s ease both; }
-  @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
-
-  
-  .gift { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-template-areas: "intro card" "notes card"; column-gap: 48px; align-items: start; }
-  .gift-intro { grid-area: intro; } .gift-notes { grid-area: notes; display: grid; gap: 12px; margin-top: 26px; } .pay-card { grid-area: card; }
-  .pay-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 14px; padding: 24px; }
-  .seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground); border: 1px solid var(--hair); border-radius: 999px; }
-  .seg button { font: inherit; font-size: 15px; font-weight: 600; line-height: 1.25; color: var(--ink-soft); background: transparent; border: 0; border-radius: 999px; padding: 10px 12px; min-height: 44px; cursor: pointer; }
-  .seg button[aria-pressed="true"] { background: var(--moss); color: var(--ground); }
-  .pay-q { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin: 20px 0 10px; }
-  .amts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(max-content, 1.25fr); gap: 8px; }
-  .amt[data-amt] { white-space: nowrap; padding-inline: 12px; }
-  .amts.sess { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .amts.pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .amt { font: inherit; font-weight: 600; line-height: 1.3; color: var(--ink); background: var(--ground); border: 1px solid var(--hair); border-radius: 14px; padding: 12px 8px; min-height: 50px; cursor: pointer; text-align: center; }
-  .amt small { display: block; font-weight: 400; font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
-  .amt small.ph { font-size: 14px; color: var(--moss-deep); }
-  .amt[aria-pressed="true"] { border-color: var(--moss); box-shadow: inset 0 0 0 1px var(--moss); }
-  .money { position: relative; display: block; }
-  .money > span { position: absolute; left: 13px; top: 50%; translate: 0 -50%; color: var(--ink-soft); font-size: 16px; pointer-events: none; }
-  .money input { padding-left: 26px; }
-  #gf-any-wrap { margin-top: 12px; max-width: 220px; }
-  .pay-card .fld-row { margin-top: 16px; }
-  
-  .sheet { background: var(--ground); border: 1px solid var(--hair); border-radius: 18px; padding: 12px 20px 20px; box-shadow: 0 22px 40px -28px rgba(20, 25, 21, 0.6); }
-  .sheet-grip { display: block; width: 40px; height: 4px; border-radius: 4px; background: var(--hair); margin: 0 auto 14px; }
-  .sheet-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
-  .sheet-h svg { color: var(--moss); }
-  .sheet-h .bk-demo { margin-left: 0; }
-  .sheet-lines { margin-top: 10px; }
-  .sheet-lines > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--hair); }
-  .sheet-lines .sub { padding-top: 0; font-size: 14px; color: var(--ink-soft); }
-  .sheet-lines .total { font-weight: 600; border-bottom: 0; }
-  .sheet-lines > div > span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
-  .sheet-slot { display: flex; align-items: center; gap: 12px; border: 1.5px dashed var(--hair); border-radius: 14px; padding: 12px 14px; margin-top: 6px; font-size: 14px; color: var(--ink-soft); }
-  .sheet-slot svg { flex: none; color: var(--moss); }
-  .sheet-note { font-size: 13px; color: var(--ink-soft); margin-top: 12px; }
-  .sheet-actions { display: flex; flex-wrap: wrap; gap: 0 6px; align-items: center; }
-  .sheet-actions .bk-go.ghost { border-color: transparent; padding-inline: 14px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-
-  
-  .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-template-areas: "head list" "intake list"; column-gap: 48px; align-items: start; }
-  .faq-head { grid-area: head; } .faq-list { grid-area: list; } .intake { grid-area: intake; margin-top: 34px; }
+  /* ---------- first visit ---------- */
+  .faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 48px; align-items: start; }
   .faq-list details { border-bottom: 1px solid var(--hair); }
   .faq-list details:first-child { border-top: 1px solid var(--hair); }
   .faq-list summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 18px;
-    padding: 15px 2px; min-height: 52px; box-sizing: border-box;
-    font-family: 'Petrona', Georgia, serif; font-size: 20px; line-height: 1.35; color: var(--ink); }
+    padding: 15px 2px; min-height: 52px; box-sizing: border-box; font-family: 'Petrona', Georgia, serif; font-size: 20px; line-height: 1.35; color: var(--ink); }
   .faq-list summary::-webkit-details-marker { display: none; }
   .faq-list summary::after { content: ""; flex: none; width: 13px; height: 13px; margin-right: 4px;
     background: linear-gradient(var(--moss), var(--moss)) center / 13px 1.5px no-repeat, linear-gradient(var(--moss), var(--moss)) center / 1.5px 13px no-repeat;
@@ -435,510 +456,133 @@
   .faq-list summary:hover { color: var(--moss-deep); }
   .faq-list .ans { padding: 0 34px 20px 2px; color: var(--ink-soft); }
   .faq-list details[open] .ans { animation: fade-in 0.45s ease both; }
+  .intake { margin-top: 28px; }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .faq-list details[open] .ans { animation: none; } .faq-list summary::after { transition: none; } }
-  .intake .btn { white-space: normal; text-align: center; }
-  .ik-card { margin-top: 18px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 18px 18px 14px; }
-  .ik-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Karla', sans-serif; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin-bottom: 14px; }
-  .ik-h .bk-demo { margin-left: 0; }
-  .ik-paper { display: block; background: #fbfaf4; color: #33291f; border-radius: 6px; padding: 18px 20px 22px; box-shadow: 0 1px 2px rgba(20, 25, 21, 0.12), 0 14px 28px -18px rgba(20, 25, 21, 0.45); rotate: -0.8deg; }
-  .ik-paper span { display: block; }
-  .ik-title { font-family: 'Petrona', Georgia, serif; font-size: 20px; line-height: 1.2; }
-  .ik-sub { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6b6150; margin-top: 2px; }
-  .ik-line { font-size: 11.5px; color: #6b6150; border-bottom: 1px solid #cfd5c0; padding-top: 12px; line-height: 1.6; }
-  .ik-paper .ik-pair { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; }
-  .ik-checks { font-size: 11.5px; color: #6b6150; padding-top: 12px; }
-  .ik-checks i { display: inline-block; width: 9px; height: 9px; border: 1px solid #8a8070; border-radius: 50%; margin: 0 4px 0 10px; vertical-align: -1px; }
-  .ik-note { font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
 
-  
-  .touch { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 48px; align-items: start; }
-  .cf-card { margin-top: 26px; }
-  .cf-card form { display: grid; gap: 10px; }
-  .cf-card .bk-go { justify-self: start; margin-top: 8px; }
-  .news { background: var(--fern-band); color: var(--on-band); border: 1px solid rgba(233, 236, 223, 0.08); border-radius: 18px; padding: 28px 26px 26px; margin-top: 4px; }
-  .news .label { color: var(--on-band); }
-  .news .label > span:first-child { opacity: 0.78; }
-  .news h3 { font-size: clamp(26px, 3.4vw, 32px); line-height: 1.15; color: var(--on-band); }
-  .news h3 em { color: var(--yarrow); }
-  .news p { color: rgba(233, 236, 223, 0.86); }
-  .news form { margin-top: 20px; }
-  .news .fld { color: rgba(233, 236, 223, 0.78); }
-  .nl-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-  .nl-row input { flex: 999 1 190px; background: rgba(233, 236, 223, 0.07); border-color: rgba(233, 236, 223, 0.3); color: var(--on-band); }
-  .news .bk-go { margin-top: 0; flex: 1 0 auto; background: var(--on-band); border-color: var(--on-band); color: #28312a; }
-  .news .bk-go.ghost { background: transparent; color: var(--on-band); border-color: rgba(233, 236, 223, 0.5); margin-top: 16px; }
-  .news button:focus-visible, .news input:focus-visible { outline-color: var(--on-band); }
-  .news .hint { color: var(--yarrow); }
-  .news .nl-done { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(233, 236, 223, 0.16); }
-  .news .nl-done h4 { margin: 0 0 6px; font-family: 'Petrona', Georgia, serif; font-weight: 400; font-size: 24px; color: var(--on-band); }
-  .news .demo-note { color: rgba(233, 236, 223, 0.72); }
+  /* ---------- contact ---------- */
+  .where { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 36px; }
+  @media (min-width: 761px) and (max-width: 900px) { .where { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; } }
+  .where > div { border-left: 2px solid var(--moss); padding-left: 14px; min-width: 0; }
+  .where h3 { display: block; font-family: inherit; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
+  .where a[data-site="email"] { display: inline-block; padding-block: 10px; overflow-wrap: anywhere; }
+  .where .num { font-size: 19px; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+  .hrs { list-style: none; display: grid; gap: 1px; font-size: 15px; line-height: 1.55; }
+  .hrs li { display: flex; justify-content: space-between; gap: 12px; }
+  .hrs li > span:first-child { color: var(--ink-soft); min-width: 3ch; }
+  .hrs li > span:last-child { text-align: right; }
+  .hrs-note { margin-top: 6px; font-size: 15px; color: var(--ink-soft); }
 
-  
-  .found { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 30px; }
-  .found-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 18px; padding: 18px 20px 22px; }
-  .found-card figcaption { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); margin-bottom: 14px; }
-  .serp { background: var(--ground); border: 1px solid var(--hair); border-radius: 14px; padding: 14px 18px 18px; }
-  .serp-q { display: flex; align-items: center; gap: 10px; border: 1px solid var(--hair); border-radius: 999px; padding: 7px 14px; font-size: 15px; color: var(--ink); margin-bottom: 16px; }
-  .serp-q svg { flex: none; color: var(--ink-soft); }
-  .serp-site { display: flex; align-items: center; gap: 10px; }
-  .serp-fav { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--moss); color: var(--ground); display: grid; place-items: center; font-family: 'Petrona', Georgia, serif; font-size: 15px; line-height: 1; }
-  .serp-site b { display: block; font-size: 14px; font-weight: 500; line-height: 1.3; }
-  .serp-site small { display: block; font-size: 12.5px; line-height: 1.3; color: var(--ink-soft); }
-  .serp-title { font-family: 'Petrona', Georgia, serif; font-size: 21px; line-height: 1.3; color: var(--moss-deep); margin-top: 10px; text-wrap: balance; }
-  .serp-desc { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin-top: 4px; }
-  .sms { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-  .sms-bubble { background: var(--ground); border: 1px solid var(--hair); border-radius: 18px 18px 18px 6px; padding: 9px 14px; font-size: 15px; line-height: 1.45; max-width: 88%; }
-  .linkcard { display: block; width: min(100%, 300px); border-radius: 18px 18px 18px 6px; overflow: hidden; border: 1px solid var(--hair); background: var(--ground); }
-  .linkcard img { display: block; width: 100%; height: auto; aspect-ratio: 1.91 / 1; object-fit: cover; object-position: 50% 54%; }
-  .linkcard span { display: block; padding: 10px 14px 12px; }
-  .linkcard b { display: block; font-size: 15px; font-weight: 600; line-height: 1.35; }
-  .linkcard small { display: block; font-size: 12.5px; color: var(--ink-soft); }
-  .gbp { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 24px; font-size: 15px; color: var(--ink-soft); }
-
-  
-  .tier-note { margin-top: 16px; padding-left: 2px; font-size: 14px; color: var(--ink-soft); }
+  footer { padding-block: 40px 60px; border-top: 1px solid var(--hair); color: var(--ink-soft); font-size: 14px; text-wrap: balance; }
+  .foot-reach { margin-top: 4px; }
+  .foot-reach a { display: inline-block; padding-block: 9px; }
+  footer .mark { font-size: 19px; color: var(--ink); }
+  footer .mark span { color: var(--moss); }
 
   @media (max-width: 760px) {
-    .two { grid-template-columns: minmax(0, 1fr); align-items: start; }
-    .two { row-gap: 36px; }
+    .two { grid-template-columns: minmax(0, 1fr); align-items: start; row-gap: 36px; }
     .two .rates { margin-top: 0; }
     .breath { width: min(100%, 400px); }
     .steps, .where, .come-grid { grid-template-columns: minmax(0, 1fr); }
     section { padding-block: 56px; }
-    
     .photo { margin-inline: -20px; border-radius: 0; max-width: none; }
-    .photo.wide, .photo.pano { width: auto; }
-    .garden-pair { gap: 10px; }
-    .garden-pair .photo { margin-inline: 0; border-radius: 14px; }
-    .photo.hands { aspect-ratio: 4 / 3; }
-    .photo.hands img { object-position: 50% 50%; }
-    .reviews, .reviews.two-up { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-    .gift { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "card" "notes"; }
-    .pay-card { margin-top: 26px; }
-    .faq { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "list" "intake"; }
+    .photo.own, .photo.at-work { width: auto; }
+    .table-pair { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .photo.at-work { justify-self: stretch; }
+    .photo.garden { margin-inline: 0; max-width: 300px; border-radius: 18px; }
+    .garden-pair, .creek-pair { gap: 10px; }
+    .garden-pair .photo, .creek-pair .photo { margin-inline: 0; border-radius: 14px; }
+    .reviews { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .gift, .faq { grid-template-columns: minmax(0, 1fr); }
+    .gift .gift-box { margin-top: 26px; }
     .faq-list { margin-top: 26px; }
-    .touch { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
-    .found { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 560px) {
     .hero-copy::before { background: radial-gradient(closest-side, rgba(20, 25, 21, 0.4) 0%, rgba(20, 25, 21, 0.34) 48%, rgba(20, 25, 21, 0.14) 80%, rgba(20, 25, 21, 0) 100%); }
-    .photo.pano { aspect-ratio: 3 / 2; }
-    .photo.hands { aspect-ratio: 4 / 5; }
-    .photo.hands img { object-position: 50% 62%; }
-    .book-head { grid-template-columns: minmax(0, 1fr); }
-    .portrait-spot { grid-column: 1; grid-row: auto; align-self: start; justify-self: start; width: 100px; height: 100px; margin: 8px 0 26px 8px; }
-    .amts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .amts.sess { grid-template-columns: minmax(0, 1fr); }
-    .amts.sess .amt { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; text-align: left; padding-inline: 14px; }
-    .amts.sess .amt small { margin-top: 0; }
-    .pay-card { padding: 20px 16px; }
-    .sheet { padding-inline: 16px; }
     .sessions-card { margin-inline: -8px; padding: 32px 16px 28px; border-radius: 22px; }
+    .fallback { padding: 20px 16px 18px; }
   }
-  @media (max-width: 480px) {
-    nav { width: calc(100% + 6px); margin-inline: -3px; justify-content: space-between; column-gap: 0; }
-    nav a { padding-inline: 3px; font-size: 13.5px; min-width: 40px; box-sizing: border-box; text-align: center; }
-    .fld-row { grid-template-columns: minmax(0, 1fr); }
-    .intake .btn { width: 100%; box-sizing: border-box; }
-    .news { padding: 24px 20px 22px; }
-  }
-  @media (max-width: 430px) {
-    .hero-band .cta-row .btn { flex: 1 1 100%; text-align: center; }
-  }
-  
+  @media (max-width: 430px) { .hero-band .cta-row .btn { flex: 1 1 100%; text-align: center; } }
   @media (max-width: 680px) {
     .hero-band .label .sep { display: none; }
     .hero-band .label .place { display: block; margin-top: 4px; }
   }
   @media (max-width: 359px) {
-    nav { justify-content: flex-start; column-gap: 16px; }
     .hero-band .label { font-size: 11px; letter-spacing: 0.18em; }
     .hero-band .tagline { font-size: 20px; margin-bottom: 6px; }
-    .seg button { font-size: 14px; padding-inline: 8px; }
   }
-  
   @media (orientation: landscape) and (max-height: 500px) {
     .hero-center { padding-block: 32px 48px; }
     .hero-band h1 { font-size: clamp(38px, 5.6vw, 54px); max-width: none; }
-    .photo.pano { max-height: 72vh; }
     section { padding-block: 56px; }
   }
-  
-  @media (min-width: 761px) and (max-height: 760px) {
-    .hero-center { padding-block: 36px 60px; }
-  }
+  @media (min-width: 761px) and (max-height: 760px) { .hero-center { padding-block: 36px 60px; } }
 
-  
+  /* things rise gently into view as you scroll */
   .reveal.pre { opacity: 0; transform: translateY(26px); }
   .reveal.in { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1); }
   .steps .reveal.in:nth-child(2), .where .reveal.in:nth-child(2) { transition-delay: 0.12s; }
   .steps .reveal.in:nth-child(3), .where .reveal.in:nth-child(3) { transition-delay: 0.24s; }
   .where .reveal.in:nth-child(4) { transition-delay: 0.36s; }
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
-
-  
-  .bk [hidden] { display: none !important; }
-  .bk { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 26px; margin-top: 30px; align-items: start; }
-  .bk > * { min-width: 0; }
-  .bk-card { background: var(--ground-2); border: 1px solid var(--hair); border-radius: 14px; padding: 24px; }
-  .bk-steps { display: flex; gap: 2px 8px; flex-wrap: wrap; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; }
-  .bk-steps span, .bk-steps button { white-space: nowrap; }
-  .bk-steps span.on, .bk-steps button.on { color: var(--moss); font-weight: 600; }
-  .bk-steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 4px 0; margin: 0; border-radius: 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-  .bk-steps button:hover { color: var(--moss-deep); }
-  .bk-steps button.on, .bk-steps button:disabled { text-decoration: none; }
-  .bk-steps button.on { cursor: default; }
-  .bk-steps button:disabled { cursor: default; }
-  .bk-steps button:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
-  .bk-nav { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
-  .done-acts { display: flex; flex-wrap: wrap; gap: 0 8px; align-items: center; }
-  .bk-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
-  @media (min-width: 540px) { .bk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  .bk-opt, .bk-day, .bk-time { font: inherit; color: var(--ink); background: var(--ground); border: 1px solid var(--hair); border-radius: 14px; padding: 12px; text-align: left; cursor: pointer; }
-  .bk-opt b { display: block; font-weight: 600; }
-  .bk-opt span { font-size: 14px; color: var(--ink-soft); }
-  .bk-opt span i { font-family: 'Petrona', Georgia, serif; font-size: 15px; color: var(--moss-deep); }
-  .bk-where { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .bk-q { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin: 18px 0 10px; }
-  .bk-mob-note { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
-  .bk-opt[aria-pressed="true"], .bk-day[aria-pressed="true"], .bk-time[aria-pressed="true"] { border-color: var(--moss); box-shadow: inset 0 0 0 1px var(--moss); }
-  .bk-days { display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 4px; margin: 16px -24px 0; scroll-padding-inline: 24px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
-  .bk-day { min-width: 64px; flex: 0 0 auto; text-align: center; padding: 10px 8px; scroll-snap-align: start; }
-  .bk-day small { display: block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
-  .bk-day b { font-size: 20px; font-weight: 600; }
-  .bk-times { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 8px; margin-top: 14px; }
-  .bk-time { text-align: center; padding: 10px 6px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  @media (max-width: 480px) { .bk-times { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .bk-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 16px; }
-  .bk-form label { font-size: 13px; color: var(--ink-soft); display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
-  .bk-form input { font: inherit; font-size: 16px; width: 100%; min-width: 0; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 14px; background: var(--ground); color: var(--ink); }
-  .bk-go { margin-top: 16px; font: inherit; font-weight: 600; padding: 13px 22px; border-radius: 14px; border: 1px solid var(--moss); background: var(--moss); color: var(--ground); cursor: pointer; }
-  .bk-go:disabled { opacity: 0.45; cursor: not-allowed; }
-  .bk-done { text-align: left; }
-  .bk-done h3 { margin: 0 0 8px; font-size: 26px; font-weight: 400; }
-  .bk-side { display: grid; gap: 12px; }
-  .bk-note { border-left: 2px solid var(--moss); padding: 4px 0 4px 14px; font-size: 14px; color: var(--ink-soft); text-wrap: pretty; }
-  .bk-note b { display: block; color: var(--ink); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2px; text-wrap: balance; }
-  .bk-inbox { background: var(--ground); border: 1px dashed var(--hair); border-radius: 14px; padding: 14px; font-size: 14px; }
-  .bk-inbox .from { font-size: 12px; color: var(--ink-soft); }
-  .bk-demo { display: inline-block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); border: 1px solid var(--ink-soft); border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: middle; line-height: 1.7; }
-  .label.with-pill .bk-demo { margin-left: 0; }
-  @media (max-width: 780px) { .bk { grid-template-columns: minmax(0, 1fr); } }
-
-  
-  .status { position: relative; z-index: 5; }
-  .status-strip { margin: 0; background: var(--moss); color: var(--ground); text-align: center; font-size: 13px; line-height: 1.4; }
-  .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px;
-    padding: 9px 16px; color: inherit; text-decoration: none; }
-  .status-strip b { text-transform: uppercase; letter-spacing: 0.14em; font-size: 11.5px; font-weight: 600; }
-  .status-strip em { font-family: 'Petrona', Georgia, serif; font-style: italic; font-weight: 400; font-size: 15px; text-wrap: balance;
-    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
-    text-decoration-color: currentColor; text-decoration-color: color-mix(in srgb, currentColor 55%, transparent); }
-  .status-strip a:hover em { text-decoration-color: currentColor; }
-  .status-strip a:focus-visible { outline: 2px solid var(--ground); outline-offset: -4px; border-radius: 6px; }
-  .status ~ .hero-band { min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); }
-  
-  
-  .status-tab { position: absolute; top: 100%; left: calc(20px + max(0px, (100% - 1020px) / 2));
-    display: flex; align-items: flex-start; gap: 6px; }
-  .status-try { display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; cursor: pointer;
-    font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    color: var(--moss-deep); background: var(--ground); border: 1px solid var(--moss); border-top: 0; border-radius: 0 0 12px 12px; padding: 7px 12px 8px; }
-  .status-try:hover { background: var(--ground-2); }
-  .status-try svg { flex: none; transition: rotate 0.3s ease; }
-  .status-try[aria-expanded="true"] svg { rotate: 180deg; }
-  .status-try:focus-visible { outline: 2px solid var(--on-band); outline-offset: 2px; }
-  .status-panel { background: var(--ground-2); border-bottom: 1px solid var(--hair); padding-block: 14px 16px; }
-  .status-panel-in { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
-  .status-q { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
-  .status-seg { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 0 1 330px; }
-  .status-note { margin: 0; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 16px; color: var(--moss-deep); }
-  @media (prefers-reduced-motion: reduce) { .status-try svg { transition: none; } }
-  @media (max-width: 560px) {
-    .status-strip a { padding: 8px 12px; gap: 0 8px; }
-    .status-strip b { font-size: 11px; letter-spacing: 0.11em; }
-    .status-strip em { font-size: 14.5px; }
-    .status-seg { flex-basis: 100%; }
-  }
-  
-  .theme-tab { display: inline-flex; align-items: stretch; min-height: 26px; box-sizing: border-box;
-    background: var(--ground); border: 1px solid var(--moss); border-top: 0; border-radius: 0 0 12px 12px; }
-  .theme-tab button { display: inline-flex; align-items: center; gap: 5px; margin: 0; padding: 7px 10px 8px; cursor: pointer; -webkit-appearance: none; appearance: none;
-    font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    color: var(--moss-deep); background: transparent; border: 0; transition: background-color 0.2s ease, color 0.2s ease; }
-  .theme-tab button:first-of-type { padding-left: 12px; border-radius: 0 0 0 11px; }
-  .theme-tab button:last-of-type { padding-right: 12px; border-radius: 0 0 11px 0; }
-  .theme-tab button + button { border-left: 1px solid var(--hair); }
-  .theme-tab button:hover { background: var(--ground-2); }
-  .theme-tab button[aria-pressed="true"] { background: var(--moss); color: var(--ground); }
-  .theme-tab button:focus-visible { outline: 2px solid currentColor; outline-offset: -3px; }
-  .theme-tab svg { flex: none; margin-block: -1px; }
-  .theme-auto { display: inline-flex; align-items: center; min-height: 30px; box-sizing: border-box; margin: 0; padding: 6px 12px; cursor: pointer; -webkit-appearance: none; appearance: none;
-    font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 10.5px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    color: var(--moss-deep); background: var(--ground); border: 1px solid var(--moss); border-radius: 999px; }
-  .theme-auto:hover { background: var(--ground-2); }
-  .theme-auto:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
-  @media (max-width: 359px) { .theme-tab svg { display: none; } }   
-  @media (prefers-reduced-motion: reduce) { .theme-tab button { transition: none; } }
-
-  .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-
-  
-  .wl { width: min(420px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); box-sizing: border-box; overflow: auto;
-    padding: 26px 24px 24px; border: 1px solid var(--hair); border-radius: 18px; background: var(--ground); color: var(--ink);
-    box-shadow: 0 30px 60px -30px rgba(20, 25, 21, 0.7); }
-  .wl::backdrop { background: rgba(20, 25, 21, 0.55); }
-  .wl .label { margin-bottom: 10px; padding-right: 36px; }
-  .wl h2 { font-size: 30px; line-height: 1.15; }
-  .wl-lede { margin-top: 10px; color: var(--ink-soft); font-size: 16px; }
-  .wl form { display: grid; gap: 10px; }
-  .wl .fld:first-of-type { margin-top: 8px; }
-  .wl .bk-go { justify-self: start; margin-top: 6px; }
-  .wl-done p { margin-top: 10px; }
-  .wl-done .demo-note { margin-top: 12px; }
-  .wl-x { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; display: grid; place-items: center; cursor: pointer;
-    background: transparent; border: 1px solid transparent; border-radius: 50%; color: var(--ink-soft); }
-  .wl-x:hover { background: var(--ground-2); color: var(--ink); }
-  @media (max-width: 380px) { .wl { padding: 22px 18px 20px; } .wl h2 { font-size: 27px; } }
-
-  
-  .tag-p { font-weight: 600; margin-left: -3px; }  
-  button.tag { position: relative; margin: 0; padding-block: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; transition: background-color 0.2s ease, border-color 0.2s ease; }
-  button.tag::after { content: ""; position: absolute; inset: -8px -2px; }  
-  .legend { line-height: 2.15; }
-  .legend button.tag::after { inset: -3px -2px; }
-  button.tag:hover { border-color: var(--moss); background: var(--tag-line); }
-  .views { padding-block: 22px 24px; background: var(--ground); }
-  .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px;
-    border: 1px solid var(--moss); border-radius: 20px; padding: 16px 16px 14px; }
-  .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
-  .views-q { margin: 0; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--moss-deep); }
-  .views-q::before { content: "\2726"; content: "\2726" / ""; font-size: 9px; letter-spacing: 0; opacity: 0.8; }
-  .views-price { margin: 0; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
-  .vseg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 16px; }
-  .views-care { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 10px 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 16px; }
-  .views-care .care-what { flex: 1 1 260px; font-size: 14px; line-height: 1.45; opacity: 0.85; }
-  .vseg button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 58px; margin: 0; padding: 8px 6px;
-    font: inherit; line-height: 1.2; text-align: center; color: var(--ink); background: transparent; border: 0; border-radius: 12px; cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease; }
-  .vseg b, .views-care b { font-family: 'Petrona', Georgia, serif; font-weight: 400; font-size: 19px; line-height: 1.15; }
-  .vseg .pr, .views-care .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; } /* wraps: on a narrow button the struck regular price drops under "$300 build", so no price runs into the next button */
-  .vseg .pr strong, .views-care .pr strong { font-weight: 600; color: var(--moss-deep); }
-  .vseg .pr s, .views-care .pr s { margin-left: 5px; }
-  .vseg button:hover { background: var(--ground); }
-  .vseg button[aria-pressed="true"] { background: var(--moss); color: var(--ground); }
-  .vseg button[aria-pressed="true"] .pr, .vseg button[aria-pressed="true"] .pr strong { color: var(--ground); }
-  .vseg .psub { display: block; max-width: 22ch; font-size: 12px; line-height: 1.3; color: var(--ink-soft); text-align: center; text-wrap: balance; }
-  .vseg button[aria-pressed="true"] .psub { color: var(--ground); }
-  .views-spots { grid-column: 1 / -1; margin: 0 2px; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
-  .views-note { margin: 0 2px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
-  .views-note b { font-weight: 600; color: var(--ink); }
-  .views-next { font: inherit; font-weight: 600; color: var(--moss-deep); background: none; border: 0; margin: 0; padding: 6px 2px; cursor: pointer; white-space: nowrap;
-    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  .views-next:hover { text-decoration-thickness: 2px; }
-  @media (min-width: 761px) {
-    .views-card { grid-template-columns: max-content minmax(0, 1fr); column-gap: 26px; row-gap: 12px; align-items: center; padding: 16px 16px 15px 22px; }
-    .views-head { flex-direction: column; align-items: flex-start; }
-    .views-note { grid-column: 1 / -1; }
-  }
-  @media (max-width: 560px) { .vseg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (prefers-reduced-motion: reduce) { .vseg button, button.tag { transition: none; } }
-
-  
-  .vp { position: fixed; z-index: 21; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    display: flex; flex-direction: column-reverse; align-items: flex-end; gap: 8px;
-    transition: opacity 0.3s ease, translate 0.3s ease; }
-  .vp.off { opacity: 0; translate: 0 8px; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, translate 0.3s ease, visibility 0s linear 0.3s; }
-  @media (max-width: 499px) { .vp { bottom: calc(54px + env(safe-area-inset-bottom, 0px)); } footer { padding-bottom: 116px; } }  
-  .vpill { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; box-sizing: border-box; margin: 0; padding: 0 14px 0 15px; cursor: pointer;
-    font-family: 'Karla', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 11px; line-height: 1.2; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
-    color: var(--ink-soft); background: var(--ground); border: 1px solid var(--moss); border-radius: 999px; box-shadow: 0 12px 26px -16px rgba(20, 25, 21, 0.6); }
-  .vpill b { font-weight: 600; color: var(--moss-deep); white-space: nowrap; }
-  .vpill:hover { background: var(--ground-2); }
-  .vpill svg { flex: none; color: var(--moss-deep); transition: rotate 0.3s ease; }
-  .vpill[aria-expanded="true"] svg { rotate: 180deg; }
-  .vpanel { box-sizing: border-box; width: min(330px, calc(100vw - 24px)); max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px); overflow: auto; overscroll-behavior: contain;
-    display: grid; gap: 10px; padding: 14px 14px 12px; background: var(--ground); color: var(--ink); border: 1px solid var(--moss); border-radius: 18px;
-    box-shadow: 0 26px 50px -28px rgba(20, 25, 21, 0.65); }
-  .vpanel .vseg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .vpanel .views-note { font-size: 14px; }
-  @media (prefers-reduced-motion: reduce) { .vp, .vp.off { transition: none; translate: none; } .vpill svg { transition: none; } }
-
-  
-  .bk-alt .cta-row { margin-top: 26px; }
-  .bk-alt .btn svg { margin-left: 8px; vertical-align: -1px; }
-  .bk-alt .reach { margin-top: 20px; }
-  .bk-alt .demo-note { margin-top: 14px; }
-  .tier-note button.tag { margin-left: 4px; }
-  
-  .found-sec { border-top: 0; padding-top: 40px; }
-  .found-wrap { border: 1.5px dashed var(--moss); border-radius: 22px; padding: 22px 22px 26px; background: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
-  .not-site { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 22px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
-  .not-site .bk-demo { font-style: normal; margin-left: 0; border-color: var(--moss); color: var(--moss-deep); }
-  @media (max-width: 560px) { .found-wrap { padding: 18px 14px 22px; } }
-
-  
-  .views-card, .vpanel, .status-panel, .wf-note { background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
-  .views-card, .vpanel { border: 1.5px dashed var(--moss); }
-  .status-panel { border-bottom: 1.5px dashed var(--moss); }
-  .wf-note { position: relative; border: 1.5px dashed var(--moss); border-radius: 18px; padding: 16px 18px; }
-  .bk-side.wf-note { padding: 24px 18px 18px; }
-  .gift-notes.wf-note { padding: 24px 18px 18px; }
-  footer .legend.wf-note { margin-top: 22px; padding: 14px 18px 12px; }
-  
-  .status-panel > .wrap, .found-wrap { position: relative; }
-  .status-panel > .wrap::after, .found-wrap::after, .wf-note::after {
-    content: "note for you, from Taya"; position: absolute; top: -13px; right: 16px; z-index: 2; pointer-events: none;
-    font-family: 'Caveat', 'Petrona', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #4a3326; white-space: nowrap; font-style: normal;
-    letter-spacing: 0; text-transform: none; background: #f4d6c1; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(40, 28, 20, 0.22); }
-  .status-panel > .wrap::after { top: -6px; }
-  @media (max-width: 560px) { .status-panel > .wrap::after { top: auto; bottom: -26px; right: 4px; } }
-
-  
-  .hrs { list-style: none; display: grid; gap: 1px; font-size: 15px; line-height: 1.55; }
-  .hrs li { display: flex; justify-content: space-between; gap: 12px; }
-  .hrs li > span:first-child { color: var(--ink-soft); min-width: 3ch; }
-  .hrs li > span:last-child { text-align: right; }
-  .hrs .ph { font-size: 15px; }
-  .hrs-note { margin-top: 6px; font-size: 15px; color: var(--ink-soft); }
-  .where div.hrs-box { padding-right: 4px; }
-
-  
-  .wf-strip-in { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; }
-  .wf-strip-t { font-weight: 600; font-size: 14.5px; text-wrap: balance; }
-  .status-strip.wf-strip a { display: inline; padding: 0; color: inherit; }
-  @media (max-width: 560px) { .wf-strip-in { padding: 8px 12px; gap: 0 8px; } .wf-strip-t { font-size: 14px; } }
 </style>
-
 </head>
 <body>
-<div class="status" id="status">
-  <p class="status-strip" data-state="open"><a href="#own-booking" id="status-link"><b id="status-label">Now welcoming new clients</b> <em><span id="status-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
-  <p class="status-strip wf-strip" data-state="open" data-wf="banner" hidden><span class="wf-strip-in"><span class="wf-strip-t" data-wf="banner-text"></span> <a data-wf="banner-link" href="#book"><em>Find out more<span aria-hidden="true">&nbsp;&rarr;</span></em></a></span></p>
-  <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
-  <div class="status-panel gutter" id="status-panel" hidden>
-    <div class="wrap status-panel-in">
-      <p class="status-q"><span id="status-q">Banner demo</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <div class="seg status-seg" role="group" aria-labelledby="status-q">
-        <button type="button" data-state="open" aria-pressed="true">Open</button>
-        <button type="button" data-state="full" aria-pressed="false">Full</button>
-        <button type="button" data-state="away" aria-pressed="false">Away</button>
-      </div>
-      <p class="status-note">Switch it anytime: email me, and it&rsquo;s done.</p>
-    </div>
-  </div>
-  <div class="status-panel gutter" id="theme-panel" hidden>
-    <div class="wrap status-panel-in">
-      <p class="status-note" id="theme-note">Your site follows each visitor&rsquo;s phone setting. Try both.</p>
-      <button type="button" class="theme-auto" id="theme-auto">Back to auto</button>
-    </div>
-  </div>
-  <p class="vh" role="status" id="theme-live"></p>
-  <p class="vh" role="status" id="status-live"></p>
+<a class="skip" href="#main">Skip to the main part</a>
+
+<div class="status" id="top">
+  <p class="status-strip" id="banner"><a href="#book" id="banner-link"><b id="banner-text">Now welcoming new clients</b> <em><span id="banner-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
 </div>
 
-<style id="wf-snav">
-  /* ---------- STICKY NAV (Oct 7 2026 rule, added Oct 10): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; her fern band, Petrona and Karla ---------- */
-  :root { --sn-h: 60px; --sn-bg: #28312a; --sn-fg: #e9ecdf; }
-  [id] { scroll-margin-top: calc(var(--sn-h) + 16px); }
-  #status, .snav-gap { scroll-margin-top: 0; }
-  .snav-wrap { position: sticky; top: 0; height: 0; z-index: 26; }
-  .snav { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; transition: transform 0.35s cubic-bezier(.3,.8,.3,1), background-color 0.25s ease, box-shadow 0.25s ease; }
-  .snav-gap { height: 96px; }
-  .snav-in { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; max-width: 1020px; margin: 0 auto; padding: 50px 20px 0; }
-  .snav .mark, .snav-btn, .snav-links { pointer-events: auto; }
-  .snav .mark { white-space: nowrap; min-width: 0; color: var(--sn-fg); text-decoration: none; text-shadow: 0 1px 2px rgba(10, 12, 10, 0.5), 0 0 14px rgba(10, 12, 10, 0.45); }
-  .snav .mark span { color: #b9c99b; }
-  .snav-links { position: relative; }
-  .snav-btn { display: none; align-items: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 14px; cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; line-height: 1; color: var(--sn-fg); background: rgba(20, 25, 21, 0.35); border: 1px solid currentColor; border-radius: 999px; -webkit-appearance: none; appearance: none; }
-  .snav nav a { color: rgba(233, 236, 223, 0.9); text-shadow: 0 1px 2px rgba(10, 12, 10, 0.6), 0 0 14px rgba(10, 12, 10, 0.55); }
-  .snav nav a:hover, .snav nav a:focus-visible { color: #fff; }
-  .snav.solid, .snav.open { background: color-mix(in srgb, var(--sn-bg) 95%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 10px 26px -18px rgba(0, 0, 0, 0.7); pointer-events: auto; }
-  .snav.solid .snav-in, .snav.open .snav-in { padding-top: 0; min-height: var(--sn-h); }
-  .snav.solid .mark, .snav.solid nav a, .snav.open .mark, .snav.open nav a { text-shadow: none; }
-  .snav.solid .snav-btn, .snav.open .snav-btn { background: transparent; }
-  .snav.tuck { transform: translateY(-110%); }
-  .snav a:focus-visible, .snav button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  @media (max-width: 760px) {
-    :root { --sn-h: 54px; }
-    .snav-gap { height: 104px; }
-    .snav-in { gap: 10px; }
-    .snav-btn { display: inline-flex; }
-    .snav nav.snav-links { margin: 0; width: auto; justify-content: flex-start; }
-    .snav-js .snav-links { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0; padding: 6px 20px 12px; background: var(--sn-bg); box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.7); }
-    .snav-js.snav-open .snav-links, .snav.open .snav-links { display: flex; }
-    html:not(.snav-js) .snav-links { width: 100%; flex-wrap: wrap; }
-    .snav .snav-links a:not([hidden]) { display: block; min-width: 0; padding: 13px 4px; font-size: 18px; line-height: 24px; text-align: left; text-shadow: none; border-bottom: 1px solid rgba(233, 236, 223, 0.16); }
-    .snav .snav-links a:last-of-type { border-bottom: 0; }
-  }
-  @media (prefers-reduced-motion: reduce) { .snav { transition: none; } .snav.tuck { transform: none; } }
-  @media print { .snav-wrap { position: static; } .snav { position: static; } .snav-btn { display: none; } }
-</style>
 <div class="snav-wrap" id="snav-wrap">
 <header class="snav" id="snav">
   <div class="snav-in">
-    <a class="mark" href="#status" aria-label="Massage by Tera, back to the top">Massage <span>by Tera</span></a>
+    <a class="mark" href="#top" data-site="name" aria-label="Tera Nansen, back to the top"><img class="rose" src="images/wild-rose-mark.png" alt="" width="168" height="147">Tera Nansen</a>
     <button type="button" class="snav-btn" id="snav-btn" aria-expanded="false" aria-controls="snav-links"><span>Menu</span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4h10M2 7h10M2 10h10"/></svg></button>
     <nav class="snav-links" id="snav-links" aria-label="Sections">
       <a href="#roots">Roots</a>
-      <a href="#table">On the table</a>
       <a href="#sessions">Sessions</a>
-      <a href="#come">Where</a>
+      <a href="#where">Where</a>
       <a href="#words">Kind words</a>
       <a href="#book">Book</a>
+      <a href="#gift">Gifts</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 </div>
-<div class="hero-band has-photo">
-<div class="snav-gap" aria-hidden="true"></div>
+
+<div class="hero-band" id="hero">
+  <div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-center gutter">
     <div class="hero-copy">
-      <p class="label"><span class="cred"><span class="nw">Holistic Health</span> <span class="nw">Practitioner, CMT</span></span><span class="sep"> &middot; </span><span class="nw place">Arcata, California</span></p>
+      <p class="label"><span class="nw">Holistic Health</span> <span class="nw">Practitioner</span><span class="sep"> &middot; </span><span class="nw place">Arcata, California</span></p>
       <h1>As deep as you&rsquo;re <em>ready</em> to go.</h1>
-      <p class="lede"><span class="tagline">Body, mind and soul integration.</span>Deep tissue focused massage, relaxing and therapeutic, led by your breath and your pace. In Tera&rsquo;s own studio in Arcata, or in your home.</p>
+      <p class="lede"><span class="tagline">Body, mind and soul integration.</span>Deep tissue focused massage, relaxing and therapeutic, led by your breath and your pace. In Tera&rsquo;s own studio in Arcata.</p>
       <div class="cta-row">
-        <a class="btn" href="#own-booking" data-wf="booking">Book with Tera</a>
+        <a class="btn" href="#book">Book with Tera</a>
         <a class="btn quiet" href="#table">What a session feels like</a>
       </div>
     </div>
   </div>
-  <span class="vh" role="img" aria-label="Tera&rsquo;s own photo: a lone fir on a green headland above the blue Pacific on a clear day"></span>
+  <span class="vh" role="img" aria-label="Tera&rsquo;s own photo: the sun breaking through fog over forested hills, tall firs in its light"></span>
 </div>
 <script>
   (function () {
-    var h = document.querySelector('.hero-band.has-photo');
+    var h = document.getElementById('hero');
     if (!h || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     h.classList.add('wait');
     var started = false;
     var go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('go'); };
     var im = new Image();
     im.onload = go; im.onerror = go;
-    im.src = 'images/coast.jpg';
+    im.src = 'images/forest-mist.jpg';
     if (im.complete) go();
     setTimeout(go, 1500);
   })();
 </script>
 
-
-<div class="views gutter" id="views" hidden>
-  <div class="wrap views-card">
-    <div class="views-head">
-      <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding price, half off the build</p>
-    </div>
-    <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your story and training, your sessions and rates, studio or home visits, kind words, and how to reach you to book."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book button to a free Cal.com I set up in your name, the first-visit FAQ and intake form, a contact form and seasonal notes."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site with reminders (Cal.com), and gift certificates and session payments paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
-    </div>
-    <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. Email me any change, and it&rsquo;s done: I update your site and your Google profile, like new hours, a new rate or a week away. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
-    <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">4 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
-    <p class="views-note" id="views-note"></p>
-  </div>
-  <p class="vh" role="status" id="views-live"></p>
-</div>
+<main id="main" tabindex="-1">
 
 <section id="roots" class="roots gutter">
   <div class="wrap two">
@@ -946,20 +590,20 @@
       <p class="label">Roots</p>
       <div class="fact reveal">1,000+</div>
       <p class="fact-note">hours of hands-on training at Heartwood Institute, up in the Southern Humboldt hills <span class="nw">(class of 2000)</span>.</p>
-      <figure class="reveal photo wide own">
-        <img src="images/garden-snapdragons.jpg" alt="Ruffled peach and pink snapdragons in full bloom in Tera&rsquo;s backyard garden" loading="lazy" width="720" height="900">
-        <figcaption class="photo-cap">From Tera&rsquo;s backyard garden</figcaption>
+      <figure class="reveal photo own portrait">
+        <img src="images/tera-portrait.jpg" alt="Tera Nansen smiling, a small flower tucked behind her ear" loading="lazy" width="1200" height="1799">
       </figure>
     </div>
     <div class="measure">
       <h2 class="reveal">A deep love for <em>all life</em>, and the ground beneath it</h2>
-      <p style="margin-top:20px">Tera is a Holistic Health Practitioner and a certified massage therapist (CMT). She has a deep love for all life and nature and draws from that connection and grounding energy that guides her in her work.</p>
+      <p style="margin-top:20px">Tera is a Holistic Health Practitioner and a massage therapist. She has a deep love for all life and nature and draws from that connection and grounding energy that guides her in her work.</p>
       <p>Over the last 24 years as a mother, a farmer, and a backyard gardener, she has learned the art of nurturing. She brings that knowledge, compassion and gentle care to the table, holding space for you to relax, unwind and allow healing to happen.</p>
-      <p>This summer she opened her own practice, a quiet studio in Arcata, something she had long been manifesting. She also comes to you, with mobile sessions in your own home.</p>
-      <div class="reveal modalities" aria-label="Training">
-        <span class="lead"><b>Deep Tissue</b></span><span><b>Swedish</b></span><span><b>Neuromuscular</b></span>
-        <span>Advanced Clinical Techniques</span><span>Polarity</span><span>Hypnotherapy</span>
-      </div>
+      <p>This summer she opened her own practice, a quiet studio in Arcata, something she had long been manifesting. For anyone who would feel more comfortable at home, she also makes home visits by request.</p>
+      <p class="trained" id="trained">Trained in</p>
+      <ul class="reveal modalities" aria-labelledby="trained">
+        <li class="lead"><b>Deep Tissue</b></li><li><b>Swedish</b></li><li><b>Neuromuscular</b></li>
+        <li>Advanced Clinical Techniques</li><li>Polarity</li><li>Hypnotherapy</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -969,16 +613,17 @@
     <p class="label">On the table</p>
     <h2 class="reveal">Working with your breath, <em>at the pace you&rsquo;re ready for</em></h2>
     <p class="measure" style="margin-top:18px">Her goal is simple: for you to feel safe, comfortable and relaxed, and to nourish your whole self.</p>
-    <div class="steps">
-      <div class="reveal"><b>Arrive</b><p>Tell Tera what your body is carrying today, and what you&rsquo;re hoping for.</p></div>
-      <div class="reveal"><b>Breathe</b><p>The work follows your breath. Go as deep as feels right, and no deeper.</p></div>
-      <div class="reveal"><b>Rest</b><p>Leave grounded, a little lighter, with time to settle before you step back out.</p></div>
+    <ol class="steps">
+      <li class="reveal"><h3>Arrive</h3><p>Tell Tera what your body is carrying today, and what you&rsquo;re hoping for.</p></li>
+      <li class="reveal"><h3>Breathe</h3><p>The work follows your breath. Go as deep as feels right, and no deeper.</p></li>
+      <li class="reveal"><h3>Rest</h3><p>Leave grounded, a little lighter, with time to settle before you step back out.</p></li>
+    </ol>
+    <div class="table-pair">
+      <figure class="her-words reveal"><blockquote><p>&ldquo;Holistic health means whole health, body, mind and soul. All are connected, all are equal in importance. To give ourselves time for rest and healing benefits our whole being.&rdquo;</p></blockquote><figcaption>Tera</figcaption></figure>
+      <figure class="reveal photo at-work">
+        <img src="images/tera-at-work.jpg" alt="Tera at a massage table, working on a client&rsquo;s back, with soft twinkle lights behind her" loading="lazy" width="1200" height="1500">
+      </figure>
     </div>
-    <blockquote class="her-words reveal"><p>&ldquo;Holistic health means whole health, body, mind and soul. All are connected, all are equal in importance. To give ourselves time for rest and healing benefits our whole being.&rdquo;</p><cite>Tera</cite></blockquote>
-    <figure class="reveal photo pano hands">
-      <img src="images/hands-at-work.jpg" alt="A therapist&rsquo;s hands massaging a client&rsquo;s bare back and shoulder in soft window light" loading="lazy" width="2000" height="3000">
-      <span class="sample-tag">Sample photo</span>
-    </figure>
   </div>
 </section>
 
@@ -987,61 +632,66 @@
     <div>
       <p class="label">Sessions</p>
       <h2 class="reveal">A <em>deep tissue</em> focus</h2>
-      <p style="margin-top:18px;color:var(--ink-soft)">Deep tissue is the heart of Tera&rsquo;s work, relaxing and therapeutic at once: slow, steady pressure into the deeper layers of muscle, guided by your breath, and only as deep as you&rsquo;re ready to go.</p>
-      <p style="color:var(--ink-soft)">She also offers Swedish, Neuromuscular, Polarity and Hypnotherapy. Any session can be one of these, or a blend, shaped around your breath and your pace.</p>
+      <p class="soft" style="margin-top:18px">Deep tissue is the heart of Tera&rsquo;s work, relaxing and therapeutic at once: slow, steady pressure into the deeper layers of muscle, guided by your breath, and only as deep as you&rsquo;re ready to go.</p>
+      <p class="soft">Every session is shaped around your breath and your pace.</p>
     </div>
     <div class="sessions-rates">
       <span class="breath" aria-hidden="true"><span class="breath-ring"></span></span>
-      <p class="egg-line" id="egg-line" role="status"></p>
       <table class="reveal rates">
-        <thead><tr><th>Session</th><th>Rate</th></tr></thead>
-        <tbody>
-          <tr><td>60 minutes<small>One area that needs care, like back, neck and shoulders</small></td><td><span class="ph" data-wf-price="massage-60">your rate</span></td></tr>
-          <tr class="focus-row"><td>90 minutes<small>Full body, with time to go deep</small></td><td><span class="ph" data-wf-price="massage-90">your rate</span></td></tr>
-          <tr><td>2 hours<small>Unhurried, head to toe, for the deepest rest</small></td><td><span class="ph" data-wf-price="massage-120">your rate</span></td></tr>
-        </tbody>
+        <caption class="vh">Sessions and rates</caption>
+        <thead><tr><th scope="col">Session</th><th scope="col">Rate</th></tr></thead>
+        <tbody id="sessions-rows"><tr><td colspan="2" class="all">Call or text <a class="tel" href="tel:+17079320037">707-932-0037</a> for sessions and rates.</td></tr></tbody>
       </table>
-      <p class="reveal fine"><span class="ph">(your cancellation policy here)</span></p>
+      <dl class="terms reveal">
+        <div><dt>How to pay</dt><dd data-site="payment"></dd></div>
+        <div><dt>Cancellations</dt><dd data-site="cancellation"></dd></div>
+      </dl>
+      <ul class="more-policies" id="more-policies" hidden></ul>
+      <p class="egg-line" id="egg-line" role="status"></p>
+    </div>
+    <div class="creek-pair" data-lightbox>
+      <figure class="reveal photo pair"><img src="images/creek-pool.jpg" alt="Clear green water over smooth river stones in a quiet creek pool" loading="lazy" width="944" height="671"></figure>
+      <figure class="reveal photo pair"><img src="images/forest-creek.jpg" alt="A slow creek under tall trees, the trees mirrored in the water and river stones in the shallows" loading="lazy" width="720" height="960"></figure>
+      <p class="pair-cap">Still water and river stones, from Tera&rsquo;s own photos.</p>
     </div>
   </div>
 </section>
 
-<section id="come" class="come gutter">
+<section id="where" class="come gutter">
   <div class="wrap">
     <span class="horizon" aria-hidden="true"></span>
-    <p class="label">Studio or mobile</p>
-    <h2 class="reveal">Come to me, or <em>I&rsquo;ll come to you</em></h2>
-    <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Rest in Tera&rsquo;s studio in Arcata, or stay home and let the massage come to you.</p>
+    <p class="label">Where</p>
+    <h2 class="reveal">In her studio, <em>or at your home by request</em></h2>
+    <p class="measure soft" style="margin-top:14px">Most sessions are in Tera&rsquo;s studio in Arcata.</p>
     <div class="come-grid">
       <div class="reveal come-card">
         <span class="come-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V10a7 7 0 0 1 14 0v11"/><path d="M3 21h18"/><circle cx="15" cy="15" r="0.6" fill="currentColor"/></svg></span>
         <h3>The studio, <em>in Arcata</em></h3>
         <p>Come in, settle onto the table, and let the rest of the day wait outside for a while.</p>
         <dl class="come-facts">
-          <div><dt>Studio</dt><dd><span class="ph" data-wf="address">your address</span></dd></div>
+          <div><dt>Studio</dt><dd data-site="studioAddress"></dd></div>
           <div><dt>Town</dt><dd>Arcata, California</dd></div>
+          <div data-site-if="studioAddress" hidden><dt>Map</dt><dd><a data-site-map href="#contact">Get directions</a></dd></div>
         </dl>
       </div>
       <div class="reveal come-card">
         <span class="come-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M12 17.5s-3-1.8-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 2-3 3.8-3 3.8Z"/></svg></span>
-        <h3>Mobile, <em>at your home</em></h3>
-        <p>Stay in your own space. When the session ends, there&rsquo;s no drive home: you&rsquo;re already there. Home visits start with a quick call or text, so Tera can hear about your space first.</p>
+        <h3>Home visits, <em>by request</em></h3>
+        <p>Mostly for older folks, and for anyone who feels more at ease in their own space. Reach out first, and Tera will talk it through with you, so you both know what to expect before she comes.</p>
         <dl class="come-facts">
-          <div><dt>Where she travels</dt><dd><span class="ph">your service area</span></dd></div>
-          <div><dt>Travel fee</dt><dd><span class="ph">any travel fee</span></dd></div>
-          <div><dt>To book</dt><dd>Call or text first</dd></div>
+          <div><dt>To ask</dt><dd data-site="homeVisits">Call, text or email first</dd></div>
         </dl>
       </div>
     </div>
-    <p class="come-foot">Not sure if you&rsquo;re in her area? Call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p>
+    <p class="come-foot">To ask about a home visit, call or text <a class="tel" href="tel:+17079320037">707-932-0037</a>, or email <a data-site="email" data-site-mailto></a>.</p>
   </div>
 </section>
 
 <section id="words" class="gutter">
   <div class="wrap">
-    <p class="label with-pill"><span>Kind words</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal words-h">In their <em>own words</em></h2>
-    <div class="reviews two-up">
+    <p class="label">Kind words</p>
+    <h2 class="reveal">In their <em>own words</em></h2>
+    <div class="reviews">
       <figure class="reveal review">
         <span class="stars" role="img" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         <blockquote><p>&ldquo;My first massage with Tera was incredible and I am now a loyal fan.&rdquo;</p></blockquote>
@@ -1053,168 +703,62 @@
         <figcaption>A client, July 2026</figcaption>
       </figure>
     </div>
-    <p class="mock-note wf-note words-note">These are real words from your clients. As new reviews come in on your Google profile, I add the best ones here.</p>
-    </div>
+    <p class="on-google" data-site-if="googleProfile" hidden><a data-site-href="googleProfile" href="#words">Read more on Google, or leave a few words of your own</a></p>
   </div>
 </section>
 
-<section id="own-booking" class="gutter">
+<section id="book" class="gutter">
   <div class="wrap">
-    <div data-show="crone all" data-fold data-thing="booking that runs itself">
-    <p class="label with-pill"><span>Your own booking</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-    <h2 class="reveal">Booking that <em>runs itself</em></h2>
-    <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Clients book you directly, any time of day, without a single phone call. Give it a try:</p>
-
-    <div class="bk">
-      <div class="bk-main">
-      <div class="bk-card" id="tb-card">
-        <nav class="bk-steps" aria-label="Booking steps"><button type="button" data-s="1" class="on" aria-current="step">1 Session</button><button type="button" data-s="2" disabled>2 Day &amp; time</button><button type="button" data-s="3" disabled>3 Your details</button></nav>
-        <div id="tb-s1">
-          <div class="bk-grid"><button type="button" class="bk-opt" data-svc="Deep Tissue" data-price="your rate" data-len="90 min"><b>Deep Tissue</b><span>90 min &middot; <i data-wf-price="massage-90">your rate</i></span></button><button type="button" class="bk-opt" data-svc="Swedish" data-price="your rate" data-len="60 min"><b>Swedish</b><span>60 min &middot; <i data-wf-price="massage-60">your rate</i></span></button><button type="button" class="bk-opt" data-svc="Polarity" data-price="your rate" data-len="60 min"><b>Polarity</b><span>60 min &middot; <i data-wf-price="massage-60">your rate</i></span></button></div>
-          <p class="bk-q" id="tb-where-q" hidden>Where</p>
-          <div class="bk-where" role="group" aria-labelledby="tb-where-q" hidden><button type="button" class="bk-opt" data-place="studio" aria-pressed="true"><b>Studio</b><span>in Arcata</span></button></div>
-          <p class="bk-mob-note">Online booking is for the studio in Arcata. Home visits start with a call or text, so Tera can hear about your space first.</p>
-          <p class="bk-mob-note" id="tb-mob-note" hidden>Tera comes to you in <span class="ph">your service area</span>, plus <span class="ph">any travel fee</span>.</p>
-        </div>
-        <div id="tb-s2" hidden>
-          <div class="bk-days" id="tb-days"></div>
-          <div class="bk-times" id="tb-times"></div>
-        </div>
-        <div id="tb-s3" hidden>
-          <div class="bk-form">
-            <label for="tb-name">Your name<input id="tb-name" autocomplete="off" value="Maya R."></label>
-            <label for="tb-mail">Email or phone<input id="tb-mail" autocomplete="off" value="maya@example.com"></label>
-            <label for="tb-addr" id="tb-addr-wrap" hidden>Your address, for the home visit<input id="tb-addr" autocomplete="off" placeholder="Street and town"></label>
-          </div>
-        </div>
-        <div class="bk-nav" id="tb-nav"><button type="button" class="bk-go" id="tb-go" disabled>Next</button><button type="button" class="bk-go ghost" id="tb-back" hidden>Back</button></div>
-        <div class="bk-done" id="tb-done" hidden>
-          <h3 id="tb-done-h" tabindex="-1">You&rsquo;re booked!</h3>
-          <p id="tb-summary"></p>
-          <p style="margin-top:10px;color:var(--ink-soft);font-size:14px">A confirmation is on its way, and a reminder will arrive the day before. Need to change it? One tap in the email.</p>
-          <div class="done-acts"><button type="button" class="bk-go ghost" id="tb-change">Change something</button><button type="button" class="bk-go ghost" id="tb-again">Try it again</button></div>
-        </div>
+    <p class="label">Book</p>
+    <h2 class="reveal">Come <em>rest</em> on Tera&rsquo;s table</h2>
+    <p class="measure soft" style="margin-top:16px">Sessions are in her studio in Arcata. Questions first, or hoping for a home visit? Call or text <a class="tel" href="tel:+17079320037">707-932-0037</a>.</p>
+    <!-- Web Faery booking: the renderer below puts SITE.bookingId on this box once she's switched on. Until then the lines inside stay. -->
+    <div class="book-box" id="book-box" data-heading-level="3">
+      <div class="fallback">
+        <p>To book a session, call or text Tera. She&rsquo;ll find a time that works for you.</p>
+        <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call 707-932-0037</a><a href="sms:+17079320037" aria-label="Text Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span>
       </div>
-      <p class="tier-note" data-show="all" data-fold>With Tended, this spot is a simple &ldquo;Book now&rdquo; button to a free Cal.com I set up in your name. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
-      </div>
-      <div class="bk-side wf-note">
-        <div class="bk-note"><b>What you see</b>Every new booking lands in your inbox and phone calendar the moment it happens.</div>
-        <div class="bk-inbox" id="tb-inbox"><div class="from">New booking</div><div id="tb-inboxtext">Waiting for a booking&hellip; try it on the left</div></div>
-        <div class="bk-note"><b>Home visits by request</b>Online booking fills your studio times. Home visits start with a call or text, so you can hear about their space before you say yes.</div>
-        <div class="bk-note"><b>Reminders go out on their own</b>Clients get a reminder the day before, so fewer <span class="nw">no-shows</span> and no texting from your phone.</div>
-        <div class="bk-note"><b>Your hours, your rules</b>You set your open times and block off days from your phone. Nobody books outside them.</div>
-        <div class="bk-note"><b>Already have booking? Keep it.</b>Whatever you use now, your Book buttons can go straight to it. Starting fresh? Booking here runs on Cal.com, free and set up in your own name.</div>
-        <p style="font-size:12px;color:var(--ink-soft)">Booking preview: nothing here books a real session.</p>
-      </div>
-    </div>
-    </div>
-
-    
-    <div class="bk-alt" data-show="mother" data-fold data-thing="Book now button" tabindex="-1" hidden>
-      <p class="label with-pill"><span>Book online</span> <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
-      <h2>Find a time <em>that suits you</em></h2>
-      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">See Tera&rsquo;s open times and book your session online, any time of day.</p>
-      <div class="cta-row"><a class="btn" id="bn-go" href="#own-booking" data-wf="booking">Book now<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg></a></div>
-      <p class="hint" id="bn-hint" role="status"></p>
-      <p class="demo-note">With Tended, this button opens your own Cal.com page, free and set up in your name: clients pick a time, and reminders go out on their own.</p>
-    </div>
-
-    
-    <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
-      <p class="label with-pill"><span>To book</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <h2>Call, text <em>or email</em></h2>
-      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Call or text Tera at <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>, or email <a class="ph" data-wf="email">your email</a>. She&rsquo;ll find a time that works for you.</p>
-      <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17079320037" aria-label="Text Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span>
-      <p class="demo-note">With Planted, people reach you by call, text or email to book. Already using a booking app for your own practice? Your Book button can go straight to it.</p>
     </div>
   </div>
 </section>
 
-
-<section id="gift" class="gutter" data-show="crone all" data-fold data-thing="gift certificates">
+<section id="gift" class="gutter">
   <div class="wrap gift">
-    <div class="gift-intro">
-      <p class="label with-pill"><span>Gift a session</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+    <div>
+      <p class="label">Gift a session</p>
       <h2 class="reveal">Give the gift of <em>rest</em></h2>
-      <p style="margin-top:14px;color:var(--ink-soft)">A gift certificate for someone you love, or your own session paid ahead of time, right here on her site. Try it:</p>
+      <p class="soft" style="margin-top:14px">A massage with Tera, for someone you love.</p>
+      <figure class="reveal photo own garden">
+        <img src="images/garden-snapdragons.jpg" alt="Ruffled peach and pink snapdragons in full bloom in Tera&rsquo;s backyard garden" loading="lazy" width="720" height="900">
+        <figcaption class="photo-cap">From Tera&rsquo;s backyard garden</figcaption>
+      </figure>
     </div>
-    <div class="pay-card" id="gf-card">
-      <form id="gf" method="dialog" novalidate aria-label="Gift certificate or session payment, preview">
-        <div class="seg" role="group" aria-label="Choose one">
-          <button type="button" data-mode="gift" aria-pressed="true">Gift certificate</button>
-          <button type="button" data-mode="pay" aria-pressed="false">Pay for a session</button>
-        </div>
-        <div id="gf-gift">
-          <p class="pay-q" id="gf-amt-q">Choose an amount</p>
-          <div class="amts" role="group" aria-labelledby="gf-amt-q">
-            <button type="button" class="amt" data-amt="50" aria-pressed="false">$50</button>
-            <button type="button" class="amt" data-amt="100" aria-pressed="true">$100</button>
-            <button type="button" class="amt" data-amt="150" aria-pressed="false">$150</button>
-            <button type="button" class="amt" data-amt="any" aria-pressed="false">Any amount</button>
-          </div>
-          <label class="fld" id="gf-any-wrap" hidden>Your amount<span class="money"><span aria-hidden="true">$</span><input id="gf-any" inputmode="numeric" autocomplete="off" placeholder="75"></span></label>
-          <div class="fld-row">
-            <label class="fld">For<input id="gf-to" autocomplete="off" value="Jules"></label>
-            <label class="fld">From<input id="gf-from" autocomplete="off" value="Maya R."></label>
-          </div>
-        </div>
-        <div id="gf-pay" hidden>
-          <p class="pay-q" id="gf-svc-q">Choose your session</p>
-          <div class="amts sess" role="group" aria-labelledby="gf-svc-q">
-            <button type="button" class="amt" data-svc="Deep Tissue" data-len="90 min" aria-pressed="false">Deep Tissue<small>90 min</small></button>
-            <button type="button" class="amt" data-svc="Swedish" data-len="60 min" aria-pressed="false">Swedish<small>60 min</small></button>
-            <button type="button" class="amt" data-svc="Polarity" data-len="60 min" aria-pressed="false">Polarity<small>60 min</small></button>
-          </div>
-          <p class="pay-q" id="gf-how-q">Pay in full or leave a deposit</p>
-          <div class="amts pair" role="group" aria-labelledby="gf-how-q">
-            <button type="button" class="amt" data-how="full" aria-pressed="true">Pay in full<small class="ph">your rate</small></button>
-            <button type="button" class="amt" data-how="deposit" aria-pressed="false">Leave a deposit<small class="ph">your deposit</small></button>
-          </div>
-        </div>
-        <p class="hint" id="gf-hint" role="status"></p>
-        <button type="submit" class="bk-go">Continue to checkout</button>
-      </form>
-      <div class="sheet fade-in" id="gf-sheet" hidden>
-        <span class="sheet-grip" aria-hidden="true"></span>
-        <h3 class="sheet-h" id="gf-sheet-h" tabindex="-1"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
-        <div class="sheet-lines">
-          <div><span id="gf-item">Gift certificate</span><span id="gf-price">$100</span></div>
-          <div class="sub"><span id="gf-sub">For Jules, from Maya R.</span></div>
-          <div class="total"><span>Total</span><span id="gf-total">$100</span></div>
-        </div>
-        <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
-        <p class="sheet-note">Preview: on a real site this opens a secure Stripe checkout, paid into your own Stripe account. Nothing is charged.</p>
-        <div class="sheet-actions"><button type="button" class="bk-go" id="gf-complete">Complete (preview)</button><button type="button" class="bk-go ghost" id="gf-back">Back</button></div>
+    <!-- Web Faery gift certificates: the renderer below puts SITE.giftId on this box once it's switched on. Until then the lines inside stay. -->
+    <div class="gift-box" id="gift-box" data-heading="0">
+      <div class="fallback">
+        <p>For a gift certificate, call or text Tera.</p>
+        <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera about a gift certificate, 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17079320037" aria-label="Text Tera about a gift certificate, 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span>
       </div>
-      <div class="bk-done fade-in" id="gf-done" hidden>
-        <h3 id="gf-done-h" tabindex="-1">All set!</h3>
-        <p id="gf-done-text"></p>
-        <p class="demo-note">Preview only. Nothing was charged.</p>
-        <div class="done-acts"><button type="button" class="bk-go ghost" id="gf-change">Change something</button><button type="button" class="bk-go ghost" id="gf-again">Try it again</button></div>
-      </div>
-    </div>
-    <div class="gift-notes wf-note">
-      <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, set up in your name. Every purchase lives right there in your Stripe, and you get a short heads-up email for each one.</div>
-      <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email, ready to print or forward.</div>
     </div>
   </div>
 </section>
 
-<section id="faq" class="gutter" data-show="mother crone all" data-fold>
+<section id="faq" class="gutter">
   <div class="wrap faq">
-    <div class="faq-head">
-      <p class="label with-pill"><span>First visit</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <div>
+      <p class="label">First visit</p>
       <h2 class="reveal">Questions, <em>gently answered</em></h2>
-      <p class="measure" style="margin-top:16px;color:var(--ink-soft)">The things first-time clients tend to wonder about, before they arrive.</p>
+      <p class="measure soft" style="margin-top:16px">The things first-time clients tend to wonder about, before they arrive.</p>
+      <p class="intake" data-site-if="intakeForm" hidden><a class="btn quiet" data-site-href="intakeForm" href="#faq">New client? Get the intake form (PDF)</a></p>
     </div>
-    <div class="faq-list" data-thing="FAQ">
+    <div class="faq-list">
       <details>
         <summary>What should I wear?</summary>
         <div class="ans"><p>Whatever feels comfortable. You undress only to the level you&rsquo;re comfortable with, and you stay covered by a sheet, with only the area being worked on uncovered.</p></div>
       </details>
       <details>
         <summary>What happens at my first session?</summary>
-        <div class="ans"><p>You&rsquo;ll start with a short conversation about what your body is carrying today and what you&rsquo;re hoping for. If you&rsquo;ve filled in the intake form, bring it along. Then you&rsquo;ll have a quiet moment to settle onto the table.</p></div>
+        <div class="ans"><p>You&rsquo;ll start with a short conversation about what your body is carrying today and what you&rsquo;re hoping for. Then you&rsquo;ll have a quiet moment to settle onto the table.</p></div>
       </details>
       <details>
         <summary>How do I tell Tera about pressure?</summary>
@@ -1222,7 +766,7 @@
       </details>
       <details>
         <summary>Can Tera come to my home?</summary>
-        <div class="ans"><p>Yes, mobile massage is available in <span class="ph">your service area</span>, plus <span class="ph">any travel fee</span>. Home visits start with a call or text, so Tera can hear about your space first: <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p></div>
+        <div class="ans"><p>By request, yes. Tera makes home visits mostly for older folks, and for people who feel more comfortable in their own home. Reach out first: call or text <a class="tel" href="tel:+17079320037">707-932-0037</a>, or email <a data-site="email" data-site-mailto></a>. She&rsquo;ll talk it through with you, so you both know what to expect.</p></div>
       </details>
       <details>
         <summary>What can I expect afterward?</summary>
@@ -1230,279 +774,161 @@
       </details>
       <details>
         <summary>What if I need to cancel or reschedule?</summary>
-        <div class="ans"><p><span class="ph">(your cancellation policy here)</span></p></div>
+        <div class="ans"><p data-site="cancellation"></p></div>
       </details>
-    </div>
-    <div class="intake" data-thing="intake form">
-      <p class="label with-pill"><span>Intake form</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <button type="button" class="btn quiet" id="ik-btn" aria-expanded="false" aria-controls="ik-card">New client? Get the intake form</button>
-      <div class="ik-card fade-in" id="ik-card" hidden>
-        <h3 class="ik-h" id="ik-h" tabindex="-1">Intake form <span class="bk-demo">preview</span></h3>
-        <div class="ik-paper" role="img" aria-label="A one-page intake form with spaces for your name, contact, what your body is carrying today, health notes, the pressure you like, and a signature">
-          <span class="ik-title">New client intake</span>
-          <span class="ik-sub">Massage by Tera</span>
-          <span class="ik-pair"><span class="ik-line">Name</span><span class="ik-line">Date</span></span>
-          <span class="ik-pair"><span class="ik-line">Phone or email</span><span class="ik-line">Studio or home visit</span></span>
-          <span class="ik-line">What is your body carrying today?</span>
-          <span class="ik-line">Health notes Tera should know about</span>
-          <span class="ik-checks">Pressure you like<i></i>light<i></i>medium<i></i>deep</span>
-          <span class="ik-line">Signature</span>
-        </div>
-        <p class="ik-note">On your real site this downloads your intake form (PDF).</p>
-        <button type="button" class="bk-go ghost" id="ik-close">Close preview</button>
-      </div>
     </div>
   </div>
 </section>
 
-<section id="book" class="book gutter">
+<section id="contact" class="gutter">
   <div class="wrap">
-    <div class="book-head">
-      <div class="portrait-spot" aria-hidden="true"><span>Optional portrait</span></div>
-      <p class="label">Book</p>
-      <h2 class="reveal">Come <em>rest</em> on Tera&rsquo;s table</h2>
-      <p class="measure" style="margin-top:16px;color:var(--ink-soft)"><span data-show="mother crone all">Book online any time, or call</span><span data-show="maiden" hidden>Call</span> or text Tera at <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a> to find a time that works for you. In her studio, or at your home.</p>
-      <div class="cta-row" data-show="mother crone all" data-fold>
-        <a class="btn" href="#own-booking" data-wf="booking">Book online with Tera</a>
-      </div>
-    </div>
+    <p class="label">Contact</p>
+    <h2 class="reveal">Call, text <em>or email</em></h2>
     <div class="garden-pair" data-lightbox>
       <figure class="reveal photo pair"><img src="images/garden-dahlia.jpg" alt="A pink and white dahlia opening wide in Tera&rsquo;s garden, more buds on tall stems behind it" loading="lazy" width="720" height="900"></figure>
       <figure class="reveal photo pair"><img src="images/garden-coral.jpg" alt="Tall coral and rose snapdragons in Tera&rsquo;s garden, ruffled blooms stacked up each stem" loading="lazy" width="720" height="900"></figure>
       <p class="pair-cap">Grown in Tera&rsquo;s garden, the same care she brings to the table.</p>
     </div>
     <div class="where">
-      <div class="reveal"><b>Studio</b><span class="ph copy" data-wf="address">your address</span><br>Arcata, California<br>or mobile, at your home</div>
-      <div class="reveal"><b>Call or text</b><span class="num copy" data-wf="phone">707-932-0037</span>
+      <div class="reveal"><h3>Studio</h3><span data-site="studioAddress"></span><br>Arcata, California<br>Home visits by request
+        <span class="reach" data-site-if="studioAddress" hidden><a data-site-map href="#contact" aria-label="Get directions to Tera&rsquo;s studio"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Directions</a></span></div>
+      <div class="reveal"><h3>Call or text</h3><span class="num">707-932-0037</span>
         <span class="reach"><a href="tel:+17079320037" aria-label="Call Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a><a href="sms:+17079320037" aria-label="Text Tera at 707-932-0037"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.2-4.4A8 8 0 1 1 21 12Z"/></svg>Text</a></span></div>
-      <div class="reveal"><b>Instagram</b><span class="reach" style="margin-top:2px"><a href="https://www.instagram.com/terarose37/" data-wf-social="instagram" target="_blank" rel="noopener" aria-label="Tera on Instagram, @Terarose37 (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@Terarose37</a></span></div>
-      <div class="reveal hrs-box" data-mark-whole data-mark-label="Your hours" data-mark-hint="All your hours in one note is perfect. Like: Tue to Sat 10 to 6, or just by appointment."><b>Hours</b><ul class="hrs" data-wf="hours"><li><span>Mon</span> <span class="ph" data-day="mon">your hours</span></li><li><span>Tue</span> <span class="ph" data-day="tue">your hours</span></li><li><span>Wed</span> <span class="ph" data-day="wed">your hours</span></li><li><span>Thu</span> <span class="ph" data-day="thu">your hours</span></li><li><span>Fri</span> <span class="ph" data-day="fri">your hours</span></li><li><span>Sat</span> <span class="ph" data-day="sat">your hours</span></li><li><span>Sun</span> <span class="ph" data-day="sun">your hours</span></li></ul><p class="hrs-note" data-wf="hours-note">By appointment</p></div>
+      <div class="reveal"><h3>Email or Instagram</h3><a data-site="email" data-site-mailto></a>
+        <span class="reach"><a href="https://www.instagram.com/terarose37/" target="_blank" rel="noopener" aria-label="Tera on Instagram, @terarose37 (opens in a new tab)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></svg>@terarose37</a></span></div>
+      <div class="reveal" data-mark-whole data-mark-label="Your hours" data-mark-hint="All your hours in one note is perfect. Like: Mon and Thu 9 to 5, Sat 10 to 4 every other week."><h3>Hours</h3><ul class="hrs" id="hours"><li><span>By appointment</span></li></ul><p class="hrs-note" id="hours-note" hidden></p></div>
     </div>
   </div>
 </section>
 
-<section id="contact" class="gutter" data-show="mother crone all" data-fold>
-  <div class="wrap touch">
-    <div data-thing="contact form">
-      <p class="label with-pill"><span>Write to Tera</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 class="reveal">Send a <em>note</em></h2>
-      <p class="measure" style="margin-top:14px;color:var(--ink-soft)">Not sure which session is right for you, or have a question first? Write any time, or call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a>.</p>
-      <div class="bk-card cf-card">
-        <form id="cf" method="dialog" novalidate aria-label="Contact form, preview">
-          <div class="fld-row">
-            <label class="fld">Your name<input id="cf-name" autocomplete="off" value="Maya R."></label>
-            <label class="fld">Email<input id="cf-mail" type="email" autocomplete="off" value="maya@example.com"></label>
-          </div>
-          <label class="fld">Message<textarea id="cf-msg" rows="4">Hi Tera, do you do mobile sessions out in McKinleyville?</textarea></label>
-          <p class="hint" id="cf-hint" role="status"></p>
-          <button type="submit" class="bk-go">Send (preview)</button>
-        </form>
-        <div class="bk-done fade-in" id="cf-done" hidden>
-          <h3 id="cf-thanks" tabindex="-1">Thank you!</h3>
-          <p>Your note is on its way to Tera.</p>
-          <p class="demo-note">On your real site this lands in your inbox.</p>
-          <div class="done-acts"><button type="button" class="bk-go ghost" id="cf-change">Change something</button><button type="button" class="bk-go ghost" id="cf-again">Try it again</button></div>
-        </div>
-      </div>
-    </div>
-    <aside class="news" aria-labelledby="nl-h" data-thing="newsletter signup">
-      <p class="label with-pill"><span>Seasonal notes</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h3 id="nl-h">Notes from <em>the garden</em></h3>
-      <p style="margin-top:10px">A few letters a year: new openings, new offerings, and a little seasonal care.</p>
-      <form id="nl" method="dialog" novalidate aria-label="Newsletter signup, preview">
-        <label class="fld" for="nl-mail">Your email</label>
-        <div class="nl-row"><input id="nl-mail" type="email" autocomplete="off" value="maya@example.com"><button type="submit" class="bk-go">Sign me up</button></div>
-        <p class="hint" id="nl-hint" role="status"></p>
-      </form>
-      <div class="nl-done fade-in" id="nl-done" hidden>
-        <h4 id="nl-done-h" tabindex="-1">You&rsquo;re on the list!</h4>
-        <p>The next seasonal note will go to <span id="nl-to" style="overflow-wrap:anywhere">you</span>.</p>
-        <p class="demo-note">Preview only: nothing was sent, and no list was joined. On your real site, this joins your own Buttondown list, set up in your name.</p>
-        <div class="done-acts"><button type="button" class="bk-go ghost" id="nl-change">Change my email</button><button type="button" class="bk-go ghost" id="nl-again">Try it again</button></div>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<section id="found" class="gutter found-sec">
-  <div class="wrap found-wrap">
-    <p class="not-site"><span class="bk-demo">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
-    <p class="label with-pill"><span>Easy to find</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h2 class="reveal">Ready for <em>Google</em>, and for sharing</h2>
-    <p class="measure" style="margin-top:14px;color:var(--ink-soft)">None of this appears on your site. It&rsquo;s how people find it: when someone nearby searches for a massage, or a friend texts them your link, this is what they see.</p>
-    <div class="found">
-      <figure class="reveal found-card">
-        <figcaption>In a search</figcaption>
-        <div class="serp">
-          <div class="serp-q"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>deep tissue massage Arcata</div>
-          <div class="serp-site"><span class="serp-fav" aria-hidden="true">T</span><span><b>Massage by Tera</b><small><span class="ph">teranansen.com</span></small></span></div>
-          <p class="serp-title">Massage by Tera | Deep Tissue Massage in Arcata</p>
-          <p class="serp-desc">Holistic Health Practitioner, CMT. Body, mind and soul integration, with a deep tissue focus. Studio in Arcata, or mobile massage at your home.</p>
-        </div>
-      </figure>
-      <figure class="reveal found-card">
-        <figcaption>In a text from a friend</figcaption>
-        <div class="sms">
-          <p class="sms-bubble">This is who I was telling you about!</p>
-          <span class="linkcard"><img src="images/coast.jpg" alt="" loading="lazy" width="720" height="1280"><span><b>Massage by Tera</b><small><span class="ph">teranansen.com</span></small></span></span>
-        </div>
-      </figure>
-    </div>
-    <p class="gbp"><span class="tag" data-go="maiden">Every build</span><span>Your Google Business Profile stays in step with your site (it lives on Google, not on your site): your pin on the map, your hours, and reviews from real clients. I keep the profile you already have, in your name, and update it whenever your site changes.</span></p>
-  </div>
-</section>
+</main>
 
 <footer class="gutter">
-  <div class="wrap"><span class="nw">Massage by Tera &middot;</span> <span class="nw">Holistic Health Practitioner, CMT &middot;</span> <span class="nw">Arcata, California</span>
-    <p class="foot-reach">Call or text <a class="tel" href="tel:+17079320037" data-wf="phone">707-932-0037</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/terarose37/" data-wf-social="instagram" target="_blank" rel="noopener" aria-label="Instagram @Terarose37 (opens in a new tab)">@Terarose37</a></p>
-    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page, call, text or email to book), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site, Book button to your own Cal.com), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and gift certificates right on your site). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+  <div class="wrap"><span class="nw"><span class="mark" data-site="name"><img class="rose" src="images/wild-rose-mark.png" alt="" width="168" height="147" loading="lazy">Tera Nansen</span> &middot;</span> <span class="nw">Holistic Health Practitioner &middot;</span> <span class="nw">Arcata, California</span>
+    <p class="foot-reach">Call or text <a class="tel" href="tel:+17079320037">707-932-0037</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/terarose37/" target="_blank" rel="noopener" aria-label="Instagram @terarose37 (opens in a new tab)">@terarose37</a></p>
+    <p data-site-if="certification" data-site-keep-slot><span data-site="certification"></span></p>
   </div>
 </footer>
 
-<dialog class="wl" id="waitlist" aria-labelledby="wl-h">
-  <div id="wl-ask">
-    <p class="label with-pill"><span>Waitlist</span> <span class="bk-demo">preview</span></p>
-    <h2 id="wl-h" tabindex="-1">Join <em>the waitlist</em></h2>
-    <p class="wl-lede">Tera&rsquo;s book is full for now. Leave your name and email, and she&rsquo;ll write to you as soon as a spot opens up.</p>
-    <form id="wl-form" method="dialog" novalidate aria-label="Waitlist, preview">
-      <label class="fld">Your name<input id="wl-name" autocomplete="off" value="Maya R."></label>
-      <label class="fld">Email<input id="wl-mail" type="email" autocomplete="off" value="maya@example.com"></label>
-      <p class="hint" id="wl-hint" role="status"></p>
-      <button type="submit" class="bk-go">Join the waitlist</button>
-    </form>
-  </div>
-  <div class="wl-done fade-in" id="wl-done" hidden>
-    <p class="label with-pill"><span>Waitlist</span> <span class="bk-demo">preview</span></p>
-    <h2 id="wl-done-h" tabindex="-1">You&rsquo;re on the list!</h2>
-    <p>Tera will email you at <span id="wl-to" style="overflow-wrap:anywhere">your inbox</span> as soon as a spot opens up.</p>
-    <p class="demo-note">Preview only: nothing was sent, and no list was joined.</p>
-    <div class="done-acts"><button type="button" class="bk-go ghost" id="wl-change">Change something</button><button type="button" class="bk-go ghost" id="wl-close">Close</button></div>
-  </div>
-  <button type="button" class="wl-x" id="wl-x" aria-label="Close the waitlist"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
-</dialog>
-
-<span class="ribbon">A mockup from Web Faery</span>
-
-<div class="vp off" id="vp" hidden>
-  <button type="button" class="vpill" id="vp-pill" aria-expanded="false" aria-controls="vp-panel">See it as <b id="vp-v">Everything</b><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 6.5 3-3 3 3"/></svg></button>
-  <div class="vpanel" id="vp-panel" hidden>
-    <div class="views-head">
-      <p class="views-q" id="vp-q">See your site as</p>
-      <p class="views-price">Your founding price, half off the build</p>
-    </div>
-    <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your story and training, your sessions and rates, studio or home visits, kind words, and how to reach you to book."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a Book button to a free Cal.com I set up in your name, the first-visit FAQ and intake form, a contact form and seasonal notes."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site with reminders (Cal.com), and gift certificates and session payments paid straight into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
-    </div>
-    <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. Email me any change, and it&rsquo;s done: I update your site and your Google profile, like new hours, a new rate or a week away. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
-    <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">4 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
-    <p class="views-note" id="vp-note"></p>
-  </div>
-</div>
-
 <script>
-  
+  /* Fills the page from SITE (top of this file). Values still in [BRACKETS] show as dashed placeholders. */
   (function () {
-    function $(id) { return document.getElementById(id); }
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    var STATES = {
-      open: { label: 'Now welcoming new clients', cta: 'Book a session', href: '#own-booking' },
-      full: { label: 'Tera’s book is full for now', cta: 'Join the waitlist', href: '#waitlist' },
-      away: { label: 'Away until Nov 3', cta: 'Gift certificates are still available', href: '#gift' }
-    };
-    var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
-    if (!strip || !link || !tryBtn || !panel) return;
-    var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
-    
-    function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
-    function stateFor(k) {
-      var s = STATES[k], v = viewNow();
-      if (k === 'full' && v === 'maiden') return { label: s.label, cta: 'Call or text to join the waitlist', href: '#own-booking' };
-      if (k === 'away' && (v === 'maiden' || v === 'mother')) return { label: s.label, cta: 'Book ahead for when she’s back', href: '#own-booking' };
-      return s;
+    var S = window.SITE || {};
+    function all(sel) { return [].slice.call(document.querySelectorAll(sel)); }
+    function isSlot(v) { return typeof v === 'string' && /^\s*\[/.test(v); }
+    function real(v) { return typeof v === 'string' ? (v.trim() !== '' && !isSlot(v)) : (Array.isArray(v) ? v.length > 0 : !!v); }
+    function slotEl(v) { var s = document.createElement('span'); s.className = 'slot'; s.textContent = v.trim(); return s; }
+    function put(el, v) {
+      el.textContent = '';
+      if (isSlot(v)) el.appendChild(slotEl(v)); else el.textContent = v;
     }
-    function setState(k, announce) {
-      var s = stateFor(k); if (!s) return;
-      current = k; strip.dataset.state = k;
-      $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href);
-      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
-      if (announce) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
-    }
-    btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
-    document.addEventListener('tera:view', function () { setState(current, false); });
-    function openPanel(open) { panel.hidden = !open; tryBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
-    tryBtn.addEventListener('click', function () { openPanel(panel.hidden); });
-    panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); tryBtn.focus(); openPanel(false); } });
 
-    
-    var dlg = $('waitlist'), form = $('wl-form'), ask = $('wl-ask'), done = $('wl-done'), hint = $('wl-hint');
-    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-    function resetWl() { form.reset(); hint.textContent = ''; ask.hidden = false; done.hidden = true; }
-    link.addEventListener('click', function (e) {
-      if (current !== 'full' || viewNow() === 'maiden' || !dlg || typeof dlg.showModal !== 'function') return;
-      e.preventDefault(); resetWl(); dlg.showModal(); quietFocus($('wl-h'));
+    /* her business name, with the brand's italic ending (nameItalic, or " by ..." when that's empty) */
+    var name = (S.name || '').trim(), it = (S.nameItalic || '').trim();
+    if (name) all('[data-site="name"]').forEach(function (el) {
+      var rose = el.querySelector('.rose');   /* her rose mark stays in front of the name */
+      el.textContent = '';
+      var m = it && name.length > it.length && name.slice(-it.length).toLowerCase() === it.toLowerCase()
+        ? [name, name.slice(0, -it.length).trim(), name.slice(-it.length)]
+        : (it ? null : /^(.*\S)\s+(by\s+.+)$/i.exec(name));
+      if (m && !isSlot(name)) { el.appendChild(document.createTextNode(m[1] + ' ')); var i = document.createElement('span'); i.textContent = m[2]; el.appendChild(i); }
+      else put(el, name);
+      if (rose) el.insertBefore(rose, el.firstChild);
+      if (el.hasAttribute('aria-label')) el.setAttribute('aria-label', name + ', back to the top');
     });
-    if (!dlg || !form) return;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var name = $('wl-name').value.trim(), mail = $('wl-mail').value.trim();
-      if (!name) { hint.textContent = 'Add your name first.'; $('wl-name').focus(); return; }
-      if (!isEmail(mail)) { hint.textContent = 'Add an email address, so Tera can write to you.'; $('wl-mail').focus(); return; }
-      hint.textContent = '';
-      $('wl-done-h').textContent = 'You\u2019re on the list, ' + name.split(/\s+/)[0] + '!';
-      $('wl-to').textContent = mail;
-      ask.hidden = true; done.hidden = false; quietFocus($('wl-done-h'));
-    });
-    function closeWl() { dlg.close(); }
-    $('wl-x').addEventListener('click', closeWl);
-    $('wl-close').addEventListener('click', closeWl);
-    $('wl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; ask.hidden = false; quietFocus($('wl-h')); });
-    dlg.addEventListener('click', function (e) {  
-      if (e.target !== dlg) return;
-      var r = dlg.getBoundingClientRect();
-      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeWl();
-    });
-    dlg.addEventListener('close', function () { resetWl(); quietFocus(link); });
-  })();
-</script>
 
-<script>
-  
-  (function () {
-    var root = document.documentElement;
-    function $(id) { return document.getElementById(id); }
-    var tab = $('theme-tab'), panel = $('theme-panel'), auto = $('theme-auto'), live = $('theme-live');
-    if (!tab || !panel || !auto || !live) return;
-    var btns = [].slice.call(tab.querySelectorAll('[data-theme]')), last = null;
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    function set(t) {
-      if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
-      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-theme') === t ? 'true' : 'false'); });
-      panel.hidden = !t;
-      live.textContent = t
-        ? (t === 'dark' ? 'Dark' : 'Light') + ' look, for this preview. Your site follows each visitor\u2019s phone setting.'
-        : 'Back to auto: following the phone setting again.';
-    }
-    btns.forEach(function (b) {
-      b.addEventListener('click', function () {
-        var t = b.getAttribute('data-theme'); last = b;
-        set(root.getAttribute('data-theme') === t ? null : t);   
+    /* plain details */
+    all('[data-site]').forEach(function (el) {
+      var k = el.getAttribute('data-site'); if (k === 'name' || !(k in S)) return;
+      var v = S[k];
+      if (typeof v !== 'string' || !v.trim()) return;
+      put(el, v);
+      if (el.hasAttribute('data-site-mailto') && real(v)) el.setAttribute('href', 'mailto:' + v.trim());
+    });
+    /* parts that only show once a detail is filled in (or, with data-site-keep-slot, while it's a placeholder too) */
+    all('[data-site-if]').forEach(function (el) {
+      var v = S[el.getAttribute('data-site-if')];
+      el.hidden = !(real(v) || (el.hasAttribute('data-site-keep-slot') && isSlot(v)));
+    });
+    all('[data-site-href]').forEach(function (el) {
+      var v = S[el.getAttribute('data-site-href')];
+      if (real(v)) el.setAttribute('href', v.trim());
+    });
+    /* directions to the studio, from its street address */
+    if (real(S.studioAddress)) all('[data-site-map]').forEach(function (el) {
+      el.setAttribute('href', 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(S.studioAddress.trim() + ', Arcata, CA' + (real(S.studioZip) ? ' ' + S.studioZip.trim() : '')));
+    });
+
+    /* sessions and rates */
+    var rows = document.getElementById('sessions-rows');
+    if (rows && (isSlot(S.sessions) || (Array.isArray(S.sessions) && S.sessions.length))) {
+      rows.textContent = '';
+      if (isSlot(S.sessions)) {
+        var tr = document.createElement('tr'), td = document.createElement('td');
+        td.colSpan = 2; td.className = 'all'; td.appendChild(slotEl(S.sessions)); tr.appendChild(td); rows.appendChild(tr);
+      } else S.sessions.forEach(function (s) {
+        var tr = document.createElement('tr'), a = document.createElement('td'), b = document.createElement('td');
+        var n = document.createElement('b'); put(n, s.name || ''); a.appendChild(n);
+        if (s.length) { a.appendChild(document.createTextNode(', ')); var l = document.createElement('span'); put(l, s.length); a.appendChild(l); }
+        if (s.note) { var sm = document.createElement('small'); put(sm, s.note); a.appendChild(sm); }
+        put(b, s.rate || '');
+        tr.appendChild(a); tr.appendChild(b); rows.appendChild(tr);
       });
-    });
-    auto.addEventListener('click', function () { set(null); quietFocus(last || btns[0]); });
-    panel.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); quietFocus(last || btns[0]); } });
-    tab.hidden = false;
+    }
+    var more = document.getElementById('more-policies'), mp = S.morePolicies;
+    if (more && (isSlot(mp) || (Array.isArray(mp) && mp.length))) {
+      (Array.isArray(mp) ? mp : [mp]).forEach(function (line) { var li = document.createElement('li'); put(li, line); more.appendChild(li); });
+      more.hidden = false;
+    }
+
+    /* hours */
+    var hrs = document.getElementById('hours');
+    if (hrs && (isSlot(S.hours) || (Array.isArray(S.hours) && S.hours.length))) {
+      hrs.textContent = '';
+      if (isSlot(S.hours)) { var li = document.createElement('li'); li.appendChild(slotEl(S.hours)); hrs.appendChild(li); }
+      else S.hours.forEach(function (d) {
+        var li = document.createElement('li'), a = document.createElement('span'), b = document.createElement('span');
+        a.textContent = d[0]; put(b, d[1] || ''); li.appendChild(a); li.appendChild(document.createTextNode(' ')); li.appendChild(b); hrs.appendChild(li);
+      });
+    }
+    var hn = document.getElementById('hours-note');
+    if (hn && real(S.hoursNote)) { hn.textContent = S.hoursNote; hn.hidden = false; }
+
+    /* the banner */
+    var ban = document.getElementById('banner');
+    if (ban) {
+      if (!S.banner) ban.parentNode.removeChild(ban);
+      else {
+        if (S.banner.text) document.getElementById('banner-text').textContent = S.banner.text;
+        if (S.banner.link) document.getElementById('banner-cta').textContent = S.banner.link;
+        if (S.banner.href) document.getElementById('banner-link').setAttribute('href', S.banner.href);
+      }
+    }
+
+    /* Web Faery booking and gift certificates: only a real id switches a box on */
+    var ok = /^[a-z0-9]{15}$/;
+    var bb = document.getElementById('book-box'), gb = document.getElementById('gift-box');
+    if (bb && ok.test(S.bookingId || '')) bb.setAttribute('data-wf-book', S.bookingId);
+    if (gb && ok.test(S.giftId || '')) gb.setAttribute('data-wf-gift', S.giftId);
+
+    /* her details for Google, from what's filled in */
+    var ld = { '@context': 'https://schema.org', '@type': 'HealthAndBeautyBusiness', name: name || 'Tera Nansen',
+      description: 'Holistic Health Practitioner. Deep tissue and Swedish massage for body, mind and soul integration, in her own studio in Arcata, with home visits by request.',
+      telephone: '+1-707-932-0037', sameAs: ['https://www.instagram.com/terarose37/'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Arcata', addressRegion: 'CA', addressCountry: 'US' } };
+    if (real(S.studioAddress)) ld.address.streetAddress = S.studioAddress.trim();
+    if (real(S.studioZip)) ld.address.postalCode = S.studioZip.trim();
+    if (real(S.email)) ld.email = S.email.trim();
+    if (real(S.webAddress)) ld.url = 'https://' + S.webAddress.trim().replace(/^https?:\/\//, '').replace(/\/+$/, '') + '/';
+    var j = document.createElement('script'); j.type = 'application/ld+json'; j.textContent = JSON.stringify(ld); document.head.appendChild(j);
   })();
 </script>
 
 <script>
+  /* photos drift a few pixels against the scroll; sections rise gently into view */
   (function () {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) return;
-
-    
     var frames = [].slice.call(document.querySelectorAll('.photo'));
     if (frames.length) {
       var ticking = false;
@@ -1517,14 +943,10 @@
           f.style.setProperty('--drift', (p * r.height * 0.035).toFixed(1) + 'px');
         });
       };
-      window.addEventListener('scroll', function () {
-        if (!ticking) { ticking = true; requestAnimationFrame(drift); }
-      }, { passive: true });
+      window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
       window.addEventListener('resize', drift);
       drift();
     }
-
-    
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
@@ -1536,492 +958,7 @@
 </script>
 
 <script>
-  (function () {
-    var P = 'tb', st = { s: 1, max: 1, place: 'studio' };
-    function $(id) { return document.getElementById(P + '-' + id); }
-    var go = $('go'), back = $('back'), card = $('card'), stepBtns = [].slice.call(card.querySelectorAll('.bk-steps [data-s]'));
-    function ok(n) { return n === 1 ? !!st.svc : n === 2 ? !!(st.day && st.time) : true; }
-    function canJump(n) { if (n > st.max) return false; for (var k = 1; k < n; k++) if (!ok(k)) return false; return true; }
-    function steps() {
-      stepBtns.forEach(function (b) {
-        var n = +b.dataset.s, on = n === st.s;
-        b.classList.toggle('on', on);
-        if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
-        b.disabled = !on && !canJump(n);
-      });
-      [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
-      go.textContent = st.s === 3 ? 'Book it (demo)' : 'Next';
-      go.disabled = !ok(st.s);
-      back.hidden = st.s === 1;
-    }
-    function firstIn(n) { var box = $('s' + n); return box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input'); }
-    function toStep(n) { st.s = n; if (n > st.max) st.max = n; steps(); }
-    stepBtns.forEach(function (b) {
-      b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && canJump(n)) toStep(n); });
-    });
-    back.addEventListener('click', function () {
-      if (st.s < 2) return; toStep(st.s - 1);
-      if (back.hidden) quietFocus(firstIn(st.s));
-    });
-    card.querySelectorAll('.bk-opt[data-svc]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        card.querySelectorAll('.bk-opt[data-svc]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-        b.setAttribute('aria-pressed', 'true'); st.svc = b.dataset.svc; st.len = b.dataset.len; st.price = b.dataset.price; steps();
-      });
-    });
-    
-    var places = [].slice.call(card.querySelectorAll('.bk-opt[data-place]'));
-    function setPlace(pl) {
-      st.place = pl;
-      places.forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.place === pl ? 'true' : 'false'); });
-      $('mob-note').hidden = pl !== 'mobile'; $('addr-wrap').hidden = pl !== 'mobile';
-    }
-    places.forEach(function (b) { b.addEventListener('click', function () { setPlace(b.dataset.place); }); });
-    var days = $('days'), times = $('times'), names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    var slots = ['10:00 am', '11:30 am', '1:00 pm', '2:30 pm', '4:00 pm'];
-    var today = new Date();
-    for (var i = 1, made = 0; made < 7; i++) {
-      var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-      if (d.getDay() === 0) continue; made++;
-      (function (d) {
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'bk-day'; b.setAttribute('aria-pressed', 'false');
-        b.innerHTML = '<small>' + names[d.getDay()] + '</small><b>' + d.getDate() + '</b>';
-        b.addEventListener('click', function () {
-          days.querySelectorAll('.bk-day').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-          b.setAttribute('aria-pressed', 'true'); st.day = names[d.getDay()] + ' ' + (d.getMonth() + 1) + '/' + d.getDate(); st.time = null; drawTimes(d.getDate()); steps();
-        });
-        days.appendChild(b);
-      })(d);
-    }
-    function drawTimes(seed) {
-      times.innerHTML = '';
-      slots.forEach(function (t, k) {
-        if ((seed + k) % 4 === 0) return;
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'bk-time'; b.textContent = t; b.setAttribute('aria-pressed', 'false');
-        b.addEventListener('click', function () {
-          times.querySelectorAll('.bk-time').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-          b.setAttribute('aria-pressed', 'true'); st.time = t; steps();
-        });
-        times.appendChild(b);
-      });
-    }
-    go.addEventListener('click', function () {
-      if (st.s < 3) { toStep(st.s + 1); return; }
-      var who = ($('name').value || 'A new client').trim(), addr = ($('addr').value || '').trim();
-      var where = st.place === 'mobile' ? 'a home visit' : 'the studio in Arcata';
-      var whereIn = st.place === 'mobile' ? 'home visit' + (addr ? ' to ' + addr : ', address to follow') : 'at the studio';
-      $('summary').textContent = st.svc + ' (' + st.len + ') on ' + st.day + ' at ' + st.time + ', ' + (st.place === 'mobile' ? 'as ' : 'at ') + where + '.';
-      $('inboxtext').textContent = who + ' booked ' + st.svc + ', ' + st.len + ', ' + st.day + ' at ' + st.time + ', ' + whereIn + '.';
-      [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; });
-      $('nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false;
-      quietFocus($('done-h'));
-    });
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    $('change').addEventListener('click', function () {
-      $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
-      $('inboxtext').textContent = 'Editing the booking… book it again to see it land here';
-      toStep(3); quietFocus($('name'));
-    });
-    $('again').addEventListener('click', function () {
-      st = { s: 1, max: 1 }; card.querySelectorAll('[aria-pressed]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-      setPlace('studio'); $('addr').value = ''; times.innerHTML = ''; $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
-      $('inboxtext').textContent = 'Waiting for a booking… try it on the left'; steps();
-      quietFocus(card.querySelector('.bk-opt'));
-    });
-    steps();
-  })();
-</script>
-
-<script>
-  
-  (function () {
-    function $(id) { return document.getElementById(id); }
-    function all(root, sel) { return [].slice.call(root.querySelectorAll(sel)); }
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    function pressOnly(list, key, val) { list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset[key] === val ? 'true' : 'false'); }); }
-    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-
-    
-    (function () {
-      var form = $('gf'); if (!form) return;
-      var sheet = $('gf-sheet'), done = $('gf-done'), hint = $('gf-hint'), any = $('gf-any');
-      var modes = all(form, '[data-mode]'), amts = all(form, '[data-amt]'), svcs = all(form, '[data-svc]'), hows = all(form, '[data-how]');
-      var st;
-      function paint() {
-        pressOnly(modes, 'mode', st.mode);
-        $('gf-gift').hidden = st.mode !== 'gift'; $('gf-pay').hidden = st.mode !== 'pay';
-        pressOnly(amts, 'amt', st.amt); $('gf-any-wrap').hidden = st.amt !== 'any';
-        pressOnly(svcs, 'svc', st.svc); pressOnly(hows, 'how', st.how);
-      }
-      function reset() {
-        st = { mode: 'gift', amt: '100', svc: '', len: '', how: 'full' };
-        any.value = ''; $('gf-to').value = 'Jules'; $('gf-from').value = 'Maya R.'; hint.textContent = '';
-        form.hidden = false; sheet.hidden = true; done.hidden = true; paint();
-      }
-      modes.forEach(function (b) { b.addEventListener('click', function () { st.mode = b.dataset.mode; hint.textContent = ''; paint(); }); });
-      amts.forEach(function (b) { b.addEventListener('click', function () { st.amt = b.dataset.amt; hint.textContent = ''; paint(); if (st.amt === 'any') any.focus(); }); });
-      svcs.forEach(function (b) { b.addEventListener('click', function () { st.svc = b.dataset.svc; st.len = b.dataset.len; hint.textContent = ''; paint(); }); });
-      hows.forEach(function (b) { b.addEventListener('click', function () { st.how = b.dataset.how; paint(); }); });
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (st.mode === 'gift') {
-          var n = st.amt === 'any' ? parseInt(String(any.value).replace(/[^0-9]/g, ''), 10) : +st.amt;
-          if (!(n >= 5 && n <= 5000)) { hint.textContent = 'Type an amount first, like 75.'; any.focus(); return; }
-          var to = $('gf-to').value.trim() || 'someone special', from = $('gf-from').value.trim() || 'you';
-          $('gf-item').textContent = 'Gift certificate';
-          $('gf-price').textContent = $('gf-total').textContent = '$' + n;
-          $('gf-sub').textContent = 'For ' + to + ', from ' + from;
-          st.doneText = 'A $' + n + ' gift certificate for ' + to + ' is on its way to your inbox, ready to print or forward.';
-        } else {
-          if (!st.svc) { hint.textContent = 'Choose a session first.'; quietFocus(svcs[0]); return; }
-          var ph = '<span class="ph">' + (st.how === 'full' ? 'your rate' : 'your deposit') + '</span>';
-          $('gf-item').textContent = st.svc + ', ' + st.len;
-          $('gf-price').innerHTML = ph; $('gf-total').innerHTML = ph;
-          $('gf-sub').textContent = st.how === 'full' ? 'Paid in full' : 'Deposit today';
-          st.doneText = st.how === 'full'
-            ? 'Your ' + st.svc + ' session (' + st.len + ') is paid in full. A receipt is on its way to your inbox.'
-            : 'Your deposit for ' + st.svc + ' (' + st.len + ') is in. A receipt is on its way to your inbox.';
-        }
-        hint.textContent = ''; form.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h'));
-      });
-      $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-      $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
-      $('gf-again').addEventListener('click', function () { reset(); quietFocus(modes[0]); });
-      $('gf-change').addEventListener('click', function () { done.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h')); });
-      reset();
-    })();
-
-    
-    (function () {
-      var btn = $('ik-btn'), card = $('ik-card'); if (!btn || !card) return;
-      function set(open) { card.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
-      btn.addEventListener('click', function () { var open = card.hidden; set(open); if (open) quietFocus($('ik-h')); });
-      $('ik-close').addEventListener('click', function () { set(false); btn.focus(); });
-    })();
-
-    
-    (function () {
-      var form = $('cf'); if (!form) return;
-      var hint = $('cf-hint'), done = $('cf-done');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var name = $('cf-name').value.trim(), mail = $('cf-mail').value.trim(), msg = $('cf-msg').value.trim();
-        if (!name) { hint.textContent = 'Add your name first.'; $('cf-name').focus(); return; }
-        if (!isEmail(mail)) { hint.textContent = 'Add an email address, so Tera can write back.'; $('cf-mail').focus(); return; }
-        if (!msg) { hint.textContent = 'Add a few words first.'; $('cf-msg').focus(); return; }
-        hint.textContent = '';
-        $('cf-thanks').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '!';
-        form.hidden = true; done.hidden = false; quietFocus($('cf-thanks'));
-      });
-      $('cf-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-      $('cf-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('cf-msg')); });
-    })();
-
-    
-    (function () {
-      var form = $('nl'); if (!form) return;
-      var hint = $('nl-hint'), done = $('nl-done');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var mail = $('nl-mail').value.trim();
-        if (!isEmail(mail)) { hint.textContent = 'Add an email address first.'; $('nl-mail').focus(); return; }
-        hint.textContent = ''; $('nl-to').textContent = mail;
-        form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
-      });
-      $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-      $('nl-change').addEventListener('click', function () { hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
-    })();
-  })();
-</script>
-
-<script>
-  
-  (function () {
-    var root = document.documentElement, body = document.body;
-    function $(id) { return document.getElementById(id); }
-    var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
-    if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-
-    var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your story and training, your sessions and rates, studio or home visits, kind words, and how to reach you to book.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus a Book now button to a free Cal.com set up in your name, the first-visit FAQ and intake form, a contact form and seasonal notes.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, doing business for you: everything in Tended, plus booking right on your site with reminders, and gift certificates and session payments paid straight into your own Stripe. That’s every piece on this page.' },
-      all: { name: 'Everything' }
-    };
-    var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
-    var view = 'all';
-    var shows = [].slice.call(document.querySelectorAll('[data-show]'));
-    var things = [].slice.call(document.querySelectorAll('[data-thing]'));
-    function has(el, v) { return (' ' + el.getAttribute('data-show') + ' ').indexOf(' ' + v + ' ') > -1; }
-    function goesIn(el, v) {   
-      for (var n = el; n && n.nodeType === 1; n = n.parentElement) if (n.hasAttribute('data-show') && !has(n, v)) return false;
-      return true;
-    }
-    
-    function more(from, to) { return things.filter(function (t) { return goesIn(t, to) && !goesIn(t, from); }).length; }
-    function moreText(n) { return n + (n === 1 ? ' more thing comes' : ' more things come'); }
-    function note(v) {
-      if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
-      var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
-      return { lead: V[v].name, text: ': ' + V[v].what + rest };
-    }
-
-    
-    [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {
-      var go = t.getAttribute('data-go'); if (!V[go]) return;
-      var b = document.createElement('button'); b.type = 'button'; b.className = t.className; b.setAttribute('data-go', go);
-      while (t.firstChild) b.appendChild(t.firstChild);
-      var s = document.createElement('span'); s.className = 'vh'; s.textContent = ': see your site as ' + V[go].name; b.appendChild(s);
-      b.title = 'See your site as ' + V[go].name;
-      t.parentNode.replaceChild(b, t);
-    });
-
-    var segBtns = [].slice.call(document.querySelectorAll('.vseg [data-view]'));
-    var notes = [$('views-note'), $('vp-note')];
-    function paintNote(p) {
-      var n = note(view), x = V[view];
-      p.textContent = 'Showing ';
-      var b = document.createElement('b'); b.textContent = n.lead; p.appendChild(b);
-      p.appendChild(document.createTextNode(n.text));
-      if (x.next) {
-        p.appendChild(document.createTextNode(' '));
-        var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'views-next'; btn.setAttribute('data-view', x.next);
-        btn.innerHTML = 'See ' + V[x.next].name + ' &middot; ' + V[x.next].price + '<span aria-hidden="true">&nbsp;&rarr;</span>';
-        p.appendChild(btn);
-      }
-    }
-    function paint() {
-      var fe = document.activeElement, fromNote = fe && fe.classList && fe.classList.contains('views-next') ? fe.parentNode : null;
-      segBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-view') === view ? 'true' : 'false'); });
-      notes.forEach(paintNote);
-      $('vp-v').textContent = view === 'all' ? 'Everything' : V[view].name + ' · ' + V[view].price;
-      if (fromNote) quietFocus(fromNote.querySelector('.views-next') || fromNote.parentNode.querySelector('.vseg [aria-pressed="true"]'));
-    }
-    function say() {
-      var n = note(view);
-      live.textContent = 'Showing ' + n.lead + (V[view].price ? ', ' + V[view].price : '') + n.text;
-    }
-
-    
-    var PROPS = ['height', 'paddingTop', 'paddingBottom', 'marginTop', 'marginBottom', 'borderTopWidth', 'borderBottomWidth'];
-    var FLAT = { height: '0px', paddingTop: '0px', paddingBottom: '0px', marginTop: '0px', marginBottom: '0px', borderTopWidth: '0px', borderBottomWidth: '0px', opacity: 0 };
-    function box(el) { var cs = getComputedStyle(el), o = {}; PROPS.forEach(function (p) { o[p] = cs[p]; }); o.opacity = +cs.opacity; return o; }
-    function stopFold(el) { var a = el._fold; if (a) { el._fold = null; a.cancel(); el.style.overflow = ''; } }
-    function fold(el, on, animate) {
-      var run = el._fold;
-      if (!run && el.hidden === !on) return 0;
-      if (!animate || !el.hasAttribute('data-fold') || typeof el.animate !== 'function') { stopFold(el); el.hidden = !on; return 0; }
-      var from = run ? box(el) : on ? FLAT : box(el);
-      stopFold(el);
-      el.hidden = false;
-      var to = on ? box(el) : FLAT;
-      var h = Math.max(parseFloat(from.height) || 0, parseFloat(to.height) || 0);
-      var dur = Math.round(Math.min(760, 420 + h * 0.25));
-      var frames = run ? [from, to] : on ? [from, { opacity: 0, offset: 0.3 }, to] : [from, { opacity: 0, offset: 0.55 }, to];
-      el.style.overflow = 'hidden';
-      var a = el.animate(frames, { duration: dur, easing: 'cubic-bezier(.45, 0, .2, 1)', fill: 'forwards' });
-      el._fold = a;
-      a.onfinish = function () {
-        if (el._fold !== a) return;
-        el._fold = null; if (!on) el.hidden = true; a.cancel(); el.style.overflow = '';
-      };
-      return dur;
-    }
-
-    
-    var CAND = 'section, [data-show], h1, h2, h3, p, li, figure, table, dl, .btn, .bk-card, .come-card, .reach, .where > div, .steps > div, .modalities, .fact, .faq-list details, .vseg';
-    function anchorFor(v, src) {
-      if (src && !vp.contains(src) && src.getClientRects().length && goesIn(src, v)) return { el: src, top: src.getBoundingClientRect().top };
-      var list = document.querySelectorAll(CAND), foldTop = null;
-      for (var i = 0; i < list.length; i++) {
-        var el = list[i];
-        if (vp.contains(el) || el.closest('dialog') || el.classList.contains('vh')) continue;
-        if (!el.getClientRects().length) {   
-          if (foldTop !== null && el.hasAttribute('data-show') && goesIn(el, v)) return { el: el, top: Math.max(foldTop, 0) };
-          continue;
-        }
-        var r = el.getBoundingClientRect(); if (r.bottom <= 0) continue;
-        if (!goesIn(el, v)) {
-          if (foldTop === null) {
-            foldTop = r.top;
-            
-            var f = el.closest('[data-show]'), fr = f.getBoundingClientRect();
-            var alt = [].filter.call(f.parentElement.children, function (x) { return x !== f && x.hasAttribute('data-show') && x.hidden && has(x, v); })[0];
-            if (alt) return { el: alt, top: Math.max(fr.top, 0) };
-          }
-          continue;
-        }
-        if (foldTop === null && (el.tagName === 'SECTION' || el.hasAttribute('data-show'))) continue;   
-        return { el: el, top: foldTop === null ? r.top : Math.max(foldTop, 0) };
-      }
-      return null;
-    }
-    var job = null, USER = ['wheel', 'touchstart', 'keydown', 'mousedown'];
-    function hold(a, dur) {
-      if (job) job.stop();
-      if (!a) return;
-      var j = { live: true, end: performance.now() + dur + 90 };
-      j.stop = function () {
-        if (!j.live) return; j.live = false; if (job === j) job = null;
-        root.style.overflowAnchor = ''; body.style.overflowAnchor = '';
-        USER.forEach(function (t) { window.removeEventListener(t, j.stop, true); });
-      };
-      job = j;
-      root.style.overflowAnchor = 'none'; body.style.overflowAnchor = 'none';   
-      USER.forEach(function (t) { window.addEventListener(t, j.stop, { capture: true, passive: true }); });   
-      function fix() { var d = a.el.getBoundingClientRect().top - a.top; if (Math.abs(d) >= 1) window.scrollTo(window.pageXOffset, window.pageYOffset + d); }
-      fix();
-      (function tick() { if (!j.live) return; fix(); if (performance.now() < j.end) requestAnimationFrame(tick); else j.stop(); })();
-    }
-
-    function setView(v, src) {
-      if (!V[v]) return;
-      if (v === view) { say(); return; }
-      var animate = !reduce.matches;
-      if (src && src.closest('.views-note')) src = src.closest('.views-card, .vpanel').querySelector('.vseg');
-      var a = anchorFor(v, src);
-      var fe = document.activeElement, lost = fe && fe !== body && !vp.contains(fe) && !goesIn(fe, v);
-      view = v; root.setAttribute('data-view', v);
-      var outer = [], longest = 0;
-      shows.forEach(function (el) {   
-        var on = has(el, v), p = el.parentElement ? el.parentElement.closest('[data-show]') : null;
-        if (p && (p.hidden || !has(p, v))) { stopFold(el); el.hidden = !on; } else outer.push([el, on]);
-      });
-      outer.forEach(function (x) { longest = Math.max(longest, fold(x[0], x[1], animate)); });
-      paint();
-      try { document.dispatchEvent(new CustomEvent('tera:view', { detail: { view: v } })); } catch (e) {}
-      hold(a, longest);
-      if (lost) {   
-        var sec = fe.closest('section'), alt = sec && [].filter.call(sec.querySelectorAll('[data-show][tabindex]'), function (x) { return has(x, v); })[0];
-        quietFocus(alt || bar.querySelector('.vseg [aria-pressed="true"]'));
-      }
-      say();
-    }
-
-    
-    var past = false, open = false;
-    function paintPill() { vp.classList.toggle('off', !(past || open || vp.contains(document.activeElement))); }
-    new IntersectionObserver(function (es) {
-      var e = es[es.length - 1]; past = !e.isIntersecting && e.boundingClientRect.top < 0; paintPill();
-    }).observe(bar);
-    
-    var ticking = false;
-    window.addEventListener('scroll', function () {
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(function () { ticking = false; var p = bar.getBoundingClientRect().bottom <= 0; if (p !== past) { past = p; paintPill(); } });
-    }, { passive: true });
-    function setOpen(o, back) {
-      open = o; panel.hidden = !o; pill.setAttribute('aria-expanded', o ? 'true' : 'false'); paintPill();
-      if (!o && back) pill.focus();
-    }
-    pill.addEventListener('click', function () { setOpen(!open); });
-    vp.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.key === 'Esc') && open) { e.preventDefault(); setOpen(false, true); } });
-    vp.addEventListener('focusout', function (e) {
-      if (open && e.relatedTarget && !vp.contains(e.relatedTarget)) setOpen(false);
-      setTimeout(paintPill, 0);
-    });
-    document.addEventListener('click', function (e) { if (open && !vp.contains(e.target)) setOpen(false); });
-    function away(e) { if (open && !vp.contains(e.target)) setOpen(false); }
-    window.addEventListener('wheel', away, { passive: true }); window.addEventListener('touchmove', away, { passive: true });
-
-    
-    [bar, panel].forEach(function (c) {
-      c.addEventListener('click', function (e) {
-        var b = e.target.closest('[data-view]'); if (!b || !c.contains(b)) return;
-        setView(b.getAttribute('data-view'), b);
-        if (c === panel) setOpen(false, true);   
-      });
-    });
-    document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('button.tag[data-go]'); if (t) setView(t.getAttribute('data-go'), t); });
-
-    
-    var bn = $('bn-go'), bnHint = $('bn-hint');
-    if (bn && bnHint) bn.addEventListener('click', function (e) {
-      if ((bn.getAttribute('href') || '').charAt(0) !== '#') return;   
-      e.preventDefault(); bnHint.textContent = 'Preview: on your real site, this opens your own Cal.com booking page.';
-    });
-
-    root.setAttribute('data-view', view);
-    [].forEach.call(document.querySelectorAll('[data-js]'), function (el) { el.hidden = false; });
-    bar.hidden = false; vp.hidden = false;
-    paint();
-  })();
-</script>
-
-
-<style id="wf-theme-dock">
-  
-  #theme-tab.theme-tab { position: fixed; left: 12px; right: auto; top: auto; bottom: calc(50px + env(safe-area-inset-bottom, 0px));
-    z-index: 22; margin: 0; border-radius: 999px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22); transform: none; }
-  #theme-tab.theme-tab button:first-of-type { border-radius: 999px 0 0 999px; }
-  #theme-tab.theme-tab button:last-of-type { border-radius: 0 999px 999px 0; }
-  #theme-panel { display: none !important; }
-  @media print { #theme-tab.theme-tab { display: none; } }
-</style>
-<script>
-  (function () {   
-    var t = document.getElementById('theme-tab'); if (!t) return;
-    var c = getComputedStyle(t); t.style.borderTop = c.borderLeftWidth + ' solid ' + c.borderLeftColor;
-    t.title = 'Try light or dark. Tap your choice again to follow the phone.';
-    var vp = document.getElementById('vp') || document.getElementById('vp-pill'), q = false;
-    function place() {
-      q = false; t.style.bottom = '';
-      if (!vp || vp.hidden) return;
-      var a = t.getBoundingClientRect(), b = vp.getBoundingClientRect();
-      if (!b.width || !b.height) return;
-      if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) t.style.bottom = (innerHeight - b.top + 8) + 'px';
-    }
-    function soon() { if (!q) { q = true; requestAnimationFrame(place); } }
-    addEventListener('scroll', soon, { passive: true }); addEventListener('resize', soon);
-    if (vp && window.MutationObserver) new MutationObserver(soon).observe(vp, { attributes: true, subtree: true, childList: true });
-    place();
-  })();
-</script>
-<script>
-  
-  (function () {
-    var all = function (s) { return [].slice.call(document.querySelectorAll(s)); };
-    var keep = all('[data-wf="phone"], [data-wf="email"], [data-wf="address"], [data-wf-social], [data-wf="hours-note"], [data-day], [data-wf-price]').map(function (el) {
-      return { el: el, html: el.innerHTML, href: el.getAttribute('href'), ph: el.classList.contains('ph') };
-    });
-    function put(k) {
-      k.el.innerHTML = k.html; k.el.removeAttribute('hidden'); k.el.style.display = '';
-      if (k.href) k.el.setAttribute('href', k.href); else k.el.removeAttribute('href');
-      k.el.classList.toggle('ph', k.ph);
-    }
-    var mine = document.querySelector('.wf-strip'), link = document.getElementById('status-link'), demo = link && link.closest('.status-strip');
-    document.addEventListener('wf:content', function () {
-      var days = all('[data-day]'), starter = days.length && days.every(function (d) { return d.textContent.trim() === 'Closed'; });
-      keep.forEach(function (k) {
-        var el = k.el, t = el.textContent.trim();
-        if (el.hasAttribute('data-wf-price')) { if (!t || t === 'your rate') put(k); else el.classList.remove('ph'); return; }
-        if (el.hasAttribute('data-day')) { if (starter) put(k); else el.classList.remove('ph'); return; }
-        if (el.getAttribute('data-wf') === 'hours-note') { if (starter && !/^Closed through/.test(t)) put(k); return; }
-        if (el.hasAttribute('hidden') || el.style.display === 'none' || !t) put(k); else el.classList.remove('ph');
-      });
-      
-      var ph = document.querySelector('[data-wf="phone"]'), num = ph ? ph.textContent.trim() : '', d = num.replace(/[^\d+]/g, '');
-      if (d.length >= 7) {
-        if (d.charAt(0) !== '+') d = (d.length === 10 ? '+1' : '+') + d;
-        all('.reach a[href^="tel:"], .reach a[href^="sms:"]').forEach(function (a) {
-          var sms = /^sms:/.test(a.getAttribute('href'));
-          a.setAttribute('href', (sms ? 'sms:' : 'tel:') + d);
-          a.setAttribute('aria-label', (sms ? 'Text' : 'Call') + ' Tera at ' + num);
-        });
-      }
-      if (mine && demo) demo.hidden = !mine.hasAttribute('hidden');
-    });
-    
-    all('#status-panel [data-state]').forEach(function (b) {
-      b.addEventListener('click', function () { if (mine && demo && !mine.hasAttribute('hidden')) { mine.hidden = true; demo.hidden = false; } });
-    });
-  })();
-</script>
-<script>
-  /* Easter egg: five taps on the sessions card, and the breathing ring takes one deep breath with you */
+  /* five taps on the sessions card, and the breathing ring takes one deep breath with you */
   (function () {
     var card = document.querySelector('.sessions-rates'), ring = document.querySelector('.breath-ring'), line = document.getElementById('egg-line');
     if (!card || !ring || !line) return;
@@ -2033,21 +970,22 @@
       if (taps.length < 5) return;
       taps = []; busy = true;
       if (!rm) { ring.classList.remove('deep'); void ring.offsetWidth; ring.classList.add('deep'); }
-      say('Breathe in, slow and full\u2026');
-      setTimeout(function () { say('\u2026and let it all go. That\u2019s the pace here.'); }, rm ? 2500 : 4600);
+      say('Breathe in, slow and full…');
+      setTimeout(function () { say('…and let it all go. That’s the pace here.'); }, rm ? 2500 : 4600);
       setTimeout(function () { line.classList.remove('on'); ring.classList.remove('deep'); busy = false; }, rm ? 7000 : 11500);
     });
   })();
 </script>
+
 <script>
-  /* sticky nav: stays at the top; Menu button on phones; tucks up while scrolling down and returns on scroll up (no tucking with reduced motion) */
+  /* sticky nav: stays at the top; Menu button on phones; tucks up while scrolling down and returns on scroll up */
   (function () {
     var bar = document.getElementById('snav'), wrap = document.getElementById('snav-wrap'), btn = document.getElementById('snav-btn'), links = document.getElementById('snav-links');
     if (!bar || !wrap || !btn || !links) return;
     document.documentElement.classList.add('snav-js');
     var mq = window.matchMedia('(max-width: 760px)'), rm = window.matchMedia('(prefers-reduced-motion: reduce)');
     var last = window.pageYOffset || 0, open = false, tucked = false, raf = 0;
-    function tuck(t) { if (t === tucked) return; tucked = t; bar.classList.toggle('tuck', t); document.body.classList.toggle('nav-tuck', t); }
+    function tuck(t) { if (t === tucked) return; tucked = t; bar.classList.toggle('tuck', t); }
     function setOpen(o) { open = o; bar.classList.toggle('open', o); btn.setAttribute('aria-expanded', o ? 'true' : 'false'); if (o) tuck(false); }
     function update() {
       raf = 0; var y = window.pageYOffset || 0;
@@ -2066,9 +1004,11 @@
     update();
   })();
 </script>
-<script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
+<script src="lightbox.js" defer></script>
+<!-- Booking and gift certificates load on her own site only; here their boxes keep the call and text lines. -->
+<!-- Web Faery: the notes bar (with her private link), the open count, Taya's note motion -->
+<script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=5";s.defer=true;document.head.appendChild(s);}</script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
-<script src="/lightbox.js?v=2" defer></script>
 <script src="/note-motion.js?v=1" defer></script>
 </body>
 </html>

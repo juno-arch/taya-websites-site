@@ -1,18 +1,25 @@
-# Massage by Tera mockup photos
+# Tera's site preview: photos
 
-Updated Oct 10 2026 (weekend quality pass). Tera's own photos lead the page now; two stock photos remain, each tagged "Sample photo".
+Updated Oct 14 2026. This page is a copy of Tera's real site (Wild Rose Massage), with Web Faery's notes bar added so she can leave notes. Every photo is Tera's own; no stock photos.
 
-## Tera's own, from her public Instagram, @terarose37 (frames captured from her reels at their native 720 x 1280, gentle UnsharpMask 1.4/75/2, no upscaling)
-- coast.jpg: a lone fir on a green headland above the Pacific, from her Sep 18 2026 reel ("I am so in love with this land and this life!", tagged #trinidadhead). Hero: full screen on phones, the right half (at most 720px, about 1:1) on wider screens. Also the link card in "Ready for Google".
-- garden-snapdragons.jpg: peach and pink snapdragons, from her Jul 20 2026 reel "Garden love" (#backyardgarden). Roots section, framed at most 420px wide.
-- garden-dahlia.jpg and garden-coral.jpg: a pink dahlia and coral snapdragons from the same Jul 20 reel. The two-photo garden pair in Book (lightbox).
+## Her own, from her Wix site (wildrosemassage.co)
+- `images/forest-mist.jpg` (2400 x 1800): the sun breaking through fog over forested hills. Her Wix hero, and the hero here.
+- `images/creek-pool.jpg` (944 x 671): clear green water over river stones. Sessions, left of the pair.
+- `images/forest-creek.jpg` (720 x 960): a slow forest creek mirroring the trees. Sessions, right of the pair.
+- `images/wild-rose-mark.png` (168 x 147): the rose from her logo, in front of her name in the top bar and the footer.
 
-## Stock (Sample photo tags kept)
-- hands-at-work.jpg: hands massaging a bare back ("On the table"). No face.
+## Her own, sent Oct 14 2026
+- `images/tera-portrait.jpg`: her smiling portrait, a small flower behind her ear. Roots.
+- `images/tera-at-work.jpg`: Tera at a massage table, working on a client's back (the client's face isn't visible). "On the table".
+- Both bought by Tera from the photographer for use on her own site.
 
-## Removed Oct 10
-- hero.jpg (stock: hands on a client's forehead, with the client's face in clear profile), garden.jpg (stock hands in soil), garden-path.jpg (stock garden bed). Kept in the weekend backup only.
+## Her own, from her public Instagram @terarose37 (frames from her Jul 20 2026 reel "Garden love", 720px)
+- `images/garden-snapdragons.jpg`: peach and pink snapdragons. Gifts.
+- `images/garden-dahlia.jpg`, `images/garden-coral.jpg`: a pink dahlia and coral snapdragons. The garden pair in Contact.
 
-## Seen but not used, on purpose
-- Her Jul 9 2026 reel opening her own practice shows her studio (table, quilt, candle, her begonia), but every frame has her announcement words over it. Ask Tera for a few plain photos of the studio.
-- Reels and posts from the studio she works for, selfies, family photos, her dog and sourdough: other businesses, faces, or personal.
+## Made for her
+- `images/apple-touch-icon.png`: her gold ring on fern green.
+- `share-preview.jpg` (1200 x 860): this preview's link thumbnail, the page on a laptop and a phone.
+
+## Removed Oct 14 2026 (from the old mockup)
+- `coast.jpg` (a reel frame, the old hero) and `hands-at-work.jpg` (stock, tagged "Sample photo"). In git history.
