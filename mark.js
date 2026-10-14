@@ -561,6 +561,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   const MODE = ON_WF ? (pm ? 'mockup' : '') : 'site';
   if (!MODE) return;
   const MOCK = MODE === 'mockup';
+  const PICKER = MOCK && !!document.querySelector('.vseg [data-view]'); // a client's own site on a peek page has no build picker
   const PAGE = MOCK ? '/peek/' + pm[1] + '/' : (location.pathname.replace(/\/index\.html$/, '/') || '/').slice(0, 120);
   const STATUS = { new: 'Sent', seen: 'Seen', quoted: 'Priced', doing: 'On it', done: 'Done', declined: 'Not this time' };
   const DOOR = 'https://webfaery.love/my/';
@@ -790,7 +791,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   const HOUSE_KEY = 'It’s like a house key, just for you, so please keep passwords out of notes.';
 
   /* ---------------- the bar ---------------- */
-  const bar = el('div', 'wfm wfm-bar'); bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', MOCK ? 'Magic mockup' : 'Your notes');
+  const bar = el('div', 'wfm wfm-bar'); bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', PICKER ? 'Magic mockup' : 'Your notes');
   document.body.appendChild(bar);
   const tab = el('button', 'wfm wfm-tab', 'Notes'); tab.type = 'button'; tab.hidden = true; tab.setAttribute('aria-label', 'Open my notes bar');
   document.body.appendChild(tab);
@@ -829,7 +830,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     return;
   }
 
-  const say = el('span'); const sayB = el('b', '', MOCK ? 'Magic mockup: ' : 'Your site: ');
+  const say = el('span'); const sayB = el('b', '', PICKER ? 'Magic mockup: ' : 'Your site: ');
   say.append(sayB, document.createTextNode(MOCK ? 'tap anything you’d like changed.' : 'tap Leave a note, then tap the spot.'));
   const listBtn = el('button', 'wfm-btn ghost', 'Your notes'); listBtn.type = 'button';
   const pauseBtn = el('button', 'wfm-btn ghost', 'Pause'); pauseBtn.type = 'button';
@@ -1560,7 +1561,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     roundBtn.hidden = !(d.round_done === true);
     let pending = false; both((s) => { if (s.getItem(DONE_KEY)) pending = true; });
     if (pending) sendDone(); // last time's Done didn't reach the server
-    if (MOCK && typeof d.pick === 'string') { // the server knows about picks
+    if (PICKER && typeof d.pick === 'string') { // the server knows about picks
       pickReady = true; founding = d.founding === true && FOUNDING_LEFT > 0; myPick = d.pick;
       if (myPick && myPick !== 'all') showView(myPick);
       if (!myPick || myPick === 'all') openCard(); // "everything" from before: pick a real build now
