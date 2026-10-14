@@ -14,48 +14,44 @@
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Which build fits you? A two-minute quiz">
 <meta property="og:description" content="Four quick taps: find the build that fits what your site needs to do, what its subscription covers, and every cost.">
-<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg?v=20261014">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta property="og:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Which build fits you? A two-minute quiz">
 <meta name="twitter:description" content="Four quick taps: find the build that fits what your site needs to do, what its subscription covers, and every cost.">
-<meta name="twitter:image" content="https://webfaery.love/images/share.jpg">
-<meta name="twitter:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
-<meta name="theme-color" content="#0e0e0c">
+<meta name="twitter:image" content="https://webfaery.love/images/share.jpg?v=20261014">
+<meta name="twitter:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
+<meta name="theme-color" content="#272c66">
 <meta name="color-scheme" content="dark">
-<link rel="stylesheet" href="fonts/fonts.css?v=20261001f">
-<link rel="stylesheet" href="soil.css?v=20261001f">
-<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js -->
-<script>matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.add('myc-js')</script>
-<script src="mycelium.js?v=20261001f" defer></script>
-<link rel="stylesheet" href="pages.css?v=20261001f">
-<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
-<link rel="stylesheet" href="faery.css?v=20261001f">
-<script src="faery.js?v=20261001f" defer></script>
+<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="wf-tokens.css?v=20261014a">
+<link rel="stylesheet" href="soil.css?v=20261014a">
+<link rel="stylesheet" href="pages.css?v=20261014a">
 <style>
   .progress {
-    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--acc); margin: 34px 0 10px;
+    font-family: var(--wf-font-read); font-weight: 600; font-size: 12.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--wf-eyebrow); margin: 34px 0 10px;
   }
+  /* the question sits on a cream card (pages.css .cream turns the words to ink on cream) */
   .qcard {
-    background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
+    background: var(--wf-card-bg); border-radius: 22px; box-shadow: var(--wf-shadow-card);
     padding: 26px 24px 26px;
   }
   .qcard h2 { font-size: 24px; font-weight: 400; margin: 0 0 4px; }
   .qcard .why { font-size: 15.5px; color: var(--ink-soft); font-style: italic; margin: 0 0 18px; }
   .answers { display: grid; gap: 10px; }
   .answers button {
-    text-align: left; cursor: pointer; font-family: 'Spectral', Georgia, serif; font-size: 17.5px;
-    color: var(--ink); background: var(--paper); border: 1px solid var(--hairline);
-    border-radius: 10px; padding: 13px 16px; line-height: 1.45; width: 100%;
+    text-align: left; cursor: pointer; font-family: var(--wf-font-read); font-size: 17.5px;
+    color: var(--ink); background: var(--paper); border: 1px solid var(--wf-b-edge);   /* 3.3:1, so each answer reads as a button */
+    border-radius: 12px; padding: 13px 16px; line-height: 1.45; width: 100%; min-height: 48px;
   }
-  .answers button:hover { border-color: var(--acc); background: var(--paper-2); }
+  .answers button:hover { border-color: var(--wf-c-ghost-edge); background: var(--paper-2); }
   .answers small { display: block; color: var(--ink-soft); font-size: 14.5px; margin-top: 2px; }
   .back {
     margin-top: 14px; background: none; border: none; cursor: pointer;
-    font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; letter-spacing: 0.1em;
+    font-family: var(--wf-font-read); font-weight: 600; font-size: 12.5px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--ink-soft); padding: 12px 0; min-height: 44px;
   }
   .back:hover { color: var(--link); }
@@ -63,38 +59,36 @@
   .result { display: none; }
   .result.show { display: block; }
 
-  /* the build: a dark band with its moon, like the build cards on the main page */
+  /* the build: a cream arch holding that build's own painting, the same three as the main page's price cards
+     (the bud, the watering can, the glade), melting into the cream below it */
   .verdict {
-    margin-top: 40px; position: relative; text-align: center;
-    /* a soft chanterelle glow behind the moon, like the moon cards' amber hill */
-    background: radial-gradient(circle at 50% 66px, rgba(230, 168, 82, 0.2), rgba(230, 168, 82, 0) 150px), var(--band);
-    color: var(--band-text); border: 1px solid var(--hairline);
-    border-radius: 150px 150px 18px 18px / 96px 96px 18px 18px;
-    padding: 118px 26px 30px;
+    margin-top: 40px; position: relative; overflow: hidden; text-align: center;
+    background: var(--wf-card-bg); color: var(--wf-c-text); box-shadow: var(--wf-shadow-card);
+    border-radius: 150px 150px 22px 22px / 96px 96px 22px 22px;
+    padding: 200px 26px 30px;
   }
-  /* the moon rises inside the arch, so it glows on the dark band in light and dark themes */
   .verdict .orb {
-    position: absolute; left: 50%; top: 40px; width: 52px; height: 52px; margin-left: -26px;
-    border-radius: 50%; filter: drop-shadow(0 0 9px var(--moonglow));
+    position: absolute; left: 0; right: 0; top: 0; height: 220px;
+    background: var(--wf-dusk) 50% 62% / cover no-repeat;
+    -webkit-mask: linear-gradient(180deg, #000 0%, #000 50%, transparent 100%); mask: linear-gradient(180deg, #000 0%, #000 50%, transparent 100%);
   }
-  /* triple moon: waxing, full, waning */
-  .verdict .orb.maiden { box-shadow: inset -13px 0 0 0 var(--moonlight); }
-  .verdict .orb.mother { background: var(--moonlight); }
-  .verdict .orb.crone { box-shadow: inset 13px 0 0 0 var(--moonlight); }
-  .verdict .eyebrow { color: var(--band-soft); display: block; }
-  .verdict h2 { font-size: 40px; font-weight: 400; margin-top: 8px; color: var(--band-text); }
+  .verdict .orb.maiden { background-image: url(images/tier-planted.jpg); background-image: image-set(url(images/tier-planted.webp) type('image/webp'), url(images/tier-planted.jpg) type('image/jpeg')); }
+  .verdict .orb.mother { background-image: url(images/tier-tended.jpg); background-image: image-set(url(images/tier-tended.webp) type('image/webp'), url(images/tier-tended.jpg) type('image/jpeg')); }
+  .verdict .orb.crone { background-image: url(images/tier-inbloom.jpg); background-image: image-set(url(images/tier-inbloom.webp) type('image/webp'), url(images/tier-inbloom.jpg) type('image/jpeg')); }
+  .verdict .eyebrow { color: var(--wf-c-rose); display: block; position: relative; }
+  .verdict h2 { font-size: 40px; font-weight: 400; margin-top: 8px; color: var(--wf-c-ink); position: relative; }
   .verdict h2:focus { outline: none; }
-  .verdict .what { font-style: italic; color: var(--band-soft); margin: 4px 0 0; font-size: 17px; }
-  .verdict .price { font-family: 'Gloock', Georgia, serif; margin: 18px 0 0; }
+  .verdict .what { font-style: italic; color: var(--wf-c-soft); margin: 4px 0 0; font-size: 17px; }
+  .verdict .price { font-family: var(--wf-font-display); margin: 18px 0 0; color: var(--wf-c-ink); }
   .verdict .price strong { font-size: 32px; font-weight: 400; font-variant-numeric: tabular-nums; }
-  .verdict .price span { font-size: 15.5px; color: var(--band-soft); }
-  .verdict .founding { font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; color: var(--band-soft); margin: 6px 0 0; }
-  .verdict .ready { font-size: 16px; color: var(--band-soft); margin: 10px auto 0; max-width: 30em; }
+  .verdict .price span { font-size: 15.5px; color: var(--wf-c-soft); }
+  .verdict .founding { font-family: var(--wf-font-read); font-weight: 600; font-size: 13px; color: var(--wf-c-gold); margin: 6px 0 0; }
+  .verdict .ready { font-size: 16px; color: var(--wf-c-soft); margin: 10px auto 0; max-width: 30em; }
   .verdict .because { margin: 18px auto 0; max-width: 36rem; text-align: left; }
-  .verdict ul { text-align: left; margin: 18px auto 0; padding: 18px 0 0; border-top: 1px solid rgba(185, 179, 167, 0.35); list-style: none; display: grid; gap: 9px; max-width: 36rem; }
+  .verdict ul { text-align: left; margin: 18px auto 0; padding: 18px 0 0; border-top: 1px solid var(--wf-c-rule); list-style: none; display: grid; gap: 9px; max-width: 36rem; }
   .verdict li { padding-left: 24px; position: relative; font-size: 16.5px; }
-  .verdict li::before { content: "\2713"; position: absolute; left: 0; color: var(--band-text); font-weight: 700; }
-  .verdict .also { font-size: 15.5px; color: var(--band-soft); margin: 16px auto 0; max-width: 36rem; text-align: left; }
+  .verdict li::before { content: "\2713"; position: absolute; left: 0; color: var(--wf-c-gold); font-weight: 700; }
+  .verdict .also { font-size: 15.5px; color: var(--wf-c-soft); margin: 16px auto 0; max-width: 36rem; text-align: left; }
 
   .after h3, .plainly h3 { font-size: 26px; font-weight: 400; margin-top: 6px; color: var(--link); }
   .after .because { margin-top: 12px; }
@@ -103,7 +97,7 @@
   .plainly ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 0; }
   .plainly li { padding: 10px 0; border-bottom: 1px solid var(--hairline); font-size: 16.5px; }
   .plainly li:last-child { border-bottom: none; }
-  .plainly li b { font-family: 'Gloock', Georgia, serif; font-weight: 400; }
+  .plainly li b { font-family: var(--wf-font-display); font-weight: 400; }
   .plainly .dated { font-size: 14.5px; color: var(--ink-soft); font-style: italic; margin-top: 8px; }
 
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
@@ -112,18 +106,24 @@
   @media (max-width: 420px) {
     .qcard { padding: 22px 18px; }
     .card { padding: 22px 20px 24px; }
-    .verdict { padding: 112px 20px 26px; }
+    .verdict { padding: 184px 20px 26px; }
+    .verdict .orb { height: 200px; }
     .cta-row .btn { flex: 1 1 100%; }
   }
 </style>
 </head>
 <body>
-<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
+<!-- the twilight behind everything (soil.css): decoration only -->
 <div class="soil" aria-hidden="true"></div>
 <header class="page-hero short">
-  <picture><source type="image/webp" srcset="images/mushrooms.webp"><img class="photo" src="images/mushrooms.jpg" alt="" fetchpriority="high" decoding="async" style="object-position: 32% 62%"></picture>
+  <picture>
+    <source media="(max-aspect-ratio: 3/4)" type="image/webp" srcset="images/path.webp">
+    <source media="(max-aspect-ratio: 3/4)" srcset="images/path.jpg">
+    <source type="image/webp" srcset="images/hero-wide.webp">
+    <img class="photo" src="images/hero-wide.jpg" width="1456" height="816" alt="" fetchpriority="high" decoding="async" style="object-position: 64% 38%">
+  </picture>
   <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <nav aria-label="Site"><a href="index.html#prices">Prices</a><a href="index.html">Home</a></nav>
   </div>
   <div class="words">
@@ -140,7 +140,7 @@
     var ph = h.querySelector('.photo');
     h.classList.add('wait');
     // play the intro only once the photo has fully arrived; if it's still on its way after
-    // 4 seconds (a slow connection), show everything at rest so a half-loaded photo never animates
+    // 4 seconds (a slow connection), show everything at rest so a half-loaded painting doesn't animate
     var settled = false;
     var rest = function () { if (settled) return; settled = true; h.classList.remove('wait'); };
     var go = function () { if (settled) return; settled = true; h.classList.remove('wait'); h.classList.add('go'); };
@@ -163,7 +163,7 @@
 
   <div id="quiz" hidden>
     <div class="progress" id="progress">Question 1 of 4</div>
-    <div class="qcard">
+    <div class="qcard cream">
       <h2 id="q-title" tabindex="-1" aria-describedby="progress"></h2>
       <p class="why" id="q-why"></p>
       <div class="answers" id="q-answers"></div>
@@ -172,7 +172,7 @@
   </div>
 
   <div class="result" id="result">
-    <div class="verdict">
+    <div class="verdict cream">
       <span class="orb" id="r-orb" aria-hidden="true"></span>
       <span class="eyebrow">Your build</span>
       <h2 id="r-build-name" tabindex="-1"></h2>
@@ -211,7 +211,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <ul>
       <li><a href="quiz.html" aria-current="page">Which build?</a></li>
       <li><a href="intake.html">Getting started</a></li>
@@ -227,7 +227,7 @@
   // Questions 1 to 3 pick the BUILD (what the site does). Question 4 asks about email from your own address and a
   // newsletter: either one means at least Tended, since both come with the Tended and In Bloom subscriptions
   // (Oct 5 2026: a Planted client who wants email from their own address moves up to Tended; no side add-ons).
-  // Booking (pricing-oct2026.md, the booking ladder, Oct 6 2026 afternoon, Pollen: "yes add the booking link to
+  // Booking (pricing-oct2026.md, the booking ladder, Oct 6 2026 afternoon: "yes add the booking link to
   // planted"): a Book button that opens the booking app they already use comes with every build, Planted too, so
   // that answer alone doesn't lift the build; a free Cal.com I set up for them is Tended; booking built right into
   // the site, with payments or deposits, and selling are In Bloom. With no booking app, people call, text or email.
@@ -347,7 +347,7 @@
     'A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer or print shop',
     'A slim banner across the top of your site for news like “Now booking” or “Away until Nov 3”'
   ];
-  // what every plan's subscription also includes (Pollen, Oct 6 2026; the same lines, in the same words, as the
+  // what every plan's subscription also includes (Oct 6 2026; the same lines, in the same words, as the
   // "Every plan’s subscription also includes" card under the plans on webfaery.love), shown under each build's own
   var EVERY_PLAN = [
     'I follow your socials and update your site as you post, or you email me',
@@ -395,7 +395,7 @@
 
   // Which accounts this client would have, all in their name (pricing-oct2026.md, "Account setup flow"). Their Google
   // profile, a booking app they already use, and Stripe have Taya added as a helper. Their Buttondown list and a new
-  // Cal.com are set up by Taya with their email and handed over at launch (the newsletter list never has a helper).
+  // Cal.com are set up by Taya with their email and handed over at launch (the newsletter list has no helper).
   function accountsLine(p, build) {
     var acc = ['Your Google profile'];
     if (p[2] === 2) acc.push('your booking app');

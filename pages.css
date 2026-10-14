@@ -1,36 +1,55 @@
-/* Shared look for the smaller pages (quiz, intake, welcome, domain).
-   Same palette tokens and self-hosted fonts as the main page; each page adds its own bits inline.
+/* Shared look for the smaller pages (quiz, intake, welcome, domain, texts, the not-found page, the agreement).
+   The twilight look of the main page: words straight on the twilight field (soil.css), the things you read
+   closely on lavender-cream cards, a painted band at the top that melts into the twilight, and lantern-gold
+   buttons. Each page adds its own bits inline.
+   Every color, size and radius comes from /wf-tokens.css. Pages normally link it before this sheet; the import
+   below brings it in for a page that can't (the signed agreement page links only fonts.css, soil.css and this
+   sheet, and its words can't change). The browser fetches it once either way.
+   The old names (--ink, --ink-soft, --link, --acc, --card, --paper...) stay, because pages and the agreement still
+   use them: they now point at the twilight values, and inside a card (or anything marked .cream) at the cream
+   values, so words in a card always read as ink on cream.
    The brand name lives only in each page's title, header and footer, so a rename stays easy. */
+@import url("wf-tokens.css?v=20261014a");
+
 :root {
-  /* one look for everyone, whatever their light or dark setting: the main page's charcoal soil (in soil.css,
-     with its mycelium), warm charcoal cards, bone ink and chanterelle gold (Pollen's Mycelium palette, Sep 30).
-     No purple anywhere. */
   color-scheme: dark;
-  --paper: #151513; --paper-2: #10100e; --card: #1c1b18;   /* fields and answers; chosen or hovered; cards */
-  --ink: #ece6da; --ink-soft: #b9b3a7; --hairline: #34322d;
-  /* chanterelle gold: pale for links and the italic words, deeper for labels and lines, the richest as a fill */
-  --candle: #f2c77c; --link: var(--candle); --on-link: #1c1209;
-  --acc: #f0b867; --acc-line: rgba(240, 184, 103, 0.55);
-  --btn: #e6a852; --on-btn: #1c1209; --btn-hover: #f0b867;
-  --moonlight: #ece3d3; --moonglow: rgba(236, 227, 211, 0.35);
-  --band: #161513; --band-text: #ece6da; --band-soft: #bcb6aa;
-  --focus: #f0b867; --err: #e2947f; --ok: #9dbb85; --field-edge: #7f7a6e;
-  /* words over photos */
-  --on-photo: #f6efe5; --on-photo-soft: rgba(246, 239, 229, 0.92);
-  /* the veil over the photos: the soil's own dark */
-  --veil: 15, 15, 13;
+  /* on the twilight */
+  --ink: var(--wf-ink); --ink-soft: var(--wf-ink-soft); --hairline: rgb(247 243 255 / .22);
+  --paper: var(--wf-dusk); --paper-2: #3a3f86; --card: var(--wf-dusk);   /* fields and boxes on the twilight; hovered */
+  --candle: var(--wf-gold-hi); --link: var(--wf-link); --on-link: var(--wf-on-gold);
+  --acc: var(--wf-gold); --acc-line: rgb(255 210 122 / .55); --acc-glow: 246, 197, 111;
+  --btn: var(--wf-gold); --on-btn: var(--wf-on-gold); --btn-hover: var(--wf-gold-hi);
+  --moonlight: var(--wf-lilac); --moonglow: rgb(201 191 232 / .35);
+  --band: var(--wf-dusk); --band-text: var(--wf-ink); --band-soft: var(--wf-ink-soft);
+  --focus: var(--wf-gold-hi); --err: #ff9e94; --ok: #86d0c8; --field-edge: #8f8ad0;
+  /* words over the paintings */
+  --on-photo: var(--wf-hero-lede); --on-photo-soft: rgb(251 248 255 / .94);
+  /* the veil over the paintings: the twilight's own ground (rgb numbers, for rgba(var(--veil), x)) */
+  --veil: 39, 44, 102;
+}
+/* inside a card: ink on cream. The same names, so a page's own styles (and the agreement's) keep working */
+.card, .cream {
+  --ink: var(--wf-c-ink); --ink-soft: var(--wf-c-soft); --hairline: var(--wf-c-rule);
+  --paper: #fcfbff; --paper-2: var(--wf-cream-2); --card: var(--wf-cream);
+  --candle: var(--wf-c-gold); --link: var(--wf-c-link); --on-link: #fcfbff;
+  --acc: var(--wf-c-gold); --acc-line: rgb(122 79 14 / .45); --acc-glow: 201, 138, 36;
+  --moonlight: #8f86cc; --moonglow: rgb(143 134 204 / .35);
+  --band: var(--wf-cream-2); --band-text: var(--wf-c-ink); --band-soft: var(--wf-c-soft);
+  --focus: var(--wf-c-link); --err: #b03a3a; --ok: #2b6a6c; --field-edge: var(--wf-c-ghost-edge);
+  color: var(--wf-c-text);
+  color-scheme: light; /* ticks, dots and fields drawn light on the cream, though the page around is twilight */
 }
 
 * { box-sizing: border-box; }
-/* the soil and the mycelium behind everything live in soil.css (shared with the main page) */
-html { -webkit-text-size-adjust: 100%; background: #0e0e0c; /* the soil, in case soil.css is slow */
-  font-synthesis-weight: none; /* Gloock has one weight only: never let the browser smear a fake bold */ }
+html { -webkit-text-size-adjust: 100%; background: var(--wf-ground); /* the twilight, in case soil.css is slow */
+  font-synthesis: none; /* Gloock has one weight only: no fake bold */ }
 body {
   margin: 0; color: var(--ink);
-  font-family: 'Spectral', Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.62;
+  font-family: var(--wf-font-read); font-size: 18px; line-height: 1.62;
 }
 p, li { text-wrap: pretty; }
-h1, h2, h3 { font-family: 'Gloock', Georgia, serif; font-weight: 400; line-height: 1.12; text-wrap: balance; margin: 0; }
+h1, h2, h3 { font-family: var(--wf-font-display); font-weight: 400; line-height: 1.12; text-wrap: balance; margin: 0; }
+h1 em, h2 em, h3 em { font-family: var(--wf-font-read); font-style: italic; font-weight: 400; color: var(--wf-italic); }
 a { color: var(--link); text-underline-offset: 3px; text-decoration-color: var(--acc-line); }
 a:hover { text-decoration-color: currentColor; }
 a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
@@ -40,16 +59,27 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .eyebrow, .kicker {
-  font-family: 'Spectral', Georgia, serif; font-size: 12.5px; font-weight: 500;
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc);
+  font-family: var(--wf-font-read); font-size: var(--wf-eyebrow-size); font-weight: 600;
+  letter-spacing: var(--wf-eyebrow-track); text-transform: uppercase; color: var(--wf-eyebrow);
 }
+.card .eyebrow, .card .kicker, .cream .eyebrow, .cream .kicker { color: var(--wf-c-rose); }
 .kicker { display: block; margin-bottom: 8px; text-wrap: balance; }
 
-/* ---------- the photo band that opens every page ----------
-   The photo arrives first and settles from a soft zoom, then the veil, then the words glide
-   up one at a time. The script right after the band adds .wait/.go, so without JavaScript or
-   with reduced motion everything simply shows at rest. */
+/* ---------- the name: "Web" in Gloock, "Faery" in Spectral italic, and one tiny gold sparkle ---------- */
+.wm { position: relative; padding-right: 13px; }
+.wm > span { font-family: var(--wf-font-read); font-style: italic; color: var(--wf-italic); }
+.wm-spark { position: absolute; right: 0; top: -4px; width: 12px; height: 12px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 214 140 / .55), rgb(247 182 207 / .18) 60%, transparent); }
+.wm-spark::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, #fffaf0 0 14%, #ffd98f 34%, var(--wf-gold) 70%);
+  clip-path: polygon(50% 0, 59% 41%, 100% 50%, 59% 59%, 50% 100%, 41% 59%, 0 50%, 41% 41%); }
+
+/* ---------- the painted band that opens every page ----------
+   The painting arrives first and settles from a soft zoom, then the veil, then the words glide up one at a
+   time. The script right after the band adds .wait/.go, so without JavaScript or with reduced motion
+   everything simply shows at rest. Its foot melts into the twilight on the same eased curve as the main
+   page's hero: the painting and its veil both thin out to nothing, so the band has no bottom edge. */
 .page-hero {
+  --melt-h: clamp(150px, 34%, 260px);
   position: relative; overflow: hidden; isolation: isolate;
   display: flex; flex-direction: column;
   min-height: clamp(420px, 64svh, 620px);
@@ -60,60 +90,51 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   position: absolute; left: 0; top: -4%; width: 100%; height: 108%;
   object-fit: cover; z-index: -3; display: block;
 }
-/* the photo's foot melts into solid soil (behind the words, so none of them fade), and main::before lets the
-   mycelium rise out of that soil gradually below it, so the photo never ends on a line */
-.page-hero::before {
-  content: ""; position: absolute; inset: auto 0 0 0; height: 16%; z-index: -1; pointer-events: none;
-  background: linear-gradient(0deg, var(--soil-fade));
+.page-hero .photo, .page-hero::after {
+  -webkit-mask: linear-gradient(#000, #000) top / 100% calc(100% - var(--melt-h) + 2px) no-repeat, var(--wf-melt-mask) bottom / 100% var(--melt-h) no-repeat;
+  mask: linear-gradient(#000, #000) top / 100% calc(100% - var(--melt-h) + 2px) no-repeat, var(--wf-melt-mask) bottom / 100% var(--melt-h) no-repeat;
 }
 .page-hero::after {
   content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
   background:
-    radial-gradient(ellipse 72% 58% at 50% 72%, rgba(var(--veil), 0.55), rgba(var(--veil), 0) 76%),
-    linear-gradient(180deg, rgba(var(--veil), 0.74) 0%, rgba(var(--veil), 0.34) 30%, rgba(var(--veil), 0.52) 58%, rgba(var(--veil), 0.86) 100%);
+    radial-gradient(ellipse 80% 66% at 50% 68%, rgba(var(--veil), 0.7), rgba(var(--veil), 0) 78%),
+    linear-gradient(180deg, rgba(var(--veil), 0.72) 0%, rgba(var(--veil), 0.3) 30%, rgba(var(--veil), 0.46) 58%, rgba(var(--veil), 0.7) 100%);
 }
 .page-hero .bar {
   display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap;
   width: 100%; max-width: 1180px; margin: 0 auto; padding: 22px 22px 0;
 }
 .page-hero .brand {
-  font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 21px; letter-spacing: 0;
+  font-family: var(--wf-font-display); font-weight: 400; font-size: 22px; letter-spacing: .01em;
   color: var(--on-photo); text-decoration: none; padding-block: 8px; white-space: nowrap;
   display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
 }
 .page-hero .brand svg { width: 20px; height: 20px; flex: none; }
-.page-hero .brand .wm span { color: var(--candle); }
-/* a soft dark glow keeps the name and the little menu words readable where the photo is brightest (the
-   forest's sun, on phones; the gaps between the trees on a big screen) */
-.page-hero .brand, .page-hero nav a { text-shadow: 0 1px 2px rgba(var(--veil), 0.7), 0 0 12px rgba(var(--veil), 0.5); }
+/* a soft twilight glow keeps the name and the little menu words readable where the painting is brightest */
+.page-hero .brand, .page-hero nav a { text-shadow: 0 1px 2px rgba(var(--veil), 0.7), 0 0 12px rgba(var(--veil), 0.6); }
 .page-hero nav { display: flex; gap: 4px 16px; flex-wrap: wrap; margin-left: auto; justify-content: flex-end; }
 .page-hero nav a {
-  font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 12.5px; letter-spacing: 0.14em;
-  text-transform: uppercase; text-decoration: none; color: var(--on-photo); opacity: 0.9;
+  font-family: var(--wf-font-read); font-weight: 500; font-size: 17px; letter-spacing: .04em;
+  text-decoration: none; color: var(--on-photo);
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 44px; min-width: 44px; padding: 0 4px; text-align: center;
 }
-.page-hero nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
-.page-hero a:focus-visible { outline-color: var(--on-photo); }
+.page-hero nav a:hover { color: var(--wf-gold-hi); text-decoration: underline; text-underline-offset: 4px; }
+.page-hero a:focus-visible { outline-color: var(--wf-gold-hi); }
 .page-hero .words {
   margin: auto auto 0; width: 100%; max-width: 760px; text-align: center;
   padding: 56px 22px 52px;
-  /* a soft dark glow keeps the small gold words readable over bright mushroom caps and sun */
-  text-shadow: 0 1px 2px rgba(var(--veil), 0.75), 0 0 16px rgba(var(--veil), 0.7);
+  text-shadow: var(--wf-text-shadow-strong);
 }
-/* cream like the main page's hero eyebrow: small gold capitals get lost on bright caps and sun */
 .page-hero .eyebrow {
-  color: var(--on-photo); display: block; margin-bottom: 16px; letter-spacing: 0.22em;
-  text-shadow: 0 1px 2px rgba(var(--veil), 0.85), 0 0 8px rgba(var(--veil), 0.8), 0 0 20px rgba(var(--veil), 0.6);
+  color: var(--wf-hero-eyebrow); display: block; margin-bottom: 16px; letter-spacing: 0.22em;
+  text-shadow: 0 1px 2px rgba(var(--veil), 0.85), 0 0 10px rgba(var(--veil), 0.8);
 }
 .page-hero h1 {
-  font-weight: 400; font-size: clamp(36px, 7.4vw, 60px); letter-spacing: -0.01em;
+  font-weight: 400; font-size: clamp(36px, 7.4vw, 60px); letter-spacing: -0.005em;
   color: var(--on-photo); max-width: 16ch; margin-inline: auto;
 }
-.page-hero h1 em {
-  font-family: 'Spectral', Georgia, serif; font-style: italic; font-weight: 400;
-  letter-spacing: -0.01em; color: var(--candle);
-}
+.page-hero h1 em { letter-spacing: -0.005em; }
 .page-hero .lede {
   font-size: clamp(18px, 2.4vw, 20.5px); color: var(--on-photo-soft);
   max-width: 34em; margin: 18px auto 0;
@@ -135,7 +156,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   .page-hero .photo { translate: none !important; }
 }
 
-/* phones held sideways: the photo band shrinks to fit its words, so the page starts on screen one */
+/* phones held sideways: the band shrinks to fit its words, so the page starts on screen one */
 @media (max-height: 520px) and (orientation: landscape) {
   .page-hero, .page-hero.short { min-height: 0; }
   .page-hero .bar { padding-top: 12px; }
@@ -150,25 +171,34 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
 /* ---------- content ---------- */
-/* no background of its own: every word sits straight on the soil and its mycelium (checked at the brightest
-   thread or light), or on a card */
+/* no background of its own: words sit straight on the twilight, or on a card */
 main {
   display: flow-root;
   padding-bottom: 40px;
   position: relative; isolation: isolate;
 }
-/* just under the photo the soil is still solid, and the mycelium comes up out of it slowly */
-main::before {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: clamp(140px, 24vh, 280px); z-index: -1; pointer-events: none;
-  background: linear-gradient(180deg, var(--soil-fade));
-}
 .card {
-  background: var(--card); border: 1px solid var(--hairline); border-radius: 16px;
+  position: relative;
+  background: var(--wf-card-bg); border-radius: 22px;
+  box-shadow: var(--wf-shadow-card);
   padding: 26px 26px 28px; margin-top: 24px;
 }
-.card.yours { border: 2px solid var(--acc); }
+/* the same slow light round the edge as the main page's cards (still with reduced motion) */
+.card::before {
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; padding: 1.5px;
+  background: var(--wf-shimmer);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: wf-shimmer var(--wf-dur-shimmer) linear infinite;
+}
+@keyframes wf-shimmer { from { background-position: 120% 0, 0 0; } to { background-position: -20% 0, 0 0; } }
+@media (prefers-reduced-motion: reduce) { .card::before { animation: none; background-position: 40% 0, 0 0; } }
+.card.yours { box-shadow: 0 0 0 2px var(--wf-gold), var(--wf-shadow-card); }
+.card h1, .card h2, .card h3, .cream h1, .cream h2, .cream h3 { color: var(--wf-c-ink); }
+.card h1 em, .card h2 em, .card h3 em, .cream h2 em, .cream h3 em { color: var(--wf-c-rose); }
 .card h2 { font-size: 24px; font-weight: 400; margin: 0 0 12px; }
 .card p { margin: 10px 0 0; }
+.card b, .card strong { color: var(--wf-c-ink); }
 .card p.soft, .soft { color: var(--ink-soft); font-size: 16.5px; }
 .note { font-size: 15px; color: var(--ink-soft); font-style: italic; margin-top: 14px; }
 
@@ -178,29 +208,37 @@ ul.checks li::before { content: "\2713"; position: absolute; left: 0; color: var
 ul.checks li small { display: block; color: var(--ink-soft); font-size: 15px; line-height: 1.5; margin-top: 2px; }
 ul.checks.never li::before { content: "\2717"; color: var(--ink-soft); }
 
-/* tall pill buttons, the same as the main page */
+/* tall pill buttons in lantern gold, the same as the main page; .secondary is the moonlit outline */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; min-height: 50px;
   text-decoration: none; text-align: center; cursor: pointer; text-wrap: balance;
-  font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; line-height: 1.2; letter-spacing: 0.01em; word-spacing: 0.03em;
-  padding: 12px 28px; border-radius: 999px;
-  background: var(--btn); color: var(--on-btn); border: 1.5px solid var(--btn);
-  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  font-family: var(--wf-font-display); font-weight: 400; font-size: 17px; line-height: 1.2; letter-spacing: 0.01em; word-spacing: 0.03em;
+  padding: 12px 28px; border-radius: var(--wf-r-pill);
+  background: var(--wf-btn-bg); color: var(--wf-btn-ink); border: 1px solid var(--wf-btn-edge);
+  box-shadow: var(--wf-shadow-btn);
+  transition: box-shadow var(--wf-dur-quick) ease, transform var(--wf-dur-quick) ease, background-color var(--wf-dur-quick) ease;
 }
-.btn:hover { background: var(--btn-hover); border-color: var(--btn-hover); box-shadow: 0 0 0 5px rgba(230, 168, 82, 0.16), 0 0 30px rgba(230, 168, 82, 0.35); }
-.btn.secondary { background: transparent; color: var(--link); }
-/* a solid card behind the words on hover, so the gold stays readable over any thread behind it */
-.btn.secondary:hover { background: var(--card); box-shadow: none; }
+.btn:hover { box-shadow: var(--wf-shadow-btn-hover); transform: translateY(-1px); }
+.card .btn, .cream .btn { box-shadow: var(--wf-shadow-btn-card); }
+.card a.btn, .cream a.btn { color: var(--wf-btn-ink); }
+.btn.secondary {
+  background: var(--wf-ghost-bg); color: var(--wf-ink); border-color: var(--wf-ghost-edge); box-shadow: none;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.btn.secondary:hover { background: rgb(255 255 255 / .1); box-shadow: 0 0 24px -6px rgb(247 182 207 / .6); }
+.card .btn.secondary, .cream .btn.secondary { background: transparent; color: var(--wf-c-ink); border-color: var(--wf-c-ghost-edge); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.card .btn.secondary:hover, .cream .btn.secondary:hover { background: rgb(84 72 160 / .08); box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .btn, .btn:hover { transition: none; transform: none; } }
 
 /* two-column money table, collapses to stacked rows on phones */
 .money { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 16px; line-height: 1.5; }
 .money th, .money td { text-align: left; vertical-align: top; padding: 11px 10px 11px 0; border-bottom: 1px solid var(--hairline); }
 .money thead th {
-  font-family: 'Spectral', Georgia, serif; font-size: 11.5px; font-weight: 500; letter-spacing: 0.12em;
+  font-family: var(--wf-font-read); font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--acc);
 }
-.money tbody th { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: 0.01em; width: 32%; }
-.money tbody th small { display: block; font-family: 'Spectral', Georgia, serif; font-weight: 400; font-size: 14.5px; color: var(--ink-soft); }
+.money tbody th { font-family: var(--wf-font-display); font-weight: 400; font-size: 17px; letter-spacing: 0.01em; width: 32%; color: var(--ink); }
+.money tbody th small { display: block; font-family: var(--wf-font-read); font-weight: 400; font-size: 14.5px; color: var(--ink-soft); }
 .money td { color: var(--ink); }
 .money tr:last-child th, .money tr:last-child td { border-bottom: none; }
 @media (max-width: 560px) {
@@ -212,32 +250,31 @@ ul.checks.never li::before { content: "\2717"; color: var(--ink-soft); }
   .money tbody th { width: auto; margin-bottom: 6px; }
   .money td { display: grid; grid-template-columns: 5.8em 1fr; gap: 10px; padding: 3px 0; }
   .money td::before {
-    content: attr(data-col); content: attr(data-col) / ""; font-family: 'Spectral', Georgia, serif; font-weight: 500; font-size: 11px; letter-spacing: 0.1em;
+    content: attr(data-col); content: attr(data-col) / ""; font-family: var(--wf-font-read); font-weight: 600; font-size: 11px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--acc); padding-top: 3px;
   }
 }
 
-/* the triple moon, drawn in pale gold */
+/* the small moon some pages still draw, in pale gold */
 .moon { width: 1em; height: 1em; vertical-align: -0.12em; color: var(--candle); flex-shrink: 0; }
 
-/* the same quiet footer as the main page: no band, just the soil and a gold hairline */
+/* the same quiet footer as the main page: the name and its sparkle, the links, and a soft gold hairline */
 footer.site-foot { margin-top: 56px; color: var(--ink-soft); padding: 0 22px 40px; font-size: 15.5px; }
 .site-foot .foot-in {
   max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 30px;
-  padding-top: 26px; border-top: 1px solid rgba(230, 168, 82, 0.3);
+  padding-top: 26px; border-top: 1px solid rgb(255 224 160 / .28);
 }
 .site-foot .brand {
-  font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 19px; letter-spacing: 0;
+  font-family: var(--wf-font-display); font-weight: 400; font-size: 21px; letter-spacing: .01em;
   color: var(--ink); text-decoration: none; white-space: nowrap;
   display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
 }
 .site-foot .brand svg { width: 18px; height: 18px; flex: none; }
 .site-foot .brand svg > circle { fill: var(--candle); }
-.site-foot .brand .wm span { color: var(--candle); }
 .site-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 22px; }
-.site-foot a:not(.brand) { display: inline-flex; min-height: 44px; align-items: center; }
+.site-foot a:not(.brand) { display: inline-flex; min-height: 44px; align-items: center; color: var(--ink); }
 .site-foot a[aria-current] { text-decoration: none; color: var(--ink-soft); }
-.site-foot .fine { width: 100%; margin: 0; font-family: 'Spectral', Georgia, serif; font-weight: 400; font-style: italic; font-size: 15px; color: var(--ink-soft); }
+.site-foot .fine { width: 100%; margin: 0; font-family: var(--wf-font-read); font-weight: 400; font-style: italic; font-size: 15px; color: var(--ink-soft); }
 
 /* narrow phones: a little more room for the words, and brand + nav stay on one row */
 @media (max-width: 380px) {
@@ -245,15 +282,15 @@ footer.site-foot { margin-top: 56px; color: var(--ink-soft); padding: 0 22px 40p
   main .card { padding: 20px 16px 22px; }
   .page-hero .bar { padding-inline: 16px; gap: 8px 10px; }
   .page-hero .words { padding-inline: 16px; }
-  .page-hero .brand { font-size: 18px; gap: 7px; }
+  .page-hero .brand { font-size: 19px; gap: 7px; }
   .page-hero .brand svg { width: 17px; height: 17px; }
   .page-hero nav { gap: 4px 8px; }
-  .page-hero nav a { font-size: 12px; letter-spacing: 0.1em; padding-inline: 3px; }
+  .page-hero nav a { font-size: 16px; padding-inline: 3px; }
 }
 @media (max-width: 345px) {
-  .page-hero .brand { font-size: 16.5px; gap: 6px; }
+  .page-hero .brand { font-size: 17.5px; gap: 6px; }
   .page-hero .brand svg { width: 15px; height: 15px; }
-  .page-hero nav a { font-size: 11px; letter-spacing: 0.08em; }
+  .page-hero nav a { font-size: 15px; }
 }
 
 /* print: everything shown, nothing waiting for a scroll or an intro that never comes */
@@ -262,7 +299,10 @@ footer.site-foot { margin-top: 56px; color: var(--ink-soft); padding: 0 22px 40p
   .page-hero.wait .photo, .page-hero.wait::after, .page-hero.wait .eyebrow,
   .page-hero.wait h1, .page-hero.wait .lede { opacity: 1 !important; }
   .page-hero *, .page-hero::after { animation: none !important; }
-  main::before { display: none; }
-  /* paper is white, so the ink turns dark (soil.css leaves the soil and its mycelium off the page) */
-  :root { --paper: #fff; --paper-2: #f6f2ea; --card: #fff; --ink: #262420; --ink-soft: #5a554c; --hairline: #ddd6c8; --candle: #7a4a12; --link: #7a4a12; --acc: #7a4a12; --btn: #7a4a12; --on-btn: #fff; --band: #fff; --band-text: #262420; --band-soft: #5a554c; }
+  .card::before { display: none; }
+  .card { box-shadow: none; border: 1px solid #ccc; }
+  /* paper is white, so the ink turns dark (soil.css leaves the twilight off the page) */
+  :root, .card, .cream { --paper: #fff; --paper-2: #f4f2fa; --card: #fff; --ink: #262a5e; --ink-soft: #4a4c80; --hairline: #ddd6ee; --candle: #7a4f0e; --link: #3c4a96; --acc: #7a4f0e; --btn: #7a4f0e; --on-btn: #fff; --band: #fff; --band-text: #262a5e; --band-soft: #4a4c80; }
+  body { color: #262a5e; }
+  .card, .cream { background: #fff; color: #262a5e; }
 }

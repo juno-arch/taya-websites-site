@@ -133,6 +133,18 @@ for (const f of ['portal.css', 'portal.js', 'portal-demo.js', 'faery.js', 'faery
 }
 // the icons the scripts draw must be in portal.html's sprite
 for (const m of js.matchAll(/icon\('(i-[a-z]+)'/g)) if (!ids.has(m[1])) fail(`portal.js uses #${m[1]}, which isn't in portal.html's sprite`);
+// the tabs (Oct 14 2026): every tab's icon is in the sprite, and every section on the project page belongs to a tab
+const pageBlock = (js.match(/const PAGES = \[([\s\S]*?)\];/) || [])[1] || '';
+const pageIds = [...pageBlock.matchAll(/id: '([a-z]+)'/g)].map((m) => m[1]);
+if (!pageIds.includes('home') || pageIds.length < 8) fail('portal.js: PAGES (the tabs) not found');
+for (const m of pageBlock.matchAll(/icon: '(i-[a-z]+)'/g)) if (!ids.has(m[1])) fail(`portal.js: the tab icon #${m[1]} isn't in portal.html's sprite`);
+const project = (html.match(/<div id="v-project" hidden>([\s\S]*?)\n  <\/div>\n<\/main>/) || [])[1] || '';
+if (!project) fail('portal.html: #v-project not found');
+for (const m of project.matchAll(/<section class="[^"]*" id="(sec-[a-z]+)"([^>]*)>/g)) {
+  const pg = (m[2].match(/data-page="([a-z]+)"/) || [])[1];
+  if (!pg) fail(`portal.html: #${m[1]} has no data-page (which tab it belongs to)`);
+  else if (!pageIds.includes(pg)) fail(`portal.html: #${m[1]} belongs to a tab that doesn't exist (${pg})`);
+}
 
 // every getting-started step the portal links into must exist in start.html (read only, never edited here)
 const startHtml = read('start.html');

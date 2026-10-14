@@ -156,7 +156,7 @@
       return {
         ok: true,
         client: Object.assign({}, CLIENT, { site_url: 'https://fernandclay.com' }),
-        note: { text: 'You’re live! 🎉 Take a slow look this week. Anything feel off, big or small? Ask for a change, further down. Settling-in tweaks are on me, and your subscription picks up right after, the same easy way.', date: today() },
+        note: { text: 'You’re live! 🎉 Take a slow look this week. Anything feel off, big or small? Tap Ask Taya at the top. Settling-in tweaks are on me, and your subscription picks up right after, the same easy way.', date: today() },
         list: {
           open: [
             item('d:balance', 'Pay the second half', 'Due at launch.', 'pay', { pay_key: 'balance' })

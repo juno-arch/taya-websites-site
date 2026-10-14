@@ -47,7 +47,7 @@ a shop lives on Cloudflare Pages.
 
 | File | What it is |
 |---|---|
-| `index.html` | Home page |
+| `index.html`, `site.css`, `site.js` | Home page: the faery door, the redwood hero melting into the twilight, the price cards, the guestbook (hidden until it's switched on), and the mailbox at the bottom. `site.js` runs the door, the hero's slow fade-in, the faery dust and the card glints |
 | `quiz.html` | Which-build quiz (which build fits, the subscription that comes with it, and every cost) |
 | `welcome.html` | What happens after you reach out |
 | `domain.html` | How your web address works: held for you, legally yours, renewed by the subscription; pointing or moving one you already have |
@@ -57,23 +57,31 @@ a shop lives on Cloudflare Pages.
 | `portal.html`, `portal.js`, `portal.css` | A client's private project page (not in search) |
 | `mark.js` | Notes and the build picker on a private mockup link (`peek/KEY/?mark=1`) |
 | `peek/` | Mockups for prospects, kept out of search by `robots.txt` |
-| `pages.css` | Shared look for the smaller pages |
-| `soil.css` | The charcoal soil behind every page and the mycelium living in it: how the threads grow in and rest, and the tiny gold lights that travel along them (shared by every page) |
-| `mycelium.svg`, `mycelium.js` | The mycelium network itself (one file every page shares) and the small script that lays it into the soil and grows it in once a visit. Without JavaScript or with reduced motion it simply shows, still |
-| `_mycelium/` | Not published: the scripts that grow the network and build `mycelium.svg` and the lights in `soil.css` (`python3 _mycelium/grow.py && python3 _mycelium/build.py`) |
-| `faery.js`, `faery.css`, `images/faery/` | Bramble, the little faery in the corner of every page (tap her, ask her things); how to swap in Taya's drawings is at the top of `faery.js` |
-| `favicon.ico`, `favicon.svg`, `apple-touch-icon.png` | The moon icon for browser tabs, search results and phone home screens |
+| `wf-tokens.css` | The design tokens: every color, font, size, radius, shadow, timing and fade the pages and back ends share (loaded first, after `fonts/fonts.css`). Contrast notes are at its top |
+| `fonts/` | The fonts, served from this site: Gloock (names, headings, prices, buttons), Spectral (reading words and italics), Lexend (back ends), each with its open font license |
+| `pages.css` | Shared look for the smaller pages: words on the twilight, cream cards, a painted band at the top that melts into the twilight. It brings in `wf-tokens.css` itself, for the signed agreement page, which can't change |
+| `soil.css` | The still twilight field and faint stars behind the smaller pages (the name stays because the agreement page links it) |
+| `mycelium.svg`, `mycelium.js`, `portal-myc.js` | The old mycelium network from the Sep 30 look. No page loads them now; kept so an older look can come back |
+| `_mycelium/` | Not published: the scripts that grew the old network (`python3 _mycelium/grow.py && python3 _mycelium/build.py`) |
+| `faery.js`, `faery.css`, `images/faery/` | Bramble, the little faery from the Sep 30 look. No page loads her now (the name and its sparkle stand in, with a slot for a logo); kept, and the site test still reads her words |
+| `favicon.ico`, `favicon.svg`, `apple-touch-icon.png` | The gold four-point sparkle on a twilight square, for browser tabs, search results and phone home screens |
+| `images/` | The paintings (door, hero-wide, hero-phone, path, tier-planted, tier-tended, tier-inbloom, contact), the Recent work screenshots, and `share.jpg`, the link preview picture (1200 x 630). The older photos stay for the pages that still use them |
 
-The look (Taya's pick, Sep 30, 2026, the Mycelium palette): charcoal soil `#0e0e0c`, warm charcoal cards `#1c1b18`,
-bone ink `#ece6da`, and chanterelle gold: `#f2c77c` for links and the italic words, `#f0b867` for labels and lines,
-`#e6a852` as a fill with `#1c1209` on it. No purple anywhere. The colors are tokens at the top of `index.html`,
-`pages.css` and `start.html` (and `faery.css` for her bubble); every word on the soil is checked against the brightest
-thread and light (the notes are in `soil.css`).
+The look (Oct 2026, the twilight): a calm blue-violet twilight field with faint stars, the deepest color the ground
+`#272c66` (no black anywhere), words in `#f7f3ff`, and lantern gold `#f6c56f` for the main buttons. The things people
+read closely sit on lavender-cream cards (ink `#262a5e`) with a slow light round their edge. Headings in Gloock,
+reading words in Spectral. The paintings were made for this site. On the main page the redwood hero melts into the twilight:
+the painting runs on under the top of Recent work and thins out to the ground color on one eased curve, softened
+by a little blur, so there is no line between them. Every value is a token in `wf-tokens.css`; contrast is checked
+there against the real backgrounds. The back ends (a client's page, getting started, booking) use the same tokens in
+a light look.
 
-The founding count (like "3 left") lives in one place only: the `#founding` line in `index.html`.
+The founding count (like "4 left") lives in one place on the site: the `#founding` line in `index.html`, kept in step
+with `FOUNDING_LEFT` in `mark.js` (paid deposits only).
 
 Clients reach Taya by email only (no calls, no chat). There's no chat or call link anywhere on the site: to get
 in touch, every page points to the free mockup (`intake.html`) or to taya@webfaery.love.
 
 Tests (not published; folders starting with `_` are skipped by GitHub Pages):
-`node _tests/quiz-paths.test.mjs`, `node _tests/site-text.test.mjs` and `node _tests/portal-text.test.mjs`
+`node _tests/quiz-paths.test.mjs`, `node _tests/site-text.test.mjs`, `node _tests/portal-text.test.mjs` and
+`node _tests/door-text.test.mjs`

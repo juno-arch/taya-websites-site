@@ -15,48 +15,42 @@
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Your project, in one calm place">
 <meta property="og:description" content="Your short list, where we are, your files and payments. Sign in with a little code, no passwords.">
-<meta property="og:image" content="https://webfaery.love/images/share.jpg">
+<meta property="og:image" content="https://webfaery.love/images/share.jpg?v=20261014">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Golden mushrooms glowing on dark moss, with the words: hand-built websites for small local businesses">
+<meta property="og:image:alt" content="Tall redwoods under a pink and lavender twilight sky, with the words: hand-built websites for small local businesses">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0e0e0c">
-<meta name="color-scheme" content="dark">
-<link rel="preload" as="image" href="images/mushrooms.webp" type="image/webp" fetchpriority="high">
-<link rel="stylesheet" href="fonts/fonts.css?v=20261001f">
-<link rel="stylesheet" href="soil.css?v=20261001f">
-<!-- the mycelium in the soil: the threads wait to grow in (unless the visitor asks for reduced motion); see mycelium.js.
-     Every other page does that first step with one inline line; the security line above allows no inline scripts,
-     so here the same line lives in portal-myc.js (loaded right away, before the page paints) -->
-<script src="portal-myc.js?v=20261001f"></script>
-<script src="mycelium.js?v=20261001f" defer></script>
-<link rel="stylesheet" href="pages.css?v=20261001f">
-<link rel="stylesheet" href="portal.css?v=20261012b">
+<meta name="theme-color" content="#2e3271">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="wf-tokens.css?v=20261014a">
+<link rel="stylesheet" href="wf-backend.css?v=20261014a">
+<link rel="stylesheet" href="portal.css?v=20261014a">
 <!--
-  portal.html: a client's own project page (built Sep 30, 2026, PREVIEW ONLY: DEMO = true in portal.js).
-  They sign in with a one-time code sent to their email (no passwords), then see:
-    a note from Taya (optional), their short list, where we are, their things (draft, agreement, sheets,
-    receipts), payments, and "Ask for a change" when they have a subscription.
+  portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
+  They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
+  (on a phone, the dock at the bottom). Only the tabs they have show:
+    Home: whose turn it is, a note from Taya, and what needs them now
+    Your project: their short list, where we are, their things (draft, agreement, sheets, receipts)
+    Orders, Products, Codes, Bookings, Gift certificates, Newsletter: only for a client whose shop, booking,
+      gift certificates or newsletter run on Web Faery's server
+    Payments: paid and still to come
+    Ask Taya: "Ask for a change", when they have a subscription
+  Each tab has its own address (#orders, #bookings-hours, #newsletter-sent), so a link or a reload opens it again.
+  A section with hidden on it is one this client doesn't have; the tabs only move between the rest.
   Everything they see comes from Taya's PocketBase dashboard (webfaery_clients and friends), through the
-  routes in garden-faery-hub/pocketbase/pb_hooks/webfaery-portal.pb.js. How to switch it on for real: the
-  deploy notes in garden-faery-hub/pocketbase/webfaery-portal-docs/ (kept out of this public repo).
-  Until then DEMO = true shows a sample client, Rosa of Fern & Clay Pottery, and sends nothing.
+  routes in garden-faery-hub/pocketbase/pb_hooks/webfaery-portal.pb.js (deploy notes in
+  garden-faery-hub/pocketbase/webfaery-portal-docs/, kept out of this public repo).
 
-  Files: portal.css (the look), portal.js (everything that happens), portal-demo.js (the sample client,
-  loaded only while DEMO = true), portal-myc.js (the one line that lets the mycelium grow in). The soil and its
-  mycelium (soil.css, mycelium.js) and the corner faery (faery.js) are the same as on every page.
-  Not in sitemap.xml and not linked from other pages yet: Pollen decides when to share it.
+  Files: wf-tokens.css (the colors, type and sizes every Web Faery page shares), wf-backend.css (the back ends'
+  shared look: the bar, the tabs, buttons, fields, sheets), portal.css (this page's own parts), portal.js
+  (everything that happens), portal-demo.js (a sample client, loaded only while DEMO = true in portal.js).
+  Not in sitemap.xml.
 -->
-<!-- the little faery in the corner (faery.js): no libraries, no network calls, no trackers -->
-<link rel="stylesheet" href="faery.css?v=20261001f">
-<script src="faery.js?v=20261001f" defer></script>
-<link rel="stylesheet" href="readable.css?v=20261002a">
 </head>
 <body>
-<!-- the soil and its mycelium behind everything (soil.css, mycelium.js): decoration only -->
-<div class="soil" aria-hidden="true"></div>
 <a class="skip-link" href="#main">Skip to your project</a>
 
 <!-- little drawings used more than once -->
@@ -81,25 +75,39 @@
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V5M7.5 9.5 12 5l4.5 4.5M5 15.5V18a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 18v-2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 20.5v-8M12 12.5C12 8 9 5.2 4.2 5.2c0 4.6 3 7.3 7.8 7.3Zm0 0c0-3.6 2.5-6 6.6-6 0 3.7-2.6 6-6.6 6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <!-- the tabs (Oct 14 2026) -->
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.2 12 4.5l8 6.7V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-path" viewBox="0 0 24 24"><path d="M6 20.5c0-3.4 2.4-4.6 5.4-5.6 3.2-1 6-2.2 6-5.6 0-2.6-2-4.3-4.6-4.3H9.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="7" cy="5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="6" cy="20.5" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M4 8.2 12 4l8 4.2v8.6L12 21l-8-4.2ZM4 8.2l8 4.2 8-4.2M12 12.4V21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4 12.6V5a1 1 0 0 1 1-1h7.6l7.4 7.4a1 1 0 0 1 0 1.4l-6.2 6.2a1 1 0 0 1-1.4 0Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9h17M12 9v11M12 9C10 5 6.5 5 6.5 7.2S10 9 12 9Zm0 0c2-4 5.5-4 5.5-1.8S14 9 12 9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4.5 7 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ask" viewBox="0 0 24 24"><path d="M5 5.5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4.5 3.5v-3.5H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18.5" cy="12" r="1.7" fill="currentColor"/></symbol>
 </svg>
 
-<header class="page-hero short" id="hero">
-  <picture><source type="image/webp" srcset="images/mushrooms.webp"><img class="photo" src="images/mushrooms.jpg" alt="" fetchpriority="high" decoding="async"></picture>
-  <div class="bar">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon)"/></svg><span class="wm">Web <span>Faery</span></span></a>
-    <nav aria-label="Site"><a href="start.html" id="nav-start">Getting started</a><a href="index.html">Home</a><button type="button" class="nav-out" id="b-signout-top" hidden>Sign out</button></nav>
+<header class="top" id="top">
+  <div class="top-art" aria-hidden="true">
+    <picture><source type="image/webp" srcset="images/admin-strip.webp"><img src="images/admin-strip.jpg" width="1456" height="300" alt="" decoding="async"></picture>
   </div>
-  <div class="words">
-    <span class="eyebrow" id="hero-eyebrow">Your project</span>
-    <h1 id="hero-title">Come on <em>in.</em></h1>
-    <p class="lede" id="hero-lede">I’ll send a little code to your email. No passwords to remember.</p>
+  <div class="top-in">
+    <a class="brand" href="index.html" id="top-brand">
+      <!-- LOGO SLOT: when Pollen's logo arrives, an img with class "logo" goes here, just before the name,
+           36 px tall (wf-backend.css .brand .logo) -->
+      <span class="wm" id="top-wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span>
+      <!-- signed in: their business name leads the bar, "your site, from Web Faery" beside it (portal.js setBrand) -->
+      <span class="biz" id="top-biz" hidden></span>
+    </a>
+    <span class="via" id="top-via"></span>
+    <nav class="top-nav" id="top-nav" aria-label="Site"><a href="start.html" id="nav-start">Getting started</a><a href="index.html" id="nav-home">Home</a><button type="button" class="nav-out" id="b-signout-top" hidden>Sign out</button></nav>
   </div>
+  <!-- the tabs: portal.js adds only the ones this client has (on a phone they move to the dock at the bottom) -->
+  <nav class="tabs" id="tabs" aria-label="Your pages" hidden></nav>
 </header>
-<!-- portal.js runs right here (not deferred) so the photo's slow intro is set before the first paint,
-     like the little script after the photo on the other pages; the rest waits for the page to finish -->
-<script src="portal.js?v=20261012b"></script>
+<script src="portal.js?v=20261014a"></script>
 
-<main class="gutter" id="main" tabindex="-1"><div class="wrap">
+<main class="page" id="main" tabindex="-1">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll tell you where things are.</p></div></noscript>
 
@@ -125,6 +133,13 @@
   </div>
 
   <p class="sr-only" id="live" aria-live="polite"></p>
+
+  <!-- the greeting: on the sign-in steps and on Home (portal.js writes the words) -->
+  <div class="hello" id="hello">
+    <span class="kicker" id="hero-eyebrow">Your project</span>
+    <h1 id="hero-title">Come on <em>in.</em></h1>
+    <p class="lede" id="hero-lede">I’ll send a little code to your email. No passwords to remember.</p>
+  </div>
 
   <!-- ============ sign in, step 1: their email ============ -->
   <section class="p-card signin" id="v-email" aria-labelledby="h-email" hidden>
@@ -196,14 +211,14 @@
   <div id="v-project" hidden>
 
     <!-- whose turn it is, while their magic mockup is the step (Oct 2 2026) -->
-    <section class="p-card turn" id="sec-turn" aria-labelledby="h-turn" hidden>
+    <section class="p-card turn" id="sec-turn" data-page="home" aria-labelledby="h-turn" hidden>
       <span class="kicker" id="turn-kicker">Your turn</span>
       <h2 id="h-turn"></h2>
       <p id="turn-text"></p>
       <p class="turn-act"><a class="btn" id="turn-btn" href="#"><span id="turn-btn-text">Open my mockup</span></a></p>
     </section>
 
-    <section class="p-card taya-note" id="sec-note" aria-labelledby="h-note" hidden>
+    <section class="p-card taya-note" id="sec-note" data-page="home" aria-labelledby="h-note" hidden>
       <img class="face" src="taya.jpg" width="256" height="256" alt="" decoding="async">
       <div>
         <h2 class="kicker" id="h-note">A note from Taya</h2>
@@ -212,9 +227,22 @@
       </div>
     </section>
 
+    <!-- what needs them now (Oct 14 2026): built by portal.js from their list, payments, orders and bookings -->
+    <section class="p-card needs" id="sec-needs" data-page="home" aria-labelledby="h-needs" hidden>
+      <h2 class="sh" id="h-needs">Needs you</h2>
+      <ul class="ledger" id="needs"></ul>
+      <p class="needs-calm" id="needs-calm" hidden>Nothing needs you right now. Everything else is quietly running.</p>
+    </section>
+
+    <!-- numbers at a glance (Oct 14 2026): only for a client whose shop, booking or gift certificates run here -->
+    <section class="p-card" id="sec-glance" data-page="home" aria-labelledby="h-glance" hidden>
+      <h2 class="sh" id="h-glance">At a glance</h2>
+      <dl class="glance" id="glance"></dl>
+    </section>
+
     <!-- your shop's products (Oct 10 2026): the owner adds and keeps their own products here; only for a client whose
          shop runs on Web Faery's server. Its code is the "Products card" block in portal.js. -->
-    <section class="p-card" id="sec-products" aria-labelledby="h-products" hidden>
+    <section class="p-card" id="sec-products" data-page="products" aria-labelledby="h-products" hidden>
       <span class="kicker">Your shop</span>
       <h2 id="h-products" tabindex="-1">Products</h2>
       <p class="orders-fine">What’s in your shop. A draft stays off your site until you set it live, and a count at 0 shows as sold out.</p>
@@ -279,7 +307,7 @@
     </section>
 
     <!-- your shop's orders (Oct 8 2026): only for a client whose shop runs on Web Faery's server -->
-    <section class="p-card" id="sec-orders" aria-labelledby="h-orders" hidden>
+    <section class="p-card" id="sec-orders" data-page="orders" aria-labelledby="h-orders" hidden>
       <span class="kicker">Your shop</span>
       <h2 id="h-orders" tabindex="-1">Orders</h2>
       <p class="orders-test" id="orders-test" hidden>Test mode: these are practice orders, no real money.</p>
@@ -293,7 +321,7 @@
     </section>
 
     <!-- your shop's discount codes and free shipping (Oct 10 2026): only for a client whose shop runs on Web Faery's server -->
-    <section class="p-card" id="sec-codes" aria-labelledby="h-codes" hidden>
+    <section class="p-card" id="sec-codes" data-page="codes" aria-labelledby="h-codes" hidden>
       <span class="kicker">Your shop</span>
       <h2 id="h-codes" tabindex="-1">Discount codes</h2>
       <p class="orders-fine">Make a code, share it, and buyers type it at checkout. Their Stripe receipt shows it too. A use counts once the order is paid.</p>
@@ -353,7 +381,7 @@
     </section>
 
     <!-- gift certificates (Oct 10 2026): only for a client whose site sells them through Web Faery's server -->
-    <section class="p-card" id="sec-gifts" aria-labelledby="h-gifts" hidden>
+    <section class="p-card" id="sec-gifts" data-page="gifts" aria-labelledby="h-gifts" hidden>
       <span class="kicker">Your site</span>
       <h2 id="h-gifts" tabindex="-1">Gift certificates</h2>
       <p class="orders-test" id="gifts-test" hidden>Test mode: these are practice certificates, no real money.</p>
@@ -378,7 +406,7 @@
          repeating blocks, their own calendars, questions, limits, settings): only for a client whose booking runs on
          Web Faery's server. Each tab can be opened by its own address: #bookings-upcoming, #bookings-calendar,
          #bookings-hours, #bookings-services, #bookings-calendars, #bookings-settings -->
-    <section class="p-card" id="sec-bookings" aria-labelledby="h-bookings" hidden>
+    <section class="p-card" id="sec-bookings" data-page="bookings" aria-labelledby="h-bookings" hidden>
       <span class="kicker">Your booking</span>
       <h2 id="h-bookings" tabindex="-1">Bookings</h2>
       <p class="orders-test" id="bk-off" hidden>Booking isn’t switched on for your site yet. Taya turns it on with you once your hours and services look right.</p>
@@ -538,7 +566,7 @@
     <!-- your newsletter (Oct 12 2026): only for a client whose newsletter runs on Web Faery's server. Four tabs, each with
          its own address: #newsletter-write, #newsletter-sent, #newsletter-people, #newsletter-settings. Its code is the
          "your newsletter" block in portal.js; the server side is hub DEPLOY.md section 64. -->
-    <section class="p-card" id="sec-news" aria-labelledby="h-news" hidden>
+    <section class="p-card" id="sec-news" data-page="newsletter" aria-labelledby="h-news" hidden>
       <span class="kicker">Your newsletter</span>
       <h2 id="h-news" tabindex="-1">Newsletter</h2>
       <p class="orders-test" id="nl-not-ready" hidden></p>
@@ -648,7 +676,7 @@
       </div>
     </section>
 
-    <section class="p-card" id="sec-list" aria-labelledby="h-list">
+    <section class="p-card" id="sec-list" data-page="project" aria-labelledby="h-list">
       <span class="kicker">Your list</span>
       <h2 id="h-list" tabindex="-1">Just these few things</h2>
       <ul class="todos" id="todos"></ul>
@@ -661,7 +689,7 @@
       </details>
     </section>
 
-    <section class="p-card" id="sec-where" aria-labelledby="h-where">
+    <section class="p-card" id="sec-where" data-page="project" aria-labelledby="h-where">
       <span class="kicker">Where we are</span>
       <h2 id="h-where">Your site, step by step</h2>
       <p class="tl-after" id="tl-after" hidden></p>
@@ -669,14 +697,14 @@
       <button type="button" class="later tl-more" id="b-tl-more" aria-controls="tl" aria-expanded="false" hidden>See every step</button>
     </section>
 
-    <section class="p-card" id="sec-things" aria-labelledby="h-things">
+    <section class="p-card" id="sec-things" data-page="project" aria-labelledby="h-things">
       <span class="kicker">Your things</span>
       <h2 id="h-things">All in one place</h2>
       <ul class="things" id="things"></ul>
     </section>
 
     <!-- texts from Web Faery (Oct 2 2026): shows once texts are switched on on the server -->
-    <section class="p-card" id="sec-texts" aria-labelledby="h-texts" hidden>
+    <section class="p-card" id="sec-texts" data-page="project" aria-labelledby="h-texts" hidden>
       <span class="kicker">Texts</span>
       <h2 id="h-texts">Sign in with a text</h2>
       <div id="texts-on" hidden>
@@ -694,14 +722,14 @@
       </form>
     </section>
 
-    <section class="p-card" id="sec-pay" aria-labelledby="h-pay" tabindex="-1">
+    <section class="p-card" id="sec-pay" data-page="payments" aria-labelledby="h-pay" tabindex="-1">
       <span class="kicker">Payments</span>
       <h2 id="h-pay">Paid and still to come</h2>
       <div class="pays" id="pays"></div>
       <p class="pay-fine" id="pay-fine">Card or bank transfer. It opens Stripe, my payment company. Paid marks show here once I see it land, usually within a day.</p>
     </section>
 
-    <section class="p-card" id="sec-change" aria-labelledby="h-change" hidden>
+    <section class="p-card" id="sec-change" data-page="ask" aria-labelledby="h-change" hidden>
       <span class="kicker">Ask for a change</span>
       <h2 id="h-change" tabindex="-1">What would you like?</h2>
       <!-- care clients: the form -->
@@ -743,14 +771,24 @@
     </section>
 
   </div>
-</div></main>
+</main>
 
 <!-- a small word that comes and goes (demo notes, "sent", payments); screen readers hear it through #live -->
 <div class="toast" id="toast" aria-hidden="true" hidden></div>
 
+<!-- on a phone the tabs sit here, at the bottom (the first four, and More for the rest) -->
+<nav class="dock" id="dock" aria-label="Your pages" hidden></nav>
+<div class="more-sheet" id="more" hidden>
+  <div class="more-in" role="dialog" aria-modal="true" aria-labelledby="more-h">
+    <p class="kicker" id="more-h">More</p>
+    <ul id="more-list"></ul>
+    <button type="button" class="lnk" id="more-close">Close</button>
+  </div>
+</div>
+
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="brand-moon-2"><rect width="24" height="24" fill="white"/><circle cx="8.6" cy="12" r="8.4" fill="black"/></mask></defs><circle cx="12" cy="12" r="8.4" fill="#f2c77c" mask="url(#brand-moon-2)"/></svg><span class="wm">Web <span>Faery</span></span></a>
+    <a class="brand" href="index.html"><span class="wm">Web <span>Faery</span><i class="wm-spark" aria-hidden="true"></i></span></a>
     <ul>
       <li><a href="start.html">Getting started</a></li>
       <li><a href="welcome.html">What happens next</a></li>

@@ -1,26 +1,44 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-wf-dark="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>This device is me &middot; Web Faery</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="/wf-tokens.css?v=20261014a">
 <style>
-  :root { --char: #1c1b18; --char-2: #24221e; --line: #3b3832; --bone: #efe6d4; --muted: #b8ae9c; --gold: #f2c77c; --moss: #a9c08a; color-scheme: dark; }
-  * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; background: var(--char); color: var(--bone); font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.55; display: grid; place-items: center; padding: 24px 16px; }
-  main { max-width: 520px; width: 100%; background: var(--char-2); border: 1px solid var(--line); border-radius: 18px; padding: 28px 24px; }
-  h1 { font-weight: normal; font-size: 28px; line-height: 1.2; margin: 0 0 12px; color: var(--gold); }
+  /* The back-end look (Oct 14 2026): lavender mist and a paper sheet, or the twilight when this device is in dark mode
+     (data-wf-dark="auto" on <html>). Colors, type and sizes come from /wf-tokens.css. */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px;
+    background: var(--wf-b-bg-glow), var(--wf-b-bg); background-attachment: fixed; color: var(--wf-b-ink);
+    font: 300 17px/var(--wf-b-line) var(--wf-font-work); font-synthesis: none; }
+  main { position: relative; overflow: hidden; max-width: 520px; width: 100%; padding: 32px 26px 22px; border-radius: var(--wf-r-sheet);
+    background: var(--wf-b-sheet); border: 1px solid var(--wf-b-rule); box-shadow: var(--wf-b-shadow); }
+  main::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 5px;
+    background: linear-gradient(90deg, var(--wf-twilight), var(--wf-lavender) 38%, var(--wf-pink) 70%, var(--wf-gold)); }
+  h1 { font: 400 clamp(28px, 7vw, 34px)/1.15 var(--wf-font-display); margin: 0 0 14px; color: var(--wf-b-ink); text-wrap: balance; }
   p { margin: 0 0 14px; }
-  .state { font-size: 19px; }
-  .state.on { color: var(--moss); }
-  .small { color: var(--muted); font-size: 15px; }
-  button { font: inherit; font-size: 17px; cursor: pointer; border-radius: 999px; padding: 10px 20px; margin: 6px 0 18px; border: 1px solid var(--gold); background: var(--gold); color: var(--char); }
-  button.off { background: transparent; color: var(--gold); }
-  button:focus-visible { outline: 3px solid var(--bone); outline-offset: 3px; }
+  .state { display: flex; align-items: baseline; gap: 10px; font-size: 18px; font-weight: 400; }
+  .state::before { content: ''; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--wf-b-edge); translate: 0 -1px; }
+  .state.on { color: var(--wf-b-done); }
+  .state.on::before { background: var(--wf-b-done); }
+  .small { color: var(--wf-b-ink-soft); font-size: 15px; }
+  .small:last-child { margin-bottom: 0; }
+  button { display: inline-flex; align-items: center; justify-content: center; min-height: var(--wf-tap); margin: 6px 0 20px; padding: 10px 22px;
+    border-radius: var(--wf-r-pill); border: 1px solid var(--wf-btn-edge); background: var(--wf-btn-bg); color: var(--wf-btn-ink);
+    font: 500 16px/1.2 var(--wf-font-work); cursor: pointer; box-shadow: var(--wf-shadow-btn-card); }
+  button:hover { filter: brightness(1.04); }
+  button.off { background: transparent; border-color: var(--wf-b-edge); color: var(--wf-b-link); box-shadow: none; }
+  button.off:hover { background: var(--wf-b-well); filter: none; }
+  button:focus-visible { outline: 2px solid var(--wf-b-focus); outline-offset: 3px; }
+  @media (prefers-reduced-motion: no-preference) { button { transition: filter var(--wf-dur-quick) ease, background-color var(--wf-dur-quick) ease; } }
   [hidden] { display: none !important; }
 </style>
 </head>
