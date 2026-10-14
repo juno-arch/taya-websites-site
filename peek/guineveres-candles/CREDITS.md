@@ -15,9 +15,9 @@ Left out on purpose: photos with words on them (their slogan banners, the Instag
 | pouring.webp / -640 | flowercandles.com home slideshow banner pixelcut-export_33.png ("Where Every Candle is Hand Poured") | Only the photo inside the banner, no banner text |
 | garden.webp / -640 | flowercandles.com home slideshow banner pixelcut-export_34.png ("Where Every Flower is Grown in Our Gardens") | Only the photo inside the banner, cropped to the poppy bed (the house and solar panels above are left out) |
 | redwood-pillar.webp / -640 | McKinleyville Chamber member page (mckinleyvillechamber.com/?p=1697), their photo 1000004155 | A flower pillar with poppies, pansies and fern on a stump among the redwoods |
-| shop/*.webp (92 files) | flowercandles.com /products.json, every product's main photo and each color or scent photo, at 640px | Their real catalog, Oct 12 2026: 31 products |
+| shop/*.webp (92 files) | flowercandles.com /products.json, every product's main photo and each color or scent photo, at 640px | Their real catalog, Oct 12 2026: 31 products. Since Oct 14 2026 the page shows 20 of them (a mockup shows 20 items for sale at most); the photos of the other 11 stay here for swaps |
 | logo.png, logo-light.png | flowercandles.com, Guinevere_Logo_Final-03_1.png | Their logo. logo-light has only the purple grey lettering and lines turned ivory for dark grounds; the poppy, leaf and ring keep their colors |
 
-Drawn for the page (no photo): the burn shelf candles (SVG, drawn to the sizes on their product pages), the little sprig divider, the frog in the footer.
+Drawn for the page (no photo): the burn shelf candles (SVG, drawn to the sizes on their product pages), the little sprig divider, the tiny green frog candle in the footer (after their Tiny Green Frog Candle).
 
-Fonts: Almendra (headings; a calligraphic book hand with a fairy tale feel, for a business named after Guinevere with Merlin candles), Andika (body; a clear, friendly reading face, rounded like the letters in their logo), Caveat (Taya's notes only), all from Google Fonts.
+Fonts: Radley (headings, since Oct 14 2026; drawn from lettering hand carved in wood, by Vernon Adams, OFL), Andika (body, prices and burn hours; a clear, friendly reading face, rounded like the letters in their logo), Caveat (Taya's notes only), all from Google Fonts.

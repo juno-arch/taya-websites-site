@@ -17,7 +17,7 @@
 <link rel="preload" as="image" href="images/hero-900.webp" media="(max-width: 760px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Radley:ital@0;1&family=Andika:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap">
 <style>
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   blockquote, figure, dl, dd { margin: 0; }
@@ -48,6 +48,8 @@
     --tag-line: #d9c6e8;
     --slat: rgba(93, 58, 136, 0.06);
     --btn-ink: #2a2235;
+    /* headings: Radley, from lettering hand carved in wood (one weight, with a real italic), warm like the old style caps on their labels */
+    --serif: 'Radley', 'Palatino Linotype', Georgia, serif;
     --logo-lift: none;
     --lb-veil: rgba(26, 19, 33, 0.95); --lb-ink: #f7f0e3; --lb-accent: #f6c14a; --lb-caption-font: 'Andika', 'Trebuchet MS', sans-serif;
     color-scheme: light;
@@ -82,7 +84,7 @@
   input:focus-visible, textarea:focus-visible { outline: 2px solid var(--pansy); outline-offset: 1px; }
   [tabindex="-1"]:focus { outline: none; }
 
-  h1, h2, h3, h4, h5, .serif { font-family: 'Almendra', 'Palatino Linotype', Georgia, serif; font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: 0; }
+  h1, h2, h3, h4, h5, .serif { font-family: var(--serif); font-weight: 400; text-wrap: balance; margin: 0; letter-spacing: 0; }
   h2 { font-size: clamp(34px, 5.2vw, 54px); line-height: 1.06; }
   h2 em, h1 em, h3 em { font-style: italic; font-weight: 400; color: var(--pansy); }
   .label { font-size: 12.5px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 700; color: var(--ink-soft); margin: 0 0 14px; text-wrap: balance; }
@@ -215,7 +217,8 @@
   .scent { display: grid; gap: 4px; font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
   .scent select { font: inherit; font-size: 16px; color: var(--ink); background: var(--ground); border: 1px solid var(--hair); border-radius: 8px; padding: 9px 10px; min-height: 44px; width: 100%; }
   .pc-buy { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px dashed var(--hair); }
-  .pc-price { font-family: 'Almendra', Georgia, serif; font-weight: 700; font-size: 25px; line-height: 1; }
+  /* numbers in Andika: Radley has only old style figures, where 10 reads like IO */
+  .pc-price { font-family: 'Andika', 'Trebuchet MS', sans-serif; font-weight: 700; font-size: 22px; line-height: 1; font-variant-numeric: lining-nums; }
   .pc-go { font: inherit; font-weight: 700; font-size: 15px; min-height: 44px; padding: 0 16px; border-radius: 999px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
     background: var(--poppy); color: var(--btn-ink); border: 1px solid var(--poppy); white-space: nowrap; }
   .pc-go:hover { background: var(--poppy-deep); border-color: var(--poppy-deep); }
@@ -229,6 +232,7 @@
   /* Planted and Tended: Buy opens their Shopify shop. In Bloom: Add to bag. */
   :root[data-view="maiden"] .buy-in, :root[data-view="mother"] .buy-in { display: none; }
   :root:not([data-view="maiden"]):not([data-view="mother"]) .buy-out { display: none; }
+  .shop-more { margin-top: 26px; font-size: 15.5px; color: var(--ink-soft); }
   .none { margin-top: 30px; padding: 26px; text-align: center; border: 1px dashed var(--hair); border-radius: 12px; color: var(--ink-soft); }
 
   .bk-note { border-left: 2px solid var(--pansy); padding: 4px 0 4px 14px; font-size: 15px; color: var(--ink-soft); text-wrap: pretty; }
@@ -255,7 +259,7 @@
   .bag-list { list-style: none; margin-top: 6px; }
   .bag-list li { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--hair); }
   .bag-list img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; display: block; }
-  .bag-list b { font-family: 'Almendra', Georgia, serif; font-weight: 700; font-size: 17px; display: block; line-height: 1.2; }
+  .bag-list b { font-family: var(--serif); font-weight: 400; font-size: 17px; display: block; line-height: 1.2; }
   .bag-list small { color: var(--ink-soft); font-size: 14px; display: block; }
   .qty { display: inline-flex; align-items: center; gap: 2px; margin-top: 4px; }
   .qty button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--hair); background: var(--ground); color: var(--ink); font: inherit; font-size: 18px; line-height: 1; cursor: pointer; }
@@ -327,7 +331,7 @@
   .cdl:hover .bloom, .cdl[aria-pressed="true"] .bloom { opacity: 1; }
   .cdl[aria-pressed="true"]::after { content: ""; display: block; width: 34px; height: 3px; margin-top: 6px; border-radius: 3px; background: var(--on-band-accent); }
   .hrs { grid-row: 3; text-align: center; padding-top: 14px; display: grid; gap: 6px; justify-items: center; }
-  .hrs b { font-family: 'Almendra', Georgia, serif; font-size: 30px; line-height: 1; color: var(--on-band-accent); font-variant-numeric: tabular-nums; }
+  .hrs b { font-family: 'Andika', 'Trebuchet MS', sans-serif; font-weight: 700; font-size: 27px; line-height: 1; color: var(--on-band-accent); font-variant-numeric: tabular-nums; }
   .hrs b small { font-size: 17px; }
   .hrs span { font-size: 13px; line-height: 1.3; color: var(--on-band-soft); text-wrap: balance; }
   .hrs i { display: block; width: 100%; max-width: 92px; height: 4px; border-radius: 4px; background: rgba(247, 240, 227, 0.12); overflow: hidden; }
@@ -361,7 +365,7 @@
   .gal figure { margin: 0; overflow: hidden; border-radius: 8px; background: var(--ground-2); cursor: zoom-in; }
   .gal figure:first-child { grid-row: span 2; }
   .gal img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .quote-line { margin-top: 34px; font-family: 'Almendra', Georgia, serif; font-style: italic; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.35; color: var(--pansy-deep); max-width: 36ch; }
+  .quote-line { margin-top: 34px; font-family: var(--serif); font-style: italic; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.35; color: var(--pansy-deep); max-width: 36ch; }
   .quote-line small { display: block; margin-top: 8px; font-family: 'Andika', sans-serif; font-style: normal; font-size: 14px; color: var(--ink-soft); }
 
   /* ---------- STORY ---------- */
@@ -381,7 +385,7 @@
   .fairs { list-style: none; display: grid; gap: 0; border-top: 2px solid var(--ink); }
   .fairs li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--hair); }
   .fairs .mo { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--leaf-deep); padding-top: 4px; }
-  .fairs b { display: block; font-family: 'Almendra', Georgia, serif; font-size: 20px; line-height: 1.2; }
+  .fairs b { display: block; font-family: var(--serif); font-weight: 400; font-size: 20px; line-height: 1.2; }
   .fairs span { font-size: 14.5px; color: var(--ink-soft); }
   .next-fair { margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: var(--ground-2); font-size: 15.5px; }
   .next-fair b { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); display: block; margin-bottom: 2px; }
@@ -389,8 +393,8 @@
   /* ---------- WORDS ---------- */
   .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 34px; }
   .review { background: var(--ground-2); border-radius: 14px; padding: 24px 22px 18px; display: flex; flex-direction: column; gap: 14px; position: relative; }
-  .review::before { content: "\201C"; font-family: 'Almendra', Georgia, serif; font-size: 64px; line-height: 0.6; color: var(--leaf); height: 22px; }
-  .review blockquote { font-family: 'Almendra', Georgia, serif; font-size: 22px; line-height: 1.35; font-weight: 400; }
+  .review::before { content: "\201C"; font-family: var(--serif); font-size: 64px; line-height: 0.6; color: var(--leaf); height: 22px; }
+  .review blockquote { font-family: var(--serif); font-size: 22px; line-height: 1.35; font-weight: 400; }
   .review cite { font-style: normal; font-size: 14px; color: var(--ink-soft); margin-top: auto; }
 
   /* ---------- FAQ ---------- */
@@ -490,8 +494,35 @@
   :root[data-theme="dark"] .foot-logo.on-light { display: none; }
   :root[data-theme="dark"] .foot-logo.on-dark { display: block; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .foot-logo.on-light { display: none; } :root:not([data-theme="light"]) .foot-logo.on-dark { display: block; } }
-  .frog-btn { width: 52px; height: 52px; display: grid; place-items: center; padding: 0; margin: 0; cursor: pointer; background: none; border: 0; border-radius: 50%; -webkit-tap-highlight-color: transparent; }
-  .frog-btn svg { width: 40px; height: 40px; display: block; }
+  /* the tiny green frog, their newest candle: tap him and he hops, his wick catches and his wax glows,
+     and his line points to his candle in the shop. Tap again to blow him out. Lit and still under reduced motion. */
+  .frog-spot { flex: 1 1 320px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
+  .frog-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 64px; margin: 0; padding: 4px 20px 4px 10px; cursor: pointer; font: inherit; font-size: 15.5px; font-weight: 700; line-height: 1.25;
+    color: var(--pansy-deep); background: var(--ground-2); border: 1px solid var(--hair); border-radius: 999px; -webkit-tap-highlight-color: transparent; transition: border-color 0.2s ease; }
+  .frog-btn:hover { border-color: var(--pansy); }
+  .frog-btn svg { width: 44px; height: 55px; flex: none; display: block; overflow: visible; }
+  #frog-say { display: inline-block; min-width: 8.9em; text-align: left; } /* the same width lit or not, so nothing beside him jumps */
+  .fr-hop, .fr-flame, .fr-smoke { transform-box: fill-box; transform-origin: 50% 100%; }
+  .fr-flame { opacity: 0; transform: scale(0.2); transition: opacity 0.35s ease, transform 0.6s cubic-bezier(.3,1.6,.5,1); }
+  .fr-halo { opacity: 0; transition: opacity 0.8s ease 0.2s; }
+  .fr-glow { opacity: 0; transition: opacity 1.4s ease 0.3s; }
+  .fr-smoke { opacity: 0; }
+  .frog-spot.lit .fr-flame { opacity: 1; transform: none; }
+  .frog-spot.lit .fr-halo { opacity: 1; }
+  .frog-spot.lit .fr-glow { opacity: 0.8; }
+  .frog-spot.lit.flick .fr-flame { animation: flick 2.4s ease-in-out infinite alternate; }
+  .frog-spot.paused .fr-flame { animation-play-state: paused; }
+  .frog-spot.hop .fr-hop { animation: fr-hop 0.9s cubic-bezier(.3,.7,.3,1) both; }
+  @keyframes fr-hop { 0% { transform: none; } 16% { transform: scale(1.08, 0.86); } 46% { transform: translateY(-22px) scale(0.96, 1.06); } 74% { transform: none; } 84% { transform: scale(1.05, 0.93); } 100% { transform: none; } }
+  .frog-spot.puff .fr-smoke { animation: fr-puff 1.3s ease-out both; }
+  @keyframes fr-puff { 0% { opacity: 0; transform: none; } 20% { opacity: 0.85; } 100% { opacity: 0; transform: translateY(-10px) scale(1.2); } }
+  .frog-line { flex: 1 1 260px; max-width: 46ch; font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+  .frog-line:empty { display: none; }
+  .frog-line .fl-cue { display: block; margin-bottom: 2px; font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.25; color: var(--pansy-deep); }
+  @media (prefers-reduced-motion: reduce) {
+    .frog-btn, .fr-flame, .fr-halo, .fr-glow { transition: none; } .fr-flame { transform: none; }
+    .frog-spot.hop .fr-hop, .frog-spot.lit.flick .fr-flame, .frog-spot.puff .fr-smoke { animation: none; }
+  }
   .legend { margin-top: 12px; font-size: 13px; line-height: 2.15; }
   .foot-reach a { display: inline-block; padding-block: 9px; }
 
@@ -502,7 +533,7 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .status-strip { background: #33204d; } }
   .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; color: inherit; text-decoration: none; }
   .status-strip b { text-transform: uppercase; letter-spacing: 0.14em; font-size: 11.5px; font-weight: 700; }
-  .status-strip em { font-family: 'Almendra', Georgia, serif; font-style: italic; font-size: 17px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(251, 244, 234, 0.55); }
+  .status-strip em { font-family: var(--serif); font-style: italic; font-size: 17px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(251, 244, 234, 0.55); }
   .status-strip a:focus-visible { outline: 2px solid #fbf4ea; outline-offset: -4px; border-radius: 6px; }
   .status + .hero-band { min-height: calc(94vh - 40px); min-height: calc(94svh - 40px); }
   .status-tab { position: absolute; top: 100%; left: calc(20px + max(0px, (100% - 1120px) / 2)); display: flex; align-items: flex-start; gap: 6px; }
@@ -516,7 +547,7 @@
   .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground); border: 1px solid var(--hair); border-radius: 999px; flex: 0 1 380px; }
   .seg button { font: inherit; font-size: 14.5px; color: var(--ink-soft); background: transparent; border: 0; border-radius: 999px; padding: 10px 12px; min-height: 44px; cursor: pointer; }
   .seg button[aria-pressed="true"] { background: var(--pansy); color: var(--ground); }
-  .status-note { margin: 0; font-family: 'Almendra', Georgia, serif; font-style: italic; font-size: 18px; color: var(--pansy-deep); }
+  .status-note { margin: 0; font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--pansy-deep); }
   @media (max-width: 560px) { .status-strip b { font-size: 10.5px; letter-spacing: 0.1em; } .status-strip em { font-size: 16px; } .seg { flex-basis: 100%; } }
   .theme-tab { display: inline-flex; align-items: stretch; min-height: 26px; box-sizing: border-box; background: var(--ground); border: 1px solid var(--pansy); border-top: 0; border-radius: 0 0 12px 12px; }
   .theme-tab button { display: inline-flex; align-items: center; gap: 5px; margin: 0; padding: 7px 10px 8px; cursor: pointer; -webkit-appearance: none; appearance: none; font-family: 'Andika', sans-serif; font-size: 10.5px; line-height: 1;
@@ -533,14 +564,14 @@
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
   .views-q { margin: 0; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--pansy-deep); }
   .views-q::before { content: "\2726"; content: "\2726" / ""; font-size: 9px; opacity: 0.8; }
-  .views-price { margin: 0; font-family: 'Almendra', Georgia, serif; font-style: italic; font-size: 17px; color: var(--ink-soft); }
-  .views-spots { grid-column: 1 / -1; margin: 0 2px; font-family: 'Almendra', Georgia, serif; font-style: italic; font-size: 17px; color: var(--ink-soft); line-height: 1.5; }
+  .views-price { margin: 0; font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink-soft); }
+  .views-spots { grid-column: 1 / -1; margin: 0 2px; font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink-soft); line-height: 1.5; }
   .vseg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 10px; }
   .views-care { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 10px 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 10px; }
   .views-care .care-what { flex: 1 1 260px; font-size: 14px; line-height: 1.45; opacity: 0.9; }
   .vseg button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 58px; margin: 0; padding: 8px 6px;
     font: inherit; line-height: 1.2; text-align: center; color: var(--ink); background: transparent; border: 0; border-radius: 8px; cursor: pointer; transition: background-color 0.25s ease, color 0.25s ease; }
-  .vseg b, .views-care b { font-family: 'Almendra', Georgia, serif; font-weight: 700; font-size: 20px; line-height: 1.15; }
+  .vseg b, .views-care b { font-family: var(--serif); font-weight: 400; font-size: 20px; line-height: 1.15; }
   .vseg .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .vseg .pr strong { font-weight: 700; color: var(--pansy-deep); }
   .vseg .pr s { margin-left: 5px; }
@@ -579,19 +610,6 @@
     font-family: 'Caveat', cursive; font-weight: 600; font-size: 15px; line-height: 1; color: #8a3d5c; white-space: nowrap;
     background: #fbd7e4; padding: 6px 10px 5px; border-radius: 2px; rotate: 2.5deg; box-shadow: 0 2px 5px rgba(26, 19, 33, 0.2); }
   .status-panel > .wrap::after { top: -21px; right: 0; }
-
-  /* the secret: the tiny green frog */
-  .frog-egg { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; text-align: center; cursor: pointer; background: rgba(20, 14, 25, 0.93); color: #f7f0e3; }
-  .frog-egg-in { display: grid; place-items: center; gap: 14px; padding: 24px; }
-  .egg-frog { width: 150px; height: 150px; overflow: visible; }
-  .egg-frog .hop { transform-box: fill-box; transform-origin: 50% 100%; }
-  .frog-egg.go .egg-frog .hop { animation: hop 1.4s cubic-bezier(.3,.7,.3,1) 0.3s 2 both; }
-  @keyframes hop { 0% { transform: none; } 18% { transform: scale(1.06, 0.88); } 45% { transform: translateY(-46px) scale(0.96, 1.06); } 72% { transform: none; } 82% { transform: scale(1.05, 0.92); } 100% { transform: none; } }
-  .egg-frog .ef { opacity: 0; transition: opacity 0.8s ease 2.9s; }
-  .frog-egg.go .egg-frog .ef { opacity: 1; }
-  .frog-egg .cue { font-family: 'Almendra', Georgia, serif; font-style: italic; font-size: clamp(26px, 5vw, 38px); line-height: 1.2; }
-  .frog-egg .cue-small { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.75; }
-  @media (prefers-reduced-motion: reduce) { .frog-egg.go .egg-frog .hop { animation: none; } .egg-frog .ef { transition: none; opacity: 1; } }
 
   .reveal.pre { opacity: 0; transform: translateY(24px); }
   .reveal.in { opacity: 1; transform: none; transition: opacity 0.9s cubic-bezier(.2,.7,.3,1), transform 0.9s cubic-bezier(.2,.7,.3,1); }
@@ -754,7 +772,7 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: everything in your shop with its price and photo, each with a Buy button to your Shopify shop, how long they burn, your garden and your story, where to find you, and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: twenty of your candles with their prices and photos, each with a Buy button to your Shopify shop, how long they burn, your garden and your story, where to find you, and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus the shop sorted by kind and by flower color, your FAQ, a newsletter sign-up that reaches you, a contact form and your Instagram feed. Buy buttons still go to your Shopify shop."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus your own shop right on your site, with a bag, your discount codes and checkout through your own Stripe, so Shopify could go."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
@@ -781,11 +799,11 @@
     <div class="finder" id="finder" data-show="mother crone all" data-thing="shop sorted by kind and flower color">
       <div class="chips" role="group" aria-labelledby="f-kind-q">
         <span class="chips-q" id="f-kind-q">Kind</span>
-        <button type="button" class="chip" data-cat="all" aria-pressed="true">Everything <small>31</small></button>
-        <button type="button" class="chip" data-cat="flower" aria-pressed="false">Flower candles <small>13</small></button>
-        <button type="button" class="chip" data-cat="critter" aria-pressed="false">Mushrooms &amp; critters <small>8</small></button>
+        <button type="button" class="chip" data-cat="all" aria-pressed="true">Everything <small>20</small></button>
+        <button type="button" class="chip" data-cat="flower" aria-pressed="false">Flower candles <small>8</small></button>
+        <button type="button" class="chip" data-cat="critter" aria-pressed="false">Mushrooms &amp; critters <small>6</small></button>
         <button type="button" class="chip" data-cat="merlin" aria-pressed="false">Merlin <small>2</small></button>
-        <button type="button" class="chip" data-cat="jar" aria-pressed="false">Jars &amp; sprays <small>6</small></button>
+        <button type="button" class="chip" data-cat="jar" aria-pressed="false">Jar candles <small>2</small></button>
         <button type="button" class="chip" data-cat="home" aria-pressed="false">For the home <small>2</small></button>
       </div>
       <div class="chips" role="group" aria-labelledby="f-col-q">
@@ -797,16 +815,17 @@
         <button type="button" class="chip" data-col="Yellow" aria-pressed="false"><span class="dot" style="background:#f1c232"></span>Yellow</button>
         <button type="button" class="chip" data-col="Red" aria-pressed="false"><span class="dot" style="background:#c9433f"></span>Red</button>
       </div>
-      <div class="finder-foot"><span id="f-count" role="status">Showing all 31</span><button type="button" class="linkish" id="f-clear" hidden>Show everything</button></div>
+      <div class="finder-foot"><span id="f-count" role="status">Showing all 20</span><button type="button" class="linkish" id="f-clear" hidden>Show everything</button></div>
     </div>
     <div class="shop-grid" id="shop-grid"></div>
+    <p class="shop-more">There are more candles on our table at fairs and festivals. <a href="#find">See where to find us</a></p>
     <div class="notes3">
       <div class="bk-note" data-show="maiden mother" hidden><b>Buy buttons</b>Planted and Tended: each Buy button opens that candle in your Shopify shop, so nothing about how you sell changes.</div>
       <div class="bk-note" data-show="crone all"><b>Sell right here</b>In Bloom: pick the flower color or scent, add to the bag, check out through your own Stripe. Orders and shipping addresses live in your own Stripe, with a short heads-up email for each, and Shopify could go.</div>
       <div class="bk-note" data-show="mother crone all"><b>Pick a color</b>Choose Purple and every flower candle that comes in purple switches to its purple photo, so people see the one they&rsquo;re buying.</div>
       <div class="bk-note" data-show="crone all"><b>Your codes</b>Your discount codes work at checkout, like the CANDLES25 and GIFT25 from your posts. Try one in the bag.</div>
     </div>
-    <p class="tier-note mock-note wf-note">These are your real candles, prices, sizes and burn times, from your Shopify shop, with your own photos. A new candle or a new scent: I can follow your socials and update as you post, or you can email me a photo and a price, and it&rsquo;s in.</p>
+    <p class="tier-note mock-note wf-note">Here are twenty of your candles, with your real prices, sizes and burn times from your Shopify shop and your own photos: your bestselling mushrooms, your newest frog and heart, and a little of everything else. A new candle or a new scent: I can follow your socials and update as you post, or you can email me a photo and a price, and it&rsquo;s in.</p>
   </div>
 </section>
 
@@ -1038,9 +1057,12 @@
     <div class="foot-top">
       <img class="foot-logo on-light" src="images/logo.png" width="626" height="335" alt="Guinevere&rsquo;s Candles: their logo, a golden poppy and a leaf in a green ring" loading="lazy">
       <img class="foot-logo on-dark" src="images/logo-light.png" width="626" height="335" alt="Guinevere&rsquo;s Candles: their logo, a golden poppy and a leaf in a green ring" loading="lazy">
-      <button type="button" class="frog-btn" id="frog-btn" aria-label="A tiny green frog candle"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 34c-2-6 1-13 6-15-1-3 1-7 4-7 2 0 3 1 3 3h-2c3-3 8-1 7 3 5 2 8 9 6 16Z" fill="#7aa33d"/><circle cx="16" cy="14" r="2.2" fill="#fff"/><circle cx="24.5" cy="15" r="2.2" fill="#fff"/><circle cx="16.3" cy="14.3" r="1.1" fill="#231a2d"/><circle cx="24.8" cy="15.3" r="1.1" fill="#231a2d"/><path d="M14 24c3 2 9 2 12 0" fill="none" stroke="#3d5a1c" stroke-width="1.4" stroke-linecap="round"/><path d="M20 9v-4" stroke="#5a4a3a" stroke-width="1.2" stroke-linecap="round"/></svg></button>
+      <div class="frog-spot" id="frog-spot">
+        <button type="button" class="frog-btn" id="frog-btn"><svg viewBox="0 0 48 60" aria-hidden="true"><defs><clipPath id="fr-clip"><ellipse cx="24" cy="47" rx="17" ry="11"/><ellipse cx="24" cy="34" rx="13.5" ry="9.5"/><circle cx="15.5" cy="27.5" r="5.4"/><circle cx="32.5" cy="27.5" r="5.4"/></clipPath></defs><g class="fr-hop"><circle class="fr-halo" cx="24" cy="12" r="13" fill="url(#gc-halo)"/><ellipse cx="9.5" cy="50" rx="6" ry="6.5" fill="#6d9a33"/><ellipse cx="38.5" cy="50" rx="6" ry="6.5" fill="#6d9a33"/><ellipse cx="24" cy="47" rx="17" ry="11" fill="#78a83a"/><ellipse cx="24" cy="49" rx="9.5" ry="7.5" fill="#a9d06a" opacity="0.55"/><ellipse cx="24" cy="34" rx="13.5" ry="9.5" fill="#86b845"/><circle cx="15.5" cy="27.5" r="5.4" fill="#86b845"/><circle cx="32.5" cy="27.5" r="5.4" fill="#86b845"/><g clip-path="url(#fr-clip)"><ellipse class="fr-glow" cx="24" cy="38" rx="17" ry="18" fill="url(#gc-glow)"/></g><circle cx="15.5" cy="27" r="3" fill="#fffdf5"/><circle cx="32.5" cy="27" r="3" fill="#fffdf5"/><circle cx="16" cy="27.4" r="1.5" fill="#231a2d"/><circle cx="32" cy="27.4" r="1.5" fill="#231a2d"/><path d="M18 37.5q6 4 12 0" fill="none" stroke="#3d5a1c" stroke-width="1.4" stroke-linecap="round"/><path d="M13 57.5c1.5-3 6-3 7.5 0zM27.5 57.5c1.5-3 6-3 7.5 0z" fill="#6d9a33"/><path d="M24 24.6v-4.6" stroke="#4a3b2c" stroke-width="1.2" stroke-linecap="round"/><path class="fr-smoke" d="M24 18c-2-3 2-5 0-8s2-5 0-8" fill="none" stroke="#b9aebf" stroke-width="1.2" stroke-linecap="round"/><g class="fr-flame"><path d="M24 4.5c3.2 4.4 4.4 8 0 15.5-4.4-7.5-3.2-11.1 0-15.5z" fill="url(#gc-flame)"/><path d="M24 11c1.4 2.1 1.7 3.8 0 6.6-1.7-2.8-1.4-4.5 0-6.6z" fill="#fffbe8"/></g></g></svg><span id="frog-say">Light the tiny frog</span></button>
+        <p class="frog-line" id="frog-line" aria-live="polite"></p>
+      </div>
     </div>
-    <span class="nw">Guinevere&rsquo;s Candles &middot; hand poured flower candles <span aria-hidden="true">&middot;</span></span> <span class="nw">woman-owned, in McKinleyville, California</span>
+    <span class="nw">Guinevere&rsquo;s Candles &middot;</span> <span class="nw">hand poured flower candles <span aria-hidden="true">&middot;</span></span> <span class="nw">woman-owned, in McKinleyville, California</span>
     <p class="foot-reach"><span class="nw">Call <a class="tel" href="tel:+17076165541">(707) 616-5541</a> <span aria-hidden="true">&middot;</span></span> <span class="nw"><a href="https://www.instagram.com/guineverescandles/" target="_blank" rel="noopener">@guineverescandles<span class="vh"> on Instagram (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span></span> <span class="nw"><a href="https://www.facebook.com/people/Guineveres-Candles/100076146635000/" target="_blank" rel="noopener">Facebook<span class="vh"> (opens in a new tab)</span></a></span></p>
     <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page, Buy buttons to your Shopify shop), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site, the shop sorted by kind and color, newsletter), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (your own shop, right on your site, through Stripe). The banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
@@ -1092,7 +1114,7 @@
       <p class="views-price">Your founding price, half off the build</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: everything in your shop with its price and photo, each with a Buy button to your Shopify shop, how long they burn, your garden and your story, where to find you, and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: twenty of your candles with their prices and photos, each with a Buy button to your Shopify shop, how long they burn, your garden and your story, where to find you, and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus the shop sorted by kind and by flower color, your FAQ, a newsletter sign-up that reaches you, a contact form and your Instagram feed. Buy buttons still go to your Shopify shop."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus your own shop right on your site, with a bag, your discount codes and checkout through your own Stripe, so Shopify could go."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
@@ -1100,14 +1122,6 @@
     <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep flowercandles.com: I can hold and renew it for you (it stays legally yours). If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">4 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
     <p class="views-note" id="vp-note"></p>
-  </div>
-</div>
-
-<div class="frog-egg" id="frog-egg" role="dialog" aria-label="The tiny green frog" tabindex="-1" hidden>
-  <div class="frog-egg-in">
-    <svg class="egg-frog" viewBox="0 0 40 46" aria-hidden="true"><defs><radialGradient id="ef-g"><stop offset="0" stop-color="#fff6c8"/><stop offset="0.5" stop-color="#f6c14a"/><stop offset="1" stop-color="#f6c14a" stop-opacity="0"/></radialGradient></defs><g class="hop"><path d="M8 44c-2-6 1-13 6-15-1-3 1-7 4-7 2 0 3 1 3 3h-2c3-3 8-1 7 3 5 2 8 9 6 16Z" fill="#7aa33d"/><circle cx="16" cy="24" r="2.2" fill="#fff"/><circle cx="24.5" cy="25" r="2.2" fill="#fff"/><circle cx="16.3" cy="24.3" r="1.1" fill="#231a2d"/><circle cx="24.8" cy="25.3" r="1.1" fill="#231a2d"/><path d="M14 34c3 2 9 2 12 0" fill="none" stroke="#3d5a1c" stroke-width="1.4" stroke-linecap="round"/><path d="M20 19v-4" stroke="#5a4a3a" stroke-width="1.2" stroke-linecap="round"/><g class="ef"><circle cx="20" cy="10" r="9" fill="url(#ef-g)" opacity="0.6"/><path d="M20 4c2.4 3 3 5.6 0 10.6C17 9.6 17.6 7 20 4z" fill="#f6c14a"/><path d="M20 8c1 1.4 1.2 2.8 0 5-1.2-2.2-1-3.6 0-5z" fill="#fff6c8"/></g></g></svg>
-    <p class="cue" id="egg-cue" role="status">Your heart, jumping for joy.</p>
-    <p class="cue-small">The tiny green frog burns for 8 hours. Tap anywhere to come back.</p>
   </div>
 </div>
 
@@ -1121,23 +1135,18 @@
 </svg>
 
 <script>
-  /* their shop: every product, price, size and burn time is theirs, from flowercandles.com (Shopify), Oct 12 2026 */
+  /* their shop: 20 of their 31 products (Oct 14 2026: a mockup shows 20 items for sale at most), picked for flower colors, shapes and sizes,
+     their bestselling mushrooms and their two newest (the tiny green frog and the medium heart). Every price, size and burn time is theirs,
+     from flowercandles.com (Shopify), Oct 12 2026 */
   window.GC_SHOP = [{"h": "tiny-mushroom-flower-candle","t": "Tiny Mushroom Flower Candle","cat": "flower","p": 10,"img": "tiny-mushroom-flower-candle.webp","size": "2.5 by 2 in","hrs": 10,"bw": "more than 10 hours","d": "These little cuties bring smiles to faces all around.","kind": "color","opts": ["Pink","Purple","Blue","Yellow"],"imgs": {"Pink": "tiny-mushroom-flower-candle-pink.webp","Purple": "tiny-mushroom-flower-candle-purple.webp","Blue": "tiny-mushroom-flower-candle-blue.webp","Yellow": "tiny-mushroom-flower-candle-yellow.webp"}},
   {"h": "medium-mushroom-flower-candle","t": "Medium Mushroom Flower Candle","cat": "flower","p": 20,"img": "medium-mushroom-flower-candle.webp","size": "4.5 by 3.5 in","hrs": 25,"bw": "over 25 hours","d": "Our handmade mushrooms are our most popular sellers.","kind": "color","opts": ["Yellow","Blue","Pink","Purple"],"imgs": {"Yellow": "medium-mushroom-flower-candle-yellow.webp","Blue": "medium-mushroom-flower-candle.webp","Pink": "medium-mushroom-flower-candle-pink.webp","Purple": "medium-mushroom-flower-candle-purple.webp"}},
-  {"h": "large-mushroom-flower-candle","t": "Large Mushroom Flower Candle","cat": "flower","p": 28,"img": "large-mushroom-flower-candle.webp","size": "5.5 by 4 in","d": "These handmade beauties are sure to delight anyone.","kind": "color","opts": ["Blue","Purple","Yellow","Pink"],"imgs": {"Blue": "large-mushroom-flower-candle-blue.webp","Purple": "large-mushroom-flower-candle.webp","Yellow": "large-mushroom-flower-candle-yellow.webp","Pink": "large-mushroom-flower-candle-pink.webp"}},
-  {"h": "mushroom-family-flower-candles","t": "Mushroom Family Flower Candles","cat": "flower","p": 48,"img": "mushroom-family-flower-candles.webp","size": "tiny, medium and large","d": "Adopt the whole handmade family and save."},
   {"h": "small-pillar-flower-candle","t": "Small Pillar Flower Candle","cat": "flower","p": 18,"img": "small-pillar-flower-candle.webp","size": "3 by 3 in","hrs": 30,"bw": "over 30 hours","d": "The perfect size to add beauty to any space.","kind": "color","opts": ["Blue","Purple","Pink","Red"],"imgs": {"Blue": "small-pillar-flower-candle-blue.webp","Purple": "small-pillar-flower-candle.webp","Pink": "small-pillar-flower-candle-pink.webp","Red": "small-pillar-flower-candle-red.webp"}},
   {"h": "large-pillar-flower-candle","t": "Large Pillar Flower Candle","cat": "flower","p": 35,"img": "large-pillar-flower-candle.webp","size": "3.5 by 6 in","hrs": 150,"bw": "over 150 hours","d": "These burn forever. We stopped timing after days and days had passed.","kind": "color","opts": ["Purple","Blue","Pink","Yellow"],"imgs": {"Purple": "large-pillar-flower-candle-purple.webp","Blue": "large-pillar-flower-candle.webp"}},
   {"h": "tall-pillar-flower-candle","t": "Tall Pillar Flower Candle","cat": "flower","p": 35,"img": "tall-pillar-flower-candle.webp","size": "3 by 9 in","hrs": 80,"bw": "over 80 hours","d": "They burn straight down, so you can enjoy the garden scene that adorns them.","kind": "color","opts": ["Blue","Purple","Pink","Yellow"],"imgs": {"Blue": "tall-pillar-flower-candle-blue.webp","Purple": "tall-pillar-flower-candle-purple.webp","Pink": "tall-pillar-flower-candle.webp","Yellow": "tall-pillar-flower-candle-yellow.webp"}},
-  {"h": "pillar-family","t": "Pillar Flower Candle Family","cat": "flower","p": 100,"img": "pillar-family.webp","size": "small, medium, large and tall","d": "All four pillars, in the flower color you choose.","kind": "color","opts": ["Blue","Purple","Yellow","Pink"],"imgs": {"Blue": "pillar-family-blue.webp","Purple": "pillar-family-purple.webp","Yellow": "pillar-family-yellow.webp","Pink": "pillar-family-pink.webp"}},
   {"h": "small-sphere-flower-candle","t": "Small Sphere Flower Candle","cat": "flower","p": 22,"img": "small-sphere-flower-candle.webp","size": "3 by 3 in","hrs": 30,"bw": "over 30 hours","d": "A handmade sphere to ignite a spark in your soul.","kind": "color","opts": ["Blue","Yellow","Pink","Purple"],"imgs": {"Blue": "small-sphere-flower-candle-blue.webp","Yellow": "small-sphere-flower-candle-yellow.webp","Pink": "small-sphere-flower-candle.webp","Purple": "small-sphere-flower-candle-purple.webp"}},
-  {"h": "medium-sphere-candles","t": "Medium Sphere Flower Candle","cat": "flower","p": 28,"img": "medium-sphere-candles.webp","hrs": 30,"bw": "over 30 hours","d": "Each one as unique as the real flowers placed upon it.","kind": "color","opts": ["Yellow","Blue","Purple","Pink"],"imgs": {"Yellow": "medium-sphere-candles-yellow.webp","Blue": "medium-sphere-candles-blue.webp","Purple": "medium-sphere-candles-purple.webp","Pink": "medium-sphere-candles.webp"}},
   {"h": "tear-drop-candle","t": "Tear Drop Flower Candle","cat": "flower","p": 30,"img": "tear-drop-candle.webp","size": "8 by 4 in","hrs": 70,"bw": "more than 70 hours","d": "The perfect gift for any occasion.","kind": "color","opts": ["Pink","Purple","Blue","Red"],"imgs": {"Pink": "tear-drop-candle-pink.webp","Purple": "tear-drop-candle-purple.webp","Blue": "tear-drop-candle-blue.webp","Red": "tear-drop-candle-red.webp"}},
-  {"h": "small-heart-candle","t": "Small Heart Candle","cat": "flower","p": 20,"img": "small-heart-candle.webp","size": "3 in","hrs": 20,"bw": "20 hours","d": "To fill your loved one with joy and appreciation."},
   {"h": "medium-heart-flower-candle","t": "Medium Heart Flower Candle","cat": "flower","p": 24,"img": "medium-heart-flower-candle.webp","size": "4 by 4 in","hrs": 40,"bw": "40 hours","d": "Our handmade medium heart will fill you with love."},
-  {"h": "tiny-magic-mushroom-candle","t": "Tiny Magic Mushroom Candle","cat": "critter","p": 10,"img": "tiny-magic-mushroom-candle.webp","size": "2.5 by 2 in","hrs": 10,"bw": "over 10 hours","d": "Little cuties that bring smiles to faces all around."},
   {"h": "medium-magic-mushroom-candle","t": "Medium Magic Mushroom Candle","cat": "critter","p": 20,"img": "medium-magic-mushroom-candle.webp","size": "4.5 by 3.5 in","hrs": 24,"bw": "over 24 hours","d": "A fun, fantastic shape, and our most popular sellers."},
-  {"h": "large-magic-mushroom-candle","t": "Large Magic Mushroom Candle","cat": "critter","p": 28,"img": "large-magic-mushroom-candle.webp","size": "5.5 by 4 in","hrs": 30,"bw": "over 30 hours","d": "Handmade beauties, sure to delight anyone."},
   {"h": "purple-magic-mushroom-family","t": "Purple Magic Mushroom Family","cat": "critter","p": 48,"img": "purple-magic-mushroom-family.webp","size": "tiny, medium and large","d": "The whole family, to delight the young and old alike."},
   {"h": "frog-flower-candles","t": "Frog Flower Candle","cat": "critter","p": 20,"img": "frog-flower-candles.webp","size": "4 by 3 in","hrs": 20,"bw": "20 hours","d": "Our handmade frogs will make your heart hop for joy.","kind": "color","opts": ["Purple","Blue","Yellow","Pink"],"imgs": {"Purple": "frog-flower-candles-purple.webp","Blue": "frog-flower-candles-blue.webp","Yellow": "frog-flower-candles-yellow.webp","Pink": "frog-flower-candles-pink.webp"}},
   {"h": "snails","t": "Snail Flower Candle","cat": "critter","p": 25,"img": "snails.webp","size": "6 by 3.5 in","hrs": 20,"bw": "more than 20 hours","d": "These snails bring smiles to faces all around.","kind": "color","opts": ["Pink","Purple","Blue","Yellow"],"imgs": {"Pink": "snails-pink.webp","Purple": "snails.webp","Blue": "snails-blue.webp","Yellow": "snails-yellow.webp"}},
@@ -1147,10 +1156,6 @@
   {"h": "merlin-large-pillar-candle","t": "Merlin Large Pillar Candle","cat": "merlin","p": 28,"img": "merlin-large-pillar-candle.webp","size": "3 by 9.5 in","hrs": 150,"bw": "over 150 hours","d": "Sparkle and shine for any abode, finished with a charm.","kind": "scent","opts": ["Green Tea & Lemongrass","Lavender Driftwood","Sea Salt Orchid","Santal & Coconut"],"imgs": {"Green Tea & Lemongrass": "merlin-large-pillar-candle.webp","Lavender Driftwood": "merlin-large-pillar-candle-lavender-driftwood.webp","Sea Salt Orchid": "merlin-large-pillar-candle-sea-salt-orchid.webp","Santal & Coconut": "merlin-large-pillar-candle-santal-coconut.webp"},"dots": {"Green Tea & Lemongrass": "#9ccf3f","Lavender Driftwood": "#9a6fd0","Sea Salt Orchid": "#e0489a","Santal & Coconut": "#33a6a6"}},
   {"h": "guineveres-jar-candles-1","t": "Guinevere’s Jar Candle","cat": "jar","p": 16,"img": "guineveres-jar-candles-1.webp","d": "Our coconut and beeswax blend, hand poured into real mason jars, with a brushed silver lid and a charm. Clean scents only.","kind": "scent","opts": ["Apple Maple Bourbon","White Tea","Sea Salt Orchid","Black Cherry Pipe Tobacco","Whiskey","Leather","Wild Rose","Coffee","Green Tea & Lemongrass","Santal Coconut","Toasted Pumpkin Spice","Caramel Brulee","Fir Tree","Frankincense & Myrrh"],"imgs": {"Apple Maple Bourbon": "guineveres-jar-candles-1-apple-maple-bourbon.webp","White Tea": "guineveres-jar-candles-1-white-tea.webp","Sea Salt Orchid": "guineveres-jar-candles-1.webp","Black Cherry Pipe Tobacco": "guineveres-jar-candles-1-black-cherry-pipe-tobacco.webp","Whiskey": "guineveres-jar-candles-1-whiskey.webp","Leather": "guineveres-jar-candles-1-leather.webp","Wild Rose": "guineveres-jar-candles-1-wild-rose.webp","Coffee": "guineveres-jar-candles-1-coffee.webp","Green Tea & Lemongrass": "guineveres-jar-candles-1-green-tea-lemongrass.webp","Santal Coconut": "guineveres-jar-candles-1-santal-coconut.webp","Toasted Pumpkin Spice": "guineveres-jar-candles-1-toasted-pumpkin-spice.webp","Caramel Brulee": "guineveres-jar-candles-1-caramel-brulee.webp","Fir Tree": "guineveres-jar-candles-1-fir-tree.webp","Frankincense & Myrrh": "guineveres-jar-candles-1-frankincense-myrrh.webp"}},
   {"h": "relax-rest-renew-rejuvinate-jar-candle","t": "Relax: Rest, Renew, Rejuvenate","cat": "jar","p": 18,"img": "relax-rest-renew-rejuvinate-jar-candle.webp","d": "Coconut wax with orange, tangerine, lavender, chamomile, ylang ylang and sandalwood oils. Glass jar, wooden lid."},
-  {"h": "energize-happiness-possitivity-jar-candle","t": "Energize: Happiness & Positivity","cat": "jar","p": 18,"img": "energize-happiness-possitivity-jar-candle.webp","hrs": 50,"bw": "over 50 hours","d": "Coconut wax with rosemary, grapefruit, orange, peppermint and cinnamon bark oils. Glass jar, wooden lid."},
-  {"h": "inspire-create-clarity-focus-jar-candle","t": "Inspire: Clarity & Focus","cat": "jar","p": 18,"img": "inspire-create-clarity-focus-jar-candle.webp","d": "Coconut wax with lemon, peppermint, wintergreen, basil, rosemary and grapefruit oils. Glass jar, wooden lid."},
-  {"h": "romance-arouse-passion-love-jar-candle","t": "Romance: Passion & Love","cat": "jar","p": 18,"img": "romance-arouse-passion-love-jar-candle.webp","d": "Coconut wax with lemon, orange, ylang ylang, sandalwood and jasmine absolute. Glass jar, wooden lid."},
-  {"h": "guineveres-room-linen-spray","t": "Room & Linen Spray","cat": "jar","p": 10,"img": "guineveres-room-linen-spray.webp","d": "Our most loved candle scents for your rooms and linens: filtered spring water and a toxin-free base.","kind": "scent","opts": ["Sea Salt Orchid","Santal Coconut","Lavender Driftwood"],"imgs": {"Sea Salt Orchid": "guineveres-room-linen-spray.webp","Santal Coconut": "guineveres-room-linen-spray-santal-coconut.webp","Lavender Driftwood": "guineveres-room-linen-spray-lavender-driftwood.webp"}},
   {"h": "guineveres-fire-starters","t": "Guinevere’s Fire Starters","cat": "home","p": 10,"img": "guineveres-fire-starters.webp","size": "10 in a reusable bag","d": "Made from 100% recycled wax. Starting any fire is a cinch."},
   {"h": "before-edison-emergency-candle","t": "Before Edison Emergency Candle","cat": "home","p": 12,"img": "before-edison-emergency-candle.webp","hrs": 60,"bw": "over 60 hours","d": "Style for any emergency, and light on any dark night."}];
 </script>
@@ -1160,7 +1165,7 @@
   (function () {
     function $(id) { return document.getElementById(id); }
     var S = window.GC_SHOP || [], grid = $('shop-grid'); if (!grid) return;
-    var CAT = { flower: 'Flower candle', critter: 'Mushrooms & critters', merlin: 'Merlin candle', jar: 'Jars & sprays', home: 'For the home' };
+    var CAT = { flower: 'Flower candle', critter: 'Mushrooms & critters', merlin: 'Merlin candle', jar: 'Jar candle', home: 'For the home' };
     var DOT = { Pink: '#e58bb8', Purple: '#8b62bf', Blue: '#6d8fd6', Yellow: '#f1c232', Red: '#c9433f' };
     var BY = {}; S.forEach(function (p) { BY[p.h] = p; });
     var sel = {}, state = { cat: 'all', col: 'any' };
@@ -1220,6 +1225,8 @@
     });
     grid.addEventListener('change', function (e) { if (e.target.tagName === 'SELECT') pick(BY[e.target.closest('.pc').id.slice(2)], e.target.value); });
     var catBtns = [].slice.call(document.querySelectorAll('#finder [data-cat]')), colBtns = [].slice.call(document.querySelectorAll('#finder [data-col]'));
+    /* each Kind chip counts the candles that are really on the page */
+    catBtns.forEach(function (b) { var k = b.dataset.cat, n = S.filter(function (p) { return k === 'all' || p.cat === k; }).length, sm = b.querySelector('small'); if (sm) sm.textContent = n; });
     var count = $('f-count'), clear = $('f-clear');
     function apply(announce) {
       var n = 0;
@@ -1572,24 +1579,48 @@
 </script>
 
 <script>
-  /* the secret: tap the tiny green frog in the footer three times (or type "ribbit"), and it hops for joy and lights up */
+  /* the tiny green frog: tap him (or type "ribbit") and he hops, his wick catches and his wax glows, and his line points to his candle
+     in the shop. Tap again to blow him out. Under reduced motion he is simply lit and still; with Save-Data his flame holds still. */
   (function () {
-    var btn = document.getElementById('frog-btn'), egg = document.getElementById('frog-egg');
-    if (!btn || !egg) return;
-    var taps = 0, timer = null, back = null, buf = '';
-    function show() {
-      back = document.activeElement; egg.hidden = false; egg.classList.remove('go');
-      requestAnimationFrame(function () { requestAnimationFrame(function () { egg.classList.add('go'); }); });
-      try { egg.focus({ preventScroll: true }); } catch (e) { egg.focus(); }
+    function $(id) { return document.getElementById(id); }
+    var btn = $('frog-btn'), spot = $('frog-spot'), say = $('frog-say'), line = $('frog-line');
+    if (!btn || !spot || !say || !line) return;
+    var rm = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    var conn = navigator.connection || {}, slow = !!(conn.saveData || /2g/.test(conn.effectiveType || ''));
+    var lit = false, timers = [], buf = '';
+    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function stop() { timers.forEach(clearTimeout); timers = []; }
+    function hop() { spot.classList.remove('hop'); void spot.offsetWidth; spot.classList.add('hop'); later(function () { spot.classList.remove('hop'); }, 950); }
+    function tell() {
+      var p = window.GC && window.GC.BY && window.GC.BY['tiny-green-frog-candle'];
+      var size = p && p.size ? p.size.replace(/ in$/, ' inches') : '1.5 by 1.5 inches', hrs = p && p.bw ? p.bw : '8 hours', price = p ? '$' + p.p : '$10';
+      line.innerHTML = '<span class="fl-cue">Ribbit. Your heart, jumping for joy.</span>Our tiny green frog candle is ' + size + ' and burns for ' + hrs + '. ' + price + '. <a href="#p-tiny-green-frog-candle" id="frog-shop">See him in the shop</a>';
+      if (!rm.matches) line.classList.add('fade-in');
     }
-    function hide() { egg.hidden = true; egg.classList.remove('go'); if (back && back.focus) try { back.focus({ preventScroll: true }); } catch (e) {} }
-    btn.addEventListener('click', function () { taps++; clearTimeout(timer); timer = setTimeout(function () { taps = 0; }, 900); if (taps >= 3) { taps = 0; show(); } });
-    egg.addEventListener('click', hide);
-    egg.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hide(); } });
+    function light() {
+      stop(); lit = true; spot.classList.remove('puff'); say.textContent = 'Blow him out';
+      if (rm.matches) spot.classList.add('lit');
+      else { hop(); later(function () { spot.classList.add('lit'); }, 600); if (!slow) later(function () { spot.classList.add('flick'); }, 1200); }
+      if (!line.firstChild) tell();
+    }
+    function out() {
+      stop(); lit = false; spot.classList.remove('lit', 'flick', 'hop'); say.textContent = 'Light him again';
+      if (!rm.matches) { spot.classList.remove('puff'); void spot.offsetWidth; spot.classList.add('puff'); later(function () { spot.classList.remove('puff'); }, 1400); }
+    }
+    btn.addEventListener('click', function () { if (lit) out(); else light(); });
+    line.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('#frog-shop') || !window.GC || !window.GC.show) return;
+      e.preventDefault(); window.GC.show('tiny-green-frog-candle');
+    });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { spot.classList.toggle('paused', !e.isIntersecting); }); }).observe(spot);
+    /* the old secret still works: type "ribbit" anywhere (not in a form) and he comes into view and lights */
     document.addEventListener('keydown', function (e) {
-      if (e.target.closest && e.target.closest('input, textarea, select')) return;
-      if (e.key.length !== 1) return; buf = (buf + e.key.toLowerCase()).slice(-6);
-      if (buf === 'ribbit') show();
+      if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
+      if (!e.key || e.key.length !== 1) return; buf = (buf + e.key.toLowerCase()).slice(-6);
+      if (buf !== 'ribbit') return; buf = '';
+      var r = spot.getBoundingClientRect(), seen = r.top >= 0 && r.bottom <= window.innerHeight;
+      if (!seen) spot.scrollIntoView({ behavior: rm.matches ? 'auto' : 'smooth', block: 'center' });
+      setTimeout(function () { if (!lit) light(); else if (!rm.matches) hop(); }, seen || rm.matches ? 0 : 750);
     });
   })();
 </script>
@@ -1603,7 +1634,7 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with everything in your shop, all 31, with prices and photos (each with a Buy button that opens it in your Shopify shop), how long they burn, your garden and your story, where to find you, kind words, and how to reach you.', next: 'mother' },
+      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with twenty of your candles, with prices and photos (each with a Buy button that opens it in your Shopify shop), how long they burn, your garden and your story, where to find you, kind words, and how to reach you.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus the shop sorted by kind and by flower color (pick Purple and every candle shows its purple photo), your FAQ, a newsletter sign-up that reaches you, a contact form and your Instagram feed. Buy buttons still open your Shopify shop.', next: 'crone' },
       crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus your own shop right here: pick the flower color or scent, add to the bag, use your discount codes, and check out through your own Stripe, with every order and shipping address in your Stripe and a short heads-up email for each. That’s every piece on this page, and Shopify could go.' },
       all: { name: 'Everything' }
