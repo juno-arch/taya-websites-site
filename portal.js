@@ -423,6 +423,7 @@
   let busy = 0;            // uploads or sends under way: never refresh the page under them
   let firstShow = true;    // the project rises in gently the first time only
   let paidReturn = '';     // back from Stripe: '1', or which payment ('deposit', 'balance', 'care')
+  let backToPay = false;   // back from Stripe without paying (?canceled=): open Payments, nothing more to say
   let nonce = newNonce();
   let pics = [];           // pictures chosen for a change request
   const openAnswers = new Set(); // "Change my answer" boxes someone opened
@@ -929,6 +930,7 @@
       loadNews();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
+      else if (backToPay) { backToPay = false; goPage('payments'); }
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(fromSignIn !== null); return; }
       show('v-offline');
@@ -4623,8 +4625,10 @@
     // and tidy the address bar so nothing lingers in it
     try {
       if (location.search) {
-        const v = new URLSearchParams(location.search).get('paid') || '';
+        const qs = new URLSearchParams(location.search);
+        const v = qs.get('paid') || '';
         paidReturn = ['1', 'deposit', 'balance', 'care'].includes(v) ? v : '';
+        backToPay = !paidReturn && qs.has('canceled');
         history.replaceState(null, '', location.pathname + location.hash);
       }
     } catch (e) { /* fine */ }
