@@ -2191,6 +2191,15 @@
     }
   };
   let serverPrices = null, who = null; // from /start-who: their own price lines for each build, and who they are
+  // their subscription a month: with their private link, the server's care_month for that build (a row with its own
+  // monthly price, like Tera's In Bloom at $45, Oct 14 2026), else the build's usual price in CARE
+  function careOf(k) {
+    const sp = serverPrices && serverPrices[k];
+    const n = sp ? Math.round(Number(sp.care_month) || 0) : 0;
+    return n > 0 ? n : CARE[k];
+  }
+  // a deal note as the end of a sentence: one period, never two ("...on the call.." read wrong)
+  const endDot = (t) => (/[.!?]$/.test(t) ? t : t + '.');
   // With their private link (Oct 10 2026), the page also saves to Taya's server as they go, words and photos, so it
   // follows them to any device they open their link on. Without a link it works on this device only, as before.
   // The key goes in the JSON body (k), and in the X-WF-Key header for a file (one file per request, in order).
@@ -2341,7 +2350,7 @@
     const sp = serverPrices && serverPrices[c.build] ? serverPrices[c.build] : null;
     if (b && sp && sp.deal) {
       m.deal = sp.deal; m.dealNote = sp.deal_note; m.full = 0; m.price = 0; m.deposit = 0; m.balance = 0; m.founding = false;
-      m.rows.push({ label: b.name + ' build', amt: 'as we agreed', note: 'Your price, as we agreed: ' + sp.deal_note + '.' });
+      m.rows.push({ label: b.name + ' build', amt: 'as we agreed', note: 'Your price, as we agreed: ' + endDot(sp.deal_note) });
     } else if (b) {
       m.full = b.price; m.price = c.founding ? b.price / 2 : b.price; m.deposit = m.price / 2; m.balance = m.price - m.deposit;
       if (sp) { m.founding = sp.founding; m.full = sp.full; m.price = sp.price; m.deposit = sp.deposit; m.balance = sp.balance; }
@@ -2351,9 +2360,10 @@
       m.rows.push({ label: 'Balance at launch', amt: money(m.balance) });
     }
     if (b) {
-      m.care = CARE[c.build];
+      m.care = careOf(c.build);
+      const usual = m.care !== CARE[c.build] ? 'Your price, as we agreed (usually ' + money(CARE[c.build]) + '). ' : '';
       m.after.push({ label: 'Your ' + b.name + ' subscription', amt: money(m.care) + ' a month',
-        note: 'It starts after your 30 days of settling in. ' + CARE_SHORT[c.build] });
+        note: usual + 'It starts after your 30 days of settling in. ' + CARE_SHORT[c.build] });
       year = m.care * 12; // kept only for the server record (year_low / year_high); never shown
       // email from their own address comes with Tended and In Bloom care only (Oct 5 2026): a Planted client who
       // wants it moves up to Tended, so it's never a side cost here (the note under the build says so)
@@ -2385,16 +2395,21 @@
         was.append(make('span', 'sr-only', 'founding price, usually '), make('s', null, money(full)));
         el.append(was);
       } else el.append(make('strong', null, money(full)));
+      // the subscription line on each card: their own price for their own build when the server says so, else the usual
+      const bc = $('[data-build="' + key + '"] .b-care');
+      if (bc) bc.textContent = 'Then a ' + money(careOf(key)) + ' a month subscription';
     }
     $$('.build').forEach((l) => l.classList.toggle('on', $('input', l).checked));
     $$('.opt').forEach((l) => { const i = $('input', l); if (i) l.classList.toggle('on', i.checked); });
     const b = BUILDS[c.build];
     // care: its price follows the build, and what it covers (every tier up to theirs, or all three before they pick)
-    $('#care-price').textContent = b ? money(CARE[c.build]) + ' a month for ' + b.name : '$12, $45 or $90 a month, matching your build';
+    $('#care-price').textContent = b ? money(careOf(c.build)) + ' a month for ' + b.name : '$12, $45 or $90 a month, matching your build';
     const incl = $('#care-incl'), upTo = b ? Object.keys(BUILDS).indexOf(c.build) : 2;
     incl.textContent = '';
     Object.keys(BUILDS).slice(0, upTo + 1).forEach((k, i) => {
-      const head = ['🌱', '🌿', '🌸'][i] + ' ' + BUILDS[k].name + ', ' + money(CARE[k]) + ' a month: ' + CARE_HEAD[k];
+      // their own build at their own price (with "usually" when it isn't the table's); the tiers below it as usual
+      const mo = k === c.build ? careOf(k) : CARE[k];
+      const head = ['🌱', '🌿', '🌸'][i] + ' ' + BUILDS[k].name + ', ' + money(mo) + ' a month' + (mo !== CARE[k] ? ' for you (usually ' + money(CARE[k]) + ')' : '') + ': ' + CARE_HEAD[k];
       const ul = make('ul', 'checks');
       CARE_INCL[k].forEach((t) => ul.append(make('li', null, t)));
       incl.append(make('h4', null, head), ul);
@@ -2685,7 +2700,8 @@
       const cc = $('#cf-care');
       cc.textContent = '';
       cc.hidden = !b;
-      if (b) cc.append(make('b', null, 'Subscription: '), document.createTextNode(money(CARE[c.build]) + ' a month, starting after your 30 days of settling in. It keeps your site running, and if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can email me your changes anytime. If you ever cancel, your site is still yours.'));
+      const ccMo = b ? careOf(c.build) : 0;
+      if (b) cc.append(make('b', null, 'Subscription: '), document.createTextNode(money(ccMo) + ' a month' + (ccMo !== CARE[c.build] ? ', your price, as we agreed (usually ' + money(CARE[c.build]) + ')' : '') + ', starting after your 30 days of settling in. It keeps your site running, and if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can email me your changes anytime. If you ever cancel, your site is still yours.'));
       $('#build-change').setAttribute('aria-label', 'Change my build');
     }
 
@@ -2714,16 +2730,18 @@
     const set = (key, text) => $$('[data-a="' + key + '"]').forEach((el) => { el.textContent = text; });
     set('build', b ? b.name + ' build' : 'build (we’ll choose it together)');
     set('does', b ? b.does : 'the site we choose together.');
-    set('price', b && m.deal ? 'Your price, as we agreed: ' + m.dealNote : b ? money(m.price) + (m.founding ? ' (the founding price, half off ' + money(b.price) + ')' : '') : 'The price of your build');
+    // (a deal note's own last period goes: the words after it put their own period or colon there)
+    set('price', b && m.deal ? 'Your price, as we agreed: ' + String(m.dealNote).replace(/\.+$/, '') : b ? money(m.price) + (m.founding ? ' (the founding price, half off ' + money(b.price) + ')' : '') : 'The price of your build');
     set('deposit', b ? money(m.deposit) : 'your deposit');
     set('balance', b ? money(m.balance) : 'the balance');
     set('weeks', b ? b.weeks + ' weeks' : '2, 3 or 4 weeks');
     const name = val('f-name');
     set('client', name ? name + (val('f-biz') ? ' (' + val('f-biz') + ')' : '') : 'you');
-    // care: part of every build, at the build's monthly price (always full price, founding or not)
-    const careMo = b ? money(CARE[c.build]) + ' a month' : 'your build’s monthly price ($12, $45 or $90 a month)';
+    // care: part of every build, at the build's monthly price (always full price, founding or not), or the price on
+    // their own row when Taya set one (careOf: the server's care_month)
+    const careMo = b ? money(careOf(c.build)) + ' a month' : 'your build’s monthly price ($12, $45 or $90 a month)';
     set('after', 'your subscription, at ' + careMo);
-    set('care', b ? 'at ' + money(CARE[c.build]) + ' a month for your ' + b.name + ' site' : 'at your build’s monthly price ($12, $45 or $90 a month)');
+    set('care', b ? 'at ' + money(careOf(c.build)) + ' a month for your ' + b.name + ' site' : 'at your build’s monthly price ($12, $45 or $90 a month)');
     set('after-long', 'Your subscription, ' + careMo + ', starting after your 30 days of settling in. It covers hosting, your web address and backups,'
       + ' and if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need (changes usually go up within 2 business days).'
       + ' If anything breaks, or I got something wrong, I fix it. Big new things, like a new page or a new feature, I quote first.');
@@ -2743,7 +2761,7 @@
     const btn = $('#pay-btn'), agreed = $('#f-agree').checked && !!val('f-sig');
     $('#pay-amt').textContent = b ? money(m.deposit) : '$0';
     $('#pay-amt').hidden = !b;
-    $('#pay-what').textContent = b && m.deal ? 'No deposit for you: your price, as we agreed, is ' + m.dealNote + '.' : b
+    $('#pay-what').textContent = b && m.deal ? 'No deposit for you: your price, as we agreed, is ' + endDot(m.dealNote) : b
       ? 'Half of your ' + b.name + ' build (' + (m.founding ? 'founding price ' : '') + money(m.price) + '). The other ' + money(m.balance) + ' is due at launch.'
       : (c.build === 'unsure' ? 'Once we’ve picked your build together, your deposit shows up here, and I’ll send you the link.'
         : 'Pick your build ' + (linkBuild ? 'above' : 'in step 1') + ', and your deposit shows up here.');
@@ -3086,7 +3104,7 @@
   // (a row left out with false doesn't apply to them; a row with '' shows as "Nothing yet")
   function sections(r) {
     const c = choices(), m = priceModel(c), b = BUILDS[r.build], h = r.accounts.have;
-    const careName = b ? 'A subscription, ' + money(CARE[r.build]) + ' a month, starting after the 30 days of settling in' : 'A subscription, at the monthly price of the build we choose';
+    const careName = b ? 'A subscription, ' + money(careOf(r.build)) + ' a month, starting after the 30 days of settling in' : 'A subscription, at the monthly price of the build we choose';
     const bookingName = { none: 'No online booking', current: 'Keep my current booking app', calcom: 'Set me up with Cal.com' }[r.extras.booking] || 'No online booking';
     const extras = [r.extras.send_email && 'email from my own address', r.extras.newsletter && 'a newsletter', bookingName !== 'No online booking' && bookingName.toLowerCase().replace('cal.com', 'Cal.com'), r.extras.selling && 'taking payments online'].filter(Boolean);
     const stepName = (id) => $('.step-name', $('[data-step="' + id + '"]')).textContent.replace(/^Step \d+: /, '');
