@@ -103,6 +103,10 @@ main:focus { outline: none; }
   display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
 }
 .tabs::-webkit-scrollbar { display: none; }
+/* more tabs than fit (a tablet with many): a soft fade at the edge that has more */
+.tabs.more-right { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent); }
+.tabs.more-left { -webkit-mask-image: linear-gradient(90deg, transparent, #000 56px); mask-image: linear-gradient(90deg, transparent, #000 56px); }
+.tabs.more-left.more-right { -webkit-mask-image: linear-gradient(90deg, transparent, #000 56px, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(90deg, transparent, #000 56px, #000 calc(100% - 56px), transparent); }
 .tabs a {
   position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 10px 12px 12px;
   white-space: nowrap; color: var(--wf-b-bar-ink); text-decoration: none; font-weight: 400; font-size: 15.5px;

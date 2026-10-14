@@ -629,6 +629,15 @@
     if (more) { if (more.dataset.pages.split(' ').includes(id)) more.setAttribute('aria-current', 'page'); else more.removeAttribute('aria-current'); }
     document.title = (id === 'home' ? 'Your project' : pageInfo(id).label) + ' · Web Faery';
     if (how.scroll) window.scrollTo(0, 0);
+    // a narrow screen with many tabs: the open one slides into view, and a soft fade shows there are more
+    const bar = $('#tabs'), cur = $('#tabs a[aria-current]');
+    if (cur && bar.scrollWidth > bar.clientWidth + 1) bar.scrollLeft = Math.max(0, cur.offsetLeft - (bar.clientWidth - cur.offsetWidth) / 2);
+    tabsEdges();
+  }
+  function tabsEdges() {
+    const bar = $('#tabs');
+    bar.classList.toggle('more-left', bar.scrollLeft > 2);
+    bar.classList.toggle('more-right', bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2);
   }
   // from a button inside the page (See payments, a Needs you row): the address follows, like a tab
   function goPage(id) {
@@ -665,6 +674,8 @@
       focusEl($('#main'), true);
       announce(pageInfo(page).label);
     });
+    $('#tabs').addEventListener('scroll', tabsEdges, { passive: true });
+    window.addEventListener('resize', tabsEdges);
     $('#more-close').addEventListener('click', () => closeMore(true));
     $('#more').addEventListener('click', (e) => { if (e.target === $('#more') || e.target.closest('a')) closeMore(false); });
     $('#more').addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMore(true); });
