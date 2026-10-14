@@ -469,6 +469,28 @@
   .seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground); border: 1.5px solid var(--hair); border-radius: 14px; }
   .seg button { font: inherit; font-size: 15px; font-weight: 500; line-height: 1.25; color: var(--ink-soft); background: transparent; border: 0; border-radius: 10px; padding: 10px 12px; min-height: 44px; cursor: pointer; }
   .seg button[aria-pressed="true"] { background: var(--ink); color: var(--ground); }
+  /* her Square service text, under the size picks: name, price and length, her description, and her notes in a small "about" */
+  .svc { margin-top: 12px; padding: 14px 16px 2px; border: 1.5px dashed var(--hair); border-radius: 14px; }
+  .svc-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+  .svc-name { font-weight: 600; font-size: 16.5px; line-height: 1.3; color: var(--ink); }
+  .svc-name em { display: block; margin-top: 4px; font-style: normal; font-family: 'Silkscreen', monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink-ink); }
+  .svc-pr { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--ink); text-align: right; margin-left: auto; }
+  .svc-pr small { display: block; font-weight: 300; font-size: 13.5px; color: var(--ink-soft); }
+  .svc-line { margin: 8px 0 10px; font-size: 15px; line-height: 1.55; color: var(--ink-soft); text-wrap: pretty; }
+  .svc-more { border-top: 1.5px dashed var(--hair); }
+  .svc-more summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 44px; box-sizing: border-box; padding: 6px 2px;
+    font-weight: 600; font-size: 15px; color: var(--pink-ink); }
+  .svc-more summary::-webkit-details-marker { display: none; }
+  .svc-more summary::after { content: ""; flex: none; width: 12px; height: 12px; margin-right: 2px;
+    background: linear-gradient(var(--pink-ink), var(--pink-ink)) center / 12px 2px no-repeat, linear-gradient(var(--pink-ink), var(--pink-ink)) center / 2px 12px no-repeat; transition: rotate 0.35s ease; }
+  .svc-more[open] summary::after { rotate: 45deg; }
+  .svc-more[open] .svc-in { animation: fade-in 0.45s ease both; }
+  .svc-in { padding: 0 2px 14px; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  .svc-in p + p, .svc-in p + .svc-list, .svc-list + p { margin-top: 8px; }
+  .svc-imp { font-family: 'Silkscreen', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--pink-ink); }
+  .svc-list { list-style: none; display: grid; gap: 3px; }
+  .svc-list li::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 9px; background: var(--butter); border: 1.5px solid var(--line); rotate: 12deg; vertical-align: 1px; }
+  @media (prefers-reduced-motion: reduce) { .svc-more[open] .svc-in { animation: none; } .svc-more summary::after { transition: none; } }
   .sheet { background: var(--ground-2); border: 1.5px solid var(--hair); border-radius: 16px; padding: 14px 18px 18px; margin-top: 16px; }
   .sheet-h { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-family: 'Sora', sans-serif; font-size: 12.5px; line-height: 1.65; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: var(--ink-soft); }
   .sheet-lines > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 9px 0; border-bottom: 1px dashed var(--hair); }
@@ -1168,8 +1190,8 @@
       <p class="label" style="margin-bottom:6px">Tattoos and estimates</p>
       <ul class="menu">
         <li class="reveal"><span class="m-name">Palm to hand size<small>Color or black only.</small></span><span class="m-price">$350-500<small>2 hrs+</small></span></li>
-        <li class="reveal"><span class="m-name">Hand size</span><span class="m-price">$500-700<small>3 hrs+</small></span></li>
-        <li class="reveal"><span class="m-name">Appointment for Two<small>Flash only! Priced estimated for TWO, palm size tattoos for couples or friends. Perfect if you&rsquo;re getting married next door at Sure Thing!</small></span><span class="m-price">$500-750<small>3 hrs 30 mins</small></span></li>
+        <li class="reveal"><span class="m-name">Hand size<small>Color or black only.</small></span><span class="m-price">$500-700<small>3 hrs+</small></span></li>
+        <li class="reveal"><span class="m-name">Appointment for Two<small>Flash only! Price estimated for TWO, palm size tattoos for couples or friends. Perfect if you&rsquo;re getting married next door at Sure Thing!</small></span><span class="m-price">$500-750<small>3 hrs 30 mins</small></span></li>
         <li class="reveal"><span class="m-name">Nipple tattoos<small>The shop has an open floor plan but a privacy wall will be used.</small></span><span class="m-price">$250-400<small>1 hr 30 mins+</small></span></li>
         <li class="reveal"><span class="m-name">Full day, flat rate<small>Ideal for large, one shot pieces, flat rate sessions on large projects, or getting as many flash tattoos as you&rsquo;d like in a full day.</small></span><span class="m-price">$1250<small>6 hrs</small></span></li>
         <li class="reveal"><span class="m-name">Consultation<small>Consultations are not required to book a tattoo and are for those looking to chat in person before booking.</small></span><span class="m-price">$10<small>deducted from cost of tattoo!</small></span></li>
@@ -1198,9 +1220,14 @@
           <button type="button" data-k="day" aria-pressed="false">Full day</button>
           <button type="button" data-k="consult" aria-pressed="false">Consultation</button>
         </div>
-        <p class="demo-note" id="bh-size-note">$350-500 estimate, 2 hrs+.</p>
+        <div class="svc" id="bh-svc">
+          <div class="svc-top" aria-live="polite"><span class="svc-name" id="bh-svc-name">Palm to Hand Size Tattoo</span><span class="svc-pr" id="bh-svc-pr">$350-500 estimate<small>2 hrs+</small></span></div>
+          <p class="svc-line" id="bh-svc-line">Tattoos that are bigger than palm size but under hand size. Color or black only. Pricing will vary on size, placement, style, and detail.</p>
+          <details class="svc-more" id="bh-svc-more"><summary>About this booking</summary><div class="svc-in" id="bh-svc-in"></div></details>
+        </div>
         <p class="bk-q" id="bh-kind-q">Flash or custom</p>
         <div class="seg" role="group" aria-labelledby="bh-kind-q" id="bh-kind"><button type="button" data-k="Flash" aria-pressed="true">Flash</button><button type="button" data-k="Custom" aria-pressed="false">Custom</button></div>
+        <p class="demo-note" id="bh-kind-note">Flash: a selection of Linnea&rsquo;s pre-drawn designs.</p>
       </div>
       <div id="bh-s2" hidden>
         <p class="bk-q" id="bh-day-q" style="margin-top:0">Day</p>
@@ -1738,9 +1765,6 @@
       { id: 'rainbow', ook: 1, cat: 'jewelry', name: 'Rainbow Lattice Junk Charm', price: 800, stock: 1, img: 'rainbow', kind: '', alt: 'A chunky gold charm cluster with a rainbow lattice sunstone, a smiley and a puffy flower' },
       { id: 'die', ook: 1, cat: 'jewelry', name: 'Diamond and Die Charm', price: 400, stock: 1, img: 'diedie', kind: '', alt: 'A gold sunburst charm with a set diamond and a little gold cube die on a long chain' },
       { id: 'y2k', cat: 'jewelry', name: 'Y2K Set', price: 650, stock: 0, img: 'y2k', kind: '10 pieces', alt: 'Ten tiny white and yellow gold charms and threadless ends laid out on a holographic pastel card' },
-      { id: 'farout', ook: 1, cat: 'jewelry', name: 'F A R O U T', price: 180, was: 250, stock: 0, img: 'farout', kind: 'threadless end', alt: 'A tiny gold star threadless end resting on a pastel crystal' },
-      { id: 'puffy', ook: 1, cat: 'jewelry', name: 'P U F F Y C A N D Y', price: 180, was: 250, stock: 0, img: 'puffy', kind: 'threadless end', alt: 'A puffy gold candy threadless end among pastel confetti' },
-      { id: 'mushroom', cat: 'jewelry', name: 'Mushroom Charm', price: 250, stock: 0, img: 'mushroom', kind: '', alt: 'A little rose gold mushroom charm on a hoop, against green and pink holographic film' },
       { id: 'y2000', cat: 'jewelry', name: 'The 2000&rsquo;s Yellow Gold Necklace', price: 200, from: 1, stock: 0, img: 'yellow2000', kind: '20 in', alt: 'A yellow gold chain with a flower charm and a diamond charm, draped over a pink crystal pyramid' },
       { id: 'peach', cat: 'apparel', name: 'Silly Peach Cropped Windbreaker', price: 86, made: 1, img: 'peach', kind: '', alt: 'A cropped hooded windbreaker in a peach and butter checkerboard of little smileys' },
       { id: 'cyberp', cat: 'apparel', name: 'Cyber Tribal Purple Cropped Windbreaker', price: 86, made: 1, img: 'cyberpurple', kind: '', alt: 'A cropped hooded windbreaker printed with white tribal swirls on lavender' },
@@ -1757,7 +1781,6 @@
       { id: 'pt-glitch', ook: 1, cat: 'paintings', name: 'Tribal Glitch', price: 250, stock: 1, img: 'pt-glitch', kind: 'gouache on arches', alt: 'The original Tribal Glitch painting in cobalt blue on a pink wall' },
       { id: 'pt-o1', ook: 1, cat: 'paintings', name: 'Original Painting', price: 100, stock: 1, img: 'pt-o1', kind: 'acrylic on arches', alt: 'A small abstract painting of soft pink, aqua and cream shapes, on concrete' },
       { id: 'pt-o5', ook: 1, cat: 'paintings', name: 'Original Painting', price: 60, stock: 1, img: 'pt-o5', kind: 'acrylic on arches', alt: 'A small abstract painting of pink blocks and blue circles' },
-      { id: 'pt-o3', ook: 1, cat: 'paintings', name: 'Original Painting', price: 100, stock: 0, img: 'pt-o3', kind: 'acrylic on arches', alt: 'A small abstract painting of pink, red and blue swirls' },
       { id: 'stickers', cat: 'stickers', soon: 'Empty on your site right now' },
       { id: 'decals', cat: 'decals', soon: 'Empty on your site right now' }
     ];
@@ -1900,14 +1923,46 @@
     function $(id) { return document.getElementById(id); }
     var card = $('bh-card'); if (!card) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+    /* her Square services, word for word from pastel-109491.square.site (read Oct 14 2026): name, price and length as Square shows them,
+       the first part of each description as the short line, the rest of it under "About this booking" */
+    var NOTES = 'Please put your idea into the appointment notes as follows:';
+    var TEXTED = 'You will be texted for further information if needed.';
+    var DEPOSIT = 'The deposit is deducted from the final cost and is non-refundable and non-transferable.';
+    var IDEA = '*IDEA', PLACE = '*PLACEMENT', BUDGET = '*BUDGET (please see estimate range on service)';
     var SIZES = {
-      palm: { name: 'Palm to hand size', est: '$350-500 estimate, 2 hrs+.', hrs: 2 },
-      hand: { name: 'Hand size', est: '$500-700 estimate, 3 hrs+.', hrs: 3 },
-      two: { name: 'Appointment for two', est: '$500-750, 3 hrs 30 mins. Flash only!', hrs: 3.5 },
-      nip: { name: 'Nipple tattoos', est: '$250-400 estimate, 1 hr 30 mins+.', hrs: 1.5 },
-      day: { name: 'Full day, flat rate', est: '$1250 flat rate, 6 hrs.', hrs: 6 },
-      consult: { name: 'Consultation', est: '$10, deducted from cost of tattoo! 30 mins.', hrs: 0.5 }
+      palm: { name: 'Palm to hand size', hrs: 2, sq: 'Palm to Hand Size Tattoo', pr: '$350-500 estimate', len: '2 hrs+',
+        line: 'Tattoos that are bigger than palm size but under hand size. Color or black only. Pricing will vary on size, placement, style, and detail.',
+        more: ['***IMPORTANT***', NOTES, [IDEA, PLACE, BUDGET], TEXTED, DEPOSIT] },
+      hand: { name: 'Hand size', hrs: 3, sq: 'Hand Size Tattoo', pr: '$500-700 estimate', len: '3 hrs+',
+        line: 'Hand size tattoo. Color or black only. Pricing will vary on size, placement, style, and detail.',
+        more: ['***IMPORTANT***', NOTES, [IDEA, PLACE, BUDGET], TEXTED, DEPOSIT] },
+      two: { name: 'Appointment for two', hrs: 3.5, sq: 'Appointment for Two', tag: '*Couples and Besties*', pr: '$500-750', len: '3 hrs 30 mins',
+        line: 'Flash only! Price estimated for TWO, palm size tattoos for couples or friends. Perfect if you’re getting married next door at Sure Thing!',
+        more: ['***IMPORTANT***', NOTES, [IDEA, PLACE, BUDGET], TEXTED] },
+      nip: { name: 'Nipple tattoos', hrs: 1.5, sq: 'Nipple Tattoos', pr: '$250-400 estimate', len: '1 hr 30 mins+',
+        line: 'Nipple tattoos! Please note that the shop has an open floor plan but a privacy wall will be used. Bringing a bikini top or a zip-up/button-up long sleeve is a great idea if you would like to be more covered during the tattoo.',
+        more: ['***IMPORTANT***', NOTES, [IDEA, BUDGET], TEXTED] },
+      day: { name: 'Full day, flat rate', hrs: 6, sq: 'Full Day (Flat Rate)', pr: '$1250 flat rate', len: '6 hrs',
+        line: 'Ideal for large, one shot pieces, flat rate sessions on large projects, or getting as many flash tattoos as you’d like in a full day. This flat rate option will reserve your appointment for the entire day at a discounted rate.',
+        more: [DEPOSIT, '***IMPORTANT***', 'Please put your idea into the appointment notes and include placement on the body.', TEXTED] },
+      consult: { name: 'Consultation', hrs: 0.5, sq: 'Consultation', pr: '$10 / deducted from cost of tattoo!', len: '30 mins',
+        line: 'Scheduled in-person consultation. Consultations are not required to book a tattoo and are for those looking to chat in person before booking. Fee is non-refundable but will be applied to the tattoo.',
+        more: [] }
     };
+    var KIND = { Flash: 'Flash: a selection of Linnea’s pre-drawn designs.', Custom: 'Custom: their interpretation of your idea.' };
+    function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+    function paintSvc() {
+      var s = SIZES[st.size], name = $('bh-svc-name'), pr = $('bh-svc-pr'), box = $('bh-svc-in'), more = $('bh-svc-more');
+      name.textContent = s.sq; if (s.tag) name.appendChild(el('em', '', s.tag));
+      pr.textContent = s.pr; pr.appendChild(el('small', '', s.len));
+      $('bh-svc-line').textContent = s.line;
+      box.textContent = '';
+      s.more.forEach(function (m) {
+        if (Array.isArray(m)) { var ul = el('ul', 'svc-list'); m.forEach(function (li) { ul.appendChild(el('li', '', li.replace(/^\*/, ''))); }); box.appendChild(ul); }
+        else box.appendChild(el('p', m === '***IMPORTANT***' ? 'svc-imp' : '', m));
+      });
+      more.hidden = !s.more.length;
+    }
     /* her hours: Sun and Mon 1 to 8, Thu to Sat 1 to 7, closed Tue and Wed */
     var CLOSE = { 0: 20, 1: 20, 4: 19, 5: 19, 6: 19 };
     var DAYS = (function () { var out = [], d = new Date(); d.setHours(12, 0, 0, 0); while (out.length < 6) { d.setDate(d.getDate() + 1); if (CLOSE[d.getDay()]) out.push(new Date(d.getTime())); } return out; })();
@@ -1922,11 +1977,12 @@
     function btn(k, text) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-k', k); b.textContent = text; return b; }
     function paint() {
       press($('bh-size'), st.size);
-      $('bh-size-note').textContent = SIZES[st.size].est;
+      paintSvc();
       var custom = $('bh-kind').querySelector('[data-k="Custom"]');
       if (st.size === 'two') st.kind = 'Flash';
       custom.disabled = st.size === 'two';
       press($('bh-kind'), st.kind);
+      $('bh-kind-note').textContent = KIND[st.kind];
       var days = $('bh-days'); days.textContent = '';
       DAYS.forEach(function (d, i) { days.appendChild(btn(i, dayName(d))); });
       press(days, st.day);
@@ -1966,7 +2022,7 @@
     });
     back.addEventListener('click', function () { if (step > 1) show(step - 1); });
     $('bh-edit').addEventListener('click', function () { reopen(1); });
-    $('bh-again').addEventListener('click', function () { st = fresh(); ['bh-idea', 'bh-name', 'bh-mail'].forEach(function (id) { $(id).value = $(id).defaultValue; }); reopen(1); });
+    $('bh-again').addEventListener('click', function () { st = fresh(); ['bh-idea', 'bh-name', 'bh-mail'].forEach(function (id) { $(id).value = $(id).defaultValue; }); $('bh-svc-more').open = false; reopen(1); });
     st = fresh(); paint(); show(1);
   })();
 </script>
