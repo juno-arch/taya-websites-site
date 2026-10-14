@@ -8,7 +8,6 @@ Their brand shoot: the team in black and navy "Humboldt's Best Cleaning" shirts,
 - `images/windows.jpg/.webp`: `2023/11/2071_1-1.jpg` (742x1024), washing a tall window from outside with a pole.
 - `images/light.jpg/.webp`: `2020/10/housecleaning67.jpg` (700x700, replaced in place by them with their own photo), dusting a pendant light.
 - `images/shower.jpg/.webp`: `2020/10/maidservice44-1.jpg` (700x700, their own), scrubbing shower tile.
-- `images/ladder.jpg/.webp` (+640): `2026/01/contactnew20263.webp` (1200x1200), a teammate in a navy shirt cleaning second-story windows beside a ladder.
 - `images/fridge.jpg/.webp` (+640): `2026/01/missionnew.webp` (1024x1024), mopping by the fridge in a bright kitchen.
 - `images/walkthrough.jpg/.webp` (+640): `2026/01/AboutUsCleaning22.webp` (1000x1228), a teammate shaking a client's hand at his front door (used for "How it works"; both faces are their own staff and client as they published it).
 - `images/caddy.jpg/.webp`: `2026/01/janit2026.webp` (700x700), a smiling teammate with a supply caddy and paper towels.
@@ -22,6 +21,8 @@ Their brand shoot: the team in black and navy "Humboldt's Best Cleaning" shirts,
 
 Left out on purpose: the theme's stock pieces still on their site (`bannergirlslider34.png`, a smiling model with spray bottles; `carpetcleaning4`, `movingcleaning55`, `gallery1`, `gallery2`; the carpet and moving before/after pairs, which look like stock; `redwoodsherobanner.jpg`, a redwoods road).
 
+Taken off on Oct 14 2026 (Pollen's note "broken photo"): `2026/01/contactnew20263.webp` (1200x1200), a teammate in a navy shirt from behind beside a ladder, the fourth photo under Services. It loaded fine everywhere; the photo itself read as a mistake next to the brand shoot (the window pole seems to grow out of his cap, branches across a third of the frame, the crop ending on his tool belt), and the four photo column ran past the bottom of laptop screens while it stuck. Their site has no other unused photo of their own (`serviceinterior23other-1.jpg` is the hero again), so Services keeps the three brand shoot photos.
+
 ## From their Instagram (@humboldtsbestcleaning, reel covers, captured Oct 12 2026 at full size in a full-screen overlay, cropped square, gentle unsharp mask)
 - `images/ig-kitchen.jpg/.webp`: cover of reel Ddr_7RERHVI ("Welcome to our newest home away from home", an Airbnb they care for). Source is 480x854, so the square is 469 px.
 - `images/ig-room.webp`: cover of reel Dc4NRcHiwFQ (their 9,000 square foot project). 720x1280 source.
@@ -30,7 +31,7 @@ Left out on purpose: the theme's stock pieces still on their site (`bannergirlsl
 - `images/ig-windows.jpg/.webp` (added in the Oct 12 review): cover of reel DbbogndiYza ("Some windows aren't easy"), 720x1280 source, cropped to the square ABOVE its green "Do you need your windows cleaned?" text band (rows 180 to 900), so no printed words; resized to 640 with a gentle unsharp mask. A teammate in an orange team shirt from behind, looking up at a ladder on a tall dark house.
 - `images/ig-bay.jpg/.webp` (added in the Oct 12 review): photo of post Da4C3T5NV9M (their non-toxic post), 1280x1600 source, cropped to the square ABOVE its dark "Professional Cleaning" text panel (x 90 to 860, y 190 to 960), resized to 640 with a gentle unsharp mask. A teammate from behind wiping a bay window that looks out on redwoods. The faint green tint is their own post's.
 
-Where they show: the For hosts grid has ig-tub, ig-kitchen, vacuum (site) and fridge (site); the Instagram feed has ig-room, ig-windows, ig-hottub and ig-bay, so no photo appears twice on the page.
+Where they show: Services has windows, light and shower; the For hosts grid has ig-tub, ig-kitchen, vacuum (site) and fridge (site); the Instagram feed has ig-room, ig-windows, ig-hottub and ig-bay, so no photo appears twice on the page.
 The other recent posts have words printed over most of the image (carousels, "Did you know? Fully licensed", "Focus on hosting", the oven "AFTER" reel, the client review card), so those are not used. Instagram stopped loading older posts after the first 12 (rate limit, again on Oct 12), so only the newest 12 were checked.
 
 ## Drawn for the page
