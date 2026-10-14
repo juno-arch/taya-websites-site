@@ -174,11 +174,15 @@
      slim black strip: small hops with a squash and a stretch, a shadow that shrinks as it leaves the ground, a rest now and
      then (a blink, sometimes a look back), then off one side and back in from the other. It moves in whole sprite pixels,
      so it stays crisp. It reads the banner like the pet does: designs up, a heart blinks over it; books closed, it naps.
-     Decorative, so screen readers skip it; it rests offscreen; under reduced motion it sits still and blinks once. */
-  .jb { --px: 2px; position: relative; z-index: 4; height: calc(var(--px) * 36); overflow: hidden;
+     Decorative, so screen readers skip it; it rests offscreen; under reduced motion it sits still and blinks once.
+     Half as thick (Pollen, Oct 14: "make the bunny banner like half the thickness"): the strip is --rows sprite pixels tall,
+     so halving --px halves the strip and the jackalope together. Each sprite pixel stays a whole number of screen pixels
+     (1px on phones; 1.5px only on 2x screens, where that is 3 real pixels; 2px with a snugger strip on plain 1x screens). */
+  .jb { --px: 1px; --rows: 36; --base: 4; position: relative; z-index: 4; height: calc(var(--px) * var(--rows)); overflow: hidden;
     background: var(--night); color: var(--on-night); border-block: 1px solid rgba(238,236,232,0.14); }
-  @media (min-width: 900px) { .jb { --px: 3px; } }
-  .jb-run { position: absolute; left: calc(50% - var(--px) * 16); bottom: calc(var(--px) * 4); width: calc(var(--px) * 32); height: calc(var(--px) * 26); }
+  @media (min-width: 900px) { .jb { --px: 2px; --rows: 33; --base: 2; } }
+  @media (min-width: 900px) and (min-resolution: 2dppx), (min-width: 900px) and (-webkit-min-device-pixel-ratio: 2) { .jb { --px: 1.5px; --rows: 36; --base: 4; } }
+  .jb-run { position: absolute; left: calc(50% - var(--px) * 16); bottom: calc(var(--px) * var(--base)); width: calc(var(--px) * 32); height: calc(var(--px) * 26); }
   .jb.live .jb-run { left: 0; will-change: transform; }
   .jb-sprite { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; fill: currentColor; shape-rendering: crispEdges; transform: scaleX(-1); }
   .jb-sprite path { display: none; }
@@ -1563,7 +1567,11 @@
     });
     measure(); x = Math.round(cols * 0.16); rest(1100); blinkAt = -1; lookAt = -1;
     jb.classList.add('live'); paint();
-    window.addEventListener('resize', function () { measure(); if (still) settle(); else paint(); });
+    function remeasure() { measure(); if (still) settle(); else paint(); }
+    window.addEventListener('resize', remeasure);
+    /* a window dragged between a 2x and a 1x screen changes the sprite pixel size without a resize */
+    var dpr = window.matchMedia ? window.matchMedia('(min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 2)') : null;
+    if (dpr) { if (dpr.addEventListener) dpr.addEventListener('change', remeasure); else if (dpr.addListener) dpr.addListener(remeasure); }
     if (rm) { if (rm.addEventListener) rm.addEventListener('change', settle); else if (rm.addListener) rm.addListener(settle); }
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { seen = e.isIntersecting; jb.classList.toggle('off', !seen); if (seen) settle(); }); }).observe(jb);
     settle();
