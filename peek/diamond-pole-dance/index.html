@@ -174,6 +174,22 @@
     .dm-more { display: none; } /* sitting still, the first three lines are plenty */
   }
 
+  /* THE DIAMOND (Pollen, Oct 14: "add a spinning diamond"): the crystal from their logo and their Instagram picture, cut
+     as a real round brilliant (57 facets) and turning slowly over the words. As it turns, its facets catch the room's
+     lights: a white glint with the fire at its tips, and now and then a flash of the party colors. Its job: it's the
+     door to the schedule. Tap it and it gives a quick whirl while the page glides down to "Reserve your pole", where
+     the mirror ball takes over. It speeds up a little under a mouse, rests when it's off screen or the tab is hidden, and
+     under reduced motion it sits still with one soft glint. Drawn on a canvas, so it stays crisp on any screen. */
+  /* it sits in the hero's top padding (--eat), so the words, buttons and the AT DIAMOND strip stay where they were */
+  .dm-gem { --gw: clamp(96px, min(11vw, 14vh), 170px); --eat: 50px; display: block; width: var(--gw); height: calc(var(--gw) * 0.75);
+    margin: calc(-1 * var(--eat)) 0 2px calc(var(--gw) * -0.11); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  @media (max-width: 760px) { .dm-gem { --eat: 36px; } }
+  .dm-gem canvas { display: block; width: 100%; height: 100%; }
+  .hero-band.wait .dm-gem { opacity: 0; }
+  .hero-band.go .dm-gem { animation: gem-in 2.6s cubic-bezier(.22,1,.36,1) 1.2s both; }
+  @keyframes gem-in { from { opacity: 0; transform: translateY(22px) scale(0.84); } 30% { opacity: 1; } to { opacity: 1; transform: none; } }
+  @media (orientation: landscape) and (max-height: 500px) { .dm-gem { --gw: 76px; --eat: 20px; } }
+
   section { padding-block: 84px; }
   section + section { border-top: 1px solid var(--hair); }
 
@@ -789,6 +805,7 @@
   <div class="hero-low gutter">
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
+        <a class="dm-gem" id="dm-gem" href="#reserve" tabindex="-1" aria-hidden="true" title="Reserve your pole"><canvas width="0" height="0"></canvas></a>
         <p class="label"><span>pole dance and fitness &middot; medford, oregon</span></p>
         <h1>Pole dance is for <em>any body</em></h1>
         <p class="lede">Five or six people a class, every level together, each on your own X&#8209;Pole. Strength, flexibility, personal style and personal growth, upstairs on Holly Street.</p>
@@ -830,6 +847,162 @@
     var im = new Image(); im.onload = go; im.onerror = go; im.src = 'images/hero.jpg';
     if (im.complete) go();
     setTimeout(go, 1500);
+  })();
+</script>
+<script>
+  /* THE DIAMOND: a round brilliant in 3D (table, 8 stars, 8 kites, 16 upper girdles, 8 pavilion mains, 16 lower girdles),
+     turning in a room of lights that stays still, so every facet catches them as it passes: the far side shows through
+     the crystal, the near side is drawn over it, and the facet that meets the key light throws the glint. */
+  (function () {
+    var a = document.getElementById('dm-gem'), cv = a && a.querySelector('canvas'), x = cv && cv.getContext && cv.getContext('2d');
+    if (!x) return;
+    var R = Math.PI / 180, P = [], F = [];
+    var g = 0.026, hc = 0.33, rt = 0.56, rs = 0.79, hp = 0.86, rl = 0.2; /* girdle, crown height, table, star tips, pavilion depth, lower girdle tips */
+    function pt(r, an, y) { P.push([r * Math.cos(an), y, r * Math.sin(an)]); return P.length - 1; }
+    function crownY(r) { return g + hc * (1 - r) / (1 - rt); }
+    function pavY(r) { return -g - hp * (1 - r); }
+    var T = [], M = [], L = [], Gt = [], Gb = [], k, j;
+    for (k = 0; k < 8; k++) { T[k] = pt(rt, 45 * k * R, g + hc); M[k] = pt(rs, (45 * k + 22.5) * R, crownY(rs) + 0.05); L[k] = pt(rl, (45 * k + 22.5) * R, pavY(rl)); }
+    for (j = 0; j < 16; j++) { Gt[j] = pt(1, 22.5 * j * R, g); Gb[j] = pt(1, 22.5 * j * R, -g); }
+    var C = P.push([0, -g - hp, 0]) - 1;
+    function face(ix, part) { F.push({ i: ix, p: part }); }
+    face(T.slice(), 't');
+    for (k = 0; k < 8; k++) {
+      var km = (k + 7) % 8, e0 = 2 * k, e1 = 2 * k + 1, e2 = (2 * k + 2) % 16;
+      face([T[k], M[k], T[(k + 1) % 8]], 'c'); face([T[k], M[km], Gt[e0], M[k]], 'c'); face([M[k], Gt[e0], Gt[e1]], 'c'); face([M[k], Gt[e1], Gt[e2]], 'c');
+      face([Gb[e0], Gb[e1], L[k]], 'p'); face([Gb[e1], Gb[e2], L[k]], 'p'); face([Gb[e0], L[k], C, L[km]], 'p');
+    }
+    for (j = 0; j < 16; j++) face([Gt[j], Gt[(j + 1) % 16], Gb[(j + 1) % 16], Gb[j]], 'g');
+    F.forEach(function (f) { /* outward normals (Newell) and centers */
+      var nx = 0, ny = 0, nz = 0, cx = 0, cy = 0, cz = 0, n = f.i.length;
+      for (var q = 0; q < n; q++) {
+        var A = P[f.i[q]], B = P[f.i[(q + 1) % n]];
+        nx += (A[1] - B[1]) * (A[2] + B[2]); ny += (A[2] - B[2]) * (A[0] + B[0]); nz += (A[0] - B[0]) * (A[1] + B[1]);
+        cx += A[0] / n; cy += A[1] / n; cz += A[2] / n;
+      }
+      var l = Math.hypot(nx, ny, nz) || 1; nx /= l; ny /= l; nz /= l;
+      if (nx * cx + ny * cy + nz * cz < 0) { nx = -nx; ny = -ny; nz = -nz; }
+      f.n = [nx, ny, nz]; f.c = [cx, cy, cz];
+    });
+    /* the room, in degrees (az 0 = toward you, + = right): a sharp key light high on the left ringed by the fire
+       (pink, amber, mint, sky), a smaller light on the right, and the studio's party lights and violet strip lower down */
+    function Dir(az, el) { return [Math.sin(az * R) * Math.cos(el * R), Math.sin(el * R), Math.cos(az * R) * Math.cos(el * R)]; }
+    var KEY = Dir(-38, 66), LIGHTS = [
+      [KEY, [1, 1, 1], 90, 2], [Dir(-50, 62), [1, 0.44, 0.71], 80, 1.1], [Dir(-44, 71), [1, 0.7, 0.36], 80, 0.95],
+      [Dir(-28, 70), [0.44, 0.94, 0.78], 80, 0.95], [Dir(-30, 61), [0.36, 0.72, 1], 80, 1.05], [Dir(30, 50), [0.92, 0.9, 1], 60, 0.9],
+      [Dir(-16, 36), [1, 0.44, 0.71], 70, 0.45], [Dir(24, 40), [0.44, 0.94, 0.78], 70, 0.4], [Dir(2, 30), [0.66, 0.55, 1], 40, 0.5]
+    ];
+    function env(rx, ry, rz, o) {
+      /* the mirrors around the room are hard stripes, so neighboring facets read dark and light like a real stone */
+      var band = Math.cos(Math.atan2(rx, rz) * 6 + Math.asin(Math.max(-1, Math.min(1, ry))) * 5);
+      var st = band < -0.15 ? 0 : band > 0.35 ? 1 : (band + 0.15) / 0.5, hi = 0.5 + 0.5 * ry, b = 0.13 + st * (0.24 + 0.72 * hi * hi);
+      o[0] = b * 0.93; o[1] = b * 0.9; o[2] = b * 1.08;
+      for (var q = 0; q < LIGHTS.length; q++) {
+        var Lq = LIGHTS[q], d = rx * Lq[0][0] + ry * Lq[0][1] + rz * Lq[0][2];
+        if (d > 0) { var s = Math.pow(d, Lq[2]) * Lq[3]; o[0] += s * Lq[1][0]; o[1] += s * Lq[1][1]; o[2] += s * Lq[1][2]; }
+      }
+      return o;
+    }
+    function tone(v) { return Math.round(255 * (1 - Math.exp(-v * 1.7))); }
+    var V = [], tmp = [0, 0, 0], PITCH = 0.3, DIST = 7;
+    function draw(W, H, yaw, glint) {
+      var cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(PITCH), sp = Math.sin(PITCH);
+      var S = Math.min(W * 0.4, H * 0.52), ox = W / 2, oy = H * 0.5 - S * 0.2, lw = Math.max(0.6, W / 420);
+      for (var q = 0; q < P.length; q++) {
+        var p = P[q], x1 = p[0] * cyw + p[2] * syw, z1 = -p[0] * syw + p[2] * cyw, y2 = p[1] * cp - z1 * sp, z2 = p[1] * sp + z1 * cp, f = DIST / (DIST - z2);
+        V[q] = [ox + x1 * f * S, oy - y2 * f * S];
+      }
+      x.clearRect(0, 0, W, H);
+      var hg = x.createRadialGradient(ox, oy - S * 0.1, 0, ox, oy - S * 0.1, S * 1.25); /* a little night behind it, then the violet strip's glow */
+      hg.addColorStop(0, 'rgba(10,8,22,0.3)'); hg.addColorStop(0.6, 'rgba(10,8,22,0.14)'); hg.addColorStop(1, 'rgba(10,8,22,0)');
+      x.fillStyle = hg; x.fillRect(0, 0, W, H);
+      hg = x.createRadialGradient(ox, oy - S * 0.1, 0, ox, oy - S * 0.1, S * 1.25);
+      hg.addColorStop(0, 'rgba(201,184,255,0.28)'); hg.addColorStop(0.55, 'rgba(150,120,255,0.1)'); hg.addColorStop(1, 'rgba(150,120,255,0)');
+      x.fillStyle = hg; x.fillRect(0, 0, W, H);
+      var front = [], back = [], best = null, bestS = 0;
+      F.forEach(function (fc) {
+        var n = fc.n, c = fc.c;
+        var nz1 = -n[0] * syw + n[2] * cyw, nx = n[0] * cyw + n[2] * syw, ny = n[1] * cp - nz1 * sp, nz = n[1] * sp + nz1 * cp;
+        var cz1 = -c[0] * syw + c[2] * cyw, cx1 = c[0] * cyw + c[2] * syw, cy2 = c[1] * cp - cz1 * sp, cz2 = c[1] * sp + cz1 * cp;
+        (-cx1 * nx - cy2 * ny + (DIST - cz2) * nz > 0 ? front : back).push({ f: fc, n: [nx, ny, nz] });
+      });
+      function poly(f) { var ix = f.i; x.beginPath(); x.moveTo(V[ix[0]][0], V[ix[0]][1]); for (var q = 1; q < ix.length; q++) x.lineTo(V[ix[q]][0], V[ix[q]][1]); x.closePath(); }
+      back.forEach(function (e) { /* the far side, seen through the stone */
+        var ix = -e.n[0], iy = -e.n[1], iz = -e.n[2];
+        env(-2 * iz * ix, 2 * iz * iy, 2 * iz * iz - 1, tmp);
+        x.fillStyle = 'rgb(' + tone(tmp[0] * 0.95) + ',' + tone(tmp[1] * 0.95) + ',' + tone(tmp[2] * 1.02) + ')';
+        poly(e.f); x.fill(); x.strokeStyle = 'rgba(255,255,255,0.16)'; x.lineWidth = lw * 0.8; x.stroke();
+      });
+      front.forEach(function (e) { /* the near side: table and crown clear, pavilion fuller */
+        var n = e.n, rx = 2 * n[2] * n[0], ry = 2 * n[2] * n[1], rz = 2 * n[2] * n[2] - 1, part = e.f.p;
+        if (part === 'p') env(rx, -ry, -rz, tmp); else env(rx, ry, rz, tmp);
+        if (part === 'g') { var gm = 0.34 + 0.4 * Math.max(0, n[1] + n[2] * 0.5); tmp[0] = tmp[0] * 0.3 + gm; tmp[1] = tmp[1] * 0.3 + gm * 0.97; tmp[2] = tmp[2] * 0.3 + gm * 1.08; }
+        x.fillStyle = 'rgba(' + tone(tmp[0]) + ',' + tone(tmp[1]) + ',' + tone(tmp[2]) + ',' + (part === 't' ? 0.42 : part === 'c' ? 0.66 : part === 'g' ? 0.9 : 0.8) + ')';
+        poly(e.f); x.fill(); x.strokeStyle = 'rgba(255,255,255,0.42)'; x.lineWidth = lw; x.stroke();
+        var d = rx * KEY[0] + ry * KEY[1] + rz * KEY[2]; if (d > bestS) { bestS = d; best = e; }
+      });
+      var gl = glint != null ? glint : Math.min(1, Math.max(0, (bestS - 0.992) / 0.007));
+      if (best && gl > 0.02) {
+        var ix2 = best.f.i, gx = 0, gy = 0; for (var q2 = 0; q2 < ix2.length; q2++) { gx += V[ix2[q2]][0] / ix2.length; gy += V[ix2[q2]][1] / ix2.length; }
+        star(gx, gy, S * (0.5 + 0.3 * gl), gl);
+      }
+    }
+    function star(sx, sy, r, al) { /* a soft bloom and a four point star, its long arms tinged with the fire */
+      x.save(); x.globalCompositeOperation = 'lighter'; x.translate(sx, sy);
+      var bg = x.createRadialGradient(0, 0, 0, 0, 0, r * 0.42);
+      bg.addColorStop(0, 'rgba(255,255,255,' + 0.95 * al + ')'); bg.addColorStop(0.35, 'rgba(232,224,255,' + 0.38 * al + ')'); bg.addColorStop(1, 'rgba(201,184,255,0)');
+      x.fillStyle = bg; x.beginPath(); x.arc(0, 0, r * 0.42, 0, 7); x.fill();
+      var w = Math.max(0.9, r * 0.06);
+      function ray(l, t, rot, fill) { x.save(); x.rotate(rot); x.fillStyle = fill; x.beginPath(); x.moveTo(-l, 0); x.lineTo(0, -t); x.lineTo(l, 0); x.lineTo(0, t); x.closePath(); x.fill(); x.restore(); }
+      var lg = x.createLinearGradient(-r, 0, r, 0);
+      lg.addColorStop(0, 'rgba(255,111,181,0)'); lg.addColorStop(0.22, 'rgba(255,150,200,' + 0.7 * al + ')'); lg.addColorStop(0.5, 'rgba(255,255,255,' + al + ')');
+      lg.addColorStop(0.78, 'rgba(120,200,255,' + 0.7 * al + ')'); lg.addColorStop(1, 'rgba(92,184,255,0)');
+      var vg = x.createLinearGradient(-r * 0.66, 0, r * 0.66, 0);
+      vg.addColorStop(0, 'rgba(255,255,255,0)'); vg.addColorStop(0.5, 'rgba(255,255,255,' + al + ')'); vg.addColorStop(1, 'rgba(255,255,255,0)');
+      ray(r, w, 0, lg); ray(r * 0.66, w * 0.9, Math.PI / 2, vg);
+      var dw = 'rgba(255,255,255,' + 0.5 * al + ')'; ray(r * 0.24, w * 0.6, Math.PI / 4, dw); ray(r * 0.24, w * 0.6, -Math.PI / 4, dw);
+      x.restore();
+    }
+
+    /* the turn: one slow revolution every 20 seconds (the 8 fold cut makes that a twinkle every couple of seconds) */
+    var still = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    var REST = 31 * R, SPD = 2 * Math.PI / 20, yaw = REST, W = 0, H = 0, raf = 0, last = 0, seen = true, hover = 0, hv = 0, kick = 0, kickAt = 0;
+    function size() {
+      var d = Math.min(3, window.devicePixelRatio || 1), w = Math.round(cv.clientWidth * d), h = Math.round(cv.clientHeight * d); /* layout size, not the scaled one mid entrance */
+      if (w > 0 && h > 0 && (w !== cv.width || h !== cv.height)) { cv.width = w; cv.height = h; }
+      W = cv.width; H = cv.height;
+    }
+    function paint() { if (!W) size(); if (W) draw(W, H, still.matches ? REST : yaw, still.matches ? 0.75 : null); }
+    function tick(t) {
+      raf = 0;
+      var dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
+      hv += (hover - hv) * Math.min(1, dt * 3);
+      var boost = kick ? kick * Math.exp(-(t - kickAt) / 1000 * 1.7) : 0; if (boost < 0.01) kick = 0;
+      yaw = (yaw + dt * SPD * (1 + 1.6 * hv + boost)) % (2 * Math.PI);
+      paint(); run();
+    }
+    function run() { if (!raf && seen && !document.hidden && !still.matches) raf = requestAnimationFrame(tick); }
+    function rest() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; }
+    function whirl(n) { kick = n; kickAt = performance.now(); run(); }
+    size(); paint(); run();
+    if ('ResizeObserver' in window) new ResizeObserver(function () { size(); paint(); }).observe(cv);
+    else window.addEventListener('resize', function () { size(); paint(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { seen = e.isIntersecting; if (seen) run(); else rest(); }); }).observe(a);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) rest(); else run(); });
+    if (still.addEventListener) still.addEventListener('change', function () { rest(); paint(); run(); });
+    /* it arrives with the words: a few quick turns that settle into the slow one */
+    a.addEventListener('animationstart', function (e) { if (e.target === a) whirl(7); });
+    a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') hover = 1; });
+    a.addEventListener('pointerleave', function () { hover = 0; });
+    /* its job: tap it and it whirls while the page glides down to the schedule */
+    a.addEventListener('click', function (e) {
+      var to = document.getElementById('reserve');
+      if (!to || still.matches || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+      e.preventDefault(); whirl(16);
+      to.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      try { history.pushState(null, '', '#reserve'); } catch (er) {}
+      try { to.focus({ preventScroll: true }); } catch (er) {}
+    });
   })();
 </script>
 

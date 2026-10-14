@@ -34,6 +34,6 @@ Pulled Oct 12 2026 from their own website (diamondpoledancestudio.webador.com) a
 | ig-4.jpg, ig-5.jpg, ig-6.jpg | Studio B wide angle shots (square crops: the mirror wall and plants, then the ivy column twice) | Instagram carousel Dcl_GKlmHOZ (slides 2, 5 and 6), Aug 28 2026 |
 | logo.png | Their logo (crystal diamond, pole dancer silhouette, DIAMOND POLE DANCE), white made transparent | their website, Home (DIAMOND.png) |
 
-The drawn studio in the "Reserve your pole" section (mirror ball, six chrome poles, Studio A's wooden beam and mirrors, Studio B's plants) is an SVG made for this page, after their own photos. The small diamond in the nav is drawn for this page too.
+The drawn studio in the "Reserve your pole" section (mirror ball, six chrome poles, Studio A's wooden beam and mirrors, Studio B's plants) is an SVG made for this page, after their own photos. The small diamond in the nav is drawn for this page too, and so is the turning diamond over the hero words (Oct 14 2026): a round brilliant drawn in code on a canvas, after the crystal diamond in their logo and Instagram picture.
 
 Left out on purpose: flyers and posts with words on them (the Halloween Showcase flyer, the monthly schedule posts, the new sign), outfit and swimwear posts, nightclub performance shots, and anything not fitness-forward. Students' faces appear only in the studio's own class photos from its website.
