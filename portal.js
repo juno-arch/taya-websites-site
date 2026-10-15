@@ -2356,7 +2356,9 @@
       phone: str(b.phone, 40), note: str(b.note, 1000), status: str(b.status, 12), group_index: +b.group_index || 1, group_size: +b.group_size || 1,
       deposit: str(b.deposit, 20), paid: !!b.paid, canceled_by: str(b.canceled_by, 12),
       answers: arr(b.answers).slice(0, 12).map((a) => (a ? { label: str(a.label, 120), answer: str(a.answer, 1000) } : null)).filter((a) => a && a.label),
-      client_reason: str(b.client_reason, 600)
+      client_reason: str(b.client_reason, 600),
+      card: !!b.card, can_noshow: !!b.can_noshow,
+      noshow: b.noshow && typeof b.noshow === 'object' ? { state: str(b.noshow.state, 12), words: str(b.noshow.words, 400) } : null
     };
   }
   const cleanWins = (v) => arr(v).filter((w) => Array.isArray(w) && w.length === 2).map((w) => [str(w[0], 5), str(w[1], 5)]).slice(0, 4);
@@ -2376,7 +2378,9 @@
         payments: !!o.payments, payments_test: !!o.payments_test, feed_url: safeUrl(o.feed_url),
         today: /^\d{4}-\d{2}-\d{2}$/.test(str(o.today)) ? str(o.today) : todayISO, now: str(o.now, 30),
         settings: { notice_hours: +st.notice_hours || 0, horizon_days: +st.horizon_days || 60, buffer_min: +st.buffer_min || 0, cancel_window_hours: +st.cancel_window_hours || 0,
-          max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0 },
+          max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0,
+          card: typeof st.card_on === 'boolean' ? { on: st.card_on, can: !!st.card_can, first: +st.noshow_first_pct || 50, repeat: +st.noshow_repeat_pct || 100,
+            policy: str(st.card_policy, 600), policy_default: str(st.card_policy_default, 600) } : null },
         questions: arr(o.questions).slice(0, 10).map((q) => (q && str(q.id) ? { id: str(q.id, 10), label: str(q.label, 120), type: BK_QTYPE[q.type] ? q.type : 'text',
           choices: arr(q.choices).map((c) => str(c, 60)).filter(Boolean).slice(0, 12), required: !!q.required, services: arr(q.services).map((x) => str(x, 20)).filter(Boolean) } : null)).filter(Boolean) },
       services: arr(d.services).slice(0, 40).map(svc).filter(Boolean),
@@ -2467,10 +2471,21 @@
     b.answers.forEach((a) => { const n = make('div', 'o-note bk-ans'); n.append(make('span', 'o-label', a.label), make('p', null, a.answer)); li.append(n); });
     if (b.client_reason) { const n = make('div', 'o-note'); n.append(make('span', 'o-label', b.status === 'canceled' ? 'Their note when they canceled' : 'Their note when they moved it'), make('p', null, b.client_reason)); li.append(n); }
     const bits = [];
-    if (b.status === 'pending') bits.push('Waiting for the deposit (held 30 minutes)');
+    if (b.status === 'pending') bits.push(b.deposit ? 'Waiting for the deposit (held 30 minutes)' : b.card === false && bk.owner.settings.card && bk.owner.settings.card.on ? 'Waiting for their card (held 30 minutes)' : 'Waiting for the deposit (held 30 minutes)');
+    if (b.card && b.status === 'confirmed') bits.push('Card saved');
     if (b.deposit) bits.push(b.paid ? 'Deposit paid: ' + b.deposit : 'Deposit ' + b.deposit);
     if (b.status === 'canceled') bits.push(b.canceled_by === 'owner' ? 'You canceled it' : 'They canceled');
     if (bits.length) li.append(make('p', 'dc-meta', bits.join(' · ')));
+    if (b.noshow && b.noshow.words) li.append(make('p', 'dc-meta bk-noshow', b.noshow.words));
+    if (b.can_noshow) {
+      const act = make('div', 'o-act o-act2');
+      const ns = make('button', 'open-btn', 'No-show');
+      ns.type = 'button';
+      ns.setAttribute('aria-label', 'Mark ' + b.name + '’s booking on ' + b.when + ' as a no-show');
+      ns.addEventListener('click', () => openNoshow(b, li));
+      act.append(ns);
+      li.append(act);
+    }
     if (!past && b.status === 'confirmed') {
       const act = make('div', 'o-act o-act2');
       const mv = make('button', 'open-btn', 'Move');
@@ -2497,6 +2512,71 @@
     ta.maxLength = 600;
     wrap.append(lab, ta);
     return { wrap, ta };
+  }
+  async function openNoshow(b, li) {
+    closeBkForms();
+    const f = make('form', 'ship-form bk-form');
+    f.noValidate = true;
+    f.append(make('p', 'o-hint', 'Checking what a no-show costs…'));
+    li.append(f);
+    let q;
+    try { q = await bookCall('/noshow-quote', { id: b.id }); } catch (e1) {
+      if (e1.code === 'signed_out') { quietSignOut(false); return; }
+      f.replaceChildren(make('p', 'err', noshowWords(e1)));
+      return;
+    }
+    f.replaceChildren();
+    if (q && q.already) { f.append(make('p', 'o-hint', 'This one is already marked. Refresh to see it.')); return; }
+    const opts = arr(q && q.options).filter((o) => o && o.can && (o.choice === 'first' || o.choice === 'repeat'));
+    const none = q && q.none && q.none.choice === 'none' ? q.none : { label: 'Mark no-show, no charge', confirm: 'Mark ' + b.name + ' as a no-show without charging?' };
+    f.append(make('p', 'o-hint', str(q && q.note, 400) || (opts.length ? b.name + ' missed ' + b.service_name + ' on ' + b.when + '. Pick what to charge their saved card.' : b.name + ' missed ' + b.service_name + ' on ' + b.when + '.')));
+    const err = make('p', 'err'); err.hidden = true;
+    const confirmLine = make('p', 'o-hint'); confirmLine.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const send = async (choice, btn, label) => {
+      setBusy(btn, true, 'Working…');
+      $$('button', btns).forEach((x) => { if (x !== btn) x.disabled = true; });
+      try {
+        const r = await bookCall('/noshow', { id: b.id, choice });
+        f.remove();
+        toast(str(r && r.message, 300) || 'Marked as a no-show.');
+        await loadBookings();
+        focusEl($('#h-bookings'), true);
+      } catch (e2) {
+        setBusy(btn, false, label);
+        $$('button', btns).forEach((x) => { x.disabled = false; });
+        if (e2.code === 'signed_out') { quietSignOut(false); return; }
+        err.textContent = noshowWords(e2); err.hidden = false;
+      }
+    };
+    // one tap shows the exact line ("Charge Sam $45 for ...?"), a second tap on the same button does it
+    const armed = { key: '' };
+    const mk = (choice, label, line, primary) => {
+      const bt = make('button', primary ? 'btn small' : 'later');
+      bt.type = 'button';
+      bt.append(make('span', null, label));
+      bt.addEventListener('click', () => {
+        if (armed.key !== choice) {
+          armed.key = choice; confirmLine.textContent = line; confirmLine.hidden = false;
+          $$('button[data-label]', btns).forEach((x) => { x.querySelector('span').textContent = x.dataset.label; });
+          bt.dataset.label = label; bt.querySelector('span').textContent = 'Yes, ' + label.charAt(0).toLowerCase() + label.slice(1);
+          return;
+        }
+        send(choice, bt, 'Yes, ' + label.charAt(0).toLowerCase() + label.slice(1));
+      });
+      return bt;
+    };
+    opts.forEach((o, i) => btns.append(mk(o.choice, str(o.label, 60), str(o.confirm, 300), i === 0)));
+    btns.append(mk('none', str(none.label, 60), str(none.confirm, 300), !opts.length));
+    const keep = make('button', 'later', 'Not now'); keep.type = 'button';
+    keep.addEventListener('click', () => { f.remove(); focusEl($$('.open-btn', li)[0]); });
+    btns.append(keep);
+    f.append(confirmLine, err, btns);
+  }
+  function noshowWords(e) {
+    if (e.status === 409) return 'This booking can’t be marked right now: it may not have started yet, it already changed, or your Stripe isn’t connected here. Nothing was charged. Refresh and look again, or email Taya.';
+    if (e.status === 502) return 'Stripe didn’t answer, so nothing was charged. Try again in a minute.';
+    return bkWords(e);
   }
   function openCancel(b, li) {
     closeBkForms();
@@ -2586,7 +2666,7 @@
     if (e.code === 'not_found') return 'That’s not here anymore. Try refreshing the page.';
     if (e.status === 409) return 'That time isn’t open anymore, or the booking already changed. Refresh and try again.';
     if (e.code === 'input') {
-      if (e.why === 'no_payments') return 'Deposits need your Stripe connected first. Email Taya and she’ll set it up.';
+      if (e.why === 'no_payments') return 'Deposits and saved cards need your Stripe connected first. Email Taya and she’ll set it up.';
       if (e.why === 'too_many') return 'That’s the most this can hold for now. Remove one first, or email Taya.';
       return 'Something in there didn’t fit. Could you check it and try again?';
     }
@@ -3245,6 +3325,17 @@
     });
     $('#in-bk-maxday').value = st.max_per_day ? String(st.max_per_day) : '';
     $('#in-bk-maxweek').value = st.max_per_week ? String(st.max_per_week) : '';
+    const c = st.card, wrap = $('#bk-card-wrap');
+    wrap.hidden = !c;
+    if (c) {
+      $('#in-bk-card-on').checked = c.on;
+      $('#in-bk-card-on').disabled = !c.can && !c.on;
+      $('#bk-card-hint').textContent = !c.can && !c.on ? 'Saving a card needs your own Stripe connected first. Email Taya and she’ll set it up with you.' : 'Their card is saved with your Stripe and charged nothing when they book. If they miss their appointment, you can charge the no-show fee with one tap under Coming up.';
+      $('#in-bk-card-first').value = String(c.first);
+      $('#in-bk-card-repeat').value = String(c.repeat);
+      $('#in-bk-card-policy').value = c.policy;
+      $('#in-bk-card-policy').placeholder = c.policy_default;
+    }
   }
   async function onBkSet(ev) {
     ev.preventDefault();
@@ -3256,6 +3347,15 @@
     body.max_per_day = md ? +md : 0; body.max_per_week = mw ? +mw : 0;
     if (!(Number.isInteger(body.max_per_day) && body.max_per_day >= 0 && body.max_per_day <= 50)) { err.textContent = 'Most bookings in a day is a number from 1 to 50, or leave it empty.'; err.hidden = false; focusEl($('#in-bk-maxday')); return; }
     if (!(Number.isInteger(body.max_per_week) && body.max_per_week >= 0 && body.max_per_week <= 200)) { err.textContent = 'Most bookings in a week is a number from 1 to 200, or leave it empty.'; err.hidden = false; focusEl($('#in-bk-maxweek')); return; }
+    if (!$('#bk-card-wrap').hidden) {
+      const pf = $('#in-bk-card-first').value.trim(), pr = $('#in-bk-card-repeat').value.trim();
+      const okPct = (v) => /^\d{1,3}$/.test(v) && +v >= 1 && +v <= 100;
+      if (!okPct(pf)) { err.textContent = 'The first no-show fee is a percent from 1 to 100.'; err.hidden = false; focusEl($('#in-bk-card-first')); return; }
+      if (!okPct(pr)) { err.textContent = 'The fee after that is a percent from 1 to 100.'; err.hidden = false; focusEl($('#in-bk-card-repeat')); return; }
+      body.card_on = $('#in-bk-card-on').checked;
+      body.noshow_first_pct = +pf; body.noshow_repeat_pct = +pr;
+      body.card_policy = cleanText($('#in-bk-card-policy').value, 600);
+    }
     const btn = $('#b-bk-set');
     setBusy(btn, true, 'Saving…');
     try {

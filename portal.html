@@ -558,6 +558,17 @@
           <select id="in-bk-remind"></select>
           <label class="field-label" for="in-bk-step">Start times offered every</label>
           <select id="in-bk-step"></select>
+          <div id="bk-card-wrap" hidden>
+            <h3 class="small-h">No-show fee</h3>
+            <label class="dc-check"><input type="checkbox" id="in-bk-card-on"> <span>Save a card when someone books</span></label>
+            <p class="orders-fine" id="bk-card-hint">Their card is saved with your Stripe and charged nothing when they book. If they miss their appointment, you can charge the no-show fee with one tap under Coming up.</p>
+            <label class="field-label" for="in-bk-card-first">First no-show: percent of the price</label>
+            <input id="in-bk-card-first" class="keeps" type="text" inputmode="numeric" maxlength="3" autocomplete="off">
+            <label class="field-label" for="in-bk-card-repeat">After that: percent of the price</label>
+            <input id="in-bk-card-repeat" class="keeps" type="text" inputmode="numeric" maxlength="3" autocomplete="off">
+            <label class="field-label" for="in-bk-card-policy">Your words for them <span class="opt-tag">(optional)</span></label>
+            <textarea id="in-bk-card-policy" class="keeps short" maxlength="600"></textarea>
+          </div>
           <p class="err" id="bk-set-err" hidden></p>
           <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-set"><span>Save settings</span></button></div>
         </form>
