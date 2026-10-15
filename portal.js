@@ -2358,6 +2358,7 @@
       answers: arr(b.answers).slice(0, 12).map((a) => (a ? { label: str(a.label, 120), answer: str(a.answer, 1000) } : null)).filter((a) => a && a.label),
       client_reason: str(b.client_reason, 600),
       card: !!b.card, can_noshow: !!b.can_noshow,
+      addons: str(b.addons, 900), addons_total: str(b.addons_total, 80),
       noshow: b.noshow && typeof b.noshow === 'object' ? { state: str(b.noshow.state, 12), words: str(b.noshow.words, 400) } : null
     };
   }
@@ -2384,6 +2385,10 @@
         questions: arr(o.questions).slice(0, 10).map((q) => (q && str(q.id) ? { id: str(q.id, 10), label: str(q.label, 120), type: BK_QTYPE[q.type] ? q.type : 'text',
           choices: arr(q.choices).map((c) => str(c, 60)).filter(Boolean).slice(0, 12), required: !!q.required, services: arr(q.services).map((x) => str(x, 20)).filter(Boolean) } : null)).filter(Boolean) },
       services: arr(d.services).slice(0, 40).map(svc).filter(Boolean),
+      // paid add-ons (Oct 15 2026): only when the server says they’re on for this owner; null = no Add-ons block
+      addons: o.addons_on === true ? { max: Math.max(1, Math.min(12, +o.addons_max || 12)), list: arr(d.addons).slice(0, 12).map((a) => (a && str(a.id) ? {
+        id: str(a.id, 20), name: str(a.name, 60), description: str(a.description, 160), price_cents: Math.max(0, +a.price_cents || 0), active: !!a.active,
+        services: arr(a.services).map((x) => str(x, 20)).filter(Boolean) } : null)).filter(Boolean) } : null,
       upcoming: arr(d.upcoming).slice(0, 500).map(cleanBkRow).filter(Boolean),
       past: arr(d.past).slice(0, 300).map(cleanBkRow).filter(Boolean),
       time_off: arr(d.time_off).slice(0, 300).map((t) => (t && str(t.id) ? { id: str(t.id, 20), label: str(t.label, 80), note: str(t.note, 200) } : null)).filter(Boolean),
@@ -2410,6 +2415,8 @@
     $('#bk-off-list').replaceChildren(...bk.time_off.map(offRow));
     if (!$('#f-bk-hours').contains(document.activeElement)) buildWeek($('#bk-week'), bk.owner.hours, '');
     if (!sec.querySelector('#bk-svcs .bk-form')) $('#bk-svcs').replaceChildren(...bk.services.map(svcRow));
+    $('#bk-addons-wrap').hidden = !bk.addons;
+    if (bk.addons && !sec.querySelector('#bk-addons-wrap .bk-form')) $('#bk-addons').replaceChildren(...bk.addons.list.map(addonRow));
     if (!sec.querySelector('#bk-reps .bk-form, #bk-p-hours > .bk-form')) $('#bk-reps').replaceChildren(...bk.repeats.map(repRow));
     $('#bk-ovr').replaceChildren(...bk.overrides.map(ovrRow));
     if (!sec.querySelector('#bk-qs .bk-form, #bk-p-services > .bk-form')) $('#bk-qs').replaceChildren(...bk.owner.questions.map(qRow));
@@ -2470,6 +2477,8 @@
     if (b.note) { const n = make('div', 'o-note'); n.append(make('span', 'o-label', 'Their note'), make('p', null, b.note)); li.append(n); }
     b.answers.forEach((a) => { const n = make('div', 'o-note bk-ans'); n.append(make('span', 'o-label', a.label), make('p', null, a.answer)); li.append(n); });
     if (b.client_reason) { const n = make('div', 'o-note'); n.append(make('span', 'o-label', b.status === 'canceled' ? 'Their note when they canceled' : 'Their note when they moved it'), make('p', null, b.client_reason)); li.append(n); }
+    // paid add-ons (Oct 15 2026): what they picked when they booked, and what’s paid at the session
+    if (b.addons) { li.append(make('p', 'dc-meta bk-addons', b.addons)); if (b.addons_total) li.append(make('p', 'dc-meta bk-addons-total', b.addons_total)); }
     const bits = [];
     if (b.status === 'pending') bits.push(b.deposit ? 'Waiting for the deposit (held 30 minutes)' : b.card === false && bk.owner.settings.card && bk.owner.settings.card.on ? 'Waiting for their card (held 30 minutes)' : 'Waiting for the deposit (held 30 minutes)');
     if (b.card && b.status === 'confirmed') bits.push('Card saved');
@@ -3140,6 +3149,125 @@
     focusEl(name);
   }
 
+  // ---- paid add-ons (Oct 15 2026): extras people tick when they book, paid at the session (only when the server says so)
+  function addonRow(a, i) {
+    const list = bk.addons.list;
+    const li = make('li', 'dc' + (a.active ? '' : ' st-off'));
+    li.dataset.addon = a.id;
+    const head = make('div', 'dc-head');
+    head.append(make('span', 'dc-name', a.name), make('span', 'dc-off', a.price_cents ? '$' + dollars(a.price_cents) : 'No charge'));
+    li.append(head);
+    const names = a.services.map((id) => (bk.services.find((s) => s.id === id) || {}).name).filter(Boolean);
+    li.append(make('p', 'dc-meta', [names.length ? 'With ' + names.join(', ') : 'With every service', a.active ? 'On' : 'Off, not shown'].join(' · ')));
+    if (a.description) li.append(make('p', 'dc-meta', a.description));
+    const act = make('div', 'o-act bk-addon-act');
+    const btn = (label, aria, fn, off) => {
+      const x = make('button', 'open-btn', label); x.type = 'button'; x.dataset.act = label;
+      x.setAttribute('aria-label', aria); x.disabled = !!off;
+      x.addEventListener('click', () => fn(x));
+      return x;
+    };
+    act.append(btn('Change', 'Change ' + a.name, () => openAddon(a, li)),
+      btn('Up', 'Move ' + a.name + ' up', (x) => moveAddon(a, 'up', x), i === 0),
+      btn('Down', 'Move ' + a.name + ' down', (x) => moveAddon(a, 'down', x), i === list.length - 1),
+      btn('Remove', 'Remove ' + a.name, (x) => removeAddon(a, x)));
+    li.append(act);
+    return li;
+  }
+  async function moveAddon(a, dir, x) {
+    setBusy(x, true, 'Moving…');
+    try {
+      await bookCall('/addon-move', { id: a.id, dir });
+      await loadBookings();
+      const row = $$('#bk-addons li').find((r) => r.dataset.addon === a.id);
+      const same = row && row.querySelector('[data-act="' + (dir === 'up' ? 'Up' : 'Down') + '"]');
+      focusEl(same && !same.disabled ? same : row && row.querySelector('[data-act="Change"]'), true);
+    } catch (e) {
+      setBusy(x, false);
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      toast(bkWords(e));
+    }
+  }
+  async function removeAddon(a, x) {
+    // two taps: the first asks, the second removes (bookings already made keep what they picked)
+    if (x.dataset.sure !== '1') {
+      x.dataset.sure = '1';
+      x.classList.add('bk-sure');
+      const span = x.querySelector('span') || x;
+      span.textContent = 'Yes, remove it';
+      x.setAttribute('aria-label', 'Yes, remove ' + a.name);
+      return;
+    }
+    setBusy(x, true, 'Removing…');
+    try {
+      await bookCall('/addon-remove', { id: a.id });
+      toast('Removed. It’s off the booking form. Bookings already made keep it.');
+      await loadBookings();
+      focusEl($('#b-bk-addon-new'), true);
+    } catch (e) {
+      setBusy(x, false);
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      toast(bkWords(e));
+    }
+  }
+  function openAddon(a, li) {
+    if (!a && bk.addons.list.length >= bk.addons.max) { toast('Twelve add-ons is the most for now. Remove one first.'); return; }
+    closeBkForms($('#bk-p-services'));
+    const key = a ? a.id : 'new';
+    const f = make('form', 'dc-form bk-form');
+    f.noValidate = true;
+    const field = (label, el, opt) => { const l = make('label', 'field-label', label + ' '); l.htmlFor = el.id; if (opt) l.append(make('span', 'opt-tag', opt)); return [l, el]; };
+    const inp = (id, val, max) => { const i = make('input'); i.id = id + '-' + key; i.type = 'text'; i.value = val; i.maxLength = max; i.autocomplete = 'off'; return i; };
+    const name = inp('in-bka-name', a ? a.name : '', 60); name.placeholder = 'Like: Hot stones';
+    const desc = inp('in-bka-desc', a ? a.description : '', 160); desc.placeholder = 'Like: Warm basalt stones for deeper ease';
+    const price = inp('in-bka-price', a && a.price_cents ? dollars(a.price_cents) : '', 7); price.inputMode = 'decimal';
+    const fs = make('fieldset', 'bk-daypick');
+    fs.append(make('legend', 'field-label', 'Offer it with'));
+    const svcBoxes = bk.services.map((s) => {
+      const l = make('label', 'dc-check');
+      const c = make('input'); c.type = 'checkbox'; c.value = s.id; c.checked = !!(a && a.services.includes(s.id));
+      l.append(c, make('span', null, s.name));
+      fs.append(l);
+      return c;
+    });
+    fs.append(make('p', 'orders-fine', 'Tick none to offer it with every service.'));
+    const onWrap = make('label', 'dc-check');
+    const on = make('input'); on.type = 'checkbox'; on.checked = a ? a.active : true;
+    onWrap.append(on, make('span', null, 'On, people can add it when they book'));
+    const err = make('p', 'err'); err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save the add-on'));
+    const no = make('button', 'later', 'Cancel'); no.type = 'button';
+    no.addEventListener('click', () => { f.remove(); focusEl(a ? li.querySelector('.open-btn') : $('#b-bk-addon-new')); });
+    btns.append(go, no);
+    f.append(make('h4', 'small-h', a ? 'Change ' + a.name : 'A new add-on'), ...field('Name', name), ...field('A short description', desc, '(optional)'),
+      ...field('Price, in dollars', price, '(paid at the session)'), fs, onWrap, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      err.hidden = true;
+      const pc = toCents(price.value);
+      const bad = (msg, el) => { err.textContent = msg; err.hidden = false; focusEl(el); };
+      if (!cleanLine(name.value, 60)) return bad('Give it a name.', name);
+      if (pc === null || pc > 50000) return bad('The price is a dollar amount up to $500, like 15 or 12.50.', price);
+      setBusy(go, true, 'Saving…');
+      try {
+        await bookCall('/addon-save', { id: a ? a.id : '', name: cleanLine(name.value, 60), description: cleanLine(desc.value, 160), price_cents: pc, active: on.checked,
+          services: svcBoxes.filter((c) => c.checked).map((c) => c.value) });
+        f.remove();
+        toast(on.checked ? 'Saved. People can add it when they book.' : 'Saved. It’s off, so it isn’t shown.');
+        await loadBookings();
+        focusEl($('#b-bk-addon-new'), true);
+      } catch (e) {
+        setBusy(go, false, 'Save the add-on');
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        err.textContent = bkWords(e);
+        err.hidden = false;
+      }
+    });
+    if (a) li.append(f); else $('#bk-addons').after(f);
+    focusEl(name);
+  }
+
   // ---- questions on the booking form
   function qRow(q, i) {
     const li = make('li', 'dc');
@@ -3372,6 +3500,7 @@
     $('#in-bk-allday').addEventListener('change', () => { $('#bk-off-hours').hidden = $('#in-bk-allday').checked; $('#in-bk-to').disabled = !$('#in-bk-allday').checked; });
     $('#f-bk-hours').addEventListener('submit', onBkHours);
     $('#b-bk-svc-new').addEventListener('click', () => { if (bk) openSvc(null, null); });
+    $('#b-bk-addon-new').addEventListener('click', () => { if (bk && bk.addons) openAddon(null, null); });
     $('#b-bk-feed').addEventListener('click', () => copyFeed(false));
     $('#b-bk-feed-new').addEventListener('click', () => copyFeed(true));
     $$('#sec-bookings .bk-tab').forEach((t) => {
