@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261015a">
+<link rel="stylesheet" href="portal.css?v=20261015b">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -106,7 +106,7 @@
   <!-- the tabs: portal.js adds only the ones this client has (on a phone they move to the dock at the bottom) -->
   <nav class="tabs" id="tabs" aria-label="Your pages" hidden></nav>
 </header>
-<script src="portal.js?v=20261015a"></script>
+<script src="portal.js?v=20261015b"></script>
 
 <main class="page" id="main" tabindex="-1">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -711,6 +711,18 @@
       <ul class="ledger vs-list" id="vs-devices"></ul>
       <p class="vs-none" id="vs-devices-none" hidden>Nothing counted yet.</p>
       <p class="vs-fine">Counted privately: no cookies, nothing that identifies anyone. Visitors are an estimate: each person counts once a day, so someone who comes back on another day counts again.</p>
+    </section>
+
+    <!-- your business papers (Oct 15 2026): insurance, business license, permits, certifications Taya keeps for them
+         (wf_papers on Web Faery's server, hub DEPLOY.md section 73). Only their own active papers come back; with none
+         the server answers papers: [] and the section and its tab stay hidden. Its code is the "Your business papers"
+         block in portal.js. -->
+    <section class="p-card" id="sec-papers" data-page="papers" aria-labelledby="h-papers" hidden>
+      <span class="kicker">Your business</span>
+      <h2 id="h-papers" tabindex="-1">Your business papers</h2>
+      <p class="pp-lede">Your insurance, licenses and permits in one place, for whenever someone asks. They’re private: only you and I can see them.</p>
+      <ul class="ledger pp-list" id="pp-list"></ul>
+      <p class="pp-fine">Renewed something, or got a new one? Email the new copy to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll put it here. I’ll also send you a reminder a month and a week before one runs out.</p>
     </section>
 
     <section class="p-card" id="sec-list" data-page="project" aria-labelledby="h-list">

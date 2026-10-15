@@ -36,6 +36,8 @@
    /preview, /test, /send, /stop, /people, /export, /settings (hub API.md section 18)
    and one for the "Your visitors" card (Oct 15 2026; the preview has it too): visits, /api/webfaery/v/mine
    (hub DEPLOY.md section 72, API.md section 22)
+   and one for the "Your business papers" card (Oct 15 2026; the preview has it too): papers, /api/webfaery/papers/mine
+   (hub DEPLOY.md section 73, API.md section 23); each file comes as a 30 minute link from the server
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -59,6 +61,7 @@
   const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
   const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
   const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
+  const PAPERS = SERVER + '/api/webfaery/papers';     // a client's own business papers (Oct 15 2026): only clients Taya added papers for get any
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -393,7 +396,9 @@
     giftLookup: (code) => postJSON('/lookup', { code }, token, GIFT),
     giftRedeem: (b) => postJSON('/redeem', b, token, GIFT),
     // their own site's visitor counts (Oct 15 2026): { visits: null } unless their site is counted
-    visits: () => postJSON('/mine', {}, token, VISITS)
+    visits: () => postJSON('/mine', {}, token, VISITS),
+    // their own business papers (Oct 15 2026): { papers: [] } unless Taya added some
+    papers: () => postJSON('/mine', {}, token, PAPERS)
   };
   let api = realApi;
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
@@ -530,6 +535,7 @@
     { id: 'gifts', label: 'Gift certificates', short: 'Gifts', icon: 'i-gift' },
     { id: 'newsletter', label: 'Newsletter', icon: 'i-mail' },
     { id: 'visitors', label: 'Visitors', icon: 'i-bars' },
+    { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -542,7 +548,7 @@
   // booking or newsletter comes first (that's what they'll open most)
   function pageList() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'payments', 'ask']);
+    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'papers', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'papers', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -825,6 +831,10 @@
     $('#sec-bookings').hidden = true;
     visits = null;
     $('#sec-visits').hidden = true;
+    papers = null;
+    papersAt = 0;
+    $('#pp-list').replaceChildren();
+    $('#sec-papers').hidden = true;
     nl = null;
     nlEdit = null;
     nlPeopleShown = false;
@@ -997,6 +1007,7 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadPapers();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
       else if (backToPay) { backToPay = false; goPage('payments'); }
@@ -1021,6 +1032,7 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadPapers();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
@@ -4783,6 +4795,131 @@
     setHidden($('#vs-devices-none'), devs.length > 0);
     setHidden(sec, false);
     if (me) renderGlance();
+  }
+
+  /* ---- your business papers (Oct 15 2026) ----
+     Insurance, business license, permits, certifications Taya keeps for them on Web Faery's server (hub DEPLOY.md
+     section 73). A ledger row each: the title, the kind and who issued it, their number, the days it is good for, who
+     to ask, the notes, and a Download link. A quiet gold "Renews in 3 weeks" line once 30 days or fewer are left (the
+     server's reminder emails start then too), and a red line only once one has ended. Only for a client Taya added
+     papers for: the server answers papers: [] for everyone else, and the section and its tab stay hidden. The server
+     sends only their own active papers (nothing sent from here picks one). Each file comes as a link that works for 30
+     minutes; a tap on a link older than 20 asks for fresh ones first. */
+  let papers = null;         // [{ kind, title, issuer, number, from, until, left, contact, notes, file }] (cleaned)
+  let papersAt = 0;          // when they came
+  const PP_FRESH_MS = 20 * 60 * 1000;
+  const PP_KINDS = { insurance: 'Insurance', license: 'Business license', permit: 'Permit', certification: 'Certification', other: 'Paper' };
+  // only the server's own file links (or, in the preview, the sample's blob) become links
+  const ppLink = (l) => {
+    const s = str(l, 600);
+    if (DEMO && /^blob:https?:\/\/[^\s"'<>]+$/.test(s)) return s;
+    return /^\/api\/webfaery\/papers\/file\?p=[a-z0-9]{15}&e=\d{13}&t=[a-f0-9]{64}$/.test(s) ? SERVER + s : '';
+  };
+  // a full day with its year: "Aug 31, 2027"
+  const ppDate = (s) => { const p = dayParts(s); return p && p.m >= 1 && p.m <= 12 ? MON[p.m - 1] + ' ' + p.d + ', ' + p.y : ''; };
+  async function loadPapers() {
+    if (typeof api.papers !== 'function') { papers = null; renderPapers(); return; }
+    try {
+      const d = await api.papers();
+      papers = cleanPapers(d);
+      papersAt = Date.now();
+      renderPapers();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!papers) $('#sec-papers').hidden = true; // a quiet refresh that misses keeps what's on screen
+    }
+  }
+  function cleanPapers(d) {
+    const list = d && typeof d === 'object' ? arr(d.papers) : [];
+    return list.slice(0, 50).map((p) => {
+      if (!p || typeof p !== 'object' || !cleanLine(p.title, 120)) return null;
+      const f = p.file && typeof p.file === 'object' ? p.file : null;
+      const link = f ? ppLink(f.link) : '';
+      return {
+        kind: Object.prototype.hasOwnProperty.call(PP_KINDS, p.kind) ? p.kind : 'other',
+        title: cleanLine(p.title, 120), issuer: cleanLine(p.issuer, 120), number: cleanLine(p.member_or_number, 80),
+        from: vsDay(p.valid_from), until: vsDay(p.valid_until),
+        left: Number.isInteger(p.days_left) ? p.days_left : null,
+        contact: cleanLine(p.contact, 200), notes: cleanText(p.notes, 2000),
+        file: link ? { link, type: f.type === 'pdf' || f.type === 'image' ? f.type : 'file', name: cleanLine(f.name, 120) } : null
+      };
+    }).filter(Boolean);
+  }
+  // the renewal line: only when it is close (30 days or fewer) or has ended
+  function ppDue(p) {
+    if (p.left === null || !p.until || p.left > 30) return null;
+    if (p.left < 0) return { cls: 'pp-due over', text: 'Ended ' + ppDate(p.until) + '. If you’ve renewed, email me the new copy and I’ll put it here.' };
+    if (p.left === 0) return { cls: 'pp-due', text: 'Renews today.' };
+    if (p.left === 1) return { cls: 'pp-due', text: 'Renews tomorrow.' };
+    const when = p.left < 14 ? p.left + ' days' : Math.round(p.left / 7) + ' weeks';
+    return { cls: 'pp-due', text: 'Renews in ' + when + ', on ' + ppDate(p.until) + '.' };
+  }
+  function ppValid(p) {
+    if (p.from && p.until) return ppDate(p.from) + ' to ' + ppDate(p.until);
+    if (p.until) return 'Through ' + ppDate(p.until);
+    if (p.from) return 'Since ' + ppDate(p.from);
+    return '';
+  }
+  function ppRow(p) {
+    const li = make('li', 'pp-item');
+    const what = make('div', 'what');
+    what.append(make('b', null, p.title), make('small', null, [PP_KINDS[p.kind], p.issuer].filter(Boolean).join(' · ')));
+    const facts = make('dl', 'pp-facts');
+    const fact = (label, value, cls) => {
+      if (!value) return;
+      const d = make('div');
+      d.append(make('dt', null, label), make('dd', cls || null, value));
+      facts.append(d);
+    };
+    fact(p.kind === 'insurance' ? 'Policy or member number' : 'Number', p.number, 'pp-sel');
+    fact('Good for', ppValid(p));
+    fact(p.kind === 'insurance' ? 'Questions or claims' : 'Questions', p.contact, 'pp-sel');
+    if (facts.children.length) what.append(facts);
+    if (p.notes) what.append(make('p', 'pp-notes', p.notes));
+    const due = ppDue(p);
+    if (due) what.append(make('p', due.cls, due.text));
+    li.append(what);
+    if (p.file) {
+      const acts = make('span', 'acts');
+      acts.append(ppDownload(p));
+      li.append(acts);
+    }
+    return li;
+  }
+  function ppDownload(p) {
+    const a = make('a', 'open-btn');
+    a.href = p.file.link;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    if (DEMO && p.file.name) a.download = p.file.name;
+    a.append(make('span', null, 'Download'), icon('i-down'));
+    a.setAttribute('aria-label', 'Download ' + p.title + (p.file.type === 'pdf' ? ' (PDF, opens in a new tab)' : p.file.type === 'image' ? ' (picture, opens in a new tab)' : ' (opens in a new tab)'));
+    a.addEventListener('click', (ev) => {
+      if (DEMO || Date.now() - papersAt < PP_FRESH_MS) return;
+      ev.preventDefault();
+      ppFresh(a, p);
+    });
+    return a;
+  }
+  // the link has (nearly) run out: a tab is opened during the tap (so phones allow it), filled once fresh links come
+  async function ppFresh(a, old) {
+    if (a.getAttribute('aria-busy') === 'true') return;
+    let win = null;
+    try { win = window.open('', '_blank'); } catch (e) { win = null; }
+    if (win) { try { win.opener = null; win.document.title = 'Opening…'; win.document.body.textContent = 'Opening your file…'; } catch (e) { /* fine */ } }
+    a.setAttribute('aria-busy', 'true');
+    try {
+      await loadPapers();
+      const p = (papers || []).find((x) => x.title === old.title && x.kind === old.kind && x.file);
+      if (p && win && !win.closed) win.location.href = p.file.link;
+      else if (win) win.close();
+    } finally { if (document.body.contains(a)) a.removeAttribute('aria-busy'); }
+  }
+  function renderPapers() {
+    const sec = $('#sec-papers');
+    if (!papers || !papers.length) { setHidden(sec, true); return; }
+    $('#pp-list').replaceChildren(...papers.map(ppRow));
+    setHidden(sec, false);
   }
 
   /* ================= no do-it-yourself editing (Oct 5 2026) =================
