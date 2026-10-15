@@ -1131,8 +1131,8 @@
             <legend class="main sub-legend" style="margin-top: 0">Online booking</legend>
             <div class="opts">
               <label class="opt"><input type="radio" name="x_booking" value="none"><span>No online booking, thanks</span></label>
-              <label class="opt"><input type="radio" name="x_booking" value="current"><span><b>Keep the booking app I already use</b><small>Whichever build you pick, your Book now button opens it. With In Bloom, it can sit right on your site instead, if your app offers that. Whatever you pay for it now stays the same. <span class="x-cost" data-x="app">Part of every build.</span></small></span></label>
-              <label class="opt"><input type="radio" name="x_booking" value="calcom"><span><b>Set me up with Cal.com</b><small>Free for one person, in your own name. A team? Each person can have their own free account. Clients pick a time, and you both get reminders. <span class="x-cost" data-x="cal">Part of Tended and In Bloom.</span></small></span></label>
+              <label class="opt"><input type="radio" name="x_booking" value="current"><span><b>Keep the booking app I already use</b><small>Whichever build you pick, your Book now button opens it. With In Bloom, you can keep it, or have booking run right on your site instead, on my server. Whatever you pay for it now stays the same. <span class="x-cost" data-x="app">Part of every build.</span></small></span></label>
+              <label class="opt"><input type="radio" name="x_booking" value="calcom"><span><b>Set up booking for me</b><small>Clients pick a time, and you both get reminders. With Tended, I set you up with Cal.com, free for one person and in your own name (a team? Each person can have their own free account). With In Bloom, booking runs right on your site, on my server. <span class="x-cost" data-x="cal">Part of Tended and In Bloom.</span></small></span></label>
             </div>
           </fieldset>
           <div class="opts" style="margin-top: 18px" data-if="x-sell">
@@ -1576,8 +1576,8 @@
         </div>
 
         <!-- set up for them (pricing-oct2026.md, "Account setup flow"): their Buttondown list (Tended, In Bloom, when
-             they'd like a newsletter) and their Cal.com booking (Tended, In Bloom, when they'd like booking and don't
-             already use an app). Taya makes each one in the client's name with the client's email during the build,
+             they'd like a newsletter) and their Cal.com booking (Tended, when they'd like booking and don't already
+             use an app; In Bloom's booking runs on Taya's server, Oct 15 2026). Taya makes each one in the client's name with the client's email during the build,
              gives each its own strong password (Proton Pass), and hands the logins over at launch; the client changes
              each password on first login. The client's only part: which email to use (blank = their contact email),
              and clicking the confirm-your-email messages. Not counted in the list's time. -->
@@ -2051,7 +2051,7 @@
     { id: 'booking', q: 'A booking app you use now?',
       a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
       said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
-      reply: { has: 'Lovely. Whichever build you pick, your Book now button opens it, so nothing changes for you or your clients. With In Bloom, it can sit right on your site instead, if your app offers that.', want: 'Lovely. I’ll set you up with Cal.com, free and in your name, and your Book now button goes straight to it. That comes with Tended and In Bloom.' } },
+      reply: { has: 'Lovely. Whichever build you pick, your Book now button opens it, so nothing changes for you or your clients. With In Bloom, you can keep it, or have booking run right on your site instead, on my server.', want: 'Lovely. With Tended, I’ll set you up with Cal.com, free and in your name, and your Book now button goes straight to it. With In Bloom, booking runs right on your site, on my server.' } },
     { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true, sub: true,
       a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
       said: Object.assign({}, APPS, { other: 'your booking app' }) },
@@ -2078,11 +2078,12 @@
   });
   function fitWhy() {
     const why = [];
-    if (have.booking === 'want') why.push('booking set up for you with Cal.com');
+    // In Bloom's booking runs right on the site, on Taya's server (Oct 15 2026: no Cal.com for In Bloom)
+    if (have.booking === 'want') why.push(fitsBuild() === 'crone' ? 'booking right on your site' : 'booking set up for you with Cal.com');
     if (have.sell === 'yes') why.push('selling on your site');
     // the booking ladder (Oct 6 2026 afternoon): a Book now button out to their app comes with every build, so it's
-    // only a reason for In Bloom, which puts booking right on the site (their own app only if it offers that, so say so)
-    if (have.booking === 'has' && fitsBuild() === 'crone') why.push('your booking app built right in (if it offers that)');
+    // only a reason for In Bloom, which puts booking right on the site (or they keep their own app, so say so)
+    if (have.booking === 'has' && fitsBuild() === 'crone') why.push('booking right on your site (or keep your own app)');
     if (have.news === 'yes') why.push('a newsletter sign-up');
     return why;
   }
@@ -2365,7 +2366,9 @@
       // email from their own address comes with Tended and In Bloom care only (Oct 5 2026): a Planted client who
       // wants it moves up to Tended, so it's never a side cost here (the note under the build says so)
     }
-    if (c.booking === 'calcom') m.after.push({ label: 'Cal.com booking', amt: 'free', note: 'Free for one person. A few of you? Each person can have their own free account, and your site links to each one.' });
+    // In Bloom's booking runs on Taya's server as part of its subscription (Oct 15 2026: no Cal.com for In Bloom)
+    if (c.booking === 'calcom' && c.build === 'crone') m.after.push({ label: 'Booking on your site', amt: 'included', note: 'Part of your subscription, running on my server.' });
+    else if (c.booking === 'calcom') m.after.push({ label: 'Cal.com booking', amt: 'free', note: 'Free for one person. A few of you? Each person can have their own free account, and your site links to each one.' });
     if (c.booking === 'current') m.after.push({ label: appName() ? 'Your ' + appName() + ' booking' : 'Your booking app', amt: 'no change', note: 'Whatever you pay for it now.' });
     if (c.sell) m.after.push({ label: 'Card fees', amt: 'per payment', note: 'About 2.9% + 30¢ per payment, kept by Stripe. The rest goes straight to you.' });
     m.yearLow = m.yearHigh = year;
@@ -2420,9 +2423,10 @@
     $('[data-x="email"]').textContent = big ? 'Covered by your subscription.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
       : 'Part of Tended and In Bloom, covered by your subscription.';
     $('[data-x="news"]').textContent = big ? 'Sending is covered by your subscription.' : 'Part of Tended and In Bloom, with sending covered by your subscription.';
-    // the booking ladder (Oct 6 2026 afternoon): a Cal.com I set up for them comes with Tended and In Bloom; a Book now
-    // button to the app they already use comes with every build, Planted too
-    $('[data-x="cal"]').textContent = big ? 'It comes with your build.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
+    // the booking ladder (Oct 6 2026 afternoon): a Cal.com I set up for them comes with Tended, and In Bloom's booking
+    // runs right on the site, on Taya's server (Oct 15 2026); a Book now button to the app they already use comes with
+    // every build, Planted too
+    $('[data-x="cal"]').textContent = c.build === 'crone' ? 'It comes with your build, right on your site.' : big ? 'It comes with your build.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
       : 'Part of Tended and In Bloom.';
     $('[data-x="app"]').textContent = b ? 'It comes with your build.' : 'Part of every build.';
     // anything they'd like that a bigger build brings (payments: In Bloom; a newsletter, email from their own address
@@ -2500,7 +2504,7 @@
     // the Google card: they have one (add Taya as a manager), none yet (Taya builds it), or no thanks
     const gNo = ticked('acct_google_no'), gNone = !gNo && ticked('acct_google_none');
     // what Taya sets up for them in their name: their Buttondown list and their Cal.com booking
-    const need = acctNeeds(c), mNews = !!need.news, mCal = !!need.booking && c.booking === 'calcom';
+    const need = acctNeeds(c), mNews = !!need.news, mCal = !!need.cal;
     return {
       'g-has': !gNo && !gNone, 'g-none': gNone, 'g-no': gNo, 'g-not-no': !gNo,
       'made-news': mNews, 'made-cal': mCal, 'made-both': mNews && mCal, 'made-one': mNews !== mCal,
@@ -2526,11 +2530,13 @@
   // The accounts their build needs (pricing-oct2026.md): a Google profile and the link to a booking app they already
   // use for every build (the booking ladder, Oct 6 2026 afternoon: Planted's Book now button opens it too); Cal.com and
   // a Buttondown list with Tended and In Bloom; Stripe with In Bloom. Each only when they'd like it, and before a
-  // build is picked (or "not sure yet"), everything they asked for shows.
+  // build is picked (or "not sure yet"), everything they asked for shows. A Cal.com Taya makes for them is Tended
+  // only (cal): In Bloom's booking runs on her server (Oct 15 2026).
   function acctNeeds(c) {
     const tier = BUILDS[c.build] ? Object.keys(BUILDS).indexOf(c.build) : 2; // 0 Planted, 1 Tended, 2 In Bloom
     return {
       booking: c.booking === 'current' || (tier >= 1 && c.booking === 'calcom'),
+      cal: c.booking === 'calcom' && (BUILDS[c.build] ? tier === 1 : true),
       news: tier >= 1 && c.news,
       pay: tier >= 2 && c.sell
     };
@@ -2556,7 +2562,7 @@
       case 'accounts': {
         const need = acctNeeds(c);
         return (ticked('acct_google_no') || ticked('acct_google_none') ? 0 : 2) + (need.booking && c.booking === 'current' ? 2 : 0)
-          + (need.news || (need.booking && c.booking === 'calcom') ? 1 : 0) + (have.domain === 'yes' ? 2 : 0);
+          + (need.news || need.cal ? 1 : 0) + (have.domain === 'yes' ? 2 : 0);
       }
       default: return +s.getAttribute('data-min');
     }
@@ -2568,7 +2574,8 @@
   function togetherList(c) {
     const out = [], need = acctNeeds(c);
     if (ticked('acct_google_none') && !ticked('acct_google_no')) out.push('Google’s one quick check for your new profile (a short video or a code)');
-    if (need.booking && c.booking === 'calcom') out.push('your booking details for Cal.com');
+    if (need.cal) out.push('your booking details for Cal.com');
+    else if (need.booking && c.booking === 'calcom') out.push('your booking details (your services and hours)');
     if (need.pay) out.push('taking payments with Stripe');
     return out;
   }
@@ -2671,7 +2678,7 @@
     if (show['x-from-qc']) {
       const bits = [];
       if (have.booking === 'has') bits.push(app ? 'your ' + app + ' booking link' : 'your booking link');
-      if (have.booking === 'want') bits.push('booking with Cal.com');
+      if (have.booking === 'want') bits.push(c.build === 'crone' ? 'booking right on your site' : 'booking with Cal.com');
       if (have.booking === 'no-need') bits.push('no online booking');
       if (have.sell === 'yes') bits.push('taking payments online');
       if (have.sell === 'no') bits.push('no payments online');
@@ -3109,7 +3116,7 @@
   function sections(r) {
     const c = choices(), m = priceModel(c), b = BUILDS[r.build], h = r.accounts.have;
     const careName = b ? 'A subscription, ' + money(careOf(r.build)) + ' a month, starting after the 30 days of settling in' : 'A subscription, at the monthly price of the build we choose';
-    const bookingName = { none: 'No online booking', current: 'Keep my current booking app', calcom: 'Set me up with Cal.com' }[r.extras.booking] || 'No online booking';
+    const bookingName = { none: 'No online booking', current: 'Keep my current booking app', calcom: r.build === 'crone' ? 'Booking right on my site' : 'Set me up with Cal.com' }[r.extras.booking] || 'No online booking';
     const extras = [r.extras.send_email && 'email from my own address', r.extras.newsletter && 'a newsletter', bookingName !== 'No online booking' && bookingName.toLowerCase().replace('cal.com', 'Cal.com'), r.extras.selling && 'taking payments online'].filter(Boolean);
     const stepName = (id) => $('.step-name', $('[data-step="' + id + '"]')).textContent.replace(/^Step \d+: /, '');
     const fileList = (k) => files[k].length ? files[k].map((f) => f.name).join(', ') : '';
@@ -3153,7 +3160,8 @@
           : r.accounts.google_manager_added ? 'I have one, and I’ve added Taya as a manager' : ''],
         // (a Book now button to the app they keep comes with every build, so its link is always on their list)
         ['Booking', r.extras.booking === 'current' ? [r.accounts.booking_app, r.accounts.booking_link || 'Keeping my app'].filter(Boolean).join(': ')
-          : r.extras.booking === 'calcom' ? (acctNeeds(c).booking ? 'Cal.com, set up by Taya in my name' : 'Part of Tended and In Bloom, so we’ll talk it over by email') : 'No online booking'],
+          : r.extras.booking === 'calcom' ? (acctNeeds(c).cal ? 'Cal.com, set up by Taya in my name' : c.build === 'crone' ? 'Right on my site, running on Taya’s server'
+            : 'Part of Tended and In Bloom, so we’ll talk it over by email') : 'No online booking'],
         onList('f-acctemail') && ['Email for my accounts', r.accounts.accounts_email ? r.accounts.accounts_email + (r.accounts.accounts_email_is_contact ? ' (my contact email)' : '') : 'My contact email'],
         ['Web address', have.domain === 'yes' ? 'Already mine: we point it, or it moves in with Taya’s and my subscription renews it' + (r.accounts.domain_done ? ' (I can sign in where it lives)' : '')
           : 'Taya buys it during the build with me as its legal owner, and my subscription renews it'],

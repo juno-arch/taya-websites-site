@@ -135,10 +135,11 @@
         '(sleepy) Taya looks after your website so you don’t have to. More time for naps. I mean, your business 😂 [Your subscription, explained →](care)'] },
     booking: { ex: 'proud', keys: 'book*|cal com|calcom|calendly|schedul*|appointment*|calendar|reservation*|stripe|sell|selling|shop|online store|products|ecommerce',
       // the booking ladder (Oct 6 2026 afternoon): a Book button to the app they already use comes with every build,
-      // Planted too; a free Cal.com Taya sets up is Tended and In Bloom; booking right on the site is In Bloom
-      say: ['Already use a booking app? Your Book button opens it, whichever build you pick. New to booking? Taya sets up a free Cal.com in your name with Tended and In Bloom. Taking payments or deposits too? That’s In Bloom, through your own Stripe. [Prices →](prices)',
-        '(sleepy) I book naps. Taya sets up real booking! Every build can have a Book button that opens the app you already use, Tended adds a free Cal.com she sets up for you, and In Bloom puts booking right on your site. [Prices →](prices)',
-        'In Bloom builds booking, payments or a little shop right into your site, and keeps it all running, with orders in your own Stripe. Just a Book button? Planted’s opens the app you already use, and with Tended it can open a free Cal.com Taya sets up for you. [Prices →](prices)'] },
+      // Planted too; a free Cal.com Taya sets up is Tended; In Bloom's booking runs right on the site, on Taya's
+      // server (Oct 15 2026: no Cal.com for In Bloom), or they keep their own app
+      say: ['Already use a booking app? Your Book button opens it, whichever build you pick. New to booking? Taya sets up a free Cal.com in your name with Tended. With In Bloom, booking runs right on your site, on Taya’s server, with payments or deposits through your own Stripe. [Prices →](prices)',
+        '(sleepy) I book naps. Taya sets up real booking! Every build can have a Book button that opens the app you already use, Tended adds a free Cal.com she sets up for you, and In Bloom puts booking right on your site, running on her server. [Prices →](prices)',
+        'In Bloom builds booking, payments or a little shop (up to 20 items) right into your site, running on Taya’s server, with orders in your own Stripe. Happy with your booking app? You can keep it. Just a Book button? Planted’s opens the app you already use, and with Tended it can open a free Cal.com Taya sets up for you. [Prices →](prices)'] },
     newsletter: { ex: 'proud', keys: 'newsletter*|mailing list|email list|subscriber*|mailchimp|buttondown|substack',
       say: ['A newsletter sign-up comes with Tended and In Bloom, and your subscription covers the sending. [Every cost →](costs)',
         '(giggle) I’d send a newsletter, but my only reader is a snail. Yours can have real readers! [The costs, said plainly →](costs)',

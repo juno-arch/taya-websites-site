@@ -203,9 +203,12 @@ combos.forEach((picks, n) => {
   if (/newsletter[^.]{0,80}helper|helper[^.]{0,80}newsletter/i.test(costs)) failures.push(`${tag}: the newsletter is listed with helper access`);
   if (mail.news && !/newsletter list is yours too, in your own Buttondown account/.test(costs)) failures.push(`${tag}: doesn't say the newsletter list lives in their own Buttondown account`);
   // the account setup flow (pricing-oct2026.md, Oct 5 2026): Taya makes their Buttondown and a new Cal.com with
-  // their email and hands them over at launch (Cal.com with Tended and In Bloom; rule 1); a booking app they
-  // already use is never "set up" by her
-  const calcom = book.kind === 'setup' || (book.kind === 'pay' && book.booking);
+  // their email and hands them over at launch (Cal.com with Tended; rule 1); a booking app they already use is
+  // never "set up" by her. In Bloom's booking runs on Taya's server, or they keep their own app (Oct 15 2026), so
+  // In Bloom gets no Cal.com account
+  const calcom = book.kind === 'setup';
+  if (build === 'In Bloom' && /Cal\.com/.test(costs)) failures.push(`${tag}: In Bloom's cost list offers a Cal.com (In Bloom's booking runs on my server, Oct 15 2026)`);
+  if (build === 'In Bloom' && book.booking && !/Booking runs right on your site, on my server[^.]*\. Happy with the app you use now\? You can keep it/.test(costs)) failures.push(`${tag}: In Bloom booking doesn't say it runs on my server, or they can keep their own app`);
   if ((mail.news || calcom) && !/I set (?:both )?up with your email and hand you(?: the logins)? at launch|which I set up with your email and hand you at launch/.test(costs)) failures.push(`${tag}: doesn't say I set up their Buttondown or Cal.com with their email and hand it over at launch`);
   if (calcom && !/booking lives in your own Cal\.com account/.test(costs)) failures.push(`${tag}: booking set up for them doesn't say their booking lives in their own Cal.com account`);
   if (book.kind === 'own' && /I set (?:it|both) up|I set up[^.]{0,30}booking/i.test(costs.replace(/newsletter list[^.]*\./g, ''))) failures.push(`${tag}: says I set up booking for someone who keeps their own app`);
