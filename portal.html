@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261014a">
+<link rel="stylesheet" href="portal.css?v=20261015a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -84,6 +84,7 @@
   <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9h17M12 9v11M12 9C10 5 6.5 5 6.5 7.2S10 9 12 9Zm0 0c2-4 5.5-4 5.5-1.8S14 9 12 9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4.5 7 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-ask" viewBox="0 0 24 24"><path d="M5 5.5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4.5 3.5v-3.5H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16M7 17v-5M12 17V7M17 17v-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18.5" cy="12" r="1.7" fill="currentColor"/></symbol>
 </svg>
 
@@ -105,7 +106,7 @@
   <!-- the tabs: portal.js adds only the ones this client has (on a phone they move to the dock at the bottom) -->
   <nav class="tabs" id="tabs" aria-label="Your pages" hidden></nav>
 </header>
-<script src="portal.js?v=20261014a"></script>
+<script src="portal.js?v=20261015a"></script>
 
 <main class="page" id="main" tabindex="-1">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -674,6 +675,31 @@
           <div class="dc-btns"><button class="btn small" type="submit" id="b-nl-set"><span>Save</span></button></div>
         </form>
       </div>
+    </section>
+
+    <!-- your visitors (Oct 15 2026): their own site's private visitor counts, the last 30 days next to the 30 before;
+         only for a client whose site is counted on Web Faery's server (the server answers visits: null for everyone
+         else, and the section stays hidden). Its code is the "Your visitors" block in portal.js. -->
+    <section class="p-card" id="sec-visits" data-page="visitors" aria-labelledby="h-visits" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-visits" tabindex="-1">Your visitors</h2>
+      <p class="vs-lede" id="vs-lede"></p>
+      <dl class="glance vs-glance" id="vs-glance"></dl>
+      <figure class="vs-days" id="vs-days">
+        <figcaption class="vs-cap" id="vs-cap">Visitors each day</figcaption>
+        <div class="vs-chart" id="vs-chart"></div>
+        <p class="vs-axis" aria-hidden="true"><span id="vs-axis-from"></span><span id="vs-axis-to"></span></p>
+      </figure>
+      <h3 class="small-h vs-h">Pages people opened most</h3>
+      <ul class="ledger vs-list" id="vs-pages"></ul>
+      <p class="vs-none" id="vs-pages-none" hidden>No pages counted yet.</p>
+      <h3 class="small-h vs-h">Where they came from</h3>
+      <ul class="ledger vs-list" id="vs-from"></ul>
+      <p class="vs-none" id="vs-from-none" hidden>No other sites to show for these 30 days.</p>
+      <h3 class="small-h vs-h">What they used</h3>
+      <ul class="ledger vs-list" id="vs-devices"></ul>
+      <p class="vs-none" id="vs-devices-none" hidden>Nothing counted yet.</p>
+      <p class="vs-fine">Counted privately: no cookies, nothing that identifies anyone. Visitors are an estimate: each person counts once a day, so someone who comes back on another day counts again.</p>
     </section>
 
     <section class="p-card" id="sec-list" data-page="project" aria-labelledby="h-list">

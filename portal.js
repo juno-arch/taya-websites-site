@@ -34,6 +34,8 @@
    /product-photo, /product-photos
    and the Newsletter card's own door, newsCall (Oct 12 2026, never in the preview): /overview, /issue, /save, /remove,
    /preview, /test, /send, /stop, /people, /export, /settings (hub API.md section 18)
+   and one for the "Your visitors" card (Oct 15 2026; the preview has it too): visits, /api/webfaery/v/mine
+   (hub DEPLOY.md section 72, API.md section 22)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -56,6 +58,7 @@
   const GIFT = SERVER + '/api/webfaery/gift';         // gift certificates (Oct 10 2026): only clients whose site sells them
   const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
   const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
+  const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -388,7 +391,9 @@
     // gift certificates (Oct 10 2026)
     giftOwner: () => postJSON('/owner', {}, token, GIFT),
     giftLookup: (code) => postJSON('/lookup', { code }, token, GIFT),
-    giftRedeem: (b) => postJSON('/redeem', b, token, GIFT)
+    giftRedeem: (b) => postJSON('/redeem', b, token, GIFT),
+    // their own site's visitor counts (Oct 15 2026): { visits: null } unless their site is counted
+    visits: () => postJSON('/mine', {}, token, VISITS)
   };
   let api = realApi;
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
@@ -524,6 +529,7 @@
     { id: 'bookings', label: 'Bookings', icon: 'i-cal' },
     { id: 'gifts', label: 'Gift certificates', short: 'Gifts', icon: 'i-gift' },
     { id: 'newsletter', label: 'Newsletter', icon: 'i-mail' },
+    { id: 'visitors', label: 'Visitors', icon: 'i-bars' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -536,7 +542,7 @@
   // booking or newsletter comes first (that's what they'll open most)
   function pageList() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    const order = live ? ['home'].concat(SHOP_PAGES, ['project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['payments', 'ask']);
+    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -748,6 +754,8 @@
     }
     // what's still on their gift certificates (the server sends it as money, "$0.00" when nothing is left)
     if (gifts && (toCents(gifts.outstanding) || 0) > 0) cells.push(['Gift certificates', gifts.outstanding, 'still to be used']);
+    // their site's visitors (Oct 15 2026), when it's counted
+    if (visits) cells.push(['Visitors', vsNum(visits.visitors), visits.since && visits.since > visits.from ? 'since ' + shortDate(visits.since) : 'the last 30 days']);
     // draw only when something changed (Needs you and the tabs call this often)
     const sig = JSON.stringify(cells);
     if (sig !== glanceSig) {
@@ -815,6 +823,8 @@
     $('#in-gift-code').value = '';
     bk = null;
     $('#sec-bookings').hidden = true;
+    visits = null;
+    $('#sec-visits').hidden = true;
     nl = null;
     nlEdit = null;
     nlPeopleShown = false;
@@ -986,6 +996,7 @@
       loadGifts();
       loadBookings();
       loadNews();
+      loadVisits();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
       else if (backToPay) { backToPay = false; goPage('payments'); }
@@ -1009,6 +1020,7 @@
       loadGifts();
       loadBookings();
       loadNews();
+      loadVisits();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
@@ -4543,6 +4555,134 @@
         : e.code === 'not_paid' ? 'This one isn’t paid yet.' : words(e));
       amt.focus();
     } finally { if (document.body.contains(save)) setBusy(save, false); busy = Math.max(0, busy - 1); }
+  }
+
+  /* ---- your visitors (Oct 15 2026) ----
+     Their own site's private visitor counts: the last 30 days next to the 30 before, a bar for each day (drawn to
+     scale from 0), the pages opened most, where people came from and what they used. Only for a client whose site is
+     counted on Web Faery's server: the server answers visits: null for everyone else, and the section and its tab
+     stay hidden. The server sends only their own site's numbers (nothing sent from here picks a site). */
+  let visits = null;         // { from, to, since, visitors, views, before, daily, pages, hosts, devices } (cleaned)
+  const vsNum = (n) => Number(n || 0).toLocaleString('en-US');
+  const vsCount = (v) => (Number.isInteger(+v) && +v >= 0 ? Math.min(+v, 1e9) : 0);
+  const vsDay = (s) => (/^\d{4}-\d{2}-\d{2}$/.test(str(s, 10)) ? str(s, 10) : '');
+  // a few hosts people know by name (the address stays underneath)
+  const VS_NAMES = [[/(^|\.)instagram\.com$/, 'Instagram'], [/(^|\.)facebook\.com$|^fb\.me$/, 'Facebook'], [/(^|\.)google\.[a-z.]+$|^com\.google\./, 'Google'],
+    [/(^|\.)bing\.com$/, 'Bing'], [/(^|\.)duckduckgo\.com$/, 'DuckDuckGo'], [/(^|\.)yelp\.com$/, 'Yelp'], [/(^|\.)tiktok\.com$/, 'TikTok'],
+    [/(^|\.)pinterest\.[a-z.]+$/, 'Pinterest'], [/(^|\.)linktr\.ee$/, 'Linktree'], [/(^|\.)nextdoor\.com$/, 'Nextdoor'], [/(^|\.)webfaery\.love$/, 'Web Faery']];
+  const VS_DEVICES = [['phone', 'Phones'], ['desktop', 'Computers'], ['tablet', 'Tablets']];
+  async function loadVisits() {
+    if (typeof api.visits !== 'function') { visits = null; renderVisits(); return; }
+    try {
+      const d = await api.visits();
+      visits = cleanVisits(d);
+      renderVisits();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!visits) $('#sec-visits').hidden = true; // a quiet refresh that misses keeps what's on screen
+    }
+  }
+  function cleanVisits(d) {
+    const v = d && typeof d === 'object' && d.visits && typeof d.visits === 'object' ? d.visits : null;
+    if (!v || !vsDay(v.from) || !vsDay(v.to)) return null;
+    const b = v.before && typeof v.before === 'object' ? v.before : {};
+    const dv = v.devices && typeof v.devices === 'object' ? v.devices : {};
+    return {
+      from: vsDay(v.from), to: vsDay(v.to), since: vsDay(v.since),
+      visitors: vsCount(v.visitors), views: vsCount(v.views),
+      before: { from: vsDay(b.from), visitors: vsCount(b.visitors), views: vsCount(b.views) },
+      daily: arr(v.daily).slice(0, 60).map((x) => (x && typeof x === 'object' && vsDay(x.day) ? { day: vsDay(x.day), visitors: vsCount(x.visitors), views: vsCount(x.views) } : null)).filter(Boolean),
+      pages: arr(v.pages).slice(0, 5).map((x) => (x && typeof x === 'object' && cleanLine(x.path, 200) ? { path: cleanLine(x.path, 200), views: vsCount(x.views) } : null)).filter(Boolean),
+      hosts: arr(v.came_from).slice(0, 5).map((x) => (x && typeof x === 'object' && cleanLine(x.host, 100) ? { host: cleanLine(x.host, 100).toLowerCase(), views: vsCount(x.views) } : null)).filter(Boolean),
+      devices: { phone: vsCount(dv.phone), tablet: vsCount(dv.tablet), desktop: vsCount(dv.desktop) }
+    };
+  }
+  // the 30 days before can be compared only when counting already ran through all of them
+  const vsComparable = (v) => !!v.since && !!v.before.from && v.since <= v.before.from && v.before.visitors > 0;
+  // the one plain line at the top: "About 214 visitors in the last 30 days, up from 160."
+  function visitsLede(v) {
+    if (!v.since) return 'Counting is on. Your first visitors show up here as they come.';
+    const people = v.visitors === 0 ? 'No visitors counted' : 'About ' + vsNum(v.visitors) + ' ' + (v.visitors === 1 ? 'visitor' : 'visitors');
+    if (v.since > v.from) return people + ' since ' + shortDate(v.since) + ', when counting began.';
+    const base = people + ' in the last 30 days';
+    if (!vsComparable(v)) return base + '.';
+    const was = v.before.visitors, diff = v.visitors - was;
+    if (Math.abs(diff) <= Math.max(2, Math.round(was * 0.05))) return base + ', about the same as the 30 days before.';
+    return base + (diff > 0 ? ', up from ' : ', down from ') + vsNum(was) + '.';
+  }
+  const svgEl = (tag, attrs) => {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.keys(attrs || {}).forEach((k) => el.setAttribute(k, String(attrs[k])));
+    return el;
+  };
+  // a bar for each day, its height to scale from 0 up to the busiest day (a quiet day is no bar, just the base line)
+  function visitsChart(v) {
+    const days = v.daily;
+    const W = 300, H = 88, n = Math.max(1, days.length), bw = W / n, gap = Math.min(2, bw * 0.3);
+    const top = days.reduce((m, d) => (d.visitors > m.visitors ? d : m), { day: '', visitors: 0 });
+    const max = Math.max(1, top.visitors);
+    const svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, preserveAspectRatio: 'none', class: 'vs-svg', role: 'img', focusable: 'false' });
+    svg.setAttribute('aria-label', top.visitors
+      ? 'Visitors each day, ' + shortDate(v.from) + ' to ' + shortDate(v.to) + '. The busiest day was ' + shortDate(top.day) + ', with ' + plural(top.visitors, 'visitor', 'visitors') + '.'
+      : 'Visitors each day, ' + shortDate(v.from) + ' to ' + shortDate(v.to) + '. None counted yet.');
+    days.forEach((d, i) => {
+      if (!d.visitors) return;
+      const h = (d.visitors / max) * H;
+      const r = svgEl('rect', { x: (i * bw + gap / 2).toFixed(2), y: (H - h).toFixed(2), width: (bw - gap).toFixed(2), height: h.toFixed(2), class: 'vs-bar' });
+      const t = svgEl('title');
+      t.textContent = shortDate(d.day) + ': ' + plural(d.visitors, 'visitor', 'visitors');
+      r.append(t);
+      svg.append(r);
+    });
+    svg.append(svgEl('line', { x1: 0, y1: H - 0.5, x2: W, y2: H - 0.5, class: 'vs-base', 'vector-effect': 'non-scaling-stroke' }));
+    return { svg, top };
+  }
+  function vsRow(label, sub, right) {
+    const li = make('li');
+    const what = make('span', 'what');
+    what.append(make('b', null, label));
+    if (sub) what.append(make('small', null, sub));
+    li.append(what, make('span', 'vs-n', right));
+    return li;
+  }
+  const vsTimes = (n) => (n === 1 ? 'once' : vsNum(n) + ' times');
+  function renderVisits() {
+    const sec = $('#sec-visits');
+    const v = visits;
+    if (!v) { setHidden(sec, true); if (me) renderGlance(); return; }
+    $('#vs-lede').textContent = visitsLede(v);
+    const cmp = vsComparable(v);
+    const since = v.since && v.since > v.from ? 'since ' + shortDate(v.since) : 'the last 30 days';
+    const cells = [
+      ['Visitors', vsNum(v.visitors), cmp ? 'the 30 days before: ' + vsNum(v.before.visitors) : since],
+      ['Page loads', vsNum(v.views), cmp ? 'the 30 days before: ' + vsNum(v.before.views) : since]
+    ];
+    $('#vs-glance').replaceChildren(...cells.map(([label, big, small]) => {
+      const d = make('div');
+      d.append(make('dt', null, label), make('dd', null, big), make('dd', 'd', small));
+      return d;
+    }));
+    const chart = visitsChart(v);
+    $('#vs-chart').replaceChildren(chart.svg);
+    $('#vs-cap').textContent = chart.top.visitors ? 'Visitors each day. The busiest: ' + shortDate(chart.top.day) + ', with ' + vsNum(chart.top.visitors) + '.' : 'Visitors each day';
+    $('#vs-axis-from').textContent = shortDate(v.daily.length ? v.daily[0].day : v.from);
+    $('#vs-axis-to').textContent = shortDate(v.daily.length ? v.daily[v.daily.length - 1].day : v.to);
+    $('#vs-pages').replaceChildren(...v.pages.map((p) => vsRow(p.path === '/' ? 'Home page' : p.path, '', vsTimes(p.views))));
+    setHidden($('#vs-pages'), !v.pages.length);
+    setHidden($('#vs-pages-none'), v.pages.length > 0);
+    $('#vs-from').replaceChildren(...v.hosts.map((h) => {
+      const known = VS_NAMES.find(([re]) => re.test(h.host));
+      return vsRow(known ? known[1] : h.host, known ? h.host : '', vsTimes(h.views));
+    }));
+    setHidden($('#vs-from'), !v.hosts.length);
+    setHidden($('#vs-from-none'), v.hosts.length > 0);
+    const all = v.devices.phone + v.devices.tablet + v.devices.desktop;
+    const devs = VS_DEVICES.map(([k, label]) => [label, v.devices[k]]).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]);
+    $('#vs-devices').replaceChildren(...devs.map(([label, n]) => vsRow(label, plural(n, 'visitor', 'visitors'), (Math.round((n / all) * 100) || 'under 1') + '%')));
+    setHidden($('#vs-devices'), !devs.length);
+    setHidden($('#vs-devices-none'), devs.length > 0);
+    setHidden(sec, false);
+    if (me) renderGlance();
   }
 
   /* ================= no do-it-yourself editing (Oct 5 2026) =================

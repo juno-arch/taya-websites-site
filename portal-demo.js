@@ -16,6 +16,7 @@
      mid       the draft is under way (the default)
      launched  launch day: settling in, the second half due, care waiting until settling in ends, "Ask for a change" open
      care      in care: everything paid, two past asks with Taya's replies
+   Once her site is live (launched, care) the "Your visitors" card shows sample counts too (visitsSample below).
    Every date is counted from today, so each moment reads true whatever day it's opened.
    The answers have exactly the shapes the server sends (API.md in the hub's webfaery-portal-docs), so the
    page can't tell them apart.
@@ -325,6 +326,38 @@
 
   function findItem(id) { return data.list.open.filter(function (x) { return x.id === id; })[0]; }
 
+  /* ---------------- "Your visitors" (Oct 15 2026): sample counts once her site is live ----------------
+     The same shape as POST /api/webfaery/v/mine. launched: counting began four days ago (no comparison yet);
+     care: a small pottery studio's ordinary month, next to the month before. Every other moment: null (no live site). */
+  function visitsSample(k) {
+    var per, since, before, pages, hosts, devices;
+    if (k === 'care') {
+      per = [5, 6, 4, 7, 9, 11, 6, 5, 7, 6, 8, 10, 12, 7, 6, 5, 8, 7, 9, 13, 6, 5, 7, 6, 8, 9, 6, 7, 5, 4];
+      since = day(-100);
+      before = { visitors: 160, views: 352 };
+      pages = [{ path: '/', views: 182 }, { path: '/classes', views: 96 }, { path: '/shop', views: 61 }, { path: '/about', views: 38 }, { path: '/contact', views: 21 }];
+      hosts = [{ host: 'google.com', views: 58 }, { host: 'l.instagram.com', views: 34 }, { host: 'facebook.com', views: 11 }, { host: 'yelp.com', views: 6 }, { host: 'linktr.ee', views: 4 }];
+      devices = { phone: 139, tablet: 9, desktop: 66 };
+    } else if (k === 'launched') {
+      per = [];
+      for (var z = 0; z < 25; z++) per.push(0);
+      per = per.concat([9, 14, 11, 8, 12]);
+      since = day(-4);
+      before = { visitors: 0, views: 0 };
+      pages = [{ path: '/', views: 61 }, { path: '/classes', views: 24 }, { path: '/about', views: 13 }, { path: '/shop', views: 9 }, { path: '/contact', views: 6 }];
+      hosts = [{ host: 'l.instagram.com', views: 21 }, { host: 'facebook.com', views: 9 }, { host: 'google.com', views: 5 }];
+      devices = { phone: 38, tablet: 2, desktop: 14 };
+    } else return null;
+    var daily = per.map(function (v, i) { return { day: day(i - 29), visitors: v, views: v ? v * 2 + (k === 'care' ? i % 3 : 1) : 0 }; });
+    var sum = function (key) { return daily.reduce(function (a, d) { return a + d[key]; }, 0); };
+    return {
+      from: day(-29), to: today(), days: 30, since: since,
+      visitors: sum('visitors'), views: sum('views'),
+      before: { from: day(-59), to: day(-30), visitors: before.visitors, views: before.views },
+      daily: daily, pages: pages, came_from: hosts, devices: devices
+    };
+  }
+
   /* ---------------- the same eight calls as the real server ---------------- */
   var api = {
     requestCode: function (who) {
@@ -404,6 +437,12 @@
         return { ok: true, id: id, reply_by: replyBy() };
       });
     }
+  };
+
+  // "Your visitors" (Oct 15 2026): the same answer as the real server, sample numbers for the moment on screen
+  api.visits = function () {
+    var g = gate(); if (g) return refuse(g);
+    return wait(400).then(function () { return { visits: visitsSample(scene) }; });
   };
 
   window.WFPortalDemo = {
