@@ -330,6 +330,9 @@ var SITE = {
   .photo.garden::after { background: linear-gradient(to top, rgba(var(--veil-rgb), 0.66) 0, rgba(var(--veil-rgb), 0.34) 64px, rgba(var(--veil-rgb), 0) 130px); }
   .garden-pair, .creek-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 40px; max-width: 720px; }
   .photo.pair { aspect-ratio: 4 / 5; }
+  .garden-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 36px; }
+  .garden-strip .photo { aspect-ratio: 4 / 5; }
+  .garden-strip .pair-cap { grid-column: 1 / -1; margin-top: 12px; }
   .pair-cap { grid-column: 1 / -1; margin: 2px 2px 0; font-family: 'Petrona', Georgia, serif; font-style: italic; font-size: 16px; color: var(--ink-soft); }
 
   /* ---------- sections ---------- */
@@ -512,6 +515,8 @@ var SITE = {
     .photo.at-work { justify-self: stretch; }
     .photo.garden { margin-inline: 0; max-width: 300px; border-radius: 18px; }
     .garden-pair, .creek-pair { gap: 10px; }
+    .garden-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .garden-strip .photo { margin-inline: 0; border-radius: 14px; }
     .garden-pair .photo, .creek-pair .photo { margin-inline: 0; border-radius: 14px; }
     .reviews { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .gift, .faq { grid-template-columns: minmax(0, 1fr); }
@@ -625,6 +630,20 @@ var SITE = {
         <li class="lead"><b>Deep Tissue</b></li><li><b>Swedish</b></li><li><b>Neuromuscular</b></li>
         <li>Advanced Clinical Techniques</li><li>Polarity</li><li>Hypnotherapy</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section id="garden" class="gutter">
+  <div class="wrap">
+    <p class="label">From the garden</p>
+    <h2 class="reveal">Grown <em>in her own backyard</em></h2>
+    <div class="garden-strip" data-lightbox>
+      <figure class="reveal photo pair"><img src="images/garden-sunrise-dahlias.jpg" alt="Tall coral dahlias in soft morning light in Tera&rsquo;s garden" loading="lazy" width="960" height="1200"></figure>
+      <figure class="reveal photo pair"><img src="images/garden-zinnia-field.jpg" alt="Rows of pink, red and cream zinnias in full bloom in Tera&rsquo;s garden" loading="lazy" width="960" height="1200"></figure>
+      <figure class="reveal photo pair"><img src="images/garden-bee-dahlia.jpg" alt="A fuzzy bumblebee on a dewy pink dahlia" loading="lazy" width="960" height="1200"></figure>
+      <figure class="reveal photo pair"><img src="images/garden-bouquet.jpg" alt="A bouquet of cream and pink dahlias in a brass vase" loading="lazy" width="960" height="1200"></figure>
+      <p class="pair-cap">The same patience she brings to the table. Her garden changes with the seasons, and so will these photos.</p>
     </div>
   </div>
 </section>
