@@ -111,7 +111,7 @@
       ],
       after: {
         maiden: 'Anything I set up for you is in your name, with your email. If a confirm-your-email message comes, just click it. Already use a booking app? Send me your booking link, and your Book now button opens it.',
-        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, with your email, and hand you the logins at launch. Already happy with a booking app? We keep that one. If a confirm-your-email message or two comes from them, just click them.',
+        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, with your email, and hand you the logins at launch. Already happy with a booking app? You keep that one. If a confirm-your-email message or two comes from them, just click them.',
         other: 'If your build has a newsletter or booking, I set those up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
       }
     },

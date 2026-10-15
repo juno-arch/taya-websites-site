@@ -111,7 +111,7 @@
       say: ['Taya! She tends gardens and builds websites here in Humboldt County, California. She’s the real deal. I’m the mascot. [Meet her →](about)',
         '(happy) Taya’s the one who actually knows things, and she writes back to every email herself. [Say hi →](email)',
         'Just Taya. No big agency, no robots, one very kind human who answers her own email. [Who you’d work with →](about)',
-        '(happy) We’re in Humboldt County, California, with the redwoods and the moss. Taya builds for anyone, near or far. [About Taya →](about)'] },
+        '(happy) Taya’s in Humboldt County, California, with the redwoods and the moss. She builds for anyone, near or far. [About Taya →](about)'] },
     start: { ex: 'happy', keys: 'make my site|make me|make a site|make a website|build my|build me|build a|hire|hiring|start|started|begin|sign up|sign me up|get started|work with|want a website|need a website|want a site|need a site|can you make|can you build|new site|new website|intake|questionnaire|interested|next step*|lets do|redo|redesign|rebuild|makeover|ready to start|ready to go|im ready|love a website|love a site|love a new|like a website|like a site|love to work|massage|bodywork*|healer*|therapist*|practitioner*|acupunct*|reiki|yoga',
       say: ['Yes! Well, Taya can. I’d just add glitter. Start with a few easy questions: [Getting started →](start) Or just say hi: [taya@webfaery.love](email)',
         '(proud) Ooh, a new site! First step: a few easy questions, or just email Taya about your work. [Get started →](start)',
