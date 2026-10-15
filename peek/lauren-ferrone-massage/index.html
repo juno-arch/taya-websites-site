@@ -152,6 +152,8 @@
   .hero .label { color: var(--hero-em); margin-bottom: 20px; text-shadow: 0 1px 14px rgba(20, 5, 28, 0.6); }
   .hero h1 { font-size: clamp(52px, 8.4vw, 104px); line-height: 0.98; color: var(--hero-ink); letter-spacing: -0.01em;
     text-shadow: 0 2px 30px rgba(20, 5, 28, 0.55); }
+  .hero h1 { font-size: clamp(44px, 6.4vw, 84px); }
+  .hero h1 em { color: #ead3f7; }
   .hero h1 .sub { display: block; margin-top: 14px; font-family: 'Proza Libre', sans-serif; font-size: clamp(13px, 1.6vw, 15px); line-height: 1.4; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 500; color: var(--hero-soft); text-shadow: 0 1px 12px rgba(20, 5, 28, 0.7); }
   .hero .lede { margin: 26px 0 0; font-size: clamp(17px, 2vw, 20px); line-height: 1.6; color: var(--hero-soft); max-width: 34ch; text-shadow: 0 1px 14px rgba(20, 5, 28, 0.75); }
   .hero .btn { background: #f3ecf6; color: #330d4a; border-color: #f3ecf6; }
@@ -212,62 +214,28 @@
   .mods { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; list-style: none; }
   .mods li { font-size: 14.5px; padding: 5px 13px; border: 1px solid var(--hair); border-radius: 999px; color: var(--ink); background: var(--paper); }
 
-  /* THE SIGNATURE, on the night plum band: "Where do you hold it?" A back, drawn in one fine line. When it first
-     comes into view, a warm gold glow (her hands, her sun) travels down from the neck, lighting each place in turn,
-     then waits: tap where you hold it, choose a pressure and a length, and your note for Lauren writes itself
-     (and rides along with the booking). Each place shows a line from her own clients about it. Under reduced
-     motion nothing travels; the places simply wait to be tapped. */
+  /* THE SIGNATURE, on the night plum band: a flower that breathes. It opens for 4 seconds and closes for 6 (a calm
+     breath), with the cue "Breathe in / Breathe out" under the heading. It moves only while on screen, and under
+     reduced motion it stays open. */
+  .bloom-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+  .bloom { width: 100%; max-width: 340px; justify-self: center; overflow: visible; }
+  .bloom .b-ring { transition: transform 6s ease-in-out; }
+  .bloom .b-back { transform: translate(150px,150px) scale(.62); }
+  .bloom .b-front { transform: translate(150px,150px) scale(.5); }
+  .bloom.open .b-ring { transition-duration: 4s; }
+  .bloom.open .b-back { transform: translate(150px,150px) scale(1); }
+  .bloom.open .b-front { transform: translate(150px,150px) scale(.92); }
+  .bloom .b-glow { opacity: .35; transition: opacity 6s ease-in-out; }
+  .bloom.open .b-glow { opacity: 1; transition-duration: 4s; }
+  .bloom-cue { font-family: 'Lustria', Georgia, serif; font-size: 22px; color: #f3c96a; margin-top: 14px; }
+  @media (max-width: 760px) { .bloom-wrap { grid-template-columns: minmax(0, 1fr); gap: 28px; text-align: center; } .bloom-copy p { margin-left: auto; margin-right: auto; } }
+  @media (prefers-reduced-motion: reduce) { .bloom .b-ring, .bloom .b-glow { transition: none; } .bloom .b-back { transform: translate(150px,150px) scale(1); } .bloom .b-front { transform: translate(150px,150px) scale(.92); } .bloom .b-glow { opacity: 1; } }
   .band { background: radial-gradient(80% 90% at 75% 20%, var(--band-2) 0, var(--band) 72%); color: var(--on-band); position: relative; overflow: hidden; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: #f3c96a; }
   .band .label { color: #f3c96a; }
   .band p { color: rgba(243, 236, 246, 0.88); }
   .band .tag { background: rgba(243, 236, 246, 0.1); color: #f3ecf6; border-color: rgba(243, 236, 246, 0.28); }
-  .map-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); grid-template-areas: "intro body" "controls body"; column-gap: 56px; align-items: start; }
-  .map-intro { grid-area: intro; } .map-controls { grid-area: controls; } .body-wrap { grid-area: body; }
-  .body-wrap { position: relative; max-width: 360px; margin: 0 auto; width: 100%; }
-  @media (min-width: 861px) { .body-wrap { position: sticky; top: calc(var(--sn-h, 62px) + 40px); } }
-  .bodymap { width: 100%; height: auto; display: block; overflow: visible; touch-action: manipulation; }
-  .bodymap .ln { fill: none; stroke: rgba(243, 236, 246, 0.72); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .bodymap .ln.thin { stroke: rgba(243, 236, 246, 0.36); stroke-width: 1.1; }
-  .bodymap .spine { fill: none; stroke: rgba(243, 236, 246, 0.42); stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: 1 7; }
-  .bodymap .skin { fill: rgba(243, 236, 246, 0.045); }
-  .bodymap .zone { cursor: pointer; }
-  .bodymap .zone .hit { fill: transparent; }
-  .bodymap .zone .ring { fill: none; stroke: rgba(243, 201, 106, 0.55); stroke-width: 1.2; stroke-dasharray: 2 5; opacity: 0.85; transition: opacity 0.6s ease; }
-  .bodymap .zone .glow { fill: url(#warm); opacity: 0; transition: opacity 0.9s ease; transform-box: fill-box; transform-origin: center; }
-  .bodymap .zone.lit .glow { opacity: 0.85; }
-  .bodymap .zone.on .glow { opacity: 1; animation: breathe 6s ease-in-out infinite; }
-  .bodymap .zone.on .ring { opacity: 0; }
-  .bodymap .zone:hover .ring { stroke: #f3c96a; opacity: 1; }
-  .bodymap.sweeping .zone .ring { opacity: 0; }
-  .bodymap .hand { fill: url(#warm); opacity: 0; }
-  @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-  @media (prefers-reduced-motion: reduce) { .bodymap .zone.on .glow { animation: none; } .bodymap .zone .glow, .bodymap .zone .ring { transition: none; } }
-  .zones { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-top: 22px; }
-  .zbtn { font: inherit; font-size: 15px; font-weight: 500; line-height: 1.2; min-height: 44px; padding: 8px 16px; border-radius: 999px; cursor: pointer;
-    color: var(--on-band); background: rgba(243, 236, 246, 0.06); border: 1px solid rgba(243, 236, 246, 0.3); transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
-  .zbtn::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; border: 1px solid #f3c96a; vertical-align: 1px; transition: background-color 0.3s ease; }
-  .zbtn:hover { border-color: #f3c96a; }
-  .zbtn[aria-pressed="true"] { background: rgba(243, 201, 106, 0.18); border-color: #f3c96a; color: #fff6dc; }
-  .zbtn[aria-pressed="true"]::before { background: #f3c96a; }
-  .zbtn:focus-visible, .pseg button:focus-visible, .note-go:focus-visible, .note-clear:focus-visible { outline: 2px solid #f3c96a; outline-offset: 2px; }
-  .pick-q { margin: 22px 0 8px; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: rgba(243, 236, 246, 0.72); }
-  .pseg { display: inline-grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; padding: 3px; border: 1px solid rgba(243, 236, 246, 0.24); border-radius: 6px; max-width: 100%; }
-  .pseg button { font: inherit; font-size: 15px; line-height: 1.2; min-height: 44px; padding: 8px 14px; border: 0; border-radius: 4px; cursor: pointer; color: rgba(243, 236, 246, 0.86); background: transparent; white-space: nowrap; }
-  .pseg button:hover { background: rgba(243, 236, 246, 0.08); }
-  .pseg button[aria-pressed="true"] { background: #f3ecf6; color: #330d4a; font-weight: 600; }
-  .note-card { margin-top: 26px; background: rgba(243, 236, 246, 0.06); border: 1px solid rgba(243, 236, 246, 0.2); border-radius: 4px; padding: 18px 20px 18px; }
-  .note-card .nc-h { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: #f3c96a; }
-  .note-text { margin-top: 8px; font-family: 'Lustria', Georgia, serif; font-size: 22px; line-height: 1.4; color: #fbf6fd; min-height: 1.4em; }
-  .note-text.empty { font-family: 'Proza Libre', sans-serif; font-size: 16px; color: rgba(243, 236, 246, 0.7); }
-  .note-kind { margin-top: 14px; padding-left: 14px; border-left: 2px solid #f3c96a; font-size: 15px; line-height: 1.55; color: rgba(243, 236, 246, 0.84); }
-  .note-kind cite { display: block; margin-top: 4px; font-style: normal; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243, 236, 246, 0.62); }
-  .note-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
-  .note-go { font: inherit; font-weight: 600; font-size: 16px; min-height: 48px; padding: 12px 24px; border-radius: 3px; cursor: pointer; background: #f3ecf6; color: #330d4a; border: 1px solid #f3ecf6; }
-  .note-go:hover { background: #ffffff; }
-  .note-go:disabled { opacity: 0.5; cursor: not-allowed; }
-  .note-clear { font: inherit; font-size: 15px; min-height: 44px; padding: 8px 14px; border-radius: 3px; cursor: pointer; background: transparent; color: rgba(243, 236, 246, 0.85); border: 1px solid transparent; text-decoration: underline; text-underline-offset: 4px; }
   .band .mock-note { border-color: rgba(243, 201, 106, 0.6); color: rgba(243, 236, 246, 0.86); }
   .band .tier-note { color: rgba(243, 236, 246, 0.86); }
 
@@ -600,8 +568,6 @@
   @media (prefers-reduced-motion: reduce) { .reveal.pre { opacity: 1; transform: none; } }
 
   @media (max-width: 860px) {
-    .map-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "body" "controls"; }
-    .body-wrap { max-width: 250px; margin-top: 26px; }
   }
   @media (max-width: 760px) {
     section { padding-block: 64px; }
@@ -733,7 +699,7 @@
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
         <p class="label"><span class="nw">Licensed massage therapist</span><span class="sep" aria-hidden="true"> &middot; </span><span class="nw place">Asheville, North Carolina</span></p>
-        <h1>Lauren Ferrone<span class="sub">Massage Therapy &amp; Body Work</span></h1>
+        <h1>Bodywork that finds <em>the exact spot</em><span class="sub">Lauren Ferrone, Massage Therapy &amp; Body Work</span></h1>
         <p class="lede">From relaxation to deep tissue, with specific attention on areas of pain or injury.</p>
         <div class="cta-row">
           <a class="btn" href="#booking">Book a session</a>
@@ -763,7 +729,7 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your sessions and prices, your story, your kind words, where to find you, and an email button to book."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus the where-you-hold-it map, a Book button to your own Cal.com, a contact form, FAQ and an open spots list."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a Book button to your own Cal.com, a contact form, FAQ and an open spots list."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your own site and gift sessions paid into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
@@ -800,70 +766,34 @@
   </div>
 </section>
 
-<section id="hold" class="band gutter" data-show="mother crone all" data-fold data-thing="the where-you-hold-it map">
-  <div class="wrap map-grid">
-    <div class="map-intro">
-      <p class="label with-pill"><span>Before you book</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 class="reveal">Where do you <em>hold it?</em></h2>
-      <p style="margin-top:16px;max-width:46ch">Tap the places that feel tight or sore, pick your pressure, and your note goes along with your booking, so Lauren knows where to begin.</p>
-    </div>
-    <div class="map-controls">
-      <ul class="zones" id="zones" aria-label="Where you hold it">
-        <li><button type="button" class="zbtn" data-zone="neck" aria-pressed="false">Neck</button></li>
-        <li><button type="button" class="zbtn" data-zone="shoulders" aria-pressed="false">Shoulders</button></li>
-        <li><button type="button" class="zbtn" data-zone="upper" aria-pressed="false">Upper back</button></li>
-        <li><button type="button" class="zbtn" data-zone="low" aria-pressed="false">Low back</button></li>
-        <li><button type="button" class="zbtn" data-zone="hips" aria-pressed="false">Hips</button></li>
-      </ul>
-      <p class="pick-q" id="pr-q">Pressure</p>
-      <div class="pseg" role="group" aria-labelledby="pr-q" id="pr-seg">
-        <button type="button" data-p="relaxing" aria-pressed="false">Relaxing</button>
-        <button type="button" data-p="medium" aria-pressed="true">Medium</button>
-        <button type="button" data-p="deep tissue" aria-pressed="false">Deep tissue</button>
-      </div>
-      <p class="pick-q" id="len-q">Length</p>
-      <div class="pseg" role="group" aria-labelledby="len-q" id="len-seg">
-        <button type="button" data-len="60" aria-pressed="true">60 minutes</button>
-        <button type="button" data-len="90" aria-pressed="false">90 minutes</button>
-      </div>
-      <div class="note-card" aria-live="polite">
-        <p class="nc-h">Your note for Lauren</p>
-        <p class="note-text empty" id="note-text">Tap where you hold it, and your note writes itself here.</p>
-        <blockquote class="note-kind" id="note-kind"><span id="note-quote">&ldquo;With just a few questions, she can pinpoint the source of your discomfort and begin to relax tight muscles through her healing touch.&rdquo;</span><cite id="note-cite">Claudette F.</cite></blockquote>
-        <div class="note-row"><button type="button" class="note-go" id="note-go" disabled>Book with this note</button><button type="button" class="note-clear" id="note-clear" hidden>Start over</button></div>
-      </div>
-      <p class="tier-note mock-note wf-note" style="margin-top:28px">People tap where they hold it, and the note rides along with their booking, so you know where to focus before they&rsquo;re on your table. The lines under it are your own clients&rsquo; words.</p>
-    </div>
-    <div class="body-wrap">
-      <svg class="bodymap" id="bodymap" viewBox="0 0 320 430" aria-hidden="true" focusable="false">
-        <defs>
-          <radialGradient id="warm"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.95"/><stop offset="0.45" stop-color="#f2b83a" stop-opacity="0.55"/><stop offset="1" stop-color="#e9a21c" stop-opacity="0"/></radialGradient>
-          <linearGradient id="fadebody" x1="0" y1="0" x2="0" y2="1"><stop offset="0.78" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-          <mask id="fade"><rect x="0" y="0" width="320" height="430" fill="url(#fadebody)"/></mask>
-          <path id="half" d="M147 92C147 102 146 109 141 115C128 122 108 125 92 131C78 137 70 149 69 167C68 191 66 215 63 239C61 263 59 286 56 310C54 334 52 360 50 400M98 185C96 211 93 237 89 263C86 285 83 301 80 319C78 340 77 366 76 400M98 185C102 213 108 241 111 267C113 287 108 307 104 329C101 347 101 368 103 430"/>
-          <path id="arm" d="M69 167C68 191 66 215 63 239C61 263 59 286 56 310C54 334 52 360 50 430H76C77 366 78 340 80 319C83 301 86 285 89 263C93 237 96 211 98 185C88 178 76 172 69 167Z"/>
-          <path id="blade" d="M121 150C135 153 142 171 136 199"/>
-        </defs>
-        <g mask="url(#fade)">
-          <path class="skin" d="M147 92C147 102 146 109 141 115C128 122 108 125 92 131C78 137 70 149 69 167C76 172 88 178 98 185C102 213 108 241 111 267C113 287 108 307 104 329C101 347 101 368 103 430H217C219 368 219 347 216 329C212 307 207 287 209 267C212 241 218 213 222 185C232 178 244 172 251 167C250 149 242 137 228 131C212 125 192 122 179 115C174 109 173 102 173 92Z"/>
-          <use href="#arm" class="skin"/>
-          <use href="#arm" class="skin" transform="translate(320 0) scale(-1 1)"/>
-          <ellipse class="skin" cx="160" cy="56" rx="30" ry="37"/>
-          <ellipse class="ln" cx="160" cy="56" rx="30" ry="37"/>
-          <use href="#half" class="ln"/>
-          <use href="#half" class="ln" transform="translate(320 0) scale(-1 1)"/>
-          <use href="#blade" class="ln thin"/>
-          <use href="#blade" class="ln thin" transform="translate(320 0) scale(-1 1)"/>
-          <path class="spine" d="M160 112V342"/>
-          <path class="ln thin" d="M146 318c4 3 8 3 10 0M164 318c2 3 6 3 10 0"/>
-        </g>
-        <g class="zone" data-zone="neck"><ellipse class="glow" cx="160" cy="106" rx="30" ry="22"/><ellipse class="ring" cx="160" cy="106" rx="15" ry="11"/><ellipse class="hit" cx="160" cy="104" rx="24" ry="18"/></g>
-        <g class="zone" data-zone="shoulders"><ellipse class="glow" cx="108" cy="134" rx="40" ry="26"/><ellipse class="glow" cx="212" cy="134" rx="40" ry="26"/><ellipse class="ring" cx="108" cy="134" rx="22" ry="13"/><ellipse class="ring" cx="212" cy="134" rx="22" ry="13"/><ellipse class="hit" cx="108" cy="136" rx="34" ry="20"/><ellipse class="hit" cx="212" cy="136" rx="34" ry="20"/></g>
-        <g class="zone" data-zone="upper"><ellipse class="glow" cx="160" cy="176" rx="62" ry="46"/><ellipse class="ring" cx="160" cy="176" rx="38" ry="28"/><ellipse class="hit" cx="160" cy="180" rx="50" ry="34"/></g>
-        <g class="zone" data-zone="low"><ellipse class="glow" cx="160" cy="276" rx="58" ry="38"/><ellipse class="ring" cx="160" cy="276" rx="34" ry="22"/><ellipse class="hit" cx="160" cy="274" rx="46" ry="30"/></g>
-        <g class="zone" data-zone="hips"><ellipse class="glow" cx="124" cy="342" rx="34" ry="30"/><ellipse class="glow" cx="196" cy="342" rx="34" ry="30"/><ellipse class="ring" cx="124" cy="342" rx="18" ry="16"/><ellipse class="ring" cx="196" cy="342" rx="18" ry="16"/><ellipse class="hit" cx="124" cy="340" rx="28" ry="24"/><ellipse class="hit" cx="196" cy="340" rx="28" ry="24"/></g>
-        <circle class="hand" id="hand" cx="160" cy="104" r="34"/>
-      </svg>
+<section id="breathe" class="band gutter" data-show="mother crone all" data-fold data-thing="a breathing flower">
+  <div class="wrap bloom-wrap">
+    <svg class="bloom" id="bloom" viewBox="0 0 300 300" role="img" aria-label="A flower slowly opening and closing, like a breath">
+      <defs>
+        <radialGradient id="bloomglow"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.9"/><stop offset="0.5" stop-color="#f2b83a" stop-opacity="0.35"/><stop offset="1" stop-color="#e9a21c" stop-opacity="0"/></radialGradient>
+        <linearGradient id="petal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#a45bd0"/><stop offset="1" stop-color="#e9c8f5"/></linearGradient>
+      </defs>
+      <circle class="b-glow" cx="150" cy="150" r="120" fill="url(#bloomglow)"/>
+      <g class="b-ring b-back">
+        <path d="M0 0 C-30 -40 -26 -92 0 -122 C26 -92 30 -40 0 0Z" fill="url(#petal)" opacity=".55" transform="rotate(0)"/>
+        <path d="M0 0 C-30 -40 -26 -92 0 -122 C26 -92 30 -40 0 0Z" fill="url(#petal)" opacity=".55" transform="rotate(72)"/>
+        <path d="M0 0 C-30 -40 -26 -92 0 -122 C26 -92 30 -40 0 0Z" fill="url(#petal)" opacity=".55" transform="rotate(144)"/>
+        <path d="M0 0 C-30 -40 -26 -92 0 -122 C26 -92 30 -40 0 0Z" fill="url(#petal)" opacity=".55" transform="rotate(216)"/>
+        <path d="M0 0 C-30 -40 -26 -92 0 -122 C26 -92 30 -40 0 0Z" fill="url(#petal)" opacity=".55" transform="rotate(288)"/>
+      </g>
+      <g class="b-ring b-front">
+        <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(36)"/>
+        <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(108)"/>
+        <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(180)"/>
+        <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(252)"/>
+        <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(324)"/>
+      </g>
+      <circle cx="150" cy="150" r="13" fill="#f3c96a"/><circle cx="150" cy="150" r="6" fill="#e9a21c"/>
+    </svg>
+    <div class="bloom-copy">
+      <h2 class="reveal">Take a <em>breath.</em></h2>
+      <p class="bloom-cue" id="bloom-cue">Breathe in</p>
+      <p style="margin-top:12px;max-width:44ch">Let it open as you breathe in, and soften as you let go. This is how Lauren hopes your hour with her feels.</p>
     </div>
   </div>
 </section>
@@ -1200,7 +1130,7 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your sessions and prices, your story, your kind words, where to find you, and an email button to book."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus the where-you-hold-it map, a Book button to your own Cal.com, a contact form, FAQ and an open spots list."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a Book button to your own Cal.com, a contact form, FAQ and an open spots list."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus booking right on your own site and gift sessions paid into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
@@ -1310,100 +1240,26 @@
 </script>
 
 <script>
-  /* THE SIGNATURE: where do you hold it? The warm glow travels down once to show the places, then the visitor taps
-     theirs, and the note for Lauren writes itself (and rides along with the booking or the contact form). */
+  /* The breathing flower: it opens for 4 seconds and closes for 6, the cue below it changes with it, and it only
+     moves while it's on screen. Under reduced motion it stays open and the words stay put. */
   (function () {
-    var svg = document.getElementById('bodymap'), hand = document.getElementById('hand');
-    if (!svg || !hand) return;
-    function $(id) { return document.getElementById(id); }
-    var ORDER = ['neck', 'shoulders', 'upper', 'low', 'hips'];
-    var NAMES = { neck: 'neck', shoulders: 'shoulders', upper: 'upper back', low: 'low back', hips: 'hips' };
-    var KIND = {
-      none: ['With just a few questions, she can pinpoint the source of your discomfort and begin to relax tight muscles through her healing touch.', 'Claudette F.'],
-      neck: ['She has provided relief for my upper back and neck tension so I can function without pain.', 'Claudette F.'],
-      shoulders: ['Taking the time to ask and identify the specific areas and pressure points that needed attention in my shoulders, neck and upper back and immediately began to offer relief.', 'Ray T.'],
-      upper: ['Lauren is so intuitive and is able to find these areas and work them out seamlessly.', 'Dr. NL'],
-      low: ['She is so attuned with the body and its needs.', 'Danielle S.'],
-      hips: ['I know how important it is to find a therapist that listens to what you want and also can figure out what your body truly needs.', 'Gustavo G.']
-    };
-    var zones = {}, btns = {};
-    [].forEach.call(svg.querySelectorAll('.zone'), function (g) { zones[g.getAttribute('data-zone')] = g; });
-    [].forEach.call(document.querySelectorAll('#zones .zbtn'), function (b) { btns[b.getAttribute('data-zone')] = b; });
-    var st = { on: [], last: null, p: 'medium', len: '60' };
-    function pressOnly(box, attr, val) { [].forEach.call(box.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute(attr) === val ? 'true' : 'false'); }); }
-    function listWords(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
-    function noteText() {
-      if (!st.on.length) return '';
-      var parts = ORDER.filter(function (z) { return st.on.indexOf(z) > -1; }).map(function (z) { return NAMES[z]; });
-      var w = listWords(parts); w = w.charAt(0).toUpperCase() + w.slice(1);
-      return w + ', ' + st.p + ' pressure, ' + st.len + ' minutes.';
+    var svg = document.getElementById('bloom'), cue = document.getElementById('bloom-cue');
+    if (!svg || !cue) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { cue.textContent = 'Breathe in, breathe out'; return; }
+    var sec = document.getElementById('breathe'), timer = null, inhale = true;
+    function step() {
+      svg.classList.toggle('open', inhale);
+      cue.textContent = inhale ? 'Breathe in' : 'Breathe out';
+      var d = inhale ? 4000 : 6000; inhale = !inhale;
+      timer = setTimeout(step, d);
     }
-    window.__lfNote = function () { return { text: noteText(), len: st.len }; };
-    function paint() {
-      ORDER.forEach(function (z) { var on = st.on.indexOf(z) > -1; zones[z].classList.toggle('on', on); btns[z].setAttribute('aria-pressed', on ? 'true' : 'false'); });
-      var t = noteText(), el = $('note-text');
-      el.textContent = t || 'Tap where you hold it, and your note writes itself here.'; el.classList.toggle('empty', !t);
-      var k = KIND[st.last && st.on.indexOf(st.last) > -1 ? st.last : (st.on[st.on.length - 1] || 'none')];
-      $('note-quote').textContent = '“' + k[0] + '”'; $('note-cite').textContent = k[1];
-      $('note-go').disabled = !t; $('note-clear').hidden = !st.on.length;
-    }
-    function toggle(z) {
-      var i = st.on.indexOf(z);
-      if (i > -1) st.on.splice(i, 1); else { st.on.push(z); st.last = z; }
-      paint();
-    }
-    ORDER.forEach(function (z) {
-      btns[z].addEventListener('click', function () { stopSweep(); toggle(z); });
-      zones[z].addEventListener('click', function () { stopSweep(); toggle(z); });
-    });
-    $('pr-seg').addEventListener('click', function (e) { var b = e.target.closest('[data-p]'); if (!b) return; st.p = b.getAttribute('data-p'); pressOnly($('pr-seg'), 'data-p', st.p); paint(); });
-    $('len-seg').addEventListener('click', function (e) { var b = e.target.closest('[data-len]'); if (!b) return; st.len = b.getAttribute('data-len'); pressOnly($('len-seg'), 'data-len', st.len); paint(); });
-    $('note-clear').addEventListener('click', function () { st.on = []; st.last = null; paint(); var f = btns.neck; try { f.focus({ preventScroll: true }); } catch (e) { f.focus(); } });
-    function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
-    function goLabel() { $('note-go').textContent = viewNow() === 'mother' ? 'Send Lauren this note' : 'Book with this note'; }
-    document.addEventListener('ex:view', goLabel); goLabel();
-    $('note-go').addEventListener('click', function () {
-      var n = { text: noteText(), len: st.len };
-      if (!n.text) return;
-      try { document.dispatchEvent(new CustomEvent(viewNow() === 'mother' ? 'lf:write' : 'lf:book', { detail: n })); } catch (e) {}
-    });
-
-    /* the warm glow: once, the first time the map comes into view */
-    var STOPS = [['neck', 160, 104], ['shoulders', 108, 134], ['shoulders', 212, 134], ['upper', 160, 176], ['low', 160, 276], ['hips', 124, 342], ['hips', 196, 342]];
-    var raf = 0, sweeping = false;
-    function stopSweep() {
-      if (!sweeping) return; sweeping = false; cancelAnimationFrame(raf);
-      hand.style.opacity = 0; svg.classList.remove('sweeping');
-      ORDER.forEach(function (z) { zones[z].classList.remove('lit'); });
-    }
-    function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
-    function sweep() {
-      sweeping = true; svg.classList.add('sweeping');
-      var SEG = 1.05, HOLD = 0.55, t0 = null, total = STOPS.length * (SEG + HOLD) + 0.8;
-      function frame(now) {
-        if (!sweeping) return;
-        if (t0 === null) t0 = now;
-        var t = (now - t0) / 1000, i = Math.floor(t / (SEG + HOLD)), u = t - i * (SEG + HOLD);
-        if (t >= total) { stopSweep(); return; }
-        var a = STOPS[Math.max(0, Math.min(STOPS.length - 1, i - 1))], b = STOPS[Math.min(STOPS.length - 1, i)];
-        if (i === 0) a = [b[0], 160, 60];
-        var k = i >= STOPS.length ? 1 : ease(Math.min(1, u / SEG));
-        var x = a[1] + (b[1] - a[1]) * k, y = a[2] + (b[2] - a[2]) * k;
-        hand.setAttribute('cx', x.toFixed(1)); hand.setAttribute('cy', y.toFixed(1));
-        hand.style.opacity = (i === 0 ? Math.min(1, u / 0.6) : t > total - 0.8 ? Math.max(0, (total - t) / 0.8) : 1) * 0.9;
-        ORDER.forEach(function (z) { zones[z].classList.toggle('lit', i < STOPS.length && u > SEG * 0.6 && b[0] === z); });
-        raf = requestAnimationFrame(frame);
-      }
-      raf = requestAnimationFrame(frame);
-    }
-    paint();
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-    if ((reduce && reduce.matches) || !('IntersectionObserver' in window) || !window.requestAnimationFrame) return;
-    var io = new IntersectionObserver(function (es) {
-      var e = es[es.length - 1];
-      if (e.isIntersecting && e.intersectionRatio > 0.45) { io.disconnect(); if (!st.on.length) sweep(); }
-    }, { threshold: [0, 0.45, 0.6] });
-    io.observe(svg);
+    function stop() { clearTimeout(timer); timer = null; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { if (!timer) { inhale = true; step(); } } else { stop(); } });
+      }, { threshold: 0.3 }).observe(sec);
+    } else { step(); }
   })();
 </script>
 
@@ -1622,7 +1478,7 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your sessions and prices, your story, your kind words, where to find you, and an email button to book.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with everything in Planted plus the where-you-hold-it map, a Book button to your own Cal.com, a contact form, FAQ and an open spots list.', next: 'crone' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with everything in Planted plus a Book button to your own Cal.com, a contact form, FAQ and an open spots list.', next: 'crone' },
       crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus booking right on your own site and gift sessions paid into your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
