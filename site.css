@@ -253,6 +253,7 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .how { --gx1: 18%; --gy1: 36%; --gx2: 88%; --gy2: 70%; }
 .about { --gx1: 78%; --gy1: 50%; --gx2: 14%; --gy2: 40%; }
 .faq-sec { --gx1: 20%; --gy1: 30%; --gx2: 84%; --gy2: 70%; }
+.tools { --gx1: 80%; --gy1: 40%; --gx2: 12%; --gy2: 64%; }
 .guestbook { --gx1: 70%; --gy1: 40%; --gx2: 16%; --gy2: 66%; }
 
 /* =============================== the cards =============================== */
@@ -373,6 +374,16 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .prices-cta p { margin: 0; color: var(--wf-c-text); }
 .quiz, .quoted { color: var(--wf-c-soft); font-size: 17px; margin: 6px 0 0; }
 
+/* ---------- In Bloom: your tools, built right in ----------
+   Laid out like the questions: the heading on the left (it stays put on wide screens), one card on the right. The
+   other apps’ prices at the foot of the card are small print, in the card’s soft ink, links included. */
+.tools-card .bullets li { margin-bottom: 12px; }
+.tools-pay { margin: 16px 0 0; font-size: 18px; }
+.tools-costs { margin: 20px 0 0; }
+.tools-costs li { font-size: 15.5px; color: var(--wf-c-soft); margin-bottom: 5px; }
+.tools-costs a { color: inherit; }
+.tools-costs .gets-more { margin-top: 10px; }
+
 /* ---------- how it works ---------- */
 /* wide screens: the lantern path is a tall framed panel on the left that stays put while the steps pass */
 .how-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: 'art head' 'art main'; grid-template-rows: auto 1fr; gap: 0 clamp(32px, 4.4vw, 64px); align-items: start; }
@@ -402,8 +413,8 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .about-text p:last-child { margin-bottom: 0; }
 
 /* ---------- questions: each one its own card ---------- */
-.faq-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(18px, 2.4vw, 40px); align-items: start; }
-.faq-grid .sec-head { position: sticky; top: calc(var(--wf-head-h) + 24px); }
+.faq-grid, .tools-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(18px, 2.4vw, 40px); align-items: start; }
+.faq-grid .sec-head, .tools-grid .sec-head { position: sticky; top: calc(var(--wf-head-h) + 24px); }
 .faq { display: grid; gap: 12px; }
 .faq details { padding: 0 clamp(18px, 2.2vw, 28px); border-radius: var(--wf-r-sheet); }
 .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 2px; min-height: var(--wf-tap); font: 400 21px/1.3 var(--wf-font-display); color: var(--wf-c-ink); }
@@ -603,8 +614,8 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
   .every-plan ul { columns: 1; }
   .panel-cols { grid-template-columns: 1fr; }
   .piece { grid-template-columns: 1fr; }
-  .faq-grid, .about-grid { grid-template-columns: 1fr; }
-  .faq-grid .sec-head { position: static; }
+  .faq-grid, .about-grid, .tools-grid { grid-template-columns: 1fr; }
+  .faq-grid .sec-head, .tools-grid .sec-head { position: static; }
 }
 /* phones and narrow tablets: the lantern path sits full width above the steps, and the first step rests on the
    end of the path */

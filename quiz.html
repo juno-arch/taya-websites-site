@@ -324,8 +324,8 @@
       because: 'People could book a time or pay you right on the site, so it becomes a working part of your business, not just a brochure.',
       points: [
         'Everything in Tended',
-        'Booking right on your site: the app you use now, if it can sit on a website, or a free Cal.com if you’d rather switch. Your choice',
-        'Payments or a small shop (gift certificates, deposits, up to about 20 items), set up in your own accounts and running on my server',
+        'Booking right on your site, running on my server as part of your subscription. Happy with your booking app? You can keep it',
+        'Payments or a small shop (gift certificates, deposits, up to 20 items), set up in your own accounts and running on my server',
         'The money goes straight to you, not through me: orders and any shipping addresses live in your own Stripe, with a short heads-up email for each'
       ],
       also: 'We test it all with pretend clients before anything goes public.',
@@ -395,13 +395,14 @@
 
   // Which accounts this client would have, all in their name (pricing-oct2026.md, "Account setup flow"). Their Google
   // profile, a booking app they already use, and Stripe have Taya added as a helper. Their Buttondown list and a new
-  // Cal.com are set up by Taya with their email and handed over at launch (the newsletter list has no helper).
+  // Cal.com (Tended only) are set up by Taya with their email and handed over at launch (the newsletter list has no
+  // helper). In Bloom's booking runs on Taya's server (Oct 15 2026), so no Cal.com account is made for it.
   function accountsLine(p, build) {
     var acc = ['Your Google profile'];
     if (p[2] === 2) acc.push('your booking app');
     if (build === 'In Bloom') acc.push('your Stripe account');
     var who = acc.length > 1 ? acc.slice(0, -1).join(', ') + ' and ' + acc[acc.length - 1] + ' are all' : acc[0] + ' is';
-    var news = p[3] >= 2, cal = p[2] === 3 || p[2] === 4, made = '';
+    var news = p[3] >= 2, cal = p[2] === 3, made = '';
     if (news && cal) made = ' Your newsletter list is yours too, in your own Buttondown account, and your booking lives in your own Cal.com account. I set both up with your email and hand you the logins at launch.';
     else if (news) made = ' Your newsletter list is yours too, in your own Buttondown account, which I set up with your email and hand you at launch.';
     else if (cal) made = ' Your booking lives in your own Cal.com account, which I set up with your email and hand you at launch.';
@@ -424,9 +425,10 @@
       lines.push(['Booking', 'Your own Cal.com account, free for one person (paid upgrades optional).']);
     }
     if (build === 'In Bloom') {
-      // booking with payments: their own Cal.com (the accounts line says I make it with their email); selling: booking if they'd like it
-      lines.push(['Booking', p[2] === 4 ? 'Your own Cal.com account, free for one person (paid upgrades optional). If you already use a booking app that can sit on a website, we can keep it instead: your choice.'
-        : 'If you’d like booking too, Cal.com is free for one person (paid upgrades optional), and I set it up for you, in your name.']);
+      // booking with payments: runs on Taya's server as part of the subscription, or they keep their own app
+      // (Oct 15 2026: no Cal.com for In Bloom); selling: booking the same way, if they'd like it
+      lines.push(['Booking', p[2] === 4 ? 'Booking runs right on your site, on my server, as part of your subscription, so there’s no booking app to pay for. Happy with the app you use now? You can keep it, at whatever it costs you now.'
+        : 'If you’d like booking too, it runs right on your site, on my server, as part of your subscription.']);
       lines.push(['Card payments', 'Stripe keeps about 2.9% + 30¢ per payment, taken from your own sales.']);
     }
     var notCovered = ['paid plans of apps you already use (Square, Vagaro, Acuity and the like)', 'ads'];

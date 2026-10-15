@@ -22,7 +22,9 @@
 //     care, free hosting forever), an offer of a call or chat (email only), Stripe at "about 3%", or a dash
 //     (mark.js keeps its "as sent" words on purpose: the already-emailed mockups show what they were sent)
 //   - shows a monthly price other than the subscription's $12 / $45 / $90, or a side cost "paid by you" (email from their
-//     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026)
+//     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026).
+//     The one exception is the main page's small print of what other apps cost on their own (class="tools-costs",
+//     Oct 15 2026): those are other companies' prices, so the old-price and monthly-price checks skip it
 //   - (the main page) leaves out the three subscription prices, the reply time, "quoted first", the settling-in start,
 //     the quoted-before-October-5 line, or the hand-over promise; or the plan cards, the "Every plan's subscription
 //     also includes" card under them (Oct 6 2026) and the "What does your subscription include?" answer stop listing
@@ -31,8 +33,9 @@
 //   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): the booking ladder (1, Oct 6 2026
 //     afternoon, Pollen: "yes add the booking link to planted", which reversed that morning's "no Book button on
 //     Planted"): every build's Book button opens the booking app they already use, Planted too (with no app, people
-//     call, text or email); a free Cal.com set up for them is Tended and In Bloom; In Bloom puts booking right on the
-//     site (their own app if it can sit on a website, or Cal.com: their choice); email forwarding free on
+//     call, text or email); a free Cal.com set up for them is Tended; In Bloom puts booking right on the site,
+//     running on Taya's own server, or they keep their own app: their choice (Oct 15 2026, In Bloom's tools on her
+//     server); email forwarding free on
 //     Planted (3); the Instagram feed Tended and up (6); no phone field on intake.html (7); texts.html's
 //     "Replies" line kept exactly as is, since it matches the texting registration (8)
 //   - shows the founding count ("N left") anywhere but once, inside id="founding" on the main page
@@ -117,6 +120,9 @@ const FORBIDDEN = [
   [/[—–]|&mdash;|&ndash;|&#821[12];/, 'a dash'],
 ];
 
+// the main page's "What apps like these usually cost on their own" small print (Oct 15 2026): other companies' prices,
+// which can match an old price of mine ($22, $35) or show a monthly price that isn't a subscription's
+const othersOut = (t) => t.replace(/<aside class="[^"]*\btools-costs\b[^"]*"[\s\S]*?<\/aside>/g, '');
 const texts = {};
 const plain = {};
 for (const page of PAGES) {
@@ -125,12 +131,14 @@ for (const page of PAGES) {
   texts[page] = text;
   plain[page] = plainOf(text);
   for (const [re, what] of FORBIDDEN) {
-    const m = text.match(re);
-    if (m) fail(`${page}: contains ${what}: "${text.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
+    const seen = what === 'an old price' ? othersOut(text) : text;
+    const m = seen.match(re);
+    if (m) fail(`${page}: contains ${what}: "${seen.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
   }
   // every monthly price is care's ($12 / $45 / $90); no side costs (the old $3 own-address email for Planted is gone)
-  for (const m of plain[page].matchAll(/\$(\d+) a month/g)) {
-    if (!CARE.includes(+m[1])) fail(`${page}: shows $${m[1]} a month: "${plain[page].slice(Math.max(0, m.index - 60), m.index + 20)}"`);
+  const mine = plainOf(othersOut(text));
+  for (const m of mine.matchAll(/\$(\d+) a month/g)) {
+    if (!CARE.includes(+m[1])) fail(`${page}: shows $${m[1]} a month: "${mine.slice(Math.max(0, m.index - 60), m.index + 20)}"`);
   }
 }
 
@@ -295,10 +303,11 @@ for (const page of ['index.html', 'welcome.html']) {
 }
 // more rounds of changes during the build are quoted first
 atLeast('index.html', /more rounds[^.]{0,60}quote/i, 1, 'doesn’t say extra rounds of changes are quoted first');
-// card fees: Stripe's rate, said the same way everywhere
+// card fees: Stripe's rate, said the same way everywhere ("per payment", or "a payment" in the In Bloom tools section's
+// words, written and fact-checked Oct 14 2026)
 for (const page of PAGES) {
   for (const m of plain[page].matchAll(/\d+(?:\.\d+)?% \+ 30¢[^.]*/g)) {
-    if (!/^2\.9% \+ 30¢ per payment/.test(m[0])) fail(`${page}: card fee isn't worded "about 2.9% + 30¢ per payment": "${m[0].slice(0, 90)}"`);
+    if (!/^2\.9% \+ 30¢ (?:per|a) payment/.test(m[0])) fail(`${page}: card fee isn't worded "about 2.9% + 30¢ per payment": "${m[0].slice(0, 90)}"`);
   }
 }
 // leaving is easy and free, and never takes the site down
@@ -347,17 +356,17 @@ for (const page of PAGES) {
 // ---- the small rules decided Oct 5 2026 (pricing-oct2026.md, Pollen: "yes to all") ----
 {
   const need = (page, re, what) => { if (!re.test(plain[page])) fail(`${page}: ${what}`); };
-  // 1. the booking ladder (Oct 6 2026 afternoon): Cal.com booking is set up for Tended and In Bloom (booking tied to
-  // In Bloom alone is caught by FORBIDDEN); every build's Book button, Planted's too, opens the app they already use;
-  // with no app, a Planted page says call, text or email; In Bloom puts booking right on the site, their own app or
-  // Cal.com, their choice
+  // 1. the booking ladder (Oct 6 2026 afternoon): Cal.com booking is set up for Tended (booking tied to In Bloom
+  // alone is caught by FORBIDDEN); every build's Book button, Planted's too, opens the app they already use; with no
+  // app, a Planted page says call, text or email; In Bloom puts booking right on the site, running on Taya's server,
+  // or they keep their own app, their choice (Oct 15 2026: In Bloom's tools run on her server, no Cal.com)
   need('index.html', /free Cal\.com I set up for you/, 'the Tended card doesn’t offer a free Cal.com I set up (small rule 1)');
-  need('index.html', /With Tended and In Bloom, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Tended and In Bloom (small rule 1)');
+  need('index.html', /With Tended, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Tended (small rule 1)');
   need('index.html', /Whichever build you pick, your Book button opens the booking app you already use/, 'doesn’t say every build’s Book button opens the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
   need('index.html', /keep it simple with Planted: people call, text or email you/, 'doesn’t say a Planted page with no booking app has people call, text or email (the booking ladder)');
   need('intake.html', /Whichever build you pick, your Book now button opens it/, 'doesn’t say every build’s Book now button opens the booking app they already use (the booking ladder)');
   need('start.html', /Whichever build you pick, your Book now button opens it/, 'doesn’t say every build’s Book now button opens the booking app they already use (the booking ladder)');
-  need('index.html', /With In Bloom, booking sits right on your site[^.]*Cal\.com[^.]*\. That’s your choice/, 'doesn’t say In Bloom puts booking right on the site, their own app or Cal.com, their choice (the booking ladder)');
+  need('index.html', /With In Bloom, booking can sit right on your site[^.]*my server[^.]*keep your own app\. That’s your choice/, 'doesn’t say In Bloom puts booking right on the site, on my server, or they keep their own app, their choice (the booking ladder, Oct 15 2026)');
   // 2. (folded into 1 on Oct 6 2026)
   // every tier card on the main page lists everything its subscription includes (pricing-oct2026.md; Tended's
   // "Post once, show up everywhere" replaced "Your Google profile kept fresh" on Oct 6 2026), and what every plan's
@@ -369,7 +378,7 @@ for (const page of PAGES) {
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
       mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
-      crone: [/Everything in Tended/, /booking, payments or shop kept running/i, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
+      crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own back end, built around your business, with its own sign-in/, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
     for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[k]} card doesn’t list ${re}`);
