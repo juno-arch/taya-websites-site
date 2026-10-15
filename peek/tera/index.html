@@ -90,17 +90,6 @@ var SITE = {
 <title>Tera Nansen | Deep Tissue and Swedish Massage in Arcata</title>
 <meta name="description" content="Tera Nansen, Holistic Health Practitioner. Deep tissue and Swedish massage for body, mind and soul, in her own studio in Arcata. Call or text 707-932-0037.">
 <meta name="theme-color" content="#28312a">
-<script>
-  /* A second look to compare (Oct 14 2026): add ?look=pink to the address to see her rose palette.
-     Without it, the page shows the default green look. To keep one for good, see TODO.md ("Two looks"). */
-  (function () {
-    try {
-      if (new URLSearchParams(location.search).get('look') !== 'pink') return;
-      document.documentElement.dataset.look = 'pink';
-      var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute('content', '#5a3a43');
-    } catch (e) {}
-  })();
-</script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tera Nansen | Deep Tissue and Swedish Massage in Arcata">
 <meta property="og:description" content="Body, mind and soul integration, with a deep tissue focus. In Tera&rsquo;s own studio in Arcata.">
@@ -159,38 +148,6 @@ var SITE = {
       --breath-core: rgba(226, 198, 112, 0.24); --breath-gold: rgba(201, 169, 79, 0.13); --breath-sage: rgba(168, 185, 138, 0.06);
       --breath-line: rgba(214, 224, 186, 0.2); --breath-halo: rgba(201, 169, 79, 0.1); --breath-inner: rgba(214, 224, 186, 0.06);
       color-scheme: dark;
-    }
-  }
-
-  /* ---------- the pink look (?look=pink, Oct 14 2026): drawn from her Wix logo ----------
-     Her rose's wine (#64404a in the logo) for labels and buttons, and a touch deeper as the rosewood bands (hero, On the table,
-     top bar, footer): a dusky rose, not a night, so it stays clear of the near-black wine bands on other pink sites;
-     soft petal grounds and a petal banner; her logo lettering's slate green as the ink; sage kept as the leaves to the rose;
-     rose hip for the sunset. */
-  :root[data-look="pink"] {
-    --ground: #f8f1f0; --ground-2: #f1e3e3; --ink: #263130; --ink-soft: #5c4f53;
-    --moss: #7a4452; --moss-deep: #5a2f3b; --fern-band: #5a3a43; --on-band: #f8ebec;
-    --yarrow: #f0b9c3; --hair: #e6d1d2; --star: #957628;
-    --dusk: #c2665e; --dusk-glow: rgba(194, 102, 94, 0.12);
-    --breath-card: var(--ground-2);
-    --breath-core: rgba(255, 248, 248, 0.92); --breath-gold: rgba(238, 196, 204, 0.6); --breath-sage: rgba(214, 226, 204, 0.32);
-    --breath-line: rgba(255, 251, 251, 0.95); --breath-halo: rgba(180, 96, 114, 0.18); --breath-inner: rgba(200, 130, 146, 0.14);
-    --lb-veil: rgba(36, 20, 26, 0.95); --lb-ink: #f8f1f0; --lb-accent: #f0b9c3;
-    --veil-rgb: 34, 18, 24; --band-rgb: 90, 58, 67; --cream-rgb: 248, 235, 236;
-    --tagline: #f6c9d0; --sn-accent: #f0b9c3; --seal: #fbf3f3;
-    --sn-bg: #5a3a43; --sn-fg: #f8ebec;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root[data-look="pink"] {
-      --ground: #251a1f; --ground-2: #31232a; --ink: #f5eaec; --ink-soft: #cdb9be;
-      --moss: #eeb0bc; --moss-deep: #f6cdd4; --fern-band: #3b262d; --on-band: #f6e7ea;
-      --yarrow: #f2bdc7; --hair: #46343b; --star: #dcc274;
-      --dusk: #eba08f; --dusk-glow: rgba(235, 160, 143, 0.05);
-      --breath-card: var(--fern-band);
-      --breath-core: rgba(240, 185, 195, 0.22); --breath-gold: rgba(194, 120, 138, 0.14); --breath-sage: rgba(169, 192, 142, 0.07);
-      --breath-line: rgba(246, 205, 212, 0.22); --breath-halo: rgba(222, 140, 160, 0.1); --breath-inner: rgba(246, 205, 212, 0.06);
-      --band-rgb: 59, 38, 45;
-      --sn-bg: #3b262d;
     }
   }
 
@@ -526,8 +483,7 @@ var SITE = {
 
   /* ---------- color bands lower down (Pollen, Oct 14 2026: break up the light run of sections with green) ----------
      Each band sets its own colors, so everything inside it (cards, lines, links, buttons, placeholders) follows along.
-     Default look: Kind words on a moss band, Gifts and Contact on sage, the footer on her fern band.
-     Pink look: Kind words and Contact on rose, Gifts on sage (the leaves to her rose), the footer on wine. */
+     Kind words on a moss band, Gifts and Contact on sage, the footer on her fern band. */
   .wash { border-top: none; }
   section.wash { color: var(--ink); }
   .wash + section { border-top: none; }
@@ -543,23 +499,6 @@ var SITE = {
     #words { --ground: #102018; --ground-2: #1a2b21; --hair: #2b3d31; --ink: #ebece6; --ink-soft: #c2c9ba; --moss: #b5cc98; --moss-deep: #cfe0b8; --star: #dcc274; }
     footer.wash { --ground: #0d1611; --hair: #24312a; --ink: #ebece6; --ink-soft: #b9c0b1; --moss: #a9c08e; --moss-deep: #c6d9ae; }
   }
-  [data-look="pink"] #words, [data-look="pink"] #contact { --ground: #fdf9f8; --ground-2: #f9f3f2; --hair: #d8b9bd; --ink: #263130; --ink-soft: #554549; --moss: #713e4b; --moss-deep: #542c37; --star: #7f6421;
-    background: #ebd3d6; }
-  [data-look="pink"] #gift { --ground: #fdf9f8; --ground-2: #f8f1f0; --hair: #bcc7ad; --ink-soft: #4f4a45; --moss: #6f3f4b; --moss-deep: #522b36;
-    background: #dce3d1; }
-  [data-look="pink"] footer.wash { --ground: #4f323a; --hair: #6a4b54; --ink: #f8ebec; --ink-soft: #dcc5c9; --moss: #f0b9c3; --moss-deep: #f7d3d9; }
-  @media (prefers-color-scheme: dark) {
-    [data-look="pink"] #words, [data-look="pink"] #contact { --ground: #2a1a21; --ground-2: #3f2a33; --hair: #553d47; --ink: #f5eaec; --ink-soft: #d5c1c6; --moss: #f0b5c0; --moss-deep: #f8d3da; --star: #dcc274;
-      background: radial-gradient(90% 80% at 100% 0%, rgba(240, 181, 192, 0.08) 0%, rgba(240, 181, 192, 0) 70%), #331f28; }
-    [data-look="pink"] #gift { --ground: #161f1b; --ground-2: #31232a; --hair: #33403a; --ink-soft: #c4c9bf; --moss: #eeb0bc; --moss-deep: #f6cdd4;
-      background: radial-gradient(90% 80% at 0% 0%, rgba(169, 192, 142, 0.08) 0%, rgba(169, 192, 142, 0) 70%), #1c2622; }
-    [data-look="pink"] footer.wash { --ground: #2b1a20; --hair: #46323a; --ink: #f5eaec; --ink-soft: #d8c2c8; --moss: #eeb0bc; --moss-deep: #f6cdd4; }
-  }
-  /* pink look: petal buttons (deep wine words) on the rosewood of the hero, a petal banner above it, and a petal edge on her rose seal */
-  [data-look="pink"] .hero-band { --moss: #f0b9c3; --moss-deep: #f7d3d9; --ground: #3d2329; }
-  [data-look="pink"] .status-strip { background: #f2c4cc; color: #4f2833; }
-  [data-look="pink"] .status-strip a:focus-visible { outline-color: currentColor; }
-  [data-look="pink"] .snav .mark .rose { box-shadow: 0 0 0 1.5px rgba(240, 185, 195, 0.6), 0 1px 8px rgba(20, 8, 12, 0.35); }
 
   @media (max-width: 760px) {
     .two { grid-template-columns: minmax(0, 1fr); align-items: start; row-gap: 36px; }
