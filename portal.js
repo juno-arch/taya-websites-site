@@ -399,6 +399,12 @@
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
   // if the sign-in changes (the private links door), only this line changes.
   const bookCall = (path, body) => postJSON(path, body || {}, token, BOOKINGS);
+  // the same sign-in, for the one booking answer that is a file (Your clients as a CSV, Oct 15 2026)
+  const bookFile = async (path, body) => {
+    const res = await post(path, body || {}, token, BOOKINGS);
+    if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+    return res.blob();
+  };
   // a client's own newsletter (Oct 12 2026): the one place that part signs in, the same way
   const newsCall = (path, body) => postJSON(path, body || {}, token, NEWS);
 
@@ -2318,11 +2324,12 @@
 
   /* ---- your bookings (Oct 10 2026; part 2 Oct 12 2026) ----
      Only for a client whose booking runs on Web Faery's server (the server answers booking: null for everyone else,
-     and the section stays hidden). Six tabs, each with its own address (#bookings-upcoming, -calendar, -hours,
-     -services, -calendars, -settings): coming up (move or cancel, which emails the person), a month view (tap a day
-     to take it off or give it different hours), hours (weekly, repeating blocks, different hours on a date, time off),
-     services and the booking form's questions, their own calendars (busy times only) and the private calendar link,
-     settings. Every call goes through bookCall, the one place this part signs in. */
+     and the section stays hidden). Seven tabs, each with its own address (#bookings-upcoming, -calendar, -hours,
+     -services, -calendars, -settings, -clients): coming up (move or cancel, which emails the person), a month view (tap
+     a day to take it off or give it different hours), hours (weekly, repeating blocks, different hours on a date, time
+     off), services and the booking form's questions, their own calendars (busy times only) and the private calendar
+     link, settings, and their clients (read only, Oct 15 2026). Every call goes through bookCall (or bookFile for the
+     CSV), the one place this part signs in. */
   let bk = null;             // the overview as the server last sent it (cleaned)
   let bkBusy = false;
   let bkTab = 'upcoming';
@@ -2330,7 +2337,7 @@
   let bkMonth = '';          // the month on show, 'YYYY-MM'
   let bkMonthDays = [];
   let bkDay = '';            // the day open under the month
-  const BK_TABS = ['upcoming', 'calendar', 'hours', 'services', 'calendars', 'settings'];
+  const BK_TABS = ['upcoming', 'calendar', 'hours', 'services', 'calendars', 'settings', 'clients'];
   const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
   const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
@@ -2436,6 +2443,7 @@
     if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#bookings-' + key); } catch (e) { /* fine */ } }
     if (focus) focusEl($('#bk-tab-' + key));
     if (key === 'calendar' && bk) loadMonth(bkMonth);
+    if (key === 'clients' && bk) loadClients(false);
   }
   function onTabKey(ev) {
     const i = BK_TABS.indexOf(bkTab);
@@ -3387,6 +3395,156 @@
     $('#b-bk-q-new').addEventListener('click', () => { if (bk) openQ(null, -1, null); });
     $('#f-bk-cal').addEventListener('submit', onBkCal);
     $('#f-bk-set').addEventListener('submit', onBkSet);
+    $('#in-bk-cl-q').addEventListener('input', onClSearch);
+    $('#b-bk-cl-more').addEventListener('click', () => loadClients(true));
+    $('#b-bk-cl-csv').addEventListener('click', downloadClients);
+  }
+
+  /* ---- your clients (Oct 15 2026, hub DEPLOY.md section 74) ----
+     READ ONLY: no editing, deleting or messaging here. The server groups this owner's bookings by email (any case)
+     and sends 50 people a page, the latest visit first. The search box filters what's on screen right away; when
+     there are more people on the server than on screen, it also asks the server (a moment after typing stops), so
+     nobody is missed. Tap a person to see their bookings under their line. */
+  const CL_STALE = 60000;
+  let cl = null;             // { people, page, more, total, at } with no search
+  let clFound = null;        // the same, for the server's answer to a search { q, ... }
+  let clBusy = false;
+  let clTimer = 0;
+  let clSeq = 0;
+  const clOpen = {};        // email -> their bookings, once fetched
+  function cleanCl(p) {
+    if (!p || typeof p !== 'object' || !str(p.key)) return null;
+    return { key: str(p.key, 200), name: str(p.name, 120), email: str(p.email, 200), phone: str(p.phone, 40), visits: Math.max(0, +p.visits || 0),
+      noshows: Math.max(0, +p.noshows || 0), regular: !!p.regular, first: str(p.first, 20), last: str(p.last, 20), next: str(p.next, 60) };
+  }
+  const clQuery = () => cleanLine($('#in-bk-cl-q').value, 80).toLowerCase();
+  async function loadClients(more) {
+    if (DEMO || clBusy) return;
+    const q = clQuery();
+    const searching = !!q && !!cl && cl.more;
+    let cur = searching ? clFound : cl;
+    if (searching && cur && cur.q !== q) cur = null;
+    if (!more && cur && Date.now() - cur.at < CL_STALE) { renderClients(); return; }
+    clBusy = true;
+    $('#b-bk-cl-more').setAttribute('aria-busy', 'true');
+    try {
+      const page = more && cur ? cur.page + 1 : 0;
+      const d = await bookCall('/clients', searching ? { page, q } : { page });
+      const people = arr(d.people).slice(0, 50).map(cleanCl).filter(Boolean);
+      const next = { q: searching ? q : '', people: (more && cur ? cur.people : []).concat(people), page: +d.page || 0, more: !!d.more, total: +d.total || 0, at: Date.now() };
+      if (searching) clFound = next; else cl = next;
+      $('#bk-cl-err').hidden = true;
+      renderClients();
+      // typed before the list came, and there are more on the server: search there too
+      if (!searching && q && cl.more) { clearTimeout(clTimer); clTimer = setTimeout(() => loadClients(false), 0); }
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      const e = $('#bk-cl-err');
+      e.textContent = words(err);
+      e.hidden = false;
+    } finally { clBusy = false; $('#b-bk-cl-more').removeAttribute('aria-busy'); }
+  }
+  function onClSearch() {
+    clearTimeout(clTimer);
+    renderClients();
+    // more people on the server than on screen: ask the server too, once typing stops
+    if (clQuery() && cl && cl.more) clTimer = setTimeout(() => loadClients(false), 350);
+  }
+  function renderClients() {
+    if (!cl) return;
+    const q = clQuery();
+    const server = !!q && cl.more && clFound && clFound.q === q;
+    const src = server ? clFound : cl;
+    const hit = (p) => !q || p.name.toLowerCase().includes(q) || p.email.includes(q);
+    const list = src.people.filter(hit);
+    $('#bk-cl-list').replaceChildren(...list.map(clRow));
+    const none = !list.length;
+    $('#bk-cl-empty').hidden = !none;
+    $('#bk-cl-empty-text').textContent = cl.total === 0
+      ? 'No clients yet. Once people book with you, they gather here, one line each.'
+      : 'No one by that name or email. Check the spelling, or try part of it.';
+    $('#bk-cl-count').textContent = q
+      ? (none ? '' : plural(list.length, 'person', 'people') + ' found')
+      : (cl.total ? plural(cl.total, 'person', 'people') + (cl.people.length < cl.total ? ', ' + cl.people.length + ' shown' : '') : '');
+    $('#b-bk-cl-more').hidden = q ? !server || !clFound.more : !cl.more;
+    $('#b-bk-cl-csv').hidden = cl.total === 0;
+  }
+  const visitsWord = (n) => (n ? plural(n, 'visit', 'visits') : 'No visits yet');
+  function clRow(p) {
+    const li = make('li', 'bk-cl');
+    const id = 'bk-cl-d-' + (++clSeq);
+    const btn = make('button', 'bk-cl-btn');
+    btn.type = 'button';
+    btn.setAttribute('aria-controls', id);
+    btn.setAttribute('aria-expanded', clOpen[p.key] && clOpen[p.key].shown ? 'true' : 'false');
+    const top = make('span', 'bk-cl-top');
+    const nm = make('span', 'bk-cl-name', p.name || p.email);
+    if (p.regular) nm.append(' ', make('span', 'bk-cl-reg', 'Regular'));
+    top.append(nm, make('span', 'bk-cl-n', visitsWord(p.visits)));
+    btn.append(top, make('span', 'bk-cl-contact', p.phone ? p.email + ' · ' + p.phone : p.email));
+    const bits = [];
+    if (p.last) bits.push('Last visit ' + p.last);
+    if (p.first && p.first !== p.last) bits.push('First ' + p.first);
+    if (p.next) bits.push('Next ' + p.next);
+    if (p.noshows) bits.push(plural(p.noshows, 'no-show', 'no-shows'));
+    if (bits.length) btn.append(make('span', 'bk-cl-dates', bits.join(' · ')));
+    const box = make('div', 'bk-cl-d');
+    box.id = id;
+    box.hidden = !(clOpen[p.key] && clOpen[p.key].shown);
+    if (!box.hidden) fillClBox(box, clOpen[p.key]);
+    btn.addEventListener('click', () => toggleCl(p, btn, box));
+    li.append(btn, box);
+    return li;
+  }
+  async function toggleCl(p, btn, box) {
+    const st = clOpen[p.key] || (clOpen[p.key] = { shown: false, list: null, more: false });
+    st.shown = !st.shown;
+    btn.setAttribute('aria-expanded', st.shown ? 'true' : 'false');
+    box.hidden = !st.shown;
+    if (!st.shown) return;
+    if (st.list) { fillClBox(box, st); return; }
+    box.replaceChildren(make('p', 'orders-fine', 'Looking up their bookings…'));
+    try {
+      const d = await bookCall('/client', { email: p.key });
+      st.list = arr(d.bookings).slice(0, 200).map((b) => (b && typeof b === 'object' ? { when: str(b.when, 60), service: str(b.service, 100), status: str(b.status, 12), word: str(b.status_word, 30) } : null)).filter(Boolean);
+      st.more = !!d.more;
+      fillClBox(box, st);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      st.list = null;
+      box.replaceChildren(make('p', 'err', words(err)));
+    }
+  }
+  function fillClBox(box, st) {
+    if (!st.list) return;
+    if (!st.list.length) { box.replaceChildren(make('p', 'orders-fine', 'No bookings to show.')); return; }
+    const ul = make('ul', 'bk-cl-bks');
+    st.list.forEach((b) => {
+      const li = make('li', 'bk-cl-bk is-' + (b.status || 'visit'));
+      li.append(make('span', 'bk-cl-when', b.when), make('span', 'bk-cl-svc', b.service), make('span', 'bk-cl-st', b.word));
+      ul.append(li);
+    });
+    box.replaceChildren(ul);
+    if (st.more) box.append(make('p', 'orders-fine', 'Showing their latest 200 bookings.'));
+  }
+  async function downloadClients() {
+    const btn = $('#b-bk-cl-csv');
+    if (DEMO || btn.getAttribute('aria-busy') === 'true') return;
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const blob = await bookFile('/clients-csv');
+      const url = URL.createObjectURL(new Blob([blob], { type: 'text/csv' }));
+      const a = make('a');
+      a.href = url;
+      a.download = 'clients-' + todayISO + '.csv';
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(words(err));
+    } finally { btn.removeAttribute('aria-busy'); }
   }
 
   // ---- the calendar link
