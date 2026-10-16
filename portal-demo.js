@@ -63,6 +63,8 @@
     return d.toISOString().slice(0, 10);
   }
 
+  var SAMPLE_ACCENT = '#b5562f'; // Fern & Clay's sample brand color (portal.js applyAccent)
+
   /* ---------------- the four moments ---------------- */
   var CLIENT = {
     first_name: 'Rosa', business: 'Fern & Clay Pottery', build: 'mother', build_label: 'Tended', founding: true,
@@ -379,7 +381,9 @@
     },
     me: function () {
       var g = gate(); if (g) return refuse(g, 350);
-      return wait(450).then(function () { return clone(data); });
+      // Oct 16 2026: a sample brand accent, a clay orange that is a little light for text, so the preview shows the
+      // darker shade the page works out (the server sends `brand` only when Taya has set a color)
+      return wait(450).then(function () { var d = clone(data); d.brand = { accent: SAMPLE_ACCENT }; return d; });
     },
     logout: function () { ss.del(IN_KEY); return wait(150).then(function () { return { ok: true }; }); },
     file: function (thing, name) {

@@ -22,11 +22,15 @@
 //   - portal.html loses its security line (Content-Security-Policy), gets an inline script, an outside
 //     script, or an on...= handler; or the scripts use innerHTML, eval or document.write
 //   - portal-demo.js stops being loaded only when DEMO is true, or the demo code shows up outside it
+//   - the brand accent's color math (portal-brand.js, Oct 16 2026) is off: the contrast ratio, the darker shade of a
+//     pale color, the fall back for white, greys and anything not a strict #rrggbb; or a brand rule in portal.css
+//     applies without a brand set, or touches gold, teal, red, text colors or fonts
 // (Folders starting with "_" are not published by GitHub Pages.)
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
@@ -190,6 +194,71 @@ if (!/if \(DEMO\) \{\s*loadDemo\(\)/.test(js)) fail('portal.js: portal-demo.js s
 if (/000000/.test(js)) fail('portal.js: the demo code should live only in portal-demo.js');
 if (/demo@webfaery\.love|000000/.test(html.replace(/<div class="demo-hint"[\s\S]*?<\/div>/g, ''))) fail('portal.html: demo sign-in shown outside the demo boxes');
 const demoOn = /const DEMO = true;/.test(js);
+
+// ---- the brand accent (Oct 16 2026): portal-brand.js's color math, in plain Node ----
+// The contrast ratio is WCAG's; a color that reads at under 4.5:1 on the paper gets a darker shade of the same hue;
+// white, greys and anything that isn't a strict #rrggbb keep Web Faery's own look (pick() gives null).
+{
+  const B = createRequire(import.meta.url)(path.join(root, 'portal-brand.js'));
+  const near = (a, b, d) => Math.abs(a - b) <= d;
+  const passesAll = (hex) => B.PAPERS.every((p) => B.contrast(hex, p) >= 4.5);
+  if (!near(B.contrast('#000000', '#ffffff'), 21, 1e-9)) fail('portal-brand.js: black on white should be 21:1');
+  if (!near(B.contrast('#ffffff', '#000000'), 21, 1e-9)) fail('portal-brand.js: contrast should not care about order');
+  if (B.contrast('#2f6b4f', '#2f6b4f') !== 1) fail('portal-brand.js: a color on itself should be 1:1');
+  if (!near(B.contrast('#767676', '#ffffff'), 4.54, 0.01)) fail(`portal-brand.js: #767676 on white should be about 4.54:1 (got ${B.contrast('#767676', '#ffffff')})`);
+  if (!Number.isNaN(B.contrast('red', '#ffffff'))) fail('portal-brand.js: contrast of a non-hex should be NaN');
+  if (B.PAPERS.join() !== '#fcfbff,#efebf8' || B.BAR !== '#2e3271') fail('portal-brand.js: the paper, ground and bar colors drifted from wf-tokens.css');
+  const tokens = read('wf-tokens.css');
+  if (!/--wf-b-sheet: #fcfbff;/.test(tokens) || !/--wf-b-bg: #efebf8;/.test(tokens) || !/--wf-night: #2e3271;/.test(tokens)) fail('wf-tokens.css: the paper, ground or bar changed: update PAPERS / BAR in portal-brand.js');
+  // a dark green: used as it is
+  const green = B.pick('#1f5130');
+  if (!green || green.text !== '#1f5130' || green.darkened || !passesAll(green.text)) fail(`portal-brand.js: a dark green should be used as it is (got ${JSON.stringify(green)})`);
+  if (green && green.bar !== '') fail('portal-brand.js: a dark green does not show on the night bar, so the gold tab line should stay');
+  // a pale yellow: darkened, same hue, and it passes
+  const yellow = B.pick('#f4e9a0');
+  if (!yellow || !yellow.darkened || !passesAll(yellow.text)) fail(`portal-brand.js: a pale yellow should get a darker shade that passes 4.5:1 (got ${JSON.stringify(yellow)})`);
+  else {
+    const a = B.hueOf('#f4e9a0'), b = B.hueOf(yellow.text);
+    if (!near(a.h, b.h, 4) || b.l >= a.l) fail(`portal-brand.js: the pale yellow's shade should be the same hue, darker (${JSON.stringify(a)} to ${JSON.stringify(b)})`);
+    // a color that already passes comes back as it is
+    if (B.darken(yellow.text) !== yellow.text) fail('portal-brand.js: darken() of a passing color should give it back');
+    if (yellow.bar !== '#f4e9a0') fail('portal-brand.js: a pale yellow shows on the night bar, so it can be the tab line as it is');
+  }
+  // the demo's clay orange is a little light: darkened
+  const clay = B.pick('#b5562f');
+  if (!clay || !clay.darkened || !passesAll(clay.text)) fail(`portal-brand.js: the demo accent should be darkened to pass (got ${JSON.stringify(clay)})`);
+  // white, black and greys: Web Faery's own look
+  for (const c of ['#ffffff', '#000000', '#808080', '#f5f5f5', '#fcfbff']) if (B.pick(c) !== null) fail(`portal-brand.js: ${c} has no hue to bring in, so it should fall back (got ${JSON.stringify(B.pick(c))})`);
+  // anything that isn't a strict #rrggbb
+  for (const c of ['', null, undefined, 'red', '#fff', '#12345g', '2f6b4f', ' #2f6b4f', '#2f6b4f ', '#2f6b4f;color:red', 'url(x)', '#2f6b4f80', 42, {}]) {
+    if (B.pick(c) !== null) fail(`portal-brand.js: ${JSON.stringify(c)} should be dropped`);
+  }
+  // every saturated hue, however pale, finds a readable shade (12 hues, pale and bright)
+  for (let h = 0; h < 360; h += 30) {
+    for (const [s, l] of [[0.9, 0.85], [0.6, 0.5], [1, 0.95]]) {
+      const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = l - c / 2;
+      const rgb = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+      const hex = '#' + rgb.map((v) => Math.round((v + m) * 255).toString(16).padStart(2, '0')).join('');
+      const p = B.pick(hex);
+      if (!p || !passesAll(p.text)) fail(`portal-brand.js: ${hex} (hue ${h}) found no readable shade (got ${JSON.stringify(p)})`);
+    }
+  }
+  // the darkening stops before near black: then it falls back
+  if (B.darken('#8a80c0', ['#2e3271']) !== '') fail('portal-brand.js: a shade that can only pass by going near black (on a dark paper) should give up');
+  // the page: loaded before portal.js, OFF until me.brand.accent, and only the small accents in portal.css
+  const brandAt = html.indexOf('src="portal-brand.js'), portalAt = html.indexOf('src="portal.js');
+  if (brandAt < 0 || brandAt > portalAt) fail('portal.html: portal-brand.js should load just before portal.js');
+  if (!/setBrand\(c\.business \|\| '', me\.brand && me\.brand\.accent\)/.test(js)) fail('portal.js: render() should pass me.brand.accent to setBrand');
+  if (!/function applyAccent\(/.test(js) || !/removeAttribute\('data-wf-brand'\)/.test(js)) fail('portal.js: applyAccent should clear the accent before it paints a new one');
+  const css = read('portal.css');
+  const brandCss = (css.split('/* ============ brand accent')[1] || '');
+  if (!brandCss) fail('portal.css: the brand accent block is missing');
+  for (const line of brandCss.split('\n').filter((l) => /\{/.test(l) && !/^\s*\/?\*/.test(l))) {
+    if (!/:root\[data-wf-brand(-bar)?\]/.test(line)) fail(`portal.css: a brand rule that applies without a brand set: ${line.trim().slice(0, 90)}`);
+    if (/--wf-b-(due|done|trouble|ink|link|bar\b)|font|--wf-gold|\bcolor:(?!\s*var\(--wf-b-brand)/.test(line.replace(/text-decoration-color|border-left-color/g, ''))) fail(`portal.css: a brand rule touches what stays Web Faery’s (gold, teal, red, text, fonts): ${line.trim().slice(0, 90)}`);
+  }
+  if (!/\.brand = \{ accent: SAMPLE_ACCENT \}/.test(demo) || !/var SAMPLE_ACCENT = '#[0-9a-f]{6}'/.test(demo)) fail('portal-demo.js: the sample client should have a sample accent');
+}
 
 if (failures.length) {
   console.error(`portal-text: ${failures.length} problem(s)`);

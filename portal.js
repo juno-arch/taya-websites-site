@@ -535,7 +535,7 @@
   };
   // the bar: signed in with a business name, their name leads ("your site, from Web Faery" beside it, on wider
   // screens) and goes to their Home; signed out, or no name yet, the Web Faery wordmark, going to webfaery.love
-  function setBrand(biz) {
+  function setBrand(biz, accent) {
     const b = $('#top-brand');
     $('#top-biz').textContent = biz;
     $('#top-biz').hidden = !biz;
@@ -543,6 +543,28 @@
     b.classList.toggle('is-biz', !!biz);
     b.setAttribute('href', biz ? '#home' : 'index.html');
     $('#top-via').textContent = biz ? 'your site, from Web Faery' : '';
+    applyAccent(accent || ''); // signed out (setBrand('')): back to Web Faery's own look
+  }
+  // Oct 16 2026: their own accent color, only when Taya has set one (me.brand.accent, a strict #rrggbb). It touches only
+  // the small accents (italic heading words, link underlines, the Heads up edge, small icons, the focus ring, and the
+  // current tab's line when it shows on the bar). portal-brand.js works out a shade that reads at 4.5:1 on the paper;
+  // white, greys, or a color with no readable shade keep Web Faery's own look. Gold, teal and red (needs you, done,
+  // trouble), text colors, fonts and layout stay as they are (portal.css, "brand accent").
+  function applyAccent(accent) {
+    const html = document.documentElement;
+    ['--wf-b-brand', '--wf-b-brand-bar'].forEach((v) => html.style.removeProperty(v));
+    html.removeAttribute('data-wf-brand');
+    html.removeAttribute('data-wf-brand-bar');
+    const B = window.WFBrand;
+    if (!accent || !B || typeof accent !== 'string') return;
+    const css = getComputedStyle(html);
+    const papers = ['--wf-b-sheet', '--wf-b-bg'].map((v) => css.getPropertyValue(v).trim().toLowerCase()).filter((x) => B.parse(x));
+    const bar = css.getPropertyValue('--wf-night').trim().toLowerCase();
+    const p = B.pick(accent, { papers: papers.length === 2 ? papers : B.PAPERS, bar: B.parse(bar) ? bar : B.BAR });
+    if (!p) return;
+    html.style.setProperty('--wf-b-brand', p.text);
+    html.setAttribute('data-wf-brand', p.darkened ? 'darker' : 'own');
+    if (p.bar) { html.style.setProperty('--wf-b-brand-bar', p.bar); html.setAttribute('data-wf-brand-bar', ''); }
   }
   const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email. No passwords to remember.');
 
@@ -1246,7 +1268,7 @@
     hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
       (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_SIGN[c.build], nowLine());
     $('#me-email').textContent = c.email || 'you';
-    setBrand(c.business || '');
+    setBrand(c.business || '', me.brand && me.brand.accent);
     // forget "I tapped Pay" once Taya has marked it
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
     // the header's "Getting started" only while that page is still theirs to fill in
