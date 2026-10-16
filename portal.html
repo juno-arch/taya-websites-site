@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261015b">
+<link rel="stylesheet" href="portal.css?v=20261016a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -109,7 +109,7 @@
   <!-- the tabs: portal.js adds only the ones this client has (on a phone they move to the dock at the bottom) -->
   <nav class="tabs" id="tabs" aria-label="Your pages" hidden></nav>
 </header>
-<script src="portal.js?v=20261015b"></script>
+<script src="portal.js?v=20261016a"></script>
 
 <main class="page" id="main" tabindex="-1">
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
@@ -599,17 +599,20 @@
       <!-- your clients (Oct 15 2026, hub DEPLOY.md section 74): read only, worked out from the bookings on the server -->
       <div class="bk-panel" role="tabpanel" id="bk-p-clients" aria-labelledby="bk-tab-clients" hidden>
         <h3 class="small-h">Your clients</h3>
-        <p class="orders-fine">Everyone who has booked with you, one line each, with the latest visit first. Tap a name to see their bookings.</p>
+        <p class="orders-fine">Everyone who has booked with you, and anyone you add yourself, one line each, with the latest visit first. Tap a name to see more.</p>
+        <!-- add by hand (Oct 16 2026, hub DEPLOY.md section 80): the form opens under this button, built by portal.js -->
+        <div class="dc-btns bk-cl-add"><button class="open-btn" type="button" id="b-bk-cl-add" aria-expanded="false">Add a client</button></div>
+        <div id="bk-cl-add-box"></div>
         <label class="field-label" for="in-bk-cl-q">Find someone</label>
         <input id="in-bk-cl-q" class="bk-cl-q" type="search" maxlength="80" autocomplete="off" spellcheck="false" placeholder="A name or email">
         <p class="orders-fine bk-cl-count" id="bk-cl-count" aria-live="polite"></p>
         <ul class="bk-cls" id="bk-cl-list"></ul>
         <p class="empty" id="bk-cl-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
-          <span class="empty-body" id="bk-cl-empty-text">No clients yet. Once people book with you, they gather here, one line each.</span></p>
+          <span class="empty-body" id="bk-cl-empty-text">No clients yet. Once people book with you, they gather here, one line each. Someone who booked by phone or came in person? Add them with Add a client.</span></p>
         <p class="err" id="bk-cl-err" hidden></p>
         <div class="dc-btns bk-cl-more"><button class="open-btn" type="button" id="b-bk-cl-more" hidden>Show more</button></div>
         <div class="nl-csv"><button class="later" type="button" id="b-bk-cl-csv">Download the list as a spreadsheet (CSV)</button></div>
-        <p class="orders-fine">For your own records: name, email, phone, visits, and first and last visit. A visit is a booking that went ahead; a no-show isn’t counted as one.</p>
+        <p class="orders-fine">For your own records: name, email, phone, visits, first and last visit, where they came from, and your note. A visit is a booking that went ahead; a no-show isn’t counted as one. People you add yourself count no visits until they book.</p>
       </div>
     </section>
 

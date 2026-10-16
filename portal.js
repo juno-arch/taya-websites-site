@@ -3637,13 +3637,18 @@
     $('#in-bk-cl-q').addEventListener('input', onClSearch);
     $('#b-bk-cl-more').addEventListener('click', () => loadClients(true));
     $('#b-bk-cl-csv').addEventListener('click', downloadClients);
+    $('#b-bk-cl-add').addEventListener('click', () => openClForm(null, null));
   }
 
   /* ---- your clients (Oct 15 2026, hub DEPLOY.md section 74) ----
      READ ONLY: no editing, deleting or messaging here. The server groups this owner's bookings by email (any case)
      and sends 50 people a page, the latest visit first. The search box filters what's on screen right away; when
      there are more people on the server than on screen, it also asks the server (a moment after typing stops), so
-     nobody is missed. Tap a person to see their bookings under their line. */
+     nobody is missed. Tap a person to see their bookings under their line.
+     Add by hand (Oct 16 2026, hub DEPLOY.md section 80): "Add a client" opens a short form under its button (name,
+     email, phone, a note only she sees). People she added carry `added` from the server and get Edit and Remove in
+     their open line (Remove asks once more); someone whose email matches a booking stays one line ("Added by you
+     too"). The bookings themselves are still read only here. */
   const CL_STALE = 60000;
   let cl = null;             // { people, page, more, total, at } with no search
   let clFound = null;        // the same, for the server's answer to a search { q, ... }
@@ -3653,8 +3658,14 @@
   const clOpen = {};        // email -> their bookings, once fetched
   function cleanCl(p) {
     if (!p || typeof p !== 'object' || !str(p.key)) return null;
-    return { key: str(p.key, 200), name: str(p.name, 120), email: str(p.email, 200), phone: str(p.phone, 40), visits: Math.max(0, +p.visits || 0),
+    const c = { key: str(p.key, 200), name: str(p.name, 120), email: str(p.email, 200), phone: str(p.phone, 40), visits: Math.max(0, +p.visits || 0),
       noshows: Math.max(0, +p.noshows || 0), regular: !!p.regular, first: str(p.first, 20), last: str(p.last, 20), next: str(p.next, 60) };
+    // someone she added by hand: what she typed, for Edit, and her note
+    if (p.added === true && typeof p.added_id === 'string' && /^[a-z0-9]{15}$/.test(p.added_id)) {
+      Object.assign(c, { added: true, both: p.source === 'both', id: p.added_id, aName: str(p.added_name, 120), aEmail: str(p.added_email, 200),
+        aPhone: str(p.added_phone, 40), note: str(p.added_note, 500) });
+    }
+    return c;
   }
   const clQuery = () => cleanLine($('#in-bk-cl-q').value, 80).toLowerCase();
   async function loadClients(more) {
@@ -3669,7 +3680,8 @@
     try {
       const page = more && cur ? cur.page + 1 : 0;
       const d = await bookCall('/clients', searching ? { page, q } : { page });
-      const people = arr(d.people).slice(0, 50).map(cleanCl).filter(Boolean);
+      const had = new Set(more && cur ? cur.people.map((x) => x.key) : []);
+      const people = arr(d.people).slice(0, 50).map(cleanCl).filter((x) => x && !had.has(x.key));
       const next = { q: searching ? q : '', people: (more && cur ? cur.people : []).concat(people), page: +d.page || 0, more: !!d.more, total: +d.total || 0, at: Date.now() };
       if (searching) clFound = next; else cl = next;
       $('#bk-cl-err').hidden = true;
@@ -3694,13 +3706,13 @@
     const q = clQuery();
     const server = !!q && cl.more && clFound && clFound.q === q;
     const src = server ? clFound : cl;
-    const hit = (p) => !q || p.name.toLowerCase().includes(q) || p.email.includes(q);
+    const hit = (p) => !q || p.name.toLowerCase().includes(q) || p.email.includes(q) || (!!p.aName && p.aName.toLowerCase().includes(q));
     const list = src.people.filter(hit);
     $('#bk-cl-list').replaceChildren(...list.map(clRow));
     const none = !list.length;
     $('#bk-cl-empty').hidden = !none;
     $('#bk-cl-empty-text').textContent = cl.total === 0
-      ? 'No clients yet. Once people book with you, they gather here, one line each.'
+      ? 'No clients yet. Once people book with you, they gather here, one line each. Someone who booked by phone or came in person? Add them with Add a client.'
       : 'No one by that name or email. Check the spelling, or try part of it.';
     $('#bk-cl-count').textContent = q
       ? (none ? '' : plural(list.length, 'person', 'people') + ' found')
@@ -3711,6 +3723,7 @@
   const visitsWord = (n) => (n ? plural(n, 'visit', 'visits') : 'No visits yet');
   function clRow(p) {
     const li = make('li', 'bk-cl');
+    li.dataset.key = p.key;
     const id = 'bk-cl-d-' + (++clSeq);
     const btn = make('button', 'bk-cl-btn');
     btn.type = 'button';
@@ -3720,17 +3733,18 @@
     const nm = make('span', 'bk-cl-name', p.name || p.email);
     if (p.regular) nm.append(' ', make('span', 'bk-cl-reg', 'Regular'));
     top.append(nm, make('span', 'bk-cl-n', visitsWord(p.visits)));
-    btn.append(top, make('span', 'bk-cl-contact', p.phone ? p.email + ' · ' + p.phone : p.email));
+    btn.append(top, make('span', 'bk-cl-contact', [p.email, p.phone].filter(Boolean).join(' · ')));
     const bits = [];
     if (p.last) bits.push('Last visit ' + p.last);
     if (p.first && p.first !== p.last) bits.push('First ' + p.first);
     if (p.next) bits.push('Next ' + p.next);
     if (p.noshows) bits.push(plural(p.noshows, 'no-show', 'no-shows'));
+    if (p.added) bits.push(p.both ? 'Added by you too' : 'Added by you');
     if (bits.length) btn.append(make('span', 'bk-cl-dates', bits.join(' · ')));
     const box = make('div', 'bk-cl-d');
     box.id = id;
     box.hidden = !(clOpen[p.key] && clOpen[p.key].shown);
-    if (!box.hidden) fillClBox(box, clOpen[p.key]);
+    if (!box.hidden) fillClBox(box, clOpen[p.key], p);
     btn.addEventListener('click', () => toggleCl(p, btn, box));
     li.append(btn, box);
     return li;
@@ -3741,30 +3755,151 @@
     btn.setAttribute('aria-expanded', st.shown ? 'true' : 'false');
     box.hidden = !st.shown;
     if (!st.shown) return;
-    if (st.list) { fillClBox(box, st); return; }
+    if (st.list) { fillClBox(box, st, p); return; }
+    // added by hand, no booking with her: nothing to look up
+    if (p.added && !p.both) { st.list = []; fillClBox(box, st, p); return; }
     box.replaceChildren(make('p', 'orders-fine', 'Looking up their bookings…'));
     try {
       const d = await bookCall('/client', { email: p.key });
       st.list = arr(d.bookings).slice(0, 200).map((b) => (b && typeof b === 'object' ? { when: str(b.when, 60), service: str(b.service, 100), status: str(b.status, 12), word: str(b.status_word, 30) } : null)).filter(Boolean);
       st.more = !!d.more;
-      fillClBox(box, st);
+      fillClBox(box, st, p);
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       st.list = null;
       box.replaceChildren(make('p', 'err', words(err)));
+      if (p.added) box.append(clActs(p, box));
     }
   }
-  function fillClBox(box, st) {
+  function fillClBox(box, st, p) {
     if (!st.list) return;
-    if (!st.list.length) { box.replaceChildren(make('p', 'orders-fine', 'No bookings to show.')); return; }
-    const ul = make('ul', 'bk-cl-bks');
-    st.list.forEach((b) => {
-      const li = make('li', 'bk-cl-bk is-' + (b.status || 'visit'));
-      li.append(make('span', 'bk-cl-when', b.when), make('span', 'bk-cl-svc', b.service), make('span', 'bk-cl-st', b.word));
-      ul.append(li);
+    const kids = [];
+    // her own note first, for someone she added
+    if (p && p.added && p.note) kids.push(make('p', 'bk-cl-lbl', 'Your note, only you see it'), make('p', 'bk-cl-note', p.note));
+    if (!st.list.length) kids.push(make('p', 'orders-fine', p && p.added && !p.both ? 'No bookings with you yet.' : 'No bookings to show.'));
+    else {
+      const ul = make('ul', 'bk-cl-bks');
+      st.list.forEach((b) => {
+        const li = make('li', 'bk-cl-bk is-' + (b.status || 'visit'));
+        li.append(make('span', 'bk-cl-when', b.when), make('span', 'bk-cl-svc', b.service), make('span', 'bk-cl-st', b.word));
+        ul.append(li);
+      });
+      kids.push(ul);
+      if (st.more) kids.push(make('p', 'orders-fine', 'Showing their latest 200 bookings.'));
+    }
+    if (p && p.added) kids.push(clActs(p, box));
+    box.replaceChildren(...kids);
+  }
+
+  // ---- add by hand (Oct 16 2026, hub DEPLOY.md section 80)
+  const CL_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  // the server says what to fix in its own words (message); otherwise the usual booking words
+  const clWords = (e) => e.msg || bkWords(e);
+  const clRowEl = (key) => $$('#bk-cl-list .bk-cl').find((x) => x.dataset.key === key);
+  // Edit and Remove, in the open line of someone she added
+  function clActs(p, box) {
+    const act = make('div', 'bk-cl-act');
+    const who = p.aName || p.name;
+    const ed = make('button', 'open-btn', 'Edit'); ed.type = 'button';
+    ed.setAttribute('aria-label', 'Edit ' + who);
+    ed.addEventListener('click', () => openClForm(p, box));
+    const rm = make('button', 'open-btn', 'Remove'); rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove ' + who);
+    rm.addEventListener('click', () => removeCl(p, rm));
+    act.append(ed, rm);
+    return act;
+  }
+  // a fresh list after a change (the line that changed shows even if it sits on a later page)
+  async function clRefresh(saved) {
+    for (let i = 0; clBusy && i < 50; i++) await new Promise((r) => setTimeout(r, 100));
+    cl = null; clFound = null;
+    Object.keys(clOpen).forEach((k) => { delete clOpen[k]; });
+    await loadClients(false);
+    if (saved && cl && !cl.people.some((x) => x.key === saved.key)) { cl.people.unshift(saved); renderClients(); }
+  }
+  async function removeCl(p, x) {
+    // two taps: the first asks, the second removes (their bookings, if any, stay as they are)
+    if (x.dataset.sure !== '1') {
+      x.dataset.sure = '1';
+      x.classList.add('bk-sure');
+      x.textContent = 'Yes, remove them';
+      x.setAttribute('aria-label', 'Yes, remove ' + (p.aName || p.name));
+      return;
+    }
+    setBusy(x, true, 'Removing…');
+    try {
+      await bookCall('/people-remove', { id: p.id });
+      toast(p.both ? 'Removed your note and details. They stay on the list from their bookings.' : 'Removed from your list.');
+      await clRefresh(null);
+      focusEl($('#b-bk-cl-add'), true);
+    } catch (e) {
+      setBusy(x, false);
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      toast(clWords(e));
+    }
+  }
+  // the short form: under "Add a client" for someone new, or inside their open line for Edit. One at a time.
+  function openClForm(p, box) {
+    if (DEMO || !bk) return;
+    const addBtn = $('#b-bk-cl-add');
+    const wasAdd = !!$('#bk-cl-add-box .bk-cl-form');
+    $$('.bk-cl-form').forEach((f) => f.remove());
+    addBtn.setAttribute('aria-expanded', 'false');
+    if (!p && wasAdd) return; // a second tap on Add a client closes it
+    const key = p ? p.id : 'new';
+    const f = make('form', 'dc-form bk-form bk-cl-form');
+    f.noValidate = true;
+    const field = (label, el, opt) => { const l = make('label', 'field-label', label + ' '); l.htmlFor = el.id; if (opt) l.append(make('span', 'opt-tag', opt)); return [l, el]; };
+    const inp = (id, val, max, type) => { const i = make('input'); i.id = id + '-' + key; i.type = type || 'text'; i.value = val; i.maxLength = max; i.autocomplete = 'off'; return i; };
+    const name = inp('in-bk-cl-name', p ? p.aName : '', 120);
+    const email = inp('in-bk-cl-email', p ? p.aEmail : '', 200, 'email'); email.spellcheck = false; email.setAttribute('autocapitalize', 'off');
+    const phone = inp('in-bk-cl-phone', p ? p.aPhone : '', 40, 'tel');
+    const note = make('textarea'); note.id = 'in-bk-cl-note-' + key; note.maxLength = 500; note.rows = 3; note.value = p ? p.note : '';
+    const err = make('p', 'err'); err.hidden = true; err.setAttribute('aria-live', 'polite');
+    const btns = make('div', 'dc-btns');
+    const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save'));
+    const no = make('button', 'later', 'Cancel'); no.type = 'button';
+    const back = () => { const row = p && box.closest('.bk-cl'); return row ? row.querySelector('.bk-cl-btn') : addBtn; };
+    no.addEventListener('click', () => { f.remove(); addBtn.setAttribute('aria-expanded', 'false'); focusEl(back()); });
+    btns.append(go, no);
+    f.append(make('h4', 'small-h', p ? 'Edit ' + (p.aName || p.name) : 'Add a client'),
+      ...field('Name', name), ...field('Email', email, '(optional)'), ...field('Phone', phone, '(optional)'),
+      ...field('A note only you see', note, '(optional)'),
+      make('p', 'orders-fine', 'An email or a phone is enough. If the email matches someone who booked, they stay one line, with your note on it.'),
+      err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      [name, email, phone, note].forEach((x) => x.removeAttribute('aria-invalid'));
+      err.hidden = true;
+      const bad = (msg, el) => { err.textContent = msg; err.hidden = false; if (el) { el.setAttribute('aria-invalid', 'true'); focusEl(el); } };
+      const nm = cleanLine(name.value, 200), em = cleanLine(email.value, 300).toLowerCase(), ph = cleanLine(phone.value, 60);
+      const digits = ph.replace(/\D/g, '').length;
+      if (!nm) return bad('Add their name.', name);
+      if (nm.length > 120) return bad('A name can be up to 120 letters.', name);
+      if (em && (em.length > 200 || !CL_EMAIL.test(em))) return bad('That email doesn’t look quite right. Check for a little typo?', email);
+      if (ph && (ph.length > 40 || !/^[0-9+().\- ]+$/.test(ph) || digits < 7 || digits > 20)) return bad('A phone number needs its digits, like 707 555 0100.', phone);
+      if (!em && !ph) return bad('Add an email or a phone, so you can reach them.', email);
+      setBusy(go, true, 'Saving…');
+      try {
+        const body = { name: nm, email: em, phone: ph, note: note.value.slice(0, 500) };
+        if (p) body.id = p.id;
+        const d = await bookCall(p ? '/people-edit' : '/people-add', body);
+        f.remove();
+        addBtn.setAttribute('aria-expanded', 'false');
+        if (!p) $('#in-bk-cl-q').value = '';
+        const saved = cleanCl(d && d.person);
+        await clRefresh(saved);
+        toast(p ? 'Saved.' : saved && saved.both ? 'Added. Their email matches someone who booked, so your note is on their line.' : 'Added. They’re on your list now.');
+        const row = saved && clRowEl(saved.key);
+        focusEl(row ? row.querySelector('.bk-cl-btn') : addBtn, true);
+      } catch (e) {
+        setBusy(go, false);
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        bad(clWords(e), e.field === 'name' ? name : e.field === 'phone' ? phone : e.field === 'note' ? note : e.field === 'email' || e.field === 'contact' ? email : null);
+      }
     });
-    box.replaceChildren(ul);
-    if (st.more) box.append(make('p', 'orders-fine', 'Showing their latest 200 bookings.'));
+    if (p) box.append(f); else { $('#bk-cl-add-box').append(f); addBtn.setAttribute('aria-expanded', 'true'); }
+    focusEl(name);
   }
   async function downloadClients() {
     const btn = $('#b-bk-cl-csv');
