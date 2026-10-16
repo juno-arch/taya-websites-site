@@ -220,16 +220,18 @@
   .bloom-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
   .bloom { width: 100%; max-width: 340px; justify-self: center; overflow: visible; }
   .bloom .b-ring { transition: transform 6s ease-in-out; }
-  .bloom .b-back { transform: translate(150px,150px) scale(.62); }
-  .bloom .b-front { transform: translate(150px,150px) scale(.5); }
+  .bloom .b-back { transform: translate(150px,150px) scale(.16); }
+  .bloom .b-front { transform: translate(150px,150px) scale(.13); }
+  .bloom .b-inner { transform: translate(150px,150px) scale(.1) rotate(-30deg); }
   .bloom.open .b-ring { transition-duration: 4s; }
-  .bloom.open .b-back { transform: translate(150px,150px) scale(1); }
-  .bloom.open .b-front { transform: translate(150px,150px) scale(.92); }
+  .bloom.open .b-back { transform: translate(150px,150px) scale(1.08); }
+  .bloom.open .b-front { transform: translate(150px,150px) scale(1) rotate(8deg); }
+  .bloom.open .b-inner { transform: translate(150px,150px) scale(1) rotate(0deg); }
   .bloom .b-glow { opacity: .35; transition: opacity 6s ease-in-out; }
   .bloom.open .b-glow { opacity: 1; transition-duration: 4s; }
   .bloom-cue { font-family: 'Lustria', Georgia, serif; font-size: 22px; color: #f3c96a; margin-top: 14px; }
   @media (max-width: 760px) { .bloom-wrap { grid-template-columns: minmax(0, 1fr); gap: 28px; text-align: center; } .bloom-copy p { margin-left: auto; margin-right: auto; } }
-  @media (prefers-reduced-motion: reduce) { .bloom .b-ring, .bloom .b-glow { transition: none; } .bloom .b-back { transform: translate(150px,150px) scale(1); } .bloom .b-front { transform: translate(150px,150px) scale(.92); } .bloom .b-glow { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .bloom .b-ring, .bloom .b-glow { transition: none; } .bloom .b-back { transform: translate(150px,150px) scale(1.08); } .bloom .b-front { transform: translate(150px,150px) scale(1); } .bloom .b-inner { transform: translate(150px,150px) scale(1); } .bloom .b-glow { opacity: 1; } }
   .band { background: radial-gradient(80% 90% at 75% 20%, var(--band-2) 0, var(--band) 72%); color: var(--on-band); position: relative; overflow: hidden; }
   .band h2 { color: var(--on-band); }
   .band h2 em { color: #f3c96a; }
@@ -768,7 +770,7 @@
 
 <section id="breathe" class="band gutter" data-show="mother crone all" data-fold data-thing="a breathing flower">
   <div class="wrap bloom-wrap">
-    <svg class="bloom" id="bloom" viewBox="0 0 300 300" role="img" aria-label="A flower slowly opening and closing, like a breath">
+    <svg class="bloom" id="bloom" viewBox="0 0 300 300" role="img" aria-label="A flower blossoming and closing again with each breath">
       <defs>
         <radialGradient id="bloomglow"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.9"/><stop offset="0.5" stop-color="#f2b83a" stop-opacity="0.35"/><stop offset="1" stop-color="#e9a21c" stop-opacity="0"/></radialGradient>
         <linearGradient id="petal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#a45bd0"/><stop offset="1" stop-color="#e9c8f5"/></linearGradient>
@@ -788,12 +790,20 @@
         <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(252)"/>
         <path d="M0 0 C-26 -34 -22 -78 0 -104 C22 -78 26 -34 0 0Z" fill="url(#petal)" transform="rotate(324)"/>
       </g>
+      <g class="b-ring b-inner">
+        <path d="M0 0 C-18 -24 -15 -52 0 -70 C15 -52 18 -24 0 0Z" fill="url(#petal)" transform="rotate(0)"/>
+        <path d="M0 0 C-18 -24 -15 -52 0 -70 C15 -52 18 -24 0 0Z" fill="url(#petal)" transform="rotate(60)"/>
+        <path d="M0 0 C-18 -24 -15 -52 0 -70 C15 -52 18 -24 0 0Z" fill="url(#petal)" transform="rotate(120)"/>
+        <path d="M0 0 C-18 -24 -15 -52 0 -70 C15 -52 18 -24 0 0Z" fill="url(#petal)" transform="rotate(180)"/>
+        <path d="M0 0 C-18 -24 -15 -52 0 -70 C15 -52 18 -24 0 0Z" fill="url(#petal)" transform="rotate(240)"/>
+        <path d="M0 0 C-18 -24 -15 -52 0 -70 C15 -52 18 -24 0 0Z" fill="url(#petal)" transform="rotate(300)"/>
+      </g>
       <circle cx="150" cy="150" r="13" fill="#f3c96a"/><circle cx="150" cy="150" r="6" fill="#e9a21c"/>
     </svg>
     <div class="bloom-copy">
-      <h2 class="reveal">Take a <em>breath.</em></h2>
+      <h2 class="reveal">Nothing to do but <em>breathe.</em></h2>
       <p class="bloom-cue" id="bloom-cue">Breathe in</p>
-      <p style="margin-top:12px;max-width:44ch">Let it open as you breathe in, and soften as you let go. This is how Lauren hopes your hour with her feels.</p>
+      <p style="margin-top:12px;max-width:44ch">Watch it blossom as you breathe in, and settle as you let go.</p>
     </div>
   </div>
 </section>
