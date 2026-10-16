@@ -787,6 +787,9 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   const el = (tag, cls, text) => { const x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; };
   const ours = (n) => !!(n && n.closest && n.closest('.wfm, .wfm-bar, .wfm-pop, .wfm-panel, .wfm-pin, .wfm-tab, [class^="wf-"], [class*=" wf-"]'));
   const linkBtn = (cls, text, href) => { const a = el('a', cls, text); a.href = href; return a; };
+  // "Back to my back end" (Oct 16 2026): the door at webfaery.love/my/ with their own key after the #, exactly as "Open my
+  // newest" does; the key stays in the address fragment (never sent to a server) and the door takes it out at once.
+  const backEnd = () => (key ? linkBtn('wfm-btn ghost', 'Back to my back end', DOOR + '#wf=' + key) : null);
   const exitUrl = location.pathname + location.search.replace(/[?&]mark=1/, '').replace(/^&/, '?') + location.hash;
   const HOUSE_KEY = 'It’s like a house key, just for you, so please keep passwords out of notes.';
 
@@ -1393,7 +1396,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const h = el('h2', '', ok ? 'Thank you' + (first ? ', ' + first : '') + '!' : 'Almost'); h.id = 'wfm-round-h';
     box.append(h, el('p', 'lead', ok ? 'That’s this round. I’ll look over your notes and get going, and you’ll get an email once your changes are up.'
       : 'That didn’t reach me just now. I’ll try again next time you open this page, or just email me at taya@webfaery.love.'));
-    const f = el('div', 'foot'); const b = el('button', 'wfm-btn', 'Close'); b.type = 'button'; b.addEventListener('click', closeCard); f.append(b); box.append(f);
+    const f = el('div', 'foot'); const b = el('button', 'wfm-btn', 'Close'); b.type = 'button'; b.addEventListener('click', closeCard); f.append(b); const be = backEnd(); if (be) f.append(be); box.append(f);
   });
   let startOpen = false; // from /marks: getting started is already open for them
   function thanks() {
@@ -1409,6 +1412,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const more = el('button', 'wfm-btn ghost', 'Keep going'); more.type = 'button'; more.addEventListener('click', closeCard);
     const bye = el('a', 'wfm-btn', 'Close my notes'); bye.href = exitUrl;
     const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(more, bye);
+    const be = backEnd(); if (be) btns.append(be); // Oct 16 2026: their way back to their back end, by the same private link
     foot.append(el('p', 'soft', startOpen ? 'I’ll email you once I’ve looked them over.' : 'Nothing to sign or pay yet. I’ll email you first.'), btns);
     box.append(foot);
   }
