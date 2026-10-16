@@ -2322,7 +2322,11 @@
      -services, -calendars, -settings): coming up (move or cancel, which emails the person), a month view (tap a day
      to take it off or give it different hours), hours (weekly, repeating blocks, different hours on a date, time off),
      services and the booking form's questions, their own calendars (busy times only) and the private calendar link,
-     settings. Every call goes through bookCall, the one place this part signs in. */
+     settings. Every call goes through bookCall, the one place this part signs in.
+     New client intake (Oct 15 2026, NOT DEPLOYED, hub DEPLOY.md section 74): only when the server sends
+     settings.intake_on, the questions editor gets "New clients only", "Tell me first" (and a short word for the line),
+     a line under the question, up to 16 questions, the "Add a new client intake" button, and Settings gets how long
+     answers are kept. A booking's "Heads up" line shows first in its row. Nothing changes for anyone else. */
   let bk = null;             // the overview as the server last sent it (cleaned)
   let bkBusy = false;
   let bkTab = 'upcoming';
@@ -2355,8 +2359,9 @@
       location: str(b.location, 10), where: str(b.where, 400), address: str(b.address, 400), name: str(b.name, 120), email: str(b.email, 200),
       phone: str(b.phone, 40), note: str(b.note, 1000), status: str(b.status, 12), group_index: +b.group_index || 1, group_size: +b.group_size || 1,
       deposit: str(b.deposit, 20), paid: !!b.paid, canceled_by: str(b.canceled_by, 12),
-      answers: arr(b.answers).slice(0, 12).map((a) => (a ? { label: str(a.label, 120), answer: str(a.answer, 1000) } : null)).filter((a) => a && a.label),
+      answers: arr(b.answers).slice(0, 16).map((a) => (a ? { label: str(a.label, 200), answer: str(a.answer, 1000) } : null)).filter((a) => a && a.label),
       client_reason: str(b.client_reason, 600),
+      heads: str(b.heads, 600), answers_cleared: !!b.answers_cleared,
       card: !!b.card, can_noshow: !!b.can_noshow,
       addons: str(b.addons, 900), addons_total: str(b.addons_total, 80),
       noshow: b.noshow && typeof b.noshow === 'object' ? { state: str(b.noshow.state, 12), words: str(b.noshow.words, 400) } : null
@@ -2381,9 +2386,11 @@
         settings: { notice_hours: +st.notice_hours || 0, horizon_days: +st.horizon_days || 60, buffer_min: +st.buffer_min || 0, cancel_window_hours: +st.cancel_window_hours || 0,
           max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0,
           card: typeof st.card_on === 'boolean' ? { on: st.card_on, can: !!st.card_can, first: +st.noshow_first_pct || 50, repeat: +st.noshow_repeat_pct || 100,
-            policy: str(st.card_policy, 600), policy_default: str(st.card_policy_default, 600) } : null },
-        questions: arr(o.questions).slice(0, 10).map((q) => (q && str(q.id) ? { id: str(q.id, 10), label: str(q.label, 120), type: BK_QTYPE[q.type] ? q.type : 'text',
-          choices: arr(q.choices).map((c) => str(c, 60)).filter(Boolean).slice(0, 12), required: !!q.required, services: arr(q.services).map((x) => str(x, 20)).filter(Boolean) } : null)).filter(Boolean) },
+            policy: str(st.card_policy, 600), policy_default: str(st.card_policy_default, 600) } : null,
+          intake: st.intake_on === true ? { keep_days: +st.intake_keep_days || 365, choices: arr(st.intake_keep_choices).map((n) => +n).filter((n) => n >= 30 && n <= 1825) } : null },
+        questions: arr(o.questions).slice(0, 16).map((q) => (q && str(q.id) ? { id: str(q.id, 10), label: str(q.label, 200), type: BK_QTYPE[q.type] ? q.type : 'text',
+          choices: arr(q.choices).map((c) => str(c, 60)).filter(Boolean).slice(0, 12), required: !!q.required, services: arr(q.services).map((x) => str(x, 20)).filter(Boolean),
+          new_only: q.new_only === true, heads: q.heads === true, heads_word: str(q.heads_word, 40), hint: str(q.hint, 400) } : null)).filter(Boolean) },
       services: arr(d.services).slice(0, 40).map(svc).filter(Boolean),
       // paid add-ons (Oct 15 2026): only when the server says they’re on for this owner; null = no Add-ons block
       addons: o.addons_on === true ? { max: Math.max(1, Math.min(12, +o.addons_max || 12)), list: arr(d.addons).slice(0, 12).map((a) => (a && str(a.id) ? {
@@ -2420,6 +2427,7 @@
     if (!sec.querySelector('#bk-reps .bk-form, #bk-p-hours > .bk-form')) $('#bk-reps').replaceChildren(...bk.repeats.map(repRow));
     $('#bk-ovr').replaceChildren(...bk.overrides.map(ovrRow));
     if (!sec.querySelector('#bk-qs .bk-form, #bk-p-services > .bk-form')) $('#bk-qs').replaceChildren(...bk.owner.questions.map(qRow));
+    $('#bk-intake-wrap').hidden = !bk.owner.settings.intake; // new client intake: only when the server says it's on
     $('#bk-cals').replaceChildren(...bk.calendars.map(calRow));
     if (!$('#f-bk-set').contains(document.activeElement)) fillSettings();
     if (!bkTabsReady) {
@@ -2463,6 +2471,8 @@
     const head = make('div', 'o-head');
     head.append(make('span', 'o-date', b.when), make('span', 'o-total bk-svc', b.service_name + (b.group_size > 1 ? ' (' + b.group_index + ' of ' + b.group_size + ')' : '')));
     li.append(head);
+    // new client intake: the "Tell me first" answers, before anything else
+    if (b.heads) { const hd = make('p', 'bk-heads'); hd.append(make('strong', null, 'Heads up: '), b.heads); li.append(hd); }
     const who = make('p', 'bk-who');
     who.append(make('span', 'bk-name', b.name));
     const mail = make('a', 'later', b.email);
@@ -2484,6 +2494,7 @@
     if (b.card && b.status === 'confirmed') bits.push('Card saved');
     if (b.deposit) bits.push(b.paid ? 'Deposit paid: ' + b.deposit : 'Deposit ' + b.deposit);
     if (b.status === 'canceled') bits.push(b.canceled_by === 'owner' ? 'You canceled it' : 'They canceled');
+    if (b.answers_cleared) bits.push('Their answers were cleared, as set in Settings');
     if (bits.length) li.append(make('p', 'dc-meta', bits.join(' · ')));
     if (b.noshow && b.noshow.words) li.append(make('p', 'dc-meta bk-noshow', b.noshow.words));
     if (b.can_noshow) {
@@ -3276,6 +3287,9 @@
     li.append(head);
     const names = q.services.map((id) => (bk.services.find((s) => s.id === id) || {}).name).filter(Boolean);
     li.append(make('p', 'dc-meta', BK_QTYPE[q.type] + (q.type === 'choice' ? ': ' + q.choices.join(', ') : '') + ' · ' + (names.length ? 'For ' + names.join(', ') : 'Every service')));
+    // new client intake: its two switches, in words
+    const tags = [q.new_only ? 'New clients only' : '', q.heads ? 'Tell me first' + (q.heads_word ? ' (“' + q.heads_word + '”)' : '') : ''].filter(Boolean);
+    if (tags.length) li.append(make('p', 'dc-meta bk-qtags', tags.join(' · ')));
     const act = make('div', 'o-act o-act2');
     const ed = make('button', 'open-btn', 'Change'); ed.type = 'button';
     ed.setAttribute('aria-label', 'Change the question: ' + q.label);
@@ -3290,7 +3304,9 @@
   async function saveQs(list, btn, done, errEl) {
     setBusy(btn, true, 'Saving…');
     try {
-      await bookCall('/questions-save', { questions: list.map((q) => ({ id: q.id || '', label: q.label, type: q.type, choices: q.type === 'choice' ? q.choices : [], required: !!q.required, services: q.services })) });
+      const intake = !!(bk && bk.owner.settings.intake);
+      await bookCall('/questions-save', { questions: list.map((q) => Object.assign({ id: q.id || '', label: q.label, type: q.type, choices: q.type === 'choice' ? q.choices : [], required: !!q.required, services: q.services },
+        intake ? { new_only: !!q.new_only, heads: !!q.heads, heads_word: q.heads ? q.heads_word || '' : '', hint: q.hint || '' } : {})) });
       toast(done);
       closeBkForms($('#bk-p-services'));
       await loadBookings();
@@ -3299,19 +3315,41 @@
     } catch (e) {
       setBusy(btn, false);
       if (e.code === 'signed_out') { quietSignOut(false); return false; }
-      const msg = e.code === 'input' && e.field === 'choices' ? 'A pick one question needs at least two different choices, one on each line.' : bkWords(e);
+      const msg = e.code === 'input' && e.field === 'choices' ? 'A pick one question needs at least two different choices, one on each line.'
+        : e.code === 'input' && e.field === 'label' ? 'Each question needs words, and fits in ' + qLabelMax() + ' letters.' : bkWords(e);
       if (errEl) { errEl.textContent = msg; errEl.hidden = false; } else toast(msg);
       return false;
     }
   }
+  // new client intake (only when the server says it's on): 16 questions of up to 200 letters, else 10 of 120
+  const qIntake = () => !!(bk && bk.owner.settings.intake);
+  const qMax = () => (qIntake() ? 16 : 10);
+  const qLabelMax = () => (qIntake() ? 200 : 120);
+  // new client intake: the starter questions, added on the server only where they're missing (nothing is overwritten)
+  async function addIntake() {
+    const btn = $('#b-bk-intake');
+    if (!bk || !qIntake()) return;
+    setBusy(btn, true, 'Adding…');
+    try {
+      const r = await bookCall('/intake-starter', {});
+      const added = arr(r && r.added).length, skipped = arr(r && r.skipped).length;
+      toast(!added ? (skipped ? 'There’s no room for more questions. Remove one first, then try again.' : 'They’re all on your form already.')
+        : 'Added ' + plural(added, 'question', 'questions') + '. Your own questions stayed as they were.' + (skipped ? ' ' + plural(skipped, 'question', 'questions') + ' didn’t fit (16 is the most).' : ''), 9000);
+      await loadBookings();
+      focusEl($('#b-bk-q-new'), true);
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      toast(bkWords(e));
+    } finally { setBusy(btn, false, 'Add a new client intake'); }
+  }
   function openQ(q, i, li) {
-    if (!q && bk.owner.questions.length >= 10) { toast('Ten questions is the most for now.'); return; }
+    if (!q && bk.owner.questions.length >= qMax()) { toast(qIntake() ? 'Sixteen questions is the most for now.' : 'Ten questions is the most for now.'); return; }
     closeBkForms($('#bk-p-services'));
     const key = q ? q.id : 'new';
     const f = make('form', 'dc-form bk-form');
     f.noValidate = true;
     const field = (label, el, opt) => { const l = make('label', 'field-label', label + ' '); l.htmlFor = el.id; if (opt) l.append(make('span', 'opt-tag', opt)); return [l, el]; };
-    const label = make('input'); label.id = 'in-bkq-label-' + key; label.type = 'text'; label.maxLength = 120; label.autocomplete = 'off'; label.value = q ? q.label : '';
+    const label = make('input'); label.id = 'in-bkq-label-' + key; label.type = 'text'; label.maxLength = qLabelMax(); label.autocomplete = 'off'; label.value = q ? q.label : '';
     label.placeholder = 'Like: Any injuries or areas to avoid?';
     const type = make('select'); type.id = 'in-bkq-type-' + key;
     Object.keys(BK_QTYPE).forEach((k) => { const o = make('option', null, BK_QTYPE[k]); o.value = k; type.append(o); });
@@ -3332,21 +3370,40 @@
       return c;
     });
     fs.append(make('p', 'orders-fine', 'Tick none to ask it for every service.'));
+    // new client intake: a line under the question, and the two switches (only when the server says it's on)
+    const intake = qIntake();
+    const extra = make('div', 'bk-qintake');
+    const hint = make('textarea', 'short'); hint.id = 'in-bkq-hint-' + key; hint.maxLength = 400; hint.value = q ? q.hint : '';
+    const newWrap = make('label', 'dc-check');
+    const newOnly = make('input'); newOnly.type = 'checkbox'; newOnly.id = 'in-bkq-new-' + key; newOnly.checked = !!(q && q.new_only);
+    newWrap.append(newOnly, make('span', null, 'New clients only'));
+    const newHelp = make('p', 'orders-fine', 'Asked the first time someone books with you. People who have booked before aren’t asked again, until their answers are cleared after the time you keep them.');
+    const headsWrap = make('label', 'dc-check');
+    const heads = make('input'); heads.type = 'checkbox'; heads.id = 'in-bkq-heads-' + key; heads.checked = !!(q && q.heads);
+    headsWrap.append(heads, make('span', null, 'Tell me first'));
+    const headsHelp = make('p', 'orders-fine', 'A Yes, or anything they write (other than “none”), shows as a Heads up line at the top of the booking and of your email.');
+    const word = make('input'); word.id = 'in-bkq-word-' + key; word.type = 'text'; word.maxLength = 40; word.autocomplete = 'off'; word.value = q ? q.heads_word : '';
+    word.placeholder = 'Like: pregnant';
+    const wordRow = make('div'); wordRow.append(...field('A short word for that line', word, '(optional)')); wordRow.hidden = !heads.checked;
+    heads.addEventListener('change', () => { wordRow.hidden = !heads.checked; });
+    extra.append(...field('A line under the question', hint, '(optional)'), newWrap, newHelp, headsWrap, headsHelp, wordRow);
+    extra.hidden = !intake;
     const err = make('p', 'err'); err.hidden = true;
     const btns = make('div', 'dc-btns');
     const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save the question'));
     const no = make('button', 'later', 'Cancel'); no.type = 'button';
     no.addEventListener('click', () => { f.remove(); focusEl(q ? li.querySelector('.open-btn') : $('#b-bk-q-new')); });
     btns.append(go, no);
-    f.append(make('h4', 'small-h', q ? 'Change the question' : 'A new question'), ...field('The question', label), ...field('How they answer', type), chRow, reqWrap, fs, err, btns);
+    f.append(make('h4', 'small-h', q ? 'Change the question' : 'A new question'), ...field('The question', label), ...field('How they answer', type), chRow, reqWrap, fs, extra, err, btns);
     f.addEventListener('submit', async (ev) => {
       ev.preventDefault();
       err.hidden = true;
-      const text = cleanLine(label.value, 120);
+      const text = cleanLine(label.value, qLabelMax());
       if (!text) { err.textContent = 'Write the question.'; err.hidden = false; focusEl(label); return; }
       const ch = choices.value.split('\n').map((c) => cleanLine(c, 60)).filter(Boolean);
       if (type.value === 'choice' && ch.length < 2) { err.textContent = 'Add at least two choices, one on each line.'; err.hidden = false; focusEl(choices); return; }
       const item = { id: q ? q.id : '', label: text, type: type.value, choices: type.value === 'choice' ? ch : [], required: req.checked, services: svcBoxes.filter((c) => c.checked).map((c) => c.value) };
+      if (intake) Object.assign(item, { hint: cleanText(hint.value, 400), new_only: newOnly.checked, heads: heads.checked, heads_word: heads.checked ? cleanLine(word.value, 40) : '' });
       const list = bk.owner.questions.slice();
       if (q) list[i] = item; else list.push(item);
       await saveQs(list, go, 'Saved. It’s on the booking form.', err);
@@ -3464,7 +3521,19 @@
       $('#in-bk-card-policy').value = c.policy;
       $('#in-bk-card-policy').placeholder = c.policy_default;
     }
+    // new client intake: how long answers are kept (only when the server says it's on)
+    const ik = st.intake;
+    $('#bk-intake-set').hidden = !ik;
+    if (ik) {
+      const sel = $('#in-bk-keep');
+      const list = (ik.choices.length ? ik.choices : [30, 60, 90, 180, 365, 730, 1095, 1825]).slice();
+      if (!list.includes(ik.keep_days)) list.push(ik.keep_days);
+      list.sort((a, b) => a - b);
+      sel.replaceChildren(...list.map((v) => { const op = make('option', null, keepWords(v)); op.value = String(v); return op; }));
+      sel.value = String(ik.keep_days);
+    }
   }
+  const keepWords = (d) => (d % 365 === 0 ? plural(d / 365, 'year', 'years') : plural(d, 'day', 'days'));
   async function onBkSet(ev) {
     ev.preventDefault();
     const err = $('#bk-set-err');
@@ -3484,6 +3553,7 @@
       body.noshow_first_pct = +pf; body.noshow_repeat_pct = +pr;
       body.card_policy = cleanText($('#in-bk-card-policy').value, 600);
     }
+    if (!$('#bk-intake-set').hidden) body.intake_keep_days = +$('#in-bk-keep').value;
     const btn = $('#b-bk-set');
     setBusy(btn, true, 'Saving…');
     try {
@@ -3514,6 +3584,7 @@
     $('#in-bk-ovr-closed').addEventListener('change', () => { $('#bk-ovr-hours').hidden = $('#in-bk-ovr-closed').checked; });
     $('#b-bk-rep-new').addEventListener('click', () => { if (bk) openRep(null, null); });
     $('#b-bk-q-new').addEventListener('click', () => { if (bk) openQ(null, -1, null); });
+    $('#b-bk-intake').addEventListener('click', addIntake);
     $('#f-bk-cal').addEventListener('submit', onBkCal);
     $('#f-bk-set').addEventListener('submit', onBkSet);
   }
