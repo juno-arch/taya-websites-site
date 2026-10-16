@@ -260,6 +260,27 @@ const demoOn = /const DEMO = true;/.test(js);
   if (!/\.brand = \{ accent: SAMPLE_ACCENT \}/.test(demo) || !/var SAMPLE_ACCENT = '#[0-9a-f]{6}'/.test(demo)) fail('portal-demo.js: the sample client should have a sample accent');
 }
 
+// ---- Extras you can switch on (Oct 16 2026, hub DEPLOY.md section 83) ----
+// Four owner switches, each a real checkbox with a visible label, a "what this does" line, one Save for the block,
+// and NO switch for what stays Taya's (the no-show card, receipts, business papers, the brand color).
+{
+  const block = (html.match(/<form[^>]*id="f-bk-x"[\s\S]*?<\/form>/) || [''])[0];
+  if (!block) fail('portal.html: the Extras you can switch on block (#f-bk-x) is missing');
+  else {
+    const boxes = [...block.matchAll(/<input type="checkbox" id="([^"]+)"/g)].map((m) => m[1]);
+    if (boxes.join(',') !== 'in-bk-x-thanks,in-bk-x-nudge,in-bk-x-addons,in-bk-x-intake') fail(`portal.html: the extras block should switch exactly the thank-you, the book again note, add-ons and intake (got ${boxes.join(', ')})`);
+    for (const id of boxes) {
+      if (!new RegExp('<label class="dc-check"><input type="checkbox" id="' + id + '" aria-describedby="' + id.replace(/^in-/, '') + '-what">').test(block)) fail(`portal.html: #${id} should sit in its own visible label and point at its "what this does" line`);
+      if (!block.includes('id="' + id.replace(/^in-/, '') + '-what"')) fail(`portal.html: #${id} has no "what this does" line`);
+    }
+    if (/card|receipt|papers|brand|stripe/i.test(block.replace(/<!--[\s\S]*?-->/g, ''))) fail('portal.html: the extras block mentions something that stays Taya’s (card, receipts, papers, brand, Stripe)');
+    if ((block.match(/type="submit"/g) || []).length !== 1) fail('portal.html: the extras block should have one Save button');
+    if ((block.match(/Every email has a stop link/g) || []).length !== 2) fail('portal.html: both email extras should say every email has a stop link');
+    if (!/Email Taya<\/a> and I will add it\./.test(block)) fail('portal.html: the book again note should say how a missing booking page address gets added');
+  }
+  if (!/const X_KEYS = \['thanks', 'nudge', 'addons', 'intake'\];/.test(js)) fail('portal.js: the extras should be the four owner switches only');
+}
+
 if (failures.length) {
   console.error(`portal-text: ${failures.length} problem(s)`);
   for (const f of failures) console.error('  - ' + f);
