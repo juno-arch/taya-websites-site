@@ -1168,6 +1168,7 @@
         url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
+      brand: d.brand && /^#[0-9a-f]{6}$/i.test(str(d.brand.accent, 7)) ? { accent: str(d.brand.accent, 7).toLowerCase() } : null, // their accent color (Oct 16 2026), only a strict #rrggbb
       care: {
         can_ask: !!care.can_ask,
         requests: arr(care.requests).map((r) => ({
