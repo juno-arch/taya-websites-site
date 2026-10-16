@@ -777,3 +777,49 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
 .dc .o-act.bk-addon-act { justify-content: flex-start; }
 .open-btn.bk-sure { border-color: var(--wf-b-due-edge); background: var(--wf-b-due-tint); color: var(--wf-b-due-ink); }
 .order .bk-addons-total { color: var(--wf-b-ink); }
+/* ============ your receipts (Oct 15 2026): a calm receipts box ============
+   Phone first (390 px): one column, 44 px taps, every amount in tabular numbers. Ledger rows for the month, no pills.
+   Color only with meaning: gold words and a gold edge for "looks like one saved twice" (it needs a look); nothing else
+   is colored. */
+.rc-fine { margin: 10px 0 0; color: var(--wf-b-ink-soft); font-size: 14.5px; line-height: 1.5; max-width: 44em; }
+.rc-top { margin: 4px 0 0; }
+.rc-lede { margin: 10px 0 0; font-size: 16.5px; line-height: 1.5; max-width: 36em; }
+.rc-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 16px; }
+.rc-pick .btn, .rc-pick .open-btn { min-height: 44px; }
+@media (max-width: 420px) { .rc-pick > * { flex: 1 1 100%; justify-content: center; } }
+.rc-file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+.rc-form { margin-top: 6px; }
+.rc-form .small-h { margin-top: 10px; }
+.rc-status { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--wf-b-ink); max-width: 36em; }
+.rc-status:empty { display: none; }
+.rc-pic { margin: 14px 0 0; }
+.rc-pic img { display: block; max-width: 100%; max-height: 280px; width: auto; height: auto; border: 1px solid var(--wf-b-rule); border-radius: 10px; background: var(--wf-b-well); }
+.rc-amt, #in-rc-date { font-variant-numeric: tabular-nums; }
+#in-rc-date, .rc-amt { max-width: 14em; }
+#in-rc-cat, #in-rc-month, #in-rc-exmonth { max-width: 20em; }
+#in-rc-note { min-height: 72px; }
+.rc-form .dc-btns > button { min-height: 44px; }
+.rc-same { margin: 16px 0 0; padding: 12px 14px; background: var(--wf-b-due-tint); border-left: 3px solid var(--wf-b-due-edge); border-radius: 8px; }
+.rc-same p { margin: 0; color: var(--wf-b-due-ink); font-size: 15.5px; line-height: 1.5; }
+.rc-same .dc-btns { margin-top: 10px; }
+.rc-total { margin: 14px 0 10px; font-size: 16.5px; font-variant-numeric: tabular-nums; }
+.rc-same-note { margin: 0 0 10px; color: var(--wf-b-due-ink); font-size: 15px; line-height: 1.5; max-width: 40em; }
+.rc-list { box-shadow: none; }
+.rc-list > li.rc-li { padding: 0; }
+.rc-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 11px 16px; background: none; border: 0;
+  color: var(--wf-b-ink); font: inherit; text-align: left; cursor: pointer;
+}
+.rc-row:hover .what b { text-decoration: underline; text-underline-offset: 3px; }
+.rc-row:focus-visible { outline-offset: -3px; }
+.rc-row[aria-expanded="true"] { background: var(--wf-b-well); }
+.rc-d { flex: none; width: 4.2em; color: var(--wf-b-ink-soft); font-size: 15px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rc-row .what b { font-weight: 400; }
+.rc-row .what small { overflow-wrap: anywhere; }
+.rc-row .what small.rc-twice { color: var(--wf-b-due-ink); font-weight: 500; }
+.rc-a { flex: none; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 16px; }
+.rc-li:has(.rc-twice) { box-shadow: inset 3px 0 0 var(--wf-b-due-edge); }
+.rc-list > li.rc-edit-li { display: block; padding: 4px 16px 18px; background: var(--wf-b-well); border-top: 0; }
+.rc-edit-li .rc-form { margin-top: 0; }
+@media (max-width: 380px) { .rc-row { padding: 11px 12px; gap: 10px; } .rc-d { width: 3.8em; } }
+@media print { .rc-pick, .rc-tabs, .rc-form { display: none; } }

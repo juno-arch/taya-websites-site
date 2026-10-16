@@ -36,6 +36,8 @@
    /preview, /test, /send, /stop, /people, /export, /settings (hub API.md section 18)
    and one for the "Your visitors" card (Oct 15 2026; the preview has it too): visits, /api/webfaery/v/mine
    (hub DEPLOY.md section 72, API.md section 22)
+   and the Receipts card's own door, rcCall and rcBlob (Oct 15 2026, never in the preview): /mine, /photo, /save, /edit,
+   /remove, /file, /export under /api/webfaery/receipts (hub DEPLOY.md section 74, API.md section 24)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -59,6 +61,7 @@
   const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
   const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
   const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
+  const RECEIPTS = SERVER + '/api/webfaery/receipts'; // a client's own receipts box (Oct 15 2026): only clients Taya switched it on for get any
   const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -407,6 +410,25 @@
   };
   // a client's own newsletter (Oct 12 2026): the one place that part signs in, the same way
   const newsCall = (path, body) => postJSON(path, body || {}, token, NEWS);
+  // a client's own receipts (Oct 15 2026): the one place that part signs in. A refusal keeps the server's own reason
+  // (maybe_same, full) and the receipts it looks like, so the card can say so in words.
+  const rcCall = async (path, body) => {
+    const res = await post(path, body || {}, token, RECEIPTS);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const e = errorFrom(res.status, data);
+      e.rc = data && typeof data.error === 'string' ? data.error.slice(0, 20) : '';
+      e.same = data && Array.isArray(data.same) ? data.same.slice(0, 3) : [];
+      throw e;
+    }
+    return data;
+  };
+  // the same door for a file (a photo, the month's CSV): the bytes as a blob
+  const rcBlob = async (path, body) => {
+    const res = await post(path, body || {}, token, RECEIPTS);
+    if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+    return res.blob();
+  };
 
   // what people read when something goes sideways
   const words = (err, where) => {
@@ -536,6 +558,7 @@
     { id: 'gifts', label: 'Gift certificates', short: 'Gifts', icon: 'i-gift' },
     { id: 'newsletter', label: 'Newsletter', icon: 'i-mail' },
     { id: 'visitors', label: 'Visitors', icon: 'i-bars' },
+    { id: 'receipts', label: 'Receipts', icon: 'i-tray' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -548,7 +571,7 @@
   // booking or newsletter comes first (that's what they'll open most)
   function pageList() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'payments', 'ask']);
+    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'receipts', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'receipts', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -556,6 +579,7 @@
     const h = (location.hash || '').slice(1);
     if (/^bookings(?:-[a-z]+)?$/.test(h)) return 'bookings';
     if (/^newsletter(?:-[a-z]+)?$/.test(h)) return 'newsletter';
+    if (/^receipts(?:-[a-z]+)?$/.test(h)) return 'receipts';
     if (/^sec-[a-z]+$/.test(h)) { const el = document.getElementById(h); return el && el.dataset.page ? el.dataset.page : ''; }
     return PAGES.some((x) => x.id === h) ? h : '';
   }
@@ -831,6 +855,7 @@
     $('#sec-bookings').hidden = true;
     visits = null;
     $('#sec-visits').hidden = true;
+    rcReset();
     nl = null;
     nlEdit = null;
     nlPeopleShown = false;
@@ -1003,6 +1028,7 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadReceipts();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
       else if (backToPay) { backToPay = false; goPage('payments'); }
@@ -1027,12 +1053,13 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadReceipts();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
     $$('#v-project textarea, #v-project input[type="text"]:not(.keeps)').some((t) => t.value.trim()) ||
     !!document.querySelector('#v-project .ship-form') || !$('#f-dc').hidden || !!document.querySelector('#sec-bookings .bk-form') ||
-    !$('#f-nl').hidden || $('#f-nl-set').contains(document.activeElement);
+    !$('#f-nl').hidden || $('#f-nl-set').contains(document.activeElement) || !$('#f-rc').hidden;
 
   // Back from Stripe (its "after payment" link can be portal.html?paid=deposit, or ?paid=1): note it, so the
   // pay button turns into a thank-you instead of asking again while Taya waits to see it land.
@@ -5143,6 +5170,467 @@
     if (me) renderGlance();
   }
 
+  /* ---- your receipts (Oct 15 2026) ----
+     A receipts box, not accounting or tax advice. Only for a client Taya switched it on for: the server answers
+     receipts: null for everyone else, and the section and its tab stay hidden. Three tabs, each with its own address
+     (#receipts-add, -month, -export). Add: take or choose a photo (the page makes it smaller first, since the server
+     can't), the server keeps it as a draft and reads it, and what it read fills the fields; nothing is saved until
+     they check it and tap Save. Or they type one in. This month: a calm ledger of a month, tap a row to change or
+     delete it. Export: a month's CSV for their bookkeeper. One form (#f-rc) does adding and changing: for a change it
+     moves under the row. Every call goes through rcCall / rcBlob, the one place this part signs in. Hub DEPLOY.md
+     section 74. */
+  let rc = null;              // the month as the server last sent it (cleaned)
+  let rcBusy = false;
+  let rcTab = 'add';
+  let rcTabsReady = false;
+  let rcMode = '';            // '' (closed), 'add' or 'edit'
+  let rcDraft = '';           // the draft row the photo made, until it is saved or let go
+  let rcEditing = null;       // the receipt being changed
+  let rcAnyway = false;       // they saw the "looks like one you saved" note and said save it anyway
+  let rcPicUrl = '';
+  const RC_TABS = ['add', 'month', 'export'];
+  const RC_CATS = { supplies: 'Supplies', tools: 'Tools and equipment', rent: 'Rent and studio', advertising: 'Advertising', insurance: 'Insurance', fees: 'Fees', other: 'Other' };
+  const RC_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const RC_MAX_CHARS = 2700000; // the photo as sent (the server takes 2 MB of photo)
+  const RC_ID = /^[a-z0-9]{15}$/;
+  const rcDay = (s) => (/^\d{4}-\d{2}-\d{2}$/.test(str(s, 10)) ? str(s, 10) : '');
+  const rcMonthOk = (s) => /^\d{4}-(0[1-9]|1[0-2])$/.test(str(s, 7));
+  const rcMonthName = (m) => (rcMonthOk(m) ? RC_MONTHS[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4) : '');
+  const rcMoney = (c) => '$' + (Math.max(0, +c || 0) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // what someone typed as a total: 24.95, $24.95, 1,024.50 -> whole cents, or 0 when it isn't an amount
+  const rcCents = (v) => {
+    const s = String(v || '').replace(/[$,\s]/g, '');
+    if (!/^\d{1,6}(\.\d{1,2})?$/.test(s)) return 0;
+    const c = Math.round(parseFloat(s) * 100);
+    return c > 0 && c <= 99999999 ? c : 0;
+  };
+  const rcAmountText = (c) => (c > 0 ? (c / 100).toFixed(2) : '');
+  function cleanRcRow(r) {
+    if (!r || typeof r !== 'object' || !RC_ID.test(str(r.id, 15))) return null;
+    const fn = cleanLine(r.file_name, 120);
+    return {
+      id: str(r.id, 15), date: rcDay(r.date), vendor: cleanLine(r.vendor, 120),
+      amount_cents: Number.isInteger(r.amount_cents) && r.amount_cents >= 0 ? r.amount_cents : 0,
+      category: Object.prototype.hasOwnProperty.call(RC_CATS, r.category) ? r.category : 'other', note: cleanText(r.note, 500),
+      photo: !!r.photo, file_name: /^[a-z0-9.-]+$/.test(fn) ? fn : '', maybe_same: !!r.maybe_same
+    };
+  }
+  function cleanRc(d) {
+    if (!d || typeof d !== 'object' || !d.receipts || typeof d.receipts !== 'object') return null;
+    const x = d.receipts, rd = x.reads && typeof x.reads === 'object' ? x.reads : {};
+    const n = (v) => (Number.isInteger(v) && v >= 0 ? Math.min(v, 100000) : 0);
+    const thisMonth = rcMonthOk(x.this_month) ? str(x.this_month, 7) : todayISO.slice(0, 7);
+    const months = arr(x.months).filter(rcMonthOk).slice(0, 60).map((m) => str(m, 7));
+    if (!months.includes(thisMonth)) months.unshift(thisMonth);
+    return {
+      month: rcMonthOk(x.month) ? str(x.month, 7) : thisMonth, this_month: thisMonth, months: months.sort().reverse(),
+      rows: arr(x.rows).slice(0, 500).map(cleanRcRow).filter(Boolean),
+      reads: { used: n(rd.used), cap: n(rd.cap), left: n(rd.left) }, reader: !!x.reader
+    };
+  }
+  async function loadReceipts(month) {
+    if (DEMO) { $('#sec-receipts').hidden = true; return; }
+    if (rcBusy) return;
+    rcBusy = true;
+    try {
+      rc = cleanRc(await rcCall('/mine', month ? { month } : {}));
+      renderRc();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!rc) $('#sec-receipts').hidden = true; // a quiet refresh that misses keeps what's on screen
+    } finally { rcBusy = false; }
+  }
+  function rcMonthOptions(sel, want) {
+    const opts = rc.months.map((m) => { const o = make('option', null, rcMonthName(m)); o.value = m; return o; });
+    sel.replaceChildren(...opts);
+    sel.value = rc.months.includes(want) ? want : rc.this_month;
+  }
+  function renderRc() {
+    const sec = $('#sec-receipts');
+    if (!rc) { setHidden(sec, true); return; }
+    rcMonthOptions($('#in-rc-month'), rc.month);
+    if (document.activeElement !== $('#in-rc-exmonth')) rcMonthOptions($('#in-rc-exmonth'), $('#in-rc-exmonth').value || rc.this_month);
+    $('#rc-tab-month').textContent = rc.month === rc.this_month ? 'This month' : rcMonthName(rc.month).split(' ')[0];
+    rcReadsLine();
+    if (rcMode !== 'edit') rcList();
+    setHidden(sec, false);
+    if (!rcTabsReady) {
+      rcTabsReady = true;
+      const h = rcHashTab();
+      if (h) selectRcTab(h, false, true);
+    }
+  }
+  function rcReadsLine() {
+    const p = $('#rc-reads');
+    if (!rc || !rc.reader) { p.hidden = true; return; }
+    p.textContent = rc.reads.left > 0
+      ? 'Photo reading: ' + rc.reads.left + ' of ' + rc.reads.cap + ' left this month.'
+      : 'This month’s ' + rc.reads.cap + ' photo reads are used up. You can still add a photo and type in what it says.';
+    p.hidden = false;
+  }
+  function rcList() {
+    const rows = rc.rows;
+    const total = rows.reduce((s, r) => s + r.amount_cents, 0);
+    $('#rc-total').textContent = rows.length ? plural(rows.length, 'receipt', 'receipts') + ' in ' + rcMonthName(rc.month) + ', ' + rcMoney(total) + ' in all.' : '';
+    setHidden($('#rc-total'), !rows.length);
+    const same = rows.filter((r) => r.maybe_same).length;
+    $('#rc-same-note').textContent = same ? 'Some of these look like the same receipt saved twice (the same day, place and total, or the same photo). Tap one to check, and delete the extra if it is one.' : '';
+    setHidden($('#rc-same-note'), !same);
+    $('#rc-list').replaceChildren(...rows.map(rcRow));
+    setHidden($('#rc-list'), !rows.length);
+    setHidden($('#rc-empty'), rows.length > 0);
+  }
+  function rcRow(r) {
+    const li = make('li', 'rc-li');
+    li.dataset.id = r.id;
+    const b = make('button', 'rc-row');
+    b.type = 'button';
+    b.append(make('span', 'rc-d', shortDate(r.date)));
+    const what = make('span', 'what');
+    what.append(make('b', null, r.vendor || 'No name yet'));
+    what.append(make('small', null, RC_CATS[r.category] + (r.note ? ', ' + r.note.split('\n')[0].slice(0, 60) : '')));
+    if (r.maybe_same) what.append(make('small', 'rc-twice', 'Looks like one saved twice'));
+    b.append(what, make('span', 'rc-a', rcMoney(r.amount_cents)));
+    b.setAttribute('aria-label', shortDate(r.date) + ', ' + (r.vendor || 'no name yet') + ', ' + rcMoney(r.amount_cents) + ', ' + RC_CATS[r.category] + (r.maybe_same ? ', looks like one saved twice' : '') + '. Change or delete');
+    b.addEventListener('click', () => rcOpenEdit(r, li));
+    li.append(b);
+    return li;
+  }
+
+  // ---- the form: adding and changing
+  function rcShowErr(which, text) {
+    const map = { date: ['#in-rc-date', '#rc-date-err'], vendor: ['#in-rc-vendor', '#rc-vendor-err'], amount: ['#in-rc-amount', '#rc-amount-err'], note: ['#in-rc-note', '#rc-note-err'] };
+    const [inp, err] = map[which];
+    $(err).textContent = text || '';
+    $(err).hidden = !text;
+    if (text) $(inp).setAttribute('aria-invalid', 'true'); else $(inp).removeAttribute('aria-invalid');
+  }
+  function rcClearForm() {
+    ['date', 'vendor', 'amount', 'note'].forEach((k) => rcShowErr(k, ''));
+    $('#in-rc-date').value = '';
+    $('#in-rc-vendor').value = '';
+    $('#in-rc-amount').value = '';
+    $('#in-rc-cat').value = 'other';
+    $('#in-rc-note').value = '';
+    $('#rc-status').textContent = '';
+    $('#rc-err').hidden = true;
+    $('#rc-same').hidden = true;
+    rcAnyway = false;
+    rcPic('');
+  }
+  function rcPic(url) {
+    if (rcPicUrl && rcPicUrl.startsWith('blob:')) URL.revokeObjectURL(rcPicUrl);
+    rcPicUrl = url;
+    if (url) $('#rc-pic-img').src = url; else $('#rc-pic-img').removeAttribute('src');
+    $('#rc-pic').hidden = !url;
+  }
+  function rcFill(r) {
+    $('#in-rc-date').value = r.date || '';
+    $('#in-rc-vendor').value = r.vendor || '';
+    $('#in-rc-amount').value = rcAmountText(r.amount_cents);
+    $('#in-rc-cat').value = Object.prototype.hasOwnProperty.call(RC_CATS, r.category) ? r.category : 'other';
+    $('#in-rc-note').value = r.note || '';
+  }
+  function rcOpenAdd() {
+    rcCloseForm(false);
+    rcMode = 'add';
+    rcClearForm();
+    $('#rc-form-h').textContent = 'A new receipt';
+    $('#b-rc-delete').hidden = true;
+    $('#b-rc-photo').hidden = true;
+    $('#rc-start').hidden = true;
+    $('#f-rc').hidden = false;
+  }
+  function rcOpenEdit(r, li) {
+    if (rcMode === 'edit' && rcEditing && rcEditing.id === r.id) { rcCloseForm(true); return; }
+    rcCloseForm(false);
+    rcMode = 'edit';
+    rcEditing = r;
+    rcClearForm();
+    rcFill(r);
+    $('#rc-form-h').textContent = 'Change this receipt';
+    $('#b-rc-delete').hidden = false;
+    $('#b-rc-delete').textContent = 'Delete';
+    $('#b-rc-photo').hidden = !r.photo;
+    const holder = make('li', 'rc-edit-li');
+    li.after(holder);
+    holder.append($('#f-rc'));
+    li.querySelector('.rc-row').setAttribute('aria-expanded', 'true');
+    $('#f-rc').hidden = false;
+    focusEl($('#rc-form-h'), true);
+    if (r.photo) {
+      rcBlob('/file', { id: r.id }).then((blob) => {
+        if (rcMode === 'edit' && rcEditing && rcEditing.id === r.id) rcPic(URL.createObjectURL(blob));
+      }).catch((e) => { if (e.code === 'signed_out') quietSignOut(true); });
+    }
+  }
+  // close the form and put it back in Add; a photo's draft that wasn't saved is let go (letGo) on the server too
+  function rcCloseForm(focusBack) {
+    const wasEdit = rcMode === 'edit' && rcEditing ? rcEditing.id : '';
+    if (rcDraft) { const id = rcDraft; rcDraft = ''; rcCall('/remove', { id }).catch(() => {}); }
+    rcMode = '';
+    rcEditing = null;
+    const f = $('#f-rc');
+    f.hidden = true;
+    const holder = f.closest('.rc-edit-li');
+    $('#rc-form-home').append(f);
+    if (holder) holder.remove();
+    $$('#rc-list .rc-row[aria-expanded]').forEach((b) => b.removeAttribute('aria-expanded'));
+    rcClearForm();
+    $('#rc-start').hidden = false;
+    if (focusBack) {
+      const row = wasEdit && $('#rc-list li[data-id="' + wasEdit + '"] .rc-row');
+      focusEl(row || $('#b-rc-camera'));
+    }
+  }
+  function rcReset() {
+    rc = null;
+    rcTabsReady = false;
+    if (rcDraft) rcDraft = ''; // signed out: the server lets it go by itself after a day
+    rcCloseForm(false);
+    $('#sec-receipts').hidden = true;
+  }
+
+  // ---- a photo: made smaller here (the server can't), then read
+  const rcFail = (code) => { const e = new Error(code); e.code = 'input'; e.reason = code; return e; };
+  async function rcShrink(file) {
+    if (file.type && !/^image\//.test(file.type)) throw rcFail('type');
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(rcFail('type')); i.src = url; });
+      const w0 = img.naturalWidth, h0 = img.naturalHeight;
+      if (!w0 || !h0) throw rcFail('type');
+      for (const [side, q] of [[1600, 0.82], [1200, 0.72], [900, 0.62]]) {
+        const k = Math.min(1, side / Math.max(w0, h0));
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(w0 * k));
+        c.height = Math.max(1, Math.round(h0 * k));
+        const g = c.getContext('2d');
+        g.fillStyle = '#fff';
+        g.fillRect(0, 0, c.width, c.height);
+        g.drawImage(img, 0, 0, c.width, c.height);
+        const data = c.toDataURL('image/jpeg', q);
+        if (data.length <= RC_MAX_CHARS) return data;
+      }
+      throw rcFail('size');
+    } finally { URL.revokeObjectURL(url); }
+  }
+  const RC_READ = {
+    '': 'Here’s what the photo says, as best it could be read. Check each one, fix anything that’s off, then Save.',
+    cap: 'This month’s photo reads are used up, so this one wasn’t read. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
+    off: 'Photo reading is resting right now. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
+    busy: 'Photo reading is resting right now. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
+    unreadable: 'That photo was hard to read. It’s kept with the receipt: type in the date, where it’s from and the total, then Save. A flat, bright photo reads best.',
+    not_receipt: 'That doesn’t look like a receipt. If it is one, type in what it says and Save. Or tap Not now and try another photo.',
+    skipped: 'Your photo is kept with it. Type in the date, where it’s from and the total, then Save.'
+  };
+  const rcSameWords = (rows) => rows.map(cleanRcRow).filter(Boolean)
+    .map((r) => [shortDate(r.date), r.vendor, rcMoney(r.amount_cents)].filter(Boolean).join(', ')).join('; ');
+  async function rcOnPhoto(input) {
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file || !rc) return;
+    rcOpenAdd();
+    const save = $('#b-rc-save');
+    setBusy(save, true, 'Reading…');
+    busy++;
+    $('#rc-status').textContent = 'Reading your photo…';
+    focusEl($('#rc-form-h'), true);
+    try {
+      const data = await rcShrink(file);
+      rcPic(data);
+      const d = await rcCall('/photo', { image: data, read: rc.reads.left > 0 || !rc.reader });
+      const r = cleanRcRow(d.receipt);
+      if (!r || rcMode !== 'add') { if (r) rcCall('/remove', { id: r.id }).catch(() => {}); return; }
+      rcDraft = r.id;
+      const g = d.read && typeof d.read === 'object' ? cleanRcRow(Object.assign({ id: r.id }, d.read)) : null;
+      if (g) rcFill(g);
+      if (!$('#in-rc-date').value) $('#in-rc-date').value = todayISO;
+      const why = Object.prototype.hasOwnProperty.call(RC_READ, d.why) ? d.why : (g ? '' : 'skipped');
+      let said = RC_READ[why];
+      if (d.same_photo) said += ' You saved this same photo before: ' + rcSameWords([d.same_photo]) + '.';
+      $('#rc-status').textContent = said;
+      announce(said);
+      if (d.reads && typeof d.reads === 'object') { rc.reads = cleanRc({ receipts: { reads: d.reads } }).reads; rcReadsLine(); }
+      $('#in-rc-date').focus();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      $('#rc-status').textContent = rcWords(err) + ' You can type it in below.';
+      rcPic('');
+      if (!$('#in-rc-date').value) $('#in-rc-date').value = todayISO;
+    } finally { setBusy(save, false); busy = Math.max(0, busy - 1); }
+  }
+
+  // ---- saving
+  async function rcOnSave(ev) {
+    if (ev) ev.preventDefault();
+    const save = $('#b-rc-save');
+    if (save.getAttribute('aria-busy') === 'true' || !rcMode) return;
+    ['date', 'vendor', 'amount', 'note'].forEach((k) => rcShowErr(k, ''));
+    $('#rc-err').hidden = true;
+    const date = $('#in-rc-date').value;
+    const vendor = cleanLine($('#in-rc-vendor').value, 200);
+    const cents = rcCents($('#in-rc-amount').value);
+    const note = cleanText($('#in-rc-note').value, 600);
+    let first = null;
+    if (!rcDay(date)) { rcShowErr('date', 'Add the date on the receipt.'); first = first || '#in-rc-date'; }
+    if (!vendor) { rcShowErr('vendor', 'Add where it’s from, like the shop’s name.'); first = first || '#in-rc-vendor'; }
+    else if (vendor.length > 120) { rcShowErr('vendor', 'That name is a bit long. 120 characters fit.'); first = first || '#in-rc-vendor'; }
+    if (!cents) { rcShowErr('amount', 'Add the total, like 24.95.'); first = first || '#in-rc-amount'; }
+    if (note.length > 500) { rcShowErr('note', 'That note is a bit long. 500 characters fit.'); first = first || '#in-rc-note'; }
+    if (first) { $(first).focus(); return; }
+    const body = { date, vendor, amount_cents: cents, category: $('#in-rc-cat').value, note };
+    if (rcAnyway) body.anyway = true;
+    let path = '/save';
+    if (rcMode === 'edit' && rcEditing) { path = '/edit'; body.id = rcEditing.id; } else if (rcDraft) body.id = rcDraft;
+    setBusy(save, true, 'Saving…');
+    busy++;
+    try {
+      const d = await rcCall(path, body);
+      const r = cleanRcRow(d.receipt);
+      rcDraft = '';
+      const wasEdit = rcMode === 'edit';
+      rcCloseForm(false);
+      const month = r ? r.date.slice(0, 7) : rc.month;
+      toast(wasEdit ? 'Saved.' : month === rc.this_month ? 'Saved. It’s in This month.' : 'Saved, in ' + rcMonthName(month) + '.');
+      await loadReceipts(wasEdit ? rc.month : month);
+      focusEl(wasEdit && r ? $('#rc-list li[data-id="' + r.id + '"] .rc-row') || $('#rc-tab-month') : $('#b-rc-camera'), true);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      if (err.rc === 'maybe_same') {
+        $('#rc-same-text').textContent = 'This looks like one you already saved: ' + rcSameWords(err.same) + '. Save it anyway?';
+        $('#rc-same').hidden = false;
+        focusEl($('#rc-same-text'));
+        announce($('#rc-same-text').textContent);
+        return;
+      }
+      if (err.code === 'input' && err.field) {
+        const k = { date: 'date', vendor: 'vendor', amount_cents: 'amount', note: 'note' }[err.field];
+        if (k) {
+          rcShowErr(k, k === 'date' ? 'Check the date: it can’t be later than today.' : k === 'vendor' ? 'Add where it’s from, like the shop’s name.' : k === 'amount' ? 'Add the total, like 24.95.' : 'That note is a bit long. 500 characters fit.');
+          $({ date: '#in-rc-date', vendor: '#in-rc-vendor', amount: '#in-rc-amount', note: '#in-rc-note' }[k]).focus();
+          return;
+        }
+      }
+      if (err.code === 'not_found') { rcDraft = ''; rcCloseForm(true); toast('That one isn’t here anymore. Try again, or type it in.'); loadReceipts(rc.month); return; }
+      $('#rc-err').textContent = rcWords(err);
+      $('#rc-err').hidden = false;
+      focusEl($('#rc-err'));
+    } finally { setBusy(save, false); busy = Math.max(0, busy - 1); }
+  }
+  async function rcOnDelete() {
+    const b = $('#b-rc-delete');
+    if (!rcEditing || b.getAttribute('aria-busy') === 'true') return;
+    if (b.textContent !== 'Yes, delete it') { b.textContent = 'Yes, delete it'; b.classList.add('nl-sure'); return; }
+    b.setAttribute('aria-busy', 'true');
+    try {
+      await rcCall('/remove', { id: rcEditing.id });
+      rcCloseForm(false);
+      toast('Deleted.');
+      await loadReceipts(rc.month);
+      focusEl($('#rc-tab-month'), true);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(rcWords(err));
+    } finally { b.removeAttribute('aria-busy'); b.classList.remove('nl-sure'); b.textContent = 'Delete'; }
+  }
+  function rcSaveFile(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const a = make('a');
+    a.href = url;
+    a.download = name;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 120000);
+  }
+  async function rcOnPhotoSave() {
+    const b = $('#b-rc-photo');
+    if (!rcEditing || b.getAttribute('aria-busy') === 'true') return;
+    b.setAttribute('aria-busy', 'true');
+    try { rcSaveFile(await rcBlob('/file', { id: rcEditing.id }), rcEditing.file_name || 'receipt.jpg'); } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(rcWords(err));
+    } finally { b.removeAttribute('aria-busy'); }
+  }
+  async function rcOnCsv() {
+    const b = $('#b-rc-csv');
+    const month = $('#in-rc-exmonth').value;
+    if (!rcMonthOk(month) || b.getAttribute('aria-busy') === 'true') return;
+    setBusy(b, true, 'Getting it…');
+    try {
+      rcSaveFile(await rcBlob('/export', { month }), 'receipts-' + month + '.csv');
+      toast('Downloaded ' + rcMonthName(month) + '.');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(true); return; }
+      toast(rcWords(err));
+    } finally { setBusy(b, false); }
+  }
+
+  // ---- the tabs
+  const rcHashTab = () => { const m = /^#receipts-([a-z]+)$/.exec(location.hash || ''); return m && RC_TABS.includes(m[1]) ? m[1] : ''; };
+  function selectRcTab(key, focus, fromHash) {
+    if (!RC_TABS.includes(key)) key = 'add';
+    rcTab = key;
+    $$('#sec-receipts .rc-tab').forEach((t) => {
+      const on = t.dataset.tab === key;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    $$('#sec-receipts .rc-panel').forEach((p) => { p.hidden = p.id !== 'rc-p-' + key; });
+    if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#receipts-' + key); } catch (e) { /* fine */ } }
+    if (focus) focusEl($('#rc-tab-' + key));
+  }
+  function onRcTabKey(ev) {
+    const i = RC_TABS.indexOf(rcTab);
+    let n = -1;
+    if (ev.key === 'ArrowRight') n = (i + 1) % RC_TABS.length;
+    else if (ev.key === 'ArrowLeft') n = (i + RC_TABS.length - 1) % RC_TABS.length;
+    else if (ev.key === 'Home') n = 0;
+    else if (ev.key === 'End') n = RC_TABS.length - 1;
+    if (n < 0) return;
+    ev.preventDefault();
+    selectRcTab(RC_TABS[n], true, false);
+  }
+
+  // ---- what people read when something goes sideways here
+  function rcWords(e) {
+    const r = e && e.reason;
+    if (e && e.code === 'input' && r === 'size') return 'That photo is too big to send, even made smaller. Try another one.';
+    if (e && e.code === 'input' && r === 'type') return 'That photo can’t be opened here. A JPG or PNG works.';
+    if (e && e.rc === 'full') return 'That’s a lot for one month. Email me at ' + TAYA + ' and I’ll make room.';
+    if (e && e.code === 'not_found') return 'Your receipts box is resting right now. Email me at ' + TAYA + ' if you need it.';
+    return words(e);
+  }
+
+  function wireReceipts() {
+    $$('#sec-receipts .rc-tab').forEach((t) => {
+      t.addEventListener('click', () => selectRcTab(t.dataset.tab, false, false));
+      t.addEventListener('keydown', onRcTabKey);
+    });
+    window.addEventListener('hashchange', () => { const h = rcHashTab(); if (h && rc) selectRcTab(h, false, true); });
+    $('#b-rc-camera').addEventListener('click', () => $('#in-rc-camera').click());
+    $('#b-rc-choose').addEventListener('click', () => $('#in-rc-choose').click());
+    $('#in-rc-camera').addEventListener('change', () => rcOnPhoto($('#in-rc-camera')));
+    $('#in-rc-choose').addEventListener('change', () => rcOnPhoto($('#in-rc-choose')));
+    $('#b-rc-type').addEventListener('click', () => {
+      if (!rc) return;
+      rcOpenAdd();
+      $('#in-rc-date').value = todayISO;
+      $('#in-rc-date').focus();
+    });
+    $('#f-rc').addEventListener('submit', rcOnSave);
+    $('#b-rc-cancel').addEventListener('click', () => rcCloseForm(true));
+    $('#b-rc-anyway').addEventListener('click', () => { rcAnyway = true; $('#rc-same').hidden = true; rcOnSave(); });
+    $('#b-rc-same-no').addEventListener('click', () => { rcCloseForm(true); toast('Not saved.'); });
+    $('#b-rc-delete').addEventListener('click', rcOnDelete);
+    $('#b-rc-photo').addEventListener('click', rcOnPhotoSave);
+    $('#b-rc-csv').addEventListener('click', rcOnCsv);
+    $('#in-rc-month').addEventListener('change', () => { rcCloseForm(false); loadReceipts($('#in-rc-month').value); });
+    // a changed field after the "looks like one you saved" note asks again
+    ['#in-rc-date', '#in-rc-vendor', '#in-rc-amount'].forEach((s) => $(s).addEventListener('input', () => { rcAnyway = false; $('#rc-same').hidden = true; }));
+  }
+
   /* ================= no do-it-yourself editing (Oct 5 2026) =================
      The "Change it yourself" editors (hours, banner, prices and more) were retired with the Oct 5 2026
      pricing: every change goes through Taya, by email or the change form above. Their code is gone on
@@ -5268,6 +5756,7 @@
     $('#f-gift').addEventListener('submit', onGiftFind);
     wireBookings();
     wireNews();
+    wireReceipts();
     wirePages();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
