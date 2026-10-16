@@ -17,6 +17,7 @@
      launched  launch day: settling in, the second half due, care waiting until settling in ends, "Ask for a change" open
      care      in care: everything paid, two past asks with Taya's replies
    Once her site is live (launched, care) the "Your visitors" card shows sample counts too (visitsSample below).
+   Every moment has a "Your business papers" card with sample papers (papersSample below).
    Every date is counted from today, so each moment reads true whatever day it's opened.
    The answers have exactly the shapes the server sends (API.md in the hub's webfaery-portal-docs), so the
    page can't tell them apart.
@@ -443,6 +444,45 @@
   api.visits = function () {
     var g = gate(); if (g) return refuse(g);
     return wait(400).then(function () { return { visits: visitsSample(scene) }; });
+  };
+
+  /* ---------------- "Your business papers" (Oct 15 2026): sample papers in every moment ----------------
+     The same shape as POST /api/webfaery/papers/mine. A made-up insurer, city and numbers (every one says SAMPLE).
+     The business license renews in 19 days, so the quiet "Renews in 3 weeks" line shows. The files are tiny PDFs
+     made right here, as blob links (the real server sends 30 minute links instead). */
+  var paperLinks = {};
+  function paperLink(key, title, lines) {
+    if (!paperLinks[key]) paperLinks[key] = URL.createObjectURL(pdf(title, lines.concat(['', SAMPLE])));
+    return paperLinks[key];
+  }
+  function papersSample() {
+    var soon = new Date(); soon.setMinutes(soon.getMinutes() + 30);
+    return [
+      {
+        kind: 'insurance', kind_label: 'Insurance', title: 'General liability insurance', issuer: 'Kilnside Mutual Insurance (sample)',
+        member_or_number: 'KMI-SAMPLE-204817', valid_from: day(-44), valid_until: day(320), days_left: 320,
+        contact: '(800) 555-0142',
+        notes: 'Covers classes and open studio in your own space. Not covered: classes you teach somewhere else, unless you add that place first.',
+        file: { name: 'General-liability-insurance.pdf', type: 'pdf', expires_at: soon.toISOString(),
+          link: paperLink('ins', 'Certificate of insurance (sample)', ['Kilnside Mutual Insurance (made up for the preview)', 'Policy KMI-SAMPLE-204817', 'Fern & Clay Pottery', 'Good from ' + spoken(day(-44)) + ' through ' + spoken(day(320))]) }
+      },
+      {
+        kind: 'license', kind_label: 'Business license', title: 'City business license', issuer: 'City of Linden Falls (sample)',
+        member_or_number: 'BL-SAMPLE-20931', valid_from: day(-346), valid_until: day(19), days_left: 19,
+        contact: 'licenses@example.com', notes: '',
+        file: { name: 'City-business-license.pdf', type: 'pdf', expires_at: soon.toISOString(),
+          link: paperLink('lic', 'Business license (sample)', ['City of Linden Falls (made up for the preview)', 'License BL-SAMPLE-20931', 'Fern & Clay Pottery', 'Good through ' + spoken(day(19))]) }
+      },
+      {
+        kind: 'permit', kind_label: 'Permit', title: 'Seller’s permit', issuer: 'State tax office (sample)',
+        member_or_number: 'SP-SAMPLE-55120', valid_from: day(-500), valid_until: '', days_left: null,
+        contact: '', notes: 'For sales tax on pots and supplies sold at the studio and online.', file: null
+      }
+    ];
+  }
+  api.papers = function () {
+    var g = gate(); if (g) return refuse(g);
+    return wait(350).then(function () { return { papers: papersSample() }; });
   };
 
   window.WFPortalDemo = {

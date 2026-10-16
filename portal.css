@@ -777,8 +777,7 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
 .dc .o-act.bk-addon-act { justify-content: flex-start; }
 .open-btn.bk-sure { border-color: var(--wf-b-due-edge); background: var(--wf-b-due-tint); color: var(--wf-b-due-ink); }
 .order .bk-addons-total { color: var(--wf-b-ink); }
-/* ============ your receipts (Oct 15 2026): a calm receipts box ============
-   Phone first (390 px): one column, 44 px taps, every amount in tabular numbers. Ledger rows for the month, no pills.
+/* ============ your receipts (Oct 15 2026): a calm receipts box =====   Phone first (390 px): one column, 44 px taps, every amount in tabular numbers. Ledger rows for the month, no pills.
    Color only with meaning: gold words and a gold edge for "looks like one saved twice" (it needs a look); nothing else
    is colored. */
 .rc-fine { margin: 10px 0 0; color: var(--wf-b-ink-soft); font-size: 14.5px; line-height: 1.5; max-width: 44em; }
@@ -823,3 +822,26 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
 .rc-edit-li .rc-form { margin-top: 0; }
 @media (max-width: 380px) { .rc-row { padding: 11px 12px; gap: 10px; } .rc-d { width: 3.8em; } }
 @media print { .rc-pick, .rc-tabs, .rc-form { display: none; } }
+=======
+/* ============ your business papers (Oct 15 2026): insurance, licenses, permits, certifications ============
+   Ledger rows like the rest of the back end. Color only with meaning: the gold "Renews in 3 weeks" line once 30 days
+   or fewer are left, red only once one has ended; everything else in the usual inks. The number and the contact are
+   selectable text (one tap selects the whole of it, for copying into a form or a phone). */
+.pp-lede { margin: 6px 0 14px; font-size: 17px; line-height: 1.5; max-width: 38em; }
+.pp-list { box-shadow: none; }
+.pp-list > li.pp-item { align-items: flex-start; flex-wrap: wrap; padding: 16px 18px; }
+.pp-item .what { flex: 1 1 18em; }
+.pp-item .acts { padding-top: 2px; }
+.pp-facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 12px 0 0; font-size: 15px; }
+.pp-facts div { display: contents; }
+.pp-facts dt { color: var(--wf-b-ink-soft); }
+.pp-facts dd { margin: 0; color: var(--wf-b-ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.pp-sel { -webkit-user-select: all; user-select: all; }
+.pp-notes { margin: 12px 0 0; padding: 10px 12px; border-left: 2px solid var(--wf-b-rule); color: var(--wf-b-ink); font-size: 15px; line-height: 1.5; white-space: pre-line; max-width: 40em; }
+.pp-due { margin: 10px 0 0; font-size: 14.5px; font-weight: 500; color: var(--wf-b-due-ink); }
+.pp-due.over { color: var(--wf-b-trouble); }
+.pp-fine { margin: 18px 0 0; color: var(--wf-b-ink-soft); font-size: 14.5px; line-height: 1.5; max-width: 44em; }
+@media (max-width: 520px) {
+  .pp-facts { grid-template-columns: 1fr; gap: 0; }
+  .pp-facts dd { margin-bottom: 6px; }
+}
