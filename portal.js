@@ -40,6 +40,8 @@
    /remove, /file, /export under /api/webfaery/receipts (hub DEPLOY.md section 74, API.md section 24)
    and one for the "Your business papers" card (Oct 15 2026; the preview has it too): papers, /api/webfaery/papers/mine
    (hub DEPLOY.md section 73, API.md section 23); each file comes as a 30 minute link from the server
+   and one for "Update your card or subscription" (Oct 16 2026, never in the preview): careManage, /care-manage, a fresh
+   Stripe billing portal link each tap (hub DEPLOY.md section 80, API.md section 26)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -401,7 +403,9 @@
     // their own site's visitor counts (Oct 15 2026): { visits: null } unless their site is counted
     visits: () => postJSON('/mine', {}, token, VISITS),
     // their own business papers (Oct 15 2026): { papers: [] } unless Taya added some
-    papers: () => postJSON('/mine', {}, token, PAPERS)
+    papers: () => postJSON('/mine', {}, token, PAPERS),
+    // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
+    careManage: () => postJSON('/care-manage', {}, token)
   };
   let api = realApi;
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
@@ -1169,6 +1173,10 @@
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
       brand: d.brand && /^#[0-9a-f]{6}$/i.test(str(d.brand.accent, 7)) ? { accent: str(d.brand.accent, 7).toLowerCase() } : null, // their accent color (Oct 16 2026), only a strict #rrggbb
+      // Web Faery billing (Oct 16 2026): Stripe said the last subscription payment didn't go through, and whether the
+      // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
+      care_trouble: d.care_trouble === true,
+      care_manage_live: d.care_manage_live === true,
       care: {
         can_ask: !!care.can_ask,
         requests: arr(care.requests).map((r) => ({
@@ -4385,7 +4393,17 @@
         const s = make('span', 'p-paid');
         s.append(icon('i-check'), make('span', null, 'Active' + (p.paid_on ? ' since ' + shortDate(p.paid_on) : '')));
         st.append(s);
-        if (me.care_manage_url) st.append(outLink(me.care_manage_url, 'Update your card or subscription', 'later', 'your Stripe subscription page'));
+        const canManage = (me.care_manage_live && typeof api.careManage === 'function') || !!me.care_manage_url;
+        if (me.care_trouble) {
+          const tr = make('p', 'p-trouble');
+          tr.setAttribute('role', 'status');
+          tr.textContent = canManage ? 'Your last payment didn’t go through. You can update your card below.'
+            : 'Your last payment didn’t go through. Email me and I’ll send you a link to update your card.';
+          st.append(tr);
+          div.classList.add('has-trouble');
+        }
+        if (me.care_manage_live && typeof api.careManage === 'function') st.append(manageButton());
+        else if (me.care_manage_url) st.append(outLink(me.care_manage_url, 'Update your card or subscription', 'later', 'your Stripe subscription page'));
       } else if (p.state === 'due' && p.url && tapped) {
         // they already tapped it: a thank-you, and only a small way to pay again
         const s = make('p', 'p-thanks');
@@ -4405,6 +4423,39 @@
       div.append(st);
       return div;
     }));
+  }
+
+  // "Update your card or subscription" through the server (Oct 16 2026): each tap asks for a fresh Stripe billing
+  // portal link for their own subscription. A tab is opened during the tap (so phones allow it) and sent there once
+  // the link arrives. If the server can't make one, Taya's saved link (care_manage_url) still works when she set one.
+  function manageButton() {
+    const b = make('button', 'later p-manage');
+    b.type = 'button';
+    b.append(make('span', null, 'Update your card or subscription'), icon('i-out'));
+    b.setAttribute('aria-label', 'Update your card or subscription (opens your Stripe subscription page in a new tab)');
+    b.addEventListener('click', () => openManage(b));
+    return b;
+  }
+  async function openManage(btn) {
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    let win = null;
+    try { win = window.open('', '_blank'); } catch (e) { win = null; }
+    if (win) { try { win.opener = null; win.document.title = 'Opening…'; win.document.body.textContent = 'Opening your Stripe subscription page…'; } catch (e) { /* fine */ } }
+    btn.setAttribute('aria-busy', 'true');
+    try {
+      const d = await api.careManage();
+      const url = d && /^https:\/\/billing\.stripe\.com\//.test(str(d.url)) ? safeUrl(d.url) : '';
+      if (!url) throw fail('server', 502);
+      if (win && !win.closed) win.location.href = url;
+      else window.location.href = url;
+    } catch (err) {
+      if (err.code === 'signed_out') { if (win) win.close(); quietSignOut(true); return; }
+      const saved = me && me.care_manage_url;
+      if (saved && win && !win.closed) { win.location.href = saved; return; }
+      if (win) win.close();
+      if (saved) { window.location.href = saved; return; }
+      toast(err.status === 502 ? 'Stripe didn’t answer just now. Try again in a few minutes, or email me at ' + TAYA + '.' : words(err));
+    } finally { btn.removeAttribute('aria-busy'); }
   }
 
   /* ---- ask for a change ---- */
