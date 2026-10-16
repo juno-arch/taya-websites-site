@@ -715,6 +715,41 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
 .nl-set textarea { width: 100%; }
 #in-nl-which { max-width: 20em; }
 
+/* ---- your clients (Oct 15 2026): a read only ledger, one row per person; tap a row for their bookings ---- */
+.bk-cl-q { width: 100%; max-width: 28em; min-height: 44px; }
+.bk-cl-count { margin: 10px 0 0; font-variant-numeric: tabular-nums; }
+.bk-cls { list-style: none; margin: 10px 0 0; padding: 0; background: var(--wf-b-sheet); border: 1px solid var(--wf-b-rule); border-radius: 16px; box-shadow: var(--wf-b-shadow); overflow: hidden; }
+.bk-cls:empty { display: none; }
+.bk-cl { border-top: 1px solid var(--wf-b-rule); }
+.bk-cl:first-child { border-top: 0; }
+.bk-cl-btn {
+  display: grid; gap: 2px; width: 100%; min-height: 44px; padding: 12px 16px; background: none; border: 0; text-align: left;
+  color: var(--wf-b-ink); font: inherit; font-size: 15.5px; line-height: 1.4; cursor: pointer;
+}
+.bk-cl-btn:hover { background: var(--wf-b-well); }
+.bk-cl-btn:focus-visible { outline-offset: -3px; }
+.bk-cl-top { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 14px; flex-wrap: wrap; }
+.bk-cl-name { font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+.bk-cl-reg { font-weight: 400; font-size: 14px; color: var(--wf-b-ink-soft); }
+.bk-cl-n, .bk-cl-dates { font-variant-numeric: tabular-nums; color: var(--wf-b-ink-soft); font-size: 14.5px; }
+.bk-cl-n { white-space: nowrap; }
+.bk-cl-contact { min-width: 0; overflow-wrap: anywhere; font-size: 14.5px; color: var(--wf-b-ink-soft); }
+.bk-cl-d { padding: 0 16px 12px; }
+.bk-cl-bks { list-style: none; margin: 0; padding: 0; border-top: 1px dashed var(--wf-b-rule); }
+.bk-cl-bk { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; padding: 8px 0; border-bottom: 1px solid var(--wf-b-rule); font-size: 14.5px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.bk-cl-bk:last-child { border-bottom: 0; }
+.bk-cl-when { grid-column: 1; }
+.bk-cl-svc { grid-column: 1; color: var(--wf-b-ink-soft); overflow-wrap: anywhere; }
+.bk-cl-st { grid-column: 2; grid-row: 1 / span 2; align-self: center; white-space: nowrap; color: var(--wf-b-ink-soft); }
+.bk-cl-bk.is-booked .bk-cl-st { color: var(--wf-b-ink); }
+@media (min-width: 760px) {
+  .bk-cl-bk { grid-template-columns: 15em minmax(0, 1fr) auto; }
+  .bk-cl-svc { grid-column: 2; grid-row: 1; }
+  .bk-cl-st { grid-column: 3; grid-row: 1; }
+}
+.bk-cl-more { margin-top: 12px; }
+.bk-cl-more .open-btn[aria-busy="true"], #b-bk-cl-csv[aria-busy="true"] { color: var(--wf-b-ink-soft); cursor: wait; }
+
 /* ============ your visitors (Oct 15 2026): their own site's private counts ============
    Calm on purpose: one plain line, two numbers, a bar for each day in the quiet decoration lavender (no up-is-good
    green, no down-is-bad red), ledger rows for pages, sites and devices, tabular numbers throughout. */
