@@ -596,6 +596,57 @@
           <p class="err" id="bk-set-err" hidden></p>
           <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-set"><span>Save settings</span></button></div>
         </form>
+
+        <!-- extras the owner switches on herself (Oct 16 2026, hub DEPLOY.md section 83): each row shows only when the
+             server sends its setting. Not here on purpose: the no-show card (Taya sets up their Stripe first), receipts,
+             business papers, the brand color. -->
+        <form class="dc-form bk-set bk-x" id="f-bk-x" novalidate hidden>
+          <h3 class="small-h">Extras you can switch on</h3>
+          <p class="orders-fine">Each one stays off until you switch it on. Switching one off keeps what you set up, so you can turn it back on any time.</p>
+          <ul class="bk-x-list">
+            <li class="bk-x-row" id="bk-x-thanks" hidden>
+              <label class="dc-check"><input type="checkbox" id="in-bk-x-thanks" aria-describedby="bk-x-thanks-what"> <span>Send a thank-you after each visit</span></label>
+              <p class="orders-fine" id="bk-x-thanks-what">A short thank you email a few hours after each visit, with a link to leave you a Google review.</p>
+              <p class="orders-fine">It goes to the person who booked, from your name. Every email has a stop link.</p>
+              <div class="bk-x-more" id="bk-x-thanks-more" hidden>
+                <label class="field-label" for="in-bk-x-thanks-hours">How many hours after the visit ends</label>
+                <select id="in-bk-x-thanks-hours"></select>
+                <label class="field-label" for="in-bk-x-thanks-url">Your Google review link</label>
+                <input id="in-bk-x-thanks-url" class="keeps" type="text" inputmode="url" autocomplete="off" spellcheck="false" maxlength="500" placeholder="https://g.page/r/…/review">
+                <p class="orders-fine">The link Google gives you for asking people to review you. It starts with https://.</p>
+                <label class="field-label" for="in-bk-x-thanks-note">A line of your own <span class="opt-tag">(optional)</span></label>
+                <textarea id="in-bk-x-thanks-note" class="keeps short" maxlength="300"></textarea>
+                <details class="bk-how"><summary>See the email</summary><div class="bk-how-body"><p class="bk-x-preview" id="bk-x-thanks-preview"></p></div></details>
+              </div>
+            </li>
+            <li class="bk-x-row" id="bk-x-nudge" hidden>
+              <label class="dc-check"><input type="checkbox" id="in-bk-x-nudge" aria-describedby="bk-x-nudge-what"> <span>Send a note when someone hasn’t booked in a while</span></label>
+              <p class="orders-fine" id="bk-x-nudge-what">One short note inviting them to book again, with a link to your booking page. Only people with nothing booked with you get one, and at most once in six months.</p>
+              <p class="orders-fine">It goes to people whose last visit was that many weeks ago, from your name. Every email has a stop link, and one stop also covers your thank-you.</p>
+              <p class="orders-fine bk-x-need" id="bk-x-nudge-page" hidden>Your booking page address needs to be saved first, so the note can link to it. <a href="mailto:taya@webfaery.love">Email Taya</a> and I will add it.</p>
+              <div class="bk-x-more" id="bk-x-nudge-more" hidden>
+                <label class="field-label" for="in-bk-x-nudge-weeks">How many weeks after their last visit</label>
+                <select id="in-bk-x-nudge-weeks"></select>
+                <label class="field-label" for="in-bk-x-nudge-note">A line of your own <span class="opt-tag">(optional)</span></label>
+                <textarea id="in-bk-x-nudge-note" class="keeps short" maxlength="300"></textarea>
+                <details class="bk-how"><summary>See the email</summary><div class="bk-how-body"><p class="bk-x-preview" id="bk-x-nudge-preview"></p></div></details>
+              </div>
+            </li>
+            <li class="bk-x-row" id="bk-x-addons" hidden>
+              <label class="dc-check"><input type="checkbox" id="in-bk-x-addons" aria-describedby="bk-x-addons-what"> <span>Paid add-ons</span></label>
+              <p class="orders-fine" id="bk-x-addons-what">Extras people can pick when they book, like aromatherapy or hot stones. They pay for them at the session, not online.</p>
+              <p class="orders-fine">When this is on, you add them under Services. Switching it off takes them off your booking form and keeps the ones you made.</p>
+            </li>
+            <li class="bk-x-row" id="bk-x-intake" hidden>
+              <label class="dc-check"><input type="checkbox" id="in-bk-x-intake" aria-describedby="bk-x-intake-what"> <span>New client intake</span></label>
+              <p class="orders-fine" id="bk-x-intake-what">Questions just for people booking with you for the first time, and a Heads up line on a booking when an answer is one you want to know first.</p>
+              <p class="orders-fine">When this is on, the intake options show with your questions under Services. Switching it on adds no questions by itself. Switching it off keeps your questions and answers, and then every question is asked of everyone.</p>
+            </li>
+          </ul>
+          <p class="err" id="bk-x-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-x"><span>Save extras</span></button></div>
+          <p class="orders-fine" id="bk-x-done" role="status"></p>
+        </form>
       </div>
 
       <!-- your clients (Oct 15 2026, hub DEPLOY.md section 74): read only, worked out from the bookings on the server -->

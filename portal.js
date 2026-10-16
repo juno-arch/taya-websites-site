@@ -2403,7 +2403,9 @@
      New client intake (Oct 15 2026, NOT DEPLOYED, hub DEPLOY.md section 74): only when the server sends
      settings.intake_on, the questions editor gets "New clients only", "Tell me first" (and a short word for the line),
      a line under the question, up to 16 questions, the "Add a new client intake" button, and Settings gets how long
-     answers are kept. A booking's "Heads up" line shows first in its row. Nothing changes for anyone else. */
+     answers are kept. A booking's "Heads up" line shows first in its row. Nothing changes for anyone else.
+     Extras you can switch on (Oct 16 2026, NOT DEPLOYED, hub DEPLOY.md section 83): a block under Settings with the
+     thank-you, the book again note, paid add-ons and the new client intake, each row only when the server sends it. */
   let bk = null;             // the overview as the server last sent it (cleaned)
   let bkBusy = false;
   let bkTab = 'upcoming';
@@ -2464,7 +2466,14 @@
           max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0,
           card: typeof st.card_on === 'boolean' ? { on: st.card_on, can: !!st.card_can, first: +st.noshow_first_pct || 50, repeat: +st.noshow_repeat_pct || 100,
             policy: str(st.card_policy, 600), policy_default: str(st.card_policy_default, 600) } : null,
-          intake: st.intake_on === true ? { keep_days: +st.intake_keep_days || 365, choices: arr(st.intake_keep_choices).map((n) => +n).filter((n) => n >= 30 && n <= 1825) } : null },
+          intake: st.intake_on === true ? { keep_days: +st.intake_keep_days || 365, choices: arr(st.intake_keep_choices).map((n) => +n).filter((n) => n >= 30 && n <= 1825) } : null,
+          // extras she switches on herself (Oct 16 2026, hub section 83): each null when the server doesn't send it
+          thanks: typeof st.thanks_on === 'boolean' ? { on: st.thanks_on, hours: Math.min(72, Math.max(1, +st.thanks_hours || 3)), url: str(st.thanks_review_url, 500),
+            note: str(st.thanks_note, 300), preview: str(st.thanks_preview, 3000) } : null,
+          nudge: typeof st.nudge_on === 'boolean' ? { on: st.nudge_on, weeks: Math.min(52, Math.max(2, +st.nudge_weeks || 6)), note: str(st.nudge_note, 300),
+            page: st.nudge_page !== false, preview: str(st.nudge_preview, 3000) } : null,
+          sw_addons: st.switches && typeof st.switches.addons_on === 'boolean' ? st.switches.addons_on : null,
+          sw_intake: st.switches && typeof st.switches.intake_on === 'boolean' ? st.switches.intake_on : null },
         questions: arr(o.questions).slice(0, 16).map((q) => (q && str(q.id) ? { id: str(q.id, 10), label: str(q.label, 200), type: BK_QTYPE[q.type] ? q.type : 'text',
           choices: arr(q.choices).map((c) => str(c, 60)).filter(Boolean).slice(0, 12), required: !!q.required, services: arr(q.services).map((x) => str(x, 20)).filter(Boolean),
           new_only: q.new_only === true, heads: q.heads === true, heads_word: str(q.heads_word, 40), hint: str(q.hint, 400) } : null)).filter(Boolean) },
@@ -2507,6 +2516,7 @@
     $('#bk-intake-wrap').hidden = !bk.owner.settings.intake; // new client intake: only when the server says it's on
     $('#bk-cals').replaceChildren(...bk.calendars.map(calRow));
     if (!$('#f-bk-set').contains(document.activeElement)) fillSettings();
+    if (!$('#f-bk-x').contains(document.activeElement)) fillExtras();
     if (!bkTabsReady) {
       bkTabsReady = true;
       const h = hashTab();
@@ -3643,6 +3653,103 @@
       err.textContent = bkWords(e); err.hidden = false;
     } finally { setBusy(btn, false, 'Save settings'); }
   }
+
+  // ---- extras she switches on herself (Oct 16 2026, hub DEPLOY.md section 83)
+  // Four rows, each shown only when the server sends its setting: the thank-you and the rebook note (their own
+  // settings keys), paid add-ons and the new client intake (settings.switches, only once their migrations are in).
+  // One Save for the block. Not here on purpose: the no-show card, receipts, business papers, the brand color.
+  const X_KEYS = ['thanks', 'nudge', 'addons', 'intake'];
+  const X_NAMES = { thanks: 'the thank-you', nudge: 'the book again note', addons: 'paid add-ons', intake: 'the new client intake' };
+  const X_HOURS = [1, 2, 3, 4, 6, 8, 12, 24, 48, 72];
+  const X_WEEKS = [2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 26, 52];
+  const X_FIELD = { thanks_on: 'in-bk-x-thanks-url', thanks_review_url: 'in-bk-x-thanks-url', thanks_hours: 'in-bk-x-thanks-hours', thanks_note: 'in-bk-x-thanks-note',
+    nudge_on: 'in-bk-x-nudge', nudge_weeks: 'in-bk-x-nudge-weeks', nudge_note: 'in-bk-x-nudge-note', addons_on: 'in-bk-x-addons', intake_on: 'in-bk-x-intake' };
+  const fillPick = (sel, list, cur, word) => {
+    const l = list.includes(cur) ? list : list.concat([cur]).sort((a, b) => a - b);
+    sel.replaceChildren(...l.map((v) => { const op = make('option', null, word(v)); op.value = String(v); return op; }));
+    sel.value = String(cur);
+  };
+  function xShown() {
+    const st = bk.owner.settings;
+    return { thanks: !!st.thanks, nudge: !!st.nudge, addons: st.sw_addons !== null, intake: st.sw_intake !== null };
+  }
+  function fillExtras() {
+    const st = bk.owner.settings, shown = xShown();
+    X_KEYS.forEach((k) => { $('#bk-x-' + k).hidden = !shown[k]; });
+    $('#f-bk-x').hidden = !X_KEYS.some((k) => shown[k]);
+    const t = st.thanks;
+    if (t) {
+      $('#in-bk-x-thanks').checked = t.on;
+      fillPick($('#in-bk-x-thanks-hours'), X_HOURS, t.hours, (v) => plural(v, 'hour', 'hours') + ' after');
+      $('#in-bk-x-thanks-url').value = t.url;
+      $('#in-bk-x-thanks-note').value = t.note;
+      $('#bk-x-thanks-preview').textContent = t.preview;
+      $('#bk-x-thanks-more').hidden = !t.on;
+    }
+    const n = st.nudge;
+    if (n) {
+      $('#in-bk-x-nudge').checked = n.on;
+      // without her booking page address saved the server can't switch it on: say so, and how it gets fixed
+      $('#in-bk-x-nudge').disabled = !n.page && !n.on;
+      $('#bk-x-nudge-page').hidden = n.page;
+      fillPick($('#in-bk-x-nudge-weeks'), X_WEEKS, n.weeks, (v) => plural(v, 'week', 'weeks') + ' after');
+      $('#in-bk-x-nudge-note').value = n.note;
+      $('#bk-x-nudge-preview').textContent = n.preview;
+      $('#bk-x-nudge-more').hidden = !n.on;
+    }
+    if (shown.addons) $('#in-bk-x-addons').checked = st.sw_addons;
+    if (shown.intake) $('#in-bk-x-intake').checked = st.sw_intake;
+  }
+  async function onBkX(ev) {
+    ev.preventDefault();
+    if (!bk) return;
+    const err = $('#bk-x-err'), done = $('#bk-x-done');
+    err.hidden = true; done.textContent = '';
+    const shown = xShown(), body = {};
+    if (shown.thanks) {
+      body.thanks_on = $('#in-bk-x-thanks').checked;
+      body.thanks_hours = +$('#in-bk-x-thanks-hours').value;
+      body.thanks_review_url = $('#in-bk-x-thanks-url').value.trim().slice(0, 500);
+      body.thanks_note = cleanText($('#in-bk-x-thanks-note').value, 300);
+      if (body.thanks_on && !body.thanks_review_url) { err.textContent = 'Please add your Google review link first, so the note can include it.'; err.hidden = false; focusEl($('#in-bk-x-thanks-url')); return; }
+    }
+    if (shown.nudge) {
+      body.nudge_on = $('#in-bk-x-nudge').checked;
+      body.nudge_weeks = +$('#in-bk-x-nudge-weeks').value;
+      body.nudge_note = cleanText($('#in-bk-x-nudge-note').value, 300);
+    }
+    if (shown.addons) body.addons_on = $('#in-bk-x-addons').checked;
+    if (shown.intake) body.intake_on = $('#in-bk-x-intake').checked;
+    const btn = $('#b-bk-x');
+    setBusy(btn, true, 'Saving…');
+    try {
+      await bookCall('/settings', body);
+      const on = X_KEYS.filter((k) => shown[k] && $('#in-bk-x-' + k).checked).map((k) => X_NAMES[k]);
+      const words = on.length ? 'Saved. On now: ' + (on.length > 1 ? on.slice(0, -1).join(', ') + ' and ' + on[on.length - 1] : on[0]) + '.' : 'Saved. All of these are off.';
+      await loadBookings();
+      if (bk) fillExtras();
+      done.textContent = words;
+      toast(words);
+    } catch (e) {
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      if (e.code === 'input' && e.why === 'no_page_url') {
+        // the server's own reason is the line under the switch, with how it gets fixed
+        $('#bk-x-nudge-page').hidden = false;
+        $('#in-bk-x-nudge').checked = false;
+        $('#in-bk-x-nudge').disabled = true;
+        $('#bk-x-nudge-more').hidden = true;
+        focusEl($('#bk-x-nudge-page'));
+        return;
+      }
+      err.textContent = e.code === 'input' && e.msg ? e.msg : bkWords(e);
+      err.hidden = false;
+      const f = e.code === 'input' && X_FIELD[e.field] ? $('#' + X_FIELD[e.field]) : null;
+      if (f) {
+        if (f.closest('.bk-x-more')) f.closest('.bk-x-more').hidden = false;
+        focusEl(f);
+      }
+    } finally { setBusy(btn, false, 'Save extras'); }
+  }
   function wireBookings() {
     $('#f-bk-off').addEventListener('submit', onBkOff);
     $('#in-bk-allday').addEventListener('change', () => { $('#bk-off-hours').hidden = $('#in-bk-allday').checked; $('#in-bk-to').disabled = !$('#in-bk-allday').checked; });
@@ -3665,6 +3772,9 @@
     $('#b-bk-intake').addEventListener('click', addIntake);
     $('#f-bk-cal').addEventListener('submit', onBkCal);
     $('#f-bk-set').addEventListener('submit', onBkSet);
+    $('#f-bk-x').addEventListener('submit', onBkX);
+    ['thanks', 'nudge'].forEach((k) => $('#in-bk-x-' + k).addEventListener('change', () => { $('#bk-x-' + k + '-more').hidden = !$('#in-bk-x-' + k).checked; }));
+    X_KEYS.forEach((k) => $('#in-bk-x-' + k).addEventListener('change', () => { $('#bk-x-done').textContent = ''; }));
     $('#in-bk-cl-q').addEventListener('input', onClSearch);
     $('#b-bk-cl-more').addEventListener('click', () => loadClients(true));
     $('#b-bk-cl-csv').addEventListener('click', downloadClients);
