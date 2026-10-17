@@ -56,7 +56,7 @@
    nothing. It shows only once the server answers with where her edits stand, so this file can go up first. */
 // Founding spots (Pollen, Oct 9): the ONE place to update the count. Juliet holds 1. At 0 the picker card drops
 // founding, and every <span class="wf-founding-left"> on a mockup reads "all 5 spots are taken".
-var FOUNDING_TOTAL = 5, FOUNDING_LEFT = 4;
+var FOUNDING_TOTAL = 5, FOUNDING_LEFT = 3;
 function foundingLeftWords() {
   return FOUNDING_LEFT > 0
     ? FOUNDING_LEFT + ' of ' + FOUNDING_TOTAL + (FOUNDING_LEFT === 1 ? ' spot is' : ' spots are') + ' still open. While one is, the build is half off, and your deposit holds yours'
