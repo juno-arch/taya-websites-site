@@ -189,6 +189,16 @@ if (fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8').includes('portal')) 
 // the key only ever travels in a header, never in a web address
 if (/[?&](token|session|key)=/.test(js)) fail('portal.js: a key in a web address');
 
+// ---- a Studio preview (Oct 19 2026, added on purpose): the key only in the #fragment, kept for this tab only, taken
+// out of the address at once; its words; no sign-out; and the reads it may send match the hub's PREVIEW_READS ----
+if (!/h\.indexOf\('#preview='\) === 0\) \{\s*history\.replaceState\(null, '', location\.pathname \+ location\.search\);/.test(js)) fail('portal.js: a Studio preview key should leave the address at once');
+if (/[?&]preview=/.test(js) || !/window\.sessionStorage\.setItem\(PREVIEW_STORE/.test(js) || !/DEMO \|\| PREVIEW \? window\.sessionStorage/.test(js)) fail('portal.js: a Studio preview key stays in the #fragment and in this tab only (sessionStorage)');
+if (!js.includes("'. Read only: nothing here changes anything.'") || !js.includes("'Viewing as '")) fail('portal.js: the Studio preview line ("Viewing as …. Read only: nothing here changes anything.") is missing');
+if (!/<h2 id="h-ended" tabindex="-1">This view has ended\. Open it again from the Studio\.<\/h2>/.test(html)) fail('portal.html: the ended Studio preview words are missing');
+if (!js.includes("const RO_TITLE = 'Read only view';")) fail('portal.js: switched off controls in a Studio preview should say "Read only view"');
+if (!/html\.wf-preview #b-signout-top, html\.wf-preview #foot-out, html\.wf-preview #b-signout \{ display: none !important; \}/.test(read('portal.css'))) fail('portal.css: a Studio preview should show no sign-out');
+if (!/if \(PREVIEW && !previewReads\(url\)\) return stayQuiet\(\);/.test(js) || !/if \(PREVIEW\) return; \/\/ a Studio preview sends no files/.test(js)) fail('portal.js: a Studio preview should send only reads');
+
 // ---- the preview ----
 if (!/if \(DEMO\) \{\s*loadDemo\(\)/.test(js)) fail('portal.js: portal-demo.js should load only when DEMO is true');
 if (/000000/.test(js)) fail('portal.js: the demo code should live only in portal-demo.js');
