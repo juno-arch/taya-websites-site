@@ -1652,8 +1652,6 @@
     saveNote.setAttribute('aria-live', 'polite');
     let lastSaved = ta.value;
     let saveTimer = 0;
-    ta.dataset.draft = item.id;
-    ta.dataset.saved = lastSaved;
     const setNote = (t) => { saveNote.textContent = t || ''; saveNote.hidden = !t; };
     const saveDraft = async () => {
       if (PREVIEW) return;
@@ -1674,7 +1672,13 @@
     };
     if (PREVIEW) {
       ta.readOnly = true;                           // a preview only reads: show the draft, send nothing
+    } else if (editing) {
+      // changing an answer already sent: keep it in this tab until Send, so the sent words stand until they commit
+      ta.addEventListener('input', () => drafts.set('ans:' + item.id, ta.value));
     } else {
+      // an open answer: autosave their words as they type, on blur, and as the page closes
+      ta.dataset.draft = item.id;
+      ta.dataset.saved = lastSaved;
       ta.addEventListener('input', () => { drafts.set('ans:' + item.id, ta.value); clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 1500); });
       ta.addEventListener('blur', () => { clearTimeout(saveTimer); saveDraft(); });
       if (!draftPagehideWired) {
