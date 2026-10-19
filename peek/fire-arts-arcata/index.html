@@ -132,6 +132,14 @@
   /* ---------- the registration strip: their red, a hot mark (same in both modes) ---------- */
   .status { position: relative; z-index: 5; }
   .status-strip { margin: 0; background: #c8110a; color: #fff; text-align: center; font-size: 14px; line-height: 1.4; }
+  .status-strip { position: relative; }
+  .status-strip a { transition: opacity .35s ease; }
+  .status-strip.swap a { opacity: 0; }
+  .status-pause { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; display: grid; place-items: center; font: inherit; font-size: 9px; line-height: 1; color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.55); border-radius: 50%; cursor: pointer; }
+  .status-pause:hover { background: rgba(255,255,255,.28); }
+  .status-pause:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .status-pause[aria-pressed="true"] span { display: inline-block; transform: scale(.8); }
+  @media (prefers-reduced-motion: reduce) { .status-strip a { transition: none; } }
   .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; color: inherit; text-decoration: none; }
   .status-strip b { font-weight: 600; }
   .status-strip em { font-style: normal; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; white-space: nowrap; }
@@ -990,7 +998,7 @@
 </svg>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="soon"><a href="#news" id="status-link"><b id="status-label">Winter classes begin Jan 4 &middot; registration opens Mon, Nov 16 at 9 am</b> <em><span id="status-cta">Get a reminder</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="soon"><a href="#news" id="status-link"><b id="status-label">Winter classes begin Jan 4 &middot; registration opens Mon, Nov 16 at 9 am</b> <em><span id="status-cta">Get a reminder</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a><button type="button" class="status-pause" id="status-pause" aria-pressed="false" aria-label="Pause the rotating banner" hidden><span aria-hidden="true">&#10074;&#10074;</span></button></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
@@ -1000,7 +1008,7 @@
         <button type="button" data-state="open" aria-pressed="false">Open</button>
         <button type="button" data-state="full" aria-pressed="false">Filling</button>
       </div>
-      <p class="status-note">The new session, a sale weekend, a full class: post it, or email me, and the banner says so. The kiln door by your class list follows along.</p>
+      <p class="status-note">The new session, a sale weekend, a full class: post it, or email me, and the banner says so. The kiln door by your class list follows along. The banner turns through a few messages on its own, and anyone can pause it.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -3285,11 +3293,47 @@
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function setState(k, announce) {
       var s = STATES[k]; if (!s) return; var m = viewNow() === 'maiden' && s.maiden ? s.maiden : s;
-      current = k; strip.dataset.state = k;
+      current = k; strip.dataset.state = k; idx = 0;
       $('status-label').textContent = s.label; $('status-cta').textContent = m.cta; link.setAttribute('href', m.href);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
       if (window.FA_door) window.FA_door(k);
       if (announce) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + m.cta + '.';
+    }
+    /* the rotating banner: the state's own message first, then three things that are always true on this page.
+       It turns every 6 seconds (fades), stops while someone hovers, focuses or taps pause, and stays on one message under reduced motion. */
+    var EVERGREEN = [
+      { label: 'Clay classes for kids 8 to 12', cta: 'See the classes', href: '#classes' },
+      { label: 'Firing for your own work, class or no class', cta: 'See the firing rates', href: '#firing' },
+      { label: 'Clay and glass memberships', cta: 'Become a member', href: '#member' }
+    ];
+    var pauseBtn = $('status-pause'), idx = 0, timer = null, paused = false, hovering = false;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function lineFor(i) {
+      if (i === 0) { var s = STATES[current], m = viewNow() === 'maiden' && s.maiden ? s.maiden : s; return { label: s.label, cta: m.cta, href: m.href }; }
+      return EVERGREEN[i - 1];
+    }
+    function show(i) {
+      var l = lineFor(i);
+      $('status-label').textContent = l.label; $('status-cta').textContent = l.cta; link.setAttribute('href', l.href);
+    }
+    function turn() {
+      if (paused || hovering) return;
+      strip.classList.add('swap');
+      setTimeout(function () { idx = (idx + 1) % (EVERGREEN.length + 1); show(idx); strip.classList.remove('swap'); }, 360);
+    }
+    function start() { if (reduce || timer) return; timer = setInterval(turn, 6000); }
+    if (pauseBtn && !reduce) {
+      pauseBtn.hidden = false;
+      pauseBtn.addEventListener('click', function () {
+        paused = !paused; pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        pauseBtn.setAttribute('aria-label', paused ? 'Play the rotating banner' : 'Pause the rotating banner');
+        pauseBtn.firstChild.innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
+      });
+      strip.addEventListener('mouseenter', function () { hovering = true; });
+      strip.addEventListener('mouseleave', function () { hovering = false; });
+      strip.addEventListener('focusin', function () { hovering = true; });
+      strip.addEventListener('focusout', function () { hovering = false; });
+      start();
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('ex:view', function () { setState(current, false); });
