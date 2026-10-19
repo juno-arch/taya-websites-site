@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261016c">
+<link rel="stylesheet" href="portal.css?v=20261019a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -111,9 +111,11 @@
 </header>
 <!-- portal-brand.js: the color math for a client's own accent (only when Taya has set one; portal.js applyAccent) -->
 <script src="portal-brand.js?v=20261016c"></script>
-<script src="portal.js?v=20261016c"></script>
+<script src="portal.js?v=20261019a"></script>
 
 <main class="page" id="main" tabindex="-1">
+  <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
+  <p class="pv-bar" id="pv-bar" role="status" hidden></p>
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll tell you where things are.</p></div></noscript>
 
@@ -211,6 +213,11 @@
     <p>Try again soon, or email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.
       Nothing is lost; your project is safe.</p>
     <button type="button" class="btn" id="b-retry"><span>Try again</span></button>
+  </section>
+
+  <!-- ============ a Studio preview that has run its 10 minutes (Oct 19 2026) ============ -->
+  <section class="p-card calm" id="v-ended" aria-labelledby="h-ended" hidden>
+    <h2 id="h-ended" tabindex="-1">This view has ended. Open it again from the Studio.</h2>
   </section>
 
   <!-- ============ their project ============ -->

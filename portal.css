@@ -871,6 +871,17 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
   .pp-facts dd { margin-bottom: 6px; }
 }
 
+/* ============ read only view: a Studio preview (Oct 19 2026, hub DEPLOY.md section 90) ============
+   Only with portal.js's html.wf-preview: a calm line at the top, no sign-out, and every control that would change
+   something quiet and plainly off (it keeps its place, so the page looks the same as the client's). */
+.pv-bar {
+  margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--wf-b-rule); border-radius: var(--wf-r-sheet);
+  background: var(--wf-b-sheet); color: var(--wf-b-ink-soft); font-size: 15px; line-height: 1.45; overflow-wrap: anywhere;
+}
+html.wf-preview #b-signout-top, html.wf-preview #foot-out, html.wf-preview #b-signout { display: none !important; }
+html.wf-preview .ro-off { opacity: .55; cursor: not-allowed; }
+html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
+
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
    --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).

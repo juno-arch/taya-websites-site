@@ -22,6 +22,8 @@
      - words typed into an answer or a change request and not sent yet, this tab only, so a sign-in
        after a quiet while doesn't lose them (cleared once sent, and at "Sign out")
    Without storage (a private window) it still works: they just sign in each visit.
+   A Studio preview (Oct 19 2026, portal.html#preview=<key>, Taya's "See exactly what they see") keeps its own short
+   lived read only key in this tab only (sessionStorage), never next to a real sign-in; see "read only view".
 
    ---- HOW IT TALKS TO THE SERVER ----
    All in the api block below (the demo has the same eight calls with the same shapes):
@@ -67,8 +69,29 @@
   const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
   const RECEIPTS = SERVER + '/api/webfaery/receipts'; // a client's own receipts box (Oct 15 2026): only clients Taya switched it on for get any
   const PAPERS = SERVER + '/api/webfaery/papers';     // a client's own business papers (Oct 15 2026): only clients Taya added papers for get any
-  const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
+  // A Studio preview (Oct 19 2026): Taya's "See exactly what they see" opens portal.html#preview=<key>, a short lived
+  // read only key for one client. It rides in the #fragment (a browser never sends that to a server, so it isn't
+  // logged), is kept for this tab only (sessionStorage), and leaves the address at once. The page then shows what that
+  // client sees, the same tabs and data, with everything that would change something switched off (section "read only
+  // view" below). Her own sign-in on this browser, if any, is left alone (a separate key, in this tab only).
+  const PREVIEW_STORE = 'wf-portal-preview-v1';
+  const PREVIEW = (() => {
+    if (DEMO) return false;
+    try {
+      const h = location.hash || '';
+      if (h.indexOf('#preview=') === 0) {
+        history.replaceState(null, '', location.pathname + location.search);
+        const t = h.slice(9);
+        if (!TOKEN_RE.test(t)) return false;
+        window.sessionStorage.setItem(PREVIEW_STORE, JSON.stringify({ token: t }));
+        return true;
+      }
+      const o = JSON.parse(window.sessionStorage.getItem(PREVIEW_STORE) || 'null');
+      return !!(o && typeof o.token === 'string' && TOKEN_RE.test(o.token));
+    } catch (e) { return false; }
+  })();
+  const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : PREVIEW ? PREVIEW_STORE : 'wf-portal-v1';
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const RESEND_WAIT = 60;              // seconds before "Send a new code" wakes up (the server sends one a minute at most)
   const PENDING_MS = 10 * 60 * 1000;   // a code works for 10 minutes: a reload within that goes back to the code step
@@ -229,7 +252,7 @@
   /* ================= keeping the sign-in key ================= */
   // (the preview keeps its pretend key for this tab only, so it never lingers)
   let token = '';
-  const box = () => (DEMO ? window.sessionStorage : window.localStorage);
+  const box = () => (DEMO || PREVIEW ? window.sessionStorage : window.localStorage);
   const store = {
     get() {
       try {
@@ -326,15 +349,38 @@
     if (status === 409 && data && data.error === 'taken') e.code = 'input';
     return e;
   };
+  // A Studio preview only reads: these calls go out, anything else stays here and quietly never answers (the server
+  // refuses it too, 403 read_only). The same list as the hub's PREVIEW_READS (webfaery-portal-lib.js).
+  const PREVIEW_READS = [
+    '/api/webfaery/portal/me', '/api/webfaery/portal/file', '/api/webfaery/portal/content-load',
+    '/api/webfaery/shop/orders', '/api/webfaery/shop/export', '/api/webfaery/shop/codes', '/api/webfaery/shop/slip',
+    '/api/webfaery/shop/products', '/api/webfaery/shop/post-kit',
+    '/api/webfaery/gift/owner', '/api/webfaery/gift/lookup',
+    '/api/webfaery/bookings/overview', '/api/webfaery/bookings/slots', '/api/webfaery/bookings/month',
+    '/api/webfaery/bookings/noshow-quote', '/api/webfaery/bookings/clients', '/api/webfaery/bookings/client',
+    '/api/webfaery/bookings/clients-csv',
+    '/api/webfaery/news/owner/overview', '/api/webfaery/news/owner/issue', '/api/webfaery/news/owner/people',
+    '/api/webfaery/news/owner/export', '/api/webfaery/news/owner/images',
+    '/api/webfaery/v/mine',
+    '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
+    '/api/webfaery/papers/mine'
+  ];
+  const previewReads = (url) => PREVIEW_READS.includes(String(url).slice(SERVER.length).split('?')[0]);
+  const stayQuiet = () => new Promise(() => { /* read only view: nothing to send, nothing to show */ });
   const post = async (path, body, key, base) => {
+    const url = (base || BASE) + path;
+    if (PREVIEW && !previewReads(url)) return stayQuiet();
     const headers = { 'Content-Type': 'application/json' };
     if (key) headers['X-WF-Session'] = key;
+    let res;
     try {
-      return await fetch((base || BASE) + path, {
+      res = await fetch(url, {
         method: 'POST', headers, body: JSON.stringify(body || {}),
         mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer'
       });
     } catch (e) { throw fail('network'); }
+    if (PREVIEW && res.status === 403) return stayQuiet(); // read_only (or anything else refused): no words about it
+    return res;
   };
   const postJSON = async (path, body, key, base) => {
     const res = await post(path, body, key, base);
@@ -344,6 +390,7 @@
   };
   // pictures and files go as a form, with a progress report while they travel
   const sendForm = (path, fields, files, key, onProgress) => new Promise((resolve, reject) => {
+    if (PREVIEW) return; // a Studio preview sends no files (every form is a change): it quietly never answers
     const fd = new FormData();
     fields.forEach(([k, v]) => fd.append(k, v));
     files.forEach((f) => fd.append('files', f, f.name));
@@ -474,7 +521,7 @@
   let pics = [];           // pictures chosen for a change request
   const openAnswers = new Set(); // "Change my answer" boxes someone opened
 
-  const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project'];
+  const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project', 'v-ended'];
   const show = (id) => {
     VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
     if (id !== 'v-loading') document.documentElement.classList.remove('wf-arriving');
@@ -1032,6 +1079,7 @@
   function quietSignOut(moveFocus) {
     token = '';
     store.clear();
+    if (PREVIEW) { previewEnded(); return; } // a Studio preview has no sign-in door: it just ends
     toEmailStep('You were signed out after a quiet while. Here’s a fresh start.' +
       (drafts.any() ? ' Your words are kept: sign in again to send them.' : ''), moveFocus !== false);
   }
@@ -1058,6 +1106,7 @@
       me = clean(data);
       lastLoad = Date.now();
       show('v-project');   // (shown and drawn in the same moment, so nothing paints half done)
+      if (PREVIEW) previewStart(data);
       render();
       loadOrders();
       loadGifts();
@@ -1225,6 +1274,7 @@
     a.rel = 'noopener noreferrer';
     a.append(make('span', null, label), icon('i-out'));
     if (what) a.dataset.what = what;
+    if (tapKey) a.dataset.pay = '1'; // a pay link: off in a Studio preview
     if (tapKey) a.addEventListener('click', () => { taps.set(tapKey); setTimeout(() => { if (me) { renderList(); renderPay(); } }, 400); });
     return a;
   };
@@ -1507,6 +1557,7 @@
       if (tapped) body.append(sentLine(PAY_THANKS));
       const b = make('button', tapped ? 'later' : 'btn small secondary', 'See payments');
       b.type = 'button';
+      b.dataset.read = '1'; // only moves to Payments
       b.addEventListener('click', () => {
         const sec = $('#sec-pay');
         goPage('payments');
@@ -1849,6 +1900,7 @@
   function fileButton(thing, name, label, what, cls) {
     const b = make('button', cls || 'open-btn', null);
     b.type = 'button';
+    b.dataset.read = '1'; // opens a file: stays on in a Studio preview
     b.append(make('span', null, label));
     if (!cls) b.append(icon('i-doc'));
     b.setAttribute('aria-label', label + ' your ' + what.replace(/^your /i, ''));
@@ -4090,6 +4142,7 @@
   // the card's one door to the server: the signed-in key goes in a header (never a web address), JSON or a photo form
   async function prodDoor(path, body) {
     const form = body instanceof FormData;
+    if (PREVIEW && (form || !previewReads(SHOP + path))) return stayQuiet(); // a Studio preview only reads
     const headers = { 'X-WF-Session': token };
     if (!form) headers['Content-Type'] = 'application/json';
     let res;
@@ -4097,6 +4150,7 @@
       res = await fetch(SHOP + path, { method: 'POST', headers, body: form ? body : JSON.stringify(body || {}),
         mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
     } catch (e) { throw fail('network'); }
+    if (PREVIEW && res.status === 403) return stayQuiet();
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw errorFrom(res.status, data);
     return data;
@@ -6087,6 +6141,72 @@
     setHidden(sec, false);
   }
 
+  /* ================= read only view: a Studio preview (Oct 19 2026) =================
+     Only when the page opened with #preview=<key> (PREVIEW, near the top). The same page, tabs and data as the client
+     sees, plus a calm line at the top. Everything that would change something is shown switched off (aria-disabled,
+     a quiet look, the title "Read only view") and does nothing when pressed; reading stays on (the tabs, More, the
+     month arrows, opening a file or a receipt, the CSV downloads, the people and month pickers, searching their
+     clients). No sign-out. The server refuses a preview's changes anyway (403 read_only), and the api block above
+     sends none; anything refused is swallowed quietly. When the key's 10 minutes are up, the page says so. */
+  const RO_TITLE = 'Read only view';
+  const RO_READ = '[data-read], [role="tab"], summary, #more-btn, #more-close, #b-tl-more, #b-retry, #b-bk-prev, #b-bk-next, ' +
+    '#b-nl-prev, #b-nl-next, #b-bk-cl-more, #b-csv-orders, #b-csv-products, #b-bk-cl-csv, #b-nl-csv, #b-rc-csv, #b-rc-photo, ' +
+    '.o-slip-btn, .bk-cl-btn, .bk-cd, .rc-row, #in-bk-cl-q, #in-nl-which, #in-rc-month, #in-rc-exmonth';
+  let roEndTimer = 0, roWatch = null;
+  function roMark() {
+    if (!PREVIEW) return;
+    $$('#main button, #main input, #main select, #main textarea, #main a[data-pay], #more button').forEach((el) => {
+      if (el.matches(RO_READ) || el.classList.contains('ro-off')) return;
+      el.classList.add('ro-off');
+      el.setAttribute('aria-disabled', 'true');
+      el.title = RO_TITLE;
+      if (el.tagName === 'INPUT' && /^(file|checkbox|radio|range|color|date|time|month|week|datetime-local)$/i.test(el.type)) el.disabled = true;
+      else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.readOnly = true;
+      else if (el.tagName === 'SELECT') el.disabled = true;
+      if (el.tagName === 'A') el.tabIndex = -1;
+    });
+  }
+  // a press on anything switched off: nothing happens (capture, so the page's own handlers never hear it)
+  function roStop(ev) {
+    if (!PREVIEW) return;
+    const t = ev.target && ev.target.closest ? ev.target.closest('.ro-off, label') : null;
+    if (!t) return;
+    const off = t.classList.contains('ro-off') ? t : (t.control && t.control.classList.contains('ro-off') ? t.control : null);
+    if (!off) return;
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+  }
+  function previewWire() {
+    document.documentElement.classList.add('wf-preview');
+    ['click', 'input', 'change', 'paste', 'keydown'].forEach((type) => document.addEventListener(type, (ev) => {
+      if (type === 'keydown' && !['Enter', ' ', 'Spacebar'].includes(ev.key)) return;
+      roStop(ev);
+    }, true));
+    // every form here sends something, and a dropped file would be one more: neither goes anywhere in a preview
+    ['submit', 'drop'].forEach((type) => document.addEventListener(type, (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); }, true));
+    roWatch = new MutationObserver(() => roMark());
+    roWatch.observe(document.getElementById('main'), { childList: true, subtree: true });
+    const more = document.getElementById('more');
+    if (more) roWatch.observe(more, { childList: true, subtree: true });
+  }
+  function previewStart(data) {
+    const c = (me && me.client) || {};
+    const bar = $('#pv-bar');
+    bar.textContent = 'Viewing as ' + (c.business || c.first_name || 'this client') + '. Read only: nothing here changes anything.';
+    bar.hidden = false;
+    roMark();
+    const s = data && data.session;
+    const ends = s && typeof s.expires_at === 'string' ? Date.parse(s.expires_at) : NaN;
+    clearTimeout(roEndTimer);
+    if (Number.isFinite(ends)) roEndTimer = setTimeout(() => quietSignOut(false), Math.max(0, Math.min(ends - Date.now(), 24 * 3600 * 1000)));
+  }
+  function previewEnded() {
+    clearTimeout(roEndTimer);
+    $('#pv-bar').hidden = true;
+    show('v-ended');
+    focusEl($('#h-ended'), true);
+  }
+
   /* ================= no do-it-yourself editing (Oct 5 2026) =================
      The "Change it yourself" editors (hours, banner, prices and more) were retired with the Oct 5 2026
      pricing: every change goes through Taya, by email or the change form above. Their code is gone on
@@ -6234,6 +6354,7 @@
       }
     } catch (e) { /* fine */ }
     token = store.get();
+    if (PREVIEW && !token) { previewEnded(); return; }
     if (token) {
       hero('Your project', 'Welcome ', 'back.', '');
       await loadProject(null);
@@ -6266,6 +6387,7 @@
       return;
     }
     wire();
+    if (PREVIEW) previewWire();
     if (DEMO) {
       loadDemo().then((D) => { wireDemo(D); start(); }, () => {
         const nowhere = () => Promise.reject(fail('network'));
