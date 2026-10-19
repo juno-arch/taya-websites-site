@@ -421,6 +421,12 @@
       return wait(500).then(function () {
         var it = findItem(id);
         if (!it) throw err('not_found', 404);
+        // a draft (Oct 19 2026): save the words, leave the row open, mark nothing sent
+        if (action === 'draft') {
+          if (it.kind !== 'answer') throw err('input', 400);
+          it.client_answer = it.answer = String(text || '').slice(0, 1000);
+          return { ok: true, status: it.status || 'open' };
+        }
         if (action === 'answer' && it.kind === 'answer' && text) it.client_answer = it.answer = String(text).slice(0, 1000);
         else if (!(action === 'sent' && (it.kind === 'start' || it.kind === 'link'))) throw err('input', 400);
         it.status = 'sent';

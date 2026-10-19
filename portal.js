@@ -464,6 +464,19 @@
     if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
     return res.blob();
   };
+  // an answer's draft sent as the page closes (Oct 19 2026): keepalive, so the browser still sends it while leaving.
+  // Fire and forget; a preview (read only) and the demo send nothing. The debounce and blur saves use api.todo instead.
+  const draftBeacon = (id, text) => {
+    if (PREVIEW || DEMO || !token) return;
+    try {
+      fetch(BASE + '/todo', {
+        method: 'POST', keepalive: true,
+        headers: { 'Content-Type': 'application/json', 'X-WF-Session': token },
+        body: JSON.stringify({ todo: id, action: 'draft', text }),
+        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer'
+      });
+    } catch (e) { /* leaving the page: nothing to show */ }
+  };
   // a client's own newsletter (Oct 12 2026): the one place that part signs in, the same way
   const newsCall = (path, body) => postJSON(path, body || {}, token, NEWS);
   // a client's own receipts (Oct 15 2026): the one place that part signs in. A refusal keeps the server's own reason
@@ -520,6 +533,7 @@
   let nonce = newNonce();
   let pics = [];           // pictures chosen for a change request
   const openAnswers = new Set(); // "Change my answer" boxes someone opened
+  let draftPagehideWired = false; // the answer autosave's one pagehide listener (Oct 19 2026), added once
 
   const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project', 'v-ended'];
   const show = (id) => {
@@ -1626,12 +1640,57 @@
     ta.maxLength = ANSWER_MAX;
     ta.rows = 3;
     ta.placeholder = 'Type it here';
-    ta.value = kept || (editing ? item.answer : '');
-    ta.addEventListener('input', () => drafts.set('ans:' + item.id, ta.value));
+    // restore a saved draft (the server returns it as item.answer for an open item too), or the sent words while editing
+    ta.value = kept || item.answer || '';
     const err = make('p', 'err');
     err.hidden = true;
     err.id = id + '-err';
     ta.setAttribute('aria-describedby', err.id);
+    // autosave as they type (Oct 19 2026): a small quiet line for their own benefit. Send stays their "I am finished" signal.
+    const saveNote = make('p', 'save-note');
+    saveNote.hidden = true;
+    saveNote.setAttribute('aria-live', 'polite');
+    let lastSaved = ta.value;
+    let saveTimer = 0;
+    ta.dataset.draft = item.id;
+    ta.dataset.saved = lastSaved;
+    const setNote = (t) => { saveNote.textContent = t || ''; saveNote.hidden = !t; };
+    const saveDraft = async () => {
+      if (PREVIEW) return;
+      const v = cleanText(ta.value, ANSWER_MAX + 1);
+      if (v === null) return;                       // too long: Send says so; skip the autosave
+      if (v === lastSaved) return;                  // nothing new to save
+      if (v === '' && lastSaved === '') return;     // an empty box that held nothing saved: leave it be
+      setNote('Saving…');
+      try {
+        await api.todo(item.id, 'draft', v);
+        lastSaved = v;
+        ta.dataset.saved = v;
+        setNote('Draft saved');
+      } catch (e2) {
+        if (e2 && e2.code === 'signed_out') { setNote(''); return; }
+        setNote('Couldn’t save, still here');       // the next keystroke tries again
+      }
+    };
+    if (PREVIEW) {
+      ta.readOnly = true;                           // a preview only reads: show the draft, send nothing
+    } else {
+      ta.addEventListener('input', () => { drafts.set('ans:' + item.id, ta.value); clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 1500); });
+      ta.addEventListener('blur', () => { clearTimeout(saveTimer); saveDraft(); });
+      if (!draftPagehideWired) {
+        draftPagehideWired = true;
+        window.addEventListener('pagehide', () => {
+          if (PREVIEW || DEMO || !token) return;
+          $$('#todos textarea[data-draft]').forEach((t) => {
+            const v = cleanText(t.value, ANSWER_MAX + 1);
+            if (v === null) return;
+            const saved = t.dataset.saved || '';
+            if (v === saved || (v === '' && saved === '')) return;
+            draftBeacon(t.dataset.draft, v);
+          });
+        });
+      }
+    }
     const row = make('div', 'row');
     const send = make('button', 'btn small', null);
     send.type = 'button';
@@ -1668,7 +1727,7 @@
         err.hidden = false;
       }
     });
-    box.append(label, ta, err, row);
+    box.append(label, ta, err, saveNote, row);
     body.append(box);
   }
 
