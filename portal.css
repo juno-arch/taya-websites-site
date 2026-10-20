@@ -874,6 +874,25 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
   .pp-facts dd { margin-bottom: 6px; }
 }
 
+/* ============ Messages (Oct 20 2026, hub DEPLOY.md section 94): their thread with Taya, ledger rows, mobile first ============ */
+.msg-intro { margin: 6px 0 0; color: var(--wf-b-ink-soft); font-size: 15.5px; line-height: 1.5; max-width: 40em; }
+.msg-none { margin: 18px 0 0; color: var(--wf-b-ink-soft); font-size: 15.5px; }
+.msg-thread { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--wf-b-rule); }
+.msg-row { padding: 12px 2px 14px; border-bottom: 1px solid var(--wf-b-rule); }
+.msg-row.from-taya { padding-left: 12px; border-left: 3px solid var(--wf-b-rule); }
+.msg-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin: 0; }
+.msg-who { font-weight: 600; color: var(--wf-b-ink); }
+.msg-when { font-size: 13.5px; color: var(--wf-b-ink-soft); font-variant-numeric: tabular-nums; }
+.msg-body { margin: 4px 0 0; font-size: 16px; line-height: 1.55; color: var(--wf-b-ink); white-space: pre-wrap; overflow-wrap: anywhere; max-width: 40em; }
+.msg-form textarea { width: 100%; max-width: 100%; box-sizing: border-box; font-size: 16px; }
+#b-msg { min-height: 46px; }
+/* the quiet dot on the Messages tab while one of Taya's waits unread */
+.msg-dot { display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: var(--wf-gold); vertical-align: 2px; flex: none; }
+@media (max-width: 760px) {
+  .dock .msg-dot { position: absolute; top: 6px; left: calc(50% + 9px); margin: 0; width: 8px; height: 8px; }
+}
+@media print { .msg-form { display: none !important; } }
+
 /* ============ read only view: a Studio preview (Oct 19 2026, hub DEPLOY.md section 90) ============
    Only with portal.js's html.wf-preview: a calm line at the top, no sign-out, and every control that would change
    something quiet and plainly off (it keeps its place, so the page looks the same as the client's). */

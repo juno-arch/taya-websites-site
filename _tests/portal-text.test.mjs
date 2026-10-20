@@ -291,6 +291,33 @@ const demoOn = /const DEMO = true;/.test(js);
   if (!/const X_KEYS = \['thanks', 'nudge', 'addons', 'intake'\];/.test(js)) fail('portal.js: the extras should be the four owner switches only');
 }
 
+// ---- Messages (Oct 20 2026, hub DEPLOY.md section 94; added on purpose) ----
+// A Messages tab with their thread (plain text, textContent only), "Write to Taya" and a Send button; Enter is a new
+// line (no key handler sends); the thread is a preview read, the write is not; the box is off in a preview; unsent
+// words kept with the page's drafts (sessionStorage); and nothing hints at what Taya can see before they send.
+{
+  if (!pageIds.includes('messages') || !/\{ id: 'messages', label: 'Messages', icon: 'i-talk' \}/.test(js)) fail('portal.js: the Messages tab is missing from PAGES');
+  const sec = (html.match(/<section class="p-card" id="sec-messages"[\s\S]*?<\/section>/) || [''])[0];
+  if (!sec) fail('portal.html: the Messages section (#sec-messages) is missing');
+  else {
+    if (!/data-page="messages"/.test(sec) || !/ hidden>/.test(sec.split('\n')[0])) fail('portal.html: #sec-messages should belong to the messages tab and start hidden');
+    if (!/<h2 id="h-messages" tabindex="-1">Messages with Taya<\/h2>/.test(sec)) fail('portal.html: the Messages heading should be “Messages with Taya”');
+    if (!/<label class="field-label" for="in-msg">Write to Taya<\/label>/.test(sec)) fail('portal.html: the box should be labelled “Write to Taya”');
+    if (!/<textarea id="in-msg"[^>]*maxlength="4000"/.test(sec)) fail('portal.html: the message box should be a textarea of up to 4000 characters');
+    if (!/<button class="btn wide" type="submit" id="b-msg"><span>Send<\/span><\/button>/.test(sec)) fail('portal.html: the message box needs its Send button');
+    if (/attach|<input type="file"/i.test(sec.replace(/<!--[\s\S]*?-->/g, '').replace(/photos or files, email me/, ''))) fail('portal.html: no attachments in Messages (phase 1)');
+  }
+  const words = [htmlWords].concat(jsStrings).join('\n');
+  const hint = words.match(/as you type|while you(?:’|')?re typing|while you type|before you send|what you(?:’|')re typing|typing indicator|Taya can see/i);
+  if (hint) fail(`portal: nothing should hint at what Taya can see before they send ("${hint[0]}")`);
+  if (!/make\('p', 'msg-body', m\.body\)/.test(js)) fail('portal.js: a message body should be drawn with textContent (make)');
+  if (/#in-msg'\)\.addEventListener\('key/.test(js)) fail('portal.js: Enter in the message box should be a new line (no key handler sends)');
+  if (!js.includes("'/api/webfaery/portal/messages'") || js.includes("'/api/webfaery/portal/message'")) fail('portal.js: the thread is a preview read and the write is not');
+  if (!/if \(PREVIEW\) box\.disabled = true;/.test(js)) fail('portal.js: the message box should be off in a Studio preview');
+  if (!/drafts\.set\('message', \$\('#in-msg'\)\.value\)/.test(js)) fail('portal.js: unsent message words should stay with the page’s drafts (sessionStorage)');
+  if (!/plural\(unreadMsgs, 'new message', 'new messages'\)/.test(js)) fail('portal.js: Home should say “1 new message” while one of Taya’s waits');
+}
+
 if (failures.length) {
   console.error(`portal-text: ${failures.length} problem(s)`);
   for (const f of failures) console.error('  - ' + f);

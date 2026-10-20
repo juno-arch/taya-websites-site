@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261019b">
+<link rel="stylesheet" href="portal.css?v=20261020a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -37,6 +37,7 @@
     Orders, Products, Codes, Bookings, Gift certificates, Newsletter: only for a client whose shop, booking,
       gift certificates or newsletter run on Web Faery's server
     Visitors, Receipts: only for a client whose site is counted, or whose receipts box Taya switched on (Oct 15 2026)
+    Messages: their thread with Taya, plain text (Oct 20 2026), when the server has messages switched on
     Payments: paid and still to come
     Ask Taya: "Ask for a change", when they have a subscription
   Each tab has its own address (#orders, #bookings-hours, #newsletter-sent), so a link or a reload opens it again.
@@ -84,6 +85,7 @@
   <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4 12.6V5a1 1 0 0 1 1-1h7.6l7.4 7.4a1 1 0 0 1 0 1.4l-6.2 6.2a1 1 0 0 1-1.4 0Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/></symbol>
   <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9h17M12 9v11M12 9C10 5 6.5 5 6.5 7.2S10 9 12 9Zm0 0c2-4 5.5-4 5.5-1.8S14 9 12 9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4.5 7 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-talk" viewBox="0 0 24 24"><path d="M4.5 5h11a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H9.5L6 16.5v-3H4.5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z M16.5 9h3a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H18v2.8L14.7 17H11a1 1 0 0 1-1-1v-2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-ask" viewBox="0 0 24 24"><path d="M5 5.5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4.5 3.5v-3.5H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16M7 17v-5M12 17V7M17 17v-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   <!-- the Receipts tab (Oct 15 2026): a little tray of slips -->
@@ -111,7 +113,7 @@
 </header>
 <!-- portal-brand.js: the color math for a client's own accent (only when Taya has set one; portal.js applyAccent) -->
 <script src="portal-brand.js?v=20261016c"></script>
-<script src="portal.js?v=20261019b"></script>
+<script src="portal.js?v=20261020a"></script>
 
 <main class="page" id="main" tabindex="-1">
   <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
@@ -960,6 +962,23 @@
         <p class="texts-fine"><a href="texts.html" target="_blank" rel="noopener">How texts from Web Faery work</a></p>
         <p class="err" id="texts-err" hidden></p>
         <button class="btn" type="submit" id="b-texts"><span>Text me</span></button>
+      </form>
+    </section>
+
+    <!-- Messages (Oct 20 2026, hub DEPLOY.md section 94): their thread with Taya, plain text only. Shown only when the
+         server sends messages_unread on /me; the thread loads when they open this tab. -->
+    <section class="p-card" id="sec-messages" data-page="messages" aria-labelledby="h-messages" hidden>
+      <span class="kicker">Messages</span>
+      <h2 id="h-messages" tabindex="-1">Messages with Taya</h2>
+      <p class="msg-intro">Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. Words only for now: for photos or files, email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+      <p class="msg-none" id="msg-none" hidden></p>
+      <ol class="msg-thread" id="msg-thread" aria-label="Messages with Taya" hidden></ol>
+      <form id="f-msg" class="msg-form" novalidate>
+        <label class="field-label" for="in-msg">Write to Taya</label>
+        <textarea id="in-msg" name="message" maxlength="4000" rows="4" aria-describedby="msg-count msg-err"></textarea>
+        <p class="count" id="msg-count" aria-live="polite"></p>
+        <p class="err" id="msg-err" hidden></p>
+        <button class="btn wide" type="submit" id="b-msg"><span>Send</span></button>
       </form>
     </section>
 

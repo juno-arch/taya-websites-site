@@ -44,6 +44,8 @@
    (hub DEPLOY.md section 73, API.md section 23); each file comes as a 30 minute link from the server
    and one for "Update your card or subscription" (Oct 16 2026, never in the preview): careManage, /care-manage, a fresh
    Stripe billing portal link each tap (hub DEPLOY.md section 80, API.md section 26)
+   and two for Messages (Oct 20 2026): messages, /messages (their thread; the preview reads it too, marking nothing
+   read) and message, /message (one more from them; never in the preview) (hub DEPLOY.md section 94, API.md section 39)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -363,7 +365,8 @@
     '/api/webfaery/news/owner/export', '/api/webfaery/news/owner/images',
     '/api/webfaery/v/mine',
     '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
-    '/api/webfaery/papers/mine'
+    '/api/webfaery/papers/mine',
+    '/api/webfaery/portal/messages'
   ];
   const previewReads = (url) => PREVIEW_READS.includes(String(url).slice(SERVER.length).split('?')[0]);
   const stayQuiet = () => new Promise(() => { /* read only view: nothing to send, nothing to show */ });
@@ -452,7 +455,11 @@
     // their own business papers (Oct 15 2026): { papers: [] } unless Taya added some
     papers: () => postJSON('/mine', {}, token, PAPERS),
     // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
-    careManage: () => postJSON('/care-manage', {}, token)
+    careManage: () => postJSON('/care-manage', {}, token),
+    // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
+    // more message from them; plain text both ways
+    messages: () => postJSON('/messages', {}, token),
+    message: (body) => postJSON('/message', { body }, token)
   };
   let api = realApi;
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
@@ -652,6 +659,7 @@
     { id: 'visitors', label: 'Visitors', icon: 'i-bars' },
     { id: 'receipts', label: 'Receipts', icon: 'i-tray' },
     { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
+    { id: 'messages', label: 'Messages', icon: 'i-talk' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -664,7 +672,8 @@
   // booking or newsletter comes first (that's what they'll open most)
   function pageList() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'payments', 'ask']);
+    // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
+    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -708,7 +717,16 @@
       if (!inDock) a.append(' ');
       a.append(c);
     }
+    // (Oct 20 2026) a quiet dot on Messages while a message from Taya waits unread
+    if (p.id === 'messages' && msgUnread() > 0) a.append(msgDot());
     return a;
+  }
+  const msgUnread = () => (me && Number.isInteger(me.messages_unread) ? me.messages_unread : 0);
+  function msgDot() {
+    const n = msgUnread();
+    const d = make('span', 'msg-dot');
+    d.append(make('span', 'sr-only', n === 1 ? ', 1 new message' : ', ' + n + ' new messages'));
+    return d;
   }
   function hideTabs() {
     pagesSig = '';
@@ -729,7 +747,7 @@
     const list = pageList();
     const tabs = list.filter((x) => x.id !== 'ask');
     const counts = pageCounts();
-    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (pageHas('ask') ? '|ask' : '');
+    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (pageHas('ask') ? '|ask' : '') + '|m' + msgUnread();
     if (sig !== pagesSig) {
       pagesSig = sig;
       $('#tabs').replaceChildren(...tabs.map((x) => tabLink(x, counts[x.id] || 0, false)));
@@ -746,6 +764,7 @@
         more.append(icon('i-more'), make('span', 'lbl', 'More'));
         const waiting = inMore.reduce((sum, x) => sum + (counts[x.id] || 0), 0);
         if (waiting) { const c = make('span', 'cnt', String(waiting)); c.append(make('span', 'sr-only', ' to do')); more.append(c); }
+        else if (msgUnread() > 0 && inMore.some((x) => x.id === 'messages')) more.append(msgDot());
         more.addEventListener('click', openMore);
         dockKids.push(more);
       }
@@ -791,6 +810,7 @@
     const bar = $('#tabs'), cur = $('#tabs a[aria-current]');
     if (cur && bar.scrollWidth > bar.clientWidth + 1) bar.scrollLeft = Math.max(0, cur.offsetLeft - (bar.clientWidth - cur.offsetWidth) / 2);
     tabsEdges();
+    if (id === 'messages') msgOpened(); // (Oct 20 2026) their thread loads when they open it (that's when Taya's are read)
   }
   function tabsEdges() {
     const bar = $('#tabs');
@@ -898,6 +918,9 @@
     if (!me) { setHidden(sec, true); return; }
     const t = taps.mine();
     const rows = []; // [page, due, title, small words]
+    // (Oct 20 2026) a message from Taya they haven't opened yet: "1 new message", first
+    const unreadMsgs = msgUnread();
+    if (unreadMsgs > 0 && pageHas('messages')) rows.push(['messages', true, plural(unreadMsgs, 'new message', 'new messages'), 'From Taya']);
     const open = me.list.open.filter((x) => x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key]));
     open.slice(0, 4).forEach((x) => rows.push([x.kind === 'pay' ? 'payments' : 'project', true, x.title, x.detail]));
     if (open.length > 4) rows.push(['project', false, plural(open.length - 4, 'more thing', 'more things') + ' on your list', '']);
@@ -953,6 +976,7 @@
     papersAt = 0;
     $('#pp-list').replaceChildren();
     $('#sec-papers').hidden = true;
+    msgReset();
     nl = null;
     nlEdit = null;
     nlPeopleShown = false;
@@ -1129,6 +1153,7 @@
       loadVisits();
       loadReceipts();
       loadPapers();
+      msgSync();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
       else if (backToPay) { backToPay = false; goPage('payments'); }
@@ -1155,6 +1180,7 @@
       loadVisits();
       loadReceipts();
       loadPapers();
+      msgSync();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
@@ -1240,6 +1266,8 @@
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
+      // portal messages (Oct 20 2026): how many of Taya's they haven't opened; null on a server without messages (no tab)
+      messages_unread: Number.isInteger(d.messages_unread) && d.messages_unread >= 0 ? Math.min(d.messages_unread, 999) : null,
       care: {
         can_ask: !!care.can_ask,
         requests: arr(care.requests).map((r) => ({
@@ -6204,6 +6232,126 @@
     setHidden(sec, false);
   }
 
+  /* ================= Messages (Oct 20 2026, hub DEPLOY.md section 94) =================
+     Their thread with Taya, inside their portal, so nobody digs through email. Plain text both ways: every word is
+     drawn with textContent, line breaks kept. The tab shows only when the server sends messages_unread on /me (a
+     server without messages sends nothing, and the tab stays away); a quiet dot on it and a "1 new message" row on Home
+     while one of Taya's waits unread. The thread loads when they open the tab (the server marks Taya's read then), and
+     again on a quiet refresh while it is open. Enter makes a new line; the Send button sends. Words they typed and
+     haven't sent stay in this tab (drafts, sessionStorage) until sent or "Sign out". A Studio preview sees the thread,
+     the box is switched off, and nothing is marked read. */
+  let msgs = null;           // [{ id, from: 'client' | 'taya', body, created }] (cleaned), or null before the first load
+  let msgsAt = 0;            // when they came
+  let msgsLoading = false;
+  const MSG_MAX = 4000;
+  const MSG_FRESH_MS = 30 * 1000;
+  function msgSync() {
+    const on = !!me && me.messages_unread !== null && typeof api.messages === 'function';
+    setHidden($('#sec-messages'), !on);
+    if (!on) return;
+    const box = $('#in-msg');
+    if (!box.value) box.value = drafts.get('message');
+    if (PREVIEW) box.disabled = true; // a Studio preview: the thread shows, the box stays off
+    msgCount();
+    if (page === 'messages' && !$('#v-project').hidden) msgOpened(true);
+  }
+  function msgReset() {
+    msgs = null;
+    msgsAt = 0;
+    $('#msg-thread').replaceChildren();
+    $('#msg-thread').hidden = true;
+    $('#msg-none').hidden = true;
+    $('#in-msg').value = '';
+    showErr('msg', '');
+    $('#sec-messages').hidden = true;
+  }
+  // the tab was opened (or is open during a refresh): load the thread, unless it just came
+  function msgOpened(force) {
+    if (!me || $('#sec-messages').hidden || msgsLoading) return;
+    if (!force && msgs && Date.now() - msgsAt < MSG_FRESH_MS) return;
+    loadMessages();
+  }
+  async function loadMessages() {
+    msgsLoading = true;
+    if (!msgs) { $('#msg-none').textContent = 'Loading your messages…'; $('#msg-none').hidden = false; }
+    try {
+      const d = await api.messages();
+      msgs = arr(d && d.messages).slice(-200).map((m) => {
+        if (!m || typeof m !== 'object') return null;
+        const body = cleanText(m.body, MSG_MAX);
+        return body ? { id: str(m.id, 40), from: m.from === 'taya' ? 'taya' : 'client', body, created: str(m.created, 40) } : null;
+      }).filter(Boolean);
+      msgsAt = Date.now();
+      // opening the thread reads Taya's messages (a Studio preview reads nothing): the dot and the Home row go
+      if (!PREVIEW && me && me.messages_unread) { me.messages_unread = 0; pagesSoon(); }
+      renderMessages();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!msgs) { $('#msg-none').textContent = 'Your messages didn’t load just now. Try again in a moment.'; $('#msg-none').hidden = false; }
+    } finally { msgsLoading = false; }
+  }
+  // "Oct 20, 2:14 PM" in their own time (and the year when it isn't this one)
+  function msgWhen(iso) {
+    const t = Date.parse(iso || '');
+    if (!Number.isFinite(t)) return '';
+    const d = new Date(t);
+    const h = d.getHours();
+    return MON[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== now.getFullYear() ? ', ' + d.getFullYear() : '') + ', ' +
+      (h % 12 === 0 ? 12 : h % 12) + ':' + pad(d.getMinutes()) + ' ' + (h < 12 ? 'AM' : 'PM');
+  }
+  function msgRow(m) {
+    const li = make('li', 'msg-row ' + (m.from === 'taya' ? 'from-taya' : 'from-you'));
+    const head = make('p', 'msg-head');
+    head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), make('span', 'msg-when', msgWhen(m.created)));
+    li.append(head, make('p', 'msg-body', m.body));
+    return li;
+  }
+  function renderMessages() {
+    const list = $('#msg-thread');
+    const none = $('#msg-none');
+    const list0 = msgs || [];
+    list.replaceChildren(...list0.map(msgRow));
+    list.hidden = !list0.length;
+    none.textContent = 'No messages yet. Whatever you write here comes straight to me.';
+    none.hidden = list0.length > 0;
+    // the newest is at the bottom, right above the box
+    if (list0.length && page === 'messages') { const last = list.lastElementChild; if (last && last.getBoundingClientRect().top > window.innerHeight) last.scrollIntoView({ block: 'nearest' }); }
+  }
+  function msgCount() {
+    const n = $('#in-msg').value.length;
+    const c = $('#msg-count');
+    c.textContent = n > MSG_MAX - 400 ? (MSG_MAX - n) + ' characters left' : '';
+    c.classList.toggle('near', n > MSG_MAX - 100);
+  }
+  async function onMessage(ev) {
+    ev.preventDefault();
+    if (PREVIEW) return;
+    const box = $('#in-msg');
+    const btn = $('#b-msg');
+    const text = cleanText(box.value, MSG_MAX + 1);
+    showErr('msg', '');
+    if (!text) { showErr('msg', 'Write a few words first.'); box.focus(); return; }
+    if (text.length > MSG_MAX) { showErr('msg', 'That’s a little long for one message. Could you split it in two?'); box.focus(); return; }
+    setBusy(btn, true, 'Sending…');
+    try {
+      const d = await api.message(text);
+      const m = d && d.message && typeof d.message === 'object' ? d.message : null;
+      const body = m ? cleanText(m.body, MSG_MAX) : '';
+      if (!msgs) msgs = [];
+      msgs.push({ id: str(m && m.id, 40), from: 'client', body: body || text, created: str(m && m.created, 40) || new Date().toISOString() });
+      box.value = '';
+      drafts.set('message', '');
+      msgCount();
+      renderMessages();
+      toast('Sent. Thank you!');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      showErr('msg', words(err));
+    } finally {
+      setBusy(btn, false);
+    }
+  }
+
   /* ================= read only view: a Studio preview (Oct 19 2026) =================
      Only when the page opened with #preview=<key> (PREVIEW, near the top). The same page, tabs and data as the client
      sees, plus a calm line at the top. Everything that would change something is shown switched off (aria-disabled,
@@ -6381,6 +6529,9 @@
     $('#in-what').addEventListener('input', () => drafts.set('change', $('#in-what').value));
     $('#in-where').addEventListener('input', () => drafts.set('change-where', $('#in-where').value));
     $('#f-change').addEventListener('submit', onChange);
+    // Messages (Oct 20 2026): the button sends (Enter is a new line); unsent words stay in this tab
+    $('#f-msg').addEventListener('submit', onMessage);
+    $('#in-msg').addEventListener('input', () => { drafts.set('message', $('#in-msg').value); msgCount(); if (!$('#msg-err').hidden) showErr('msg', ''); });
     $('#in-what').addEventListener('input', whatCount);
     $('#in-pics').addEventListener('change', onPics);
     $('#b-another').addEventListener('click', askAnother);
