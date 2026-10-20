@@ -436,6 +436,41 @@ const demoOn = /const DEMO = true;/.test(js);
   }
 }
 
+// ---- Business papers: they add their own (Oct 20 2026, hub DEPLOY.md section 98; added on purpose) ----
+// "Add a paper" on the card (a file, an optional name, kind and good until day), shown only when the server says it
+// takes them; Rename and Remove only on their own papers (the server's added_by, with an id), asked in the row (no
+// window.confirm); the add, rename and remove are not preview reads; the email fine print stays as a second way.
+{
+  const sec = (html.match(/<section class="p-card" id="sec-papers"[\s\S]*?<\/section>/) || [''])[0];
+  if (!sec) fail('portal.html: the business papers card (#sec-papers) is missing');
+  else {
+    if (!/<button type="button" class="later pp-add-open" id="b-pp-add" aria-expanded="false" aria-controls="f-pp">Add a paper<\/button>/.test(sec)) fail('portal.html: the papers card should have an “Add a paper” button');
+    if (!/<div class="pp-add" id="pp-add" hidden>/.test(sec) || !/<form class="rc-form pp-form" id="f-pp" novalidate hidden>/.test(sec)) fail('portal.html: Add a paper and its form start hidden (shown only when the server takes papers)');
+    if (!/<input id="in-pp-file" class="pp-file" type="file" accept="[^"]*\.pdf[^"]*\.docx[^"]*\.csv[^"]*image\/\*"/.test(sec) || /accept="[^"]*(?:\.svg|\.html|\.exe|\.zip)/.test(sec)) fail('portal.html: the paper file picker should take PDFs, photos, Office files and text, and not SVG, HTML, EXE or zip');
+    if (!/<select id="in-pp-kind">\s*<option value="">Pick one<\/option>\s*<option value="insurance">Insurance<\/option>\s*<option value="license">Business license<\/option>\s*<option value="permit">Permit<\/option>\s*<option value="certification">Certification<\/option>\s*<option value="other">Something else<\/option>\s*<\/select>/.test(sec)) fail('portal.html: the paper kinds should be insurance, license, permit, certification and something else, with none picked');
+    if (!/<input id="in-pp-name" type="text" maxlength="120"/.test(sec) || !/<input id="in-pp-until" type="date"/.test(sec)) fail('portal.html: the paper name (120) and the good until day should be there');
+    if (!/Name <span class="opt-tag">\(optional\)<\/span>/.test(sec) || !/Good until <span class="opt-tag">\(optional\)<\/span>/.test(sec)) fail('portal.html: the name and the good until day are optional, and say so');
+    if (!sec.includes('A PDF, a photo, a Word, Excel or PowerPoint file, or plain text, up to 10 MB.')) fail('portal.html: the papers hint should say what files work, up to 10 MB');
+    if (!sec.includes('Email the new copy to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll put it here.')) fail('portal.html: the “Email the new copy” fine print should stay as a second way');
+    if (!sec.includes('Nothing here yet. Add your first one below, and it stays here for whenever someone asks.')) fail('portal.html: the empty papers line is missing');
+  }
+  if (/\bconfirm\(/.test(js)) fail('portal.js: no window.confirm (ask in the row)');
+  for (const route of ["'/api/webfaery/papers/add'", "'/api/webfaery/papers/rename'", "'/api/webfaery/papers/remove'"]) if (js.includes(route)) fail('portal.js: ' + route + ' should not be a preview read');
+  if (!js.includes("'/api/webfaery/papers/mine',")) fail('portal.js: papers/mine should stay a preview read');
+  if (!/papersAdd: \(fields, file, onProgress\) => sendForm\('\/add', fields, \[file\], token, onProgress, PAPERS\)/.test(js)) fail('portal.js: a paper goes as one file in a form to papers/add');
+  if (!/const theirs = p\.added_by === 'client' && PP_ID\.test\(str\(p\.id, 20\)\);/.test(js) || !/if \(p\.theirs\) ppOwnActs\(p, acts\);/.test(js)) fail('portal.js: Rename and Remove only on their own papers (added_by client, with an id)');
+  if (!/if \(!list\.length && !ppUpload\) \{ setHidden\(sec, true\); return; \}/.test(js)) fail('portal.js: the papers card stays hidden with no papers unless the server takes their own');
+  const ppStrings = ['Added by you', 'Rename', 'Remove', 'Yes, remove it', 'Keep it', 'Save the name', 'Added. It’s in your papers now.', 'Removed.', 'Renamed.',
+    'Pick a file first.', 'Give it a name first, even a short one.', '” from your portal? Its file goes too.', 'more file'];
+  for (const s of ppStrings) if (!js.includes("'" + s + "'")) fail(`portal.js: the papers words “${s}” are missing`);
+  const ppAt = js.indexOf('/* ---- your business papers'), ppEnd = js.indexOf('/* ================= Messages', ppAt);
+  if (ppAt < 0 || ppEnd < 0) fail('portal.js: the business papers part is missing');
+  for (const s of literals(js.slice(ppAt, ppEnd)).filter((x) => /[A-Za-z]{2,} [A-Za-z]{2,}/.test(x))) {
+    if (/\bnever\b/i.test(s)) fail(`portal.js: "never" in "${s.slice(0, 80)}"`);
+    if (/\b(we|us|our)\b/i.test(s)) fail(`portal.js: I / me, not we / us / our: "${s.slice(0, 80)}"`);
+  }
+}
+
 if (failures.length) {
   console.error(`portal-text: ${failures.length} problem(s)`);
   for (const f of failures) console.error('  - ' + f);
