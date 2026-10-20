@@ -684,6 +684,7 @@ function composer(o) {
   box.addEventListener('dragover', function (ev) { ev.preventDefault(); });
   box.addEventListener('input', function () { tidy(); changed(); });
   doc.addEventListener('selectionchange', function () {
+    if (!box.isConnected) return; // a composer drawn over (the Studio draws one per profile) stays quiet
     var s = doc.getSelection && doc.getSelection();
     if (s && inBox(s.anchorNode)) { remember(); pressed(); }
   });
