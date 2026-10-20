@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
 <link rel="stylesheet" href="portal.css?v=20261020b">
+<link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -112,6 +113,8 @@
   <nav class="tabs" id="tabs" aria-label="Your pages" hidden></nav>
 </header>
 <!-- portal-brand.js: the color math for a client's own accent (only when Taya has set one; portal.js applyAccent) -->
+<!-- portal-rich.js (Oct 20 2026, hub DEPLOY.md section 95): the Messages composer and the markup renderer (window.WFRich) -->
+<script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal.js?v=20261020b"></script>
 
@@ -970,12 +973,16 @@
     <section class="p-card" id="sec-messages" data-page="messages" aria-labelledby="h-messages" hidden>
       <span class="kicker">Messages</span>
       <h2 id="h-messages" tabindex="-1">Messages with Taya</h2>
-      <p class="msg-intro">Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. Words only for now: for photos or files, email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+      <p class="msg-intro" id="msg-intro-plain">Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. Words only for now: for photos or files, email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+      <!-- [rich b23] shown instead of the line above once the server has rich messages (portal.js richStart) -->
+      <p class="msg-intro" id="msg-intro-rich" hidden>Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. You can make words bold, add lists, links and emoji, and attach photos and files (up to 5 in a message, 10 MB each).</p>
       <p class="msg-none" id="msg-none" hidden></p>
       <ol class="msg-thread" id="msg-thread" aria-label="Messages with Taya" hidden></ol>
       <form id="f-msg" class="msg-form" novalidate>
         <label class="field-label" for="in-msg">Write to Taya</label>
         <textarea id="in-msg" name="message" maxlength="4000" rows="4" aria-describedby="msg-count msg-err"></textarea>
+        <!-- [rich b23] the composer goes here (portal-rich.js), in place of the box above -->
+        <div class="msg-composer" id="msg-rich" hidden></div>
         <p class="count" id="msg-count" aria-live="polite"></p>
         <p class="err" id="msg-err" hidden></p>
         <button class="btn wide" type="submit" id="b-msg"><span>Send</span></button>

@@ -366,7 +366,8 @@
     '/api/webfaery/v/mine',
     '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
     '/api/webfaery/papers/mine',
-    '/api/webfaery/portal/messages'
+    '/api/webfaery/portal/messages',
+    '/api/webfaery/portal/message-file' // [rich b23] opening an attachment is a read (hub DEPLOY.md section 95)
   ];
   const previewReads = (url) => PREVIEW_READS.includes(String(url).slice(SERVER.length).split('?')[0]);
   const stayQuiet = () => new Promise(() => { /* read only view: nothing to send, nothing to show */ });
@@ -461,7 +462,15 @@
     messages: () => postJSON('/messages', {}, token),
     // (Oct 20 2026, hub section 95) one long message whole (the thread sends long ones folded)
     messageFull: (id) => postJSON('/messages', { full: id }, token),
-    message: (body) => postJSON('/message', { body }, token)
+    message: (body, files) => postJSON('/message', files && files.length ? { body, files } : { body }, token),
+    // [rich b23] (hub DEPLOY.md section 97): attachments, two steps (upload, then the message names their ids)
+    messageUpload: (files, onProgress) => sendForm('/message-upload', [], files, token, onProgress),
+    messageUnattach: (id) => postJSON('/message-unattach', { id }, token),
+    async messageFile(id, inline) {
+      const res = await post('/message-file', inline ? { id, inline: true } : { id }, token);
+      if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+      return res.blob();
+    }
   };
   let api = realApi;
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
@@ -6254,6 +6263,49 @@
   const MSG_EMAIL_MAX = 20000; // an email's words can run longer than a portal message
   const MSG_FOLD = 600;
   const MSG_FRESH_MS = 30 * 1000;
+  // ---- [rich b23] (hub DEPLOY.md section 95): when the thread answer says rich: true (the server has the rich
+  // migration) and portal-rich.js is here, the box becomes the composer (Bold, Italic, Underline, lists, Link, Emoji,
+  // Attach, Clear formatting), the words are drawn from the restricted markup by WFRich.render (createElement and
+  // textContent only) and attachments show under them. Otherwise everything below runs as plain text, as before.
+  const RICH_MAX = 8000;
+  const RICH_STORE = STORE_KEY + '-msg-rich';
+  let msgRich = false;       // the server said rich: true
+  let msgRc = null;          // the composer, once made
+  const richOn = () => msgRich && !!window.WFRich;
+  function richFetch(id, inline) { return api.messageFile(id, inline); }
+  function richStart() {
+    if (msgRc || !richOn()) return;
+    $('#in-msg').hidden = true;
+    $('label[for="in-msg"]').hidden = true;
+    $('#msg-count').hidden = true;
+    $('#msg-intro-plain').hidden = true;
+    $('#msg-intro-rich').hidden = false;
+    const host = $('#msg-rich');
+    host.hidden = false;
+    msgRc = window.WFRich.composer({
+      host, id: 'msg-rc', label: 'Write to Taya', store: RICH_STORE, readOnly: PREVIEW,
+      upload: typeof api.messageUpload === 'function' ? (files, onP) => { busy++; return api.messageUpload(files, onP).finally(() => { busy--; }); } : null,
+      unattach: typeof api.messageUnattach === 'function' ? (id) => api.messageUnattach(id) : null,
+      fetchFile: typeof api.messageFile === 'function' ? richFetch : null,
+      errorWords: (err) => (err && err.code === 'signed_out' ? 'You’ve been signed out. Sign in again to attach files.' : err && err.code === 'slow_down' && err.retry >= 60 ? words(err) : ''),
+      onChange: () => { if (!$('#msg-err').hidden) showErr('msg', ''); }
+    });
+  }
+  function richStop() {
+    if (msgRc) { msgRc.clear(); msgRc.el.remove(); msgRc = null; }
+    try { sessionStorage.removeItem(RICH_STORE); } catch (e) { /* fine */ }
+    msgRich = false;
+    $('#msg-rich').hidden = true;
+    $('#in-msg').hidden = false;
+    $('label[for="in-msg"]').hidden = false;
+    $('#msg-count').hidden = false;
+    $('#msg-intro-plain').hidden = false;
+    $('#msg-intro-rich').hidden = true;
+  }
+  function richFiles(m) {
+    return window.WFRich.fileList(m.files, { fetchFile: richFetch, onError: (err) => { if (err.code === 'signed_out') quietSignOut(false); else toast(err.code === 'not_found' ? 'That file isn’t here anymore.' : words(err)); } });
+  }
+  // ---- [rich b23] end
   function msgSync() {
     const on = !!me && me.messages_unread !== null && typeof api.messages === 'function';
     setHidden($('#sec-messages'), !on);
@@ -6271,6 +6323,7 @@
     $('#msg-thread').hidden = true;
     $('#msg-none').hidden = true;
     $('#in-msg').value = '';
+    richStop(); // [rich b23] the composer and its kept words go with the sign-out too
     showErr('msg', '');
     $('#sec-messages').hidden = true;
   }
@@ -6285,7 +6338,9 @@
     if (!msgs) { $('#msg-none').textContent = 'Loading your messages…'; $('#msg-none').hidden = false; }
     try {
       const d = await api.messages();
+      msgRich = !!(d && d.rich === true); // [rich b23]
       msgs = arr(d && d.messages).slice(-200).map(msgClean).filter(Boolean);
+      richStart(); // [rich b23]
       msgsAt = Date.now();
       // opening the thread reads Taya's messages (a Studio preview reads nothing): the dot and the Home row go
       if (!PREVIEW && me && me.messages_unread) { me.messages_unread = 0; pagesSoon(); }
@@ -6308,9 +6363,11 @@
   function msgClean(m) {
     if (!m || typeof m !== 'object') return null;
     const email = m.source === 'email';
-    const body = cleanText(m.body, email ? MSG_EMAIL_MAX : MSG_MAX);
-    if (!body) return null;
+    const body = cleanText(m.body, email ? MSG_EMAIL_MAX : (richOn() ? RICH_MAX : MSG_MAX));
+    const rf = !email && richOn() ? arr(m.files).slice(0, 5) : []; // [rich b23]
+    if (!body && !rf.length) return null;
     const o = { id: str(m.id, 40), from: m.from === 'taya' ? 'taya' : 'client', body, created: str(m.created, 40) };
+    if (!email) o.files = rf;
     if (email) {
       o.email = true;
       o.subject = cleanLine(m.subject, 200);
@@ -6359,6 +6416,13 @@
     } else head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), when);
     li.append(head);
     if (m.email && m.subject) { const s = make('p', 'msg-subject'); s.append(make('b', '', m.subject)); li.append(s); }
+    if (!m.email && richOn()) { // [rich b23] the markup drawn by WFRich.render (createElement and textContent only), then the files
+      const rbody = make('div', 'msg-body msg-rich');
+      rbody.append(window.WFRich.render(m.body, document));
+      li.append(rbody);
+      if (m.files && m.files.length) li.append(richFiles(m));
+      return li;
+    }
     const body = make('p', 'msg-body', m.body);
     li.append(body);
     if (m.body.length > MSG_FOLD || m.folded) li.append(msgFold(m, body, li));
@@ -6382,9 +6446,36 @@
     c.textContent = n > MSG_MAX - 400 ? (MSG_MAX - n) + ' characters left' : '';
     c.classList.toggle('near', n > MSG_MAX - 100);
   }
+  // [rich b23] Send from the composer: the markup and the attachments' ids (uploaded already, as they were attached)
+  async function onRichMessage() {
+    const btn = $('#b-msg');
+    showErr('msg', '');
+    if (msgRc.busy()) { showErr('msg', 'A file is still uploading. Send again in a moment.'); return; }
+    const v = msgRc.value();
+    if (!v.body && !v.files.length) { showErr('msg', 'Write a few words first.'); msgRc.focus(); return; }
+    if (v.body.length > RICH_MAX) { showErr('msg', 'That’s a little long for one message. Could you split it in two?'); msgRc.focus(); return; }
+    setBusy(btn, true, 'Sending…');
+    try {
+      const d = await api.message(v.body, v.files);
+      const m = d && d.message && typeof d.message === 'object' ? d.message : null;
+      if (!msgs) msgs = [];
+      msgs.push({ id: str(m && m.id, 40), from: 'client', body: m ? cleanText(m.body, RICH_MAX) : v.body, files: m ? arr(m.files).slice(0, 5) : [], created: str(m && m.created, 40) || new Date().toISOString() });
+      msgRc.clear();
+      renderMessages();
+      toast('Sent. Thank you!');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      showErr('msg', err.code === 'input' && err.field === 'files' ? 'One of the files couldn’t go with this message. Take it off and attach it again.'
+        : err.code === 'input' && err.reason === 'links' ? 'That’s a lot of links for one message (40 at most).'
+          : err.code === 'input' && err.reason === 'long' ? 'That’s a little long for one message. Could you split it in two?' : words(err));
+    } finally {
+      setBusy(btn, false);
+    }
+  }
   async function onMessage(ev) {
     ev.preventDefault();
     if (PREVIEW) return;
+    if (msgRc) { onRichMessage(); return; } // [rich b23]
     const box = $('#in-msg');
     const btn = $('#b-msg');
     const text = cleanText(box.value, MSG_MAX + 1);
