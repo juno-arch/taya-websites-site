@@ -459,6 +459,8 @@
     // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
     // more message from them; plain text both ways
     messages: () => postJSON('/messages', {}, token),
+    // (Oct 20 2026, hub section 95) one long message whole (the thread sends long ones folded)
+    messageFull: (id) => postJSON('/messages', { full: id }, token),
     message: (body) => postJSON('/message', { body }, token)
   };
   let api = realApi;
@@ -6239,11 +6241,18 @@
      while one of Taya's waits unread. The thread loads when they open the tab (the server marks Taya's read then), and
      again on a quiet refresh while it is open. Enter makes a new line; the Send button sends. Words they typed and
      haven't sent stay in this tab (drafts, sessionStorage) until sent or "Sign out". A Studio preview sees the thread,
-     the box is switched off, and nothing is marked read. */
-  let msgs = null;           // [{ id, from: 'client' | 'taya', body, created }] (cleaned), or null before the first load
+     the box is switched off, and nothing is marked read.
+     (Oct 20 2026, hub section 95) The thread can also carry their emails with Taya, once Taya switches that on for
+     them: each in its place by date, with the subject in bold and "via email" under the time; their own emails say
+     You, Taya's say Taya. Long words fold behind "Show more" after 600 characters (a body the server folded comes whole
+     on tap, a read, so a preview can do it too). A server without these fields sends portal messages only, drawn as
+     before. */
+  let msgs = null;           // [{ id, from: 'client' | 'taya', body, created, email?, subject?, folded?, files? }] (cleaned), or null before the first load
   let msgsAt = 0;            // when they came
   let msgsLoading = false;
   const MSG_MAX = 4000;
+  const MSG_EMAIL_MAX = 20000; // an email's words can run longer than a portal message
+  const MSG_FOLD = 600;
   const MSG_FRESH_MS = 30 * 1000;
   function msgSync() {
     const on = !!me && me.messages_unread !== null && typeof api.messages === 'function';
@@ -6276,11 +6285,7 @@
     if (!msgs) { $('#msg-none').textContent = 'Loading your messages…'; $('#msg-none').hidden = false; }
     try {
       const d = await api.messages();
-      msgs = arr(d && d.messages).slice(-200).map((m) => {
-        if (!m || typeof m !== 'object') return null;
-        const body = cleanText(m.body, MSG_MAX);
-        return body ? { id: str(m.id, 40), from: m.from === 'taya' ? 'taya' : 'client', body, created: str(m.created, 40) } : null;
-      }).filter(Boolean);
+      msgs = arr(d && d.messages).slice(-200).map(msgClean).filter(Boolean);
       msgsAt = Date.now();
       // opening the thread reads Taya's messages (a Studio preview reads nothing): the dot and the Home row go
       if (!PREVIEW && me && me.messages_unread) { me.messages_unread = 0; pagesSoon(); }
@@ -6299,11 +6304,65 @@
     return MON[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== now.getFullYear() ? ', ' + d.getFullYear() : '') + ', ' +
       (h % 12 === 0 ? 12 : h % 12) + ':' + pad(d.getMinutes()) + ' ' + (h < 12 ? 'AM' : 'PM');
   }
+  // one message from the server, cleaned (an email keeps its subject, its fold and its attachment count)
+  function msgClean(m) {
+    if (!m || typeof m !== 'object') return null;
+    const email = m.source === 'email';
+    const body = cleanText(m.body, email ? MSG_EMAIL_MAX : MSG_MAX);
+    if (!body) return null;
+    const o = { id: str(m.id, 40), from: m.from === 'taya' ? 'taya' : 'client', body, created: str(m.created, 40) };
+    if (email) {
+      o.email = true;
+      o.subject = cleanLine(m.subject, 200);
+      o.files = Number.isInteger(m.attachments) && m.attachments > 0 ? Math.min(m.attachments, 999) : 0;
+    }
+    if (m.folded === true) o.folded = true;
+    return o;
+  }
+  // the words, folded behind "Show more" after MSG_FOLD characters; one the server folded comes whole on tap
+  function msgFold(m, body, li) {
+    const short = () => m.body.slice(0, MSG_FOLD).replace(/\s+$/, '') + '…';
+    body.textContent = short();
+    const more = make('button', 'msg-more', 'Show more');
+    more.type = 'button';
+    more.setAttribute('aria-expanded', 'false');
+    let open = false;
+    more.addEventListener('click', async () => {
+      if (!open && m.folded && m.id) {
+        setBusy(more, true, 'Opening…');
+        try {
+          const d = await api.messageFull(m.id);
+          const full = msgClean(d && d.message);
+          if (full && full.body) { m.body = full.body; m.folded = false; }
+        } catch (err) {
+          if (err.code === 'signed_out') { quietSignOut(false); return; }
+          toast(words(err));
+          return;
+        } finally { setBusy(more, false); }
+      }
+      open = !open;
+      body.textContent = open ? m.body : short();
+      more.textContent = open ? 'Show less' : 'Show more';
+      more.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!open && li.getBoundingClientRect().top < 0) li.scrollIntoView({ block: 'start' });
+    });
+    return more;
+  }
   function msgRow(m) {
-    const li = make('li', 'msg-row ' + (m.from === 'taya' ? 'from-taya' : 'from-you'));
+    const li = make('li', 'msg-row ' + (m.from === 'taya' ? 'from-taya' : 'from-you') + (m.email ? ' is-email' : ''));
     const head = make('p', 'msg-head');
-    head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), make('span', 'msg-when', msgWhen(m.created)));
-    li.append(head, make('p', 'msg-body', m.body));
+    const when = make('span', 'msg-when', msgWhen(m.created));
+    if (m.email) {
+      const stamp = make('span', 'msg-stamp');
+      stamp.append(when, make('span', 'msg-via', 'via email'));
+      head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), stamp);
+    } else head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), when);
+    li.append(head);
+    if (m.email && m.subject) { const s = make('p', 'msg-subject'); s.append(make('b', '', m.subject)); li.append(s); }
+    const body = make('p', 'msg-body', m.body);
+    li.append(body);
+    if (m.body.length > MSG_FOLD || m.folded) li.append(msgFold(m, body, li));
+    if (m.email && m.files) li.append(make('p', 'msg-files', m.files === 1 ? '1 attachment, in the email itself' : m.files + ' attachments, in the email itself'));
     return li;
   }
   function renderMessages() {

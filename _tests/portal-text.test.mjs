@@ -318,6 +318,18 @@ const demoOn = /const DEMO = true;/.test(js);
   if (!/plural\(unreadMsgs, 'new message', 'new messages'\)/.test(js)) fail('portal.js: Home should say “1 new message” while one of Taya’s waits');
 }
 
+// ---- Their emails in Messages (Oct 20 2026, hub DEPLOY.md section 95; added on purpose) ----
+// An email row: the subject in bold and "via email" under the time, both drawn with textContent; long words folded
+// behind "Show more" after 600 characters; the whole text is a read on the same thread route (so a preview can open
+// it and nothing is written); an email is never counted toward the unread dot by the page itself.
+{
+  if (!/make\('span', 'msg-via', 'via email'\)/.test(js)) fail('portal.js: an email row should say “via email” under the time');
+  if (!/make\('b', '', m\.subject\)/.test(js)) fail('portal.js: an email’s subject should be bold, drawn with textContent (make)');
+  if (!/const MSG_FOLD = 600;/.test(js) || !/make\('button', 'msg-more', 'Show more'\)/.test(js)) fail('portal.js: long words should fold behind “Show more” after 600 characters');
+  if (!/messageFull: \(id\) => postJSON\('\/messages', \{ full: id \}, token\)/.test(js)) fail('portal.js: the whole text of a folded message should be a read on the thread route');
+  if (/messages_unread[^\n]*email/.test(js)) fail('portal.js: emails should not change the unread count on the page');
+}
+
 if (failures.length) {
   console.error(`portal-text: ${failures.length} problem(s)`);
   for (const f of failures) console.error('  - ' + f);
