@@ -42,6 +42,8 @@
     --yellow: #fddd5b;      /* their ink-brush menu tabs */
     --ox: #4a070b;          /* their menu leather */
     --ox-2: #5e0d12;
+    --brick: #6c2722;       /* THEIR logo red: the field behind "New Moon", sampled from their logo file (Oct 20; 89% of its pixels) */
+    --brick-2: #823229;
     --orange: #ef8649;      /* their menu prices (on the leather only) */
     --em: #a83c14;          /* orange, deep enough for words on light */
     --label: #2b3163;
@@ -125,6 +127,9 @@
   .moon[data-s="low"] .m-low { opacity: 1; }
   .moon[data-s="half"] .m-half { opacity: 1; }
   @media (prefers-reduced-motion: reduce) { .moon .m-full, .moon .m-low, .moon .m-half { transition: none; } }
+  /* craters and maria (Pollen, Oct 20: "give the moon some craters"), faint, so every disc reads as a moon, lit or not */
+  .moon .m-crat { pointer-events: none; }
+  /* their colors sit on the drawing itself (#nm-craters in the defs), since page styles don't reach inside a <use> */
 
   /* THE HERO: their own counter, the espresso machine and the full pastry case (April 2026). The photo is only
      1440 wide, so on very wide screens it stops at 1800 and fades into the night; on phones it's a sharp band on
@@ -141,7 +146,7 @@
       linear-gradient(90deg, rgba(20, 23, 51, 0.7) 0, rgba(20, 23, 51, 0.25) 46%, rgba(20, 23, 51, 0) 66%); }
   .hero > .gutter { position: relative; z-index: 3; }
   .hero .wrap { max-width: 1220px; }
-  .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 40px 72px; }
+  .hero-main { flex: 1; display: flex; align-items: flex-end; padding-block: 40px 112px; }
   .hero-copy { max-width: 640px; }
   .hero .label { color: var(--yellow); margin-bottom: 16px; text-shadow: 0 1px 14px rgba(10, 12, 30, 0.7); }
   .hero h1 { font-size: clamp(56px, 8.4vw, 112px); line-height: 0.9; font-weight: 900; color: #fbf3e4; letter-spacing: 0.005em; text-shadow: 0 3px 34px rgba(10, 12, 30, 0.6); }
@@ -154,8 +159,26 @@
   .hero a:focus-visible { outline-color: #fbf3e4; }
   .hero-cap { position: absolute; right: 16px; bottom: 14px; z-index: 3; font-size: 12px; color: rgba(251, 243, 228, 0.72); letter-spacing: 0.04em; }
 
+  /* the hero's turning banner (Pollen, Oct 20: "add a rotating banner"): one true thing at a time, with a little moon
+     that waxes one step per item, so you can see where you are in the turn. Stops on hover, focus or the pause button;
+     under reduced motion it rests on the first item. */
+  .moonrow { display: flex; align-items: center; gap: 12px; margin-top: 26px; max-width: 600px; padding: 10px 10px 10px 12px; box-sizing: border-box;
+    border-top: 1px solid rgba(253, 221, 91, 0.45); border-bottom: 1px solid rgba(253, 221, 91, 0.2); color: #fbf3e4; text-shadow: 0 1px 14px rgba(10, 12, 30, 0.85); }
+  .moonrow .moon { width: 26px; height: 26px; flex: none; }
+  .moonrow .mr-lit { fill: url(#moonlit); }
+  .mr-text { flex: 1; min-width: 0; font-size: 15.5px; line-height: 1.4; color: inherit; text-decoration: none; transition: opacity 0.4s ease; }
+  .mr-text b { display: block; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 800; color: var(--yellow); }
+  .mr-text span { text-decoration: underline; text-decoration-color: rgba(253, 221, 91, 0.55); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .mr-text:hover span { text-decoration-color: var(--yellow); }
+  .moonrow.swap .mr-text { opacity: 0; }
+  .mr-pause { flex: none; width: 44px; height: 44px; display: grid; place-items: center; margin: -6px -4px -6px 0; padding: 0; font: inherit; font-size: 10px; line-height: 1; color: #fbf3e4; background: rgba(20, 23, 51, 0.35); border: 1px solid rgba(251, 243, 228, 0.5); border-radius: 50%; cursor: pointer; }
+  .mr-pause:hover { border-color: var(--yellow); }
+  .moonrow a:focus-visible, .mr-pause:focus-visible { outline: 2px solid #fbf3e4; outline-offset: 3px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) { .mr-text { transition: none; } }
+
   /* the slow fade-in: the photo first, then the words */
-  .hero.wait .hero-photo, .hero.wait::after, .hero.wait .label, .hero.wait h1, .hero.wait .lede, .hero.wait .cta-row { opacity: 0; }
+  .hero.wait .hero-photo, .hero.wait::after, .hero.wait .label, .hero.wait h1, .hero.wait .lede, .hero.wait .cta-row, .hero.wait .moonrow { opacity: 0; }
+  .hero.go .moonrow { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.9s both; }
   .hero.go .hero-photo { animation: hero-photo 4s cubic-bezier(.22,1,.36,1) both; }
   .hero.go::after { animation: hero-fade 2.4s ease 0.7s both; }
   .hero.go .label { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.6s both; }
@@ -194,7 +217,7 @@
   .cap { margin-top: 10px; font-size: 14px; color: var(--ink-soft); }
 
   /* ---------- THE SIGNATURE: Today's case, on the night band ---------- */
-  .night { background: radial-gradient(90% 80% at 80% 0%, var(--night-2) 0, var(--night) 70%); color: var(--on-night); position: relative; overflow: hidden; }
+  .night { background: radial-gradient(90% 80% at 80% 0%, var(--night-2) 0, var(--night) 70%); color: var(--on-night); position: relative; overflow: hidden; overflow: clip; }
   .night h2 { color: var(--on-night); }
   .night h2 em { color: var(--yellow); }
   .night .label { color: var(--gold); }
@@ -209,7 +232,7 @@
   .night a { color: #f3dc8e; }
   .night .stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
     background-image: radial-gradient(1.2px 1.2px at 12% 18%, #f6f0e2 50%, transparent 51%), radial-gradient(1px 1px at 33% 8%, #f6f0e2 50%, transparent 51%), radial-gradient(1.4px 1.4px at 61% 14%, #f3dc8e 50%, transparent 51%), radial-gradient(1px 1px at 84% 30%, #f6f0e2 50%, transparent 51%), radial-gradient(1.2px 1.2px at 92% 6%, #f6f0e2 50%, transparent 51%), radial-gradient(1px 1px at 7% 56%, #f3dc8e 50%, transparent 51%); }
-  .case-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 20px 56px; align-items: end; position: relative; }
+  .case-head { position: relative; max-width: 760px; }
   .their-words { margin-top: 16px; padding-left: 16px; border-left: 3px solid var(--yellow); font-size: 17px; color: #f6f0e2; max-width: 46ch; }
   .their-words cite { display: block; margin-top: 4px; font-style: normal; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(246, 240, 226, 0.7); }
   .legend-moons { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; font-size: 15px; color: rgba(246, 240, 226, 0.92); }
@@ -245,6 +268,42 @@
   html[data-view="maiden"] .pastry, html[data-view="mother"] .pastry { grid-template-columns: minmax(0, 1fr) auto; cursor: default; }
   .case-order { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 30px; position: relative; }
   .case-note { margin-top: 26px; max-width: 74ch; position: relative; }
+
+  /* the moon key, now on the left and a filter (Pollen, Oct 20): tap a phase to see only what's in that state */
+  .case-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 10px 40px; align-items: start; margin-top: 34px; position: relative; }
+  .case-body > * { min-width: 0; }
+  html[data-view="maiden"] .case-body, html[data-view="mother"] .case-body { grid-template-columns: minmax(0, 1fr); }
+  .case-key { position: sticky; top: calc(var(--sn-h, 64px) + 18px); }
+  .case-key .k-q { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 800; color: var(--gold); margin: 0 0 10px; }
+  .k-list { display: grid; gap: 8px; list-style: none; }
+  .k-btn { width: 100%; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; text-align: left; font: inherit; color: #f6f0e2; cursor: pointer;
+    background: rgba(246, 240, 226, 0.05); border: 1px solid rgba(246, 240, 226, 0.2); border-left: 4px solid var(--brick-2); border-radius: 10px; padding: 9px 12px; min-height: 56px; box-sizing: border-box; transition: background-color 0.3s ease, border-color 0.3s ease; }
+  .k-btn .moon { width: 32px; height: 32px; }
+  .k-btn b { display: block; font-weight: 800; font-size: 15.5px; line-height: 1.2; }
+  .k-btn small { display: block; font-size: 13px; color: rgba(246, 240, 226, 0.72); line-height: 1.3; }
+  .k-n { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--yellow); font-size: 18px; }
+  .k-btn:hover { border-color: rgba(253, 221, 91, 0.6); border-left-color: var(--yellow); }
+  .k-btn[aria-pressed="true"] { background: rgba(253, 221, 91, 0.14); border-color: var(--yellow); border-left-color: var(--yellow); }
+  .k-btn:focus-visible { outline: 2px solid #f6f0e2; outline-offset: 2px; }
+  .k-clear { margin-top: 10px; font: inherit; font-size: 14.5px; font-weight: 700; color: #f3dc8e; background: none; border: 0; padding: 10px 2px; min-height: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+  .k-tip { margin-top: 12px; font-size: 14.5px; }
+  .case-tools .gbtn.ghost { min-height: 40px; padding: 6px 14px; border-radius: 999px; font-size: 14.5px; color: #f6f0e2; border-color: rgba(246, 240, 226, 0.45); }
+  .case-tools .gbtn.ghost:disabled { opacity: 0.4; }
+  .case-empty { margin-top: 12px; font-size: 15px; color: rgba(246, 240, 226, 0.7); font-style: italic; }
+  .p-count { display: block; font-size: 13px; font-weight: 700; color: rgba(246, 240, 226, 0.78); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .p-count i { font-style: normal; display: inline-block; height: 4px; width: 64px; margin-left: 8px; vertical-align: 2px; border-radius: 4px; background: rgba(246, 240, 226, 0.14); overflow: hidden; position: relative; }
+  .p-count i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--left, 100%); background: var(--gold); border-radius: 4px; transition: width 0.4s ease; }
+  .pastry[data-s="low"] .p-count i::after { background: var(--orange); }
+  html[data-view="maiden"] .p-count, html[data-view="mother"] .p-count { display: none; }
+  @media (prefers-reduced-motion: reduce) { .k-btn, .p-count i::after { transition: none; } }
+  @media (max-width: 860px) {
+    .case-body { grid-template-columns: minmax(0, 1fr); }
+    .case-key { position: static; }
+    .k-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .k-btn { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 4px; padding: 10px 6px; border-left-width: 1px; border-top: 4px solid var(--brick-2); }
+    .k-btn small { display: none; }
+    .k-btn b { font-size: 14px; }
+  }
   @media (prefers-reduced-motion: reduce) { .pastry { transition: none; } }
   @media (max-width: 760px) { .case-head { grid-template-columns: minmax(0, 1fr); } .case-grid { grid-template-columns: minmax(0, 1fr); } }
 
@@ -252,6 +311,7 @@
   .leather { background-color: var(--ox); color: #f3ecd8; position: relative;
     background-image: radial-gradient(120% 90% at 20% 0%, rgba(120, 22, 28, 0.55) 0, rgba(74, 7, 11, 0) 60%),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E"); }
+  .leather { border-block: 6px solid var(--brick); box-shadow: inset 0 1px 0 0 rgba(212, 188, 114, 0.45), inset 0 -1px 0 0 rgba(212, 188, 114, 0.45); }
   .leather h2 { color: #fbf3e4; }
   .leather h2 em { color: var(--yellow); }
   .leather .label { color: var(--yellow); }
@@ -357,6 +417,31 @@
   .gift { margin-top: 40px; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 34px; align-items: start; }
   .gift > * { min-width: 0; }
   @media (max-width: 860px) { .order-grid, .po-wrap, .gift { grid-template-columns: minmax(0, 1fr); } }
+
+  /* In Bloom: an order built right from their menu, sent as a request (Pollen, Oct 20) */
+  .ob-wrap { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr); gap: 26px; margin-top: 30px; align-items: start; }
+  .ob-wrap > * { min-width: 0; }
+  #ob-card { border-top: 5px solid var(--brick); }
+  .ob-cats { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; }
+  .ob-cats button { font: inherit; font-size: 15px; font-weight: 700; min-height: 44px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--hair); background: var(--ground); color: var(--ink); cursor: pointer; }
+  .ob-cats button[aria-pressed="true"] { background: var(--brick); border-color: var(--brick); color: #fbf3e4; }
+  .ob-cats button .ob-cn { font-variant-numeric: tabular-nums; opacity: 0.8; margin-left: 4px; }
+  .ob-bar { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--mist); font-weight: 800; }
+  .ob-bar span:first-child { font-weight: 600; color: var(--ink-soft); }
+  .ob-bar b { font-size: 19px; font-variant-numeric: tabular-nums; }
+  .gbtn.red { background: var(--brick); border-color: var(--brick); color: #fbf3e4; }
+  .gbtn.red:hover { background: var(--brick-2); border-color: var(--brick-2); }
+  .ob-ticket { margin-top: 14px; border: 1.5px dashed var(--hair); border-radius: 8px; padding: 14px 16px; background: var(--ground); }
+  .ob-ticket .sheet-lines > div { padding: 7px 0; }
+  .ob-limit { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 860px) { .ob-wrap { grid-template-columns: minmax(0, 1fr); } }
+
+  /* the artist application (Tended + In Bloom) */
+  .apply { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 34px; align-items: start; margin-top: 56px; }
+  .apply > * { min-width: 0; }
+  .apply .card { border-top: 5px solid var(--brick); }
+  .apply h3.big { font-size: clamp(30px, 3.6vw, 40px); line-height: 1.05; }
+  @media (max-width: 860px) { .apply { grid-template-columns: minmax(0, 1fr); } }
 
   /* ---------- THE PLACE ---------- */
   .place { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
@@ -491,7 +576,9 @@
   @media (max-width: 760px) { .found { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 560px) { .found-wrap { padding: 18px 14px 22px; } }
 
-  footer { padding-block: 60px 100px; background: var(--night); color: rgba(246, 240, 226, 0.82); font-size: 14.5px; text-wrap: balance; }
+  /* the footer sits on THEIR logo red, just like their logo (Pollen, Oct 20: "add in the red, isnt their red in the logo?"),
+     with a thin navy and gold edge so the night navy and moon gold come along. Same red in dark mode. */
+  footer { padding-block: 60px 100px; background: var(--brick); border-top: 6px solid var(--night); box-shadow: inset 0 1px 0 0 rgba(212, 188, 114, 0.55); color: rgba(246, 240, 226, 0.82); font-size: 14.5px; text-wrap: balance; }
   footer a { color: #f3dc8e; }
   .foot-mark { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
   .foot-mark img { width: 230px; height: auto; display: block; }
@@ -626,6 +713,16 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <radialGradient id="moonlit" cx="0.42" cy="0.38" r="0.7"><stop offset="0" stop-color="#fbeaa8"/><stop offset="0.6" stop-color="#e6cf86"/><stop offset="1" stop-color="#c9ad5c"/></radialGradient>
+    <g id="nm-craters">
+      <ellipse fill="#8f7432" fill-opacity="0.26" cx="14.6" cy="15.2" rx="5.4" ry="4.2" transform="rotate(-18 14.6 15.2)"/>
+      <ellipse fill="#8f7432" fill-opacity="0.26" cx="24.4" cy="24.6" rx="4.6" ry="3.3" transform="rotate(24 24.4 24.6)"/>
+      <ellipse fill="#8f7432" fill-opacity="0.26" cx="12.8" cy="25.4" rx="2.6" ry="2"/>
+      <circle fill="#9c7f37" fill-opacity="0.28" stroke="#fff2bf" stroke-opacity="0.35" stroke-width="0.5" cx="26.2" cy="12.6" r="2.3"/>
+      <circle fill="#9c7f37" fill-opacity="0.28" stroke="#fff2bf" stroke-opacity="0.35" stroke-width="0.5" cx="20.4" cy="30.6" r="1.5"/>
+      <circle fill="#9c7f37" fill-opacity="0.28" stroke="#fff2bf" stroke-opacity="0.35" stroke-width="0.5" cx="30.2" cy="19.8" r="1.3"/>
+      <circle fill="#9c7f37" fill-opacity="0.28" stroke="#fff2bf" stroke-opacity="0.35" stroke-width="0.5" cx="17.6" cy="21.2" r="1"/>
+      <circle fill="#9c7f37" fill-opacity="0.28" stroke="#fff2bf" stroke-opacity="0.35" stroke-width="0.5" cx="9.4" cy="19" r="0.9"/>
+    </g>
   </defs>
 </svg>
 
@@ -733,6 +830,11 @@
           <a class="btn" href="#order">Order ahead for pickup</a>
           <a class="btn quiet" href="#case">See today&rsquo;s case</a>
         </div>
+        <div class="moonrow" id="moonrow" role="region" aria-label="What&rsquo;s new at New Moon" aria-roledescription="rotating banner">
+          <svg class="moon" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle class="m-dark" cx="20" cy="20" r="17"/><path class="mr-lit" id="mr-lit"/></svg>
+          <a class="mr-text" id="mr-link" href="#case"><b id="mr-k">In the case</b><span id="mr-t">Cinnamon rolls, croissants, danishes and scones, baked fresh this morning</span></a>
+          <button type="button" class="mr-pause" id="mr-pause" aria-pressed="false" aria-label="Pause the banner" hidden><span aria-hidden="true">&#10074;&#10074;</span></button>
+        </div>
       </div>
     </div>
   </div>
@@ -757,8 +859,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: today&rsquo;s case and your whole menu with prices, your hours with the moon that&rsquo;s lit while you&rsquo;re open, your room and patio, kind words, and an Order button to your own Flipdish."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a big order and catering form, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus the live case you flip from your phone, pastry pre-orders and gift cards paid right on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a big order and catering form, an artist application for your walls, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus the live case that counts down from your morning bake, orders people build from your menu, and pastry pre-orders and gift cards paid right on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep newmoonbakery.com: I can hold and renew it for you so it&rsquo;s one less thing to remember (it stays legally yours). If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -778,34 +880,45 @@
         <h2 class="reveal">Fresh from the oven, <em>while the moon is full</em></h2>
         <blockquote class="their-words">Our pastries are made in house and baked fresh every morning, supplies may not last. Limited to two per item.<cite>From your menu</cite></blockquote>
       </div>
-      <div data-show="crone all" data-thing="a live case you flip from your phone">
-        <ul class="legend-moons" aria-label="What the moons mean">
-          <li><svg class="moon" viewBox="0 0 40 40" aria-hidden="true" data-s="full"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/></svg>Full moon: plenty</li>
-          <li><svg class="moon lg-low" viewBox="0 0 40 40" aria-hidden="true" data-s="low"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/><path class="m-low"/></svg>Waning: getting low</li>
-          <li><svg class="moon" viewBox="0 0 40 40" aria-hidden="true" data-s="new"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/></svg>New moon: sold out</li>
+    </div>
+
+    <div class="case-body">
+      <aside class="case-key" data-show="crone all" data-thing="a live case that counts down from your morning bake" aria-labelledby="k-q">
+        <p class="k-q" id="k-q">Show me what&rsquo;s</p>
+        <ul class="k-list" role="group" aria-labelledby="k-q">
+          <li><button type="button" class="k-btn" data-f="full" aria-pressed="false"><svg class="moon" viewBox="0 0 40 40" aria-hidden="true" data-s="full"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/></svg><span><b>Plenty</b><small>Full moon</small></span><span class="k-n" id="k-full">0</span></button></li>
+          <li><button type="button" class="k-btn" data-f="low" aria-pressed="false"><svg class="moon" viewBox="0 0 40 40" aria-hidden="true" data-s="low"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/><path class="m-low"/></svg><span><b>Getting low</b><small>Waning moon</small></span><span class="k-n" id="k-low">0</span></button></li>
+          <li><button type="button" class="k-btn" data-f="new" aria-pressed="false"><svg class="moon" viewBox="0 0 40 40" aria-hidden="true" data-s="new"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/></svg><span><b>Sold out</b><small>New moon</small></span><span class="k-n" id="k-new">0</span></button></li>
         </ul>
-        <p style="margin-top:14px;font-size:15.5px">Check the moons before you drive up the canyon.</p>
+        <button type="button" class="k-clear" id="k-clear" hidden>Show everything again</button>
+        <p class="k-tip">Check the moons before you drive up the canyon.</p>
+      </aside>
+
+      <div class="case-main">
+        <div class="case-tools" data-show="crone all" id="case-tools">
+          <span class="demo-pill">Preview</span>
+          <span class="lead" id="case-at-q">See the case at</span>
+          <span role="group" aria-labelledby="case-at-q" style="display:flex;flex-wrap:wrap;gap:8px">
+            <button type="button" class="pill-btn" data-at="7" aria-pressed="false">7 am</button>
+            <button type="button" class="pill-btn" data-at="11" aria-pressed="true">11 am</button>
+            <button type="button" class="pill-btn" data-at="14" aria-pressed="false">2 pm</button>
+          </span>
+          <button type="button" class="gbtn ghost" id="case-back" disabled>Back</button>
+          <button type="button" class="gbtn ghost" id="case-reset">Reset</button>
+        </div>
+        <p class="case-sum" id="case-sum" data-show="crone all" aria-live="polite"></p>
+
+        <div class="case-grp" id="grp-pastries">
+          <h3>Fresh baked pastries</h3>
+          <ul class="case-grid" id="case-pastries"></ul>
+          <p class="case-empty" hidden>None of these right now.</p>
+        </div>
+        <div class="case-grp" id="grp-desserts">
+          <h3>Desserts &amp; cookies</h3>
+          <ul class="case-grid" id="case-desserts"></ul>
+          <p class="case-empty" hidden>None of these right now.</p>
+        </div>
       </div>
-    </div>
-
-    <div class="case-tools" data-show="crone all" id="case-tools">
-      <span class="demo-pill">Preview</span>
-      <span class="lead" id="case-at-q">See the case at</span>
-      <span role="group" aria-labelledby="case-at-q" style="display:flex;flex-wrap:wrap;gap:8px">
-        <button type="button" class="pill-btn" data-at="7" aria-pressed="false">7 am</button>
-        <button type="button" class="pill-btn" data-at="11" aria-pressed="true">11 am</button>
-        <button type="button" class="pill-btn" data-at="14" aria-pressed="false">2 pm</button>
-      </span>
-    </div>
-    <p class="case-sum" id="case-sum" data-show="crone all" aria-live="polite"></p>
-
-    <div class="case-grp">
-      <h3>Fresh baked pastries</h3>
-      <ul class="case-grid" id="case-pastries"></ul>
-    </div>
-    <div class="case-grp">
-      <h3>Desserts &amp; cookies</h3>
-      <ul class="case-grid" id="case-desserts"></ul>
     </div>
 
     <div class="case-order">
@@ -814,8 +927,8 @@
       <p style="font-size:15px">Prices as of October 19, from your online menu.</p>
     </div>
 
-    <p class="case-note mock-note wf-note" data-show="crone all">Try it: tap any pastry to flip its moon. On your real site, whoever&rsquo;s at the counter flips an item to low or sold out from one short page on their phone, and the case here follows right away, so people see what&rsquo;s left before the drive, and a busy day doesn&rsquo;t mean switching ordering off. The 7 am, 11 am and 2 pm buttons are just a sample day for this preview. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-    <p class="case-note mock-note wf-note" data-show="maiden mother" hidden>With this build, your case is listed with today&rsquo;s prices. The moons that you flip from your phone, so people can see what&rsquo;s sold out, come with In Bloom. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+    <p class="case-note mock-note wf-note" data-show="crone all">Try it: tap a pastry to order one, and watch its count and its moon go down (Back undoes it, Reset starts the morning over). Tap a moon on the left to see only what&rsquo;s plenty, low or sold out. Here&rsquo;s the idea: each morning you tell the page how many of each you baked, and the moons follow as the count drops. Orders that come through your site count down by themselves. Counter sales would take a quick tap on one short page on your phone, unless it can connect to your point of sale. Whether Flipdish or your register can share those numbers is something I&rsquo;d check first, before I promise it. The counts and the 7 am, 11 am and 2 pm buttons are a sample day for this preview. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+    <p class="case-note mock-note wf-note" data-show="maiden mother" hidden>With this build, your case is listed with today&rsquo;s prices. The moons that count down from your morning bake, so people can see what&rsquo;s sold out, come with In Bloom. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
   </div>
 </section>
 
@@ -1024,6 +1137,63 @@
       </div>
     </div>
 
+    <div id="build" data-show="crone all" data-thing="an order people build from your menu" tabindex="-1" style="margin-top:64px">
+      <p class="label with-pill"><span>Build your order</span> <span class="demo-pill">Preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h2 class="reveal" style="font-size:clamp(32px,4.4vw,46px)">Pick it from the menu, <em>we&rsquo;ll have it ready</em></h2>
+      <div class="ob-wrap">
+        <div class="card" id="ob-card">
+          <div class="steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your order</button><button type="button" data-s="2" disabled>2 Pickup</button><button type="button" data-s="3" disabled>3 Review</button></div>
+          <div id="ob-1">
+            <div class="ob-cats" role="group" aria-label="Menu" id="ob-cats">
+              <button type="button" data-c="bake" aria-pressed="true">Pastries &amp; sweets<span class="ob-cn" data-cn="bake"></span></button>
+              <button type="button" data-c="drink" aria-pressed="false">Coffee, chai &amp; more<span class="ob-cn" data-cn="drink"></span></button>
+              <button type="button" data-c="food" aria-pressed="false">Quiche, sammies &amp; burritos<span class="ob-cn" data-cn="food"></span></button>
+            </div>
+            <div class="po-items" id="ob-items"></div>
+            <p class="ob-limit" style="margin-top:10px">Pastries and sweets are limited to two per item, and quiche to four of the same, like your menu says. Prices from your online menu, October 19.</p>
+          </div>
+          <div id="ob-2" hidden>
+            <p class="q" id="ob-day-q">Pickup day</p>
+            <div class="choice" role="group" aria-labelledby="ob-day-q" id="ob-days">
+              <button type="button" data-day="today" aria-pressed="false">Today<small>same day pickup</small></button>
+              <button type="button" data-day="tomorrow" aria-pressed="false">Tomorrow<small>a pre-order, 24 hours ahead</small></button>
+            </div>
+            <p class="q" id="ob-time-q">Pickup time</p>
+            <div class="choice" role="group" aria-labelledby="ob-time-q" id="ob-times">
+              <button type="button" data-time="7 am" aria-pressed="false">7 am</button>
+              <button type="button" data-time="8:30 am" aria-pressed="false">8:30 am</button>
+              <button type="button" data-time="10 am" aria-pressed="false">10 am</button>
+              <button type="button" data-time="11:30 am" aria-pressed="false">11:30 am</button>
+              <button type="button" data-time="1 pm" aria-pressed="false">1 pm</button>
+              <button type="button" data-time="2:30 pm" aria-pressed="false">2:30 pm</button>
+            </div>
+            <div class="fld-row" style="margin-top:16px">
+              <label class="fld">Name for the order<input id="ob-name" autocomplete="off" value="Jess R."></label>
+              <label class="fld">Email<input id="ob-mail" type="email" autocomplete="off" value="jess@example.com"></label>
+            </div>
+          </div>
+          <div id="ob-3" hidden>
+            <h3 class="sheet-h" id="ob-rev-h" tabindex="-1">Your order <span class="demo-pill">Preview</span></h3>
+            <div class="ob-ticket"><div class="sheet-lines" id="ob-lines"></div></div>
+          </div>
+          <div class="ob-bar" id="ob-bar" aria-live="polite"><span id="ob-count">Nothing yet</span><b id="ob-total">$0.00</b></div>
+          <p class="hint" id="ob-hint" role="status"></p>
+          <div class="go-row" id="ob-nav"><button type="button" class="gbtn" id="ob-go">Pickup details</button><button type="button" class="gbtn ghost" id="ob-back" hidden>Back</button></div>
+          <div class="done fade-in" id="ob-done" hidden>
+            <h3 id="ob-done-h" tabindex="-1">Got it!</h3>
+            <p id="ob-done-text"></p>
+            <p class="demo-note">Preview only. Nothing was sent or charged.</p>
+            <div class="go-row"><button type="button" class="gbtn ghost" id="ob-edit">Change something</button><button type="button" class="gbtn ghost" id="ob-again">Try it again</button></div>
+          </div>
+        </div>
+        <div class="side-notes mock-note wf-note">
+          <div class="snote"><b>What you see</b>Each request lands in your portal, with a short heads-up email to you: who, what, and when they&rsquo;ll be by. If you&rsquo;d like people to pay ahead, it can go through your own Stripe instead.</div>
+          <div class="inbox"><div class="from">New order request</div><div id="ob-inbox">Waiting for an order&hellip; try it on the left</div></div>
+          <div class="snote"><b>Flipdish stays</b>Your Flipdish ordering keeps running just as it does now, for same day pickup and 24 hour pre-orders. Whether a request from here can go straight into Flipdish or your register is something I&rsquo;d check with them first, before I promise it.</div>
+        </div>
+      </div>
+    </div>
+
     <div id="preorder" data-show="crone all" data-thing="pastry pre-orders paid on your site" tabindex="-1" style="margin-top:64px">
       <p class="label with-pill"><span>Pre-order online</span> <span class="demo-pill">Preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal" style="font-size:clamp(32px,4.4vw,46px)">Save me a cinnamon roll <em>for tomorrow</em></h2>
@@ -1132,6 +1302,38 @@
       <div class="place-photos">
         <figure class="reveal"><div class="photo"><picture><source type="image/webp" srcset="images/storefront-640.webp 640w, images/storefront.webp 1200w" sizes="(max-width: 760px) 46vw, 270px"><img src="images/storefront.jpg" width="1200" height="1600" alt="New Moon&rsquo;s red wooden building with its blue door, a New Moon sign on the gable and black chairs and a table out front under a blue sky" loading="lazy"></picture></div><figcaption class="cap">1 West 1st Street</figcaption></figure>
         <figure class="reveal" style="margin-top:44px"><div class="photo"><picture><source type="image/webp" srcset="images/patio-soup-640.webp 640w, images/patio-soup.webp 1080w" sizes="(max-width: 760px) 46vw, 270px"><img src="images/patio-soup.jpg" width="1080" height="1440" alt="A bowl of chicken and orzo soup on a patio table, with the town and the hills of Nederland beyond the railing" loading="lazy"></picture></div><figcaption class="cap">Soup with a view</figcaption></figure>
+      </div>
+    </div>
+    <div class="apply" id="artists" data-show="mother crone all" data-thing="an artist application for your walls" tabindex="-1">
+      <div>
+        <p class="label with-pill"><span>For local artists</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+        <h3 class="big">Want your work <em>on our walls?</em></h3>
+        <p class="soft" style="margin-top:10px">We love featuring local artists, and we feature a new one each month. Tell us a little about your work, and we&rsquo;ll be in touch by email.</p>
+        <p class="soft" style="margin-top:10px">How far ahead the walls are booked: <span class="ph">(your note on wall dates)</span></p>
+        <p class="tier-note mock-note wf-note">Artists can apply to hang their work right from your site. Each application lands in your inbox with their link and photos, so you can pick next month&rsquo;s artist from one place. The wall dates and who&rsquo;s up this month are yours to fill in; I left them blank.</p>
+      </div>
+      <div class="card" id="ar-card">
+        <form class="stack" id="ar" novalidate aria-label="Artist application, preview" style="margin-top:0">
+          <div class="fld-row">
+            <label class="fld">Your name<input id="ar-name" autocomplete="off" value="Robin K."></label>
+            <label class="fld">Email<input id="ar-mail" type="email" autocomplete="off" value="robin@example.com"></label>
+          </div>
+          <div class="fld-row">
+            <label class="fld">Your medium<input id="ar-medium" autocomplete="off" value="Watercolor"></label>
+            <label class="fld">Link to your work or Instagram<input id="ar-link" type="url" autocomplete="off" value="instagram.com/robinpaints"></label>
+          </div>
+          <label class="fld">A few pieces, in a few words each<textarea id="ar-photos" rows="3">Three watercolors of the Indian Peaks in fall, and one of Barker Reservoir at dusk.</textarea></label>
+          <label class="fld">What would you hang?<textarea id="ar-hang" rows="2">Six framed pieces, mostly 11 by 14.</textarea></label>
+          <p class="demo-note" style="margin-top:0">On your real site, artists can add a few photos here too.</p>
+          <p class="hint" id="ar-hint" role="status"></p>
+          <div><button type="submit" class="gbtn red">Send my application (preview)</button></div>
+        </form>
+        <div class="done fade-in" id="ar-done" hidden>
+          <h3 id="ar-thanks" tabindex="-1">Thank you!</h3>
+          <p id="ar-done-text"></p>
+          <p class="demo-note">Preview only: nothing was sent. On your real site this lands in your inbox at goodvibes@newmoonbakery.com.</p>
+          <div class="go-row"><button type="button" class="gbtn ghost" id="ar-edit">Change something</button><button type="button" class="gbtn ghost" id="ar-again">Try it again</button></div>
+        </div>
       </div>
     </div>
     <figure class="wide reveal"><div class="photo rimmed-none"><picture><source type="image/webp" srcset="images/rainbow-900.webp 900w, images/rainbow.webp 2000w" sizes="(max-width: 1160px) 100vw, 1120px"><img src="images/rainbow.jpg" width="2000" height="1300" alt="A rainbow over the street outside New Moon after a rain, the red building and its patio tent among the trees" loading="lazy"></picture></div><figcaption class="cap">After the rain on 1st Street</figcaption></figure>
@@ -1305,7 +1507,7 @@
     <div class="foot-mark"><picture><source type="image/webp" srcset="images/logo.webp"><img src="images/logo.png" width="1200" height="351" alt="New Moon" loading="lazy"></picture><button type="button" class="foot-moon" id="foot-moon" aria-label="The moon"><svg class="moon" viewBox="0 0 40 40" aria-hidden="true" focusable="false" data-s="full"><circle class="m-dark" cx="20" cy="20" r="17"/><circle class="m-full" cx="20" cy="20" r="17"/></svg></button></div>
     <p>New Moon Bakery &amp; Cafe <span aria-hidden="true">&middot;</span> <span class="nw">1 West 1st Street,</span> <span class="nw">Nederland, Colorado 80466</span></p>
     <p class="foot-reach"><a href="mailto:goodvibes@newmoonbakery.com">goodvibes@newmoonbakery.com</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/newmoonbakeryandcafenederland/" target="_blank" rel="noopener">Instagram<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.facebook.com/newmoonbakeryandcafenederland/" target="_blank" rel="noopener">Facebook<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: today&rsquo;s case, your menu, your hours, Order on Flipdish), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: big order form, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (the live case, pre-orders and gift cards on your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: today&rsquo;s case, your menu, your hours, Order on Flipdish), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: big order form, artist application, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (the live case with your morning counts, orders built from your menu, pre-orders and gift cards on your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
   </div>
 </footer>
@@ -1353,6 +1555,53 @@
     var low = nmMoonPath(0.28, 'left'), half = nmMoonPath(0.5, 'left');
     [].forEach.call(document.querySelectorAll('.moon .m-low'), function (p) { if (!p.getAttribute('d')) p.setAttribute('d', low); });
     [].forEach.call(document.querySelectorAll('.moon .m-half'), function (p) { if (!p.getAttribute('d')) p.setAttribute('d', half); });
+    /* craters on every moon disc (one shared drawing in the defs) */
+    window.nmCraters = function (svg) {
+      if (!svg || svg.querySelector('.m-crat')) return;
+      var u = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      u.setAttribute('href', '#nm-craters'); u.setAttribute('class', 'm-crat'); svg.appendChild(u);
+    };
+    [].forEach.call(document.querySelectorAll('svg.moon'), nmCraters);
+  })();
+</script>
+
+<script>
+  /* the hero's turning banner: five true things from their own menu and site, one at a time, every 6 seconds. The
+     little moon waxes one step per item. Hover, focus or the pause button stop it; reduced motion rests on the first. */
+  (function () {
+    var row = document.getElementById('moonrow'), link = document.getElementById('mr-link'), k = document.getElementById('mr-k'), t = document.getElementById('mr-t'), lit = document.getElementById('mr-lit'), pause = document.getElementById('mr-pause');
+    if (!row || !link || !k || !t || !lit || !pause) return;
+    var ITEMS = [
+      { k: 'In the case', t: 'Cinnamon rolls, croissants, danishes and scones, baked fresh this morning', href: '#case' },
+      { k: 'Back for fall', t: 'Pumpkin Bars are in the case. Fall’s here!', href: '#case' },
+      { k: 'Order ahead', t: 'Order for pickup today, or 24 hours ahead, and grab it by the coffee bar', href: '#order' },
+      { k: 'Gluten free & vegan', t: 'Gluten free and vegan options, from carrot cake to Southwest quiche', href: '#menu' },
+      { k: 'The patio', t: 'A spacious outdoor patio overlooking the mountains', href: '#place' }
+    ];
+    var i = 0, paused = false, held = false;
+    function paint() {
+      var it = ITEMS[i]; k.textContent = it.k; t.textContent = it.t; link.setAttribute('href', it.href);
+      lit.setAttribute('d', nmMoonPath((i + 1) / ITEMS.length, 'right'));
+    }
+    paint();
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    pause.hidden = false;
+    function turn() {
+      if (paused || held || document.hidden) return;
+      row.classList.add('swap');
+      setTimeout(function () { i = (i + 1) % ITEMS.length; paint(); row.classList.remove('swap'); }, 420);
+    }
+    setInterval(turn, 6000);
+    pause.addEventListener('click', function () {
+      paused = !paused; pause.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pause.setAttribute('aria-label', paused ? 'Play the banner' : 'Pause the banner');
+      pause.firstChild.textContent = paused ? '▶' : '❚❚';
+    });
+    row.addEventListener('mouseenter', function () { held = true; });
+    row.addEventListener('mouseleave', function () { held = false; });
+    row.addEventListener('focusin', function () { held = true; });
+    row.addEventListener('focusout', function () { held = false; });
   })();
 </script>
 
@@ -1440,51 +1689,54 @@
 
 <script>
   /* THE SIGNATURE: today's case. Every real pastry and dessert on their online menu (prices as of Oct 19 2026), each
-     with a moon: full = plenty, waning = getting low, new = sold out. Tap one to flip its moon (in the real build the
-     counter does this from a phone); the 7 am / 11 am / 2 pm buttons show a sample day. */
+     with a moon: full = plenty, waning = getting low, new = sold out. Pollen, Oct 20: each morning they tell the page how
+     many of each they baked and the moons follow the count down. Here the counts are a sample morning: tap a pastry to
+     "order" one (Back undoes, Reset starts the morning over), the 7 am / 11 am / 2 pm buttons show a sample day, and the
+     moon key on the left filters the case by phase (tap again to clear). */
   (function () {
     var SVG = 'http://www.w3.org/2000/svg';
     var PASTRIES = [
-      { id: 'cin', n: 'Cinnamon Rolls', p: '5.50' },
-      { id: 'cro', n: 'Croissants', p: 'from 5', d: 'Plain, almond, chocolate, lavender goat cheese, ham and cheddar, sun-dried tomato and mozzarella, pistachio rose' },
-      { id: 'muf', n: 'Muffins', p: '4.50', d: 'Cherry chocolate chip, blueberry, raspberry' },
-      { id: 'sco', n: 'Scones', p: '4.50', d: 'Chocolate blueberry, raspberry, peach, cranberry orange' },
-      { id: 'apt', n: 'Apple Turnover', p: '4.50' },
-      { id: 'dan', n: 'Danishes', p: '4.50', d: 'Berry, cherry with rose icing, jalapeño and bacon' }
+      { id: 'cin', n: 'Cinnamon Rolls', p: '5.50', b: 30 },
+      { id: 'cro', n: 'Croissants', p: 'from 5', b: 40, d: 'Plain, almond, chocolate, lavender goat cheese, ham and cheddar, sun-dried tomato and mozzarella, pistachio rose' },
+      { id: 'muf', n: 'Muffins', p: '4.50', b: 24, d: 'Cherry chocolate chip, blueberry, raspberry' },
+      { id: 'sco', n: 'Scones', p: '4.50', b: 24, d: 'Chocolate blueberry, raspberry, peach, cranberry orange' },
+      { id: 'apt', n: 'Apple Turnover', p: '4.50', b: 12 },
+      { id: 'dan', n: 'Danishes', p: '4.50', b: 24, d: 'Berry, cherry with rose icing, jalapeño and bacon' }
     ];
     var DESSERTS = [
-      { id: 'pcc', n: 'Pecan Coffee Cake', p: '5.00' },
-      { id: 'hev', n: 'Heavenly Bar', p: '6.50', d: 'Graham cracker crust, condensed milk, coconut, chocolate chips, almonds, walnuts and pecans' },
-      { id: 'frb', n: 'Fruit Bar', p: '5.00', d: 'Shortbread crust, orange marmalade, raspberries and blueberries' },
-      { id: 'car', n: 'Carrot Cake', p: '6.50', gf: 1, d: 'Contains walnuts and pineapple' },
-      { id: 'mac', n: 'Coconut Macaroon', p: '2.50', gf: 1 },
-      { id: 'cmc', n: 'Chocolate Coconut Macaroon', p: '3.00', gf: 1 },
-      { id: 'ccc', n: 'Chocolate Chip Cookie', p: '2.50' },
-      { id: 'hik', n: 'Mountain Hiker Cookie', p: '5.00', gf: 1, d: 'Oats, cranberries, pecans and coconut' },
-      { id: 'tea', n: 'Tea Breads', p: '4.00', d: 'Banana, chocolate chip banana, vegan carrot, vegan banana' },
-      { id: 'pbp', n: 'Peanut Butter Puddles', p: '3.00', gf: 1 },
-      { id: 'blu', n: 'Blueberry Cardamom Cheesecake', p: '5.00', d: 'Organic blueberries and spicy cardamom, no bake' },
-      { id: 'pum', n: 'Pumpkin Bar', p: '5.50', d: 'Fall’s here' }
+      { id: 'pcc', n: 'Pecan Coffee Cake', p: '5.00', b: 12 },
+      { id: 'hev', n: 'Heavenly Bar', p: '6.50', b: 16, d: 'Graham cracker crust, condensed milk, coconut, chocolate chips, almonds, walnuts and pecans' },
+      { id: 'frb', n: 'Fruit Bar', p: '5.00', b: 16, d: 'Shortbread crust, orange marmalade, raspberries and blueberries' },
+      { id: 'car', n: 'Carrot Cake', p: '6.50', b: 12, gf: 1, d: 'Contains walnuts and pineapple' },
+      { id: 'mac', n: 'Coconut Macaroon', p: '2.50', b: 24, gf: 1 },
+      { id: 'cmc', n: 'Chocolate Coconut Macaroon', p: '3.00', b: 24, gf: 1 },
+      { id: 'ccc', n: 'Chocolate Chip Cookie', p: '2.50', b: 30 },
+      { id: 'hik', n: 'Mountain Hiker Cookie', p: '5.00', b: 18, gf: 1, d: 'Oats, cranberries, pecans and coconut' },
+      { id: 'tea', n: 'Tea Breads', p: '4.00', b: 12, d: 'Banana, chocolate chip banana, vegan carrot, vegan banana' },
+      { id: 'pbp', n: 'Peanut Butter Puddles', p: '3.00', b: 20, gf: 1 },
+      { id: 'blu', n: 'Blueberry Cardamom Cheesecake', p: '5.00', b: 12, d: 'Organic blueberries and spicy cardamom, no bake' },
+      { id: 'pum', n: 'Pumpkin Bar', p: '5.50', b: 16, d: 'Fall’s here' }
     ];
+    /* a sample day: at 11 and 2, items marked low sit at a fifth of the bake, sold out at none, the rest at 60% / 40% */
     var DAY = {
-      7: {},
-      11: { cin: 'low', cro: 'low', hev: 'low', dan: 'low' },
-      14: { cin: 'new', cro: 'low', sco: 'new', dan: 'new', hev: 'new', car: 'low', hik: 'new', pum: 'low', muf: 'low', mac: 'low' }
+      7: { rest: 1 },
+      11: { rest: 0.6, low: ['cin', 'cro', 'hev', 'dan'] },
+      14: { rest: 0.4, low: ['cro', 'car', 'pum', 'muf', 'mac'], gone: ['cin', 'sco', 'dan', 'hev', 'hik'] }
     };
     var WORDS = { full: 'Plenty', low: 'Getting low', 'new': 'Sold out' };
-    var NEXT = { full: 'low', low: 'new', 'new': 'full' };
     var lowD = nmMoonPath(0.28, 'left');
-    var state = {}, cards = {};
+    var cards = {}, left = {}, baked = {}, hist = [], filter = null, at = 11;
     function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
     function moon() {
       var s = document.createElementNS(SVG, 'svg'); s.setAttribute('class', 'moon'); s.setAttribute('viewBox', '0 0 40 40'); s.setAttribute('aria-hidden', 'true'); s.setAttribute('focusable', 'false');
       var a = document.createElementNS(SVG, 'circle'); a.setAttribute('class', 'm-dark'); a.setAttribute('cx', 20); a.setAttribute('cy', 20); a.setAttribute('r', 17);
       var b = document.createElementNS(SVG, 'circle'); b.setAttribute('class', 'm-full'); b.setAttribute('cx', 20); b.setAttribute('cy', 20); b.setAttribute('r', 17);
       var c = document.createElementNS(SVG, 'path'); c.setAttribute('class', 'm-low'); c.setAttribute('d', lowD);
-      s.appendChild(a); s.appendChild(b); s.appendChild(c); return s;
+      s.appendChild(a); s.appendChild(b); s.appendChild(c); if (window.nmCraters) nmCraters(s); return s;
     }
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function live() { var v = viewNow(); return v === 'crone' || v === 'all'; }
+    function stateOf(id) { var l = left[id], b = baked[id]; return l <= 0 ? 'new' : l <= Math.max(2, Math.round(b * 0.25)) ? 'low' : 'full'; }
     function build(list, host) {
       if (!host) return;
       list.forEach(function (it) {
@@ -1494,43 +1746,67 @@
         if (it.gf) { var g = el('span', 'gf', 'GF'); g.title = 'Gluten free'; name.appendChild(document.createTextNode(' ')); name.appendChild(g); }
         if (it.d) name.appendChild(el('small', '', it.d));
         var st = el('span', 'p-state'); name.appendChild(st);
+        var ct = el('span', 'p-count'); name.appendChild(ct);
         b.appendChild(name); b.appendChild(el('span', 'p-price', it.p));
-        b.addEventListener('click', function () { if (!live()) return; set(it.id, NEXT[state[it.id]], true); });
+        b.addEventListener('click', function () { if (!live()) return; order(it.id); });
         li.appendChild(b); host.appendChild(li);
-        cards[it.id] = { b: b, m: m, st: st, n: it.n };
+        baked[it.id] = it.b;
+        cards[it.id] = { li: li, b: b, m: m, st: st, ct: ct, n: it.n, p: it.p };
       });
     }
     build(PASTRIES, document.getElementById('case-pastries'));
     build(DESSERTS, document.getElementById('case-desserts'));
-    var ids = Object.keys(cards), sum = document.getElementById('case-sum'), live$ = document.getElementById('status-live');
-    function paintSum() {
-      var full = 0, low = 0, gone = 0;
-      ids.forEach(function (k) { if (state[k] === 'full') full++; else if (state[k] === 'low') low++; else gone++; });
-      while (sum.firstChild) sum.removeChild(sum.firstChild);
-      var b = el('b', '', String(ids.length - gone) + ' of ' + ids.length); sum.appendChild(b);
-      sum.appendChild(document.createTextNode(' still in the case' + (low ? ', ' + low + ' getting low' : '') + (gone ? ', ' + gone + ' sold out for today.' : '.')));
+    var ids = Object.keys(cards), sum = document.getElementById('case-sum');
+    var backBtn = document.getElementById('case-back'), resetBtn = document.getElementById('case-reset'), clearBtn = document.getElementById('k-clear');
+    var keyBtns = [].slice.call(document.querySelectorAll('.k-btn[data-f]'));
+    function label(c, id, s) {
+      if (live()) { c.b.setAttribute('aria-label', c.n + ', ' + c.p + '. ' + WORDS[s] + ', ' + left[id] + ' of ' + baked[id] + ' left.' + (left[id] ? ' Tap to order one.' : '')); c.b.removeAttribute('aria-disabled'); }
+      else { c.b.removeAttribute('aria-label'); c.b.setAttribute('aria-disabled', 'true'); }
     }
-    function set(id, s, announce) {
-      var c = cards[id]; if (!c) return;
-      state[id] = s; c.m.setAttribute('data-s', s); c.b.setAttribute('data-s', s); c.st.textContent = WORDS[s];
-      c.b.setAttribute('aria-label', c.n + ', ' + c.b.querySelector('.p-price').textContent + '. ' + WORDS[s] + '. Tap to change.');
-      if (announce) { paintSum(); }
+    function paint(say) {
+      var n = { full: 0, low: 0, 'new': 0 };
+      ids.forEach(function (id) {
+        var c = cards[id], s = stateOf(id); n[s]++;
+        c.m.setAttribute('data-s', s); c.b.setAttribute('data-s', s); c.st.textContent = WORDS[s];
+        c.ct.textContent = left[id] + ' of ' + baked[id] + ' left';
+        var bar = el('i'); bar.setAttribute('aria-hidden', 'true'); bar.style.setProperty('--left', Math.round(100 * left[id] / baked[id]) + '%'); c.ct.appendChild(bar);
+        c.li.hidden = !!(filter && live() && s !== filter);
+        label(c, id, s);
+      });
+      ['full', 'low', 'new'].forEach(function (k) { var x = document.getElementById('k-' + k); if (x) x.textContent = n[k]; });
+      keyBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-f') === filter ? 'true' : 'false'); b.setAttribute('aria-label', WORDS[b.getAttribute('data-f')] + ', ' + n[b.getAttribute('data-f')] + (filter === b.getAttribute('data-f') ? '. Showing only these, tap again to show everything.' : '. Tap to show only these.')); });
+      if (clearBtn) clearBtn.hidden = !filter;
+      ['grp-pastries', 'grp-desserts'].forEach(function (g) {
+        var box = document.getElementById(g); if (!box) return;
+        var any = [].some.call(box.querySelectorAll('li'), function (li) { return !li.hidden; });
+        box.querySelector('.case-empty').hidden = any;
+      });
+      if (backBtn) backBtn.disabled = !hist.length;
+      while (sum.firstChild) sum.removeChild(sum.firstChild);
+      sum.appendChild(el('b', '', String(ids.length - n['new']) + ' of ' + ids.length));
+      sum.appendChild(document.createTextNode(' still in the case' + (n.low ? ', ' + n.low + ' getting low' : '') + (n['new'] ? ', ' + n['new'] + ' sold out for today.' : '.') + (say ? ' ' + say : '')));
+    }
+    function order(id) {
+      if (left[id] <= 0) { paint(cards[id].n + ' is sold out for today.'); return; }
+      left[id]--; hist.push(id);
+      paint('Ordered one: ' + cards[id].n + ', ' + left[id] + ' left.');
     }
     function day(h) {
-      ids.forEach(function (k) { set(k, (DAY[h] || {})[k] || 'full', false); });
-      paintSum();
+      at = h; hist = []; var d = DAY[h] || DAY[7];
+      ids.forEach(function (id) {
+        var b = baked[id];
+        left[id] = (d.gone || []).indexOf(id) > -1 ? 0 : (d.low || []).indexOf(id) > -1 ? Math.max(1, Math.round(b * 0.2)) : Math.round(b * d.rest);
+      });
       [].forEach.call(document.querySelectorAll('#case-tools [data-at]'), function (x) { x.setAttribute('aria-pressed', +x.getAttribute('data-at') === h ? 'true' : 'false'); });
+      paint();
     }
     [].forEach.call(document.querySelectorAll('#case-tools [data-at]'), function (x) { x.addEventListener('click', function () { day(+x.getAttribute('data-at')); }); });
-    function labels() {
-      ids.forEach(function (k) {
-        var c = cards[k];
-        if (live()) { c.b.setAttribute('aria-label', c.n + ', ' + c.b.querySelector('.p-price').textContent + '. ' + WORDS[state[k]] + '. Tap to change.'); c.b.removeAttribute('aria-disabled'); }
-        else { c.b.removeAttribute('aria-label'); c.b.setAttribute('aria-disabled', 'true'); }
-      });
-    }
-    document.addEventListener('ex:view', labels);
-    day(11); labels();
+    if (backBtn) backBtn.addEventListener('click', function () { var id = hist.pop(); if (!id) return; left[id]++; paint('Back: ' + cards[id].n + ', ' + left[id] + ' left again.'); });
+    if (resetBtn) resetBtn.addEventListener('click', function () { day(7); paint('Reset to this morning’s bake.'); });
+    keyBtns.forEach(function (b) { b.addEventListener('click', function () { var f = b.getAttribute('data-f'); filter = filter === f ? null : f; paint(filter ? 'Showing only what’s ' + WORDS[f].toLowerCase() + '.' : 'Showing everything.'); }); });
+    if (clearBtn) clearBtn.addEventListener('click', function () { filter = null; paint('Showing everything.'); var f = keyBtns[0]; if (f) { try { f.focus({ preventScroll: true }); } catch (e) { f.focus(); } } });
+    document.addEventListener('ex:view', function () { if (!live()) filter = null; paint(); });
+    day(11);
   })();
 </script>
 
@@ -1713,6 +1989,120 @@
       reset();
     })();
 
+    /* build your order (In Bloom, Pollen Oct 20): 19 real items from their online menu at their Oct 19 prices (drinks
+       at the 12 oz price), quantities, a pickup day and time, a name, a running total, then a request. Nothing is sent. */
+    (function () {
+      var card = $('ob-card'); if (!card) return;
+      var ITEMS = [
+        { c: 'bake', n: 'Cinnamon Roll', p: 5.5, max: 2 }, { c: 'bake', n: 'Muffin', p: 4.5, d: 'Flavor of the day', max: 2 },
+        { c: 'bake', n: 'Scone', p: 4.5, d: 'Flavor of the day', max: 2 }, { c: 'bake', n: 'Danish', p: 4.5, d: 'Flavor of the day', max: 2 },
+        { c: 'bake', n: 'Apple Turnover', p: 4.5, max: 2 }, { c: 'bake', n: 'Heavenly Bar', p: 6.5, max: 2 },
+        { c: 'bake', n: 'Pecan Coffee Cake', p: 5, max: 2 }, { c: 'bake', n: 'Carrot Cake', p: 6.5, d: 'Gluten free', max: 2 },
+        { c: 'bake', n: 'Mountain Hiker Cookie', p: 5, d: 'Gluten free', max: 2 }, { c: 'bake', n: 'Pumpkin Bar', p: 5.5, max: 2 },
+        { c: 'drink', n: 'Drip Coffee', p: 3.5, d: '12 oz, house roast or decaf', max: 6 }, { c: 'drink', n: 'Latte', p: 5.45, d: 'Hot, 12 oz', max: 6 },
+        { c: 'drink', n: 'Bhakti Chai', p: 6.25, d: 'Spicy chai, hot, 12 oz', max: 6 }, { c: 'drink', n: 'Matcha Latte', p: 6.75, d: '12 oz', max: 6 },
+        { c: 'drink', n: 'New Moon Frappe', p: 8.55, d: 'Blended espresso, homemade whip', max: 6 },
+        { c: 'food', n: 'Southwest Quiche', p: 8.95, d: 'By the slice, vegetarian, gluten free', max: 4 }, { c: 'food', n: 'Veggie Quiche', p: 8.95, d: 'By the slice, vegetarian', max: 4 },
+        { c: 'food', n: 'Egg Burrito', p: 11.25, d: 'Vegetarian', max: 6 }, { c: 'food', n: 'Crisp Garden Sandwich', p: 13.75, d: 'Vegetarian', max: 6 }
+      ];
+      var st, rows = [], host = $('ob-items'), cats = $('ob-cats');
+      ITEMS.forEach(function (it, i) {
+        var row = el('div', 'po-item'), info = el('div');
+        info.appendChild(el('b', '', it.n)); info.appendChild(el('small', '', money(it.p) + (it.d ? ' · ' + it.d : '')));
+        var q = el('div', 'qty'); q.setAttribute('role', 'group'); q.setAttribute('aria-label', it.n + ', how many');
+        var minus = el('button', '', '−'); minus.type = 'button'; minus.setAttribute('aria-label', 'One less ' + it.n);
+        var out = el('output', '', '0'); out.setAttribute('aria-live', 'polite');
+        var plus = el('button', '', '+'); plus.type = 'button'; plus.setAttribute('aria-label', 'One more ' + it.n);
+        minus.addEventListener('click', function () { if (st.q[i] > 0) { st.q[i]--; paint(); } });
+        plus.addEventListener('click', function () { if (st.q[i] < it.max) { st.q[i]++; paint(); } else hint.textContent = it.max === 2 ? 'Pastries and sweets are limited to two per item.' : it.max === 4 ? 'Quiche is limited to four of the same per person.' : 'That’s plenty of ' + it.n + ' for one order.'; });
+        q.appendChild(minus); q.appendChild(out); q.appendChild(plus);
+        row.appendChild(info); row.appendChild(q); host.appendChild(row);
+        rows.push({ row: row, minus: minus, plus: plus, out: out });
+      });
+      function press(group, attr, val) { [].forEach.call(group.querySelectorAll('[' + attr + ']'), function (x) { x.setAttribute('aria-pressed', x.getAttribute(attr) === val ? 'true' : 'false'); }); }
+      cats.addEventListener('click', function (e) { var b = e.target.closest('[data-c]'); if (!b) return; st.cat = b.getAttribute('data-c'); paint(); });
+      $('ob-days').addEventListener('click', function (e) { var b = e.target.closest('[data-day]'); if (!b) return; st.day = b.getAttribute('data-day'); hint.textContent = ''; paint(); });
+      $('ob-times').addEventListener('click', function (e) { var b = e.target.closest('[data-time]'); if (!b) return; st.time = b.getAttribute('data-time'); hint.textContent = ''; paint(); });
+      function total() { return st.q.reduce(function (a, n, i) { return a + n * ITEMS[i].p; }, 0); }
+      function count() { return st.q.reduce(function (a, n) { return a + n; }, 0); }
+      function when() { return (st.day === 'tomorrow' ? 'tomorrow' : 'today') + ' at ' + st.time; }
+      function canGo(n) { return n === 1 || (n === 2 ? count() > 0 && st.max >= 2 : !!(count() && st.day && st.time) && st.max >= 3); }
+      var go = $('ob-go'), back = $('ob-back'), hint = $('ob-hint');
+      function paint() {
+        st.max = Math.max(st.max || 1, st.s);
+        rows.forEach(function (r, i) { r.out.textContent = st.q[i]; r.minus.disabled = st.q[i] === 0; r.plus.setAttribute('aria-disabled', st.q[i] >= ITEMS[i].max ? 'true' : 'false'); r.row.hidden = ITEMS[i].c !== st.cat; });
+        press(cats, 'data-c', st.cat); press($('ob-days'), 'data-day', st.day || ''); press($('ob-times'), 'data-time', st.time || '');
+        [].forEach.call(cats.querySelectorAll('[data-cn]'), function (s) { var c = s.getAttribute('data-cn'), n = st.q.reduce(function (a, q, i) { return a + (ITEMS[i].c === c ? q : 0); }, 0); s.textContent = n ? ' (' + n + ')' : ''; });
+        var n = count();
+        $('ob-count').textContent = n ? n + (n === 1 ? ' item' : ' items') + (st.s > 1 && st.day && st.time ? ', pickup ' + when() : '') : 'Nothing yet';
+        $('ob-total').textContent = money(total());
+        [1, 2, 3].forEach(function (k) { $('ob-' + k).hidden = st.s !== k; });
+        card.querySelectorAll('.steps [data-s]').forEach(function (b) {
+          var k = +b.dataset.s, on = k === st.s; b.classList.toggle('on', on);
+          if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+          b.disabled = !on && !canGo(k);
+        });
+        back.hidden = st.s === 1;
+        go.textContent = st.s === 1 ? 'Pickup details' : st.s === 2 ? 'Review my order' : 'Request my order';
+        go.classList.toggle('red', st.s === 3);
+      }
+      function lines() {
+        var box = $('ob-lines'); while (box.firstChild) box.removeChild(box.firstChild);
+        st.q.forEach(function (n, i) { if (!n) return; var r = el('div'); r.appendChild(el('span', '', n + ' × ' + ITEMS[i].n)); r.appendChild(el('span', '', money(n * ITEMS[i].p))); box.appendChild(r); });
+        var p = el('div'); p.appendChild(el('span', '', 'For ' + ($('ob-name').value.trim() || 'you') + ', pickup ' + when())); box.appendChild(p);
+        var t = el('div', 'total'); t.appendChild(el('span', '', 'Total')); t.appendChild(el('span', '', money(total()))); box.appendChild(t);
+      }
+      function jump(n) { st.s = n; hint.textContent = ''; paint(); var box = $('ob-' + n); quietFocus(n === 3 ? $('ob-rev-h') : box.querySelector('button[aria-pressed="true"], button:not([disabled]), input')); }
+      card.querySelectorAll('.steps [data-s]').forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && canGo(n)) { if (n === 3) lines(); jump(n); } }); });
+      back.addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
+      go.addEventListener('click', function () {
+        if (st.s === 1) { if (!count()) { hint.textContent = 'Add at least one thing with the + buttons first.'; return; } jump(2); return; }
+        if (st.s === 2) {
+          if (!st.day) { hint.textContent = 'Pick today or tomorrow first.'; return; }
+          if (!st.time) { hint.textContent = 'Pick a pickup time first.'; return; }
+          if (!$('ob-name').value.trim()) { hint.textContent = 'Add a name, so we know whose order it is.'; $('ob-name').focus(); return; }
+          if (!isEmail($('ob-mail').value.trim())) { hint.textContent = 'Add an email address, so we can write back if anything changes.'; $('ob-mail').focus(); return; }
+          lines(); jump(3); return;
+        }
+        var who = $('ob-name').value.trim(), what = [];
+        st.q.forEach(function (n, i) { if (n) what.push(n + ' ' + (n > 1 ? ITEMS[i].n.replace(/(ch|sh)$/, '$1e') + 's' : ITEMS[i].n)); });
+        $('ob-done-h').textContent = 'Got it, ' + who.split(/\s+/)[0] + '!';
+        $('ob-done-text').textContent = 'Your order request (' + what.join(', ') + ', ' + money(total()) + ') is in, for pickup ' + when() + '. It will be on the right side of the entryway by the coffee bar.';
+        $('ob-inbox').textContent = who + ' asked for ' + what.join(', ') + ', pickup ' + when() + ' (' + money(total()) + ').';
+        [1, 2, 3].forEach(function (k) { $('ob-' + k).hidden = true; });
+        $('ob-nav').hidden = true; $('ob-bar').hidden = true; card.querySelector('.steps').hidden = true; $('ob-done').hidden = false; quietFocus($('ob-done-h'));
+      });
+      function unDone() { $('ob-done').hidden = true; $('ob-nav').hidden = false; $('ob-bar').hidden = false; card.querySelector('.steps').hidden = false; $('ob-inbox').textContent = 'Waiting for an order… try it on the left'; }
+      function reset() {
+        st = { s: 1, cat: 'bake', q: ITEMS.map(function (_, i) { return i === 0 ? 1 : 0; }) };
+        $('ob-name').value = 'Jess R.'; $('ob-mail').value = 'jess@example.com';
+        unDone(); hint.textContent = ''; paint();
+      }
+      $('ob-edit').addEventListener('click', function () { unDone(); jump(1); });
+      $('ob-again').addEventListener('click', function () { reset(); quietFocus(rows[0].plus); });
+      reset();
+    })();
+
+    /* artist application (Tended + In Bloom) */
+    (function () {
+      var form = $('ar'); if (!form) return;
+      var hint = $('ar-hint'), done = $('ar-done');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = $('ar-name').value.trim(), mail = $('ar-mail').value.trim(), med = $('ar-medium').value.trim(), link = $('ar-link').value.trim(), hang = $('ar-hang').value.trim();
+        if (!name) { hint.textContent = 'Add your name first.'; $('ar-name').focus(); return; }
+        if (!isEmail(mail)) { hint.textContent = 'Add an email address, so we can write back.'; $('ar-mail').focus(); return; }
+        if (!med) { hint.textContent = 'Tell us your medium, like watercolor or photography.'; $('ar-medium').focus(); return; }
+        if (!link) { hint.textContent = 'Add a link to your work or your Instagram, so we can see it.'; $('ar-link').focus(); return; }
+        if (!hang) { hint.textContent = 'Tell us what you would hang.'; $('ar-hang').focus(); return; }
+        hint.textContent = ''; $('ar-thanks').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '!';
+        $('ar-done-text').textContent = 'Your application is in: ' + med.toLowerCase() + ', from ' + link + '. We feature a local artist each month, and we’ll be in touch at ' + mail + '.';
+        form.hidden = true; done.hidden = false; quietFocus($('ar-thanks'));
+      });
+      $('ar-edit').addEventListener('click', function () { done.hidden = true; form.hidden = false; quietFocus($('ar-hang')); });
+      $('ar-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
+    })();
+
     /* gift cards */
     (function () {
       var form = $('gc-form'); if (!form) return;
@@ -1807,8 +2197,8 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with today’s case and your whole menu with prices, your hours with the moon that’s lit while you’re open, your room and patio, kind words, and an Order button to your own Flipdish.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with everything in Planted plus a big order and catering form, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus the live case you flip from your phone, and pastry pre-orders and gift cards paid right on your site into your own Stripe. That’s every piece on this page.' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with everything in Planted plus a big order and catering form, an artist application for your walls, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus the live case that counts down from your morning bake, orders people build from your menu, and pastry pre-orders and gift cards paid right on your site into your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
