@@ -13,9 +13,10 @@ butternut-soup (05), vichyssoise (04), canapes (03), spanakopita (12), tortellin
 - `images/g/endive` (braised endive), `images/g/choc-strawberry` (also the gift section), `images/g/tortellini-brown-butter` (also the menus section).
 
 ## From Instagram @chefler.sky (largest size served, July 2025)
-- `images/hero` (1440 x 1918) and `images/hero-900`: Skyler at the grill on a mountain deck, in profile, sun behind. "summer is for #bbq" post, slide 4, https://www.instagram.com/chefler.sky/p/DLp1mpDsDgW/ . Photographer unknown (someone else held the camera).
+- `images/hero` (1440 x 1850, native) and `images/hero-900` (Oct 20, Pollen's note "change hero photo"): Skyler's hand holding the plum and burrata salad over the deck rail, mountains at dusk, https://www.instagram.com/chefler.sky/p/DL_nBScteCB/ (the caption credits a Food & Wine recipe; the page claims nothing about it). Also the Google and text-view link card.
+- `images/grill` (1152 x 1440, 4:5 crop of the top of the photo): Skyler at the grill on a mountain deck, in profile, sun behind (the hero until Oct 20, now the Where I cook photo). "summer is for #bbq" post, slide 4, https://www.instagram.com/chefler.sky/p/DLp1mpDsDgW/ . Photographer unknown (someone else held the camera).
 - `images/pie` (1081 x 1440): Skyler cutting a lattice cherry pie, https://www.instagram.com/chefler.sky/p/DLp262ls1UG/ . About section. Shows Skyler's face: ask before launch.
-- `images/plum` and `images/g/plum-burrata`: plum and burrata salad on the deck rail, https://www.instagram.com/chefler.sky/p/DL_nBScteCB/ (the caption credits a Food & Wine recipe; the page claims nothing about it).
+- `images/g/plum-burrata`: the same plum and burrata photo, in the dishes grid. (`images/plum` was removed Oct 20; the hero uses the photo now.)
 - `images/ig/paella`, `images/ig/shrimp`, `images/ig/sole`: "see food. #SEAfood!" post, slides 1, 2, 5, https://www.instagram.com/chefler.sky/p/DLqDML7ScwX/ .
 - `images/ig/skewers`: bbq post slide 2, cropped to the tray only (a railing sign with words is cut out).
 
@@ -31,3 +32,7 @@ butternut-soup (05), vichyssoise (04), canapes (03), spanakopita (12), tortellin
 
 ## Fonts
 Caveat (the deck's own hand), Courier Prime (stand-in for the deck's Courier New), Vollkorn (body), all Google Fonts.
+
+
+## Hero video (checked Oct 20 2026)
+Pollen asked for a video of Skyler cooking. None exists publicly: Instagram @chefler.sky has 4 posts, all photos (the two carousels checked slide by slide), no Reels tab, no highlights, nothing tagged; the chef profile page has no video; the Culinary Portfolio deck has no video. A sticky note under the hero asks Skyler for a short clip.
