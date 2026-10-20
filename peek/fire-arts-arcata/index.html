@@ -131,6 +131,17 @@
 
   /* ---------- the registration strip: their red, a hot mark (same in both modes) ---------- */
   .status { position: relative; z-index: 5; }
+  /* the hero's class ticker (Pollen, Oct 20: "pls add a class rotating banner here"): the classes that still have spots, one at a time,
+     on the photo, no card. It stops on hover or focus and with the pause button, and stays on one class under reduced motion. */
+  .class-ticker { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; margin-top: 26px; padding-top: 14px; max-width: 680px; border-top: 1px solid rgba(255, 238, 214, .38); color: #fff4e4; text-shadow: 0 1px 14px rgba(15, 6, 3, .85); font-size: 15.5px; line-height: 1.4; position: relative; padding-right: 40px; }
+  .class-ticker[hidden] { display: none; }
+  .ct-label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #ffc23a; font-weight: 700; }
+  .class-ticker a { color: inherit; text-decoration: none; transition: opacity .35s ease; }
+  .class-ticker a b { font-weight: 700; text-decoration: underline; text-decoration-color: rgba(255, 194, 58, .7); text-underline-offset: 4px; }
+  .class-ticker a:focus-visible, .ct-pause:focus-visible { outline: 2px solid #ffc23a; outline-offset: 3px; border-radius: 4px; }
+  .class-ticker.swap a { opacity: 0; }
+  .ct-pause { position: absolute; right: 0; top: 10px; width: 28px; height: 28px; display: grid; place-items: center; font: inherit; font-size: 9px; line-height: 1; color: #fff4e4; background: rgba(15, 6, 3, .35); border: 1px solid rgba(255, 238, 214, .55); border-radius: 50%; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .class-ticker a { transition: none; } }
   .status-strip { margin: 0; background: #c8110a; color: #fff; text-align: center; font-size: 14px; line-height: 1.4; }
   .status-strip { position: relative; }
   .status-strip a { transition: opacity .35s ease; }
@@ -1091,6 +1102,11 @@
         <div class="cta-row">
           <a class="btn hot" href="#pick">Find your class</a>
           <a class="btn line" href="#member">Become a member</a>
+        </div>
+        <div class="class-ticker" id="class-ticker" hidden>
+          <span class="ct-label">Open classes</span>
+          <a id="ct-link" href="#pick"><b id="ct-name"></b> <span id="ct-meta"></span></a>
+          <button type="button" class="ct-pause" id="ct-pause" aria-pressed="false" aria-label="Pause the class rotation"><span aria-hidden="true">&#10074;&#10074;</span></button>
         </div>
       </div>
     </div>
@@ -3275,6 +3291,44 @@
     io.observe(band.querySelector('.holes'));
     var floor = band.querySelector('.fire-floor');
     if (floor) new IntersectionObserver(function (es) { band.classList.toggle('burning', es[es.length - 1].isIntersecting); }, { rootMargin: '60px 0px' }).observe(floor);
+  })();
+</script>
+
+<script>
+  /* the hero class ticker: classes with spots left, one at a time. Before registration opens it says when it opens instead of spots. */
+  (function () {
+    var box = document.getElementById('class-ticker'), nameEl = document.getElementById('ct-name'), metaEl = document.getElementById('ct-meta'), link = document.getElementById('ct-link'), pauseBtn = document.getElementById('ct-pause');
+    var all = window.FA_CLASSES; if (!box || !all || !all.length) return;
+    var DAYS = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], S = window.FA_SESSION || {};
+    var before = S.opens && Date.now() < Date.parse(S.opens);
+    var list = all.filter(function (c) { return before || c.left > 0; }).sort(function (a, b) { return (a.day - b.day) || (a.start - b.start); });
+    if (!list.length) return;
+    list = list.filter(function (c, i) { return i % Math.max(1, Math.ceil(list.length / 8)) === 0; }).slice(0, 8);
+    function metaFor(c) {
+      var s = DAYS[c.day] + ' ' + c.time + ' with ' + c.who;
+      if (before) return s + ' (registration opens ' + (S.opensText || 'soon') + ')';
+      return s + ' (' + c.left + (c.left === 1 ? ' spot' : ' spots') + ' left)';
+    }
+    var idx = 0, timer = null, paused = false, hovering = false;
+    function show(i) { var c = list[i]; nameEl.textContent = c.t; metaEl.textContent = metaFor(c); link.setAttribute('href', '#pick'); }
+    show(0); box.hidden = false;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || list.length < 2) { pauseBtn.hidden = true; return; }
+    function turn() {
+      if (paused || hovering) return;
+      box.classList.add('swap');
+      setTimeout(function () { idx = (idx + 1) % list.length; show(idx); box.classList.remove('swap'); }, 360);
+    }
+    timer = setInterval(turn, 5500);
+    pauseBtn.addEventListener('click', function () {
+      paused = !paused; pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pauseBtn.setAttribute('aria-label', paused ? 'Play the class rotation' : 'Pause the class rotation');
+      pauseBtn.firstChild.innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
+    });
+    box.addEventListener('mouseenter', function () { hovering = true; });
+    box.addEventListener('mouseleave', function () { hovering = false; });
+    box.addEventListener('focusin', function () { hovering = true; });
+    box.addEventListener('focusout', function () { hovering = false; });
   })();
 </script>
 
