@@ -305,7 +305,12 @@ const demoOn = /const DEMO = true;/.test(js);
     if (!/<label class="field-label" for="in-msg">Write to Taya<\/label>/.test(sec)) fail('portal.html: the box should be labelled “Write to Taya”');
     if (!/<textarea id="in-msg"[^>]*maxlength="4000"/.test(sec)) fail('portal.html: the message box should be a textarea of up to 4000 characters');
     if (!/<button class="btn wide" type="submit" id="b-msg"><span>Send<\/span><\/button>/.test(sec)) fail('portal.html: the message box needs its Send button');
-    if (/attach|<input type="file"/i.test(sec.replace(/<!--[\s\S]*?-->/g, '').replace(/photos or files, email me/, ''))) fail('portal.html: no attachments in Messages (phase 1)');
+    // (Oct 20 2026, rich messages, hub DEPLOY.md section 95; changed on purpose) attachments come only with the rich
+    // composer, which portal-rich.js makes: the page itself has no file input, the plain line still says to email files
+    const plainSec = sec.replace(/<!--[\s\S]*?-->/g, '').replace(/<p class="msg-intro" id="msg-intro-rich"[\s\S]*?<\/p>/, '');
+    if (/attach|<input type="file"/i.test(plainSec.replace(/photos or files, email me/, ''))) fail('portal.html: attachments outside the rich composer in Messages');
+    if (!/id="msg-intro-plain"[^>]*>[^<]*photos or files, email me/.test(sec)) fail('portal.html: the plain Messages line should still say to email photos or files');
+    if (!/<p class="msg-intro" id="msg-intro-rich" hidden>/.test(sec) || !/<div class="msg-composer" id="msg-rich" hidden><\/div>/.test(sec)) fail('portal.html: the rich line and the composer’s place should be in Messages, hidden');
   }
   const words = [htmlWords].concat(jsStrings).join('\n');
   const hint = words.match(/as you type|while you(?:’|')?re typing|while you type|before you send|what you(?:’|')re typing|typing indicator|Taya can see/i);
@@ -316,6 +321,107 @@ const demoOn = /const DEMO = true;/.test(js);
   if (!/if \(PREVIEW\) box\.disabled = true;/.test(js)) fail('portal.js: the message box should be off in a Studio preview');
   if (!/drafts\.set\('message', \$\('#in-msg'\)\.value\)/.test(js)) fail('portal.js: unsent message words should stay with the page’s drafts (sessionStorage)');
   if (!/plural\(unreadMsgs, 'new message', 'new messages'\)/.test(js)) fail('portal.js: Home should say “1 new message” while one of Taya’s waits');
+}
+
+// ---- Rich messages (Oct 20 2026, hub DEPLOY.md section 95; added on purpose) ----
+// portal-rich.js: loaded before portal.js, no HTML from strings, its words pass the same rules; the renderer, run here in
+// plain Node with a pretend document, makes nothing but p, br, strong, em, u, ul, ol, li and a (https links only, rel
+// noopener noreferrer nofollow) whatever it is given; the markup comes back the same when written twice; 41 links, too
+// much text and anything shaped like HTML are handled; the attachment read is a preview read, the upload is not.
+{
+  const richFile = 'portal-rich.js';
+  if (!fs.existsSync(path.join(root, richFile)) || !fs.existsSync(path.join(root, 'portal-rich.css'))) fail('missing portal-rich.js or portal-rich.css');
+  else {
+    const rsrc = read(richFile);
+    const richAt = html.indexOf('src="portal-rich.js'), portalAt2 = html.indexOf('src="portal.js');
+    if (richAt < 0 || richAt > portalAt2) fail('portal.html: portal-rich.js should load before portal.js');
+    if (!/href="portal-rich\.css\?v=/.test(html)) fail('portal.html: portal-rich.css is not linked');
+    if (/\.innerHTML|outerHTML\s*=|insertAdjacentHTML|document\.write|\beval\(|new Function\(|createContextualFragment|DOMParser/.test(rsrc)) fail('portal-rich.js: builds the page from HTML strings or runs strings as code');
+    if (/\.innerHTML|outerHTML\s*=|insertAdjacentHTML|createContextualFragment|DOMParser/.test(js)) fail('portal.js: HTML from strings');
+    const richStrings = literals(rsrc).filter((s) => /[A-Za-z]{2,} [A-Za-z]{2,}/.test(s));
+    for (const s of richStrings) {
+      for (const [re, what] of FORBIDDEN) { const m = s.match(re); if (m) fail(`portal-rich.js: ${what}: "${s.slice(0, 80)}"`); }
+      if (/\\'/.test(s)) fail(`portal-rich.js: a straight apostrophe in "${s.slice(0, 80)}" (use ’)`);
+      if (/\bnever\b/i.test(s)) fail(`portal-rich.js: "never" in "${s.slice(0, 80)}"`);
+      if (/\b(we|us|our)\b/i.test(s)) fail(`portal-rich.js: I / me, not we / us / our: "${s.slice(0, 80)}"`);
+    }
+    if (!js.includes("'/api/webfaery/portal/message-file'") || js.includes("'/api/webfaery/portal/message-upload'") || js.includes("'/api/webfaery/portal/message-unattach'")) fail('portal.js: the attachment read should be a preview read, the upload and unattach not');
+    if (!/window\.WFRich\.render\(m\.body, document\)/.test(js)) fail('portal.js: rich bodies should be drawn by WFRich.render');
+
+    const R = createRequire(import.meta.url)(path.join(root, richFile));
+    // a pretend document: every element and attribute made is written down
+    const fakeDoc = () => {
+      const made = [], attrs = [];
+      const node = (tag) => ({
+        tag, kids: [],
+        appendChild(c) { this.kids.push(c); return c; },
+        setAttribute(k, v) { attrs.push([tag, k, String(v)]); },
+        set textContent(v) { this.kids = [{ tag: '#text', text: String(v) }]; },
+        get textContent() { return this.kids.map((c) => (c.tag === '#text' ? c.text : c.textContent)).join(''); },
+      });
+      return {
+        made, attrs,
+        createElement(t) { made.push(String(t).toLowerCase()); return node(String(t).toLowerCase()); },
+        createTextNode(t) { return { tag: '#text', text: String(t) }; },
+        createDocumentFragment() { return node('#frag'); },
+      };
+    };
+    const ALLOWED = ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'a'];
+    if (R.ALLOWED.join() !== ALLOWED.join()) fail('portal-rich.js: ALLOWED drifted');
+    const hostile = [
+      '<script>alert(1)</script>', '<img src=x onerror=alert(1)>', '"><svg onload=alert(1)>', '<iframe src="javascript:alert(1)">',
+      '[click](javascript:alert(1))', '[click](JAVASCRIPT:alert(1))', '[x](data:text/html;base64,PHNjcmlwdD4=)', '[x](//evil.example/a)',
+      '[x](http://plain.example)', '[x](https://good.example" onmouseover="alert(1))', '[x](https://good.example/a b)', '[x](https://user@evil.example)',
+      '[x](https://evil.example/\u0000)', '[<b>x</b>](https://ok.example)', '**' + '*__'.repeat(3000), '['.repeat(5000) + 'x](https://ok.example)',
+      '- <script>\n1. <img onerror=x>\n\n__**[a](https://a.example)**__', String.fromCharCode(0x202E) + 'gnp.exe', '&lt;script&gt;', '<a href="https://ok.example">x</a>',
+      '[ok](https://ok.example/path?q=1#frag)', 'x'.repeat(30000),
+    ];
+    const t0 = Date.now();
+    for (const h of hostile) {
+      const d = fakeDoc();
+      let frag = null;
+      try { frag = R.render(h, d); } catch (e) { fail(`portal-rich.js: render threw on ${JSON.stringify(h.slice(0, 40))}: ${e.message}`); continue; }
+      const bad = d.made.filter((t) => !ALLOWED.includes(t));
+      if (bad.length) fail(`portal-rich.js: render made <${bad[0]}> from ${JSON.stringify(h.slice(0, 40))}`);
+      for (const [tag, k, v] of d.attrs) {
+        if (tag !== 'a' || !['href', 'rel', 'target'].includes(k)) fail(`portal-rich.js: render set ${k} on <${tag}>`);
+        if (k === 'href' && !/^https:\/\/[A-Za-z0-9.-]+[^\s"'<>]*$/.test(v)) fail(`portal-rich.js: render made a link to ${JSON.stringify(v)}`);
+        if (k === 'rel' && v !== 'noopener noreferrer nofollow') fail('portal-rich.js: links need rel="noopener noreferrer nofollow"');
+        if (k === 'target' && v !== '_blank') fail('portal-rich.js: links open in a new tab');
+      }
+      if (/javascript:|data:text/i.test(JSON.stringify(d.attrs))) fail(`portal-rich.js: a javascript: or data: link from ${JSON.stringify(h.slice(0, 40))}`);
+      if (h === '<script>alert(1)</script>' && frag.textContent !== '<script>alert(1)</script>') fail('portal-rich.js: a script tag in the markup should show as letters');
+    }
+    if (Date.now() - t0 > 3000) fail(`portal-rich.js: rendering the hostile set took ${Date.now() - t0} ms (a markup bomb?)`);
+    // what it should make
+    const shape = (text) => { const d = fakeDoc(); const f = R.render(text, d); return { tags: d.made.join(','), text: f.textContent, attrs: d.attrs }; };
+    const s1 = shape('Hi **bold** *it* __under__ [site](https://webfaery.love/a)\nline two\n\n- one\n- two\n\n1. first\n2. second');
+    if (s1.tags !== 'p,strong,em,u,a,br,ul,li,li,ol,li,li') fail(`portal-rich.js: render shape ${s1.tags}`);
+    if (!s1.attrs.some(([t, k, v]) => t === 'a' && k === 'href' && v === 'https://webfaery.love/a')) fail('portal-rich.js: the https link should be a link');
+    if (shape('2 \\* 3 \\_ \\[x\\]').text !== '2 * 3 _ [x]') fail('portal-rich.js: backslash escapes should show the letter');
+    // the validator (the same core as the server's)
+    const N = R.normalize;
+    const okText = (s) => { const r = N(s); return r.ok ? r.text : '!' + r.reason; };
+    if (okText('<script>alert(1)</script>hi') !== 'alert(1)hi') fail(`portal-rich.js: normalize should drop tag shapes, got ${okText('<script>alert(1)</script>hi')}`);
+    if (okText('<img src=x onerror=alert(1)>') !== '!empty') fail('portal-rich.js: an img tag alone should leave nothing');
+    if (okText('[x](javascript:alert(1))') !== '\\[x\\](javascript:alert(1))') fail(`portal-rich.js: a javascript: link should stay plain letters, got ${okText('[x](javascript:alert(1))')}`);
+    if (okText('[x](data:text/html,hi)').includes('](data') && !okText('[x](data:text/html,hi)').startsWith('\\[')) fail('portal-rich.js: a data: link should stay plain letters');
+    const links = (n) => Array.from({ length: n }, (_, i) => '[l' + i + '](https://l' + i + '.example)').join(' ');
+    if (!N(links(40)).ok || N(links(41)).reason !== 'links') fail('portal-rich.js: 40 links are fine, 41 are refused');
+    if (N('x'.repeat(8000)).ok !== true || N('x'.repeat(8001)).reason !== 'long') fail('portal-rich.js: 8000 characters are fine, 8001 are refused');
+    if (N(42).reason !== 'type' || N('   \n ').reason !== 'empty') fail('portal-rich.js: not text or empty should be refused');
+    // 'https://a.example/' is 18 characters: 18 + 481 = 499 is a link, 18 + 482 = 500 is plain letters
+    if (!N('[x](https://a.example/' + 'p'.repeat(481) + ')').text.startsWith('[x](') || N('[x](https://a.example/' + 'p'.repeat(482) + ')').text.startsWith('[x](')) fail('portal-rich.js: link hrefs should be under 500 characters');
+    const t1 = Date.now();
+    N('**__*'.repeat(1500)); N('['.repeat(15000)); N('*'.repeat(15000)); N(('**a' + '__b').repeat(1500));
+    if (Date.now() - t1 > 2000) fail(`portal-rich.js: normalizing markup bombs took ${Date.now() - t1} ms`);
+    for (const s of ['***x***', '*a**b*', '**a***b*', '___x___', 'a\\*b', '- one\n- two\n\nthree\n\\- four', '1. a\n7. b', '**[x](https://a.example)** tail  ', '**un*closed', '[a\\]b](https://a.example)', ...hostile.slice(0, 20)]) {
+      const a = N(s), b = a.ok ? N(a.text) : null;
+      if (a.ok && (!b.ok || b.text !== a.text)) fail(`portal-rich.js: normalize should be stable: ${JSON.stringify(s.slice(0, 30))} gave ${JSON.stringify(a.text.slice(0, 40))} then ${JSON.stringify(b.ok ? b.text.slice(0, 40) : b.reason)}`);
+    }
+    if (okText('1. a\n7. b') !== '1. a\n2. b') fail('portal-rich.js: numbered items are numbered 1, 2, 3');
+    if (R.EMOJI.length !== 60 || new Set(R.EMOJI).size !== 60) fail(`portal-rich.js: the emoji grid should be 60 different ones (got ${R.EMOJI.length})`);
+  }
 }
 
 if (failures.length) {
