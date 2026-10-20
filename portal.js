@@ -393,13 +393,14 @@
     return data;
   };
   // pictures and files go as a form, with a progress report while they travel
-  const sendForm = (path, fields, files, key, onProgress) => new Promise((resolve, reject) => {
+  // [papers b24] base: another route family (the business papers' /add); BASE when not given, as before
+  const sendForm = (path, fields, files, key, onProgress, base) => new Promise((resolve, reject) => {
     if (PREVIEW) return; // a Studio preview sends no files (every form is a change): it quietly never answers
     const fd = new FormData();
     fields.forEach(([k, v]) => fd.append(k, v));
     files.forEach((f) => fd.append('files', f, f.name));
     const x = new XMLHttpRequest();
-    x.open('POST', BASE + path);
+    x.open('POST', (base || BASE) + path);
     x.setRequestHeader('X-WF-Session', key);
     x.timeout = 5 * 60 * 1000;
     if (onProgress && x.upload) x.upload.onprogress = (e) => { if (e.lengthComputable) onProgress(e.loaded / e.total); };
@@ -455,6 +456,11 @@
     visits: () => postJSON('/mine', {}, token, VISITS),
     // their own business papers (Oct 15 2026): { papers: [] } unless Taya added some
     papers: () => postJSON('/mine', {}, token, PAPERS),
+    // (Oct 20 2026, hub section 98) they add their own: one file with an optional name, kind and "good until" day; a
+    // new name or Remove for one of THEIR OWN papers only (the server checks; Taya's have no id here)
+    papersAdd: (fields, file, onProgress) => sendForm('/add', fields, [file], token, onProgress, PAPERS),
+    papersRename: (id, title) => postJSON('/rename', { id, title }, token, PAPERS),
+    papersRemove: (id) => postJSON('/remove', { id }, token, PAPERS),
     // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
     careManage: () => postJSON('/care-manage', {}, token),
     // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
@@ -985,7 +991,12 @@
     rcReset();
     papers = null;
     papersAt = 0;
+    ppUpload = null;
+    ppAsk = '';
+    ppEditing = '';
     $('#pp-list').replaceChildren();
+    ppOpenForm(false);
+    $('#pp-add').hidden = true;
     $('#sec-papers').hidden = true;
     msgReset();
     nl = null;
@@ -6126,8 +6137,17 @@
      papers for: the server answers papers: [] for everyone else, and the section and its tab stay hidden. The server
      sends only their own active papers (nothing sent from here picks one). Each file comes as a link that works for 30
      minutes; a tap on a link older than 20 asks for fresh ones first. */
-  let papers = null;         // [{ kind, title, issuer, number, from, until, left, contact, notes, file }] (cleaned)
+  /* (Oct 20 2026, hub DEPLOY.md section 98) They add their own too: "Add a paper" under the list (a file, and if they
+     like a name, what it is and a "good until" day), shown only when the server sends `upload` (so with an older
+     server the card is exactly as before, and for anyone with no papers it stays hidden). Theirs say "Added by you" and
+     have Rename (a small field in the row) and Remove (asks once in the row, not a pop-up); Taya's have neither. Files
+     are checked by the server by their real bytes. A Studio preview sees the card with these switched off. */
+  let papers = null;         // [{ id, theirs, kind, title, issuer, number, from, until, left, contact, notes, file }] (cleaned)
   let papersAt = 0;          // when they came
+  let ppUpload = null;       // { readOnly, eachMb, filesLeft, mbLeft } when the server takes their own papers, else null
+  let ppAsk = '';            // the id of their paper whose "Remove it?" shows
+  let ppEditing = '';        // the id of their paper whose Rename field shows
+  const PP_ID = /^[a-z0-9]{15}$/;
   const PP_FRESH_MS = 20 * 60 * 1000;
   const PP_KINDS = { insurance: 'Insurance', license: 'Business license', permit: 'Permit', certification: 'Certification', other: 'Paper' };
   // only the server's own file links (or, in the preview, the sample's blob) become links
@@ -6143,6 +6163,7 @@
     try {
       const d = await api.papers();
       papers = cleanPapers(d);
+      ppUpload = cleanUpload(d);
       papersAt = Date.now();
       renderPapers();
     } catch (err) {
@@ -6152,11 +6173,13 @@
   }
   function cleanPapers(d) {
     const list = d && typeof d === 'object' ? arr(d.papers) : [];
-    return list.slice(0, 50).map((p) => {
+    return list.slice(0, 80).map((p) => {
       if (!p || typeof p !== 'object' || !cleanLine(p.title, 120)) return null;
       const f = p.file && typeof p.file === 'object' ? p.file : null;
       const link = f ? ppLink(f.link) : '';
+      const theirs = p.added_by === 'client' && PP_ID.test(str(p.id, 20));
       return {
+        id: theirs ? p.id : '', theirs,
         kind: Object.prototype.hasOwnProperty.call(PP_KINDS, p.kind) ? p.kind : 'other',
         title: cleanLine(p.title, 120), issuer: cleanLine(p.issuer, 120), number: cleanLine(p.member_or_number, 80),
         from: vsDay(p.valid_from), until: vsDay(p.valid_until),
@@ -6165,6 +6188,13 @@
         file: link ? { link, type: f.type === 'pdf' || f.type === 'image' ? f.type : 'file', name: cleanLine(f.name, 120) } : null
       };
     }).filter(Boolean);
+  }
+  // (section 98) the server takes their own papers: how much room is left; null when it doesn't (an older server)
+  function cleanUpload(d) {
+    const u = d && typeof d === 'object' && d.upload && typeof d.upload === 'object' ? d.upload : null;
+    if (!u) return null;
+    const n = (v, max) => (Number.isInteger(v) && v >= 0 ? Math.min(v, max) : 0);
+    return { readOnly: u.read_only === true || PREVIEW, eachMb: n(u.each_mb, 100) || 10, filesLeft: n(u.files_left, 1000), mbLeft: n(u.mb_left, 100000) };
   }
   // the renewal line: only when it is close (30 days or fewer) or has ended
   function ppDue(p) {
@@ -6182,9 +6212,10 @@
     return '';
   }
   function ppRow(p) {
-    const li = make('li', 'pp-item');
+    const li = make('li', 'pp-item' + (p.theirs ? ' theirs' : ''));
+    if (p.theirs) li.dataset.id = p.id;
     const what = make('div', 'what');
-    what.append(make('b', null, p.title), make('small', null, [PP_KINDS[p.kind], p.issuer].filter(Boolean).join(' · ')));
+    what.append(make('b', null, p.title), make('small', null, [PP_KINDS[p.kind], p.issuer, p.theirs ? 'Added by you' : ''].filter(Boolean).join(' · ')));
     const facts = make('dl', 'pp-facts');
     const fact = (label, value, cls) => {
       if (!value) return;
@@ -6200,12 +6231,124 @@
     const due = ppDue(p);
     if (due) what.append(make('p', due.cls, due.text));
     li.append(what);
-    if (p.file) {
+    if (p.file || p.theirs) {
       const acts = make('span', 'acts');
-      acts.append(ppDownload(p));
+      if (p.file) acts.append(ppDownload(p));
+      if (p.theirs) ppOwnActs(p, acts);
       li.append(acts);
     }
+    if (p.theirs && ppEditing === p.id) li.append(ppRenameForm(p));
+    if (p.theirs && ppAsk === p.id) li.append(ppAskRow(p));
     return li;
+  }
+  // (section 98) Rename and Remove, on their own papers only
+  function ppOwnActs(p, acts) {
+    const ren = make('button', 'later pp-ren', 'Rename');
+    ren.type = 'button';
+    ren.setAttribute('aria-label', 'Rename ' + p.title);
+    ren.addEventListener('click', () => { ppAsk = ''; ppEditing = p.id; renderPapers(); focusEl($('#in-pp-ren'), true); });
+    const rm = make('button', 'later pp-rm', 'Remove');
+    rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove ' + p.title);
+    rm.addEventListener('click', () => { ppEditing = ''; ppAsk = p.id; renderPapers(); focusEl($('#b-pp-keep'), true); });
+    acts.append(ren, rm);
+  }
+  function ppRenameForm(p) {
+    const f = make('form', 'pp-ren-form');
+    f.noValidate = true;
+    const lab = make('label', 'field-label', 'A new name');
+    lab.htmlFor = 'in-pp-ren';
+    const inp = make('input');
+    inp.id = 'in-pp-ren';
+    inp.type = 'text';
+    inp.maxLength = 120;
+    inp.autocomplete = 'off';
+    inp.value = p.title;
+    const err = make('p', 'err');
+    err.id = 'pp-ren-err';
+    err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const save = make('button', 'btn small');
+    save.type = 'submit';
+    save.append(make('span', null, 'Save the name'));
+    const no = make('button', 'later', 'Not now');
+    no.type = 'button';
+    no.addEventListener('click', () => { ppEditing = ''; renderPapers(); ppFocusRow(p.id, '.pp-ren'); });
+    btns.append(save, no);
+    f.append(lab, inp, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const title = cleanLine(inp.value, 120);
+      if (!title) { err.textContent = 'Give it a name first, even a short one.'; err.hidden = false; focusEl(inp); return; }
+      if (title === p.title) { ppEditing = ''; renderPapers(); ppFocusRow(p.id, '.pp-ren'); return; }
+      setBusy(save, true, 'Saving…');
+      try {
+        await api.papersRename(p.id, title);
+        ppEditing = '';
+        await loadPapers();
+        toast('Renamed.');
+        ppFocusRow(p.id, '.pp-ren');
+      } catch (e) {
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        setBusy(save, false);
+        err.textContent = ppWords(e);
+        err.hidden = false;
+      }
+    });
+    return f;
+  }
+  function ppAskRow(p) {
+    const box = make('div', 'pp-ask');
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', 'Remove ' + p.title + '?');
+    box.append(make('p', null, 'Remove “' + p.title + '” from your portal? Its file goes too.'));
+    const btns = make('div', 'dc-btns');
+    const yes = make('button', 'btn small');
+    yes.type = 'button';
+    yes.append(make('span', null, 'Yes, remove it'));
+    const keep = make('button', 'later', 'Keep it');
+    keep.type = 'button';
+    keep.id = 'b-pp-keep';
+    keep.addEventListener('click', () => { ppAsk = ''; renderPapers(); ppFocusRow(p.id, '.pp-rm'); });
+    yes.addEventListener('click', async () => {
+      setBusy(yes, true, 'Removing…');
+      try {
+        await api.papersRemove(p.id);
+        ppAsk = '';
+        await loadPapers();
+        toast('Removed.');
+        focusEl($('#h-papers'), true);
+      } catch (e) {
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        setBusy(yes, false);
+        if (e.code === 'not_found') { ppAsk = ''; await loadPapers(); toast('That one was already gone.'); return; }
+        toast(ppWords(e));
+      }
+    });
+    btns.append(yes, keep);
+    box.append(btns);
+    return box;
+  }
+  function ppFocusRow(id, sel) {
+    const li = $$('#pp-list li.theirs').find((x) => x.dataset.id === id);
+    const b = li ? $(sel, li) : null;
+    if (b) focusEl(b, true);
+  }
+  // what people read when adding, renaming or removing doesn't go through
+  function ppWords(e) {
+    const r = e && e.reason;
+    const each = (ppUpload && ppUpload.eachMb) || 10;
+    if (e && (e.code === 'too_big' || (e.code === 'input' && r === 'size'))) return 'That file is bigger than ' + each + ' MB. A smaller copy, or a PDF of it, will fit.';
+    if (e && e.code === 'input' && r === 'type') return 'That kind of file can’t go here. A PDF, a photo, a Word, Excel or PowerPoint file, or plain text works.';
+    if (e && e.code === 'input' && r === 'too_many') return 'You’ve added 25 papers, which is all this card holds. Remove one you don’t need, or email it to me at ' + TAYA + '.';
+    if (e && e.code === 'input' && r === 'full') return 'Your papers are using all of their 200 MB. Remove one you don’t need, or email it to me at ' + TAYA + '.';
+    if (e && e.code === 'input' && r === 'count') return 'Pick one file to add.';
+    if (e && e.code === 'input' && e.field === 'valid_until') return 'That “good until” day doesn’t look right. Pick it from the calendar, or leave it empty.';
+    if (e && e.code === 'input' && e.field === 'title') return 'Give it a name first, even a short one.';
+    if (e && e.code === 'slow_down' && !e.retry) return 'Another file is still on its way. Try again in a moment.';
+    if (e && e.code === 'slow_down') return 'That’s a lot of papers in one go. Try again in an hour, or email them to me at ' + TAYA + '.';
+    if (e && e.code === 'not_ready') return 'Adding papers is resting right now. Email the copy to me at ' + TAYA + ' and I’ll put it here.';
+    return words(e);
   }
   function ppDownload(p) {
     const a = make('a', 'open-btn');
@@ -6231,16 +6374,90 @@
     a.setAttribute('aria-busy', 'true');
     try {
       await loadPapers();
-      const p = (papers || []).find((x) => x.title === old.title && x.kind === old.kind && x.file);
+      const p = (papers || []).find((x) => (old.theirs ? x.id === old.id : x.title === old.title && x.kind === old.kind) && x.file);
       if (p && win && !win.closed) win.location.href = p.file.link;
       else if (win) win.close();
     } finally { if (document.body.contains(a)) a.removeAttribute('aria-busy'); }
   }
+  // shown when there are papers, or (section 98) when the server takes their own; hidden otherwise, as before
   function renderPapers() {
     const sec = $('#sec-papers');
-    if (!papers || !papers.length) { setHidden(sec, true); return; }
-    $('#pp-list').replaceChildren(...papers.map(ppRow));
+    const list = papers || [];
+    if (!list.length && !ppUpload) { setHidden(sec, true); return; }
+    if (ppAsk && !list.some((x) => x.theirs && x.id === ppAsk)) ppAsk = '';
+    if (ppEditing && !list.some((x) => x.theirs && x.id === ppEditing)) ppEditing = '';
+    $('#pp-list').replaceChildren(...list.map(ppRow));
+    setHidden($('#pp-list'), !list.length);
+    setHidden($('#pp-none'), !!list.length || !ppUpload);
+    setHidden($('#pp-add'), !ppUpload);
+    if (ppUpload) {
+      const full = ppUpload.filesLeft < 1 || ppUpload.mbLeft < 1;
+      $('#pp-room').textContent = full
+        ? 'Your papers have used all their room (25 files, 200 MB). Remove one you don’t need to add another.'
+        : 'Room for ' + plural(ppUpload.filesLeft, 'more file', 'more files') + ', ' + ppUpload.mbLeft + ' MB in all. Only you and I can see them.';
+      $('#b-pp-send').disabled = full;
+    }
     setHidden(sec, false);
+  }
+
+  // ---- (section 98) Add a paper
+  function ppOpenForm(open) {
+    const f = $('#f-pp');
+    f.hidden = !open;
+    $('#b-pp-add').setAttribute('aria-expanded', String(open));
+    setHidden($('#b-pp-add'), open);
+    if (open) { ppErr(''); $('#pp-status').textContent = ''; focusEl($('#pp-form-h')); }
+    else { f.reset(); ppErr(''); $('#pp-status').textContent = ''; }
+  }
+  function ppErr(text) {
+    const e = $('#pp-err');
+    e.textContent = text;
+    e.hidden = !text;
+    if (text) focusEl(e, true);
+  }
+  async function ppOnAdd(ev) {
+    if (ev) ev.preventDefault();
+    if (!ppUpload || ppUpload.readOnly) return;
+    const btn = $('#b-pp-send');
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    const file = $('#in-pp-file').files && $('#in-pp-file').files[0];
+    if (!file) { ppErr('Pick a file first.'); return; }
+    if (file.size > ppUpload.eachMb * 1024 * 1024) { ppErr(ppWords({ code: 'input', reason: 'size' })); return; }
+    if (ppUpload.filesLeft < 1) { ppErr(ppWords({ code: 'input', reason: 'too_many' })); return; }
+    const until = $('#in-pp-until').value;
+    if (until && !/^\d{4}-\d{2}-\d{2}$/.test(until)) { ppErr(ppWords({ code: 'input', field: 'valid_until' })); return; }
+    const fields = [];
+    const title = cleanLine($('#in-pp-name').value, 120);
+    if (title) fields.push(['title', title]);
+    if (Object.prototype.hasOwnProperty.call(PP_KINDS, $('#in-pp-kind').value)) fields.push(['kind', $('#in-pp-kind').value]);
+    if (until) fields.push(['valid_until', until]);
+    ppErr('');
+    setBusy(btn, true, 'Adding…');
+    const status = $('#pp-status');
+    status.textContent = 'Sending your file…';
+    try {
+      const d = await api.papersAdd(fields, file, (f) => { status.textContent = 'Sending your file… ' + Math.min(99, Math.round(f * 100)) + '%'; });
+      const id = d && d.paper && PP_ID.test(str(d.paper.id, 20)) ? d.paper.id : '';
+      setBusy(btn, false);
+      ppOpenForm(false);
+      await loadPapers();
+      toast('Added. It’s in your papers now.');
+      if (id) ppFocusRow(id, '.pp-ren'); else focusEl($('#b-pp-add'), true);
+    } catch (e) {
+      setBusy(btn, false);
+      status.textContent = '';
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      ppErr(ppWords(e));
+    }
+  }
+  function wirePapers() {
+    $('#b-pp-add').addEventListener('click', () => ppOpenForm(true));
+    $('#b-pp-cancel').addEventListener('click', () => { ppOpenForm(false); focusEl($('#b-pp-add'), true); });
+    $('#f-pp').addEventListener('submit', ppOnAdd);
+    $('#in-pp-file').addEventListener('change', () => {
+      const f = $('#in-pp-file').files && $('#in-pp-file').files[0];
+      ppErr(f && ppUpload && f.size > ppUpload.eachMb * 1024 * 1024 ? ppWords({ code: 'input', reason: 'size' }) : '');
+    });
   }
 
   /* ================= Messages (Oct 20 2026, hub DEPLOY.md section 94) =================
@@ -6697,6 +6914,7 @@
     wireBookings();
     wireNews();
     wireReceipts();
+    wirePapers(); // their own business papers (Oct 20 2026, hub section 98)
     wirePages();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
