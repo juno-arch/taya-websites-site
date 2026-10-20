@@ -100,7 +100,8 @@ const FORBIDDEN = [
   // (skin care, aftercare, "I take care of it", the Garden care eyebrow) is fine.
   [/\b(?:Planted|Tended|In Bloom)(?:’s)? care\b|\bcare (?:comes with|is part of) every site|\bthen care\b|\bmonthly care\b|\bcare plan\b|What does care include|What (?:each )?care includes|\bstop care\b/i, 'the old name "care" for the subscription (it’s "subscription" since Oct 6 2026)'],
   [/paid by you/i, 'a side cost "paid by you" (no add-ons: own-address email comes with Tended and In Bloom)'],
-  [/\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately)'],
+  // Oct 20 2026 (Pollen): the one public line is "Healing arts practitioners: ask me about a trade for a website build."; any other trade wording stays private
+  [/(?<!ask me about a )\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately, except the one "ask me about a trade" line)'],
   [/founding spots last/i, 'open-ended founding wording (show the count and the deadline)'],
   [/\bon call\b/i, '"on call"'],
   [/\b(?:book a call|a quick call|45-minute call|want to chat|a chat|hop on a call|video call|phone call|chat with|free chat|30-minute chat|rather talk)\b|Let’s talk/i, 'an offer of a call or chat (email only)'],

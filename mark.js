@@ -1159,6 +1159,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const a = el('a', '', 'webfaery.love'); a.href = 'https://webfaery.love/'; a.target = '_blank'; a.rel = 'noopener';
     care.append(a, document.createTextNode('.'));
     box.append(care);
+    box.append(el('p', 'soft', 'Healing arts practitioners: ask me about a trade for a website build.'));
     const foot = el('div', 'foot');
     // a straight path (Pollen, Oct 2): pick a build, leave notes, done. No "show me everything".
     foot.append(el('p', 'soft', 'You can switch anytime, and nothing is final until we’ve emailed.'));
