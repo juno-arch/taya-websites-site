@@ -414,13 +414,6 @@
   .news .mock-note { text-align: left; color: rgba(252, 247, 234, 0.9); border-color: rgba(241, 197, 106, 0.7) !important; margin-top: 22px; }
   @media (max-width: 860px) { .touch, .reach { grid-template-columns: minmax(0, 1fr); } .news { border-radius: 120px 120px 14px 14px; } }
 
-  /* ---------- the trade ask (secondary) ---------- */
-  .trade { padding-block: 56px 64px; border-top: 1px solid var(--hair); }
-  .trade-in { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 36px; align-items: start; }
-  .trade-in > * { min-width: 0; }
-  .trade h2 { font-size: clamp(25px, 3vw, 32px); }
-  .trade .from-wf { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; margin-bottom: 10px; }
-  @media (max-width: 860px) { .trade-in { grid-template-columns: minmax(0, 1fr); gap: 22px; } }
 
   footer { padding-block: 56px 100px; background: var(--wash); color: var(--ink-soft); font-size: 15px; }
   .foot { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 34px; align-items: start; }
@@ -1019,35 +1012,6 @@
   </div>
 </section>
 
-<section id="trade" class="gutter trade" aria-labelledby="tr-h">
-  <div class="wrap trade-in">
-    <div>
-      <p class="from-wf">A note from Web Faery</p>
-      <h2 id="tr-h">Healing arts practitioners: ask about a trade for a website build</h2>
-      <p class="soft lede-in">If you&rsquo;re in the Guide and would like a website of your own, you can ask me, Taya, about trading a session, a class or something you make for the build. Trades are talked through one by one, nothing is promised up front, and I reply by email.</p>
-      <p class="sec-note mock-note wf-note">This is a way for practitioners in your Guide to ask me about a trade. The request comes to me, not to you or Hannah, and I can take this section off if you&rsquo;d rather not have it.</p>
-    </div>
-    <div class="card-box" style="margin-top:0">
-      <form id="tr" class="form" novalidate aria-label="Ask about a trade, preview">
-        <div class="fld-row">
-          <label class="fld">Your name<input id="tr-name" autocomplete="off" value="Sam W."></label>
-          <label class="fld">Email<input id="tr-mail" type="email" autocomplete="off" value="sam@example.com"></label>
-        </div>
-        <label class="fld">What you offer<input id="tr-offer" autocomplete="off" value="Sound healing sessions and a monthly class"></label>
-        <label class="fld">What you&rsquo;d like built<textarea id="tr-want" rows="3">A simple site with my offerings, my story and a way to book.</textarea></label>
-        <label class="fld">Your site, if you have one<input id="tr-site" autocomplete="off" placeholder="example.com"></label>
-        <p class="hint" id="tr-hint" role="status"></p>
-        <div class="nav-row"><button type="submit" class="btn-go">Submit (preview)</button></div>
-      </form>
-      <div class="done fade-in" id="tr-done" hidden>
-        <h3 id="tr-done-h" tabindex="-1">Thank you!</h3>
-        <p class="soft" id="tr-done-t"></p>
-        <p class="demo-note">Preview only: nothing was sent.</p>
-        <div class="nav-row"><button type="button" class="btn-go ghost" id="tr-back">Back</button><button type="button" class="btn-go ghost" id="tr-edit">Change something</button><button type="button" class="btn-go ghost" id="tr-again">Try again</button></div>
-      </div>
-    </div>
-  </div>
-</section>
 </main>
 
 <footer class="gutter">
@@ -1060,7 +1024,6 @@
       <p class="serif" style="font-size:22px;color:var(--ink)">The free Healing Arts Guide for Humboldt, Del Norte, Mendocino and Southern Oregon</p>
       <p class="foot-reach"><a href="tel:+17076832316">707&#8209;683&#8209;2316</a><a href="mailto:info@wholisticheartbeat.com">info@wholisticheartbeat.com</a></p>
       <p>Arcata, California</p>
-      <p><a href="#trade">Practitioners: ask about a website trade</a></p>
       <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (paid listings and advertiser events). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
       <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
     </div>
@@ -1431,7 +1394,7 @@
 </script>
 
 <script>
-  /* contact, newsletter, the trade ask, and the secret heartbeat */
+  /* contact, newsletter, and the secret heartbeat */
   (function () {
     function $(id) { return document.getElementById(id); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
@@ -1460,24 +1423,6 @@
         hint.textContent = ''; $('nl-to').textContent = m; form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
       $('nl-again').addEventListener('click', function () { form.reset(); done.hidden = true; form.hidden = false; quietFocus($('nl-mail')); });
-    })();
-    (function () {
-      var form = $('tr'); if (!form) return;
-      var hint = $('tr-hint'), done = $('tr-done');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var name = $('tr-name').value.trim();
-        if (!name) { hint.textContent = 'Add your name first.'; $('tr-name').focus(); return; }
-        if (!isEmail($('tr-mail').value.trim())) { hint.textContent = 'Add an email address, so I can reply.'; $('tr-mail').focus(); return; }
-        if (!$('tr-offer').value.trim()) { hint.textContent = 'Add a few words about what you offer.'; $('tr-offer').focus(); return; }
-        hint.textContent = '';
-        $('tr-done-t').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '. Your note is on its way to me, Taya at Web Faery. I read each one and reply by email, and we can talk it through from there.';
-        form.hidden = true; done.hidden = false; quietFocus($('tr-done-h'));
-      });
-      function back() { done.hidden = true; form.hidden = false; }
-      $('tr-back').addEventListener('click', function () { back(); quietFocus(form.querySelector('[type="submit"]')); });
-      $('tr-edit').addEventListener('click', function () { back(); quietFocus($('tr-offer')); });
-      $('tr-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; back(); quietFocus($('tr-name')); });
     })();
     /* Easter egg: tap the globe heart in the footer three times, or type "heartbeat": it beats once */
     (function () {
