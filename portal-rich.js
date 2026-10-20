@@ -588,7 +588,8 @@ function composer(o) {
     pressed();
   });
   tAttach.addEventListener('click', function () { if (!readOnly) picker.click(); });
-  picker.addEventListener('change', function () { var l = Array.prototype.slice.call(picker.files || []); picker.value = ''; addFiles(l); });
+  picker.addEventListener('change', function () { var l = Array.prototype.slice.call(picker.files || []); addFiles(l); picker.value = ''; // read and sent first, then cleared (a cleared input can empty its files in some browsers) [fixed after rehearsal, Oct 20]
+  });
 
   // ---- the link row
   function openLink() {
