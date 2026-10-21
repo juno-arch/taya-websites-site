@@ -422,6 +422,7 @@
     me: () => postJSON('/me', {}, token),
     logout: (key) => postJSON('/logout', {}, key),
     todo: (id, action, text) => postJSON('/todo', text == null ? { todo: id, action } : { todo: id, action, text }, token),
+    approveSite: () => postJSON('/approve-site', {}, token), // (Oct 21 2026) Stage 5 final site review
     async file(thing, name) {
       const res = await post('/file', name ? { thing, name } : { thing }, token);
       if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
@@ -1620,6 +1621,40 @@
         body.append(d);
       }
       if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
+    } else if (kind === 'approve' && item.url) {
+      // (Oct 21 2026) Stage 5 final site review: look over the whole site, then approve it. Nothing goes live before this.
+      act.append(outLink(item.url, 'Open my site', 'open-btn', 'your whole site', ''));
+      const ask = make('button', 'btn small', 'Approve my site');
+      ask.type = 'button';
+      ask.addEventListener('click', () => {
+        const box = make('div', 'approve-ask');
+        box.append(make('p', 'hint', 'Once you approve, I can publish it. You can still send me small changes after it is live.'));
+        const yes = make('button', 'btn small', 'Yes, approve it');
+        yes.type = 'button';
+        const no = make('button', 'later', 'Not yet');
+        no.type = 'button';
+        no.addEventListener('click', () => { box.remove(); ask.hidden = false; ask.focus(); });
+        yes.addEventListener('click', async () => {
+          yes.disabled = true;
+          busy++;
+          try {
+            await api.approveSite();
+            me.list.open = me.list.open.filter((x) => x !== item);
+            me.list.done.push({ id: item.id, title: item.title });
+            renderList();
+            announce('Thank you! Your site is approved. I will let you know when it is live.');
+          } catch (err) {
+            yes.disabled = false;
+            if (err.code === 'signed_out') { quietSignOut(true); return; }
+            toast(words(err));
+          } finally { busy = Math.max(0, busy - 1); }
+        });
+        box.append(yes, no);
+        ask.hidden = true;
+        act.append(box);
+        yes.focus();
+      });
+      act.append(ask);
     } else if (kind === 'link' && item.url) {
       if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
       const what = item.id === 'd:draft' ? 'your private draft' : 'that page';

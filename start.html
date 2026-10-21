@@ -3638,6 +3638,7 @@
     });
   }
 
+  const SIMPLE_START = true; // false brings the work, look and accounts steps back for a mockup visit
   function boot(qs) {
   deviceCopyOff = !owner && !!(qs.get('name') || '').trim();
   const saved = store.get();
@@ -3669,6 +3670,10 @@
       $('#mock-q').hidden = false; $('#b-work').classList.add('has-mock');
       $('#s-work .st').textContent = 'Check your mockup';
       $('#s-look').hidden = true;
+      // (Oct 21 2026, Pollen via Process) with a mockup the page asks only for choices: the build, the agreement, then the
+      // deposit last. What we already know is corrected on their magic site; their accounts are set up by Taya, and the
+      // few hard steps they do come as short videos in their portal. So the work, look and accounts steps stay out of it.
+      if (SIMPLE_START) { $('#s-work').hidden = true; $('#s-accounts').hidden = true; }
     }
     // what Taya's link knows about them (read from the fragment at the very top): filled in, unless they've
     // already typed something there themselves or opened it to change
