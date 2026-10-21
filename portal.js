@@ -2675,6 +2675,18 @@
         checked_at: str(c.checked_at, 30), ok_at: str(c.ok_at, 30), error: str(c.error, 40), busy_count: +c.busy_count || 0 } : null)).filter(Boolean)
     };
   }
+  // (Oct 21 2026) one tap to put the bookings in their phone's calendar: webcal:// opens the subscribe prompt on an iPhone, iPad
+  // or Mac, and Google Calendar's own add-by-link page serves Android and the web. Off in a Studio preview (it would hand out their link).
+  function calLinks() {
+    const sub = $('#a-bk-subscribe'), g = $('#a-bk-gcal');
+    const url = bk && bk.owner && bk.owner.feed_url;
+    const on = !!url && !PREVIEW;
+    sub.hidden = g.hidden = !on;
+    if (!on) { sub.removeAttribute('href'); g.removeAttribute('href'); return; }
+    const web = 'webcal://' + url.replace(/^https:\/\//, '');
+    sub.href = web;
+    g.href = 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(web);
+  }
   function renderBk() {
     const sec = $('#sec-bookings');
     if (!bk) { sec.hidden = true; return; }
@@ -2682,6 +2694,7 @@
     $('#bk-off').hidden = bk.owner.active;
     $('#bk-test').hidden = !bk.owner.payments_test;
     $('#bk-zone').textContent = 'Times here are ' + (bk.owner.zone || 'Pacific') + ' time.';
+    calLinks();
     if (!sec.querySelector('#bk-up .bk-form')) {
       $('#bk-up-empty').hidden = bk.upcoming.length > 0;
       $('#bk-up').replaceChildren(...bk.upcoming.map((b) => bkRow(b, false)));
@@ -4251,7 +4264,7 @@
     let url = bk && bk.owner.feed_url;
     const btn = fresh ? $('#b-bk-feed-new') : $('#b-bk-feed');
     try {
-      if (fresh) { url = safeUrl((await bookCall('/feed-new')).feed_url); if (bk) bk.owner.feed_url = url; }
+      if (fresh) { url = safeUrl((await bookCall('/feed-new')).feed_url); if (bk) { bk.owner.feed_url = url; calLinks(); } }
       if (!url) throw fail('server');
       await navigator.clipboard.writeText(url);
       note.textContent = fresh ? 'A new link is copied. The old one stops working, so update it on your phone.' : 'Copied. Paste it into your phone’s calendar as a subscribed calendar.';
