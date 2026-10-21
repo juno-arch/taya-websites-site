@@ -323,6 +323,38 @@ const demoOn = /const DEMO = true;/.test(js);
   if (!/plural\(unreadMsgs, 'new message', 'new messages'\)/.test(js)) fail('portal.js: Home should say “1 new message” while one of Taya’s waits');
 }
 
+// ---- Resources (Oct 21 2026, hub DEPLOY.md section 101; added on purpose) ----
+// A Resources tab with the how-to videos and guides Taya approved: hidden until the server sends at least one, grouped
+// by topic under plain headings, ledger rows (title, one line, Watch for a video and Read for a guide), each a plain link
+// that opens in a new tab with rel noopener noreferrer. Nothing embedded (no iframe, no video tag, no outside script,
+// no frame-src), only https links on the hosts the server allows, drawn with textContent; the read is a preview read.
+{
+  if (!pageIds.includes('resources') || !/\{ id: 'resources', label: 'Resources', icon: 'i-play' \}/.test(js)) fail('portal.js: the Resources tab is missing from PAGES');
+  const sec = (html.match(/<section class="p-card" id="sec-resources"[\s\S]*?<\/section>/) || [''])[0];
+  if (!sec) fail('portal.html: the Resources section (#sec-resources) is missing');
+  else {
+    if (!/data-page="resources"/.test(sec) || !/ hidden>/.test(sec.split('\n')[0])) fail('portal.html: #sec-resources should belong to the resources tab and start hidden');
+    if (!/<h2 id="h-resources" tabindex="-1">How-to videos and guides<\/h2>/.test(sec)) fail('portal.html: the Resources heading should be “How-to videos and guides”');
+    if (!/<p class="rs-lede">Short videos and guides I made for the everyday parts of being online, like your Google profile\. Each one opens in a new tab\.<\/p>/.test(sec)) fail('portal.html: the Resources line should say they open in a new tab');
+    if (!/<div class="rs-groups" id="rs-groups"><\/div>/.test(sec)) fail('portal.html: the Resources groups go in #rs-groups');
+    const secWords = sec.replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ');
+    if (/\bnever\b/i.test(secWords) || /\b(we|us|our)\b/i.test(secWords)) fail('portal.html: the Resources words should be I / me, without “never”');
+    if (/<iframe|<video|<embed|<object/i.test(sec)) fail('portal.html: nothing embedded in Resources');
+  }
+  if (/frame-src|youtube|vimeo|loom/i.test((csp && csp[1]) || '')) fail('portal.html: the security line should not open frames or video hosts for Resources');
+  const rsBlock = (js.match(/\/\* ---- Resources \(Oct 21 2026[\s\S]*?\/\* ================= Messages/) || [''])[0];
+  if (!rsBlock) fail('portal.js: the Resources block is missing');
+  if (/createElement\(|make\('(iframe|video|embed|object|script)'|window\.open|\.src =/.test(rsBlock)) fail('portal.js: Resources should embed nothing');
+  if (!js.includes("'/api/webfaery/portal/resources'")) fail('portal.js: the Resources read should be on PREVIEW_READS');
+  if (!/resources: \(\) => postJSON\('\/resources', \{\}, token\)/.test(js)) fail('portal.js: Resources should be one read, POST /portal/resources');
+  if (!/make\('span', null, r\.kind === 'video' \? 'Watch' : 'Read'\)/.test(js)) fail('portal.js: a video says Watch, a guide says Read');
+  if (!/a\.target = '_blank';\s*a\.rel = 'noopener noreferrer';\s*a\.append\(make\('span', null, r\.kind/.test(js)) fail('portal.js: a resource opens in a new tab with rel noopener noreferrer');
+  if (!/make\('b', null, r\.title\)/.test(js) || !/make\('small', null, r\.summary\)/.test(js)) fail('portal.js: a resource’s title and line should be drawn with textContent (make)');
+  if (!/const RS_HEADS = \{ google: 'Your Google profile', email: 'Email', site: 'Your site', shop: 'Your shop', booking: 'Bookings', other: 'More' \};/.test(js)) fail('portal.js: the Resources topic headings changed');
+  if (!/if \(!resources \|\| !resources\.length\) \{ setHidden\(sec, true\); return; \}/.test(js)) fail('portal.js: Resources should stay hidden until there is at least one');
+  if (!/return m && RS_HOSTS\.includes\(m\[1\]\) \? s : '';/.test(js)) fail('portal.js: only https links on the allowed hosts should become Resources links');
+}
+
 // ---- Their emails in Messages (Oct 20 2026, hub DEPLOY.md section 95; added on purpose) ----
 // An email row: the subject in bold and "via email" under the time, both drawn with textContent; long words folded
 // behind "Show more" after 600 characters; the whole text is a read on the same thread route (so a preview can open
