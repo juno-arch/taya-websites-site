@@ -1255,7 +1255,8 @@
         start_step: str(x.start_step, 20), url: safeUrl(x.url), accept: str(x.accept, 10),
         status: x.status === 'sent' ? 'sent' : 'open', answer: str(x.answer, 1000),
         files_count: Math.max(0, Math.min(999, Math.round(+x.files_count || 0))), sent_on: str(x.sent_on, 30),
-        derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12)
+        derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12),
+        video: /^[a-z0-9-]{1,40}$/.test(str(x.video, 40)) ? str(x.video, 40) : '' // (Oct 21 2026) the hard step this to-do has a video for
       };
     };
     const agreement = th.agreement && typeof th.agreement === 'object' ? {
@@ -1647,6 +1648,17 @@
         focusEl(target || sec);
       });
       act.append(b);
+    }
+    // (Oct 21 2026) a hard step with a video Taya approved for their build: a plain Watch link straight to it
+    const vid = item.video && resources ? resources.find((r) => r.step === item.video && r.kind === 'video') : null;
+    if (vid && item.status !== 'sent') {
+      const w = make('a', 'open-btn');
+      w.href = vid.url;
+      w.target = '_blank';
+      w.rel = 'noopener noreferrer';
+      w.append(make('span', null, 'Watch how'), icon('i-out'));
+      w.setAttribute('aria-label', 'Watch the video for ' + item.title + ' (opens in a new tab)');
+      act.append(w);
     }
     if (act.childNodes.length) body.append(act);
     li.append(mk, body);
@@ -6514,6 +6526,7 @@
       const d = await api.resources();
       resources = cleanResources(d);
       renderResources();
+      refreshVideoTodos();
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       if (!resources) $('#sec-resources').hidden = true; // a quiet refresh that misses keeps what's on screen
@@ -6526,7 +6539,9 @@
       const title = cleanLine(r.title, 120);
       const url = rsLink(r.url);
       if (!title || !url || !RS_TOPICS.includes(r.topic) || (r.kind !== 'video' && r.kind !== 'guide')) return null;
-      return { title, summary: cleanLine(r.summary, 300), url, kind: r.kind, topic: r.topic };
+      const lc = /^\d{4}-\d{2}-\d{2}$/.test(str(r.last_checked, 10)) ? str(r.last_checked, 10) : '';
+      return { title, summary: cleanLine(r.summary, 300), url, kind: r.kind, topic: r.topic,
+        step: /^[a-z0-9-]{1,40}$/.test(str(r.step, 40)) ? str(r.step, 40) : '', steps_text: str(r.steps_text, 1500), last_checked: lc };
     }).filter(Boolean);
   }
   function rsRow(r) {
@@ -6543,6 +6558,15 @@
     a.setAttribute('aria-label', (r.kind === 'video' ? 'Watch ' : 'Read ') + r.title + ' (opens in a new tab)');
     acts.append(a);
     li.append(what, acts);
+    // (Oct 21 2026) a hard step's written steps (a video is never the only way) and when Taya last checked the screens
+    if (r.step) li.id = 'rs-step-' + r.step;
+    if (r.steps_text || r.last_checked) {
+      const d = make('details', 'howto rs-written');
+      d.append(make('summary', null, 'The steps in writing'));
+      if (r.steps_text) r.steps_text.split(/\n+/).filter(Boolean).forEach((line) => d.append(make('p', 'detail', line)));
+      if (r.last_checked) d.append(make('p', 'hint', 'I last checked this on ' + r.last_checked + '. If a screen looks different, tell me.'));
+      li.append(d);
+    }
     return li;
   }
   function renderResources() {
@@ -6563,6 +6587,11 @@
     });
     $('#rs-groups').replaceChildren(...groups);
     setHidden(sec, false);
+  }
+  // their to-dos that have a video pick it up once Resources has loaded
+  function refreshVideoTodos() {
+    if (!me || !me.list) return;
+    (me.list.open || []).filter((x) => x.video).forEach(replaceRow);
   }
 
   /* ================= Messages (Oct 20 2026, hub DEPLOY.md section 94) =================
