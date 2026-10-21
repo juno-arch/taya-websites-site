@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261020b">
+<link rel="stylesheet" href="portal.css?v=20261020c">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
@@ -116,7 +116,7 @@
 <!-- portal-rich.js (Oct 20 2026, hub DEPLOY.md section 95): the Messages composer and the markup renderer (window.WFRich) -->
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
-<script src="portal.js?v=20261020b"></script>
+<script src="portal.js?v=20261020c"></script>
 
 <main class="page" id="main" tabindex="-1">
   <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
@@ -919,6 +919,38 @@
       <h2 id="h-papers" tabindex="-1">Your business papers</h2>
       <p class="pp-lede">Your insurance, licenses and permits in one place, for whenever someone asks. They’re private: only you and I can see them.</p>
       <ul class="ledger pp-list" id="pp-list"></ul>
+      <!-- Oct 20 2026 (hub DEPLOY.md section 98): they add their own papers. Shown only when the server says it can take
+           them (papers/mine sends `upload`); their own rows get Rename and Remove, Taya's stay as they are. -->
+      <p class="pp-none" id="pp-none" hidden>Nothing here yet. Add your first one below, and it stays here for whenever someone asks.</p>
+      <div class="pp-add" id="pp-add" hidden>
+        <button type="button" class="later pp-add-open" id="b-pp-add" aria-expanded="false" aria-controls="f-pp">Add a paper</button>
+        <form class="rc-form pp-form" id="f-pp" novalidate hidden>
+          <h3 class="small-h" id="pp-form-h" tabindex="-1">Add a paper</h3>
+          <label class="field-label" for="in-pp-file">The file</label>
+          <input id="in-pp-file" class="pp-file" type="file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.heic,.heif,.docx,.xlsx,.pptx,.txt,.csv,application/pdf,image/*" aria-describedby="pp-hint">
+          <p class="pp-hint" id="pp-hint">A PDF, a photo, a Word, Excel or PowerPoint file, or plain text, up to 10 MB.</p>
+          <label class="field-label" for="in-pp-name">Name <span class="opt-tag">(optional)</span></label>
+          <input id="in-pp-name" type="text" maxlength="120" autocomplete="off" placeholder="Empty keeps the file’s name">
+          <label class="field-label" for="in-pp-kind">What it is <span class="opt-tag">(optional)</span></label>
+          <select id="in-pp-kind">
+            <option value="">Pick one</option>
+            <option value="insurance">Insurance</option>
+            <option value="license">Business license</option>
+            <option value="permit">Permit</option>
+            <option value="certification">Certification</option>
+            <option value="other">Something else</option>
+          </select>
+          <label class="field-label" for="in-pp-until">Good until <span class="opt-tag">(optional)</span></label>
+          <input id="in-pp-until" type="date" min="2000-01-01" max="2100-12-31">
+          <p class="rc-status" id="pp-status" role="status"></p>
+          <p class="err" id="pp-err" tabindex="-1" hidden></p>
+          <div class="dc-btns">
+            <button class="btn small" type="submit" id="b-pp-send"><span>Add it</span></button>
+            <button class="later" type="button" id="b-pp-cancel">Not now</button>
+          </div>
+          <p class="pp-room" id="pp-room"></p>
+        </form>
+      </div>
       <p class="pp-fine">Renewed something, or got a new one? Email the new copy to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll put it here. I’ll also send you a reminder a month and a week before one runs out.</p>
     </section>
 
