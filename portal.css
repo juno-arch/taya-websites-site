@@ -986,3 +986,35 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
    else the gold line stays */
 :root[data-wf-brand-bar] .tabs a[aria-current="page"]::after,
 :root[data-wf-brand-bar] .dock [aria-current="page"]::before { background: var(--wf-b-brand-bar); box-shadow: none; }
+
+/* ============ your business cards (Oct 21 2026): the preview, the form, the printer links ============ */
+.cd-lede, .cd-soon { color: var(--wf-b-ink-soft); }
+.cd-view { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+.cd-fig { margin: 0; min-width: 0; }
+.cd-canvas { display: block; width: 100%; height: auto; aspect-ratio: 1125 / 675; border-radius: 8px; border: 1px solid var(--wf-b-rule); box-shadow: var(--wf-b-shadow); background: #fff; }
+.cd-cap { margin-top: 6px; font-size: 13.5px; color: var(--wf-b-ink-soft); }
+.cd-fine { margin: 10px 0 0; font-size: 14.5px; color: var(--wf-b-ink-soft); }
+.cd-styles { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.cd-style {
+  min-height: 44px; min-width: 88px; padding: 8px 18px; border-radius: 12px; border: 1.5px solid var(--wf-b-edge); background: transparent;
+  color: var(--wf-b-ink); font-family: var(--wf-font-work); font-size: 15.5px; cursor: pointer;
+}
+.cd-style[aria-pressed="true"] { border-color: var(--wf-b-link); color: var(--wf-b-link); font-weight: 500; box-shadow: inset 0 0 0 1px var(--wf-b-link); }
+.cd-style:disabled { cursor: default; opacity: .7; }
+.cd-set { border: 0; margin: 0; padding: 0; min-width: 0; }
+.cd-set input { width: 100%; max-width: 100%; box-sizing: border-box; min-height: 44px; }
+.cd-form .field-label { margin-top: 14px; }
+.cd-dl, .cd-order { margin-top: 26px; }
+.cd-download, .cd-go { margin-top: 0; }
+.cd-download:disabled { cursor: not-allowed; }
+.cd-msg { margin: 10px 0 0; color: var(--wf-b-ink); }
+.cd-msg:empty { display: none; }
+.cd-steps { margin: 10px 0 14px; padding-left: 22px; }
+.cd-steps li { margin: 4px 0; }
+.cd-go2 { display: inline-flex; align-items: center; min-height: 44px; margin-left: 16px; }
+@media (max-width: 560px) {
+  .cd-view { grid-template-columns: minmax(0, 1fr); }
+  .cd-go { display: flex; justify-content: center; width: 100%; box-sizing: border-box; }
+  .cd-go2 { margin-left: 0; }
+  .cd-download { width: 100%; }
+}
