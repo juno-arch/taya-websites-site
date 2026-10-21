@@ -1,3 +1,15 @@
+/* Studio preview (Oct 20 2026, Pollen): a page opened from "See exactly what they see" carries ?wfpreview=1 and only reads.
+   Nothing it does is saved, picked, noted, uploaded or sent, so looking never changes a client's own record. */
+(function () {
+  if (!/[?&]wfpreview=1(?:&|$)/.test(location.search) || !window.fetch) return;
+  var real = window.fetch.bind(window);
+  var WRITES = /\/(mark|pick|ready|mockup-done|mockup-upload|draft-save|draft-upload|draft-remove|draft-clear|start-send)(?:\?|$)/;
+  window.fetch = function (url, opts) {
+    var m = String((opts && opts.method) || 'GET').toUpperCase();
+    if (m !== 'GET' && WRITES.test(String(url && url.url || url))) return Promise.resolve(new Response(JSON.stringify({ ok: false, error: 'preview' }), { status: 403, headers: { 'Content-Type': 'application/json' } }));
+    return real(url, opts);
+  };
+})();
 /* mark.js v5 (Oct 10 2026): no sign-in. Every client has one private link from Taya's emails, webfaery.love/my/#wf=KEY
    (the door, my/door.js), and this file runs in two places:
      on their mockup (webfaery.love/peek/SLUG/?mark=1, loaded by the peek page's own loader): the key comes from #wf=

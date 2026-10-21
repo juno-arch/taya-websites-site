@@ -1305,6 +1305,7 @@
     const peek = [me.things && me.things.draft && me.things.draft.url, c.site_url]
       .map((u) => String(u || '').match(/^https:\/\/(?:www\.)?webfaery\.love\/peek\/([a-z0-9-]{1,40})\/?/)).find(Boolean);
     if (peek) q.set('mockup', peek[1]);
+    if (PREVIEW) q.set('wfpreview', '1'); // a Studio preview opens it read only: nothing it does is saved or sent
     const qs = q.toString();
     return START_PAGE + (qs ? '?' + qs : '') + (START_STEPS[step] ? '#' + START_STEPS[step] : '');
   };
@@ -1320,9 +1321,14 @@
   };
   // a link out of the portal (a draft, Stripe, their site): a new tab that can't reach back here.
   // tapKey: remember the tap ("Paid? Thank you!") so the same button doesn't glow at them again
+  // a Studio preview opens their pages read only (?wfpreview=1: the page's own switch, mark.js and start.html)
+  const previewHref = (href) => {
+    try { const u = new URL(href, location.href); if (/(^|\.)webfaery\.love$/.test(u.hostname)) { u.searchParams.set('wfpreview', '1'); return u.toString(); } } catch (e) { /* leave it */ }
+    return href;
+  };
   const outLink = (href, label, cls, what, tapKey) => {
     const a = make('a', cls || 'open-btn');
-    a.href = href;
+    a.href = PREVIEW ? previewHref(href) : href;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.append(make('span', null, label), icon('i-out'));
