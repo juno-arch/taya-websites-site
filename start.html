@@ -2142,11 +2142,14 @@
   // tag (owner, from /start-who), so a stranger's preview, Taya's own look or another client's answers on the same
   // device stay apart from theirs, and out of their draft. Without a link, the one preview copy, as before.
   let owner = '';
+  // Oct 20 2026 (Pollen): a page that names someone (?name=) but has no private link (a preview, or "Not Tami? Just look") never
+  // reads or writes the one shared preview copy on this device (it could hold another client's answers and photos).
+  let deviceCopyOff = false;
   const storeKey = () => STORE_KEY + (owner ? ':' + owner : '');
   const store = {
-    get(k) { try { return JSON.parse(localStorage.getItem(k || storeKey()) || 'null'); } catch (e) { return null; } },
-    set(v) { try { localStorage.setItem(storeKey(), JSON.stringify(v)); return true; } catch (e) { return false; } },
-    clear() { try { localStorage.removeItem(storeKey()); } catch (e) { /* nothing saved, nothing to clear */ } }
+    get(k) { if (deviceCopyOff) return null; try { return JSON.parse(localStorage.getItem(k || storeKey()) || 'null'); } catch (e) { return null; } },
+    set(v) { if (deviceCopyOff) return false; try { localStorage.setItem(storeKey(), JSON.stringify(v)); return true; } catch (e) { return false; } },
+    clear() { if (deviceCopyOff) return; try { localStorage.removeItem(storeKey()); } catch (e) { /* nothing saved, nothing to clear */ } }
   };
   let stepState = {};                                  // step id: 'done' or 'skipped'
   // what they opened to change, where Taya's link already knew it: About you, the accounts email, the web address,
@@ -2166,6 +2169,7 @@
       return this.db;
     },
     async put(kind, list) {
+      if (deviceCopyOff) return;
       if (owner) kind = owner + ':' + kind; // their own files, apart from a preview's
       try {
         const db = await this.open();
@@ -2174,6 +2178,7 @@
       } catch (e) { /* private mode or full: they just add them again, as before */ }
     },
     async get(kind, plain) {
+      if (deviceCopyOff) return [];
       if (owner && !plain) kind = owner + ':' + kind;
       try {
         const db = await this.open();
@@ -2181,6 +2186,7 @@
       } catch (e) { return []; }
     },
     async clear() {
+      if (deviceCopyOff) return;
       try {
         const db = await this.open(); const os = db.transaction('files', 'readwrite').objectStore('files');
         if (!owner) { os.clear(); return; }
@@ -3620,6 +3626,7 @@
   }
 
   function boot(qs) {
+  deviceCopyOff = !owner && !!(qs.get('name') || '').trim();
   const saved = store.get();
   if (saved && saved.v === 1) restore(saved);
   // a link from Taya's welcome email can pick the build and founding ahead of time, and say what they

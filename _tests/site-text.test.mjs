@@ -68,6 +68,15 @@ const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
 const failures = [];
 const fail = (msg) => failures.push(msg);
 
+// Oct 20 2026 (Pollen): a start page that names someone (?name=) but has no private link never reads or writes the shared
+// preview copy on the device (it could hold another client's answers and photos), and neither does its photo store
+{
+  const st = read('start.html');
+  if (!/let deviceCopyOff = false;/.test(st) || !/deviceCopyOff = !owner && !!\(qs\.get\('name'\) \|\| ''\)\.trim\(\);/.test(st)) fail('start.html: the shared preview copy should be off when the page names someone without their private link');
+  if (!/get\(k\) \{ if \(deviceCopyOff\) return null;/.test(st) || !/set\(v\) \{ if \(deviceCopyOff\) return false;/.test(st)) fail('start.html: the device copy should honor the preview switch');
+  if (!/async put\(kind, list\) \{\n      if \(deviceCopyOff\) return;/.test(st) || !/async get\(kind, plain\) \{\n      if \(deviceCopyOff\) return \[\];/.test(st)) fail('start.html: the photo store should honor the preview switch');
+}
+
 // What a visitor (or a screen reader, or Google) can see: the HTML minus styles, comments and
 // scripts, except the quiz's own logic, whose strings end up on screen (its // comments are dropped).
 function visibleText(html) {
