@@ -2139,6 +2139,7 @@
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const form = $('#start');
   const money = (n) => '$' + Math.round(n).toLocaleString('en-US');
+  const SIMPLE_START = true; // false brings the work, look and accounts steps back for a mockup visit
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const radio = (name) => { const el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; };
   const ticked = (name) => !!form.querySelector('input[name="' + name + '"]:checked');
@@ -3638,7 +3639,6 @@
     });
   }
 
-  const SIMPLE_START = true; // false brings the work, look and accounts steps back for a mockup visit
   function boot(qs) {
   deviceCopyOff = !owner && !!(qs.get('name') || '').trim();
   const saved = store.get();
