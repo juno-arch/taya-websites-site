@@ -46,6 +46,8 @@
    Stripe billing portal link each tap (hub DEPLOY.md section 80, API.md section 26)
    and two for Messages (Oct 20 2026): messages, /messages (their thread; the preview reads it too, marking nothing
    read) and message, /message (one more from them; never in the preview) (hub DEPLOY.md section 94, API.md section 39)
+   and one for Resources (Oct 21 2026; the preview reads it too): resources, /resources, the how-to videos and guides
+   Taya approved, the same for every client (hub DEPLOY.md section 101, API.md section 45)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -367,7 +369,8 @@
     '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
     '/api/webfaery/papers/mine',
     '/api/webfaery/portal/messages',
-    '/api/webfaery/portal/message-file' // [rich b23] opening an attachment is a read (hub DEPLOY.md section 95)
+    '/api/webfaery/portal/message-file', // [rich b23] opening an attachment is a read (hub DEPLOY.md section 95)
+    '/api/webfaery/portal/resources' // the approved how-to videos and guides, a read (hub DEPLOY.md section 101)
   ];
   const previewReads = (url) => PREVIEW_READS.includes(String(url).slice(SERVER.length).split('?')[0]);
   const stayQuiet = () => new Promise(() => { /* read only view: nothing to send, nothing to show */ });
@@ -461,6 +464,8 @@
     papersAdd: (fields, file, onProgress) => sendForm('/add', fields, [file], token, onProgress, PAPERS),
     papersRename: (id, title) => postJSON('/rename', { id, title }, token, PAPERS),
     papersRemove: (id) => postJSON('/remove', { id }, token, PAPERS),
+    // the how-to videos and guides Taya approved (Oct 21 2026): { resources: [] } until she approves one
+    resources: () => postJSON('/resources', {}, token),
     // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
     careManage: () => postJSON('/care-manage', {}, token),
     // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
@@ -677,6 +682,7 @@
     { id: 'receipts', label: 'Receipts', icon: 'i-tray' },
     { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
     { id: 'messages', label: 'Messages', icon: 'i-talk' },
+    { id: 'resources', label: 'Resources', icon: 'i-play' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -690,7 +696,8 @@
   function pageList() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
     // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
-    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'payments', 'ask']);
+    // (Oct 21 2026) Resources: after their papers, before Payments
+    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -998,6 +1005,9 @@
     ppOpenForm(false);
     $('#pp-add').hidden = true;
     $('#sec-papers').hidden = true;
+    resources = null;
+    $('#rs-groups').replaceChildren();
+    $('#sec-resources').hidden = true;
     msgReset();
     nl = null;
     nlEdit = null;
@@ -1175,6 +1185,7 @@
       loadVisits();
       loadReceipts();
       loadPapers();
+      loadResources();
       msgSync();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
@@ -1202,6 +1213,7 @@
       loadVisits();
       loadReceipts();
       loadPapers();
+      loadResources();
       msgSync();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
@@ -6464,6 +6476,80 @@
       const f = $('#in-pp-file').files && $('#in-pp-file').files[0];
       ppErr(f && ppUpload && f.size > ppUpload.eachMb * 1024 * 1024 ? ppWords({ code: 'input', reason: 'size' }) : '');
     });
+  }
+
+  /* ---- Resources (Oct 21 2026, hub DEPLOY.md section 101) ----
+     Short how-to videos and guides Taya made (finding and verifying their Google profile, setting hours, answering a
+     review, adding a photo, and more later), the same for every client. The server sends only the ones she approved,
+     already in order (topic, then her order, then title); with none it answers resources: [] and the section and its
+     tab stay hidden. A ledger row each, under a plain heading per topic: the title, one line about it, and Watch (a
+     video) or Read (a guide), a plain link that opens in a new tab. Nothing is embedded and no outside script runs.
+     Only https links on the hosts the server allows become links (checked again here). A Studio preview reads it too. */
+  let resources = null;      // [{ id, title, summary, url, kind, topic }] (cleaned), or null before the first load
+  const RS_TOPICS = ['google', 'email', 'site', 'shop', 'booking', 'other'];
+  const RS_HEADS = { google: 'Your Google profile', email: 'Email', site: 'Your site', shop: 'Your shop', booking: 'Bookings', other: 'More' };
+  const RS_HOSTS = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'www.youtube-nocookie.com', 'youtube-nocookie.com',
+    'vimeo.com', 'www.vimeo.com', 'player.vimeo.com', 'loom.com', 'www.loom.com', 'webfaery.love', 'www.webfaery.love', 'bookings.gardenfaery.love'];
+  const rsLink = (u) => {
+    const s = str(u, 300);
+    const m = /^https:\/\/([a-z0-9.-]+)(?::443)?(?:[/?#][^\s"\x27<>\\]*)?$/.exec(s);
+    return m && RS_HOSTS.includes(m[1]) ? s : '';
+  };
+  async function loadResources() {
+    if (typeof api.resources !== 'function') { resources = null; renderResources(); return; }
+    try {
+      const d = await api.resources();
+      resources = cleanResources(d);
+      renderResources();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!resources) $('#sec-resources').hidden = true; // a quiet refresh that misses keeps what's on screen
+    }
+  }
+  function cleanResources(d) {
+    const list = d && typeof d === 'object' ? arr(d.resources) : [];
+    return list.slice(0, 200).map((r) => {
+      if (!r || typeof r !== 'object') return null;
+      const title = cleanLine(r.title, 120);
+      const url = rsLink(r.url);
+      if (!title || !url || !RS_TOPICS.includes(r.topic) || (r.kind !== 'video' && r.kind !== 'guide')) return null;
+      return { title, summary: cleanLine(r.summary, 300), url, kind: r.kind, topic: r.topic };
+    }).filter(Boolean);
+  }
+  function rsRow(r) {
+    const li = make('li', 'rs-item');
+    const what = make('div', 'what');
+    what.append(make('b', null, r.title));
+    if (r.summary) what.append(make('small', null, r.summary));
+    const acts = make('span', 'acts');
+    const a = make('a', 'open-btn');
+    a.href = r.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.append(make('span', null, r.kind === 'video' ? 'Watch' : 'Read'), icon('i-out'));
+    a.setAttribute('aria-label', (r.kind === 'video' ? 'Watch ' : 'Read ') + r.title + ' (opens in a new tab)');
+    acts.append(a);
+    li.append(what, acts);
+    return li;
+  }
+  function renderResources() {
+    const sec = $('#sec-resources');
+    if (!resources || !resources.length) { setHidden(sec, true); return; }
+    const groups = [];
+    RS_TOPICS.forEach((t) => {
+      const rows = resources.filter((r) => r.topic === t); // the server's order, kept inside each topic
+      if (!rows.length) return;
+      const g = make('div', 'rs-group');
+      const h = make('h3', 'rs-head', RS_HEADS[t]);
+      h.id = 'rs-h-' + t;
+      const ul = make('ul', 'ledger rs-list');
+      ul.setAttribute('aria-labelledby', h.id);
+      ul.append(...rows.map(rsRow));
+      g.append(h, ul);
+      groups.push(g);
+    });
+    $('#rs-groups').replaceChildren(...groups);
+    setHidden(sec, false);
   }
 
   /* ================= Messages (Oct 20 2026, hub DEPLOY.md section 94) =================
