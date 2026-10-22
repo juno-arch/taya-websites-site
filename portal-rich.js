@@ -519,7 +519,7 @@ function composer(o) {
   });
 
   var picker = el(doc, 'input', 'wfr-picker');
-  picker.type = 'file'; picker.multiple = true; picker.accept = ACCEPT; picker.hidden = true; picker.tabIndex = -1;
+  picker.type = 'file'; picker.multiple = true; picker.accept = ACCEPT + (o.extraAccept ? ',' + o.extraAccept : ''); // extraAccept: the Studio adds video/mp4 for an email (Oct 22 2026) picker.hidden = true; picker.tabIndex = -1;
   picker.setAttribute('aria-hidden', 'true');
   var chips = el(doc, 'ul', 'wfr-chips');
   chips.setAttribute('aria-label', W.attached);
