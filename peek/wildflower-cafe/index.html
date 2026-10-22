@@ -241,6 +241,12 @@
   .take img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .take h3 { font-size: clamp(26px, 3.2vw, 34px); line-height: 1.1; }
   .shops { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .dshop { margin-top: 28px; padding: 26px; border-radius: 22px; border: 1px solid var(--line, rgba(0,0,0,.14)); background: var(--ground, #fff); }
+  .dshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; margin-top: 18px; }
+  .dshop-item { display: grid; gap: 8px; padding: 18px; border-radius: 16px; background: var(--ground-2); }
+  .dshop-item h4 { margin: 0; font-size: 22px; line-height: 1.15; }
+  .dshop-item p { margin: 0; }
+  .dshop-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
   .shops span { font-size: 14.5px; font-weight: 500; padding: 6px 12px; border-radius: 999px; background: var(--ground); border: 1px solid var(--hair); }
 
   /* HOLIDAY PIES + SIDES */
@@ -1062,6 +1068,29 @@
         <p class="tier-note mock-note wf-note">Your August 2021 post listed these four stores. Tell me where they are now, and I&rsquo;ll match it.</p>
       </div>
     </div>
+
+    <div class="dshop" id="dshop" data-show="crone all" data-thing="a small shop for your bottled dressings">
+      <p class="label with-pill" style="margin-bottom:8px"><span>Order a bottle</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h3>The dressing <em>shop</em></h3>
+      <p class="measure" style="margin-top:10px">Not near a store that carries them? Order a bottle here and pick it up at the cafe counter, or have it shipped.</p>
+      <div class="dshop-grid">
+        <div class="dshop-item">
+          <h4>Tofu Tahini Dressing</h4>
+          <p>Wildflower Specialty Foods. Locally made and vegan, the one from our salads.</p>
+          <div class="dshop-row"><b><span class="ph">price</span></b><span class="ph">bottle size</span></div>
+          <button type="button" class="bk-go ghost" data-demo-add>Add to my order</button>
+        </div>
+        <div class="dshop-item">
+          <h4>Humboldt Hemp Vinaigrette</h4>
+          <p>Wildflower Specialty Foods. Locally made and vegan, good on just about anything.</p>
+          <div class="dshop-row"><b><span class="ph">price</span></b><span class="ph">bottle size</span></div>
+          <button type="button" class="bk-go ghost" data-demo-add>Add to my order</button>
+        </div>
+      </div>
+      <p class="demo-note" style="margin-top:14px" id="dshop-note">Preview only: nothing is charged. On your real site, checkout is Stripe&rsquo;s, and the money goes straight to your own Stripe.</p>
+      <div class="bk-note" style="margin-top:14px"><b>Where orders go</b>Each order, and the shipping address if it&rsquo;s shipped, lives in your own Stripe, with a short heads-up email to you for each one (what, how many, city and state). No list to keep.</div>
+      <p class="tier-note mock-note wf-note">I only found two bottled dressings, and no prices online. Tell me the sizes and prices, whether you&rsquo;d ship or only do pickup, and if there&rsquo;s anything else you bottle, and I&rsquo;ll fill this in (a shop holds up to 20 items).</p>
+    </div>
   </div>
 </section>
 
@@ -1739,7 +1768,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your whole menu (prices, plus vegan and gluten free marks), the bakery and your bottled dressings, holiday pies and sides with a Call to pre-order button, the dining room and its mural, kind words, your hours with the poppy that opens when you do, your story, and an Order button to your DoorDash.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus menu filters for vegan and gluten free, your FAQ, a contact form, a specials email list on Buttondown, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus holiday pie and side pre-orders right on your site (pick, choose a pickup day, pay), with each order and payment in your own Stripe, on my server with your own back end, and an Order button that runs on DoorDash’s commission free online ordering, right on your site. That’s every piece on this page.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus holiday pie and side pre-orders right on your site (pick, choose a pickup day, pay), a small shop for your bottled dressings, with each order and payment in your own Stripe, on my server with your own back end, and an Order button that runs on DoorDash’s commission free online ordering, right on your site. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1930,5 +1959,6 @@
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
+<script>(function(){document.addEventListener("click",function(e){var b=e.target.closest("[data-demo-add]");if(!b)return;var on=b.getAttribute("aria-pressed")==="true";b.setAttribute("aria-pressed",on?"false":"true");b.textContent=on?"Add to my order":"Added to my order";});})();</script>
 <script src="/lightbox.js?v=2" defer></script>
 <script src="/note-motion.js?v=1" defer></script>
