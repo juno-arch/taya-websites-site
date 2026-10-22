@@ -1257,7 +1257,8 @@
         status: x.status === 'sent' ? 'sent' : 'open', answer: str(x.answer, 1000),
         files_count: Math.max(0, Math.min(999, Math.round(+x.files_count || 0))), sent_on: str(x.sent_on, 30),
         derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12),
-        video: /^[a-z0-9-]{1,40}$/.test(str(x.video, 40)) ? str(x.video, 40) : '' // (Oct 21 2026) the hard step this to-do has a video for
+        video: /^[a-z0-9-]{1,40}$/.test(str(x.video, 40)) ? str(x.video, 40) : '', // (Oct 21 2026) the hard step this to-do has a video for
+        choices: Array.isArray(x.choices) ? x.choices.map((c) => str(c, 40)).filter(Boolean).slice(0, 5) : [] // (Oct 22 2026) tap choices; the page adds Other
       };
     };
     const agreement = th.agreement && typeof th.agreement === 'object' ? {
@@ -1729,7 +1730,108 @@
   };
 
   /* ---- an answer, typed right here ---- */
+  // (Oct 22 2026, Pollen) a question with choices: tap one, or tap Other to write it. Every question has Other. The answer goes
+  // back as the chosen words, or "Other: <their words>"; Send waits until one is picked (and Other has words).
+  function choiceBlock(item, body, act) {
+    const sentBefore = item.status === 'sent' && item.answer;
+    if (sentBefore && !openAnswers.has(item.id)) {
+      const said = make('p', 'said');
+      said.append(make('span', 'sr-only', 'You said: '), item.answer);
+      body.append(said);
+      const p = make('p', 'thanks-line');
+      p.append(icon('i-check'), make('span', null, 'Sent, thank you! I’ll check it soon.'));
+      body.append(p);
+      const b = make('button', 'later', 'Change my answer');
+      b.type = 'button';
+      b.addEventListener('click', () => { openAnswers.add(item.id); replaceRow(item); });
+      act.append(b);
+      return;
+    }
+    const OTHER = 'Other';
+    const box = make('div', 'answer-box choice-box');
+    const gid = 'ch-' + item.id.replace(/[^A-Za-z0-9]/g, '');
+    const group = make('div', 'choices');
+    group.setAttribute('role', 'radiogroup');
+    group.setAttribute('aria-label', 'Your answer to: ' + item.title);
+    let picked = '';
+    const buttons = [];
+    const otherWrap = make('div', 'other-wrap');
+    otherWrap.hidden = true;
+    const ta = make('textarea', 'short');
+    ta.id = gid + '-other';
+    ta.maxLength = ANSWER_MAX - 10;
+    ta.rows = 3;
+    ta.placeholder = 'Type your answer here';
+    const tl = make('label', 'sr-only', 'Your own answer to: ' + item.title);
+    tl.htmlFor = ta.id;
+    otherWrap.append(tl, ta);
+    const err = make('p', 'err');
+    err.hidden = true;
+    const send = make('button', 'btn small', null);
+    send.type = 'button';
+    send.append(make('span', null, 'Send'));
+    send.disabled = true;
+    const refresh = () => {
+      buttons.forEach((b) => { const on = b.dataset.value === picked; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.classList.toggle('on', on); });
+      otherWrap.hidden = picked !== OTHER;
+      send.disabled = !picked || (picked === OTHER && !ta.value.trim());
+    };
+    item.choices.concat([OTHER]).forEach((label) => {
+      const b = make('button', 'choice-btn', label);
+      b.type = 'button';
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', 'false');
+      b.dataset.value = label;
+      b.disabled = PREVIEW;
+      b.addEventListener('click', () => { picked = label; refresh(); if (label === OTHER) ta.focus(); });
+      buttons.push(b);
+      group.append(b);
+    });
+    ta.addEventListener('input', refresh);
+    if (PREVIEW) ta.readOnly = true;
+    const row = make('div', 'row');
+    row.append(send);
+    if (sentBefore) {
+      const cancel = make('button', 'later', 'Keep what I sent');
+      cancel.type = 'button';
+      cancel.addEventListener('click', () => { openAnswers.delete(item.id); replaceRow(item); });
+      row.append(cancel);
+    }
+    send.addEventListener('click', async () => {
+      let text = picked;
+      if (picked === OTHER) {
+        const w = cleanText(ta.value, ANSWER_MAX);
+        if (!w) { err.textContent = 'A word or two is plenty.'; err.hidden = false; ta.focus(); return; }
+        text = 'Other: ' + w;
+        if (text.length > ANSWER_MAX) { err.textContent = 'That’s a lot! Could you keep it shorter? Email me the rest.'; err.hidden = false; return; }
+      }
+      err.hidden = true;
+      setBusy(send, true, 'Sending…');
+      busy++;
+      try {
+        await api.todo(item.id, 'answer', text);
+        item.status = 'sent';
+        item.answer = text;
+        item.sent_on = todayISO;
+        openAnswers.delete(item.id);
+        busy--;
+        replaceRow(item);
+        announce('Sent, thank you!');
+      } catch (e2) {
+        busy--;
+        setBusy(send, false);
+        refresh();
+        if (e2.code === 'signed_out') { quietSignOut(true); return; }
+        err.textContent = words(e2);
+        err.hidden = false;
+      }
+    });
+    box.append(group, otherWrap, err, row);
+    body.append(box);
+  }
+
   function answerBlock(item, body, act) {
+    if (item.choices && item.choices.length >= 2) { choiceBlock(item, body, act); return; }
     const kept = drafts.get('ans:' + item.id);
     if (kept && item.status === 'sent' && kept !== item.answer) openAnswers.add(item.id);
     const editing = openAnswers.has(item.id);

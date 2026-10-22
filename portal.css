@@ -198,6 +198,14 @@ html.wf-arriving .page { min-height: 100vh; min-height: 100svh; }
 .todo .said { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--wf-b-well); font-size: 15.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .todo .answer-box { margin-top: 12px; width: 100%; }
 .todo .answer-box .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 10px; }
+/* (Oct 22 2026) a question's choices: tap one (or Other, which opens a box); every tap is 44px tall */
+.todo .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.todo .choice-btn { min-height: 44px; padding: 8px 18px; border-radius: 12px; border: 1.5px solid var(--wf-b-edge); background: transparent; color: inherit; font: inherit; font-size: 16px; cursor: pointer; }
+.todo .choice-btn:hover:not(:disabled) { border-color: var(--wf-b-accent); }
+.todo .choice-btn:focus-visible { outline: 2px solid var(--wf-b-focus, var(--wf-b-accent)); outline-offset: 2px; }
+.todo .choice-btn.on { border-color: var(--wf-b-accent); background: var(--wf-b-well); font-weight: 600; }
+.todo .other-wrap { margin-top: 10px; }
+@media (max-width: 480px) { .todo .choices { flex-direction: column; } .todo .choice-btn { width: 100%; text-align: left; } }
 /* the autosave's small quiet line (Oct 19 2026) */
 .todo .answer-box .save-note { margin: 6px 0 0; font-size: 13.5px; color: var(--wf-b-ink-soft); }
 .todo .answer-box .save-note:empty { display: none; }
