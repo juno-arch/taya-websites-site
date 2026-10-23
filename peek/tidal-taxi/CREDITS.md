@@ -23,7 +23,7 @@ Every photo is the client's own, from the files Poppy handed over (clients/tidal
 
 Left out on purpose: shutterstock-1473381332 (Japonski Island; looks like a stock photo, licence unknown), the northern lights photo (they run April to October), the zipline photo (a person in frame), the brown bear close-up (720 px) and the door-decal photo (shows the "(COHO)" note the family has not confirmed).
 
-Reviews: Anne on Tripadvisor (Sept 5, 2025), Serena P. on Yelp (May 19, 2025), Ann D. on Yelp (June 8, 2024), read by hand on the public pages Oct 22 2026 and quoted word for word (Ann D.: first two sentences only). The three testimonials on the current site are not used (origin unknown).
+Reviews: Erin Krex, Dan Veeneman and Tristen Ellsworth on Google (read by hand on their Google Maps listing Oct 22 2026, 4.8 stars from 122 reviews, quoted word for word). Also read and available: Anne on Tripadvisor (Sept 5, 2025), Serena P. (May 19, 2025) and Ann D. (June 8, 2024) on Yelp. The three testimonials on the current site are not used (origin unknown).
 
 Brand: colors eyedropped by the family's builder from the door decal (deep water blue #0a3b5c, mid teal #2a8cb0, bright #4ec3e0, gold #d4a84a, soft gold #e8c670); wordmark in Playfair Display italic with spaced caps, as on the current site. Headings are in Archivo (wide black italic, after the door lettering); body Public Sans.
 
