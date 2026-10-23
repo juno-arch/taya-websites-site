@@ -72,6 +72,7 @@
   const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
   const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
   const RECEIPTS = SERVER + '/api/webfaery/receipts'; // a client's own receipts box (Oct 15 2026): only clients Taya switched it on for get any
+  const CRITIQUE = SERVER + '/api/webfaery/critique'; // their critique of Web Faery (Oct 23 2026): only clients on a trade or free deal get the card
   const PAPERS = SERVER + '/api/webfaery/papers';     // a client's own business papers (Oct 15 2026): only clients Taya added papers for get any
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
   // A Studio preview (Oct 19 2026): Taya's "See exactly what they see" opens portal.html#preview=<key>, a short lived
@@ -368,6 +369,7 @@
     '/api/webfaery/v/mine',
     '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
     '/api/webfaery/papers/mine',
+    '/api/webfaery/critique/mine', // their critique card, a read (hub DEPLOY.md section 128); save and send stay refused
     '/api/webfaery/portal/messages',
     '/api/webfaery/portal/message-file', // [rich b23] opening an attachment is a read (hub DEPLOY.md section 95)
     '/api/webfaery/portal/resources' // the approved how-to videos and guides, a read (hub DEPLOY.md section 101)
@@ -465,6 +467,10 @@
     papersAdd: (fields, file, onProgress) => sendForm('/add', fields, [file], token, onProgress, PAPERS),
     papersRename: (id, title) => postJSON('/rename', { id, title }, token, PAPERS),
     papersRemove: (id) => postJSON('/remove', { id }, token, PAPERS),
+    // their critique of Web Faery (Oct 23 2026): { eligible: false } unless they are on a trade or free deal
+    critique: () => postJSON('/mine', {}, token, CRITIQUE),
+    critiqueSave: (b) => postJSON('/save', b, token, CRITIQUE),
+    critiqueSend: () => postJSON('/send', {}, token, CRITIQUE),
     // the how-to videos and guides Taya approved (Oct 21 2026): { resources: [] } until she approves one
     resources: () => postJSON('/resources', {}, token),
     // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
@@ -997,6 +1003,7 @@
     visits = null;
     $('#sec-visits').hidden = true;
     rcReset();
+    cqReset();
     papers = null;
     papersAt = 0;
     ppUpload = null;
@@ -1186,6 +1193,7 @@
       loadVisits();
       loadReceipts();
       loadPapers();
+      loadCritique();
       loadResources();
       msgSync();
       if (fromSignIn) focusEl($('#hero-title'));
@@ -1214,6 +1222,7 @@
       loadVisits();
       loadReceipts();
       loadPapers();
+      loadCritique();
       loadResources();
       msgSync();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
@@ -6313,6 +6322,152 @@
     ['#in-rc-date', '#in-rc-vendor', '#in-rc-amount'].forEach((s) => $(s).addEventListener('input', () => { rcAnyway = false; $('#rc-same').hidden = true; }));
   }
 
+  /* ---- your critique of Web Faery (Oct 23 2026, hub DEPLOY.md section 128) ----
+     A client on a trade or free deal (the server says so with eligible: true) sees one card: six short prompts, each a few
+     choices plus Other, and one free box. Every one is optional and saves the moment they answer, so they can leave and
+     come back. Send marks it sent and shows the thank you; Change an answer opens it again. Everyone else: the server says
+     eligible: false and the card stays hidden. A Studio preview reads it and changes nothing. Words go in as text only. */
+  let cq = null; // { prompts, answers, fix, status }
+  const cqTimers = {};
+  function cqReset() {
+    cq = null;
+    Object.keys(cqTimers).forEach((k) => { clearTimeout(cqTimers[k]); delete cqTimers[k]; });
+    const s = $('#sec-critique');
+    if (s) { s.hidden = true; $('#cq-prompts').replaceChildren(); }
+  }
+  async function loadCritique() {
+    if (typeof api.critique !== 'function') { cqReset(); return; }
+    try {
+      const d = await api.critique();
+      if (!d || d.eligible !== true || !Array.isArray(d.prompts)) { cqReset(); return; }
+      const prompts = d.prompts.slice(0, 8).map((q) => {
+        const key = /^[a-z_]{2,20}$/.test(str(q && q.key, 20)) ? q.key : '';
+        const title = cleanLine(q && q.title, 120);
+        const choices = arr(q && q.choices).map((c) => cleanLine(c, 60)).filter(Boolean).slice(0, 6);
+        return key && title && choices.length ? { key, title, choices } : null;
+      }).filter(Boolean);
+      const answers = {};
+      prompts.forEach((q) => {
+        const a = d.answers && d.answers[q.key];
+        if (a && typeof a === 'object') answers[q.key] = { choice: cleanLine(a.choice, 60), other: cleanLine(a.other, 400) };
+      });
+      cq = { prompts, answers, fix: cleanText(d.fix_first, 1500) || '', status: d.status === 'sent' ? 'sent' : 'draft',
+        lede: cleanLine(d.intro, 400), thanks: cleanLine(d.thanks, 120) || 'Thank you, this helps a lot.', readOnly: !!d.read_only };
+      renderCritique(false);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!cq) { const s = $('#sec-critique'); if (s) s.hidden = true; }
+    }
+  }
+  function cqSay(text, bad) {
+    const st = $('#cq-status'), er = $('#cq-err');
+    if (bad) { er.textContent = text; er.hidden = !text; st.textContent = ''; } else { st.textContent = text || ''; er.hidden = true; }
+  }
+  // one save at a time, in the order they were made: two answers changed together must not write over each other on the server
+  let cqChain = Promise.resolve();
+  function cqSave(body) {
+    if (!cq || cq.readOnly) return Promise.resolve();
+    cqChain = cqChain.then(async () => {
+      cqSay('Saving…', false);
+      try {
+        await api.critiqueSave(body);
+        if (cq && cq.status === 'sent') { cq.status = 'draft'; renderCritique(true); }
+        cqSay('Saved.', false);
+      } catch (err) {
+        if (err.code === 'signed_out') { quietSignOut(false); return; }
+        cqSay('That one did not save. Try once more.', true);
+      }
+    });
+    return cqChain;
+  }
+  function renderCritique(keepFocus) {
+    const sec = $('#sec-critique');
+    if (!sec || !cq) return;
+    sec.hidden = false;
+    $('#cq-lede').textContent = cq.lede;
+    const sent = cq.status === 'sent';
+    $('#f-cq').hidden = sent;
+    $('#cq-thanks').hidden = !sent;
+    $('#cq-thanks-line').textContent = cq.thanks;
+    if (sent) return;
+    const host = $('#cq-prompts');
+    if (host.dataset.drawn === '1' && keepFocus) return;
+    host.replaceChildren();
+    host.dataset.drawn = '1';
+    cq.prompts.forEach((q) => {
+      const a = cq.answers[q.key] || { choice: '', other: '' };
+      const fs = document.createElement('fieldset');
+      fs.className = 'cq-q';
+      const lg = document.createElement('legend');
+      lg.className = 'field-label';
+      lg.textContent = q.title;
+      fs.append(lg);
+      q.choices.concat(['Other']).forEach((c, i) => {
+        const id = 'cq-' + q.key + '-' + i;
+        const row = document.createElement('div');
+        row.className = 'cq-choice';
+        const r = document.createElement('input');
+        r.type = 'radio'; r.name = 'cq-' + q.key; r.id = id; r.value = c;
+        r.checked = a.choice === c;
+        r.disabled = cq.readOnly;
+        r.addEventListener('change', () => { a.choice = c; cq.answers[q.key] = a; cqSave({ key: q.key, choice: c, other: a.other || '' }); });
+        const l = document.createElement('label');
+        l.htmlFor = id; l.textContent = c;
+        row.append(r, l);
+        fs.append(row);
+      });
+      const w = document.createElement('input');
+      w.type = 'text'; w.maxLength = 400; w.autocomplete = 'off';
+      w.id = 'cq-' + q.key + '-words';
+      w.placeholder = 'In your own words (optional)';
+      w.setAttribute('aria-label', q.title + ', in your own words');
+      w.value = a.other || '';
+      w.disabled = cq.readOnly;
+      w.addEventListener('input', () => {
+        a.other = w.value; cq.answers[q.key] = a;
+        clearTimeout(cqTimers[q.key]);
+        cqTimers[q.key] = setTimeout(() => cqSave({ key: q.key, choice: a.choice || '', other: a.other || '' }), 900);
+      });
+      fs.append(w);
+      host.append(fs);
+    });
+    const fix = $('#in-cq-fix');
+    fix.value = cq.fix || '';
+    fix.disabled = cq.readOnly;
+    $('#b-cq-send').disabled = cq.readOnly;
+  }
+  function wireCritique() {
+    const fix = $('#in-cq-fix');
+    if (!fix) return;
+    fix.addEventListener('input', () => {
+      if (!cq) return;
+      cq.fix = fix.value;
+      clearTimeout(cqTimers.fix);
+      cqTimers.fix = setTimeout(() => cqSave({ key: 'fix_first', text: cq.fix }), 900);
+    });
+    $('#f-cq').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (!cq || cq.readOnly) return;
+      const btn = $('#b-cq-send');
+      Object.keys(cqTimers).forEach((k) => clearTimeout(cqTimers[k]));
+      setBusy(btn, true, 'Sending…');
+      try {
+        await cqChain;
+        await api.critiqueSave({ key: 'fix_first', text: fix.value });
+        const d = await api.critiqueSend();
+        cq.status = 'sent';
+        if (d && d.thanks) cq.thanks = cleanLine(d.thanks, 120) || cq.thanks;
+        cqSay('', false);
+        renderCritique(false);
+        focusEl($('#cq-thanks-line'));
+      } catch (err) {
+        if (err.code === 'signed_out') { quietSignOut(false); return; }
+        cqSay(err && err.code === 'input' ? 'Answer at least one, then send.' : 'That did not send. Try once more.', true);
+      } finally { setBusy(btn, false); }
+    });
+    $('#b-cq-edit').addEventListener('click', () => { if (!cq) return; cq.status = 'draft'; $('#cq-prompts').dataset.drawn = ''; renderCritique(false); focusEl($('#h-critique')); });
+  }
+
   /* ---- your business papers (Oct 15 2026) ----
      Insurance, business license, permits, certifications Taya keeps for them on Web Faery's server (hub DEPLOY.md
      section 73). A ledger row each: the title, the kind and who issued it, their number, the days it is good for, who
@@ -7190,6 +7345,7 @@
     wireNews();
     wireReceipts();
     wirePapers(); // their own business papers (Oct 20 2026, hub section 98)
+    wireCritique(); // their critique of Web Faery (Oct 23 2026, hub section 128)
     wirePages();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }

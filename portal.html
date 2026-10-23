@@ -998,6 +998,29 @@
       <button type="button" class="later tl-more" id="b-tl-more" aria-controls="tl" aria-expanded="false" hidden>See every step</button>
     </section>
 
+    <!-- Your critique of Web Faery (Oct 23 2026, hub DEPLOY.md section 128): only for a client on a trade or free deal; the
+         server answers eligible: false for everyone else and this stays hidden. Six short prompts and one free box, all
+         optional, each saved as they go. Its code is the "critique" block in portal.js. -->
+    <section class="p-card" id="sec-critique" data-page="project" aria-labelledby="h-critique" hidden>
+      <span class="kicker">Your thoughts</span>
+      <h2 id="h-critique" tabindex="-1">Your critique of Web Faery</h2>
+      <p class="cq-lede" id="cq-lede"></p>
+      <form class="cq-form" id="f-cq" novalidate>
+        <div id="cq-prompts"></div>
+        <label class="field-label" for="in-cq-fix" id="cq-fix-label">One thing I should fix first</label>
+        <textarea id="in-cq-fix" rows="3" maxlength="1500" placeholder="In your own words"></textarea>
+        <p class="rc-status" id="cq-status" role="status"></p>
+        <p class="err" id="cq-err" tabindex="-1" hidden></p>
+        <div class="dc-btns">
+          <button class="btn small" type="submit" id="b-cq-send"><span>Send my critique</span></button>
+        </div>
+      </form>
+      <div class="cq-thanks" id="cq-thanks" hidden>
+        <p id="cq-thanks-line"></p>
+        <button class="later" type="button" id="b-cq-edit">Change an answer</button>
+      </div>
+    </section>
+
     <section class="p-card" id="sec-things" data-page="project" aria-labelledby="h-things">
       <span class="kicker">Your things</span>
       <h2 id="h-things">All in one place</h2>
