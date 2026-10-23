@@ -1,0 +1,40 @@
+/* The owner's Schedule tab (Oct 22 2026, portal-schedule.js): a Day and Week hour grid. Light page, the portal's own tokens, hairlines, no shadows.
+   A visit is the accent, time off and other calendars are quiet and hatched, her open hours a faint lift. Buttons tap at 44px; grid events are as
+   tall as their time. */
+.sch-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 4px 0 8px; }
+.sch-nav, .sch-views, .sch-tools { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.sch-title { margin: 0; font-size: 18px; color: var(--wf-b-ink); min-width: 10em; overflow-wrap: anywhere; }
+.sch [aria-pressed="true"] { border-color: var(--wf-b-accent); color: var(--wf-b-ink); font-weight: 600; }
+.sch-sum { margin: 0 0 6px; color: var(--wf-b-ink-soft); font-size: 14px; }
+.sch-say { margin: 4px 0; color: var(--wf-b-ink); }
+.sch-say.is-bad, .sch-hint.is-bad { color: var(--wf-b-trouble); }
+.sch-grid { overflow-x: auto; border: 1px solid var(--wf-b-rule); border-radius: 12px; background: var(--wf-b-sheet); }
+.sch-week { min-width: 560px; width: 100%; }
+.sch-heads, .sch-allday, .sch-body { display: grid; grid-template-columns: 52px repeat(var(--cols), minmax(0, 1fr)); }
+.sch-head { min-height: 44px; background: none; border: 0; border-left: 1px solid var(--wf-b-rule); border-bottom: 1px solid var(--wf-b-rule); color: var(--wf-b-ink); font: inherit; font-size: 14px; cursor: pointer; }
+.sch-head.is-today { font-weight: 600; color: var(--wf-b-accent); }
+.sch-gutter { color: var(--wf-b-ink-soft); font-size: 12px; padding-right: 6px; text-align: right; }
+.sch-hour { border-top: 1px solid var(--wf-b-rule); box-sizing: border-box; }
+.sch-allcol { border-left: 1px solid var(--wf-b-rule); min-height: 28px; padding: 1px; display: flex; flex-direction: column; gap: 1px; }
+.sch-col { position: relative; border-left: 1px solid var(--wf-b-rule); background-image: linear-gradient(var(--wf-b-rule) 1px, transparent 1px); background-size: 100% 44px; }
+.sch-open { position: absolute; left: 0; right: 0; background: var(--wf-b-leaf-tint); opacity: .55; pointer-events: none; }
+.sch-now { position: absolute; left: 0; right: 0; height: 0; border-top: 2px solid var(--wf-b-trouble); pointer-events: none; }
+.sch-ev { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; text-align: left; font: inherit; font-size: 13px; line-height: 1.2; padding: 2px 5px;
+  background: var(--wf-b-well); color: var(--wf-b-ink); border: 1px solid var(--wf-b-accent); border-radius: 4px; cursor: pointer; }
+.sch-allcol .sch-ev { position: static; min-height: 24px; }
+.sch-ev-t { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sch-ev-w { color: var(--wf-b-ink-soft); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sch-ev.is-off, .sch-ev.is-busy { background: repeating-linear-gradient(135deg, rgb(0 0 0 / .05) 0 6px, transparent 6px 12px); border: 1px dashed var(--wf-b-edge); color: var(--wf-b-ink-soft); cursor: default; }
+.sch-ev:focus-visible { outline: 2px solid var(--wf-b-focus); outline-offset: 1px; }
+.sch-detail, .sch-form { margin: 10px 0; padding: 10px 0; border-top: 1px solid var(--wf-b-rule); border-bottom: 1px solid var(--wf-b-rule); max-width: 640px; }
+.sch-dh { margin: 0 0 4px; font-size: 17px; color: var(--wf-b-ink); overflow-wrap: anywhere; }
+.sch-dw, .sch-hint { margin: 0 0 6px; color: var(--wf-b-ink); overflow-wrap: anywhere; }
+.sch-hint { color: var(--wf-b-ink-soft); }
+.sch-acts, .sch-days, .sch-times { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin: 6px 0; }
+.sch-check, .sch-fl { display: flex; align-items: center; gap: 6px; min-height: 44px; color: var(--wf-b-ink); font-size: 15px; }
+.sch-fl { flex-direction: column; align-items: stretch; gap: 2px; min-height: 0; margin: 6px 0; }
+.sch-fl-t { color: var(--wf-b-ink-soft); font-size: 14px; }
+.sch-check input[type="checkbox"] { width: 20px; height: 20px; }
+.sch-sel, .sch-in, .sch-msg { font: inherit; color: var(--wf-b-ink); background: var(--wf-b-field); border: 1px solid var(--wf-b-edge); border-radius: 8px; padding: 8px 10px; min-height: 44px; box-sizing: border-box; max-width: 100%; width: 100%; }
+.sch-msg { display: block; margin: 6px 0; }
+@media (max-width: 600px) { .sch-title { min-width: 0; width: 100%; } }

@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
 <link rel="stylesheet" href="portal.css?v=20261021a">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
+<link rel="stylesheet" href="portal-schedule.css?v=20261022a">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
@@ -118,6 +119,7 @@
 <!-- portal-rich.js (Oct 20 2026, hub DEPLOY.md section 95): the Messages composer and the markup renderer (window.WFRich) -->
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
+<script src="portal-schedule.js?v=20261022a"></script>
 <script src="portal.js?v=20261021a"></script>
 
 <main class="page" id="main" tabindex="-1">
@@ -435,6 +437,7 @@
       <p class="orders-fine" id="bk-zone"></p>
       <div class="bk-tabs" role="tablist" aria-label="Bookings">
         <button type="button" role="tab" class="bk-tab" id="bk-tab-upcoming" data-tab="upcoming" aria-controls="bk-p-upcoming" aria-selected="true">Coming up</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-schedule" data-tab="schedule" aria-controls="bk-p-schedule" aria-selected="false" tabindex="-1">Schedule</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-calendar" data-tab="calendar" aria-controls="bk-p-calendar" aria-selected="false" tabindex="-1">Calendar</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-hours" data-tab="hours" aria-controls="bk-p-hours" aria-selected="false" tabindex="-1">Hours</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-services" data-tab="services" aria-controls="bk-p-services" aria-selected="false" tabindex="-1">Services</button>
@@ -452,6 +455,11 @@
           <summary>Past and canceled <span class="opt-tag">(the last 60 days)</span></summary>
           <ul class="orders bks" id="bk-past"></ul>
         </details>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-schedule" aria-labelledby="bk-tab-schedule" hidden>
+        <h3 class="small-h">Your schedule</h3>
+        <div class="sch" id="sch-root"></div>
       </div>
 
       <div class="bk-panel" role="tabpanel" id="bk-p-calendar" aria-labelledby="bk-tab-calendar" hidden>

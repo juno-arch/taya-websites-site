@@ -361,7 +361,7 @@
     '/api/webfaery/shop/products', '/api/webfaery/shop/post-kit',
     '/api/webfaery/gift/owner', '/api/webfaery/gift/lookup',
     '/api/webfaery/bookings/overview', '/api/webfaery/bookings/slots', '/api/webfaery/bookings/month',
-    '/api/webfaery/bookings/noshow-quote', '/api/webfaery/bookings/clients', '/api/webfaery/bookings/client',
+    '/api/webfaery/bookings/noshow-quote', '/api/webfaery/bookings/week', '/api/webfaery/bookings/clients', '/api/webfaery/bookings/client',
     '/api/webfaery/bookings/clients-csv',
     '/api/webfaery/news/owner/overview', '/api/webfaery/news/owner/issue', '/api/webfaery/news/owner/people',
     '/api/webfaery/news/owner/export', '/api/webfaery/news/owner/images',
@@ -2745,7 +2745,7 @@
   let bkMonth = '';          // the month on show, 'YYYY-MM'
   let bkMonthDays = [];
   let bkDay = '';            // the day open under the month
-  const BK_TABS = ['upcoming', 'calendar', 'hours', 'services', 'calendars', 'settings', 'clients'];
+  const BK_TABS = ['upcoming', 'schedule', 'calendar', 'hours', 'services', 'calendars', 'settings', 'clients'];
   const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
   const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
@@ -2757,6 +2757,7 @@
     try {
       bk = cleanBk(await bookCall('/overview'));
       renderBk();
+      try { document.dispatchEvent(new CustomEvent('wf-bk-updated')); } catch (e) { /* the Schedule tab just doesn't refresh by itself */ }
       if (bk && bkTab === 'calendar') loadMonth(bkMonth);
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
@@ -2883,8 +2884,11 @@
     if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#bookings-' + key); } catch (e) { /* fine */ } }
     if (focus) focusEl($('#bk-tab-' + key));
     if (key === 'calendar' && bk) loadMonth(bkMonth);
+    if (key === 'schedule' && bk && window.WFSchedule) window.WFSchedule.show(); // (Oct 22 2026) the Day and Week grid, portal-schedule.js
     if (key === 'clients' && bk) loadClients(false);
   }
+  // (Oct 22 2026) a small bridge for portal-schedule.js (the Schedule tab): the owner's own calls, switching tabs, the overview, a toast
+  window.WFBk = { call: bookCall, select: (k) => selectTab(k, true, false), data: () => bk, toast: (t) => toast(t), reload: () => loadBookings(), signedOut: () => quietSignOut(false) };
   function onTabKey(ev) {
     const i = BK_TABS.indexOf(bkTab);
     let n = -1;
