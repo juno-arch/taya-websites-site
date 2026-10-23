@@ -4,8 +4,8 @@ Instagram files are signed and could not be saved directly, so each photo was sh
 
 | File in photos/ | Instagram post | Used as |
 |---|---|---|
-| ig-interior-counter.jpg (1160x860) | DWNf2qWFOf7, the reopening after their renovation | hero, gallery, link card |
-| ig-croissant-dough.jpg (1160x955) | DeILqKMyHX5, "We are hiring for all positions" (Oct 5 2026); hands only, no face | gallery, feed tile |
+| ig-interior-counter.jpg (1160x860) | DWNf2qWFOf7, the reopening after their renovation | gallery (first tile), link card |
+| ig-croissant-dough.jpg (1160x955) | DeILqKMyHX5, "We are hiring for all positions" (Oct 5 2026); hands only, no face | hero (v2, light pink look; also hero-dough-960.webp, a 960 px copy), gallery, feed tile |
 | ig-pistachio-croissant.jpg (1160x1036) | DXUZb5jlFn-, "Pistachio Cream filled Croissant" | gallery, feed tile |
 | ig-croissant-cortado.jpg (1160x1036) | DZnHn5kBKQc | gallery, feed tile |
 | ig-almond-croissant-cut.jpg (1160x1036) | DKixmC-xj0Q, "The perfect Almond Croissant"; a hand, no face | gallery, feed tile |
@@ -14,3 +14,9 @@ Instagram files are signed and could not be saved directly, so each photo was sh
 | logo.png (2000x670) | Their Square site header logo (cdn editmysite upload, 2021) | redrawn as transparent and cream versions on the page |
 
 Not used: sq-a (latte pour) and sq-b (glazed croissants), the category images on their Square order page (NOT-USED-*.jpg): the first looks like a stock photo and neither could be tied to them. Macaron photo (DLLHPvZSpft, a customer and a child), photos credited to a photographer (@caitlinblaisdellphotography), the Google reviewers' photos.
+
+## Words and sources for the "Meet the baker" section (v2, Oct 22 2026)
+Owner research is in prospects/batch15-sitka/wildflour-sitka-ak/owner-research.md. On the page:
+- https://www.kcaw.org/2015/12/16/new-businesses-feature-baked-goods/ (KCAW, Dec 16 2015, Brielle Schaeffer: Graceful Pastries, Grace Ivers)
+- https://sitkaarts.com/article/christian-litten-winter-2025/ (Sitka Arts Guide, winter 2025: the WildFlour opening year and the "brains and brawn" line, by Christian Litten)
+Owner name also confirmed by Yelp's business owner field and the Alaska company record for WildFlour LLC. No awards were found, so none are on the page.
