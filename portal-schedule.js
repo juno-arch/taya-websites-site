@@ -160,13 +160,17 @@
   }
 
   // ---------------------------------------------------------------- loading
+  // the first request has no server date yet: the browser's own day picks the week to ask for, then the server's "today" settles it
+  const localDay = () => { const n = new Date(); return n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate()); };
   async function load(quiet) {
     if (busy) return;
+    const first = !anchor;
+    if (first) anchor = localDay();
     const r = range();
     let d = null;
-    try { d = await call('/week', { from: r.from, to: r.to }); } catch (e) { if (!quiet) say(words(e), true); return; }
+    try { d = await call('/week', { from: r.from, to: r.to }); } catch (e) { if (first) anchor = ''; if (!quiet) say(words(e), true); return; }
     data = d; today = d.today; nowMin = d.now_min;
-    if (!anchor) anchor = today;
+    if (first && d.today !== anchor) { anchor = d.today; await load(quiet); return; }
     render();
   }
   function go(newAnchor, newView) {
