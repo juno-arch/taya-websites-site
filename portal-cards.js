@@ -253,7 +253,7 @@
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
     const dark = ratio(bg, '#ffffff') < ratio(bg, lk.ink);        // true when ink reads better on this ground
     const fg = dark ? lk.ink : '#ffffff';
-    const fgSoft = dark ? lk.soft : mix('#ffffff', bg, 0.2);
+    const fgSoft = dark ? (ratio(lk.soft, bg) >= 4.5 ? lk.soft : lk.ink) : mix('#ffffff', bg, 0.2);
 
     if (side === 'front') {
       // the business name where a logo would sit
