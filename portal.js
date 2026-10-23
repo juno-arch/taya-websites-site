@@ -2745,7 +2745,7 @@
   let bkMonth = '';          // the month on show, 'YYYY-MM'
   let bkMonthDays = [];
   let bkDay = '';            // the day open under the month
-  const BK_TABS = ['upcoming', 'schedule', 'calendar', 'hours', 'services', 'calendars', 'settings', 'clients'];
+  const BK_TABS = ['upcoming', 'schedule', 'calendar', 'hours', 'services', 'settings', 'clients'];
   const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
   const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
@@ -2871,7 +2871,7 @@
   }
 
   // ---- the tabs
-  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); return m && BK_TABS.includes(m[1]) ? m[1] : ''; };
+  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); const k = m && m[1] === 'calendars' ? 'settings' : m && m[1]; return k && BK_TABS.includes(k) ? k : ''; }; // #bookings-calendars (the old tab) opens Settings
   function selectTab(key, focus, fromHash) {
     if (!BK_TABS.includes(key)) key = 'upcoming';
     bkTab = key;

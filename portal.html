@@ -120,7 +120,7 @@
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261022b"></script>
-<script src="portal.js?v=20261021a"></script>
+<script src="portal.js?v=20261022a"></script>
 
 <main class="page" id="main" tabindex="-1">
   <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
@@ -428,7 +428,7 @@
     <!-- your bookings (Oct 10 2026; part 2 Oct 12 2026: tabs, a month view, days off, different hours on a date,
          repeating blocks, their own calendars, questions, limits, settings): only for a client whose booking runs on
          Web Faery's server. Each tab can be opened by its own address: #bookings-upcoming, #bookings-calendar,
-         #bookings-hours, #bookings-services, #bookings-calendars, #bookings-settings, #bookings-clients (Oct 15 2026) -->
+         #bookings-hours, #bookings-services, #bookings-settings (Connected calendars is at the end of it; #bookings-calendars opens Settings), #bookings-clients (Oct 15 2026) -->
     <section class="p-card" id="sec-bookings" data-page="bookings" aria-labelledby="h-bookings" hidden>
       <span class="kicker">Your booking</span>
       <h2 id="h-bookings" tabindex="-1">Bookings</h2>
@@ -441,7 +441,6 @@
         <button type="button" role="tab" class="bk-tab" id="bk-tab-calendar" data-tab="calendar" aria-controls="bk-p-calendar" aria-selected="false" tabindex="-1">Calendar</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-hours" data-tab="hours" aria-controls="bk-p-hours" aria-selected="false" tabindex="-1">Hours</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-services" data-tab="services" aria-controls="bk-p-services" aria-selected="false" tabindex="-1">Services</button>
-        <button type="button" role="tab" class="bk-tab" id="bk-tab-calendars" data-tab="calendars" aria-controls="bk-p-calendars" aria-selected="false" tabindex="-1">Your calendars</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-settings" data-tab="settings" aria-controls="bk-p-settings" aria-selected="false" tabindex="-1">Settings</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-clients" data-tab="clients" aria-controls="bk-p-clients" aria-selected="false" tabindex="-1">Your clients</button>
       </div>
@@ -548,40 +547,6 @@
         </div>
       </div>
 
-      <div class="bk-panel" role="tabpanel" id="bk-p-calendars" aria-labelledby="bk-tab-calendars" hidden>
-        <h3 class="small-h">Busy times from your calendar</h3>
-        <p class="orders-fine">Connect the calendar you already keep, and the times you’re busy there close for booking here. Only the busy times are kept: no titles, places or notes.</p>
-        <ul class="dcs" id="bk-cals"></ul>
-        <form class="dc-form" id="f-bk-cal" novalidate>
-          <label class="field-label" for="in-bk-cal-url">Your calendar’s private address</label>
-          <input id="in-bk-cal-url" class="keeps" type="text" inputmode="url" autocomplete="off" spellcheck="false" maxlength="2000" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics" aria-describedby="bk-cal-err">
-          <label class="field-label" for="in-bk-cal-label">A name for it <span class="opt-tag">(optional, only you see it)</span></label>
-          <input id="in-bk-cal-label" class="keeps" type="text" maxlength="60" autocomplete="off" placeholder="Like: Personal">
-          <p class="err" id="bk-cal-err" hidden></p>
-          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-cal"><span>Connect it</span></button></div>
-        </form>
-        <details class="bk-how">
-          <summary>Where to find that address</summary>
-          <div class="bk-how-body">
-            <p><strong>Google Calendar</strong> (on a computer): Settings, then your calendar’s name on the left, then Integrate calendar. Copy the “Secret address in iCal format”.</p>
-            <p><strong>Outlook</strong>: Settings, Calendar, Shared calendars, Publish a calendar. Pick your calendar and “Can view when I’m busy”, then copy the ICS link. That one shares only busy times.</p>
-            <p><strong>iPhone or Mac (iCloud)</strong>: in Calendar, share the calendar and turn on Public Calendar, then copy the link. Anyone with that link could see the calendar, so a calendar kept just for these busy times is a good idea.</p>
-            <p>Keep the address to yourself, like a password. If you ever share it by mistake, make a new one in your calendar and paste it here.</p>
-          </div>
-        </details>
-
-        <h3 class="small-h">Your bookings in your calendar</h3>
-        <p class="orders-fine">Each booking email to you has a calendar file. Open it to add the booking to your calendar; the emails when it moves or is canceled carry a file that moves or removes it.</p>
-        <p class="orders-fine">Tap Add to my calendar on an iPhone, iPad or Mac and your calendar offers to subscribe, so every booking lands on your phone and stays up to date. On an Android phone, use Add to Google Calendar. Or copy your private calendar link and add it as a subscribed calendar by hand. It holds every booking, with the address for home visits. Calendars look for changes on their own schedule: an iPhone every so often (on a Mac you can pick every 5 minutes), Google every several hours, sometimes a day. The emails are the quick way. Keep the link to yourself.</p>
-        <div class="dc-btns">
-          <a class="btn small" id="a-bk-subscribe" href="#" hidden><span>Add to my calendar</span></a>
-          <a class="later" id="a-bk-gcal" href="#" target="_blank" rel="noopener noreferrer" hidden>Add to Google Calendar</a>
-          <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
-          <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
-        </div>
-        <p class="orders-fine" id="bk-feed-note" role="status"></p>
-      </div>
-
       <div class="bk-panel" role="tabpanel" id="bk-p-settings" aria-labelledby="bk-tab-settings" hidden>
         <h3 class="small-h">How booking works for you</h3>
         <form class="dc-form bk-set" id="f-bk-set" novalidate>
@@ -672,6 +637,40 @@
           <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-x"><span>Save extras</span></button></div>
           <p class="orders-fine" id="bk-x-done" role="status"></p>
         </form>
+      
+        <!-- (Oct 22 2026, Pollen: "your calendars should have a different name or moved to settings") the old Your calendars tab, now Connected calendars at the end of Settings -->
+        <h3 class="small-h bk-cal-h">Connected calendars</h3>
+        <h4 class="small-h">Busy times from your calendar</h4>
+        <p class="orders-fine">Connect the calendar you already keep, and the times you’re busy there close for booking here. Only the busy times are kept: no titles, places or notes.</p>
+        <ul class="dcs" id="bk-cals"></ul>
+        <form class="dc-form" id="f-bk-cal" novalidate>
+          <label class="field-label" for="in-bk-cal-url">Your calendar’s private address</label>
+          <input id="in-bk-cal-url" class="keeps" type="text" inputmode="url" autocomplete="off" spellcheck="false" maxlength="2000" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics" aria-describedby="bk-cal-err">
+          <label class="field-label" for="in-bk-cal-label">A name for it <span class="opt-tag">(optional, only you see it)</span></label>
+          <input id="in-bk-cal-label" class="keeps" type="text" maxlength="60" autocomplete="off" placeholder="Like: Personal">
+          <p class="err" id="bk-cal-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-cal"><span>Connect it</span></button></div>
+        </form>
+        <details class="bk-how">
+          <summary>Where to find that address</summary>
+          <div class="bk-how-body">
+            <p><strong>Google Calendar</strong> (on a computer): Settings, then your calendar’s name on the left, then Integrate calendar. Copy the “Secret address in iCal format”.</p>
+            <p><strong>Outlook</strong>: Settings, Calendar, Shared calendars, Publish a calendar. Pick your calendar and “Can view when I’m busy”, then copy the ICS link. That one shares only busy times.</p>
+            <p><strong>iPhone or Mac (iCloud)</strong>: in Calendar, share the calendar and turn on Public Calendar, then copy the link. Anyone with that link could see the calendar, so a calendar kept just for these busy times is a good idea.</p>
+            <p>Keep the address to yourself, like a password. If you ever share it by mistake, make a new one in your calendar and paste it here.</p>
+          </div>
+        </details>
+
+        <h4 class="small-h">Your bookings in your calendar</h4>
+        <p class="orders-fine">Each booking email to you has a calendar file. Open it to add the booking to your calendar; the emails when it moves or is canceled carry a file that moves or removes it.</p>
+        <p class="orders-fine">Tap Add to my calendar on an iPhone, iPad or Mac and your calendar offers to subscribe, so every booking lands on your phone and stays up to date. On an Android phone, use Add to Google Calendar. Or copy your private calendar link and add it as a subscribed calendar by hand. It holds every booking, with the address for home visits. Calendars look for changes on their own schedule: an iPhone every so often (on a Mac you can pick every 5 minutes), Google every several hours, sometimes a day. The emails are the quick way. Keep the link to yourself.</p>
+        <div class="dc-btns">
+          <a class="btn small" id="a-bk-subscribe" href="#" hidden><span>Add to my calendar</span></a>
+          <a class="later" id="a-bk-gcal" href="#" target="_blank" rel="noopener noreferrer" hidden>Add to Google Calendar</a>
+          <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
+          <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
+        </div>
+        <p class="orders-fine" id="bk-feed-note" role="status"></p>
       </div>
 
       <!-- your clients (Oct 15 2026, hub DEPLOY.md section 74): read only, worked out from the bookings on the server -->
