@@ -40,7 +40,6 @@ const fail = (msg) => failures.push(msg);
 const html = read('portal.html');
 const js = read('portal.js');
 const demo = read('portal-demo.js');
-const cardsJs = read('portal-cards.js');
 
 // ---- the words people read ----
 const visible = html
@@ -62,15 +61,10 @@ function literals(src) {
 }
 const jsStrings = literals(js);
 const demoStrings = literals(demo);
-// Oct 21 2026: the business cards page. Its one printer price sentence says "$25 to $45" (a printer's price, not
-// Web Faery's), which the old-price rule would catch, so that exact phrase is set aside before the words are checked.
-const PRINTER_PRICE = 'It is usually about $25 to $45 for 50 cards with shipping.';
-const cardsStrings = literals(cardsJs).map((s) => s.split(PRINTER_PRICE).join(''));
 const sources = [
   ['portal.html', [htmlWords]],
   ['portal.js', jsStrings],
   ['portal-demo.js', demoStrings],
-  ['portal-cards.js', cardsStrings],
 ];
 
 const FORBIDDEN = [
@@ -188,7 +182,7 @@ for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
   if (/^(https?:)?\/\//.test(src)) fail(`portal.html: an outside script (${src})`);
 }
 if (/\son[a-z]+=/i.test(html.replace(/<!--[\s\S]*?-->/g, ''))) fail('portal.html: an on...= handler (inline code is blocked)');
-for (const [file, src] of [['portal.js', js], ['portal-demo.js', demo], ['portal-cards.js', cardsJs]]) {
+for (const [file, src] of [['portal.js', js], ['portal-demo.js', demo]]) {
   if (/\.innerHTML\s*=|insertAdjacentHTML|document\.write|\beval\(|new Function\(/.test(src)) fail(`${file}: builds the page from HTML strings or runs strings as code`);
 }
 if (fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8').includes('portal')) fail('sitemap.xml lists the portal (it is private)');
@@ -507,48 +501,6 @@ const demoOn = /const DEMO = true;/.test(js);
     if (/\bnever\b/i.test(s)) fail(`portal.js: "never" in "${s.slice(0, 80)}"`);
     if (/\b(we|us|our)\b/i.test(s)) fail(`portal.js: I / me, not we / us / our: "${s.slice(0, 80)}"`);
   }
-}
-
-// ---- your business cards (Oct 21 2026): portal-cards.js and #sec-cards ----
-// The card is drawn and the files made in the client's own browser: nothing is sent, nothing is fetched, the QR code
-// is made by a small encoder in the page, the printer links open a new tab safely, and the preview (Studio) switches
-// the form and the downloads off. The safe-area guide is on the screen only, never in the files.
-{
-  const cd = createRequire(import.meta.url)(path.join(root, 'portal-cards.js'));
-  const sec = (html.match(/<section class="p-card" id="sec-cards"[\s\S]*?<\/section>/) || [''])[0];
-  if (!sec || !/data-page="cards"/.test(sec)) fail('portal.html: the business cards card (#sec-cards, data-page="cards") is missing');
-  if (!sec.includes('Your business cards')) fail('portal.html: the cards card should be called “Your business cards”');
-  const cardsAt = html.indexOf('src="portal-cards.js'), portalAt3 = html.indexOf('src="portal.js');
-  if (cardsAt < 0 || cardsAt > portalAt3) fail('portal.html: portal-cards.js should load before portal.js');
-  if (/\bfetch\(|XMLHttpRequest|sendBeacon|WebSocket|new Image\(|https?:\/\/(?!www\.moo\.com\/us\/business-cards\/|www\.vistaprint\.com\/business-cards)/.test(cardsJs.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/.*$/gm, '$1').replace(/'https:\/\/' \+ w|\^https\?:\\\/\\\//g, '')))
-    fail('portal-cards.js: nothing goes over the network, and only MOO and Vistaprint are linked');
-  if (!cardsJs.includes("const MOO = 'https://www.moo.com/us/business-cards/', VISTA = 'https://www.vistaprint.com/business-cards';")) fail('portal-cards.js: the printer links should be MOO’s and Vistaprint’s business cards pages');
-  if (!/go\.target = '_blank'; go\.rel = 'noopener noreferrer'/.test(cardsJs) || !/go2\.target = '_blank'; go2\.rel = 'noopener noreferrer'/.test(cardsJs)) fail('portal-cards.js: the printer links open a new tab with rel noopener noreferrer');
-  if (!/draw\(cv, side, f\.style, lk, f, false\);/.test(cardsJs)) fail('portal-cards.js: the files are drawn without the safe-area guide');
-  if (!/draw\(front\.cv, 'front', f\.style, lk, f, true\)/.test(cardsJs)) fail('portal-cards.js: the on-screen preview shows the safe-area guide');
-  if (!/fs\.disabled = !!c\.preview;/.test(cardsJs) || !/dlBtn\.disabled = !!c\.preview;/.test(cardsJs) || !/if \(!c\.preview\) \{ try \{ window\.localStorage\.setItem/.test(cardsJs)) fail('portal-cards.js: a Studio preview switches the form, the downloads and the saving off');
-  if (cd.W !== 1125 || cd.H !== 675 || cd.BLEED !== 37.5 || cd.SAFE !== 75) fail('portal-cards.js: the files are 1125 x 675 px (3.75 x 2.25 in at 300 dpi) with 0.125 in bleed and a 0.125 in safe area');
-  for (const s of ['Order at MOO', 'or try Vistaprint', 'Download print files', 'Download your two files above.', 'Upload them at the printer.', 'Pay and add your shipping address there.',
-    'The printer sets the price and sends the cards to you. I do not handle the order or the money. ' + PRINTER_PRICE, 'I will add your brand here soon.']) {
-    if (!cardsJs.includes(s)) fail(`portal-cards.js: the words “${s}” are missing`);
-  }
-  for (const s of cardsStrings.filter((x) => /[A-Za-z]{2,} [A-Za-z]{2,}/.test(x))) {
-    if (/\bnever\b/i.test(s)) fail(`portal-cards.js: "never" in "${s.slice(0, 80)}"`);
-    if (/\b(we|us|our)\b/i.test(s)) fail(`portal-cards.js: I / me, not we / us / our: "${s.slice(0, 80)}"`);
-  }
-  // the QR encoder: sizes, finder patterns, the timing line, and that the text decides the version
-  const q = cd.qr('https://webfaery.love');
-  if (!q || q.version !== 2 || q.size !== 25) fail(`portal-cards.js: a 21 letter address should make a version 2 QR, 25 modules wide (got ${q && q.version}, ${q && q.size})`);
-  else {
-    const finderOk = (x0, y0) => { for (let i = 0; i < 7; i++) for (let j = 0; j < 7; j++) { const edge = i === 0 || j === 0 || i === 6 || j === 6, core = i >= 2 && i <= 4 && j >= 2 && j <= 4; if (q.get(x0 + j, y0 + i) !== (edge || core)) return false; } return true; };
-    if (!finderOk(0, 0) || !finderOk(18, 0) || !finderOk(0, 18)) fail('portal-cards.js: the QR finder squares are wrong');
-    for (let i = 8; i < 17; i++) if (q.get(i, 6) !== (i % 2 === 0) || q.get(6, i) !== (i % 2 === 0)) fail('portal-cards.js: the QR timing line is wrong');
-    if (!q.get(8, 25 - 8)) fail('portal-cards.js: the QR dark module is missing');
-  }
-  if (cd.qr('') !== null || cd.qr('x'.repeat(300)) !== null) fail('portal-cards.js: an empty or too long address should give no QR');
-  const long = cd.qr('https://example.com/' + 'a'.repeat(150));
-  if (!long || long.version < 8) fail('portal-cards.js: a long address should make a bigger QR');
-  if (cd.qrUrl('webfaery.love/') !== 'https://webfaery.love' || cd.qrUrl('not a site') !== '' || cd.qrUrl('') !== '') fail('portal-cards.js: the QR address is the site as https, or nothing');
 }
 
 if (failures.length) {

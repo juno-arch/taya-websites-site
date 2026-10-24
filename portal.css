@@ -970,6 +970,23 @@ html.wf-preview #b-signout-top, html.wf-preview #foot-out, html.wf-preview #b-si
 html.wf-preview .ro-off { opacity: .55; cursor: not-allowed; }
 html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 
+/* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
+   Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
+   --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).
+   It touches only the small accents below. NOT themed on purpose: gold (the main button, "needs you" counts and
+   tints), teal and red (done, trouble, due and paid), every text color (body, links' words, labels), fonts,
+   layout, the bar itself and its gold focus rings, the Web Faery mark in the footer, and the door page (my/).
+   With no data-wf-brand nothing here applies, so the look is exactly Web Faery's own. */
+:root[data-wf-brand] { --wf-b-focus: var(--wf-b-brand); }
+:root[data-wf-brand] h1 em, :root[data-wf-brand] h2 em, :root[data-wf-brand] h3 em { color: var(--wf-b-brand); }
+:root[data-wf-brand] main a:not(.btn) { text-decoration-color: var(--wf-b-brand); }
+:root[data-wf-brand] .bk .bk-heads { border-left-color: var(--wf-b-brand); }
+:root[data-wf-brand] .thing .ico, :root[data-wf-brand] .more-in li a svg { color: var(--wf-b-brand); }
+/* the current tab's line sits on the night bar: their color only when it shows there at 3:1 (data-wf-brand-bar),
+   else the gold line stays */
+:root[data-wf-brand-bar] .tabs a[aria-current="page"]::after,
+:root[data-wf-brand-bar] .dock [aria-current="page"]::before { background: var(--wf-b-brand-bar); box-shadow: none; }
+
 /* ============ your business cards (Oct 21 2026): the preview, the form, the printer links ============ */
 .cd-lede, .cd-soon { color: var(--wf-b-ink-soft); }
 .cd-view { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
@@ -1001,20 +1018,3 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
   .cd-go2 { margin-left: 0; }
   .cd-download { width: 100%; }
 }
-
-/* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
-   Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
-   --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).
-   It touches only the small accents below. NOT themed on purpose: gold (the main button, "needs you" counts and
-   tints), teal and red (done, trouble, due and paid), every text color (body, links' words, labels), fonts,
-   layout, the bar itself and its gold focus rings, the Web Faery mark in the footer, and the door page (my/).
-   With no data-wf-brand nothing here applies, so the look is exactly Web Faery's own. */
-:root[data-wf-brand] { --wf-b-focus: var(--wf-b-brand); }
-:root[data-wf-brand] h1 em, :root[data-wf-brand] h2 em, :root[data-wf-brand] h3 em { color: var(--wf-b-brand); }
-:root[data-wf-brand] main a:not(.btn) { text-decoration-color: var(--wf-b-brand); }
-:root[data-wf-brand] .bk .bk-heads { border-left-color: var(--wf-b-brand); }
-:root[data-wf-brand] .thing .ico, :root[data-wf-brand] .more-in li a svg { color: var(--wf-b-brand); }
-/* the current tab's line sits on the night bar: their color only when it shows there at 3:1 (data-wf-brand-bar),
-   else the gold line stays */
-:root[data-wf-brand-bar] .tabs a[aria-current="page"]::after,
-:root[data-wf-brand-bar] .dock [aria-current="page"]::before { background: var(--wf-b-brand-bar); box-shadow: none; }
