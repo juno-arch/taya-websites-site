@@ -690,7 +690,6 @@
     { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
     { id: 'messages', label: 'Messages', icon: 'i-talk' },
     { id: 'resources', label: 'Resources', icon: 'i-play' },
-    { id: 'cards', label: 'Business cards', short: 'Cards', icon: 'i-palette' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -705,7 +704,7 @@
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
     // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
     // (Oct 21 2026) Resources: after their papers, before Payments
-    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'cards', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'cards', 'payments', 'ask']);
+    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -1416,19 +1415,6 @@
       const proj = document.getElementById('v-project'); proj.insertBefore(box, proj.firstElementChild);
     }
   }
-  // (Oct 21 2026) Your business cards: portal-cards.js draws the card from what the portal already knows
-  function cardsSync() {
-    const sec = $('#sec-cards');
-    if (!sec) return;
-    const on = !!me && !!window.WFCards;
-    setHidden(sec, !on);
-    if (!on) return;
-    const c = me.client;
-    window.WFCards.mount({
-      accent: me.brand && me.brand.accent || '', business: c.business, first: c.first_name, email: c.email,
-      site: c.site_url, preview: PREVIEW, key: c.email
-    });
-  }
   function render() {
     const c = me.client;
     const build = BUILDS[c.build] || c.build_label;
@@ -1440,7 +1426,6 @@
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
     // the header's "Getting started" only while that page is still theirs to fill in
     $('#nav-start').hidden = !startItem();
-    cardsSync();
     renderBack();
     renderTurn();
     renderNote();
