@@ -268,14 +268,14 @@
       ctx.fillStyle = style === 'simple' ? lk.accent : (style === 'soft' ? lk.accent : fg);
       ctx.fillRect(MARGIN, y, style === 'bold' ? 160 : 96, 6);
       y += 54;
-      if (nameLine) { ctx.fillStyle = fg; fit(ctx, nameLine, '500 {s}px ' + WORK, maxW, 46, 26); ctx.fillText(nameLine, MARGIN, y); y += 8; }
-      if (role) { y += 42; ctx.fillStyle = fgSoft; fit(ctx, role, '300 {s}px ' + WORK, maxW, 32, 22); ctx.fillText(role, MARGIN, y); }
+      if (nameLine) { ctx.fillStyle = fg; fit(ctx, nameLine, '500 {s}px ' + WORK, maxW, 40, 24); ctx.fillText(nameLine, MARGIN, y); y += 8; }
+      if (role) { y += 36; ctx.fillStyle = fgSoft; fit(ctx, role, '300 {s}px ' + WORK, maxW, 28, 20); ctx.fillText(role, MARGIN, y); }
       // contacts stack up from the bottom, left
-      const cs = 33, gap = 46;
-      let cy = H - MARGIN - 14 - (contact.length - 1) * gap;
+      const cs = 27, gap = 40;
+      let cy = H - MARGIN + 6 - (contact.length - 1) * gap;
       ctx.fillStyle = fg;
       contact.forEach((line, i) => {
-        fit(ctx, line, '300 {s}px ' + WORK, maxW * 0.7, cs, 22);
+        fit(ctx, line, '300 {s}px ' + WORK, maxW * 0.62, cs, 18);
         ctx.fillText(line, MARGIN, cy + i * gap);
       });
     } else {
@@ -287,8 +287,8 @@
         const box = 300, qx = style === 'bold' ? (W - box) / 2 : W - MARGIN - box + 12, qy = style === 'bold' ? MARGIN - 6 : (H - box) / 2 - 30;
         paintQr(ctx, code, qx, qy, box, '#1a1a1a', '#ffffff');
         ctx.fillStyle = fgSoft; ctx.textAlign = style === 'bold' ? 'center' : 'left';
-        ctx.font = '300 30px ' + WORK;
-        ctx.fillText('Scan to visit', style === 'bold' ? W / 2 : qx + 4, qy + box + 46);
+        ctx.font = '300 24px ' + WORK;
+        ctx.fillText('Scan to visit', style === 'bold' ? W / 2 : qx + 4, qy + box + 40);
         ctx.textAlign = 'left';
         if (style !== 'bold') {
           ctx.fillStyle = fg;
@@ -296,11 +296,11 @@
           const bl = wrap(ctx, biz, qx - MARGIN - 40);
           bl.slice(0, 3).forEach((ln, i) => ctx.fillText(ln, MARGIN, MARGIN + 40 + i * bs * 1.15));
           if (words) {
-            ctx.fillStyle = fgSoft; ctx.font = 'italic 300 32px ' + WORK;
-            wrap(ctx, words, qx - MARGIN - 40).slice(0, 4).forEach((ln, i) => ctx.fillText(ln, MARGIN, H - MARGIN - 90 + i * 44));
+            ctx.fillStyle = fgSoft; ctx.font = 'italic 300 28px ' + WORK;
+            wrap(ctx, words, qx - MARGIN - 40).slice(0, 4).forEach((ln, i) => ctx.fillText(ln, MARGIN, H - MARGIN - 80 + i * 40));
           }
         } else if (words) {
-          ctx.fillStyle = fgSoft; ctx.font = 'italic 300 30px ' + WORK; ctx.textAlign = 'center';
+          ctx.fillStyle = fgSoft; ctx.font = 'italic 300 26px ' + WORK; ctx.textAlign = 'center';
           ctx.fillText(wrap(ctx, words, maxW)[0], W / 2, H - MARGIN + 10);
           ctx.textAlign = 'left';
         }
