@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- No outside scripts, no inline scripts: only this site's own files may run here, and the page may only
+     talk to itself and the bookings server. (GitHub Pages can't send security headers, so they live here.) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://bookings.gardenfaery.love; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<meta name="wf-server" content="https://bookings.gardenfaery.love">
+<meta name="color-scheme" content="light dark">
+<title>Your invoice</title>
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
+<link rel="stylesheet" href="invoice.css?v=20261024a">
+<!--
+  invoice.html: the page a client's invoice link opens (built Oct 25 2026). Private and unlisted: not in sitemap.xml, no
+  link to it from any page, noindex. It only opens from the link in the message Taya sends (invoice.html?t=...). The part
+  the page shows comes from the bookings server (hub pb_hooks/webfaery-studio-invoices.pb.js, GET invoice/view); the Pay
+  button asks the server for a Stripe bank-payment page and goes there. Nothing is kept in the browser.
+  Same invoice.js and invoice.css as the hub's pb_public/invoice/ (the hub's tests check they match).
+-->
+</head>
+<body>
+<main class="inv" id="inv" aria-live="polite">
+  <p class="inv-wait" id="inv-wait">One moment, opening your invoice.</p>
+</main>
+<script src="invoice.js?v=20261024a"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* The public invoice page (Oct 24 2026, webfaery-portal-docs/PORT-QUEUE-OCT24.md part C): one calm sheet on the twilight, drawn by invoice.js. */
+:root { --ground: #272c66; --sheet: #fbf8ff; --ink: #2c2160; --soft: #5b5588; --rule: #ddd6f0; --gold: #f6c56f; --on-gold: #2c2160; --ember: #a2402f; --moss: #2f6b5e; --focus: #7a5af8; }
+@media (prefers-color-scheme: dark) { :root { --sheet: #30357a; --ink: #f7f3ff; --soft: #cfc8ec; --rule: #474c8f; --ember: #ff9e94; --moss: #86d0c8; --focus: #ffe0a0; } }
+* { box-sizing: border-box; }
+html { background: var(--ground); }
+body { margin: 0; min-height: 100vh; background: linear-gradient(180deg, #272c66, #353880 60%, #272c66); color: var(--ink); font-family: 'Lexend', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.5; }
+.inv { max-width: 720px; margin: 0 auto; padding: 24px 16px 56px; }
+.inv-sheet { background: var(--sheet); border-radius: 14px; padding: 24px 20px; box-shadow: 0 10px 30px -14px rgb(22 20 66 / .7); }
+.inv-from { margin: 0; color: var(--soft); font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
+.inv-h { font-family: 'Gloock', Georgia, serif; font-weight: 400; font-size: 30px; line-height: 1.15; margin: 4px 0 12px; overflow-wrap: anywhere; }
+.inv-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); gap: 4px 20px; margin: 0 0 18px; }
+.inv-meta dt { color: var(--soft); font-size: 13px; }
+.inv-meta dd { margin: 0 0 8px; overflow-wrap: anywhere; }
+.inv-status { font-weight: 600; margin: 0 0 14px; }
+.inv-status.is-paid { color: var(--moss); }
+.inv-status.is-overdue { color: var(--ember); }
+.inv-lines { border-top: 1px solid var(--rule); }
+.inv-line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.inv-desc { overflow-wrap: anywhere; }
+.inv-sub { color: var(--soft); font-size: 13.5px; }
+.inv-amt { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.inv-sums { margin: 10px 0 0 auto; max-width: 20em; }
+.inv-sum { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; font-variant-numeric: tabular-nums; }
+.inv-sum.is-due { border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 10px; font-weight: 600; font-size: 18px; }
+.inv-notes { margin: 18px 0 0; color: var(--soft); white-space: pre-wrap; overflow-wrap: anywhere; }
+.inv-note-pay { margin: 14px 0 0; padding: 10px 12px; border-left: 3px solid var(--gold); background: rgb(246 197 111 / .14); border-radius: 0 8px 8px 0; overflow-wrap: anywhere; }
+.inv-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 20px; }
+.inv-pay { min-height: 48px; padding: 0 22px; border: 0; border-radius: 10px; background: var(--gold); color: var(--on-gold); font: inherit; font-weight: 600; cursor: pointer; }
+.inv-pay[disabled] { opacity: .6; cursor: default; }
+.inv-link { min-height: 44px; padding: 0; background: none; border: 0; color: var(--ink); font: inherit; text-decoration: underline; cursor: pointer; }
+.inv-pay:focus-visible, .inv-link:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.inv-fine { margin: 14px 0 0; color: var(--soft); font-size: 13.5px; }
+.inv-wait, .inv-err { text-align: center; color: #f7f3ff; padding: 48px 0; }
+@media (max-width: 480px) { .inv-sheet { padding: 20px 14px; } .inv-h { font-size: 26px; } }
+@media print {
+  html, body { background: #fff; }
+  .inv-sheet { box-shadow: none; border-radius: 0; background: #fff; color: #000; }
+  .inv-acts, .inv-fine { display: none; }
+  .inv-from, .inv-sub, .inv-meta dt, .inv-notes { color: #333; }
+}
