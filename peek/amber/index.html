@@ -8,7 +8,12 @@
 <meta name="robots" content="noindex">
 <meta property="og:title" content="Nueberd | Handmade by Amber Baker, plus My Thrifting Era">
 <meta property="og:description" content="Mindfully handmade jewelry, wooden accessories and cozy home, plus a one woman owned thrift shop. Every piece one of a kind.">
-<meta property="og:image" content="images/hero.jpg">
+<meta property="og:image" content="https://webfaery.love/peek/amber/share-preview.jpg">
+<meta property="og:url" content="https://webfaery.love/peek/amber/">
+<meta property="og:type" content="website">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23f4efe3'/%3E%3Cpath d='M9 26V14a7 7 0 0 1 14 0v12Z' fill='none' stroke='%239b4a26' stroke-width='2.4'/%3E%3Cpath d='M16 8v18M9 18h14' stroke='%239b4a26' stroke-width='1.6'/%3E%3C/svg%3E">
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -385,6 +390,7 @@
   .views-care { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 10px 14px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 12px; }
   .views-care .care-what { flex: 1 1 260px; font-size: 14px; line-height: 1.45; opacity: 0.85; }
   .vseg button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 58px; margin: 0; padding: 8px 6px; font: inherit; line-height: 1.2; text-align: center; color: var(--ink); background: transparent; border: 0; border-radius: 9px; cursor: pointer; transition: background-color 0.25s ease, color 0.25s ease; }
+  .vseg .psub { display: block; max-width: 24ch; font-size: 12px; line-height: 1.3; opacity: .85; }
   .vseg b, .views-care b { font-family: 'Young Serif', Georgia, serif; font-weight: 400; font-size: 18px; line-height: 1.3; }
   .vseg .pr, .views-care .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .vseg .pr strong, .views-care .pr strong { font-weight: 700; color: var(--accent-deep); }
@@ -480,9 +486,9 @@
   
   section.shop-sec { padding-block: 44px 76px; }
   .page-head { padding-block: 44px 6px; }
-  .page-head h1, .sec-h1 { font-size: clamp(36px, 5.6vw, 60px); line-height: 1.08; letter-spacing: -0.015em; }
+  .page-head h1, .page-head h2, .sec-h1 { font-size: clamp(36px, 5.6vw, 60px); line-height: 1.08; letter-spacing: -0.015em; }
   .sec-h1 { font-size: clamp(30px, 4.6vw, 48px); line-height: 1.18; }
-  .page-head h1 em, .sec-h1 em { font-style: normal; color: var(--head-em); }
+  .page-head h1 em, .page-head h2 em, .sec-h1 em { font-style: normal; color: var(--head-em); }
   .page-head .lede { margin-top: 16px; color: var(--ink-soft); max-width: 60ch; font-size: 17.5px; }
   .thrift-head { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 48px; align-items: center; }
   .thrift-head .photo { aspect-ratio: 1; }
@@ -758,15 +764,15 @@
   <div class="wrap views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -946,7 +952,7 @@
 <section class="gutter page-head">
   <div class="wrap">
     <p class="label"><span>Nueberd</span> <span class="tag" data-go="maiden">Every build</span></p>
-    <h1 tabindex="-1">Made <em>by hand</em></h1>
+    <h2 tabindex="-1">Made <em>by hand</em></h2>
     <p class="lede">Mindfully handmade wooden accessories, jewelry and cozy home. Each piece is hand-knotted from high-quality, eco-friendly cotton cord, some in a linen-cotton blend that makes them that much more cozy. Boho vibes with a modern cottage witch aesthetic.</p>
   </div>
 </section>
@@ -989,7 +995,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
       <div>
         <p class="label"><span>How it runs</span> <span class="tag" data-go="maiden">Every build</span></p>
-        <p>Your bestsellers stay up for good and you make them to order; new pieces go up as drops every couple of weeks. Email me the photos and prices and the drop goes live on the day you pick. And your shop never looks empty, even right after a drop sells out.</p>
+        <p>Your bestsellers stay up for good and you make them to order; new pieces go up as drops every couple of weeks. Email me the photos and prices and the drop goes live on the day you pick. And your shop always has something in it, even right after a drop sells out.</p>
       </div>
     </div>
     <ul class="trust">
@@ -1005,10 +1011,10 @@
 <div class="page" id="page-thrifted" data-page="thrifted">
 <div class="views-slot"></div>
 <section class="gutter page-head">
-  <div class="wrap thrift-head">
+  <div class="wrap thrift-head" id="thrifted">
     <div>
       <p class="label"><span>My Thrifting Era</span> <span class="tag" data-go="maiden">Every build</span></p>
-      <h1 tabindex="-1">I dig through the piles, <em>so you don&rsquo;t have to</em></h1>
+      <h2 tabindex="-1">I dig through the piles, <em>so you don&rsquo;t have to</em></h2>
       <p class="lede">A one woman owned thrift shop. Cozy knits, cottagecore nightgowns, linen, and honestly the most random assortment of clothes. Each one gets an honest look first: if there&rsquo;s a hole or a mismatched button, it&rsquo;s in the listing.</p>
       <div class="reach">
         <a href="https://www.depop.com/mythriftingera/" data-wf-social="depop" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop my Depop <span class="note">164 sold</span><span class="vh"> (opens in a new tab)</span></a>
@@ -1079,7 +1085,7 @@
   <div class="wrap two">
     <div>
       <p class="label"><span>About Amber</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h1 class="sec-h1 reveal" tabindex="-1">Thrifting since before I could <em>even walk</em></h1>
+      <h2 class="sec-h1 reveal" tabindex="-1">Thrifting since before I could <em>even walk</em></h2>
       <p style="margin-top:18px">I grew up with four older sisters, which means hand-me-downs were my first wardrobe and secondhand has always felt like home.</p>
       <p>I want to honor my body the same way that I honor the seasons, including what I choose to cover it with. Not just for fashion&rsquo;s sake, but collecting things that truly awaken something in me. That&rsquo;s what I knot into every piece, and what I look for in every pile.</p>
       <p class="story-sig">Amber</p>
@@ -1166,15 +1172,15 @@
   <div class="vpanel" id="vp-panel" hidden>
     <div class="views-head">
       <p class="views-q" id="vp-q">See your site as</p>
-      <p class="views-price">Your founding price, half off</p>
+      <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1688,7 +1694,7 @@
       var slot = byName[name].querySelector('.views-slot'); if (bar && slot && bar.parentNode !== slot) slot.appendChild(bar);
       if (el && el.getClientRects().length) { el.scrollIntoView(); }
       else if (changed || user) { window.scrollTo(0, 0); }
-      if (changed && user && !el) quietFocus(byName[name].querySelector('h1'));
+      if (changed && user && !el) quietFocus(byName[name].querySelector('h1, h2'));
       window.dispatchEvent(new Event('scroll'));
     }
     window.addEventListener('hashchange', function () { var r = resolve(location.hash); show(r.page, r.el, true); });
