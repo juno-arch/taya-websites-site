@@ -127,7 +127,7 @@
   .moon[data-s="low"] .m-low { opacity: 1; }
   .moon[data-s="half"] .m-half { opacity: 1; }
   @media (prefers-reduced-motion: reduce) { .moon .m-full, .moon .m-low, .moon .m-half { transition: none; } }
-  /* craters and maria (Pollen, Oct 20: "give the moon some craters"), faint, so every disc reads as a moon, lit or not */
+  /* craters and maria, faint, so every disc reads as a moon, lit or not */
   .moon .m-crat { pointer-events: none; }
   /* their colors sit on the drawing itself (#nm-craters in the defs), since page styles don't reach inside a <use> */
 
@@ -251,7 +251,7 @@
   .case-order { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 30px; position: relative; }
   .case-note { margin-top: 26px; max-width: 74ch; position: relative; }
 
-  /* the moon key, now on the left and a filter (Pollen, Oct 20): tap a phase to see only what's in that state */
+  /* the moon key, now on the left and a filter: tap a phase to see only what's in that state */
   .case-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 10px 40px; align-items: start; margin-top: 34px; position: relative; }
   .case-body > * { min-width: 0; }
   html[data-view="maiden"] .case-body, html[data-view="mother"] .case-body { grid-template-columns: minmax(0, 1fr); }
@@ -400,7 +400,7 @@
   .gift > * { min-width: 0; }
   @media (max-width: 860px) { .order-grid, .po-wrap, .gift { grid-template-columns: minmax(0, 1fr); } }
 
-  /* In Bloom: an order built right from their menu, sent as a request (Pollen, Oct 20) */
+  /* In Bloom: an order built right from their menu, sent as a request */
   .ob-wrap { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr); gap: 26px; margin-top: 30px; align-items: start; }
   .ob-wrap > * { min-width: 0; }
   #ob-card { border-top: 5px solid var(--brick); }
@@ -558,7 +558,7 @@
   @media (max-width: 760px) { .found { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 560px) { .found-wrap { padding: 18px 14px 22px; } }
 
-  /* the footer sits on THEIR logo red, just like their logo (Pollen, Oct 20: "add in the red, isnt their red in the logo?"),
+  /* the footer sits on THEIR logo red, just like their logo,
      with a thin navy and gold edge so the night navy and moon gold come along. Same red in dark mode. */
   footer { padding-block: 60px 100px; background: var(--brick); border-top: 6px solid var(--night); box-shadow: inset 0 1px 0 0 rgba(212, 188, 114, 0.55); color: rgba(246, 240, 226, 0.82); font-size: 14.5px; text-wrap: balance; }
   footer a { color: #f3dc8e; }
@@ -1628,7 +1628,7 @@
 
 <script>
   /* THE SIGNATURE: today's case. Every real pastry and dessert on their online menu (prices as of Oct 19 2026), each
-     with a moon: full = plenty, waning = getting low, new = sold out. Pollen, Oct 20: each morning they tell the page how
+     with a moon: full = plenty, waning = getting low, new = sold out. Each morning they tell the page how
      many of each they baked and the moons follow the count down. Here the counts are a sample morning: tap a pastry to
      "order" one (Back undoes, Reset starts the morning over), the 7 am / 11 am / 2 pm buttons show a sample day, and the
      moon key on the left filters the case by phase (tap again to clear). */
@@ -1928,7 +1928,7 @@
       reset();
     })();
 
-    /* build your order (In Bloom, Pollen Oct 20): 19 real items from their online menu at their Oct 19 prices (drinks
+    /* build your order: 19 real items from their online menu at their Oct 19 prices (drinks
        at the 12 oz price), quantities, a pickup day and time, a name, a running total, then a request. Nothing is sent. */
     (function () {
       var card = $('ob-card'); if (!card) return;
