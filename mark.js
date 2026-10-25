@@ -3,7 +3,7 @@
 (function () {
   if (!/[?&]wfpreview=1(?:&|$)/.test(location.search) || !window.fetch) return;
   var real = window.fetch.bind(window);
-  var WRITES = /\/(mark|pick|ready|mockup-done|mockup-upload|draft-save|draft-upload|draft-remove|draft-clear|start-send)(?:\?|$)/;
+  var WRITES = /\/(mark|pick|ready|mockup-done|mockup-upload|photo-swap|draft-save|draft-upload|draft-remove|draft-clear|start-send)(?:\?|$)/;
   window.fetch = function (url, opts) {
     var m = String((opts && opts.method) || 'GET').toUpperCase();
     if (m !== 'GET' && WRITES.test(String(url && url.url || url))) return Promise.resolve(new Response(JSON.stringify({ ok: false, error: 'preview' }), { status: 403, headers: { 'Content-Type': 'application/json' } }));
@@ -677,6 +677,14 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   .wfm-pop .photo img { width: 54px; height: 54px; object-fit: cover; border-radius: 10px; }
   .wfm-pop .photo input { position: absolute; width: 1px; height: 1px; opacity: 0; }
   .wfm-pop .photo:focus-within { outline: 2px solid var(--wfm-focus); outline-offset: 2px; border-radius: 10px; }
+  .wfm-pop .swapbtn { margin-top: 8px; }
+  .wfm-card .swap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 10px 0 8px; }
+  .wfm-card .swap figure { margin: 0; min-width: 0; }
+  .wfm-card .swap .swapbox { display: flex; align-items: center; justify-content: center; min-height: 120px; max-height: 220px; border: 1px solid var(--wfm-edge); border-radius: 12px; overflow: hidden; background: var(--wfm-well); }
+  .wfm-card .swap img { display: block; width: 100%; height: auto; max-height: 220px; object-fit: contain; }
+  .wfm-card .swap figcaption { margin-top: 4px; font-size: 13px; color: var(--wfm-soft); }
+  .wfm-card .swap .swapmiss { padding: 10px; font-size: 13.5px; color: var(--wfm-soft); text-align: center; }
+  @media (max-width: 480px) { .wfm-card .swap { grid-template-columns: minmax(0, 1fr); } }
   .wfm-pop .wfm-btn.ghost, .wfm-panel .wfm-btn.ghost, .wfm-card .wfm-btn.ghost { color: var(--wfm-link); border-color: var(--wfm-edge); }
   .wfm-pop .wfm-btn.ghost:hover, .wfm-panel .wfm-btn.ghost:hover, .wfm-card .wfm-btn.ghost:hover { background: var(--wfm-well); color: var(--wfm-ink); }
   .wfm-pop :focus-visible, .wfm-panel :focus-visible, .wfm-card :focus-visible { outline: 2px solid var(--wfm-focus); outline-offset: 2px; }
@@ -987,6 +995,132 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     } catch (e) { return f; }
   }
 
+  /* ---------------- replace a photo (Oct 25 2026) ---------------- */
+  // A new photo for one on their page. It goes to Taya (POST /photo-swap, the key in X-WF-Key) and waits for her yes:
+  // nothing on the page changes, here or anywhere, until she has looked and put it there herself.
+  const SWAP_MAX = 8 * 1048576, SWAP_MIN_SIDE = 500;
+  const photoIn = (n) => {
+    if (!n || !n.tagName) return null;
+    const i = n.tagName === 'IMG' ? n : (n.querySelector ? n.querySelector('img') : null);
+    return i && !ours(i) && (i.currentSrc || i.src) ? i : null;
+  };
+  const SWAP_WORDS = {
+    type: 'That kind of file won’t go here. A JPG or PNG works, or email it to me.',
+    big: 'That one is over 8 MB. Email it to me and I’ll make it easy.',
+    small: 'That picture is a little small to look good on your page. A bigger one, at least 500 pixels across, works better.',
+    dimensions: 'That picture is bigger than I can use. A smaller one, please, or email it to me.',
+    waiting: 'You’ve already sent me a few that I haven’t looked at yet. I’ll get to them, and then you can send more.',
+    preview: 'This is a preview, so nothing is sent.',
+    safe: 'That didn’t go through. Try once more, or email it to me.',
+  };
+  // jpg and png go as they are; a bigger or other kind is turned into a JPEG here (longest side 2400 px) when the browser can
+  async function swapPrepare(f) {
+    if (!f || !/^image\//.test(f.type)) return { err: 'type' };
+    let w = 0, h = 0, bmp = null;
+    try { if (window.createImageBitmap) { bmp = await createImageBitmap(f); w = bmp.width; h = bmp.height; } } catch (e) { bmp = null; }
+    if (bmp && Math.max(w, h) < SWAP_MIN_SIDE) return { err: 'small' };
+    if (/^image\/(jpeg|png)$/.test(f.type) && f.size <= SWAP_MAX) return { file: f };
+    if (!bmp) return { err: /^image\/(jpeg|png)$/.test(f.type) ? 'big' : 'type' };
+    try {
+      const k = Math.min(1, 2400 / Math.max(w, h));
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      const blob = await new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.88));
+      if (!blob) return { err: 'type' };
+      if (blob.size > SWAP_MAX) return { err: 'big' };
+      return { file: new File([blob], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg', lastModified: f.lastModified }) };
+    } catch (e) { return { err: 'type' }; }
+  }
+  async function sendSwap(img, file, note) {
+    const fd = new FormData();
+    fd.append('page', PAGE);
+    const src = img.currentSrc || img.src || '';
+    if (/^https:\/\//.test(src)) fd.append('src', src.slice(0, 600));
+    if (img.alt) fd.append('alt', img.alt.slice(0, 200));
+    fd.append('path', cssPath(img));
+    if (note) fd.append('note', note);
+    fd.append('files', file, file.name);
+    let res;
+    try { res = await fetch(BASE + '/photo-swap', { method: 'POST', headers: { 'X-WF-Key': key }, body: fd, mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
+    catch (e) { const x = new Error('network'); x.code = 'network'; throw x; }
+    let data = null; try { data = await res.json(); } catch (e) { data = null; }
+    if (res.ok && data && data.ok) return data;
+    const x = new Error('fail'); x.status = res.status; x.code = (data && data.error) || 'server'; x.reason = data && data.reason;
+    throw x;
+  }
+  function openSwap(img) {
+    const box = scrim('wfm-swap-h');
+    const h = el('h2', '', 'Replace this photo'); h.id = 'wfm-swap-h';
+    box.append(h, el('p', 'lead', 'Pick a new photo and I’ll take a look. Nothing on your site changes until I’ve said yes.'));
+    const pics = el('div', 'swap');
+    const fig = (cap) => { const f = el('figure'); const b = el('div', 'swapbox'); f.append(b, el('figcaption', '', cap)); pics.append(f); return b; };
+    const nowBox = fig('On your page now'), newBox = fig('Your new photo');
+    const cur = document.createElement('img'); cur.alt = ''; cur.src = img.currentSrc || img.src; nowBox.append(cur);
+    cur.addEventListener('error', () => { nowBox.textContent = ''; nowBox.append(el('span', 'swapmiss', 'The photo you picked.')); });
+    newBox.append(el('span', 'swapmiss', 'Not chosen yet'));
+    box.append(pics);
+    const drop = el('label', 'wfm-drop');
+    const input = el('input'); input.type = 'file'; input.accept = 'image/jpeg,image/png,image/*';
+    drop.append(input, el('b', '', 'Choose a new photo'), el('span', '', 'A JPG or PNG, at least 500 pixels across, up to 8 MB. Another kind of picture? Email it to me.'));
+    box.append(drop);
+    const msg = el('p', 'msg'); msg.hidden = true; msg.setAttribute('role', 'status');
+    const lab = el('label', '', 'Anything I should know? (optional)'); lab.htmlFor = 'wfm-swap-note';
+    const ta = el('textarea'); ta.id = 'wfm-swap-note'; ta.maxLength = 300; ta.placeholder = 'Like: this one shows the new front window.';
+    const any = el('div', 'anything'); any.append(lab, ta);
+    box.append(msg, any);
+    let chosen = null;
+    const foot = el('div', 'foot');
+    const cancel = el('button', 'wfm-btn ghost', 'Cancel'); cancel.type = 'button';
+    const go = el('button', 'wfm-btn', 'Send to Taya'); go.type = 'button'; go.disabled = true;
+    const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(cancel, go);
+    foot.append(el('p', 'soft', 'I’ll write you if I have a question.'), btns);
+    box.append(foot);
+    const say = (words, bad) => { msg.hidden = false; msg.className = 'msg' + (bad ? ' bad' : ''); msg.textContent = words; };
+    cancel.addEventListener('click', () => { if (!busy) closeCard(); });
+    let seq = 0; // the last pick wins, even if an earlier one is still being turned into a JPEG
+    input.addEventListener('change', async () => {
+      const f = input.files && input.files[0]; input.value = '';
+      const mine = ++seq;
+      chosen = null; go.disabled = true; msg.hidden = true;
+      if (!f) return;
+      const r = await swapPrepare(f);
+      if (mine !== seq) return;
+      if (r.err) { newBox.textContent = ''; newBox.append(el('span', 'swapmiss', 'Not chosen yet')); say(SWAP_WORDS[r.err], true); return; }
+      chosen = r.file;
+      newBox.textContent = '';
+      const im = document.createElement('img'); im.alt = 'Your new photo';
+      try { im.src = URL.createObjectURL(chosen); } catch (e) { /* the picture just doesn't show here */ }
+      newBox.append(im);
+      go.disabled = false;
+    });
+    go.addEventListener('click', async () => {
+      if (!chosen || busy) return;
+      busy = true; go.disabled = true; cancel.disabled = true; go.textContent = 'Sending…'; msg.hidden = true;
+      try {
+        await sendSwap(img, chosen, ta.value.trim());
+        busy = false;
+        say('Sent ✓ Thank you! I’ll take a look, and your site stays just as it is until I’ve said yes.', false);
+        go.hidden = true; cancel.disabled = false; cancel.textContent = 'Done'; chosen = null;
+      } catch (x) {
+        busy = false; cancel.disabled = false; go.textContent = 'Send to Taya';
+        if (answerTrouble(x)) { closeCard(); return; }
+        go.disabled = !chosen;
+        if (x.code === 'preview') say(SWAP_WORDS.preview, true);
+        else if (x.reason === 'type') say(SWAP_WORDS.type, true);
+        else if (x.reason === 'size' || x.status === 413) say(SWAP_WORDS.big, true);
+        else if (x.reason === 'small') say(SWAP_WORDS.small, true);
+        else if (x.reason === 'dimensions') say(SWAP_WORDS.dimensions, true);
+        else if (x.code === 'too_many_waiting') say(SWAP_WORDS.waiting, true);
+        else if (x.code === 'busy' || x.code === 'slow_down' || x.status === 429) say(DOOR_WORDS.busy, true);
+        else say(SWAP_WORDS.safe, true);
+      }
+    });
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) { try { const dt = new DataTransfer(); dt.items.add(f); input.files = dt.files; input.dispatchEvent(new Event('change')); } catch (er) { say(SWAP_WORDS.safe, true); } } });
+  }
+
   /* ---------------- the note ---------------- */
   let pop = null, popOpen = false, picked = null, priceFirst = false;
   const closePop = () => { if (pop) pop.remove(); pop = null; popOpen = false; if (picked) picked.classList.remove('wfm-pick'); picked = null; };
@@ -1024,6 +1158,13 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     row.append(cancel, send);
     pop.append(ta);
     if (!MOCK) pop.append(ph);
+    // a photo here? they can send a new one in its place (it waits for Taya's yes)
+    const imgHere = photoIn(n);
+    if (imgHere) {
+      const sw = el('button', 'wfm-btn ghost swapbtn', 'Replace this photo'); sw.type = 'button';
+      sw.addEventListener('click', () => openSwap(imgHere));
+      pop.append(sw);
+    }
     pop.append(err, row);
     document.body.appendChild(pop);
     const r = n.getBoundingClientRect();
