@@ -1,0 +1,4 @@
+# Photo credits (all from stoneranchmendo.com, the ranch's own site; downloaded Oct 24 2026)
+Photographers named in the file names on their site: Neil Silverman (silvermansphotography.com): the yurt, tile, stone face, chess table, bench, heart, ocean fog, tower and yurt photos. Silverman Photography (Dunn Regello set): ceremony lawn. Andrea set: hero (tower with ceremony chairs). 006A* set (their Redstone House listing photos): rainbow ring, stone oven, house deck, bedroom set, interiors. Adobe House listing photos: adobe-living, adobe-dining. IMG_8142/8147/7A4A5292: stone stage, pond rocks, labyrinth. PergolaStoneRanch.jpg: pergola.
+Logo arch: their logo (stoneranchmendo.com/wp-content/uploads/2025/02/12.png).
+No wedding portraits, no guests' faces. Wedding photos with people were skipped. The Instagram tiles are stand-ins from their site photos (Instagram image links could not be saved).
