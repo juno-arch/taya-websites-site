@@ -670,7 +670,7 @@
     html.setAttribute('data-wf-brand', p.darkened ? 'darker' : 'own');
     if (p.bar) { html.style.setProperty('--wf-b-brand-bar', p.bar); html.setAttribute('data-wf-brand-bar', ''); }
   }
-  const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email. No passwords to remember.');
+  const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email, so there is no password to remember. If you like, you can choose a password once you are in.');
 
   /* ================= the pages (Oct 14 2026): one short page per area, with tabs =================
      Every section in #v-project says which page it belongs to (data-page). A page shows in the tabs when any of its
