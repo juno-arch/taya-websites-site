@@ -331,7 +331,7 @@
   };
 
   /* ================= the server (the only place that talks to it) ================= */
-  const KNOWN = ['input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big',
+  const KNOWN = ['signin', 'weak', 'current', 'same', 'input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big',
     'over_balance', 'not_paid', 'refunded', 'expired'];
   const fail = (code, status, retry) => { const e = new Error(code); e.code = code; e.status = status || 0; if (retry) e.retry = retry; return e; };
   const errorFrom = (status, data) => {
@@ -421,6 +421,9 @@
   const realApi = {
     requestCode: (who) => postJSON('/request-code', who),
     verifyCode: (who, code) => postJSON('/verify-code', Object.assign({}, who, { code })),
+    passwordSignIn: (email, password) => postJSON('/password-signin', { email, password }), // (Oct 25 2026) the same session the code gives
+    passwordState: () => postJSON('/password-state', {}, token),
+    passwordSet: (password, current) => postJSON('/password-set', current ? { password, current } : { password }, token),
     me: () => postJSON('/me', {}, token),
     logout: (key) => postJSON('/logout', {}, key),
     todo: (id, action, text) => postJSON('/todo', text == null ? { todo: id, action } : { todo: id, action, text }, token),
@@ -571,7 +574,7 @@
   const openAnswers = new Set(); // "Change my answer" boxes someone opened
   let draftPagehideWired = false; // the answer autosave's one pagehide listener (Oct 19 2026), added once
 
-  const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project', 'v-ended'];
+  const VIEWS = ['v-email', 'v-pass', 'v-code', 'v-loading', 'v-offline', 'v-project', 'v-ended'];
   const show = (id) => {
     VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
     if (id !== 'v-loading') document.documentElement.classList.remove('wf-arriving');
@@ -1032,6 +1035,9 @@
     n.hidden = !notice;
     showErr('email', '');
     stopResend();
+    pwState = null;
+    $('#in-ppass').value = ''; $('#in-pnew').value = ''; $('#in-pcur').value = '';
+    $('#pw-link').hidden = usePhone || PREVIEW;
     show('v-email');
     if (moveFocus) focusEl($('#h-email'));
   }
@@ -1046,6 +1052,7 @@
     $('#l-email').textContent = on ? 'Your phone number' : 'Your email';
     $('#email-hint').textContent = on ? 'Use the number you gave me when we started.' : 'Use the email you gave me when we started.';
     $('#b-phone').textContent = on ? 'Use my email instead' : 'Text me a code instead';
+    $('#pw-link').hidden = on;
     showErr('email', '');
     input.focus();
   }
@@ -1433,6 +1440,7 @@
     renderTimeline();
     renderThings();
     renderTexts();
+    renderPassword();
     renderPay();
     renderChange();
     renderNeeds();
@@ -1489,6 +1497,117 @@
       if (DEMO) { toast('Demo: nothing was saved.'); return; }
       try { const d = await postJSON('/sms', { on: false }, token); me.sms = Object.assign({}, me.sms, d.sms || {}); renderTexts(); toast('Texts are off.'); }
       catch (e) { toast('That didn’t go through. Try again?'); }
+    });
+  }
+
+
+  /* ================= a password to sign in with (Oct 25 2026) =================
+     Another way to the same portal; the emailed code stays (and is the way back when a password is forgotten).
+     It is set from inside a signed in portal, here. The page only ever holds what was just typed: nothing is kept in
+     storage, and the fields are emptied after every try. The server checks it (bcrypt) and answers the same to any miss. */
+  const PW_WEAK = {
+    short: 'Please use at least 12 characters. A few ordinary words in a row, like a little sentence, works well.',
+    long: 'That is longer than I can keep. Please use 200 characters or fewer.',
+    common: 'That one is on the lists of passwords people guess first. Try a few unrelated words in a row instead.',
+    pattern: 'That has a pattern that is easy to guess. Try a few unrelated words in a row instead.',
+    personal: 'That one is built from your name or email, which is easy to guess. Try a few unrelated words instead.'
+  };
+  let pwState = null;      // { set, set_on } from the server, or null while unknown
+  let pwWired = false;
+  const pwDay = (d) => { const m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(d); if (!m) return ''; const n = ['January','February','March','April','May','June','July','August','September','October','November','December'][+m[2] - 1]; return n ? 'on ' + n + ' ' + (+m[3]) : ''; };
+  const pwErr = (id, text) => { const p = $('#' + id); p.textContent = text || ''; p.hidden = !text; };
+  const showPw = (inputs, on) => inputs.forEach((i) => { i.type = on ? 'text' : 'password'; });
+
+  function toPassStep() {
+    $('#in-pemail').value = $('#in-email').value.trim();
+    $('#in-ppass').value = '';
+    $('#in-pshow').checked = false;
+    showPw([$('#in-ppass')], false);
+    pwErr('pass-err', '');
+    show('v-pass');
+    focusEl($('#h-pass'));
+    ($('#in-pemail').value ? $('#in-ppass') : $('#in-pemail')).focus();
+  }
+
+  async function onPass(e) {
+    e.preventDefault();
+    if (verifying) return;
+    const em = $('#in-pemail').value.trim().toLowerCase();
+    const pw = $('#in-ppass').value;
+    if (em.length < 3 || em.length > 200 || !EMAIL_RE.test(em)) { pwErr('pass-err', 'That email doesn’t look quite right. Check for a little typo?'); $('#in-pemail').focus(); return; }
+    if (!pw) { pwErr('pass-err', 'Type your password, or ask for a code instead.'); $('#in-ppass').focus(); return; }
+    verifying = true;
+    pwErr('pass-err', '');
+    const btn = $('#b-pass');
+    setBusy(btn, true, 'Signing in…');
+    try {
+      const r = await api.passwordSignIn(em, pw);
+      if (!r || !TOKEN_RE.test(str(r.token, 100))) throw fail('server', 500);
+      $('#in-ppass').value = '';
+      token = r.token;
+      store.set(token);
+      stopResend();
+      pending.clear();
+      who = null;
+      announce('You’re in.');
+      await loadProject(true);
+    } catch (err) {
+      $('#in-ppass').value = '';
+      pwErr('pass-err', err.code === 'signed_out' || err.code === 'signin'
+        ? 'That email and password don’t match. Check them and try again, or email yourself a code instead.'
+        : words(err) + (err.code === 'slow_down' ? ' The emailed code works in the meantime.' : ''));
+      $('#in-ppass').focus();
+    } finally { verifying = false; setBusy(btn, false); }
+  }
+
+  async function renderPassword() {
+    const sec = $('#sec-password');
+    if (PREVIEW || DEMO || !me) { sec.hidden = true; return; } // a Studio preview only reads; the demo has no server
+    wirePassword();
+    if (!pwState) {
+      try { const d = await api.passwordState(); pwState = { set: !!d.set, set_on: str(d.set_on, 10) }; }
+      catch (err) { sec.hidden = true; return; }
+      if (!me) return;
+    }
+    sec.hidden = false;
+    $('#h-password').textContent = pwState.set ? 'Your password' : 'Sign in with a password';
+    $('#pw-now').textContent = pwState.set
+      ? 'You have a password set' + (pwDay(pwState.set_on) ? ' (' + pwDay(pwState.set_on) + ')' : '') + '. You can use it with your email to sign in, or change it here.'
+      : 'Rather not wait for an emailed code? Choose a password and use it with your email to sign in.';
+    $('#pw-cur-wrap').hidden = !pwState.set;
+    $('#l-pnew').textContent = pwState.set ? 'Choose a new password' : 'Choose a password';
+    const bl = pwState.set ? 'Change my password' : 'Save my password';
+    $('#b-pw').querySelector('span').textContent = bl;
+    $('#b-pw').dataset.label = bl; // (setBusy puts this back after a save)
+    syncPages();
+  }
+
+  function wirePassword() {
+    if (pwWired) return; pwWired = true;
+    $('#in-pwshow').addEventListener('change', () => showPw([$('#in-pnew'), $('#in-pcur')], $('#in-pwshow').checked));
+    $('#f-password').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      pwErr('pw-err', '');
+      const pw = $('#in-pnew').value;
+      const cur = pwState && pwState.set ? $('#in-pcur').value : '';
+      if (!pw) { pwErr('pw-err', 'Type the password you would like to use.'); $('#in-pnew').focus(); return; }
+      if (Array.from(pw).length < 12) { pwErr('pw-err', PW_WEAK.short); $('#in-pnew').focus(); return; }
+      const b = $('#b-pw');
+      setBusy(b, true, 'Saving…');
+      try {
+        await api.passwordSet(pw, cur);
+        $('#in-pnew').value = ''; $('#in-pcur').value = '';
+        pwState = null;
+        setBusy(b, false);
+        toast('Your password is saved. Any other places you were signed in were signed out.', 9000);
+        await renderPassword();
+      } catch (err) {
+        if (err.code === 'weak') pwErr('pw-err', PW_WEAK[err.reason] || PW_WEAK.pattern);
+        else if (err.code === 'current') { pwErr('pw-err', 'I need your current password to change it. If you forgot it, sign out, sign in with an emailed code, and come back here.'); $('#in-pcur').focus(); }
+        else if (err.code === 'same') pwErr('pw-err', 'That is the password you have now. Pick a different one to change it.');
+        else if (err.code === 'signed_out') { quietSignOut(); return; }
+        else pwErr('pw-err', words(err));
+      } finally { setBusy(b, false); }
     });
   }
 
@@ -7313,6 +7432,10 @@
     $('#f-code').addEventListener('submit', onCode);
     $('#in-code').addEventListener('input', onCodeInput);
     $('#b-resend').addEventListener('click', onResend);
+    $('#b-use-pass').addEventListener('click', toPassStep);
+    $('#f-pass').addEventListener('submit', onPass);
+    $('#in-pshow').addEventListener('change', () => showPw([$('#in-ppass')], $('#in-pshow').checked));
+    $('#b-pass-code').addEventListener('click', () => { $('#in-email').value = $('#in-pemail').value.trim(); $('#in-ppass').value = ''; toEmailStep('', true); $('#in-email').focus(); });
     $('#b-restart').addEventListener('click', () => { stopResend(); pending.clear(); who = null; toEmailStep('', false); $('#in-email').focus(); });
     $('#b-retry').addEventListener('click', () => loadProject(true));
     $('#b-signout').addEventListener('click', signOut);

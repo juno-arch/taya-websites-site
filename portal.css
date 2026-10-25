@@ -970,6 +970,19 @@ html.wf-preview #b-signout-top, html.wf-preview #foot-out, html.wf-preview #b-si
 html.wf-preview .ro-off { opacity: .55; cursor: not-allowed; }
 html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 
+/* a password to sign in with (Oct 25 2026) */
+.pw-link { margin: 14px 0 0; }
+#v-pass input[type="password"], #f-password input[type="password"] {
+  width: 100%; max-width: 100%; min-height: 48px; padding: 10px 12px;
+  background: var(--wf-b-field); color: var(--wf-b-ink); border: 1px solid var(--wf-b-edge); border-radius: var(--wf-r-input);
+  font-family: var(--wf-font-work); font-weight: 400; font-size: 16.5px; line-height: 1.45;
+}
+#f-password input { max-width: 28em; }
+#v-pass .field-label { margin-top: 16px; }
+#v-pass #b-pass { margin-top: 18px; }
+#f-password .field-label { margin-top: 14px; }
+#f-password #b-pw { margin-top: 6px; }
+
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
    --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).

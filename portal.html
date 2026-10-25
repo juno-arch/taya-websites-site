@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261021a">
+<link rel="stylesheet" href="portal.css?v=20261025a">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <link rel="stylesheet" href="portal-schedule.css?v=20261022b">
 <!--
@@ -120,7 +120,7 @@
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261022b"></script>
-<script src="portal.js?v=20261022a"></script>
+<script src="portal.js?v=20261025a"></script>
 
 <main class="page" id="main" tabindex="-1">
   <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
@@ -178,10 +178,37 @@
     <p class="si-small" id="email-hint">Use the email you gave me when we started.</p>
     <p class="si-small">Trouble with your portal? Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
     <button type="button" class="later" id="b-phone" hidden>Text me a code instead</button>
+    <p class="si-small pw-link" id="pw-link" hidden><button type="button" class="later" id="b-use-pass">Sign in with a password instead</button></p>
     <div class="demo-hint" hidden>
       <p><b>Demo sign-in:</b> demo@webfaery.love, code 000000</p>
       <button type="button" class="later" data-fill="email">Fill it in for me</button>
     </div>
+  </section>
+
+  <!-- ============ sign in with a password (Oct 25 2026): another way to the same portal, the emailed code stays ============ -->
+  <section class="p-card signin" id="v-pass" aria-labelledby="h-pass" hidden>
+    <div class="si-head">
+      <img class="face" src="taya.jpg" width="256" height="256" alt="" decoding="async">
+      <div>
+        <span class="kicker">Sign in</span>
+        <h2 id="h-pass" tabindex="-1">Your email and password</h2>
+      </div>
+    </div>
+    <form id="f-pass" novalidate>
+      <label class="field-label" for="in-pemail">Your email</label>
+      <input id="in-pemail" name="email" type="email" autocomplete="username" inputmode="email" autocapitalize="off"
+             spellcheck="false" maxlength="200" aria-describedby="pass-err">
+      <label class="field-label" for="in-ppass">Your password</label>
+      <input id="in-ppass" name="password" type="password" autocomplete="current-password" autocapitalize="off"
+             spellcheck="false" maxlength="400" aria-describedby="pass-err">
+      <label class="texts-agree"><input type="checkbox" id="in-pshow"> <span>Show my password</span></label>
+      <p class="err" id="pass-err" hidden></p>
+      <button class="btn wide" type="submit" id="b-pass"><span>Sign me in</span></button>
+    </form>
+    <div class="si-links">
+      <button type="button" class="later" id="b-pass-code">Forgot it? Email me a code instead</button>
+    </div>
+    <p class="si-small">The emailed code always works too. Trouble? Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
   </section>
 
   <!-- ============ sign in, step 2: the code ============ -->
@@ -1025,6 +1052,27 @@
       <span class="kicker">Your things</span>
       <h2 id="h-things">All in one place</h2>
       <ul class="things" id="things"></ul>
+    </section>
+
+    <!-- a password for signing in (Oct 25 2026): set from inside a signed in portal, never from an email link alone -->
+    <section class="p-card" id="sec-password" data-page="project" aria-labelledby="h-password" hidden>
+      <span class="kicker">Sign in</span>
+      <h2 id="h-password">Sign in with a password</h2>
+      <p class="texts-why" id="pw-now"></p>
+      <form id="f-password" novalidate>
+        <div id="pw-cur-wrap" hidden>
+          <label class="field-label" for="in-pcur">Your current password</label>
+          <input id="in-pcur" name="current" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" maxlength="400" aria-describedby="pw-cur-hint pw-err">
+          <p class="texts-fine" id="pw-cur-hint">Forgot it? If you signed in with an emailed code a few minutes ago, leave this empty.</p>
+        </div>
+        <label class="field-label" for="in-pnew" id="l-pnew">Choose a password</label>
+        <input id="in-pnew" name="password" type="password" autocomplete="new-password" autocapitalize="off" spellcheck="false" maxlength="200" aria-describedby="pw-hint pw-err">
+        <p class="texts-fine" id="pw-hint">At least 12 characters. A few ordinary words in a row, like a little sentence, works well. Capitals and symbols are fine and not needed.</p>
+        <label class="texts-agree"><input type="checkbox" id="in-pwshow"> <span>Show what I type</span></label>
+        <p class="err" id="pw-err" hidden></p>
+        <button class="btn" type="submit" id="b-pw"><span>Save my password</span></button>
+      </form>
+      <p class="si-small">The emailed code still works, so you can always get in that way too.</p>
     </section>
 
     <!-- texts from Web Faery (Oct 2 2026): shows once texts are switched on on the server -->
