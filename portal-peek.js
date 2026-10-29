@@ -4,6 +4,8 @@
    Inserts itself just above the footer, takes its colors from the page's own button, respects dark mode and reduced motion.
    Nothing is sent anywhere. */
 (function () {
+  /* Oct 25 2026 (Pollen: "remove the portal peek until I have time to redesign it"): switched OFF. To bring it back, set window.WF_PORTAL_PEEK_ON = true before this script, or delete the next line. */
+  if (!window.WF_PORTAL_PEEK_ON) return;
   if (document.getElementById('portal-peek')) return;
   var me = document.currentScript || document.querySelector('script[src*="portal-peek.js"]');
   var kind = (me && me.getAttribute('data-kind')) || 'practice';

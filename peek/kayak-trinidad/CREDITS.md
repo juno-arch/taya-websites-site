@@ -13,3 +13,5 @@ Every photo is from their own website uploads (kayaktrinidad.com/wp-content/uplo
 - ig-1 to ig-6: square crops of bay, bow, otters, stack, anemone and elk, standing in for their Instagram tiles.
 - logo (uploads/2016/06/kayaktrinidad.png): their badge, used as is, 700 px wide.
 Not used: any photo with a clearly visible customer face, the award badge images, photos with large overlaid words.
+
+Shop section (added Oct 30 2026): the store link and all product photos, names and prices come from their own Shopify store (61cb1b-2.myshopify.com, linked from the "Shop Kayaks, Gear & Gift Cards" link on kayaktrinidad.com; about 204 products). Verified it loads Oct 29 2026. Featured: Kayak Trinidad Logo T-shirt, Astral Lonnie PFD, Werner Camano Carbon paddle, Aquapac phone case, Hurricane Osprey 120 (images/shop-*.jpg, resized to 640 px). The gift card photo is their own gift certificate image from /products/kayak-trinidad-gift-cards. Their Shopify store stays as it is; the page only links to it. The earlier "gift paddles into your Stripe" section was removed because their gift cards live on Shopify. I skipped the hoodie photo because it shows a model's face.
