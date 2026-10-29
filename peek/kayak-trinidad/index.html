@@ -326,7 +326,19 @@
   .her-words cite { display: block; margin-top: 6px; font-family: 'Readex Pro', sans-serif; font-style: normal; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
   @media (max-width: 780px) { .bk { grid-template-columns: minmax(0, 1fr); } }
 
-  /* gift */
+  /* shop */
+  .prods { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+  .prod { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--ink); background: var(--paper); border: 1px solid var(--hair); border-radius: 4px; padding: 10px 10px 14px; }
+  .prod:hover { border-color: var(--plum); }
+  .prod .pimg { display: block; aspect-ratio: 1; background: #fff; border-radius: 2px; overflow: hidden; }
+  .prod img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .prod b { font-weight: 600; font-size: 15px; line-height: 1.3; margin-top: 6px; }
+  .prod .pp { color: var(--ink-soft); font-size: 15px; }
+  .giftcards { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 32px; align-items: center; margin-top: 44px; padding: 24px; background: var(--paper); border: 1px solid var(--hair); border-radius: 4px; }
+  .giftcards h3 { margin: 0 0 8px; }
+  .gcimg { margin: 0; } .gcimg img { width: 100%; height: auto; display: block; border-radius: 2px; }
+  @media (max-width: 900px) { .prods { grid-template-columns: repeat(2, minmax(0, 1fr)); } .giftcards { grid-template-columns: minmax(0, 1fr); } .gcimg { max-width: 320px; } }
+  /* gift (old styles, unused) */
   .gift { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); grid-template-areas: "intro card" "notes card"; column-gap: 56px; align-items: start; }
   .gift-intro { grid-area: intro; } .gift-notes { grid-area: notes; display: grid; gap: 12px; margin-top: 26px; } .pay-card { grid-area: card; }
   .gift-intro .matted { margin-top: 30px; max-width: 360px; }
@@ -815,6 +827,7 @@
       <a href="#season">Whale season</a>
       <a href="#lessons">Lessons</a>
       <a href="#rentals">Rentals</a>
+      <a href="#shop">Shop</a>
       <a href="#about">About</a>
       <a href="#find">Find us</a>
     </nav>
@@ -864,7 +877,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your tours and prices, lessons, rentals, your story, kind words, where to find you, and Book buttons to Peek, as you have now."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, FAQ, season notes sign-up, your Instagram feed, and a Book button to your own Cal.com page for rentals."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus rental booking and gift paddles right on your site, on my server, paid into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus rental booking right on your site, on my server, paid into your own Stripe. Your Shopify store stays as it is, and the site links to it."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you email me any change, and it&rsquo;s done. Hosting and backups included, and so is kayaktrinidad.com: I hold and renew it for you, and it stays legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1083,52 +1096,28 @@
   </div>
 </section>
 
-<section id="gift" class="gutter" data-show="crone all" data-fold data-thing="gift paddles">
-  <div class="wrap gift">
-    <div class="gift-intro">
-      <p class="label with-pill"><span>Give a paddle</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <h2 class="reveal">A day on the water, <em>as a gift</em></h2>
-      <p class="soft" style="margin-top:14px">For a birthday, an anniversary, a family who has always wanted to try it. Choose a tour or an amount and it&rsquo;s emailed, ready to print or forward. Try it:</p>
-      <div class="matted reveal"><figure class="photo p43"><picture><source type="image/webp" srcset="images/kayaks.webp"><img src="images/kayaks.jpg" width="1600" height="1200" alt="Red and yellow kayaks and blue paddleboards laid out on the grass beside a still blue lagoon, with forested hills across the water" loading="lazy" style="object-position:50% 75%"></picture></figure></div>
+<section id="shop" class="gutter">
+  <div class="wrap">
+    <p class="label with-pill"><span>Shop</span> <span class="tag" data-go="maiden">Every build</span></p>
+    <h2 class="reveal">Gear and gifts, <em>from your own store</em></h2>
+    <p class="soft" style="margin-top:14px;max-width:60ch">Your online store stays on Shopify, just as it is. This page links to it, so guests can browse your kayaks, wetsuits, paddles and gear without leaving the feel of the site.</p>
+    <p style="margin-top:22px"><a class="btn" href="https://61cb1b-2.myshopify.com/" target="_blank" rel="noopener">Shop gear and gift cards<span class="vh"> (opens your store in a new tab)</span></a></p>
+    <div class="prods">
+        <a class="prod reveal" href="https://61cb1b-2.myshopify.com/products/kayak-trinidad-logo-t-shirts" target="_blank" rel="noopener"><span class="pimg"><img src="images/shop-tee.jpg" width="640" height="640" alt="A Kayak Trinidad logo T-shirt in gold, with the whale and sea stack on the back" loading="lazy"></span><b>Kayak Trinidad Logo T-shirt</b><span class="pp">$30</span></a>
+        <a class="prod reveal" href="https://61cb1b-2.myshopify.com/products/astral-lonnie-pfd" target="_blank" rel="noopener"><span class="pimg"><img src="images/shop-pfd.jpg" width="640" height="640" alt="An orange and grey Astral Lonnie life jacket" loading="lazy"></span><b>Astral Lonnie PFD</b><span class="pp">$145</span></a>
+        <a class="prod reveal" href="https://61cb1b-2.myshopify.com/products/werner-paddles-camano-carbon-2-piece-straight-shaft" target="_blank" rel="noopener"><span class="pimg"><img src="images/shop-paddle.jpg" width="640" height="640" alt="The blade of a black Werner Camano carbon paddle" loading="lazy"></span><b>Werner Camano Carbon paddle</b><span class="pp">$439</span></a>
+        <a class="prod reveal" href="https://61cb1b-2.myshopify.com/products/aquapac-waterproof-classic-phone-case-plus" target="_blank" rel="noopener"><span class="pimg"><img src="images/shop-case.jpg" width="640" height="640" alt="A waterproof Aquapac phone case holding a phone" loading="lazy"></span><b>Aquapac waterproof phone case</b><span class="pp">$39.95</span></a>
+        <a class="prod reveal" href="https://61cb1b-2.myshopify.com/products/hurricane-osprey-120" target="_blank" rel="noopener"><span class="pimg"><img src="images/shop-osprey.jpg" width="640" height="640" alt="A yellow Hurricane Osprey 120 recreational kayak, top and side views" loading="lazy"></span><b>Hurricane Osprey 120 kayak</b><span class="pp">$1,199</span></a>
     </div>
-    <div class="pay-card" id="gf-card">
-      <form id="gf" method="dialog" novalidate aria-label="Gift a paddle, preview">
-        <p class="pay-q" id="gf-amt-q">Choose a gift</p>
-        <div class="amts" role="group" aria-labelledby="gf-amt-q">
-          <button type="button" class="amt" data-amt="119" aria-pressed="true">$119<small>Big Lagoon tour</small></button>
-          <button type="button" class="amt" data-amt="149" aria-pressed="false">$149<small>Trinidad Bay tour</small></button>
-          <button type="button" class="amt" data-amt="any" aria-pressed="false">Any amount<small>toward a paddle</small></button>
-        </div>
-        <label class="fld" id="gf-any-wrap" hidden>Your amount<span class="money"><span aria-hidden="true">$</span><input id="gf-any" inputmode="numeric" autocomplete="off" placeholder="50"></span></label>
-        <div class="fld-row">
-          <label class="fld">For<input id="gf-to" autocomplete="off" value="Jules"></label>
-          <label class="fld">From<input id="gf-from" autocomplete="off" value="Sam W."></label>
-        </div>
-        <p class="hint" id="gf-hint" role="status"></p>
-        <button type="submit" class="bk-go">Continue to checkout</button>
-      </form>
-      <div class="sheet fade-in" id="gf-sheet" hidden>
-        <span class="sheet-grip" aria-hidden="true"></span>
-        <h3 class="sheet-h" id="gf-sheet-h" tabindex="-1"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure checkout <span class="bk-demo">preview</span></h3>
-        <div class="sheet-lines">
-          <div><span id="gf-item">Gift: Big Lagoon wildlife tour</span><span id="gf-price">$119</span></div>
-          <div class="sub"><span id="gf-sub">For Jules, from Sam W.</span></div>
-          <div class="total"><span>Total</span><span id="gf-total">$119</span></div>
-        </div>
-        <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
-        <p class="sheet-note">Preview: on a real site this opens a secure Stripe checkout, paid into your own Stripe account. Nothing is charged.</p>
-        <div class="sheet-actions"><button type="button" class="bk-go" id="gf-complete">Complete (preview)</button><button type="button" class="bk-go ghost" id="gf-back">Back</button></div>
-      </div>
-      <div class="bk-done fade-in" id="gf-done" hidden>
-        <h3 id="gf-done-h" tabindex="-1">All set!</h3>
-        <p id="gf-done-text"></p>
-        <p class="demo-note">Preview only. Nothing was charged.</p>
-        <div class="bk-nav"><button type="button" class="bk-go ghost" id="gf-again">Try it again</button><button type="button" class="bk-go ghost" id="gf-edit">Change something</button></div>
+    <div class="giftcards reveal">
+      <figure class="gcimg"><img src="images/shop-giftcard.jpg" width="640" height="463" alt="The Kayak Trinidad gift certificate, with three photos of kayakers on the water" loading="lazy"></figure>
+      <div>
+        <h3>Gift cards</h3>
+        <p class="soft">A day on the water makes a good present. Your gift cards live in your Shopify store, and this link takes guests straight to them.</p>
+        <p style="margin-top:16px"><a class="btn quiet" href="https://61cb1b-2.myshopify.com/products/kayak-trinidad-gift-cards" target="_blank" rel="noopener">Buy a gift card<span class="vh"> (opens in a new tab)</span></a></p>
       </div>
     </div>
-    <div class="gift-notes mock-note wf-note">
-      <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, set up in your name. Every gift is listed in your Stripe, with a short heads-up email for each. Your online store on Shopify can keep selling kayaks and gear, or gift cards can move here: tell me which you&rsquo;d like.</div>
-    </div>
+    <p class="sec-note mock-note wf-note">The products, photos and prices here are from your own Shopify store, and each one links back to it. Your store has about 200 products, so I show a few and the button opens the rest. Tell me which ones you&rsquo;d like featured.</p>
   </div>
 </section>
 
@@ -1299,7 +1288,7 @@
     <div class="foot-mark"><button type="button" class="foot-whale" id="foot-whale" aria-label="A grey whale"><svg viewBox="0 0 220 96" aria-hidden="true" focusable="false"><use href="#whale"/></svg></button>Kayak Trinidad</div>
     <p>Tours, lessons and rentals <span aria-hidden="true">&middot;</span> <span class="nw">Trinidad, California</span> <span aria-hidden="true">&middot;</span> Licensed &amp; insured guide and outfitter</p>
     <p class="foot-reach"><a href="tel:+17073290085">(707) 329-0085</a> <span aria-hidden="true">&middot;</span> <a href="mailto:reservations@kayaktrinidad.com">reservations@kayaktrinidad.com</a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (rental booking and gift paddles). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (rental booking). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
   </div>
 </footer>
@@ -1316,7 +1305,7 @@
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your tours and prices, lessons, rentals, your story, kind words, where to find you, and Book buttons to Peek, as you have now."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus a contact form, FAQ, season notes sign-up, your Instagram feed, and a Book button to your own Cal.com page for rentals."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus rental booking and gift paddles right on your site, on my server, paid into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus rental booking right on your site, on my server, paid into your own Stripe. Your Shopify store stays as it is, and the site links to it."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you email me any change, and it&rsquo;s done. Hosting and backups included, and so is kayaktrinidad.com: I hold and renew it for you, and it stays legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1556,42 +1545,13 @@
 </script>
 
 <script>
-  /* gift paddles, contact, season notes, and the secret whale */
+  /* contact, season notes, and the secret whale */
   (function () {
     function $(id) { return document.getElementById(id); }
     function all(root, sel) { return [].slice.call(root.querySelectorAll(sel)); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     function pressOnly(list, key, val) { list.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset[key] === val ? 'true' : 'false'); }); }
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-
-    (function () {
-      var form = $('gf'); if (!form) return;
-      var sheet = $('gf-sheet'), done = $('gf-done'), hint = $('gf-hint'), any = $('gf-any');
-      var amts = all(form, '[data-amt]'), st;
-      function paint() { pressOnly(amts, 'amt', st.amt); $('gf-any-wrap').hidden = st.amt !== 'any'; }
-      function reset() {
-        st = { amt: '119' };
-        any.value = ''; $('gf-to').value = 'Jules'; $('gf-from').value = 'Sam W.'; hint.textContent = '';
-        form.hidden = false; sheet.hidden = true; done.hidden = true; paint();
-      }
-      amts.forEach(function (b) { b.addEventListener('click', function () { st.amt = b.dataset.amt; hint.textContent = ''; paint(); if (st.amt === 'any') any.focus(); }); });
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var n = st.amt === 'any' ? parseInt(String(any.value).replace(/[^0-9]/g, ''), 10) : +st.amt;
-        if (!(n >= 5 && n <= 5000)) { hint.textContent = 'Type an amount first, like 50.'; any.focus(); return; }
-        var to = $('gf-to').value.trim() || 'someone special', from = $('gf-from').value.trim() || 'you';
-        $('gf-item').textContent = st.amt === '119' ? 'Gift: Big Lagoon wildlife tour' : st.amt === '149' ? 'Gift: Trinidad Bay whale and wildlife tour' : 'Gift toward a paddle';
-        $('gf-price').textContent = $('gf-total').textContent = '$' + n;
-        $('gf-sub').textContent = 'For ' + to + ', from ' + from;
-        st.doneText = 'A $' + n + ' gift for ' + to + ' is on its way to your inbox, ready to print or forward.';
-        hint.textContent = ''; form.hidden = true; sheet.hidden = false; quietFocus($('gf-sheet-h'));
-      });
-      $('gf-back').addEventListener('click', function () { sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-      $('gf-complete').addEventListener('click', function () { $('gf-done-text').textContent = st.doneText; sheet.hidden = true; done.hidden = false; quietFocus($('gf-done-h')); });
-      $('gf-again').addEventListener('click', function () { reset(); quietFocus(amts[0]); });
-      $('gf-edit').addEventListener('click', function () { done.hidden = true; sheet.hidden = true; form.hidden = false; quietFocus(form.querySelector('[aria-pressed="true"]') || form.querySelector('[type="submit"]')); });
-      reset();
-    })();
 
     (function () {
       var form = $('cf'); if (!form) return;
@@ -1666,7 +1626,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your tours and prices, lessons, rentals, your story, kind words, where to find you, and Book buttons to Peek, as you have now.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with everything in Planted plus a contact form, FAQ, season notes sign-up, your Instagram feed, and a Book button to your own Cal.com page for rentals.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus rental booking and gift paddles right on your site, on my server, paid into your own Stripe. That’s every piece on this page.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus rental booking right on your site, on my server, paid into your own Stripe. Your Shopify store stays as it is, and the site links to it. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
