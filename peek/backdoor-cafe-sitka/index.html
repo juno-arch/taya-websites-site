@@ -1067,7 +1067,8 @@
               <span class="sheet-grip" aria-hidden="true"></span>
               <h3 class="sheet-h" id="sv-sheet-h" tabindex="-1">Your reservation <span class="demo-pill">Preview</span></h3>
               <div class="sheet-lines" id="sv-lines"></div>
-              <p class="demo-note">You pay at the counter when you pick up. Preview only: nothing was sent.</p>
+              <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
+              <p class="demo-note">Plates are paid for ahead, so your plate is saved. Preview: on your real site this opens Stripe&rsquo;s checkout, paid into your own Stripe. Nothing is charged.</p>
             </div>
           </div>
           <p class="hint" id="sv-hint" role="status"></p>
@@ -1082,7 +1083,7 @@
         <div class="side-notes mock-note wf-note">
           <div class="snote"><b>What you see</b>Each reservation lands in your portal, with a short heads-up email to you: who, how many plates, and when they&rsquo;ll be by. It fills the gap your October post and the phone have covered so far.</div>
           <div class="inbox"><div class="from">New lunch reservation</div><div id="sv-inbox">Waiting for a reservation&hellip; try it on the left</div></div>
-          <div class="snote"><b>You set the limits</b>How many plates you can make each day, and the pickup times. When a day is full, it comes off the list by itself. If you&rsquo;d like people to pay ahead, it can go through your own Stripe once your lunch price is set.</div>
+          <div class="snote"><b>You set the limits</b>How many plates you can make each day, and the pickup times. When a day is full, it comes off the list by itself. Plates are paid for ahead, through your own Stripe, so a saved plate is a sold plate. It goes live once your lunch price is set.</div>
         </div>
       </div>
     </div>
@@ -1138,10 +1139,6 @@
     <div class="visit">
       <div>
         <div class="clock" id="clock">
-          <div class="clock-top">
-            <svg class="dglyph" id="clock-door" viewBox="0 0 40 50" aria-hidden="true" focusable="false" data-s="open"><rect class="d-glow" x="6" y="8" width="28" height="40"/><rect class="d-leaf" x="7" y="9" width="26" height="39"/><path class="d-frame" d="M5 48V7h30v41"/><circle class="d-knob" cx="29" cy="30" r="1.9"/></svg>
-            <div><p class="clock-state is-open" id="clock-state">Open now</p><p class="clock-sub" id="clock-sub">taking orders until 1:30</p></div>
-          </div>
           <ul class="week" id="week" aria-label="Hours">
             <li data-d="1"><b>Monday</b><span>7 am to 2 pm<small>orders until 1:30</small></span></li>
             <li data-d="2"><b>Tuesday</b><span>7 am to 2 pm<small>orders until 1:30</small></span></li>
@@ -1151,10 +1148,8 @@
             <li data-d="6"><b>Saturday</b><span>7 am to 1:30 pm<small>orders until 1</small></span></li>
             <li data-d="0"><b>Sunday</b><span>Closed</span></li>
           </ul>
-          <div class="clock-try" id="clock-try"><span class="demo-pill">Preview</span><span>See it at</span><button type="button" data-t="2:6:30" aria-pressed="false">Tue 6:30 am</button><button type="button" data-t="2:12:00" aria-pressed="false">Tue noon</button><button type="button" data-t="5:13:45" aria-pressed="false">Fri 1:45 pm</button><button type="button" data-t="6:12:30" aria-pressed="false">Sat 12:30 pm</button><button type="button" data-t="now" aria-pressed="true">Right now</button></div>
-          <p class="vh" role="status" id="clock-live"></p>
         </div>
-        <p class="tier-note mock-note wf-note">The little door at the top of the page is ajar while you&rsquo;re open and shut when you&rsquo;re not. It reads your hours and the time in Sitka, so it&rsquo;s right by itself every day. I used the fall hours from your Instagram. Yelp still says you close at 3 and Tripadvisor says 6:30 to 5, so I&rsquo;ll keep your site and your Google profile matching these.</p>
+        <p class="tier-note mock-note wf-note">I used the fall hours from your Instagram. Yelp still says you close at 3 and Tripadvisor says 6:30 to 5, so I&rsquo;ll keep your site and your Google profile matching these.</p>
       </div>
       <div>
         <div class="where">
@@ -1532,7 +1527,7 @@
           b.disabled = !on && !canGo(n);
         });
         back.hidden = st.s === 1;
-        go.textContent = st.s === 1 ? 'Pickup details' : st.s === 2 ? 'Review my plates' : 'Save my lunch (preview)';
+        go.textContent = st.s === 1 ? 'Pickup details' : st.s === 2 ? 'Review my plates' : 'Pay and save my lunch (preview)';
       }
       function lines() {
         var box = $('sv-lines'); while (box.firstChild) box.removeChild(box.firstChild);
@@ -1540,7 +1535,7 @@
         row(st.n + (st.n === 1 ? ' plate' : ' plates'), st.dish);
         row('Pickup', st.day + ', ' + st.time);
         row('Under the name', $('sv-name').value.trim());
-        row('Pay', 'at the counter');
+        row('Pay now', 'your lunch price' + (st.n > 1 ? ' x ' + st.n : ''));
       }
       function jump(n) { st.s = n; hint.textContent = ''; paint(); var box = $('sv-' + n); quietFocus(n === 3 ? $('sv-sheet-h') : box.querySelector('button[aria-pressed="true"], button:not([disabled]), input')); }
       card.querySelectorAll('.steps [data-s]').forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && canGo(n)) { if (n === 3) lines(); jump(n); } }); });
@@ -1554,9 +1549,9 @@
           lines(); jump(3); return;
         }
         var who = $('sv-name').value.trim(), first = who.split(/\s+/)[0];
-        $('sv-done-h').textContent = 'Saved, ' + first + '!';
-        $('sv-done-text').textContent = st.n + (st.n === 1 ? ' plate' : ' plates') + ' of ' + st.dish.toLowerCase() + ' will be waiting on ' + st.day + ', around ' + st.time + '. Come in through the back door, and pay at the counter.';
-        $('sv-inbox').textContent = who + ' saved ' + st.n + (st.n === 1 ? ' plate' : ' plates') + ' of ' + st.dish.toLowerCase() + ' for ' + st.day + ', around ' + st.time + '.';
+        $('sv-done-h').textContent = 'Paid and saved, ' + first + '!';
+        $('sv-done-text').textContent = st.n + (st.n === 1 ? ' plate' : ' plates') + ' of ' + st.dish.toLowerCase() + ' will be waiting on ' + st.day + ', around ' + st.time + '. Paid ahead, so just come in through the back door and pick it up.';
+        $('sv-inbox').textContent = who + ' paid for ' + st.n + (st.n === 1 ? ' plate' : ' plates') + ' of ' + st.dish.toLowerCase() + ' for ' + st.day + ', around ' + st.time + '.';
         [1, 2, 3].forEach(function (n) { $('sv-' + n).hidden = true; });
         $('sv-nav').hidden = true; card.querySelector('.steps').hidden = true; $('sv-done').hidden = false; quietFocus($('sv-done-h'));
       });
