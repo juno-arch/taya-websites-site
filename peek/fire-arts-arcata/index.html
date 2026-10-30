@@ -240,6 +240,20 @@
   .vseg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; background: var(--ground-2); border: 1px solid var(--hair); border-radius: 10px; }
   .vseg button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 58px; margin: 0; padding: 8px 6px;
     font: inherit; line-height: 1.2; text-align: center; color: var(--ink); background: transparent; border: 0; border-radius: 7px; cursor: pointer; transition: background-color 0.25s ease, color 0.25s ease; }
+  /* THE ROTATING BANNER under the hero: a slim strip, a flame chip at the left, their real lines rolling slowly by, a small gem between each in
+     the colors of the kiln and the glass (orange, amber, red, cobalt, teal). Pauses on hover and focus; sits still (first three lines) under reduced motion. */
+  .fa-marq { position: relative; z-index: 3; display: flex; align-items: stretch; overflow: hidden; color: #fbeedd; background: #170d09; border-top: 1px solid rgba(255, 122, 26, 0.7); }
+  .fa-tag { flex: none; display: flex; align-items: center; gap: 8px; padding: 0 26px 0 18px; background: linear-gradient(100deg, #b0100a, #d0450a); color: #fff3df; font-family: 'Geologica', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); position: relative; z-index: 1; }
+  .fa-tag svg { width: 16px; height: 20px; flex: none; }
+  .fa-win { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; padding: 13px 0 12px 16px; font-family: 'Geologica', sans-serif; font-weight: 300; font-size: 15px; line-height: 1.25; letter-spacing: 0.2em; text-transform: uppercase; }
+  .fa-run { display: inline-flex; animation: fa-scroll var(--dur, 80s) linear infinite; }
+  .fa-run > span { white-space: pre; }
+  .fa-run i { font-style: normal; display: inline-block; width: 6px; height: 6px; margin: 0 22px 0 18px; vertical-align: 2px; transform: rotate(45deg); background: #ffc23a; }
+  .fa-run i.f1 { background: #ff7a1a; } .fa-run i.f2 { background: #ffc23a; } .fa-run i.f3 { background: #ff7a5c; } .fa-run i.f4 { background: #5b8cff; } .fa-run i.f5 { background: #6fdcd2; }
+  @keyframes fa-scroll { to { transform: translateX(-50%); } }
+  .fa-marq:hover .fa-run, .fa-marq:focus-within .fa-run { animation-play-state: paused; }
+  @media (max-width: 560px) { .fa-tag { padding: 0 20px 0 14px; font-size: 10.5px; } .fa-tag span { display: none; } .fa-win { font-size: 13.5px; padding: 12px 0 11px 12px; } }
+  @media (prefers-reduced-motion: reduce) { .fa-run { animation: none; display: inline; } .fa-run > span { white-space: normal; } .fa-win { white-space: normal; padding-inline: 14px; line-height: 1.6; } .fa-more { display: none; } }
   .vseg b, .views-care b { font-family: 'Eczar', Georgia, serif; font-weight: 700; font-size: 19px; line-height: 1.15; }
   .vseg .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
   .vseg .pr strong { font-weight: 600; color: var(--word); }
@@ -1122,6 +1136,22 @@
     var go = function () { if (started) return; started = true; h.classList.remove('wait'); h.classList.add('lit'); };
     if (im.complete) go(); else { im.addEventListener('load', go); im.addEventListener('error', go); }
     setTimeout(go, 1500);
+  })();
+</script>
+
+<div class="fa-marq" id="fa-marq" role="group" aria-label="At Fire Arts: eight week wheel and handbuilding classes. Clay classes for kids 8 to 12. Clay and glass memberships. Firing for your own work. A gallery of work made right here. South G Street, Arcata."><span class="fa-tag" aria-hidden="true"><svg viewBox="0 0 16 20" fill="currentColor"><path d="M8 0c.6 3.4 4.6 5.6 4.6 10.4A4.6 4.6 0 0 1 8 15a4.6 4.6 0 0 1-4.6-4.6c0-1.8.8-3 1.7-4 .2 1.3.9 2 1.6 2.2C6.2 6 6.8 2.4 8 0Z"/><path d="M4 16.5h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg><span>at fire arts</span></span><span class="fa-win" aria-hidden="true"><span class="fa-run" id="fa-run"><span>Eight week wheel and handbuilding classes<i></i>Clay classes for kids 8 to 12<i></i>Clay and glass memberships<span class="fa-more"><i></i>Firing for your own work<i></i>A gallery of work made right here<i></i>South G Street, Arcata</span></span></span></span></div>
+<script>
+  /* The banner rolls slowly by on a loop: a gem closes the run, a second copy follows so the seam is seamless, each gem takes the next color.
+     About 40px a second whatever the screen. Under reduced motion one run sits still, first three lines only. */
+  (function () {
+    var run = document.getElementById('fa-run'); if (!run) return;
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var one = run.firstElementChild;
+    if (!still) { one.appendChild(document.createElement('i')); run.appendChild(one.cloneNode(true)); }
+    [].forEach.call(run.querySelectorAll('i'), function (g, n) { g.className = 'f' + (n % 5 + 1); });
+    if (still) return;
+    var pace = function () { var w = one.getBoundingClientRect().width; if (w > 0) run.style.setProperty('--dur', Math.max(30, w / 40).toFixed(1) + 's'); };
+    pace(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(pace);
   })();
 </script>
 
