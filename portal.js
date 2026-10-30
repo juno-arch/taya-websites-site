@@ -2296,7 +2296,8 @@
     const L = me.launch;
     const live = me.timeline.current === 'care' || me.timeline.current === 'resting';
     if (!L || live) { box.hidden = true; return; }
-    box.append(make('p', 'tl-moves', L.moves_text), make('p', 'tl-est', L.estimate_text));
+    if (L.moves_text) box.append(make('p', 'tl-moves', L.moves_text));
+    box.append(make('p', 'tl-est', L.estimate_text));
     if (L.overdue_text) box.append(make('p', 'tl-late', L.overdue_text));
     if (L.requested) {
       box.append(make('p', 'tl-asked', 'You asked for ' + (shortDate(L.requested.date) || L.requested.date) + '. I’ll write you back about it.'));
