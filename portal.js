@@ -1286,7 +1286,7 @@
     return {
       client: {
         first_name: str(c.first_name, 60), business: str(c.business, 160), build: str(c.build, 12),
-        build_label: str(c.build_label, 20), founding: !!c.founding, care: str(c.care, 12), care_active: !!c.care_active,
+        build_label: str(c.build_label, 20), founding: !!c.founding, no_charge: !!c.no_charge, care: str(c.care, 12), care_active: !!c.care_active,
         site_url: safeUrl(c.site_url), email: str(c.email, 200)
       },
       note: d.note && str(d.note.text).trim() ? { text: str(d.note.text, 600).trim(), date: str(d.note.date, 30) } : null,
@@ -5044,6 +5044,19 @@
     const c = me.client;
     const sec = $('#sec-pay');
     const pays = me.pay;
+    // a free or trade site with nothing to pay: say so, no amounts and no buttons (add 33)
+    if (!pays.length && c.no_charge) {
+      sec.hidden = false;
+      const row = make('div', 'payrow st-later');
+      row.id = 'pay-nocharge';
+      row.append(make('span', 'p-name', 'No charge'), make('span', 'p-sub', 'Your site is free, so there is nothing to pay. If that ever changes I will tell you first.'));
+      $('#pays').replaceChildren(row);
+      const fine = $('#pay-fine');
+      if (fine) fine.hidden = true;
+      return;
+    }
+    const fine0 = $('#pay-fine');
+    if (fine0) fine0.hidden = false;
     if (!pays.length) { sec.hidden = true; return; }
     sec.hidden = false;
     const t = taps.mine();
