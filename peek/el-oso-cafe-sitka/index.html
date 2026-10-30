@@ -63,7 +63,7 @@
   .fade-in { animation: fade-in 0.5s ease both; }
   @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
-  /* In Bloom: save a lunch, gift cards */
+  /* In Bloom */
   .po-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 26px; margin-top: 30px; align-items: start; }
   .po-wrap > * { min-width: 0; }
   #sv-card { border-top: 5px solid var(--crust); }
@@ -656,11 +656,6 @@
   @media (prefers-reduced-motion: reduce) { .ly.drop { animation: none; } }
 
   /* ---------- ORDER AHEAD (In Bloom) ---------- */
-  .oa-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 26px; margin-top: 44px; align-items: start; }
-  .oa-wrap > * { min-width: 0; }
-  #oa-card { border-top: 5px solid var(--glow); }
-  .oa-line { padding: 12px 14px; border: 1px solid var(--hair); border-radius: 6px; background: var(--ground); font-family: var(--mono); font-size: 17px; line-height: 1.4; margin-top: 8px; }
-  @media (max-width: 860px) { .oa-wrap { grid-template-columns: minmax(0, 1fr); } }
 
   /* ---------- THE CART PHOTO FRAME, the visit ---------- */
   .visit .shopphoto { margin-top: 30px; }
@@ -866,8 +861,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: tonight&rsquo;s hours, the menu, kind words, and a Call button to (907) 738-7238."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus Stack it, a message form for big orders, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus order ahead for pickup, paid on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus Stack it, a message form for questions and big groups, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, and nothing extra on this page: it keeps to hours, the menu, Stack it and a Call button."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -960,7 +955,7 @@
     <div data-thing="Stack it, a burger planner">
       <p class="label with-pill"><span>Stack it</span> <span class="demo-pill">Preview</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Stack it your way, <em>then say it</em></h2>
-      <p class="soft measure" style="margin-top:14px">Pick your patties and what goes on, and the page writes the order the way you&rsquo;d say it at the window. Try it.</p>
+      <p class="soft measure" style="margin-top:14px">Pick your patties and what goes on, and the page writes it the way you&rsquo;d say it at the window. Nothing is sent or saved, so the Call button is how it gets to you. Try it.</p>
 
       <div class="stack-wrap">
         <div class="stage" id="stage">
@@ -1008,55 +1003,6 @@
       </div>
     </div>
 
-    <div data-show="crone all" data-fold data-thing="order ahead for pickup" id="oa" tabindex="-1">
-      <div class="oa-wrap">
-        <div class="card" id="oa-card">
-          <p class="label with-pill" style="margin-bottom:8px"><span>Order ahead</span> <span class="demo-pill">Preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-          <h3>Have it <em>ready when you walk in</em></h3>
-          <p class="soft" style="margin-top:8px">Send the stack you just built to the grill, pay, and pick it up at the time you choose.</p>
-          <div class="steps" role="group" aria-label="Steps, tap one you have done to go back" style="margin-top:18px"><button type="button" data-s="1" class="on" aria-current="step">1 Your stack</button><button type="button" data-s="2" disabled>2 Pickup</button><button type="button" data-s="3" disabled>3 Pay</button></div>
-          <div id="oa-1">
-            <p class="q" style="margin-top:0">The one you built</p>
-            <p class="oa-line" id="oa-line"></p>
-            <p class="q" id="oa-q-n">How many</p>
-            <div class="ctr" role="group" aria-labelledby="oa-q-n"><button type="button" id="oa-minus" aria-label="One fewer">&minus;</button><output id="oa-n" aria-live="polite">1</output><button type="button" id="oa-plus" aria-label="One more">+</button></div>
-          </div>
-          <div id="oa-2" hidden>
-            <p class="q" id="oa-time-q" style="margin-top:0">Pickup time at the window</p>
-            <div class="choice" role="group" aria-labelledby="oa-time-q" id="oa-times">
-              <button type="button" data-time="6:00 pm" aria-pressed="false">6:00 pm</button><button type="button" data-time="7:00 pm" aria-pressed="false">7:00 pm</button><button type="button" data-time="8:00 pm" aria-pressed="false">8:00 pm</button><button type="button" data-time="9:30 pm" aria-pressed="false">9:30 pm</button><button type="button" data-time="11:00 pm" aria-pressed="false">11:00 pm</button>
-            </div>
-            <div class="fld-row" style="margin-top:16px">
-              <label class="fld">Name for the order<input id="oa-name" autocomplete="off" value="Sam R."></label>
-              <label class="fld">Email<input id="oa-mail" type="email" autocomplete="off" value="sam@example.com"></label>
-            </div>
-          </div>
-          <div id="oa-3" hidden>
-            <div class="sheet">
-              <span class="sheet-grip" aria-hidden="true"></span>
-              <h3 class="sheet-h" id="oa-sheet-h" tabindex="-1">Secure checkout <span class="demo-pill">Preview</span></h3>
-              <div class="sheet-lines" id="oa-lines"></div>
-              <div class="sheet-slot" aria-hidden="true"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
-              <p class="demo-note">Preview: on your real site this opens Stripe&rsquo;s checkout, paid into your own Stripe, and the order and the payment both live there. Nothing is charged.</p>
-            </div>
-          </div>
-          <p class="hint" id="oa-hint" role="status"></p>
-          <div class="go-row" id="oa-nav"><button type="button" class="gbtn" id="oa-go">Pickup details</button><button type="button" class="gbtn ghost" id="oa-back" hidden>Back</button></div>
-          <div class="done fade-in" id="oa-done" hidden>
-            <h3 id="oa-done-h" tabindex="-1">On the grill!</h3>
-            <div class="sticky"><p>Pickup</p><p class="s-name" id="oa-sticky-name">Sam</p><p id="oa-sticky-text"></p></div>
-            <p id="oa-done-text" style="margin-top:16px"></p>
-            <p class="demo-note">Preview only. Nothing was sent or charged.</p>
-            <div class="go-row"><button type="button" class="gbtn ghost" id="oa-edit">Change something</button><button type="button" class="gbtn ghost" id="oa-again">Try it again</button></div>
-          </div>
-        </div>
-        <div class="side-notes mock-note wf-note">
-          <div class="snote"><b>What you see</b>Each order lands in your portal, with a short heads-up email to you: who, what, and when they&rsquo;ll be by. Orders and payments live in your own Stripe, so you can see each one there too.</div>
-          <div class="inbox"><div class="from">New order</div><div id="oa-inbox" class="inbox-line">Waiting for an order&hellip; try it on the left</div></div>
-          <div class="snote"><b>You set the limits</b>Which pickup times you offer, how many orders you can take in an hour, and when ordering turns itself off for the night. If you run out of patties, one post and the order button says so.</div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1120,7 +1066,7 @@
         <details><summary>What&rsquo;s a Bamburger?</summary><div class="ans"><p>A 6 oz smashed patty with American and cheddar, grilled onions, pickles and Bamb sauce on a Martin&rsquo;s potato roll. Doubles and the QuadZilla are the same idea, stacked.</p></div></details>
         <details><summary>What&rsquo;s the special this week?</summary><div class="ans"><p>It&rsquo;s posted on Instagram, and the banner at the top of this page says so too. <span class="ph">(this week&rsquo;s special)</span></p></div></details>
         <details><summary>Can I call in an order?</summary><div class="ans"><p>Call (907) 738-7238. <span class="ph">(how you take phone orders, and how long they take)</span></p></div></details>
-        <details><summary>Do you do big orders?</summary><div class="ans"><p>Send a note with how many and for when, using the form below. <span class="ph">(your note on big orders)</span></p></div></details>
+        <details><summary>Can you feed a big group?</summary><div class="ans"><p>Send a note with how many and for when, using the form below. <span class="ph">(your note on big groups)</span></p></div></details>
       </div>
     </div>
     <aside class="news" id="news" aria-labelledby="nl-h" data-thing="a newsletter">
@@ -1142,8 +1088,8 @@
     <div data-thing="a message form" style="grid-column:1 / -1">
       <div class="card" id="msg-card">
         <p class="label with-pill" style="margin-bottom:8px"><span>Say hello</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-        <h3>A question, or <em>a big order?</em></h3>
-        <p class="soft" style="margin-top:8px">Send a note, with how many and for when if it&rsquo;s a big order, and you&rsquo;ll get a reply.</p>
+        <h3>A question, or <em>a big group?</em></h3>
+        <p class="soft" style="margin-top:8px">Send a note, with how many and for when if it&rsquo;s a big group, and you&rsquo;ll get a reply.</p>
         <form class="stack" id="msg" novalidate aria-label="Message form, preview">
           <div class="fld-row">
             <label class="fld">Your name<input id="msg-name" autocomplete="off" value="Sam R."></label>
@@ -1244,7 +1190,7 @@
     <div class="foot-mark"><button type="button" class="foot-patty" id="foot-patty" aria-label="The patty"><i></i></button><span class="wm">El Oso Caf&eacute;</span></div>
     <p>205 Lincoln St, inside Flipside <span aria-hidden="true">&middot;</span> <span class="nw">Sitka, Alaska 99835</span></p>
     <p class="foot-reach"><a href="tel:+19077387238">(907) 738-7238</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/osositka/" target="_blank" rel="noopener">Instagram<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.facebook.com/profile.php?id=61570475696571" target="_blank" rel="noopener">Facebook<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: tonight&rsquo;s hours, the menu, kind words, a Call button), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: Stack it, message form, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (order ahead for pickup, paid into your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: tonight&rsquo;s hours, the menu, kind words, a Call button), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: Stack it, message form, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (everything in Tended; no extra piece on this page). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
   </div>
 </footer>
@@ -1388,7 +1334,7 @@
   })();
 </script>
 <script>
-  /* Tended: Stack it, message form, newsletter. In Bloom: order ahead for pickup. Nothing is sent anywhere. */
+  /* Tended: Stack it, message form, newsletter. Nothing is sent anywhere. */
   (function () {
     function $(id) { return document.getElementById(id); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
@@ -1480,9 +1426,7 @@
         [].forEach.call($('st-tops').querySelectorAll('[data-t]'), function (b) { b.setAttribute('aria-pressed', st[b.dataset.t] ? 'true' : 'false'); });
         [].forEach.call($('st-presets').querySelectorAll('[data-p]'), function (b) { b.setAttribute('aria-pressed', b.dataset.p === preset ? 'true' : 'false'); });
         $('say-line').textContent = words();
-        var ol = $('oa-line'); if (ol) ol.textContent = words().replace('Hi! Can I get a ', '').replace(/\?$/, '');
         draw();
-        if (window.osoOrderSync) window.osoOrderSync();
       }
       function set(p) { st = copy(PRESETS[p]); preset = p; paint(); }
       $('st-presets').addEventListener('click', function (e) { var b = e.target.closest('[data-p]'); if (b) set(b.dataset.p); });
@@ -1494,63 +1438,6 @@
       return { say: words, get: function () { return copy(st); } };
     })();
 
-    /* ORDER AHEAD (In Bloom): the stack you built, a pickup time, pay in Stripe. */
-    (function () {
-      var card = $('oa-card'); if (!card) return;
-      var list = $('oa-line'), hint = $('oa-hint'), go = $('oa-go'), back = $('oa-back'), s = { s: 1, qty: 1, time: '', max: 1 };
-      function press(group, attr, val) { [].forEach.call(group.querySelectorAll('[' + attr + ']'), function (x) { x.setAttribute('aria-pressed', x.getAttribute(attr) === val ? 'true' : 'false'); }); }
-      function canGo(n) { return n === 1 || (n === 2 ? s.max >= 2 : !!s.time && s.max >= 3); }
-      function what() { var t = list.textContent || 'Bamburger'; return (s.qty > 1 ? s.qty + ' × ' : '') + t; }
-      function paint() {
-        s.max = Math.max(s.max, s.s);
-        $('oa-n').textContent = s.qty; $('oa-minus').disabled = s.qty <= 1; $('oa-plus').disabled = s.qty >= 6;
-        press($('oa-times'), 'data-time', s.time);
-        [1, 2, 3].forEach(function (n) { $('oa-' + n).hidden = s.s !== n; });
-        card.querySelectorAll('.steps [data-s]').forEach(function (b) {
-          var n = +b.dataset.s, on = n === s.s; b.classList.toggle('on', on);
-          if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
-          b.disabled = !on && !canGo(n);
-        });
-        back.hidden = s.s === 1;
-        go.textContent = s.s === 1 ? 'Pickup details' : s.s === 2 ? 'Review and pay' : 'Pay with Stripe (preview)';
-      }
-      window.osoOrderSync = function () { };
-      function lines() {
-        var box = $('oa-lines'); while (box.firstChild) box.removeChild(box.firstChild);
-        function row(a, b2, cls) { var x = el('div', cls); x.appendChild(el('span', '', a)); var q = el('span'); if (typeof b2 === 'string') q.textContent = b2; else q.appendChild(b2); x.appendChild(q); box.appendChild(x); }
-        row(what(), el('span', 'ph', '(your price)'));
-        row('Pickup', s.time);
-        row('Under the name', $('oa-name').value.trim());
-        row('Total', el('span', 'ph', '(your total)'), 'total');
-      }
-      function jump(n) { s.s = n; hint.textContent = ''; if (n === 3) lines(); paint(); quietFocus(n === 3 ? $('oa-sheet-h') : $('oa-' + n).querySelector('button:not([disabled]), input')); }
-      card.querySelectorAll('.steps [data-s]').forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== s.s && canGo(n)) jump(n); }); });
-      $('oa-minus').addEventListener('click', function () { if (s.qty > 1) { s.qty--; paint(); } });
-      $('oa-plus').addEventListener('click', function () { if (s.qty < 6) { s.qty++; paint(); } });
-      $('oa-times').addEventListener('click', function (e) { var b = e.target.closest('[data-time]'); if (!b) return; s.time = b.getAttribute('data-time'); hint.textContent = ''; paint(); });
-      back.addEventListener('click', function () { if (s.s > 1) jump(s.s - 1); });
-      go.addEventListener('click', function () {
-        if (s.s === 1) { jump(2); return; }
-        if (s.s === 2) {
-          if (!s.time) { hint.textContent = 'Pick a pickup time first.'; return; }
-          if (!$('oa-name').value.trim()) { hint.textContent = 'Add a name, so the order has one on it.'; $('oa-name').focus(); return; }
-          if (!isEmail($('oa-mail').value.trim())) { hint.textContent = 'Add an email address, so we can write back if anything changes.'; $('oa-mail').focus(); return; }
-          jump(3); return;
-        }
-        var who = $('oa-name').value.trim(), first = who.split(/\s+/)[0];
-        $('oa-done-h').textContent = 'On the grill, ' + first + '!';
-        $('oa-sticky-name').textContent = who; $('oa-sticky-text').textContent = what() + ', ' + s.time;
-        $('oa-done-text').textContent = 'Your order will be ready at the window at ' + s.time + '. A receipt goes to ' + $('oa-mail').value.trim() + '.';
-        $('oa-inbox').textContent = who + ' ordered ' + what() + ' for ' + s.time + '. Paid in your Stripe.';
-        [1, 2, 3].forEach(function (n) { $('oa-' + n).hidden = true; });
-        $('oa-nav').hidden = true; card.querySelector('.steps').hidden = true; $('oa-done').hidden = false; quietFocus($('oa-done-h'));
-      });
-      function unDone() { $('oa-done').hidden = true; $('oa-nav').hidden = false; card.querySelector('.steps').hidden = false; $('oa-inbox').textContent = 'Waiting for an order… try it on the left'; }
-      function reset() { s = { s: 1, qty: 1, time: '', max: 1 }; $('oa-name').value = 'Sam R.'; $('oa-mail').value = 'sam@example.com'; unDone(); hint.textContent = ''; paint(); }
-      $('oa-edit').addEventListener('click', function () { unDone(); jump(1); });
-      $('oa-again').addEventListener('click', function () { reset(); quietFocus($('oa-minus')); });
-      reset();
-    })();
   })();
 </script>
 <script>
@@ -1644,8 +1531,8 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with tonight’s hours, the menu, kind words, and a Call button to (907) 738-7238.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus Stack it, a message form for big orders, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus order ahead for pickup, paid on your site into your own Stripe. That’s every piece on this page.' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus Stack it, a message form for questions and big groups, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended. This page has no extra piece at this level: it keeps to hours, the menu, Stack it and a Call button.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
