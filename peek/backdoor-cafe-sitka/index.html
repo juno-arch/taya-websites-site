@@ -292,7 +292,6 @@
   /* In Bloom: save a lunch, gift cards */
   .po-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 26px; margin-top: 30px; align-items: start; }
   .po-wrap > * { min-width: 0; }
-  #sv-card { border-top: 5px solid var(--cedar); }
   .steps { display: flex; gap: 2px 10px; flex-wrap: wrap; font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; }
   .steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; border-radius: 4px; padding: 6px 2px; margin: -6px 0; white-space: nowrap; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; font-weight: 800; min-height: 32px; }
   .steps button:hover { color: var(--plum); }
@@ -767,7 +766,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: today&rsquo;s board with your hot lunch, what&rsquo;s at the counter, your room and walls, kind words, your hours, and a Call button to (907) 747-8856."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a message form, an art hang application for your walls, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus lunch reservations that land in your portal, and gift cards paid right on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus gift cards paid right on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1038,55 +1037,6 @@
 
 <section id="bloom" class="gutter" data-show="crone all" data-fold tabindex="-1">
   <div class="wrap">
-    <div id="save" data-thing="lunch reservations" tabindex="-1">
-      <p class="label with-pill"><span>Save me a lunch</span> <span class="demo-pill">Preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <h2 class="reveal">Save me a plate, <em>I&rsquo;ll be there at noon</em></h2>
-      <div class="po-wrap">
-        <div class="card" id="sv-card">
-          <div class="steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your lunch</button><button type="button" data-s="2" disabled>2 Pickup</button><button type="button" data-s="3" disabled>3 Review</button></div>
-          <div id="sv-1">
-            <p class="q" id="sv-day-q" style="margin-top:0">Which day</p>
-            <div class="choice" role="group" aria-labelledby="sv-day-q" id="sv-days"></div>
-            <p class="q" id="sv-n-q">How many plates</p>
-            <div class="choice" role="group" aria-labelledby="sv-n-q" id="sv-ns">
-              <button type="button" data-n="1" aria-pressed="false">1</button><button type="button" data-n="2" aria-pressed="false">2</button><button type="button" data-n="3" aria-pressed="false">3</button><button type="button" data-n="4" aria-pressed="false">4</button>
-            </div>
-          </div>
-          <div id="sv-2" hidden>
-            <p class="q" id="sv-time-q" style="margin-top:0">Pickup time</p>
-            <div class="choice" role="group" aria-labelledby="sv-time-q" id="sv-times">
-              <button type="button" data-time="11:30 am" aria-pressed="false">11:30 am</button><button type="button" data-time="12:00 pm" aria-pressed="false">12:00 pm</button><button type="button" data-time="12:30 pm" aria-pressed="false">12:30 pm</button><button type="button" data-time="1:00 pm" aria-pressed="false">1:00 pm</button>
-            </div>
-            <div class="fld-row" style="margin-top:16px">
-              <label class="fld">Name for the plate<input id="sv-name" autocomplete="off" value="Jess R."></label>
-              <label class="fld">Email<input id="sv-mail" type="email" autocomplete="off" value="jess@example.com"></label>
-            </div>
-          </div>
-          <div id="sv-3" hidden>
-            <div class="sheet">
-              <span class="sheet-grip" aria-hidden="true"></span>
-              <h3 class="sheet-h" id="sv-sheet-h" tabindex="-1">Your reservation <span class="demo-pill">Preview</span></h3>
-              <div class="sheet-lines" id="sv-lines"></div>
-              <p class="demo-note">You pay at the counter when you pick up. Preview only: nothing was sent.</p>
-            </div>
-          </div>
-          <p class="hint" id="sv-hint" role="status"></p>
-          <div class="go-row" id="sv-nav"><button type="button" class="gbtn" id="sv-go">Pickup details</button><button type="button" class="gbtn ghost" id="sv-back" hidden>Back</button></div>
-          <div class="done fade-in" id="sv-done" hidden>
-            <h3 id="sv-done-h" tabindex="-1">Saved for you!</h3>
-            <p id="sv-done-text"></p>
-            <p class="demo-note">Preview only. Nothing was sent.</p>
-            <div class="go-row"><button type="button" class="gbtn ghost" id="sv-edit">Change something</button><button type="button" class="gbtn ghost" id="sv-again">Try it again</button></div>
-          </div>
-        </div>
-        <div class="side-notes mock-note wf-note">
-          <div class="snote"><b>What you see</b>Each reservation lands in your portal, with a short heads-up email to you: who, how many plates, and when they&rsquo;ll be by. It fills the gap your October post and the phone have covered so far.</div>
-          <div class="inbox"><div class="from">New lunch reservation</div><div id="sv-inbox">Waiting for a reservation&hellip; try it on the left</div></div>
-          <div class="snote"><b>You set the limits</b>How many plates you can make each day, and the pickup times. When a day is full, it comes off the list by itself. If you&rsquo;d like people to pay ahead, it can go through your own Stripe once your lunch price is set.</div>
-        </div>
-      </div>
-    </div>
-
     <div class="gift" id="gift" data-thing="gift cards">
       <div>
         <p class="label with-pill"><span>A small shop</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
@@ -1138,10 +1088,6 @@
     <div class="visit">
       <div>
         <div class="clock" id="clock">
-          <div class="clock-top">
-            <svg class="dglyph" id="clock-door" viewBox="0 0 40 50" aria-hidden="true" focusable="false" data-s="open"><rect class="d-glow" x="6" y="8" width="28" height="40"/><rect class="d-leaf" x="7" y="9" width="26" height="39"/><path class="d-frame" d="M5 48V7h30v41"/><circle class="d-knob" cx="29" cy="30" r="1.9"/></svg>
-            <div><p class="clock-state is-open" id="clock-state">Open now</p><p class="clock-sub" id="clock-sub">taking orders until 1:30</p></div>
-          </div>
           <ul class="week" id="week" aria-label="Hours">
             <li data-d="1"><b>Monday</b><span>7 am to 2 pm<small>orders until 1:30</small></span></li>
             <li data-d="2"><b>Tuesday</b><span>7 am to 2 pm<small>orders until 1:30</small></span></li>
@@ -1151,10 +1097,8 @@
             <li data-d="6"><b>Saturday</b><span>7 am to 1:30 pm<small>orders until 1</small></span></li>
             <li data-d="0"><b>Sunday</b><span>Closed</span></li>
           </ul>
-          <div class="clock-try" id="clock-try"><span class="demo-pill">Preview</span><span>See it at</span><button type="button" data-t="2:6:30" aria-pressed="false">Tue 6:30 am</button><button type="button" data-t="2:12:00" aria-pressed="false">Tue noon</button><button type="button" data-t="5:13:45" aria-pressed="false">Fri 1:45 pm</button><button type="button" data-t="6:12:30" aria-pressed="false">Sat 12:30 pm</button><button type="button" data-t="now" aria-pressed="true">Right now</button></div>
-          <p class="vh" role="status" id="clock-live"></p>
         </div>
-        <p class="tier-note mock-note wf-note">The little door at the top of the page is ajar while you&rsquo;re open and shut when you&rsquo;re not. It reads your hours and the time in Sitka, so it&rsquo;s right by itself every day. I used the fall hours from your Instagram. Yelp still says you close at 3 and Tripadvisor says 6:30 to 5, so I&rsquo;ll keep your site and your Google profile matching these.</p>
+        <p class="tier-note mock-note wf-note">I used the fall hours from your Instagram. Yelp still says you close at 3 and Tripadvisor says 6:30 to 5, so I&rsquo;ll keep your site and your Google profile matching these.</p>
       </div>
       <div>
         <div class="where">
@@ -1209,7 +1153,7 @@
     <div class="foot-mark"><button type="button" class="foot-door" id="foot-door" aria-label="The back door"><svg class="dglyph" viewBox="0 0 40 50" aria-hidden="true" focusable="false" data-s="open"><rect class="d-glow" x="6" y="8" width="28" height="40"/><rect class="d-leaf" x="7" y="9" width="26" height="39"/><path class="d-frame" d="M5 48V7h30v41"/><circle class="d-knob" cx="29" cy="30" r="1.9"/></svg></button><span class="wm">The BackDoor Cafe</span></div>
     <p>104 Barracks St <span aria-hidden="true">&middot;</span> <span class="nw">Sitka, Alaska 99835</span> <span aria-hidden="true">&middot;</span> behind Old Harbor Books</p>
     <p class="foot-reach"><a href="tel:+19077478856">(907) 747-8856</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/sitkabackdoor/" target="_blank" rel="noopener">Instagram<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: today&rsquo;s board, the counter, your room, your hours, a Call button), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: message form, art hang application, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (lunch reservations in your portal, gift cards on your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: today&rsquo;s board, the counter, your room, your hours, a Call button), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: message form, art hang application, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (gift cards on your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
   </div>
 </footer>
@@ -1439,7 +1383,7 @@
   })();
 </script>
 <script>
-  /* Tended: message form, art hang application, newsletter. In Bloom: save me a lunch, gift cards. Nothing is sent anywhere. */
+  /* Tended: message form, art hang application, newsletter. In Bloom: gift cards. Nothing is sent anywhere. */
   (function () {
     function $(id) { return document.getElementById(id); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
@@ -1494,81 +1438,6 @@
         hint.textContent = ''; $('nl-to').textContent = mail; form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
       $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-    })();
-
-    /* save me a lunch: the next five weekdays, with that day's lunch from the board */
-    (function () {
-      var card = $('sv-card'); if (!card) return;
-      var B = window.bdBoard, st, days = $('sv-days'), hint = $('sv-hint'), go = $('sv-go'), back = $('sv-back');
-      var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      function akToday() {
-        try {
-          var p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sitka', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).split('-');
-          return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
-        } catch (e) { var n = new Date(); return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())); }
-      }
-      var base = akToday(), r = B ? B.read() : null, start = r && r.s === 'open' && r.d >= 1 && r.d <= 5 ? 0 : 1, picked = 0, opts = [];
-      for (var k = start; picked < 5 && k < 14; k++) {
-        var d = new Date(base.getTime() + k * 86400000), wd = d.getUTCDay();
-        if (wd < 1 || wd > 5) continue;
-        picked++;
-        var label = SHORT[wd] + ', ' + MON[d.getUTCMonth()] + ' ' + d.getUTCDate(), dish = B ? B.LUNCH[wd][0] : 'Hot lunch';
-        var b = el('button'); b.type = 'button'; b.setAttribute('aria-pressed', 'false'); b.setAttribute('data-day', label); b.setAttribute('data-dish', dish);
-        b.appendChild(document.createTextNode(label)); b.appendChild(el('small', '', dish + (B && B.LUNCH[wd][1] ? ' ' + B.LUNCH[wd][1] : '')));
-        days.appendChild(b); opts.push(b);
-      }
-      function press(group, attr, val) { [].forEach.call(group.querySelectorAll('[' + attr + ']'), function (x) { x.setAttribute('aria-pressed', x.getAttribute(attr) === val ? 'true' : 'false'); }); }
-      days.addEventListener('click', function (e) { var b = e.target.closest('[data-day]'); if (!b) return; st.day = b.getAttribute('data-day'); st.dish = b.getAttribute('data-dish'); hint.textContent = ''; paint(); });
-      $('sv-ns').addEventListener('click', function (e) { var b = e.target.closest('[data-n]'); if (!b) return; st.n = +b.getAttribute('data-n'); hint.textContent = ''; paint(); });
-      $('sv-times').addEventListener('click', function (e) { var b = e.target.closest('[data-time]'); if (!b) return; st.time = b.getAttribute('data-time'); hint.textContent = ''; paint(); });
-      function canGo(n) { return n === 1 || (n === 2 ? !!(st.day && st.n) && st.max >= 2 : !!(st.day && st.n && st.time) && st.max >= 3); }
-      function paint() {
-        st.max = Math.max(st.max || 1, st.s);
-        press(days, 'data-day', st.day || ''); press($('sv-ns'), 'data-n', String(st.n || '')); press($('sv-times'), 'data-time', st.time || '');
-        [1, 2, 3].forEach(function (n) { $('sv-' + n).hidden = st.s !== n; });
-        card.querySelectorAll('.steps [data-s]').forEach(function (b) {
-          var n = +b.dataset.s, on = n === st.s; b.classList.toggle('on', on);
-          if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
-          b.disabled = !on && !canGo(n);
-        });
-        back.hidden = st.s === 1;
-        go.textContent = st.s === 1 ? 'Pickup details' : st.s === 2 ? 'Review my plates' : 'Save my lunch (preview)';
-      }
-      function lines() {
-        var box = $('sv-lines'); while (box.firstChild) box.removeChild(box.firstChild);
-        function row(a, b2) { var x = el('div'); x.appendChild(el('span', '', a)); x.appendChild(el('span', '', b2)); box.appendChild(x); }
-        row(st.n + (st.n === 1 ? ' plate' : ' plates'), st.dish);
-        row('Pickup', st.day + ', ' + st.time);
-        row('Under the name', $('sv-name').value.trim());
-        row('Pay', 'at the counter');
-      }
-      function jump(n) { st.s = n; hint.textContent = ''; paint(); var box = $('sv-' + n); quietFocus(n === 3 ? $('sv-sheet-h') : box.querySelector('button[aria-pressed="true"], button:not([disabled]), input')); }
-      card.querySelectorAll('.steps [data-s]').forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.s; if (n !== st.s && canGo(n)) { if (n === 3) lines(); jump(n); } }); });
-      back.addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
-      go.addEventListener('click', function () {
-        if (st.s === 1) { if (!st.day) { hint.textContent = 'Pick a day first.'; return; } if (!st.n) { hint.textContent = 'Pick how many plates.'; return; } jump(2); return; }
-        if (st.s === 2) {
-          if (!st.time) { hint.textContent = 'Pick a pickup time first.'; return; }
-          if (!$('sv-name').value.trim()) { hint.textContent = 'Add a name, so we know whose plate it is.'; $('sv-name').focus(); return; }
-          if (!isEmail($('sv-mail').value.trim())) { hint.textContent = 'Add an email address, so we can write back if anything changes.'; $('sv-mail').focus(); return; }
-          lines(); jump(3); return;
-        }
-        var who = $('sv-name').value.trim(), first = who.split(/\s+/)[0];
-        $('sv-done-h').textContent = 'Saved, ' + first + '!';
-        $('sv-done-text').textContent = st.n + (st.n === 1 ? ' plate' : ' plates') + ' of ' + st.dish.toLowerCase() + ' will be waiting on ' + st.day + ', around ' + st.time + '. Come in through the back door, and pay at the counter.';
-        $('sv-inbox').textContent = who + ' saved ' + st.n + (st.n === 1 ? ' plate' : ' plates') + ' of ' + st.dish.toLowerCase() + ' for ' + st.day + ', around ' + st.time + '.';
-        [1, 2, 3].forEach(function (n) { $('sv-' + n).hidden = true; });
-        $('sv-nav').hidden = true; card.querySelector('.steps').hidden = true; $('sv-done').hidden = false; quietFocus($('sv-done-h'));
-      });
-      function unDone() { $('sv-done').hidden = true; $('sv-nav').hidden = false; card.querySelector('.steps').hidden = false; $('sv-inbox').textContent = 'Waiting for a reservation… try it on the left'; }
-      function reset() {
-        st = { s: 1, n: 2 };
-        $('sv-name').value = 'Jess R.'; $('sv-mail').value = 'jess@example.com';
-        unDone(); hint.textContent = ''; paint();
-      }
-      $('sv-edit').addEventListener('click', function () { unDone(); jump(1); });
-      $('sv-again').addEventListener('click', function () { reset(); quietFocus(opts[0]); });
-      reset();
     })();
 
     /* gift cards: any amount */
@@ -1638,7 +1507,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with today’s board and your hot lunch, what’s at the counter, your room and walls, kind words, your hours, and a Call button to (907) 747-8856.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus a message form, an art hang application for your walls, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus lunch reservations that land in your portal, and gift cards paid right on your site into your own Stripe. That’s every piece on this page.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus gift cards paid right on your site into your own Stripe. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
