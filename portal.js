@@ -1298,6 +1298,9 @@
       timeline: {
         current: str(tl.current, 20) || 'getting_started',
         stages: arr(tl.stages).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), date: str(s && s.date, 30), state: str(s && s.state, 8) })),
+        // the five steps (add 22 / 25): same source as the Studio's timeline; an older server sends none, and the six stages above are drawn
+        steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), until: str(s && s.until, 30),
+          turn: s && (s.turn === 'you' || s.turn === 'me') ? s.turn : '', state: s && (s.state === 'done' || s.state === 'now') ? s.state : 'next' })),
         care_since: str(tl.care_since, 30)
       },
       things: {
@@ -1398,6 +1401,12 @@
     const soon = d && !isPast(d) ? shortDate(d) : '';
     if (cur === 'care') return 'Live, and in my care';
     if (cur === 'resting') return 'Live, and all yours';
+    // the five steps (same names as the timeline and the Studio)
+    const now5 = arr(me.timeline.steps).find((x) => x.state === 'now');
+    if (now5 && now5.key !== 'getting_started') {
+      const u = now5.key === 'settling_in' && now5.until ? ', until ' + shortDate(now5.until) : '';
+      return 'Now: ' + now5.label.toLowerCase() + u;
+    }
     if (cur === 'getting_started') return !me.start_open && me.mockup ? 'Now: your mockup' : 'Now: getting started';
     if (cur === 'call') return 'Now: gathering your story' + (d ? (isPast(d) ? '' : ', ' + shortDate(d)) : '');
     if (cur === 'draft') return 'Now: your draft' + (soon ? ', about ' + soon : '');
@@ -2217,10 +2226,13 @@
     const cur = me.timeline.current;
     const ci = stageIndex(cur);
     const live = cur === 'care' || cur === 'resting';
-    const list = STAGES.map(([key, label], i) => {
-      const s = me.timeline.stages.find((x) => x.key === key) || {};
-      return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
-    });
+    // the five steps come from the server (the same source as the Studio's timeline); an older server sends the six stages
+    const five = arr(me.timeline.steps).length === 5;
+    const list = five ? me.timeline.steps.map((s) => ({ key: s.key, label: s.label, date: s.date || '', until: s.until || '', turn: s.turn || '', say: s.say || '', state: s.state }))
+      : STAGES.map(([key, label], i) => {
+        const s = me.timeline.stages.find((x) => x.key === key) || {};
+        return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
+      });
     $('#tl').replaceChildren(...list.map((s) => {
       const li = make('li', s.state);
       if (s.state === 'now') li.setAttribute('aria-current', 'step');
@@ -2233,21 +2245,22 @@
       if (s.state === 'now') name.append(make('span', 'now-pill', 'Now'));
       else if (s.state === 'done') name.append(make('span', 'sr-only', '(done)'));
       body.append(name);
-      const d = shortDate(s.date);
+      const d = shortDate(five && s.key === 'settling_in' && s.until ? s.until : s.date);
       // the draft link is already here: its date is when it's finished, not when it arrives
-      const draftHere = s.key === 'draft' && s.state === 'now' && !!me.things.draft;
+      const draftHere = (s.key === 'draft' || s.key === 'build') && s.state === 'now' && !!me.things.draft;
       let when = '';
       if (d) {
         if (s.state === 'done') when = d;
         else if (s.key === 'settling_in') when = (s.state === 'now' ? 'Until ' : 'Until about ') + d;
-        else if (s.key === 'call') when = isPast(s.date) ? d : 'About ' + d;
+        else if (s.key === 'call' || s.key === 'setup') when = isPast(s.date) ? d : 'About ' + d;
         else if (draftHere) when = isPast(s.date) ? '' : 'Finished about ' + d;
         else if (s.state === 'now') when = isPast(s.date) ? 'Since ' + d : 'About ' + d;
         else when = 'About ' + d;
       }
       body.append(make('span', 'when', when));
-      const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : STAGE_SAY[s.key];
+      const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
       if (s.state === 'now' && say) body.append(make('p', 'say', say));
+      if (s.state === 'now' && s.turn) body.append(make('p', 'turn', s.turn === 'you' ? 'Your turn' : 'My turn'));
       li.append(dot, body);
       return li;
     }));

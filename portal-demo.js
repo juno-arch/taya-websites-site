@@ -77,6 +77,21 @@
     if (ci < 0) ci = keys.length;
     return keys.map(function (k, i) { return { key: k, label: labels[i], date: dates[i] || '', state: i < ci ? 'done' : (i === ci ? 'now' : 'next') }; });
   }
+  // the five steps the portal draws (the server sends these from webfaery-steps-lib.js)
+  function steps(dates, current) {
+    var keys = ['getting_started', 'setup', 'build', 'launch', 'settling_in'];
+    var labels = ['Getting started', 'Setup', 'Build and review', 'Launch', 'Settling in'];
+    var say = ['Your answers, the agreement and the deposit that holds your spot.', 'I set up your accounts, in your name, and get everything ready to build.',
+      'I build your site. You look it over, tell me what to change, and approve it when you love it.', 'Your site goes live at your own web address, and I hand you your logins.',
+      '30 days of tweaks, on me, and I check in to see how it is all feeling.'];
+    var at = { getting_started: 0, setup: 1, build: 2, launch: 3, settling_in: 3 };
+    var ci = { getting_started: 0, call: 1, draft: 2, changes: 2, launch: 3, settling_in: 4 }[current];
+    if (ci === undefined) ci = 5;
+    return keys.map(function (k, i) {
+      return { key: k, label: labels[i], say: say[i], state: i < ci ? 'done' : (i === ci ? 'now' : 'next'), date: dates[[0, 1, 2, 4, 4][i]] || '',
+        until: k === 'settling_in' ? (dates[5] || '') : '', turn: i === ci ? (k === 'getting_started' ? 'you' : 'me') : '' };
+    });
+  }
   // the plan, counted from today: [started, call, draft, changes, launch, settled]
   function plan(start) { return [0, 7, 21, 28, 35, 65].map(function (n) { return day(start + n); }); }
   function item(id, title, detail, kind, extra) {
@@ -107,7 +122,7 @@
           ],
           done: []
         },
-        timeline: { current: 'getting_started', stages: stages([today()], 'getting_started'), care_since: '' },
+        timeline: { current: 'getting_started', stages: stages([today()], 'getting_started'), steps: steps([today()], 'getting_started'), care_since: '' },
         things: { draft: null, agreement: null, brand_sheet: false, handoff_sheet: false, receipts: [] },
         pay: [
           { key: 'deposit', amount: 300, period: '', state: 'later', paid_on: '', starts_on: '', url: '' },
@@ -139,7 +154,7 @@
             { id: 'wfdemo00000002f', title: 'Send your logo files' }
           ]
         },
-        timeline: { current: 'draft', stages: stages(d, 'draft'), care_since: '' },
+        timeline: { current: 'draft', stages: stages(d, 'draft'), steps: steps(d, 'draft'), care_since: '' },
         things: {
           draft: { url: 'https://draft.example.com/fern-and-clay', note: 'It’s private, so please don’t share the link yet.' },
           agreement: agreement(d[0]), brand_sheet: false, handoff_sheet: false, receipts: [clone(RECEIPT_DEPOSIT)]
@@ -175,7 +190,7 @@
             { id: 'wfdemo00000003h', title: 'Look over your draft' }
           ]
         },
-        timeline: { current: 'settling_in', stages: stages(d, 'settling_in'), care_since: '' },
+        timeline: { current: 'settling_in', stages: stages(d, 'settling_in'), steps: steps(d, 'settling_in'), care_since: '' },
         things: { draft: null, agreement: agreement(d[0]), brand_sheet: true, handoff_sheet: true, receipts: [clone(RECEIPT_DEPOSIT)] },
         pay: [
           { key: 'deposit', amount: 300, period: '', state: 'paid', paid_on: DEPOSIT_DAY.launched, starts_on: '', url: '' },
@@ -208,7 +223,7 @@
             { id: 'wfdemo00000004i', title: 'Pay the second half' }
           ]
         },
-        timeline: { current: 'care', stages: stages(d, 'care'), care_since: d[5] },
+        timeline: { current: 'care', stages: stages(d, 'care'), steps: steps(d, 'care'), care_since: d[5] },
         things: { draft: null, agreement: agreement(d[0]), brand_sheet: true, handoff_sheet: true, receipts: [clone(RECEIPT_DEPOSIT), clone(RECEIPT_BALANCE), clone(RECEIPT_CARE)] },
         pay: [
           { key: 'deposit', amount: 300, period: '', state: 'paid', paid_on: DEPOSIT_DAY.care, starts_on: '', url: '' },
@@ -236,7 +251,7 @@
       client: Object.assign({}, CLIENT),
       note: null,
       list: { open: [], done: doneOn ? [{ id: 'wfdemo00000009a', title: 'Things you sent from your mockup' }] : [] },
-      timeline: { current: 'getting_started', stages: stages([today()], 'getting_started'), care_since: '' },
+      timeline: { current: 'getting_started', stages: stages([today()], 'getting_started'), steps: steps([today()], 'getting_started'), care_since: '' },
       things: { draft: null, agreement: null, brand_sheet: false, handoff_sheet: false, receipts: [] },
       start_open: false,
       mockup: { url: 'https://webfaery.love/peek/a-restful-space/?mark=1', done_on: doneOn },
