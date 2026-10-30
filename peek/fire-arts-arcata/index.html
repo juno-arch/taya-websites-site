@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Fire Arts Center, Humboldt County&rsquo;s community ceramics and fused glass studio on South G Street in Arcata. Eight week wheel and handbuilding classes, kids&rsquo; clay classes, clay and glass memberships, firing services and a gallery of local work.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23120a07'/%3E%3Cdefs%3E%3CradialGradient id='g' cx='.5' cy='.9' r='.7'%3E%3Cstop offset='0' stop-color='%23fff3c4'/%3E%3Cstop offset='.4' stop-color='%23ffc23a'/%3E%3Cstop offset='.8' stop-color='%23e0300e'/%3E%3Cstop offset='1' stop-color='%23e0300e' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d='M9 28V15a7 7 0 0 1 14 0v13z' fill='url(%23g)'/%3E%3Cpath d='M8 28V14a8 8 0 0 1 16 0v14' fill='none' stroke='%23fbeedd' stroke-width='2.6'/%3E%3C/svg%3E">
-<link rel="preload" as="image" href="images/hero-gallery-dusk.webp" imagesrcset="images/hero-gallery-dusk-800.webp 800w, images/hero-gallery-dusk.webp 1438w" imagesizes="(max-width: 760px) 740px, 100vw" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-wheel-class.webp" imagesrcset="images/hero-wheel-class-800.webp 800w, images/hero-wheel-class.webp 1500w" imagesizes="(max-width: 760px) 740px, 100vw" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Eczar:wght@500..800&family=Geologica:wght@300..600&family=Caveat:wght@600&display=swap">
@@ -131,25 +131,9 @@
 
   /* ---------- the registration strip: their red, a hot mark (same in both modes) ---------- */
   .status { position: relative; z-index: 5; }
-  /* the hero's class ticker: the classes that still have spots, one at a time,
-     on the photo, no card. It stops on hover or focus and with the pause button, and stays on one class under reduced motion. */
-  .class-ticker { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; margin-top: 26px; padding-top: 14px; max-width: 680px; border-top: 1px solid rgba(255, 238, 214, .38); color: #fff4e4; text-shadow: 0 1px 14px rgba(15, 6, 3, .85); font-size: 15.5px; line-height: 1.4; position: relative; padding-right: 40px; }
-  .class-ticker[hidden] { display: none; }
-  .ct-label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #ffc23a; font-weight: 700; }
-  .class-ticker a { color: inherit; text-decoration: none; transition: opacity .35s ease; }
-  .class-ticker a b { font-weight: 700; text-decoration: underline; text-decoration-color: rgba(255, 194, 58, .7); text-underline-offset: 4px; }
-  .class-ticker a:focus-visible, .ct-pause:focus-visible { outline: 2px solid #ffc23a; outline-offset: 3px; border-radius: 4px; }
-  .class-ticker.swap a { opacity: 0; }
-  .ct-pause { position: absolute; right: 0; top: 10px; width: 28px; height: 28px; display: grid; place-items: center; font: inherit; font-size: 9px; line-height: 1; color: #fff4e4; background: rgba(15, 6, 3, .35); border: 1px solid rgba(255, 238, 214, .55); border-radius: 50%; cursor: pointer; }
-  @media (prefers-reduced-motion: reduce) { .class-ticker a { transition: none; } }
   .status-strip { margin: 0; background: #c8110a; color: #fff; text-align: center; font-size: 14px; line-height: 1.4; }
   .status-strip { position: relative; }
   .status-strip a { transition: opacity .35s ease; }
-  .status-strip.swap a { opacity: 0; }
-  .status-pause { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; display: grid; place-items: center; font: inherit; font-size: 9px; line-height: 1; color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.55); border-radius: 50%; cursor: pointer; }
-  .status-pause:hover { background: rgba(255,255,255,.28); }
-  .status-pause:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-  .status-pause[aria-pressed="true"] span { display: inline-block; transform: scale(.8); }
   @media (prefers-reduced-motion: reduce) { .status-strip a { transition: none; } }
   .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 9px 16px; color: inherit; text-decoration: none; }
   .status-strip b { font-weight: 600; }
@@ -1023,7 +1007,7 @@
 </svg>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="soon"><a href="#news" id="status-link"><b id="status-label">Winter classes begin Jan 4 &middot; registration opens Mon, Nov 16 at 9 am</b> <em><span id="status-cta">Get a reminder</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a><button type="button" class="status-pause" id="status-pause" aria-pressed="false" aria-label="Pause the rotating banner" hidden><span aria-hidden="true">&#10074;&#10074;</span></button></p>
+  <p class="status-strip" data-state="soon"><a href="#news" id="status-link"><b id="status-label">Winter classes begin Jan 4 &middot; registration opens Mon, Nov 16 at 9 am</b> <em><span id="status-cta">Get a reminder</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
@@ -1033,7 +1017,7 @@
         <button type="button" data-state="open" aria-pressed="false">Open</button>
         <button type="button" data-state="full" aria-pressed="false">Filling</button>
       </div>
-      <p class="status-note">The new session, a sale weekend, a full class: post it, or email me, and the banner says so. The kiln door by your class list follows along. The banner turns through a few messages on its own, and anyone can pause it.</p>
+      <p class="status-note">The new session, a sale weekend, a full class: post it, or email me, and the banner says so. The kiln door by your class list follows along.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -1105,7 +1089,7 @@
 </div>
 
 <div class="hero-band" id="top">
-  <div class="hero-img"><img src="images/hero-gallery-dusk.webp" srcset="images/hero-gallery-dusk-800.webp 800w, images/hero-gallery-dusk.webp 1438w" sizes="(max-width: 760px) 740px, 100vw" width="1438" height="860" alt="Fused glass panels glowing orange, blue and red on a window shelf at dusk, above rows of handmade cups and bowls, with string lights" fetchpriority="high"></div>
+  <div class="hero-img"><img src="images/hero-wheel-class.webp" srcset="images/hero-wheel-class-800.webp 800w, images/hero-wheel-class.webp 1500w" sizes="(max-width: 760px) 740px, 100vw" width="1500" height="992" alt="A Fire Arts class at the pottery wheels: three students smiling, one with hands on a spinning pot of clay" fetchpriority="high"></div>
   <div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
@@ -1116,11 +1100,6 @@
         <div class="cta-row">
           <a class="btn hot" href="#pick">Find your class</a>
           <a class="btn line" href="#member">Become a member</a>
-        </div>
-        <div class="class-ticker" id="class-ticker" hidden>
-          <span class="ct-label">Open classes</span>
-          <a id="ct-link" href="#pick"><b id="ct-name"></b> <span id="ct-meta"></span></a>
-          <button type="button" class="ct-pause" id="ct-pause" aria-pressed="false" aria-label="Pause the class rotation"><span aria-hidden="true">&#10074;&#10074;</span></button>
         </div>
       </div>
     </div>
@@ -1164,7 +1143,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list, sorted by what people want to make and then by level, with a Register button to your Square shop, your fused glass, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class list in tabs by what people want to make, narrowed by day and place, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates, a real waitlist, and your own back end with every class list, all on my server. Sign-ups pay into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates, a real waitlist, and your own portal with every class list, all on my server. Sign-ups pay into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep your site healthy. I follow your socials and update your site and Google profile as you post, or you can email me any change, and it&rsquo;s done: the new schedule, a new teacher, a sale weekend. Hosting and backups included, and you&rsquo;d keep fireartsarcata.com: I can hold and renew it for you so it&rsquo;s one less thing to remember (it stays legally yours), or you can keep it where it is. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1572,12 +1551,12 @@
   @container be (max-width: 314px) { .be-pp-t .wv { display: none; } }
   @media (prefers-reduced-motion: reduce) { .be-page.be-in { animation: none; } }
 </style>
-<section id="backend" class="gutter alt be-sec" tabindex="-1" aria-labelledby="be-h" data-show="crone all" data-fold data-thing="your own back end: class lists, the waitlist, waivers and gift certificates">
+<section id="backend" class="gutter alt be-sec" tabindex="-1" aria-labelledby="be-h" data-show="crone all" data-fold data-thing="your own portal: class lists, the waitlist, waivers and gift certificates">
   <div class="wrap">
-    <p class="not-site"><span class="bk-demo">Just for you</span> Not on your site. Your back end has its own sign-in, and only you have it.</p>
+    <p class="not-site"><span class="bk-demo">Just for you</span> Not on your site. Your portal has its own sign-in, and only you have it.</p>
     <div class="sec-head">
       <div>
-        <p class="label"><span>Your back end</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+        <p class="label"><span>Your portal</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
         <h2 id="be-h" class="reveal">Where your <em>sign-ups go</em></h2>
       </div>
       <p class="intro">This is where every sign-up lands. It works, so tap around.<span class="be-try" data-js hidden>Sign up for a class above, and you&rsquo;ll show up in its list here.</span></p>
@@ -1585,13 +1564,13 @@
     <div class="be-layout">
       <div class="be-frame">
         <div class="be-bar" aria-hidden="true"><span class="be-dots"><i></i><i></i><i></i></span><span class="be-url"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"/></svg><span>Your back end, private to you</span></span></div>
-        <div class="be-app" id="be-app" role="region" aria-label="Your back end, a working preview with sample names">
+        <div class="be-app" id="be-app" role="region" aria-label="Your portal, a working preview with sample names">
           <div class="be-top">
             <span class="be-brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 28V15a7 7 0 0 1 14 0v13z" fill="#ff7a1a"/><path d="M8 28V14a8 8 0 0 1 16 0v14" fill="none" stroke="#25301f" stroke-width="2.6"/></svg>Fire Arts Center</span>
             <span class="be-via">from Web Faery</span>
             <span class="be-sample">Sample names</span>
           </div>
-          <div class="be-tabs-wrap" id="be-tabs-wrap"><div class="be-tabs" id="be-tabs" role="tablist" aria-label="Your back end"></div></div>
+          <div class="be-tabs-wrap" id="be-tabs-wrap"><div class="be-tabs" id="be-tabs" role="tablist" aria-label="Your portal"></div></div>
           <div id="be-panel" role="tabpanel" aria-labelledby="be-tab-classes">
             <div class="be-page">
               <p class="be-test">A preview with sample names. Nothing here is saved or sent.</p>
@@ -1601,7 +1580,7 @@
           <p class="vh" role="status" id="be-live"></p>
         </div>
       </div>
-      <p class="tier-note mock-note wf-note be-note">Every sign-up lands here, in your own back end on my server (it has its own sign-in): who&rsquo;s in each class, their waivers, and the waitlist in order. Print the list for the teacher before the first class. Payments go straight into your own Stripe, or Square if you keep it. With Planted or Tended, sign-ups stay in Square, the way it works now.</p>
+      <p class="tier-note mock-note wf-note be-note">Every sign-up lands here, in your own portal on my server (it has its own sign-in): who&rsquo;s in each class, their waivers, and the waitlist in order. Print the list for the teacher before the first class. Payments go straight into your own Stripe, or Square if you keep it. With Planted or Tended, sign-ups stay in Square, the way it works now.</p>
     </div>
   </div>
 </section>
@@ -1610,7 +1589,7 @@
   <div class="wrap">
     <p class="label"><span>The kilns</span> <span class="tag" data-go="maiden">Every build</span></p>
     <h2 id="kilns-h" class="reveal">Cone 6 or cone 10? <em>Every class says its clay</em></h2>
-    <p class="intro">Each studio fires one clay, and your teacher tells you which one to buy. Inside the kiln, a little witness cone bends over when the firing reaches its heat.<span data-show="crone all"> The cones on each class time work the same way: a bent cone is a spot that&rsquo;s taken.</span></p>
+    <p class="intro">Each studio fires one clay, and your teacher tells you which one to buy. Cone 6 and cone 10 clays and glazes are made for different firing temperatures, so they are not mixed: a clay or glaze fired at the wrong cone can melt or slump and ruin a kiln shelf. That is why each clay has its own studio and kilns. <span class="soft">(General explanation, not from Fire Arts&rsquo; own pages.)</span> Inside the kiln, a little witness cone bends over when the firing reaches its heat.<span data-show="crone all"> The cones on each class time work the same way: a bent cone is a spot that&rsquo;s taken.</span></p>
     <div class="holes">
       <div class="hole c06"><span class="win" aria-hidden="true"><svg class="kc down" viewBox="0 0 16 30"><path class="b" d="M5.4 29.6h6.2l-1.2-12.8H6.6Z"/><g class="j1"><path class="m" d="M6.6 17.2h3.8l-.6-7.4H7.2Z"/><g class="j2"><path class="t" d="M7.2 10.2h2.6L8.6 2.4c-.05-.3-.25-.3-.3 0Z"/></g></g></svg></span><div><h3>Cone 06</h3><span class="t">About 1828&deg;F</span><p>The bisque firing, before any glaze goes on.</p></div></div>
       <div class="hole c6"><span class="win" aria-hidden="true"><svg class="kc down" viewBox="0 0 16 30"><path class="b" d="M5.4 29.6h6.2l-1.2-12.8H6.6Z"/><g class="j1"><path class="m" d="M6.6 17.2h3.8l-.6-7.4H7.2Z"/><g class="j2"><path class="t" d="M7.2 10.2h2.6L8.6 2.4c-.05-.3-.25-.3-.3 0Z"/></g></g></svg></span><div><h3><i class="clay c6" aria-hidden="true"></i>Cone 6</h3><span class="t">About 2232&deg;F</span><p>Studio #10 and Phoenix. Glaze fired in the electric kilns.</p></div></div>
@@ -1988,7 +1967,7 @@
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your whole class list, sorted by what people want to make and then by level, with a Register button to your Square shop, your fused glass, memberships, firing rates, the gallery, and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the class list in tabs by what people want to make, narrowed by day and place, each class with its own Register button to its Square page, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates, a real waitlist, and your own back end with every class list, all on my server. Sign-ups pay into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus sign-up right on each class time, with spots left, the level check, the waiver signed in the form, gift certificates, a real waitlist, and your own portal with every class list, all on my server. Sign-ups pay into your own Stripe or Square."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep your site healthy. I follow your socials and update your site and Google profile as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep fireartsarcata.com: I can hold and renew it for you (it stays legally yours). If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -3014,7 +2993,7 @@
         '<p class="be-pp-m">' + esc(c.who) + ' &middot; ' + DAYS[c.day] + 's, ' + esc(c.time) + ' &middot; ' + placeOf(c) + ' &middot; ' + esc(c.dates) + '</p>' +
         '<div class="be-pp-scroll"><table class="be-pp-t"><caption class="vh">Class list with a box for each class meeting</caption><thead>' + hd + '</thead><tbody>' + rows + '</tbody></table></div>' +
         '<p class="be-pp-f">' + list.length + (list.length === 1 ? ' student' : ' students') + ', ' + (kid ? 'each waiver signed by a parent' : 'each with a signed waiver') + ' &middot; printed ' + dateTxt(new Date(TODAY)) + '</p></div>' +
-        '<p class="be-foot">Preview only: on your real back end, this prints as one page, with a box for each class to mark who came.</p>';
+        '<p class="be-foot">Preview only: on your real portal, this prints as one page, with a box for each class to mark who came.</p>';
     }
 
     /* ---------- Waitlist ---------- */
@@ -3167,7 +3146,7 @@
       if (t.hasAttribute('data-back')) { var was = S.cls; S.cls = null; S.print = false; render(null, true); quietFocus(panel.querySelector('[data-cls="' + was + '"]')); keepInView(panel.querySelector('[data-cls="' + was + '"]')); return; }
       if (t.hasAttribute('data-print')) { S.print = true; render('#be-vh', true); keepInView($('be-vh')); return; }
       if (t.hasAttribute('data-unprint')) { S.print = false; render(null, true); quietFocus(panel.querySelector('[data-print]')); return; }
-      if (t.hasAttribute('data-csv')) { $('be-st').textContent = 'Preview only: on your real back end, this saves the list as a spreadsheet (CSV) that opens in Excel or Google Sheets.'; return; }
+      if (t.hasAttribute('data-csv')) { $('be-st').textContent = 'Preview only: on your real portal, this saves the list as a spreadsheet (CSV) that opens in Excel or Google Sheets.'; return; }
       if (t.hasAttribute('data-seewait')) { S.offer = null; go('wait'); quietFocus($('be-vh')); return; }
       if (t.hasAttribute('data-offer')) { var n = t.getAttribute('data-offer'), opening = S.offer !== n; S.offer = opening ? n : null; render(); if (opening) { quietFocus($('be-mail')); keepInView($('be-mail')); } else quietFocus(panel.querySelector('[data-offer="' + n + '"]')); return; }
       if (t.hasAttribute('data-wv')) { var k = t.getAttribute('data-wv'); S.open = S.open === k ? null : k; $('be-wv-out').innerHTML = wvListHtml(); quietFocus(panel.querySelector('[data-wv="' + (window.CSS && CSS.escape ? CSS.escape(k) : k.replace(/"/g, '')) + '"]')); return; }
@@ -3236,7 +3215,7 @@
         if (!line) { line = document.createElement('p'); var nav = pane.querySelector('.bk-nav'); pane.insertBefore(line, nav || null); }
         line.className = 'demo-note be-tell';
         line.innerHTML = (wait ? 'Preview only: nothing was sent. On your real site, the email goes out by itself. ' : 'Preview only: nothing was charged or sent. On your real site, one more cone bends over on that class time. ') +
-          esc(who) + ' is now on the #' + c.n + (wait ? ' waitlist' : ' list') + ' in your back end preview below. <button type="button" class="linkish" data-be-see="' + c.n + '" data-be-mode="' + (wait ? 'wait' : 'su') + '">See it</button>';
+          esc(who) + ' is now on the #' + c.n + (wait ? ' waitlist' : ' list') + ' in your portal preview below. <button type="button" class="linkish" data-be-see="' + c.n + '" data-be-mode="' + (wait ? 'wait' : 'su') + '">See it</button>';
       }
     });
     document.addEventListener('click', function (e) {
@@ -3251,7 +3230,7 @@
         frame.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
         quietFocus($('be-vh'));
         if (target && target.getBoundingClientRect().bottom > window.innerHeight) setTimeout(function () { target.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); }, reduce ? 0 : 450);
-        say(wait ? 'Your back end, Waitlist: you are on the #' + n + ' waitlist.' : 'Your back end, class #' + n + ': you are on the list.');
+        say(wait ? 'Your portal, Waitlist: you are on the #' + n + ' waitlist.' : 'Your portal, class #' + n + ': you are on the list.');
       }, 30);
     });
 
@@ -3325,44 +3304,6 @@
 </script>
 
 <script>
-  /* the hero class ticker: classes with spots left, one at a time. Before registration opens it says when it opens instead of spots. */
-  (function () {
-    var box = document.getElementById('class-ticker'), nameEl = document.getElementById('ct-name'), metaEl = document.getElementById('ct-meta'), link = document.getElementById('ct-link'), pauseBtn = document.getElementById('ct-pause');
-    var all = window.FA_CLASSES; if (!box || !all || !all.length) return;
-    var DAYS = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], S = window.FA_SESSION || {};
-    var before = S.opens && Date.now() < Date.parse(S.opens);
-    var list = all.filter(function (c) { return before || c.left > 0; }).sort(function (a, b) { return (a.day - b.day) || (a.start - b.start); });
-    if (!list.length) return;
-    list = list.filter(function (c, i) { return i % Math.max(1, Math.ceil(list.length / 8)) === 0; }).slice(0, 8);
-    function metaFor(c) {
-      var s = DAYS[c.day] + ' ' + c.time + ' with ' + c.who;
-      if (before) return s + ' (registration opens ' + (S.opensText || 'soon') + ')';
-      return s + ' (' + c.left + (c.left === 1 ? ' spot' : ' spots') + ' left)';
-    }
-    var idx = 0, timer = null, paused = false, hovering = false;
-    function show(i) { var c = list[i]; nameEl.textContent = c.t; metaEl.textContent = metaFor(c); link.setAttribute('href', '#pick'); }
-    show(0); box.hidden = false;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || list.length < 2) { pauseBtn.hidden = true; return; }
-    function turn() {
-      if (paused || hovering) return;
-      box.classList.add('swap');
-      setTimeout(function () { idx = (idx + 1) % list.length; show(idx); box.classList.remove('swap'); }, 360);
-    }
-    timer = setInterval(turn, 5500);
-    pauseBtn.addEventListener('click', function () {
-      paused = !paused; pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
-      pauseBtn.setAttribute('aria-label', paused ? 'Play the class rotation' : 'Pause the class rotation');
-      pauseBtn.firstChild.innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
-    });
-    box.addEventListener('mouseenter', function () { hovering = true; });
-    box.addEventListener('mouseleave', function () { hovering = false; });
-    box.addEventListener('focusin', function () { hovering = true; });
-    box.addEventListener('focusout', function () { hovering = false; });
-  })();
-</script>
-
-<script>
   /* the status banner: coming up, open, filling */
   (function () {
     function $(id) { return document.getElementById(id); }
@@ -3377,47 +3318,11 @@
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function setState(k, announce) {
       var s = STATES[k]; if (!s) return; var m = viewNow() === 'maiden' && s.maiden ? s.maiden : s;
-      current = k; strip.dataset.state = k; idx = 0;
+      current = k; strip.dataset.state = k;
       $('status-label').textContent = s.label; $('status-cta').textContent = m.cta; link.setAttribute('href', m.href);
       btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
       if (window.FA_door) window.FA_door(k);
       if (announce) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + m.cta + '.';
-    }
-    /* the rotating banner: the state's own message first, then three things that are always true on this page.
-       It turns every 6 seconds (fades), stops while someone hovers, focuses or taps pause, and stays on one message under reduced motion. */
-    var EVERGREEN = [
-      { label: 'Clay classes for kids 8 to 12', cta: 'See the classes', href: '#classes' },
-      { label: 'Firing for your own work, class or no class', cta: 'See the firing rates', href: '#firing' },
-      { label: 'Clay and glass memberships', cta: 'Become a member', href: '#member' }
-    ];
-    var pauseBtn = $('status-pause'), idx = 0, timer = null, paused = false, hovering = false;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function lineFor(i) {
-      if (i === 0) { var s = STATES[current], m = viewNow() === 'maiden' && s.maiden ? s.maiden : s; return { label: s.label, cta: m.cta, href: m.href }; }
-      return EVERGREEN[i - 1];
-    }
-    function show(i) {
-      var l = lineFor(i);
-      $('status-label').textContent = l.label; $('status-cta').textContent = l.cta; link.setAttribute('href', l.href);
-    }
-    function turn() {
-      if (paused || hovering) return;
-      strip.classList.add('swap');
-      setTimeout(function () { idx = (idx + 1) % (EVERGREEN.length + 1); show(idx); strip.classList.remove('swap'); }, 360);
-    }
-    function start() { if (reduce || timer) return; timer = setInterval(turn, 6000); }
-    if (pauseBtn && !reduce) {
-      pauseBtn.hidden = false;
-      pauseBtn.addEventListener('click', function () {
-        paused = !paused; pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
-        pauseBtn.setAttribute('aria-label', paused ? 'Play the rotating banner' : 'Pause the rotating banner');
-        pauseBtn.firstChild.innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
-      });
-      strip.addEventListener('mouseenter', function () { hovering = true; });
-      strip.addEventListener('mouseleave', function () { hovering = false; });
-      strip.addEventListener('focusin', function () { hovering = true; });
-      strip.addEventListener('focusout', function () { hovering = false; });
-      start();
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
     document.addEventListener('ex:view', function () { setState(current, false); });
@@ -3552,7 +3457,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your whole class list sorted by what people want to make and then by level (each class written once, with every time, teacher, place and clay under it, and a Register button to your Square shop), your fused glass, memberships, firing rates, the gallery, kind words, and how to find you.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus the class list in tabs by what people want to make, narrowed by day and place, a Register button on each class that opens that exact class on Square, a registration reminder email, the member waiting list, your FAQ, a contact form and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus sign-up right on each class time: spots left as witness cones in a little kiln window, a level check that points people to the right class, the waiver signed in the form, gift certificate numbers taken right there, a waitlist that emails the next person when a spot opens, and your own back end with the class lists, waitlist, waivers and gift certificates, all on my server. Sign-ups pay into your own Stripe, or Square if you’d rather keep it. That’s every piece on this page.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus sign-up right on each class time: spots left as witness cones in a little kiln window, a level check that points people to the right class, the waiver signed in the form, gift certificate numbers taken right there, a waitlist that emails the next person when a spot opens, and your own portal with the class lists, waitlist, waivers and gift certificates, all on my server. Sign-ups pay into your own Stripe, or Square if you’d rather keep it. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };

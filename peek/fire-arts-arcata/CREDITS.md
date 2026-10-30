@@ -40,3 +40,10 @@ Every photo is Fire Arts Center's own, from their public Instagram (@firearts_ar
 share-preview.jpg: rebuilt Oct 12 2026 (late) from the window-shelf hero (desktop 1440 and phone 390, light), same file as prospects/batch9/fire-arts-arcata/email-preview.jpg.
 
 Fonts: Eczar (headings, day names, prices) and Geologica (body), both new to Web Faery; Caveat for Taya's notes only. All from Google Fonts. Gelasio and IBM Plex Sans (the Oct 10 look) are gone.
+
+## Oct 30 2026 edits (edits-fire)
+
+- Hero photo swapped (Pollen's note: a class spinning on the wheel): hero-wheel-class.webp (1500x992) and hero-wheel-class-800.webp. Source: Fire Arts' own Instagram post DcbUzmvAxqc (Aug 24 2026, "Fire Arts Class registration starts today"), slide 1, downloaded at 2146x2146, cropped below the words on the photo (the top of the original has a caption bar) and above the table. Three students at the wheels, one centering clay. hero-gallery-dusk.webp stays on the page as the "Easy to find" link card.
+- Cone 6 vs cone 10 explanation (The kilns section): Fire Arts' own pages (fireartsarcata.com, Instagram class posts) give the fact that the main studio, 520 S G St, is cone 10 only and Studio #10 (550 S G St) is cone 6 only, and that glazes fire in gas reduction (cone 10) and electric (cone 6). They do not say WHY the clays are not mixed (the site returned 403 to my fetch, and the earlier saved copy in prospects/batch9/fire-arts-arcata/sources.md has no reason). So the added sentences are the general reason (different firing temperatures; wrong cone can melt or slump and ruin a kiln shelf), marked on the page as "General explanation, not from Fire Arts' own pages." Pollen or Fire Arts should confirm their own wording.
+- Wording audit: every "back end" shown on the page now says "portal".
+- Banner: the status strip is now one static message (no rotation, no pause button); the hero "Open classes" rotating ticker (first item Glazed and Confused, Mon 10 am to 12:30 pm with Bob Raymond) was removed.
