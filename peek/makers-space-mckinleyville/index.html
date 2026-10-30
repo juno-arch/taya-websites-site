@@ -323,7 +323,7 @@
   button.tag { position: relative; margin: 0; padding-block: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; }
   button.tag::after { content: ""; position: absolute; inset: -8px -2px; }
   /* views bar + Subscription box */
-  .views { padding-block: 22px 24px; background: var(--ground); }
+  .views { padding-block: 22px 24px; background: var(--ground); color: var(--ink); margin-top: 40px; border-radius: 12px; }
   .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; border: 1.5px dashed var(--accent); border-radius: 10px; padding: 16px 16px 14px; }
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
   .views-q { margin: 0; font-size: 12px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--accent); }
@@ -715,9 +715,8 @@
     <p style="margin-top:14px;font-size:14px;opacity:.85"><button type="button" class="brush" id="brush" aria-label="A paintbrush: tap three times for a surprise"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M26 4 14 16"/><path d="M14 16c-3-1-6 1-6 4 0 2-1 4-3 5 4 2 10 1 11-3 1-2 0-5-2-6z" fill="currentColor" fill-opacity=".25"/></svg></button></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
     <p style="font-size:13px;opacity:.7;margin-top:6px">&copy; 2026 The Makers&rsquo; Space, McKinleyville, CA</p>
-  </div>
-  <div class="views gutter" id="views" hidden>
-  <div class="wrap views-card">
+  <div class="views" id="views" hidden>
+  <div class="views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
       <p class="views-price">Your founding build price, half off</p>
@@ -734,6 +733,7 @@
   </div>
   <p class="vh" role="status" id="views-live"></p>
 </div>
+  </div>
 </footer>
 
 <div class="drips" id="drips" hidden role="dialog" aria-label="A surprise"><p>Write your name on the bottom!<small>Tap anywhere to close</small></p></div>
