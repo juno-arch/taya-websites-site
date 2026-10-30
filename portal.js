@@ -1330,6 +1330,7 @@
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
+      manage_sub: d.manage_sub === true,
       // portal messages (Oct 20 2026): how many of Taya's they haven't opened; null on a server without messages (no tab)
       messages_unread: Number.isInteger(d.messages_unread) && d.messages_unread >= 0 ? Math.min(d.messages_unread, 999) : null,
       care: {
@@ -5126,8 +5127,9 @@
   function manageButton() {
     const b = make('button', 'later p-manage');
     b.type = 'button';
-    b.append(make('span', null, 'Update your card or subscription'), icon('i-out'));
-    b.setAttribute('aria-label', 'Update your card or subscription (opens your Stripe subscription page in a new tab)');
+    const label = me && me.manage_sub ? 'Manage your subscription' : 'Update your card or subscription'; // (add 34) the new wording waits for Settings
+    b.append(make('span', null, label), icon('i-out'));
+    b.setAttribute('aria-label', label + ' (opens your Stripe subscription page in a new tab)');
     b.addEventListener('click', () => openManage(b));
     return b;
   }
