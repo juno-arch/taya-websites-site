@@ -98,7 +98,7 @@
         'Nope, nothing sneaky! The build is yours to keep, and your subscription is one small monthly bill. Change something? Taya can follow your socials, or you can email her, and it’s done ✨ [Every cost →](costs)'] },
     time: { ex: 'happy', keys: 'how long|long does|timeline|weeks|week|fast|quick*|turnaround|deadline|soon|rush|asap|how soon|by when|ready|go live|goes live|live yet|be live|launch|launched',
       say: ['(giggle) Depends. How long is a piece of moss? About 2 to 4 weeks, apparently. I’ve been here since spring. [How it works →](how)',
-        '(proud) Planted is about 2 weeks, Tended about 3, In Bloom about 4, counted from when your content is in. [The steps →](how)',
+        '(proud) Planted is about 2 weeks, Tended about 3, In Bloom about 4, counted from your deposit, and it moves if your content comes later. [The steps →](how)',
         'You see a first draft in about a week, then two rounds of changes, then it goes live. I’d need a nap in between. [How it works →](how)',
         '(sleepy) About 2, 3 or 4 weeks, depending on the size. Taya is quick. I am... resting. [How it works →](how)'] },
     who: { ex: 'giggle', keys: 'bramble|who are you|who are u|what r u|wat r u|what are u|your name|ur name|what are you|whats your name|who r u|who is this|who you|what do you do|where do you live',
