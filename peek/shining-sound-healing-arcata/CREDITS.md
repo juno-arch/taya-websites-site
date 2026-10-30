@@ -14,3 +14,8 @@ Every photo is Samantha Peters' own, from shiningsoundhealing.com (Squarespace).
 Not used: Unsplash stock image (1783564352527.../unsplash-image-koy6FlCCy5s.jpg), pond ripple png, photo with her carved name sign, 2018 sunset and 2020 selfie, flyers.
 Sample photos: none.
 Fonts: Sansita, Bitter and Caveat (Google Fonts, SIL OFL).
+Oct 30 2026, sessions section "see and hear":
+- Muted looping video: Day 10 "Tune In, Your Own Sound" (YouTube id exEChrwEZzE, about 5 min), one of the ten Tune In Challenge videos embedded on her own Course page (https://www.shiningsoundhealing.com/course). Shown with the YouTube embed (youtube-nocookie.com, mute=1 autoplay=1 loop=1 controls=1), loaded only when scrolled to. Nothing was downloaded. The YouTube channel it sits on shows as "Sam Anderson" (https://www.youtube.com/@SamAnderson-u6p), so Pollen should confirm that is Samantha's channel. She has no session footage online that I found; this is her closest calm, sound-led video.
+- img/video-poster.webp: the video's own YouTube thumbnail (https://i.ytimg.com/vi/exEChrwEZzE/maxresdefault.jpg), resized to 960x540, shown only before the video loads.
+- Singing bowl player: her SoundCloud is https://soundcloud.com/shiningsoundhealing (found through the on.soundcloud.com link on her Services page). Her two public tracks, with titles and lengths as listed there: "Tune In Healing Light" 14:36 (/tune-in-healing-light-mp3) and "Drumming an inward journey" 19:23 (/drumming-an-inward-journey-mp3). Played through the SoundCloud Widget API iframe (w.soundcloud.com/player/), added only when a visitor taps Play.
+Not found: no YouTube channel in her own name, and her site links only to Instagram (@shiningsoundhealing) and Facebook (samanthapeters).

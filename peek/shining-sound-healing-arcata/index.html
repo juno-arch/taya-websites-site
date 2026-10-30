@@ -133,6 +133,32 @@
   .ses.wide { grid-column: 1 / -1; }
   .sec-note { margin-top: 26px; font-size: 15px; color: var(--ink-soft); max-width: 62ch; }
 
+  /* see and hear: one silent looping video + the singing bowl player (SoundCloud loads only on a tap) */
+  .listen { margin-top: 44px; display: grid; gap: 28px; align-items: start; }
+  @media (min-width: 900px) { .listen { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; } }
+  .listen h3 { font-size: 28px; }
+  .listen .lead { margin-top: 8px; color: var(--ink-soft); font-size: 16.5px; max-width: 52ch; }
+  .vidbox { position: relative; margin-top: 16px; aspect-ratio: 16 / 9; background: var(--night); border-radius: 18px 18px 18px 4px; overflow: hidden; border: 1px solid var(--hair); }
+  .vidbox img, .vidbox iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+  .vidrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 12px; }
+  .vidrow .btn { min-height: 44px; padding: 8px 20px; }
+  .vidrow p { margin: 0; font-size: 15px; color: var(--ink-soft); flex: 1 1 220px; }
+  .bowlplayer { background: var(--paper); border: 1px solid var(--hair); border-radius: 18px 18px 18px 4px; padding: 24px 22px 22px; }
+  .bowlplayer h3 { font-size: 26px; }
+  .trk { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+  .trk button { width: 100%; box-sizing: border-box; min-height: 56px; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; padding: 10px 16px; border-radius: 14px; border: 1.5px solid var(--hair); background: transparent; color: var(--ink); font: inherit; font-size: 16.5px; cursor: pointer; }
+  .trk button small { font-size: 14px; color: var(--accent); font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
+  .trk button[aria-pressed="true"] { border-color: var(--lake); background: var(--mist); }
+  .bp-ctl { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+  .bp-ctl .btn { min-width: 112px; }
+  .bp-bar { flex: 1 1 auto; min-width: 0; }
+  .bp-bar input[type=range] { width: 100%; accent-color: var(--lake); margin: 0; min-height: 28px; }
+  .bp-time { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .bp-say { margin: 12px 0 0; min-height: 26px; font-size: 15px; color: var(--ink-soft); }
+  .bp-src { margin: 8px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .bp-src a { color: var(--lake); }
+  .bp-frame { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); border: 0; opacity: 0; pointer-events: none; }
+
   /* the picker: pick how long, and the pond rings */
   .band { background: var(--night); color: var(--night-ink); position: relative; overflow: hidden; }
   .band h2 em { color: var(--gold); }
@@ -391,6 +417,38 @@
         <div class="cta-row"><a class="btn ghost" href="https://www.shiningsoundhealing.com/services" target="_blank" rel="noopener">Gift card<span class="vh"> (opens in a new tab)</span></a></div>
       </li>
     </ul>
+
+    <div class="listen" id="listen">
+      <div>
+        <h3>A quiet look first</h3>
+        <p class="lead">A short loop from Samantha&rsquo;s own Tune In Challenge. It plays by itself with no sound, and it pauses when you scroll away. Tap the speaker in the player if you would like to hear her.</p>
+        <div class="vidbox" id="vid" data-vid="exEChrwEZzE">
+          <img src="img/video-poster.webp" width="960" height="540" alt="A bouquet of dahlias in cream, orange, plum and soft pink" loading="lazy" decoding="async">
+        </div>
+        <div class="vidrow">
+          <button type="button" class="btn ghost" id="vid-toggle" aria-pressed="false">Pause the video<span class="vh"> (it plays without sound)</span></button>
+          <p>Day 10 of the Tune In Challenge, Your Own Sound. Plays muted.</p>
+        </div>
+      </div>
+      <div class="bowlplayer" id="bowlplayer" aria-labelledby="bp-h">
+        <h3 id="bp-h">Singing bowl player</h3>
+        <p class="lead">Sound meditations to listen to any time, from Samantha&rsquo;s SoundCloud. Nothing plays until you tap.</p>
+        <ul class="trk" id="trk">
+          <li><button type="button" data-t="tune-in-healing-light-mp3" data-ms="876167" aria-pressed="false"><span>Tune In Healing Light</span><small>14:36</small></button></li>
+          <li><button type="button" data-t="drumming-an-inward-journey-mp3" data-ms="1163383" aria-pressed="false"><span>Drumming an inward journey</span><small>19:23</small></button></li>
+        </ul>
+        <div class="bp-ctl">
+          <button type="button" class="btn" id="bp-play" aria-pressed="false" disabled>Play</button>
+          <div class="bp-bar">
+            <input type="range" id="bp-seek" min="0" max="1000" value="0" step="1" aria-label="Where you are in the recording" disabled>
+            <div class="bp-time"><span id="bp-now">0:00</span><span id="bp-total">0:00</span></div>
+          </div>
+        </div>
+        <p class="bp-say" id="bp-say" role="status" aria-live="polite">Pick one to begin.</p>
+        <p class="bp-src">Plays through <a href="https://soundcloud.com/shiningsoundhealing" target="_blank" rel="noopener">SoundCloud<span class="vh"> (opens in a new tab)</span></a>. It loads when you tap play.</p>
+      </div>
+    </div>
+    <p class="sec-note mock-note wf-note">The loop is Day 10 from your Course page, and both recordings are the two on your SoundCloud, shown with their own titles and lengths. The video is muted and the recordings play only when someone taps. If you would rather show a different video or add a new recording, send it and I will swap it in.</p>
     <p class="sec-note mock-note wf-note">The sessions and prices are exactly the ones on your Services page. Right now only the Personal Sound Stream has a Book link (your Acuity), and the others say call or text, so I kept that for Planted. I can follow your socials and update as you post, or you can email me, and a new session or price is up, usually within 2 business days. Your Sound Stream line about practicing with volunteers in September and October 2025 is left off, since that date has passed.</p>
   </div>
 </section>
@@ -699,6 +757,111 @@
 
 
 
+<script>
+  /* see and hear. The video is a muted YouTube loop (youtube-nocookie) that loads when scrolled to; the SoundCloud player loads only on a tap. Nothing here starts with sound. */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var $ = function (id) { return document.getElementById(id); };
+    var box = $('vid'), tog = $('vid-toggle');
+    if (box && tog) {
+      var id = box.getAttribute('data-vid'), frame = null, userPaused = reduce, inView = false, ready = false;
+      var cmd = function (f) { if (frame && frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: f, args: '' }), 'https://www.youtube-nocookie.com'); };
+      var label = function () {
+        var playing = !userPaused;
+        tog.setAttribute('aria-pressed', playing ? 'false' : 'true');
+        tog.firstChild.nodeValue = playing ? 'Pause the video' : 'Play the video';
+      };
+      var build = function () {
+        if (frame) return;
+        frame = document.createElement('iframe');
+        frame.title = 'Tune In Challenge, Day 10: Your Own Sound (muted video loop)';
+        frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        frame.setAttribute('allowfullscreen', '');
+        frame.referrerPolicy = 'strict-origin-when-cross-origin';
+        frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?mute=1&autoplay=1&loop=1&playlist=' + id + '&controls=1&playsinline=1&rel=0&enablejsapi=1&origin=' + encodeURIComponent(location.origin);
+        frame.addEventListener('load', function () { ready = true; cmd('mute'); if (userPaused || !inView) cmd('pauseVideo'); });
+        box.appendChild(frame);
+        var im = box.querySelector('img'); if (im) im.hidden = true;
+      };
+      var sync = function () { if (!frame) return; if (inView && !userPaused) cmd('playVideo'); else cmd('pauseVideo'); };
+      tog.addEventListener('click', function () {
+        userPaused = !userPaused;
+        label();
+        if (!userPaused && !frame) build(); else if (ready) sync();
+      });
+      label();
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          inView = es[0].isIntersecting;
+          if (inView && !userPaused && !frame) build(); else if (ready) sync();
+        }, { threshold: 0.35 }).observe(box);
+      }
+    }
+
+    var bp = $('bowlplayer');
+    if (!bp) return;
+    var trk = bp.querySelectorAll('#trk button'), play = $('bp-play'), seek = $('bp-seek'), now = $('bp-now'), tot = $('bp-total'), say = $('bp-say');
+    var base = 'https://soundcloud.com/shiningsoundhealing/', SC = 'https://w.soundcloud.com', host = null, cur = null, playing = false, dragging = false, ok = false, wantPlay = false;
+    var fmt = function (sec) { sec = Math.max(0, Math.round(sec)); return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2); };
+    var opts = '&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false&buying=false&sharing=false&download=false&liking=false';
+    var url = function (b) { return SC + '/player/?url=' + encodeURIComponent(base + b.getAttribute('data-t')) + opts; };
+    var ms = function (b) { return +b.getAttribute('data-ms'); };
+    /* the SoundCloud Widget API is a postMessage protocol on the player iframe, so it is spoken directly here and no outside script is added to the page */
+    var send = function (method, value) { if (host && host.contentWindow) host.contentWindow.postMessage(JSON.stringify(value === undefined ? { method: method } : { method: method, value: value }), SC); };
+    var paint = function () {
+      play.textContent = playing ? 'Pause' : 'Play';
+      play.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      play.disabled = !cur;
+      seek.disabled = !cur || !ok;
+    };
+    var name = function () { return cur.firstChild.textContent; };
+    var pick = function (b) {
+      [].forEach.call(trk, function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      var had = !!cur;
+      cur = b; seek.value = 0; now.textContent = '0:00'; tot.textContent = fmt(ms(b) / 1000);
+      say.textContent = 'Ready: ' + name() + '. Tap Play.';
+      playing = false; wantPlay = false;
+      if (host) { ok = false; host.src = url(b); }
+      paint();
+    };
+    window.addEventListener('message', function (e) {
+      if (e.origin !== SC || !host || e.source !== host.contentWindow) return;
+      var d; try { d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; } catch (x) { return; }
+      if (!d || !cur) return;
+      if (d.method === 'ready') {
+        ok = true;
+        ['play', 'pause', 'finish', 'playProgress'].forEach(function (n) { send('addEventListener', n); });
+        if (wantPlay) send('play');
+        paint();
+      } else if (d.method === 'play') { playing = true; wantPlay = false; say.textContent = 'Playing ' + name() + '.'; paint(); }
+      else if (d.method === 'pause') { playing = false; say.textContent = 'Paused.'; paint(); }
+      else if (d.method === 'finish') { playing = false; seek.value = 0; now.textContent = '0:00'; say.textContent = 'Finished. Take a breath.'; paint(); }
+      else if (d.method === 'playProgress' && !dragging && d.value) { seek.value = Math.round(d.value.relativePosition * 1000); now.textContent = fmt(d.value.currentPosition / 1000); }
+    });
+    var start = function () {
+      /* first tap on Play: only now does anything from SoundCloud load */
+      if (host) return;
+      wantPlay = true; say.textContent = 'Loading from SoundCloud...';
+      host = document.createElement('iframe');
+      host.className = 'bp-frame';
+      host.title = 'SoundCloud player for the recording you picked (the controls are on this page)';
+      host.setAttribute('tabindex', '-1'); host.setAttribute('aria-hidden', 'true');
+      host.allow = 'autoplay';
+      host.src = url(cur);
+      bp.appendChild(host);
+    };
+    [].forEach.call(trk, function (b) { b.addEventListener('click', function () { pick(b); }); });
+    play.addEventListener('click', function () {
+      if (!cur) return;
+      if (!host) { start(); return; }
+      if (!ok) { wantPlay = true; return; }
+      if (playing) send('pause'); else { wantPlay = true; send('play'); }
+    });
+    seek.addEventListener('input', function () { dragging = true; now.textContent = fmt(seek.value / 1000 * ms(cur) / 1000); });
+    seek.addEventListener('change', function () { dragging = false; if (ok) send('seekTo', Math.round(seek.value / 1000 * ms(cur))); });
+    paint();
+  })();
+</script>
 <script>
   (function () {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
