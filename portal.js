@@ -1274,7 +1274,9 @@
         files_count: Math.max(0, Math.min(999, Math.round(+x.files_count || 0))), sent_on: str(x.sent_on, 30),
         derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12),
         video: /^[a-z0-9-]{1,40}$/.test(str(x.video, 40)) ? str(x.video, 40) : '', // (Oct 21 2026) the hard step this to-do has a video for
-        choices: Array.isArray(x.choices) ? x.choices.map((c) => str(c, 40)).filter(Boolean).slice(0, 5) : [] // (Oct 22 2026) tap choices; the page adds Other
+        choices: Array.isArray(x.choices) ? x.choices.map((c) => str(c, 90)).filter(Boolean).slice(0, 6) : [], // (Oct 22 2026) tap choices; the page adds Other (Oct 30: up to six, 90 characters)
+        media: /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.mp4$/.test(str(x.media, 120)) ? str(x.media, 120) : '', // (Oct 30 2026) a how-to video, shown as a player under the words
+        group: str(x.group, 60)
       };
     };
     const agreement = th.agreement && typeof th.agreement === 'object' ? {
@@ -1643,7 +1645,15 @@
     const done = me.list.done;
     const cur = me.timeline.current;
     $('#h-list').textContent = !open.length ? 'All caught up' : open.length === 1 ? 'Just one thing' : 'Just these few things';
-    $('#todos').replaceChildren(...open.map(todoRow));
+    // (Oct 30 2026) a plain heading above each run of rows that share a group
+    const rowsOut = [];
+    let lastGroup = '';
+    open.forEach((x) => {
+      if (x.group && x.group !== lastGroup) { const g = make('li', 'todo-group'); g.append(make('h3', null, x.group)); rowsOut.push(g); }
+      lastGroup = x.group || '';
+      rowsOut.push(todoRow(x));
+    });
+    $('#todos').replaceChildren(...rowsOut);
     $('#todos').hidden = !open.length;
     $('#list-empty').hidden = open.length > 0;
     // their turn on the mockup: an empty list mustn't sit under "Your turn" saying "rest easy"
@@ -1697,6 +1707,23 @@
     const body = make('div');
     body.append(make('h3', null, item.title));
     if (item.detail) body.append(make('p', 'detail', item.detail));
+    // (Oct 30 2026) a how-to video right under the words, with a plain link for anyone whose phone will not play it
+    if (item.media && item.status !== 'sent') {
+      const wrap = make('div', 'todo-video');
+      const v = document.createElement('video');
+      v.controls = true;
+      v.preload = 'metadata';
+      v.setAttribute('playsinline', '');
+      v.src = item.media;
+      v.setAttribute('aria-label', 'Short video: ' + item.title);
+      const alt = make('a', 'open-btn', null);
+      alt.href = item.media;
+      alt.target = '_blank';
+      alt.rel = 'noopener noreferrer';
+      alt.append(make('span', null, 'Open the video in a new tab'), icon('i-out'));
+      wrap.append(v, alt);
+      body.append(wrap);
+    }
     const sentLine = (text) => {
       const p = make('p', 'thanks-line');
       p.append(icon('i-check'), make('span', null, text));
