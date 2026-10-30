@@ -1004,6 +1004,7 @@
     bk = null;
     $('#sec-bookings').hidden = true;
     visits = null;
+    visitsSoon = false;
     $('#sec-visits').hidden = true;
     rcReset();
     cqReset();
@@ -5965,6 +5966,7 @@
      scale from 0), the pages opened most, where people came from and what they used. Only for a client whose site is
      counted on Web Faery's server: the server answers visits: null for everyone else, and the section and its tab
      stay hidden. The server sends only their own site's numbers (nothing sent from here picks a site). */
+  let visitsSoon = false;    // (add 35) not counted yet and the site has not launched: the card says counting starts at launch
   let visits = null;         // { from, to, since, visitors, views, before, daily, pages, hosts, devices } (cleaned)
   const vsNum = (n) => Number(n || 0).toLocaleString('en-US');
   const vsCount = (v) => (Number.isInteger(+v) && +v >= 0 ? Math.min(+v, 1e9) : 0);
@@ -5979,6 +5981,7 @@
     try {
       const d = await api.visits();
       visits = cleanVisits(d);
+      visitsSoon = !visits && !!d && d.soon === true;
       renderVisits();
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
@@ -6052,6 +6055,8 @@
   function renderVisits() {
     const sec = $('#sec-visits');
     const v = visits;
+    sec.classList.toggle('vs-soon', !v && visitsSoon);
+    if (!v && visitsSoon) { $('#vs-lede').textContent = 'Counting starts when your site launches.'; setHidden(sec, false); if (me) renderGlance(); return; }
     if (!v) { setHidden(sec, true); if (me) renderGlance(); return; }
     $('#vs-lede').textContent = visitsLede(v);
     const cmp = vsComparable(v);
