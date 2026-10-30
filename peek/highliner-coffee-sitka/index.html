@@ -793,7 +793,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your cup builder, the roaster and your beans, the counter, the room, kind words, joining the crew, your hours, and Call and gift card buttons."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: everything in Planted, plus a message form, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus pickup pre-orders from the cup builder and a beans shop, paid right on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus a beans shop: packaged coffee to ship, paid on your site into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it&rsquo;s legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -847,9 +847,7 @@
             <button type="button" data-s="1" class="on" aria-current="step">1 Hot or iced</button>
             <button type="button" data-s="2" disabled>2 Your drink</button>
             <button type="button" data-s="3" disabled>3 Syrups</button>
-            <button type="button" data-s="4" disabled>4 Your order</button>
-            <button type="button" data-s="5" disabled data-show="crone all" data-fold>5 Pickup</button>
-            <button type="button" data-s="6" disabled data-show="crone all" data-fold>6 Review</button>
+            <button type="button" data-s="4" disabled>4 Say it</button>
           </div>
 
           <div id="cp-1">
@@ -874,55 +872,19 @@
             <div class="sf-row"><label><input type="checkbox" id="cp-sf"> Sugar free</label><small id="cp-sf-small">Shows the syrups that come sugar free.</small></div>
             <div class="chips" id="cp-chips" role="group" aria-label="Syrups"></div>
             <p class="picked" id="cp-picked" role="status"></p>
-            <div class="go-row"><button type="button" class="gbtn" id="cp-go3">Your order</button><button type="button" class="gbtn ghost" id="cp-surprise">Surprise me</button><button type="button" class="gbtn ghost" data-back="2">Back</button></div>
+            <div class="go-row"><button type="button" class="gbtn" id="cp-go3">Say it</button><button type="button" class="gbtn ghost" id="cp-surprise">Surprise me</button><button type="button" class="gbtn ghost" data-back="2">Back</button></div>
           </div>
 
           <div id="cp-4" class="cup-done fade-in" hidden>
             <div class="slip"><p class="slip-h">Say this at the window</p><p class="slip-txt" id="slip-txt"></p><p class="slip-say" id="slip-say"></p></div>
             <p class="copied" id="cp-copied" role="status"></p>
-            <div class="go-row"><button type="button" class="gbtn" id="cp-copy">Copy my order</button><button type="button" class="gbtn ghost" id="cp-change">Change something</button><button type="button" class="gbtn ghost" id="cp-again">Try it again</button></div>
-            <div class="go-row" data-show="crone all" data-fold style="margin-top:12px"><button type="button" class="gbtn" id="cp-send">Send it ahead for pickup</button></div>
-            <p class="demo-note">Preview only: nothing is sent unless you send it ahead.</p>
-          </div>
-
-          <div id="cp-5" hidden>
-            <p class="q" id="cp-w-q" style="margin-top:0">When will you be by</p>
-            <div class="choice" role="group" aria-labelledby="cp-w-q" id="cp-whens">
-              <button type="button" data-w="in about 10 minutes" aria-pressed="false">About 10 minutes</button><button type="button" data-w="in about 20 minutes" aria-pressed="false">About 20 minutes</button><button type="button" data-w="in about 30 minutes" aria-pressed="false">About 30 minutes</button><button type="button" data-w="in about an hour" aria-pressed="false">About an hour</button>
-            </div>
-            <p class="q" id="cp-p-q">Where you will pick it up</p>
-            <div class="choice" role="group" aria-labelledby="cp-p-q" id="cp-wheres">
-              <button type="button" data-p="at the drive-thru window" aria-pressed="false">At the drive-thru window</button><button type="button" data-p="at the counter" aria-pressed="false">At the counter</button>
-            </div>
-            <div class="fld-row" style="margin-top:16px">
-              <label class="fld">Name for the cup<input id="cp-name" autocomplete="off" value="Jess R."></label>
-              <label class="fld">Email<input id="cp-mail" type="email" autocomplete="off" value="jess@example.com"></label>
-            </div>
-            <p class="hint" id="cp-p-hint" role="status"></p>
-            <div class="go-row"><button type="button" class="gbtn" id="cp-go5">Review</button><button type="button" class="gbtn ghost" data-back="4">Back</button></div>
-          </div>
-
-          <div id="cp-6" hidden>
-            <div class="sheet" style="background:rgba(246,239,223,0.08);border-color:rgba(246,239,223,0.25)">
-              <span class="sheet-grip" aria-hidden="true"></span>
-              <h3 class="sheet-h" id="cp-sheet-h" tabindex="-1" style="color:rgba(246,239,223,0.8)">Secure checkout <span class="demo-pill">Preview</span></h3>
-              <div class="sheet-lines" id="cp-lines"></div>
-              <div class="sheet-slot" aria-hidden="true" style="color:rgba(246,239,223,0.75);border-color:rgba(246,239,223,0.3)"><svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="24" height="18" rx="3"/><path d="M1 7h24M5 14h6"/></svg><span>Card or phone wallet, in Stripe&rsquo;s secure form</span></div>
-              <p class="demo-note">Preview: on your real site this opens Stripe&rsquo;s checkout, paid into your own Stripe. Nothing is charged.</p>
-            </div>
-            <div class="go-row"><button type="button" class="gbtn" id="cp-pay">Place order (preview)</button><button type="button" class="gbtn ghost" data-back="5">Back</button></div>
-          </div>
-
-          <div id="cp-7" class="cup-done fade-in" hidden>
-            <h3 id="cp-done-h" tabindex="-1" style="color:#f6efdf;font-size:30px">On its way to the counter!</h3>
-            <p id="cp-done-text" style="margin-top:8px"></p>
-            <p class="demo-note">Preview only. Nothing was sent or charged.</p>
-            <div class="go-row"><button type="button" class="gbtn ghost" id="cp-edit5">Change something</button><button type="button" class="gbtn ghost" id="cp-again7">Try it again</button></div>
+            <div class="go-row"><button type="button" class="gbtn" id="cp-copy">Copy what I would say</button><button type="button" class="gbtn ghost" id="cp-change">Change something</button><button type="button" class="gbtn ghost" id="cp-again">Try it again</button></div>
+            <div class="go-row" style="margin-top:12px"><a class="gbtn" href="tel:+19077474924" style="text-decoration:none">Call (907) 747-4924</a></div>
+            <p class="demo-note">Preview only: nothing is sent or saved. Say it at the window, or call.</p>
           </div>
         </div>
 
         <p class="tier-note mock-note wf-note" style="margin-top:22px">Your syrup board, as a drink people build. I typed the flavors from a photo of your board on Google (April 2026), so tell me if one is off, and which syrups come sugar free. When you add a syrup, I can follow your socials and update as you post, or you can email me the new flavor, and it&rsquo;s here, usually within 2 business days.</p>
-        <p class="tier-note mock-note wf-note" data-show="crone all" data-fold data-thing="pickup pre-orders" style="margin-top:14px">Pickup pre-orders: each one lands in your portal, with a short heads-up email to you: the drink, the name and when they&rsquo;ll be by. Your Toast page says online ordering isn&rsquo;t available right now, so this is where it would live. Card payments go into your own Stripe, and your prices go where the blanks are.</p>
       </div>
     </div>
   </div>
@@ -1087,14 +1049,14 @@
     <div data-thing="a message form" style="grid-column:1 / -1">
       <div class="card" id="msg-card">
         <p class="label with-pill" style="margin-bottom:8px"><span>Say hello</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
-        <h3>A question, a big order, <em>an idea?</em></h3>
-        <p class="soft" style="margin-top:8px">Send us a note and we&rsquo;ll write back. <span class="ph">(your note on catering and large orders, if you do them)</span></p>
+        <h3>A question, a gift idea, <em>a hello?</em></h3>
+        <p class="soft" style="margin-top:8px">Send us a note and we&rsquo;ll write back.</p>
         <form class="stack" id="msg" novalidate aria-label="Message form, preview">
           <div class="fld-row">
             <label class="fld">Your name<input id="msg-name" autocomplete="off" value="Jess R."></label>
             <label class="fld">Email<input id="msg-mail" type="email" autocomplete="off" value="jess@example.com"></label>
           </div>
-          <label class="fld">Your message<textarea id="msg-text" rows="3">Could I order two dozen bagels for a Friday morning meeting?</textarea></label>
+          <label class="fld">Your message<textarea id="msg-text" rows="3">Do you have the bags with the gold label right now?</textarea></label>
           <p class="hint" id="msg-hint" role="status"></p>
           <div><button type="submit" class="gbtn">Send message (preview)</button></div>
         </form>
@@ -1114,7 +1076,7 @@
     <div id="shop" data-thing="a beans shop" tabindex="-1">
       <p class="label with-pill"><span>Beans, to take home</span> <span class="demo-pill">Preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Take the roaster <em>home with you</em></h2>
-      <p class="measure soft" style="margin-top:12px">Bags to pick up at the cafe, or to send to someone who misses Sitka. Orders and any shipping addresses live in your own Stripe, with a short heads-up email for each.</p>
+      <p class="measure soft" style="margin-top:12px">Bags to send to someone who misses Sitka, or to treat yourself. Orders and any shipping addresses live in your own Stripe, with a short heads-up email for each.</p>
       <div class="shop">
         <div>
           <div class="steps" id="shop-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Pick your coffee</button><button type="button" data-s="2" disabled>2 Checkout</button></div>
@@ -1124,8 +1086,8 @@
           <div id="shop-1">
             <h3 style="font-size:26px">Your bags</h3>
             <div class="sheet-lines" id="shop-lines" style="margin-top:10px"><p class="soft" style="padding:8px 0">Nothing in the cart yet. Add a coffee on the left.</p></div>
-            <p class="q" id="shop-d-q">Pick up or ship</p>
-            <div class="choice" role="group" aria-labelledby="shop-d-q" id="shop-ds"><button type="button" data-d="Pick up at the cafe" aria-pressed="true">Pick up at the cafe</button><button type="button" data-d="Ship it" aria-pressed="false">Ship it</button></div>
+            <p class="q" id="shop-d-q">Shipping</p>
+            <div class="choice" role="group" aria-labelledby="shop-d-q" id="shop-ds"><button type="button" data-d="Ship it" aria-pressed="true">Ship it</button></div>
             <p class="hint" id="shop-hint" role="status"></p>
             <div class="go-row"><button type="button" class="gbtn" id="shop-go">Continue to checkout</button></div>
           </div>
@@ -1238,7 +1200,7 @@
     <div class="foot-mark"><button type="button" class="foot-logo" id="foot-logo" aria-label="Highliner mountain"><img src="images/logo-cream.png" width="885" height="405" alt="" style="width:54px;height:auto"></button><span class="wm">Highliner Coffee Co.</span></div>
     <p>327 Seward St <span aria-hidden="true">&middot;</span> <span class="nw">Sitka, Alaska 99835</span> <span aria-hidden="true">&middot;</span> roasting since 1994</p>
     <p class="foot-reach"><a href="tel:+19077474924">(907) 747-4924</a> <span aria-hidden="true">&middot;</span> <a href="mailto:highlinercoffeeco@gmail.com">highlinercoffeeco@gmail.com</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/highlinercoffee/" target="_blank" rel="noopener">Instagram<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.facebook.com/HighlinerCoffee" target="_blank" rel="noopener">Facebook<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: your cup, the roaster and beans, the counter, the room, kind words, joining the crew, your hours, Call and gift card buttons), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: message form, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (pickup pre-orders and a beans shop, paid into your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: your cup, the roaster and beans, the counter, the room, kind words, joining the crew, your hours, Call and gift card buttons), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: message form, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (a beans shop: packaged coffee to ship, paid into your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
   </div>
 </footer>
@@ -1287,7 +1249,7 @@
 
 <script>
   /* THE SIGNATURE: pour your cup. Their syrup board, typed from a photo on Google (April 2026), as a drink you build and then say at the window.
-     In Bloom adds pickup pre-orders. Nothing is sent anywhere. */
+     Nothing is sent anywhere. */
   (function () {
     function $(id) { return document.getElementById(id); }
     var card = $('cup-card'); if (!card) return;
@@ -1304,9 +1266,9 @@
       { id: 'combo', name: 'Combos', c: '#3aa6a0', items: ['Almond Joy', 'Bob Marley', 'Hawaiian Island', 'Highliner Rainbow', 'Snickers'] }
     ];
     var SF = ['Almond Roca', 'Blackberry', 'Blue Raspberry', 'Caramel', 'Hazelnut', 'Irish Cream', 'Orange', 'Peach', 'Peppermint', 'Raspberry', 'Strawberry', 'Vanilla'];
-    var t = 'iced', base = null, fl = [], sf = false, fam = 0, step = 1, reach = 1, when = '', where = '';
+    var t = 'iced', base = null, fl = [], sf = false, fam = 0, step = 1, reach = 1;
     var $b = $('cp-bases'), $f = $('cp-fams'), $c = $('cp-chips'), $p = $('cp-picked');
-    var panels = {}; for (var i = 1; i <= 7; i++) panels[i] = $('cp-' + i);
+    var panels = {}; for (var i = 1; i <= 4; i++) panels[i] = $('cp-' + i);
     var stepBtns = [].slice.call($('cup-steps').querySelectorAll('[data-s]'));
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     function art(w) { return /^[aeiou]/i.test(w) ? 'an' : 'a'; }
@@ -1330,15 +1292,15 @@
     function paintSteps() {
       stepBtns.forEach(function (b) {
         var s = +b.getAttribute('data-s');
-        b.disabled = s > reach || step === 7; b.classList.toggle('on', s === step);
+        b.disabled = s > reach; b.classList.toggle('on', s === step);
         if (s === step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
       });
     }
     function go(n, focus) {
-      step = n; if (n <= 6 && n > reach) reach = n; if (n === 7) reach = 6;
-      for (var k = 1; k <= 7; k++) if (panels[k]) panels[k].hidden = (k !== n);
+      step = n; if (n > reach) reach = n;
+      for (var k = 1; k <= 4; k++) if (panels[k]) panels[k].hidden = (k !== n);
       paintSteps(); paintCup();
-      if (n === 4) paintOrder(); if (n === 6) paintReview();
+      if (n === 4) paintOrder();
       if (focus !== false) { var p = panels[n]; if (p) { p.setAttribute('tabindex', '-1'); quietFocus(p); } }
     }
     /* step 1 */
@@ -1400,51 +1362,18 @@
     }
     $('cp-copy').addEventListener('click', function () {
       var txt = orderText(), ok = function () { $('cp-copied').textContent = 'Copied. Paste it into a text, or read it out at the window.'; };
-      try { navigator.clipboard.writeText(txt).then(ok, function () { $('cp-copied').textContent = 'Your order: ' + txt; }); } catch (e) { $('cp-copied').textContent = 'Your order: ' + txt; }
+      try { navigator.clipboard.writeText(txt).then(ok, function () { $('cp-copied').textContent = 'What to say: ' + txt; }); } catch (e) { $('cp-copied').textContent = 'What to say: ' + txt; }
     });
     $('cp-change').addEventListener('click', function () { go(3); });
     function reset() {
-      t = 'iced'; base = null; fl = []; sf = false; fam = 0; when = ''; where = ''; reach = 1;
+      t = 'iced'; base = null; fl = []; sf = false; fam = 0; reach = 1;
       $('cp-sf').checked = false;
       [].forEach.call($('cp-temps').querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-t') === 'iced' ? 'true' : 'false'); });
       [].forEach.call($b.children, function (y) { y.setAttribute('aria-pressed', 'false'); });
-      [].forEach.call($('cp-whens').children, function (y) { y.setAttribute('aria-pressed', 'false'); });
-      [].forEach.call($('cp-wheres').children, function (y) { y.setAttribute('aria-pressed', 'false'); });
-      $('cp-p-hint').textContent = ''; $('cp-b-hint').textContent = '';
+      $('cp-b-hint').textContent = '';
       paintChips(); go(1);
     }
-    $('cp-again').addEventListener('click', reset); $('cp-again7').addEventListener('click', reset);
-    /* In Bloom: pickup */
-    $('cp-send').addEventListener('click', function () { go(5); });
-    [['cp-whens', 'w'], ['cp-wheres', 'p']].forEach(function (pair) {
-      var box = $(pair[0]);
-      [].forEach.call(box.children, function (b) {
-        b.addEventListener('click', function () { if (pair[1] === 'w') when = b.getAttribute('data-w'); else where = b.getAttribute('data-p'); [].forEach.call(box.children, function (y) { y.setAttribute('aria-pressed', y === b ? 'true' : 'false'); }); });
-      });
-    });
-    $('cp-go5').addEventListener('click', function () {
-      var h = $('cp-p-hint');
-      if (!when) { h.textContent = 'Pick when you will be by, so the cup is ready.'; return; }
-      if (!where) { h.textContent = 'Pick where you will pick it up.'; return; }
-      if (!$('cp-name').value.trim()) { h.textContent = 'Add a name for the cup.'; return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('cp-mail').value.trim())) { h.textContent = 'That email looks a little off. Check it and try again.'; return; }
-      h.textContent = ''; go(6);
-    });
-    function paintReview() {
-      var box = $('cp-lines'); box.innerHTML = '';
-      function row(a, b, cls) { var d = document.createElement('div'); if (cls) d.className = cls; var s1 = document.createElement('span'), s2 = document.createElement('span'); s1.textContent = a; if (b === null) { s2.innerHTML = '<span class="ph">(price)</span>'; } else s2.textContent = b; d.appendChild(s1); d.appendChild(s2); box.appendChild(d); }
-      row((t === 'iced' ? 'Iced ' : 'Hot ') + base, null);
-      fl.forEach(function (x) { row('+ ' + sfName(x), null); });
-      row('For ' + $('cp-name').value.trim(), 'Pickup ' + when.replace('in about ', ''));
-      row('Where', where.replace('at the ', ''));
-      row('Total', null, 'total');
-      quietFocus($('cp-sheet-h'));
-    }
-    $('cp-pay').addEventListener('click', function () {
-      $('cp-done-text').textContent = 'Your ' + drinkWords() + ' is saved for ' + $('cp-name').value.trim() + ', ' + where + ', ' + when + '.';
-      go(7, false); quietFocus($('cp-done-h'));
-    });
-    $('cp-edit5').addEventListener('click', function () { go(5); });
+    $('cp-again').addEventListener('click', reset);
     [].forEach.call(card.querySelectorAll('[data-back]'), function (b) { b.addEventListener('click', function () { go(+b.getAttribute('data-back')); }); });
     stepBtns.forEach(function (b) { b.addEventListener('click', function () { if (!b.disabled) go(+b.getAttribute('data-s')); }); });
     paintChips(); go(1, false);
@@ -1461,7 +1390,7 @@
       ['Full City Blend', '#0c2548', 'House blend'], ['Longliner’s Blend', '#0c2548', 'House blend, a smooth medium roast'], ['Ancient Mariner Blend', '#0c2548', 'House blend'], ['Fairweather Grounds', '#0c2548', 'House blend'],
       ['Primo Decaf', '#2f6f68', 'Decaf']
     ];
-    var qty = {}, dlv = 'Pick up at the cafe', step = 1;
+    var qty = {}, dlv = 'Ship it', step = 1;
     var lines = $('shop-lines'), stepBtns = [].slice.call($('shop-steps').querySelectorAll('[data-s]'));
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     function count() { return ITEMS.reduce(function (n, it) { return n + (qty[it[0]] || 0); }, 0); }
@@ -1497,7 +1426,7 @@
     });
     $('shop-back').addEventListener('click', function () { go(1); });
     $('shop-pay').addEventListener('click', function () {
-      var n = count(); $('shop-done-text').textContent = n + (n === 1 ? ' bag is' : ' bags are') + (dlv === 'Ship it' ? ' on the way to the roaster’s shipping table.' : ' set aside for pickup at the cafe.');
+      var n = count(); $('shop-done-text').textContent = n + (n === 1 ? ' bag is' : ' bags are') + ' on the way to the roaster’s shipping table.';
       go(3); quietFocus($('shop-done-h'));
     });
     $('shop-edit').addEventListener('click', function () { go(1); });
@@ -1652,7 +1581,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your cup builder, the roaster and your beans, the counter, the room, kind words, joining the crew, your hours, and Call and gift card buttons.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus a message form, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus pickup pre-orders from the cup builder and a beans shop, paid right on your site into your own Stripe. That\u2019s every piece on this page.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus a beans shop: packaged coffee to ship, paid on your site into your own Stripe. That\u2019s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
