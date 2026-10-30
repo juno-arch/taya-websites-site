@@ -620,6 +620,28 @@
   .rs-steps { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(238, 244, 240, 0.75); margin-bottom: 14px; }
   .rs-steps button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 6px 2px; margin: -6px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; min-height: 32px; }
   .rs-steps button.on { color: #f1cf7a; font-weight: 500; text-decoration: none; cursor: default; }
+  .rs-k { margin: 14px 0 2px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(238, 244, 240, 0.72); }
+  .rs-appt { margin: 0; font-size: 17px; }
+  .rs-row { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: end; margin-top: 12px; }
+  .rs-row .rs-tz { margin: 0 0 12px; }
+  .rs-qty { width: 96px; }
+  .rs-dates { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 10px; margin-top: 12px; }
+  .rs-dates .chip { border-radius: 4px; display: grid; gap: 1px; justify-items: center; padding: 10px 8px; text-align: center; }
+  .rs-dates .chip small { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.78; }
+  .rs-dates .chip b { font-weight: 600; }
+  .rs-menu { display: flex; flex-wrap: wrap; gap: 0 10px; }
+  .rs .rs-ok { color: #eef4f0; font-weight: 400; }
+  .rs-opt { border: 0; padding: 0; margin: 18px 0 0; font-size: 15px; }
+  .rs-opt legend { padding: 0; font-family: inherit; font-size: 20px; color: #eef4f0; margin-bottom: 4px; }
+  .rs-opt label, .rs-agree { display: inline-flex; gap: 8px; align-items: center; min-height: 44px; margin-right: 14px; color: #eef4f0; }
+  .rs-opt input, .rs-agree input { width: 20px; height: 20px; accent-color: #f1cf7a; }
+  .rs-waiver { margin-top: 14px; font-size: 14.5px; line-height: 1.55; color: rgba(238, 244, 240, 0.9); }
+  .rs-waiver h4 { margin: 0 0 6px; font-size: 19px; font-weight: 500; color: #eef4f0; }
+  .rs-waiver ol { margin: 0 0 8px; padding-left: 20px; display: grid; gap: 6px; }
+  .rs-sum { margin-top: 10px; font-size: 16px; }
+  .rs-sum div { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0; border-bottom: 1px solid rgba(238, 244, 240, 0.25); }
+  .rs-sum .rs-tot { font-weight: 600; }
+  .rs .demo-note { color: rgba(238, 244, 240, 0.78); }
   .rs-inbox { margin-top: 16px; border: 1px dashed rgba(238, 244, 240, 0.4); border-radius: 4px; padding: 12px 14px; font-size: 15px; }
   .rs-inbox .from { font-size: 12px; color: rgba(238, 244, 240, 0.72); }
   .rs .bk-go { background: #f1cf7a; border-color: #f1cf7a; color: #14241d; }
@@ -996,34 +1018,75 @@
 
     <div class="rs" id="rs" data-show="crone all" data-fold data-thing="class reservations right on your site">
       <p class="label with-pill"><span>Reserve a class</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <div class="rs-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your class</button><button type="button" data-s="2" disabled>2 Your details</button></div>
+      <div class="rs-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Date &amp; Time</button><button type="button" data-s="2" disabled>2 Your information</button><button type="button" data-s="3" disabled>3 Payment</button></div>
       <div id="rs-s1">
-        <h3 id="rs-h">Your class</h3>
-        <p id="rs-what" style="margin-top:8px"></p>
-        <div class="bk-nav" style="margin-top:14px"><button type="button" class="bk-go" id="rs-next">Next</button><button type="button" class="bk-go ghost" id="rs-cancel">Pick a different class</button></div>
+        <h3 id="rs-h">Date &amp; Time</h3>
+        <p class="rs-k">Appointment</p>
+        <p id="rs-what" class="rs-appt"></p>
+        <div class="rs-row"><label class="fld rs-qty" for="rs-qty">Quantity<input id="rs-qty" type="number" min="1" max="6" value="1" inputmode="numeric"></label><p class="rs-k rs-tz">Time zone: Pacific Time</p></div>
+        <div class="rs-dates" id="rs-dates" role="group" aria-label="Pick a date and time"></div>
+        <div class="rs-menu" id="rs-menu" hidden>
+          <button type="button" class="bk-go" id="rs-cont">Select and continue</button>
+          <button type="button" class="bk-go ghost" id="rs-add">Select and add another time</button>
+          <button type="button" class="bk-go ghost" id="rs-rec">Select and make recurring</button>
+        </div>
+        <p class="hint rs-ok" id="rs-picked" role="status"></p>
+        <div class="bk-nav" style="margin-top:6px"><button type="button" class="bk-go ghost" id="rs-code">Check code balance</button><button type="button" class="bk-go ghost" id="rs-cancel">Pick a different class</button></div>
+        <p class="demo-note" id="rs-code-msg" role="status" hidden>On your site a student types the code from a pass and sees the classes left on it. Preview only, so there is no code to check here.</p>
       </div>
       <div id="rs-s2" hidden>
+        <h3>Your Information</h3>
+        <p class="rs-k">Appointment</p>
+        <p id="rs-what2" class="rs-appt"></p>
         <div class="bk-form">
           <div class="fld-row">
-            <label class="fld" for="rs-name">Your name<input id="rs-name" autocomplete="off" value="Maya R."></label>
-            <label class="fld" for="rs-mail">Email<input id="rs-mail" type="email" autocomplete="off" value="maya@example.com"></label>
+            <label class="fld" for="rs-fn">First name *<input id="rs-fn" autocomplete="off" value="Maya"></label>
+            <label class="fld" for="rs-ln">Last name *<input id="rs-ln" autocomplete="off" value="R."></label>
           </div>
-          <label class="fld" for="rs-pay">How you will pay<select id="rs-pay"><option value="drop">Drop-in, $17 (I pay when I arrive)</option><option value="pass">I have a pass code</option><option value="new">New to Tosha, 3 classes for $30</option></select></label>
+          <div class="fld-row">
+            <label class="fld" for="rs-ph">Phone<input id="rs-ph" type="tel" autocomplete="off" value="+1 "></label>
+            <label class="fld" for="rs-mail">Email *<input id="rs-mail" type="email" autocomplete="off" value="maya@example.com"></label>
+          </div>
+          <fieldset class="rs-opt"><legend>Email Opt In</legend>
+            <p>Would you like to receive an occasional email? (we don&rsquo;t send many emails- we promise!) *</p>
+            <label><input type="radio" name="rs-opt" value="yes"> Yes</label> <label><input type="radio" name="rs-opt" value="no"> No</label>
+          </fieldset>
+          <div class="rs-waiver" id="rs-waiver">
+            <h4>Waiver of Liability and Disclosure:</h4>
+            <ol>
+              <li>I agree to employ my own judgment as to whether a particular pose or activity is appropriate for me.</li>
+              <li>I agree that Tosha Yoga is in no way responsible for the loss or damage of my belongings.</li>
+              <li>I understand that yoga is not a substitute for medical attention. Yoga is not recommended and is not safe under certain medical conditions.</li>
+              <li>I acknowledge that I have been given permission from my physician to practice yoga, or that I have decided to practice yoga without the approval of my doctor and do hereby assume all responsibility for my participation in any activity associated with Tosha Yoga.</li>
+              <li>I have read this waiver of liability form. I fully understand its terms and conditions and hereby agree to irrevocably release and waive any claims that I have now or hereafter may have against Tosha Yoga or its teachers.</li>
+            </ol>
+            <p>(we&rsquo;re glad you&rsquo;re here)</p>
+            <label class="rs-agree"><input type="checkbox" id="rs-agree"> I have read and agree to the terms above</label>
+          </div>
         </div>
         <p class="hint" id="rs-hint" role="status"></p>
-        <div class="bk-nav"><button type="button" class="bk-go" id="rs-go">Reserve (preview)</button><button type="button" class="bk-go ghost" id="rs-back">Back</button></div>
+        <div class="bk-nav"><button type="button" class="bk-go" id="rs-topay">Continue to payment</button><button type="button" class="bk-go ghost" id="rs-back">Back</button></div>
+      </div>
+      <div id="rs-s3" hidden>
+        <h3>Payment</h3>
+        <div class="rs-sum"><div><span id="rs-line">Class</span><span id="rs-amt">$17.00</span></div><div class="rs-tot"><span>Total</span><span id="rs-tot">$17.00</span></div></div>
+        <label class="fld" for="rs-pay" style="margin-top:14px">How you will pay<select id="rs-pay"><option value="drop">Single class, $17 (online now, or at the studio)</option><option value="pass">I have a pass or unlimited code</option><option value="new">New to Tosha, 3 classes for $30</option><option value="stu">Student special, 3 classes for $30</option></select></label>
+        <label class="fld" for="rs-coupon" style="margin-top:12px">Coupon or pass code<input id="rs-coupon" autocomplete="off" placeholder="Optional"></label>
+        <p class="hint" id="rs-hint3" role="status"></p>
+        <div class="bk-nav"><button type="button" class="bk-go" id="rs-go">Book (preview)</button><button type="button" class="bk-go ghost" id="rs-back3">Back</button></div>
       </div>
       <div id="rs-done" hidden>
-        <h3 id="rs-done-h" tabindex="-1">You&rsquo;re in!</h3>
+        <h3 id="rs-done-h" tabindex="-1">You&rsquo;re booked!</h3>
         <p id="rs-summary" style="margin-top:8px"></p>
-        <div class="rs-inbox"><div class="from">New reservation, in your inbox</div><div id="rs-inbox">&hellip;</div></div>
-        <div class="bk-nav" style="margin-top:14px"><button type="button" class="bk-go ghost" id="rs-again">Try it again</button><button type="button" class="bk-go ghost" id="rs-edit">Change something</button></div>
+        <div class="rs-inbox"><div class="from">Confirmation email, in your student&rsquo;s inbox</div><div id="rs-inbox">&hellip;</div></div>
+        <div class="bk-nav" style="margin-top:14px"><button type="button" class="bk-go ghost" id="rs-again">Try it again</button><button type="button" class="bk-go ghost" id="rs-edit">Change something</button><button type="button" class="bk-go ghost" id="rs-cal" aria-disabled="true" aria-describedby="rs-cal-msg">Add to calendar</button></div>
+        <p class="demo-note" id="rs-cal-msg" role="status" hidden>This is a preview, so there is no calendar file yet. On your site this button puts the class on a phone or computer calendar.</p>
       </div>
-      <p class="sec-note mock-note wf-note">Here people reserve a class right on your site, and you see who is coming before you walk in. Nothing here books a real class, and the pass codes and prices are the ones on your Acuity page today. A change like a sub shows on the board and the banner once you tell me, usually within 2 business days. <span class="vh">Preview only.</span></p>
+      <p class="sec-note mock-note wf-note">Here people reserve a class right on your site, and you see who is coming before you walk in. Nothing here books a real class, and the steps, the waiver words, the pass codes and the prices are the ones on your Acuity page today, in the same order. A change like a sub shows on the board and the banner once you tell me, usually within 2 business days. <span class="vh">Preview only.</span></p>
     </div>
 
     <p class="tier-note mock-note wf-note" data-show="maiden mother" data-fold hidden>This is your own Acuity schedule, laid out as a flower. With this build every class has a Book button to your Acuity page, so booking doesn&rsquo;t change at all for you or your students. Reserving right here comes with In Bloom. <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
-    <p class="sec-note mock-note wf-note">These are the classes on your Acuity schedule as of October 24, and the notes under each are from your Classes page. Your Classes page and your schedule differ in a few places (Meditation Lab is 12 to 12:30 on one and 12 to 1 on the other, and the Saturday and Tuesday evening classes), so I followed the schedule people book from. Tap Angie is out Saturday to see how a sub shows up: your schedule already says &ldquo;subbed by Serena&rdquo; for today, and here it lands on the page and in the banner too. I can follow your socials and update as you post, or you can email me the sub, and it&rsquo;s up. <span class="ph">(a line about Energizing Flow)</span></p>
+    <p class="sec-note mock-note wf-note">These are the classes on your Acuity schedule as of October 30, and the notes under each are from your Classes page. Your Classes page and your schedule differ in a few places (the Saturday and Tuesday evening classes, and Meditation Lab, which now reads 9 to 10 am on your schedule), so I followed the schedule people book from. Tap Angie is out Saturday to see how a sub shows up: your schedule already says &ldquo;subbed by Serena&rdquo; for today, and here it lands on the page and in the banner too. I can follow your socials and update as you post, or you can email me the sub, and it&rsquo;s up. <span class="ph">(a line about Energizing Flow)</span></p>
   </div>
 </section>
 
@@ -1118,6 +1181,7 @@
         <p class="soft measure" style="margin-top:14px">The studio is intentionally simple, so it stays affordable: no front desk, minimal staff, a few products for sale. They prefer cash, and also take card or Apple Pay.</p>
         <ul class="price-list">
           <li class="reveal"><span class="pl-name">New to Tosha<small>3 classes, valid for one month</small></span><span class="pl-price">$30</span></li>
+          <li class="reveal"><span class="pl-name">Student special<small>3 classes with a valid student ID</small></span><span class="pl-price">$30</span></li>
           <li class="reveal"><span class="pl-name">Drop in<small>One class, pay when you arrive or online beforehand</small></span><span class="pl-price">$17</span></li>
           <li class="reveal"><span class="pl-name">5 class pass<small>Valid for 3 months, drop-in classes</small></span><span class="pl-price">$80</span></li>
           <li class="reveal"><span class="pl-name">10 class pass<small>Valid for 6 months, drop-in classes</small></span><span class="pl-price">$140</span></li>
@@ -1581,7 +1645,7 @@
       { d: 1, t: '9:00 to 10:15 am', n: 'Vinyasa', w: 'Kati', m: 'strong', x: 'An energetic flow rooted in breath, designed to awaken, inspire and connect. All levels, with advanced postures and mindful variations.' },
       { d: 1, t: '12:00 to 1:00 pm', n: 'Slow Strength', w: 'Serena', m: 'steady', x: 'Move slowly. Breathe deeply. Build strength from the inside out. All levels welcome, 60 minutes.' },
       { d: 1, t: '5:30 to 7:00 pm', n: 'Strength Flow', w: 'Suzanne', m: 'strong', x: 'Ashtanga and Vinyasa roots, to help you get stronger and more resilient by moving through challenge. Open to all levels. The room is warm most of the year, not nearly hot yoga warm.' },
-      { d: 2, t: '12:00 to 1:00 pm', n: 'Meditation Lab', w: 'Damla', m: 'quiet', x: 'A midday meditation by donation: a partner breathing practice, a short lesson, then 20 minutes of shared silence.', don: 1 },
+      { d: 2, t: '9:00 to 10:00 am', n: 'Meditation Lab', w: 'Damla', m: 'quiet', x: 'A midday meditation by donation: a partner breathing practice, a short lesson, then 20 minutes of shared silence.', don: 1 },
       { d: 2, t: '5:30 to 6:30 pm', n: 'All Levels Flow', w: 'B', m: 'steady', x: 'Connect to your breath, your core, your limbs and your spirit: simple flows, and stillness in postures. Beginner to advanced.' },
       { d: 2, t: '7:00 to 8:15 pm', n: 'All Levels Flow', w: 'Chloe', m: 'steady', x: 'Connect to your breath, your core, your limbs and your spirit: simple flows, and stillness in postures. Beginner to advanced.' },
       { d: 3, t: '9:00 to 10:15 am', n: 'Vinyasa', w: 'Kati', m: 'strong', x: 'An energetic flow rooted in breath, designed to awaken, inspire and connect. All levels, with advanced postures and mindful variations.' },
@@ -1712,45 +1776,99 @@
     }
   })();
 
-  /* reserve a class right on your site (In Bloom) */
+  /* reserve a class right on your site (In Bloom). Steps follow the Acuity flow: Date & Time, Your Information, Payment, then the confirmation. */
   (function () {
     function $(id) { return document.getElementById(id); }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var box = $('rs'); if (!box) return;
-    var cur = { label: 'Vinyasa with Kati, Monday 9:00 to 10:15 am', n: 'Vinyasa', w: 'Kati', d: 'Monday', t: '9:00 to 10:15 am' }, step = 1;
+    var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], DAYN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var BASE = new Date(2026, 9, 25); /* the Sunday of the week this preview was read, so the dates stay put */
+    var cur = { label: 'Vinyasa with Kati, Monday 9:00 to 10:15 am', n: 'Vinyasa', w: 'Kati', d: 'Monday', t: '9:00 to 10:15 am', di: 1 }, step = 1, opts = [], sel = -1, picks = [], recur = false;
+    function startOf(t) { var m = /^(\d+:\d+)(?: (am|pm))? to .* (am|pm)$/.exec(t); return m ? m[1] + ' ' + (m[2] || m[3]).toUpperCase() : t; }
+    function build() {
+      opts = []; var first = new Date(2026, 9, 31); /* from the day after the preview date */
+      for (var k = 0; k < 28 && opts.length < 4; k++) {
+        var dt = new Date(first.getFullYear(), first.getMonth(), first.getDate() + k);
+        if (dt.getDay() !== cur.di) continue;
+        var wk = Math.floor((dt - BASE) / 604800000);
+        opts.push({ wk: wk === 0 ? 'This week' : wk === 1 ? 'Next week' : 'In ' + wk + ' weeks', day: DAYN[dt.getDay()], date: MON[dt.getMonth()] + ' ' + dt.getDate(), time: startOf(cur.t) });
+      }
+      var host = $('rs-dates'); host.textContent = '';
+      opts.forEach(function (o, i) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', 'false');
+        [['small', o.wk], ['span', o.day], ['span', o.date], ['b', o.time]].forEach(function (p) { var e = document.createElement(p[0]); e.textContent = p[1]; b.appendChild(e); });
+        b.addEventListener('click', function () { sel = sel === i ? -1 : i; paintPick(); });
+        host.appendChild(b);
+      });
+    }
+    function labelOf(o) { return o.day + ', ' + o.date + ' at ' + o.time; }
+    function paintPick() {
+      [].forEach.call($('rs-dates').children, function (b, i) { b.setAttribute('aria-pressed', i === sel ? 'true' : 'false'); });
+      $('rs-menu').hidden = sel < 0;
+    }
+    function picked() {
+      var txt = picks.length ? picks.map(labelOf).join(', then ') : '';
+      return recur ? txt + ', repeating every ' + cur.d + ' for 4 weeks' : txt;
+    }
     function paint() {
-      $('rs-what').textContent = cur.n + ' with ' + cur.w + ', ' + cur.d + ' ' + cur.t + '.';
-      $('rs-s1').hidden = step !== 1; $('rs-s2').hidden = step !== 2; $('rs-done').hidden = step !== 3;
-      var steps = box.querySelector('.rs-steps'); steps.hidden = step === 3;
+      var what = cur.n + ' with ' + cur.w + ', ' + cur.d + ' ' + cur.t + '.';
+      $('rs-what').textContent = what; $('rs-what2').textContent = what + (picks.length ? ' ' + picked() + '.' : '');
+      ['1', '2', '3'].forEach(function (n) { $('rs-s' + n).hidden = step !== +n; }); $('rs-done').hidden = step !== 4;
+      var steps = box.querySelector('.rs-steps'); steps.hidden = step === 4;
       [].forEach.call(steps.querySelectorAll('[data-s]'), function (b) {
         var n = +b.dataset.s, on = n === step; b.classList.toggle('on', on); if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
         b.disabled = !on && n > step;
       });
+      $('rs-picked').textContent = step === 1 && picks.length ? 'Added so far: ' + picked() + '.' : '';
+      var q = Math.max(1, Math.min(6, parseInt($('rs-qty').value, 10) || 1)), cnt = Math.max(1, picks.length) * q;
+      $('rs-line').textContent = cur.n + (cnt > 1 ? ' x ' + cnt : '');
     }
+    function fresh() { picks = []; recur = false; sel = -1; build(); paintPick(); $('rs-hint').textContent = ''; $('rs-hint3').textContent = ''; $('rs-code-msg').hidden = true; }
     document.addEventListener('wk:reserve', function (e) {
-      var c = e.detail; cur = { label: c.label, n: c.n, w: c.w, d: c.d, t: c.t }; step = 1; $('rs-hint').textContent = ''; paint();
+      var c = e.detail; cur = { label: c.label, n: c.n, w: c.w, d: c.d, t: c.t, di: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(c.d) }; step = 1; fresh(); paint();
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       box.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-      setTimeout(function () { quietFocus($('rs-next')); }, reduce ? 0 : 600);
+      setTimeout(function () { quietFocus($('rs-dates').firstChild); }, reduce ? 0 : 600);
     });
-    $('rs-next').addEventListener('click', function () { step = 2; paint(); quietFocus($('rs-name')); });
-    $('rs-back').addEventListener('click', function () { step = 1; paint(); quietFocus($('rs-next')); });
-    box.querySelector('.rs-steps [data-s="1"]').addEventListener('click', function () { if (step > 1) { step = 1; paint(); quietFocus($('rs-next')); } });
-    $('rs-cancel').addEventListener('click', function () { var first = document.querySelector('#cls .cl:not([hidden]) .cl-main'); var sec = $('week'); quietFocus(first); if (first) first.scrollIntoView({ behavior: 'auto', block: 'center' }); });
-    $('rs-go').addEventListener('click', function () {
-      var name = $('rs-name').value.trim(), mail = $('rs-mail').value.trim();
-      if (!name) { $('rs-hint').textContent = 'Add your name first.'; $('rs-name').focus(); return; }
+    function take() { if (sel < 0) return false; var o = opts[sel]; if (picks.indexOf(o) < 0) picks.push(o); return true; }
+    $('rs-cont').addEventListener('click', function () { if (!take()) return; sel = -1; paintPick(); step = 2; paint(); quietFocus($('rs-fn')); });
+    $('rs-add').addEventListener('click', function () { if (!take()) return; sel = -1; paintPick(); paint(); quietFocus($('rs-dates').firstChild); });
+    $('rs-rec').addEventListener('click', function () { if (!take()) return; recur = true; picks = opts.slice(); sel = -1; paintPick(); step = 2; paint(); quietFocus($('rs-fn')); });
+    $('rs-qty').addEventListener('input', paint);
+    $('rs-code').addEventListener('click', function () { $('rs-code-msg').hidden = !$('rs-code-msg').hidden; });
+    $('rs-back').addEventListener('click', function () { step = 1; paint(); quietFocus($('rs-dates').firstChild); });
+    $('rs-back3').addEventListener('click', function () { step = 2; paint(); quietFocus($('rs-fn')); });
+    [1, 2].forEach(function (n) { box.querySelector('.rs-steps [data-s="' + n + '"]').addEventListener('click', function () { if (step > n) { step = n; paint(); } }); });
+    $('rs-cancel').addEventListener('click', function () { var first = document.querySelector('#cls .cl:not([hidden]) .cl-main'); quietFocus(first); if (first) first.scrollIntoView({ behavior: 'auto', block: 'center' }); });
+    $('rs-topay').addEventListener('click', function () {
+      var fn = $('rs-fn').value.trim(), ln = $('rs-ln').value.trim(), mail = $('rs-mail').value.trim();
+      if (!fn) { $('rs-hint').textContent = 'Add your first name.'; $('rs-fn').focus(); return; }
+      if (!ln) { $('rs-hint').textContent = 'Add your last name.'; $('rs-ln').focus(); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { $('rs-hint').textContent = 'Add an email address, so a confirmation can reach you.'; $('rs-mail').focus(); return; }
-      $('rs-hint').textContent = '';
-      var pay = $('rs-pay').value, how = pay === 'drop' ? 'drop-in, $17 at the door' : pay === 'pass' ? 'with a pass code' : 'New to Tosha, 3 classes for $30';
-      var tail = pay === 'drop' ? 'Pay $17 when you arrive.' : pay === 'pass' ? 'Bring your pass code, or give your name at the door.' : 'Your 3 for $30 starts with this class.';
-      $('rs-summary').textContent = 'Thank you, ' + name.split(/\s+/)[0] + '. You are in for ' + cur.n + ' with ' + cur.w + ', ' + cur.d + ' ' + cur.t + '. ' + tail;
-      $('rs-inbox').textContent = name + ' reserved ' + cur.n + ', ' + cur.d + ' ' + cur.t + ' (' + how + ').';
-      step = 3; paint(); quietFocus($('rs-done-h'));
+      if (!box.querySelector('input[name="rs-opt"]:checked')) { $('rs-hint').textContent = 'Choose Yes or No for the occasional email.'; box.querySelector('input[name="rs-opt"]').focus(); return; }
+      if (!$('rs-agree').checked) { $('rs-hint').textContent = 'Please tick that you have read and agree to the terms above.'; $('rs-agree').focus(); return; }
+      $('rs-hint').textContent = ''; step = 3; paint(); updateTotal(); quietFocus($('rs-pay'));
     });
-    $('rs-edit').addEventListener('click', function () { step = 2; paint(); quietFocus($('rs-name')); });
-    $('rs-again').addEventListener('click', function () { step = 1; $('rs-hint').textContent = ''; paint(); quietFocus($('rs-next')); });
-    paint();
+    function updateTotal() {
+      var q = Math.max(1, Math.min(6, parseInt($('rs-qty').value, 10) || 1)), cnt = Math.max(1, picks.length) * q, pay = $('rs-pay').value, amt;
+      if (pay === 'pass') amt = 0; else if (pay === 'drop') amt = 17 * cnt; else amt = 30;
+      var f = '$' + amt.toFixed(2); $('rs-amt').textContent = $('rs-tot').textContent = f;
+      $('rs-line').textContent = pay === 'pass' ? cur.n + ' (covered by your code)' : pay === 'drop' ? cur.n + ' x ' + cnt : pay === 'new' ? 'New to Tosha, 3 classes' : 'Student special, 3 classes';
+    }
+    $('rs-pay').addEventListener('change', updateTotal);
+    $('rs-go').addEventListener('click', function () {
+      var first = $('rs-fn').value.trim(), pay = $('rs-pay').value;
+      var how = pay === 'drop' ? 'single class, $17' : pay === 'pass' ? 'with a pass or unlimited code' : pay === 'new' ? 'New to Tosha, 3 classes for $30' : 'Student special, 3 classes for $30';
+      var tail = pay === 'drop' ? 'Your class is paid.' : pay === 'pass' ? 'Give your name at the door, or your code if the teacher asks.' : 'A code for your 3 classes is on its way to your inbox.';
+      var when = picks.length ? picked() : cur.d + ' ' + cur.t;
+      $('rs-summary').textContent = 'Thank you, ' + first + '. You are in for ' + cur.n + ' with ' + cur.w + ', ' + when + '. ' + tail;
+      $('rs-inbox').textContent = first + ' ' + $('rs-ln').value.trim() + ' booked ' + cur.n + ', ' + when + ' (' + how + ').';
+      $('rs-cal-msg').hidden = true; step = 4; paint(); quietFocus($('rs-done-h'));
+    });
+    $('rs-cal').addEventListener('click', function () { $('rs-cal-msg').hidden = false; });
+    $('rs-edit').addEventListener('click', function () { step = 1; paint(); quietFocus($('rs-dates').firstChild); });
+    $('rs-again').addEventListener('click', function () { step = 1; fresh(); paint(); quietFocus($('rs-dates').firstChild); });
+    fresh(); paint();
   })();
 
   /* passes, gifts and deposits (In Bloom), the contact form, the newsletter and the secret flower */
