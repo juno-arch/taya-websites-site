@@ -5,7 +5,7 @@ No stock photos. No clear faces, no kids' photos, no photo with words on it.
 - floor-bw (114d63_b6c174dc...): black and white social dancing from above. 4032 px native, shown at 1400 px.
 - lights (d55da0_6bd62a3c...): dancers under the mirror ball. 960 px native, shown at 960.
 - courtyard (d55da0_4c87c2ab...): the entrance and sign. 1728 px wide native, shown at 900.
-- berimbau (114d63_3a31d45...): a capoeira berimbau on a rug. 1080 px wide native, shown at 720.
+- belly (114d63_3ac35960...): three belly dancers outdoors, from the Programs page of redwoodraks.com (pulled Oct 30 2026). 720 px wide, shown at 720. Replaced the berimbau photo (a capoeira instrument, not a dance photo); berimbau files are still in images/ unused.
 - logo and the eight dancer silhouettes: cut from their logo file (d55da0_9b2cf620..., 2400x900), white keyed to transparent; each dancer is split by its own logo color.
 Sharpened gently (UnsharpMask 1.4, 75, 2), webp plus jpg, 640 px webp copies.
 Skipped on purpose: photos of children, flyers with lettering, teacher portraits.
