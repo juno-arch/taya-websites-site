@@ -1306,6 +1306,12 @@
         brand_sheet: !!th.brand_sheet, handoff_sheet: !!th.handoff_sheet,
         receipts: arr(th.receipts).map((r) => ({ name: str(r && r.name, 200), label: str(r && r.label, 120) || 'Receipt' })).filter((r) => r.name).slice(0, 20)
       },
+      // (Oct 30 2026) launch date lines: new clients only, and only when the server sends them
+      launch: d.launch && typeof d.launch === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(str(d.launch.estimate_on, 10)) ? {
+        estimate_on: str(d.launch.estimate_on, 10), estimate_text: str(d.launch.estimate_text, 80), moves_text: str(d.launch.moves_text, 80),
+        overdue_text: str(d.launch.overdue_text, 160), can_request: d.launch.can_request === true,
+        requested: d.launch.requested && /^\d{4}-\d{2}-\d{2}$/.test(str(d.launch.requested.date, 10)) ? { date: str(d.launch.requested.date, 10) } : null
+      } : null,
       start_open: d.start_open !== false,   // Taya's getting-started switch (older servers: always open)
       sms: d.sms && typeof d.sms === 'object' ? { available: d.sms.available === true, on: d.sms.on === true, last4: /^\d{4}$/.test(str(d.sms.last4)) ? d.sms.last4 : '' } : null,
       // their magic mockup while getting started is closed, and whether they've finished it
@@ -2266,6 +2272,52 @@
       after.append(icon('i-full'), span);
       after.hidden = false;
     } else after.hidden = true;
+    renderLaunch();
+  }
+
+  /* ---- launch date (new clients only; the server sends `launch` only when it is on for them) ---- */
+  function renderLaunch() {
+    const box = $('#tl-launch');
+    if (!box) return;
+    box.replaceChildren();
+    const L = me.launch;
+    const live = me.timeline.current === 'care' || me.timeline.current === 'resting';
+    if (!L || live) { box.hidden = true; return; }
+    box.append(make('p', 'tl-moves', L.moves_text), make('p', 'tl-est', L.estimate_text));
+    if (L.overdue_text) box.append(make('p', 'tl-late', L.overdue_text));
+    if (L.requested) {
+      box.append(make('p', 'tl-asked', 'You asked for ' + (shortDate(L.requested.date) || L.requested.date) + '. I’ll write you back about it.'));
+    } else if (L.can_request) {
+      const open = make('button', 'later', 'Need a different launch date?');
+      open.type = 'button';
+      const form = make('form', 'tl-form');
+      form.hidden = true;
+      const l1 = make('label', null, 'The date you would like');
+      const d = make('input'); d.type = 'date'; d.required = true; d.id = 'in-launch-date';
+      l1.append(d);
+      const l2 = make('label', null, 'Anything I should know? (optional)');
+      const n = make('textarea'); n.maxLength = 300; n.rows = 2; n.id = 'in-launch-note';
+      l2.append(n);
+      const go = make('button', 'btn', 'Send my request'); go.type = 'submit';
+      form.append(l1, l2, go);
+      open.addEventListener('click', () => { form.hidden = !form.hidden; open.setAttribute('aria-expanded', String(!form.hidden)); if (!form.hidden) d.focus(); });
+      form.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        if (!d.value) { d.focus(); return; }
+        if (DEMO) { toast('Demo: nothing was saved.'); return; }
+        go.disabled = true;
+        try {
+          const res = await postJSON('/launch-request', { date: d.value, note: n.value.trim() }, token);
+          me.launch.requested = { date: str(res && res.requested && res.requested.date, 10) || d.value };
+          renderLaunch();
+          toast('Thanks, I got your request. I’ll write you back about it.');
+        } catch (e) {
+          toast(e.code === 'slow_down' ? 'That’s a lot of tries for now. Try again in a bit.' : e.code === 'input' ? 'Pick a day after today, within the next year.' : 'That didn’t go through. Try again?');
+        } finally { go.disabled = false; }
+      });
+      box.append(open, form);
+    }
+    box.hidden = false;
   }
 
   /* ---- your things ---- */
