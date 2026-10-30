@@ -77,7 +77,7 @@
   .ph { display: inline-block; min-width: 8ch; padding: 0 6px; border-bottom: 2px dotted var(--accent); color: var(--ink-soft); }
 
   /* nav: slim, sticky, clear over the photo, solid once you scroll past it */
-  .nav { position: fixed; z-index: 30; inset: 0 0 auto 0; transition: background 0.3s ease, box-shadow 0.3s ease; }
+  .nav { position: fixed; z-index: 30; inset: var(--navtop, 0px) 0 auto 0; transition: background 0.3s ease, box-shadow 0.3s ease; }
   .nav-in { max-width: 1080px; margin: 0 auto; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; box-sizing: border-box; }
   .brand { font-family: var(--display); font-weight: 700; font-style: italic; font-size: 21px; color: #fff; text-decoration: none; text-shadow: 0 1px 8px rgba(8, 14, 28, 0.7); }
   .nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
@@ -209,6 +209,80 @@
   .free-list li { padding-left: 24px; position: relative; color: var(--ink-soft); }
   .free-list li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--accent); }
 
+  /* tune in video facade: no network until the play tap */
+  .dv { margin-top: 16px; max-width: 560px; }
+  .dv-box { position: relative; aspect-ratio: 16 / 9; border-radius: 4px 14px 14px 4px; overflow: hidden; background: var(--night); border: 1px solid var(--hair); border-left: 5px solid var(--accent); }
+  .dv-play { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 14px; box-sizing: border-box; cursor: pointer; border: 0; color: var(--night-ink); font: inherit;
+    background: radial-gradient(circle at 78% 22%, rgba(230, 182, 85, 0.28), rgba(230, 182, 85, 0) 46%), linear-gradient(150deg, #1b2036 0%, #22406a 100%);
+    display: grid; grid-template-rows: 1fr auto; justify-items: center; align-items: center; text-align: center; gap: 4px; }
+  .dv-play:hover .dv-ico { background: var(--gold); color: var(--night); }
+  .dv-play:focus-visible { outline: 3px solid var(--gold); outline-offset: -6px; }
+  .dv-ico { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: rgba(241, 236, 224, 0.94); color: var(--night); box-shadow: 0 0 0 6px rgba(230, 182, 85, 0.35); transition: background-color 0.2s ease, color 0.2s ease; }
+  .dv-ico svg { width: 30px; height: 30px; margin-left: 4px; }
+  .dv-cap { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 19px; line-height: 1.2; }
+  .dv-cap small { display: block; font-family: var(--body); font-style: normal; font-weight: 400; font-size: 13.5px; letter-spacing: 0.04em; opacity: 0.85; margin-top: 2px; }
+  .dv-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .dv-note { margin: 8px 0 0; font-size: 14.5px; color: var(--ink-soft); }
+  @media (prefers-reduced-motion: reduce) { .dv-ico { transition: none; } }
+
+  /* moon calendar */
+  .moon { margin-top: 30px; max-width: 640px; background: var(--paper); border: 1px solid var(--hair); border-radius: 18px; padding: 22px 16px 18px; }
+  .moon h3 { font-size: 26px; }
+  .moon-next { list-style: none; display: grid; gap: 8px; margin: 14px 0 0; padding: 0; }
+  .moon-next li { padding-left: 14px; border-left: 4px solid var(--accent); color: var(--ink-soft); }
+  .moon-next b { color: var(--ink); }
+  .moon-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; }
+  .moon-bar h4 { margin: 0; font-family: var(--display); font-size: 22px; text-align: center; flex: 1; }
+  .moon-bar .btn { min-height: 44px; min-width: 44px; padding: 8px 14px; }
+  .moon-today { margin-top: 8px; text-align: center; }
+  .moon-today button { font: inherit; font-size: 15px; color: var(--lake); background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 44px; padding: 0 12px; }
+  .moon-wk, .moon-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+  .moon-wk { margin-top: 8px; font-size: 12.5px; text-align: center; color: var(--ink-soft); letter-spacing: 0.04em; }
+  .moon-grid { margin-top: 4px; touch-action: pan-y; }
+  .mc { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 1px; min-height: 64px; padding: 4px 0 3px; border-radius: 10px; border: 1.5px solid transparent; background: transparent; color: var(--ink); font: inherit; font-size: 12.5px; line-height: 1.1; box-sizing: border-box; min-width: 0; }
+  .mc svg { width: 28px; height: 28px; display: block; }
+  .mc .lb { font-size: 10.5px; font-weight: 600; letter-spacing: 0.03em; color: var(--accent); line-height: 1.1; }
+  .mc.blank { visibility: hidden; }
+  button.mc { cursor: pointer; background: var(--mist); }
+  button.mc:hover { border-color: var(--accent); }
+  button.mc:focus-visible { outline: 3px solid var(--lake); outline-offset: 1px; }
+  button.mc[aria-pressed="true"] { border-color: var(--accent); background: var(--paper); box-shadow: 0 0 0 2px var(--accent); }
+  .mc.today { border-color: var(--bloom); }
+  .mc.today .n { background: var(--bloom); color: #fff; border-radius: 999px; padding: 0 6px; }
+  .moon-card { margin-top: 14px; border-left: 5px solid var(--accent); border-radius: 4px 14px 14px 4px; background: var(--mist); padding: 14px 16px; min-height: 24px; }
+  .moon-card h4 { margin: 0; font-family: var(--display); font-size: 22px; }
+  .moon-card p { margin: 6px 0 0; }
+  .moon-key { margin: 12px 0 0; font-size: 14.5px; color: var(--ink-soft); }
+  @media (max-width: 440px) { .moon { padding-inline: 8px; } .mc { min-height: 60px; font-size: 12px; } .mc svg { width: 24px; height: 24px; } .mc .lb { font-size: 9.5px; } }
+
+  /* top banner */
+  .status { position: relative; z-index: 40; }
+  .status-strip { margin: 0; background: var(--night); color: var(--night-ink); text-align: center; font-size: 14.5px; line-height: 1.4; }
+  .status-strip a { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 1px 10px; padding: 10px 16px; color: inherit; text-decoration: none; }
+  .status-strip b { font-family: var(--display); font-style: italic; font-weight: 700; font-size: 17px; }
+  .status-strip b::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-right: 9px; vertical-align: 2px; }
+  .status-strip[data-state="gather"] b::before { background: #cfe0f2; box-shadow: 0 0 0 3px rgba(207, 224, 242, 0.25); }
+  .status-strip[data-state="away"] b::before { background: #f08fb7; }
+  .status-strip em { font-style: normal; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(241, 236, 224, 0.55); }
+  .status-strip a:hover em { text-decoration-color: currentColor; }
+  .status-strip a:focus-visible { outline: 2px solid var(--night-ink); outline-offset: -4px; border-radius: 4px; }
+  .status-tab { position: absolute; top: 100%; left: calc(20px + max(0px, (100% - 1080px) / 2)); }
+  .status-try { display: inline-flex; align-items: center; gap: 7px; min-height: 26px; box-sizing: border-box; cursor: pointer; font-family: var(--body); font-size: 11px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600;
+    color: var(--accent); background: var(--ground); border: 1px solid var(--accent); border-top: 0; border-radius: 0 0 8px 8px; padding: 7px 12px 8px; }
+  .status-try:hover { background: var(--mist); }
+  .status-try svg { flex: none; transition: rotate 0.3s ease; }
+  .status-try[aria-expanded="true"] svg { rotate: 180deg; }
+  .status-panel { background: var(--mist); padding-block: 26px 16px; border-bottom: 1.5px dashed var(--accent); background-image: repeating-linear-gradient(-45deg, var(--slat) 0 10px, rgba(0, 0, 0, 0) 10px 22px); }
+  .status-panel-in { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; max-width: 1080px; margin: 0 auto; }
+  .status-q { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+  .seg { display: grid; gap: 4px; padding: 4px; background: var(--ground); border: 1px solid var(--hair); border-radius: 6px; }
+  .seg button { font: inherit; font-size: 15.5px; font-weight: 600; line-height: 1.25; color: var(--ink-soft); background: transparent; border: 0; border-radius: 4px; padding: 10px 12px; min-height: 44px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); }
+  .status-seg { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 0 1 360px; }
+  .status-note { margin: 0; font-family: var(--display); font-style: italic; font-size: 18px; color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .status-try svg { transition: none; } }
+  @media (max-width: 560px) { .status-strip a { padding: 9px 12px; gap: 0 8px; } .status-strip b { font-size: 16px; } .status-seg { flex-basis: 100%; } }
+
   /* about */
   .about { display: grid; gap: 34px; align-items: center; }
   @media (min-width: 860px) { .about { grid-template-columns: 340px minmax(0, 1fr); gap: 56px; } }
@@ -293,7 +367,7 @@
   button.tag { position: relative; margin: 0; padding-block: 6px; cursor: pointer; -webkit-appearance: none; appearance: none; }
   button.tag::after { content: ""; position: absolute; inset: -8px -2px; }
   /* views bar + Subscription box */
-  .views { padding-block: 22px 24px; background: var(--ground); }
+  .views { padding-block: 22px 24px; background: var(--ground); color: var(--ink); margin-top: 40px; border-radius: 12px; }
   .views-card { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; border: 1.5px dashed var(--accent); border-radius: 10px; padding: 16px 16px 14px; }
   .views-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 14px; }
   .views-q { margin: 0; font-size: 12px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--accent); }
@@ -337,6 +411,23 @@
 </style>
 </head>
 <body>
+
+<div class="status" id="status">
+  <p class="status-strip" data-state="tune"><a href="https://www.instagram.com/shiningsoundhealing/" id="status-link" target="_blank" rel="noopener"><b id="status-label">Tune In Tuesday: pause, breathe, hum, give thanks</b> <em><span id="status-cta">Follow @shiningsoundhealing on Instagram</span><span class="vh" id="status-new"> (opens in a new tab)</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button></div>
+  <div class="status-panel gutter" id="status-panel" hidden>
+    <div class="status-panel-in">
+      <p class="status-q"><span id="status-q">Banner demo</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <div class="seg status-seg" role="group" aria-labelledby="status-q">
+        <button type="button" data-state="tune" aria-pressed="true">Tune In Tuesday</button>
+        <button type="button" data-state="gather" aria-pressed="false">Gathering</button>
+        <button type="button" data-state="away" aria-pressed="false">Away</button>
+      </div>
+      <p class="status-note">A gathering is coming, or you are away for a few days: post it, or email me, and the banner says so.</p>
+    </div>
+  </div>
+  <p class="vh" role="status" id="status-live"></p>
+</div>
 
 <nav class="nav" id="nav" aria-label="Main">
   <div class="nav-in">
@@ -492,6 +583,7 @@
         <button type="button" class="day" data-d="0" aria-pressed="true">1</button><button type="button" class="day" data-d="1" aria-pressed="false">2</button><button type="button" class="day" data-d="2" aria-pressed="false">3</button><button type="button" class="day" data-d="3" aria-pressed="false">4</button><button type="button" class="day" data-d="4" aria-pressed="false">5</button><button type="button" class="day" data-d="5" aria-pressed="false">6</button><button type="button" class="day" data-d="6" aria-pressed="false">7</button><button type="button" class="day" data-d="7" aria-pressed="false">8</button><button type="button" class="day" data-d="8" aria-pressed="false">9</button><button type="button" class="day" data-d="9" aria-pressed="false">10</button>
       </div>
       <div class="day-card" aria-live="polite"><h3 id="day-h"></h3><p id="day-p"></p></div>
+      <div class="dv" id="dv"><div class="dv-box" id="dv-box"><button type="button" class="dv-play" id="dv-play"><span class="dv-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.5v17l14-8.5z"/></svg></span><span class="dv-cap" id="dv-cap"></span></button></div><p class="dv-note">Nothing loads from YouTube until you tap play. The video then plays with sound, so check your volume first.</p></div>
       <div class="day-nav"><button type="button" class="btn ghost" id="day-prev">Back</button><button type="button" class="btn ghost" id="day-next">Next day</button></div>
       <div class="cta-row"><a class="btn" href="https://www.shiningsoundhealing.com/course" target="_blank" rel="noopener">Start the challenge<span class="vh"> (opens your course page in a new tab)</span></a></div>
     </div>
@@ -519,6 +611,23 @@
     <div class="gath">
       <div class="row"><b>Next gathering</b> <span class="ph">(date, time and where)</span></div>
       <div class="row"><b>What to bring</b> <span class="ph">(your answer)</span></div>
+    </div>
+    <div class="moon" id="moon">
+      <h3>The moon, <em>month by month</em></h3>
+      <ul class="moon-next">
+        <li><b>Next full moon:</b> <span id="mn-full">&nbsp;</span></li>
+        <li><b>Next new moon:</b> <span id="mn-new">&nbsp;</span></li>
+      </ul>
+      <div class="moon-bar">
+        <button type="button" class="btn ghost" id="mo-prev" aria-label="Previous month">&larr;</button>
+        <h4 id="mo-title" aria-live="polite"></h4>
+        <button type="button" class="btn ghost" id="mo-next" aria-label="Next month">&rarr;</button>
+      </div>
+      <div class="moon-today"><button type="button" id="mo-now">Back to this month</button></div>
+      <div class="moon-wk" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+      <div class="moon-grid" id="mo-grid" role="group" aria-label="Moon phases for the month. Swipe or use the arrows to change month."></div>
+      <div class="moon-card" id="mo-card" role="status" aria-live="polite"><p style="margin:0">Tap a full or new moon day to see its name.</p></div>
+      <p class="moon-key">The phases are worked out on this page from the moon&rsquo;s regular 29.5 day cycle, so a day can be off by a little. Full moon names follow the common Northern American tradition.</p>
     </div>
     <p class="sec-note mock-note wf-note">You posted a Hunter&rsquo;s Full Moon ceremony on Instagram on October 15. I left the date and place as blanks because they were not in the post text I could read. Send me one and I will add it, or I can follow your socials and update as you post.</p>
   </div>
@@ -711,10 +820,9 @@
     <p><a href="mailto:shiningsoundhealing@outlook.com">shiningsoundhealing@outlook.com</a> <span aria-hidden="true">&middot;</span> <a href="tel:+17078450438">(707) 845-0438</a></p>
     <p class="legend">Sound healing is a complementary therapy and not a cure all. Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (booking and payments on your own site).</p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
-  </div>
 
-<div class="views gutter" id="views" hidden>
-  <div class="wrap views-card">
+<div class="views" id="views" hidden>
+  <div class="views-card">
     <div class="views-head">
       <p class="views-q" id="views-q">See your site as</p>
       <p class="views-price">Your founding build price, half off</p>
@@ -731,7 +839,7 @@
   </div>
   <p class="vh" role="status" id="views-live"></p>
 </div>
-
+  </div>
 </footer>
 
 <span class="ribbon">A mockup from Web Faery</span>
@@ -954,9 +1062,30 @@
       ['Energy Cleansing', 'Picture letting go of stress and inviting in light.'],
       ['Your Own Sound', 'Settle in and play to find your own sound, one that feels good to your body.']
     ];
+    var VID = ['nnxX9I5sQlM', 'Lw1iibziMKU', 'jyq0jaAZkHc', 'tcllQTyE3DY', '41fsFrFc0rk', 'NVChKoU8Grs', 'L-aWjlRxS6M', 'EOtxqq562Lc', 'hMKcHiI2Yhc', 'exEChrwEZzE'];
+    var dvBox = $('dv-box'), dvPlay = $('dv-play');
+    function plain(h) { var t = document.createElement('div'); t.innerHTML = h; return t.textContent; }
+    function resetVideo(i) {
+      var old = dvBox.querySelector('iframe'); if (old) { old.src = 'about:blank'; old.remove(); }
+      dvPlay.hidden = false;
+      var t = 'Day ' + (i + 1) + ': ' + plain(D[i][0]);
+      $('dv-cap').innerHTML = '<span aria-hidden="true">' + t + '</span><small aria-hidden="true">Tap to play</small>';
+      dvPlay.setAttribute('aria-label', 'Play ' + t + ' (loads a YouTube video)');
+    }
+    dvPlay.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.title = 'Tune In Challenge, Day ' + (dayI + 1) + ': ' + plain(D[dayI][0]) + ' (video)';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      f.src = 'https://www.youtube-nocookie.com/embed/' + VID[dayI] + '?autoplay=1&playsinline=1&rel=0';
+      dvPlay.hidden = true; dvBox.appendChild(f); f.focus();
+    });
     var dayI = 0, dbtn = [].slice.call(document.querySelectorAll('.day'));
     function showDay(i) {
+      var moved = Math.max(0, Math.min(9, i)) !== dayI || !dvBox.querySelector('.dv-cap').textContent;
       dayI = Math.max(0, Math.min(9, i));
+      if (moved) resetVideo(dayI);
       $('day-h').innerHTML = 'Day ' + (dayI + 1) + ': ' + D[dayI][0]; $('day-p').innerHTML = D[dayI][1];
       dbtn.forEach(function (b, n) { b.setAttribute('aria-pressed', n === dayI ? 'true' : 'false'); });
       $('day-prev').disabled = dayI === 0; $('day-next').disabled = dayI === 9;
@@ -1091,5 +1220,148 @@
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
 <script src="/lightbox.js?v=2" defer></script>
 <script src="/note-motion.js?v=1" defer></script>
+
+<script>
+  /* the top banner (every build): one static message, with a demo of the other states */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var STATES = {
+      tune: { label: 'Tune In Tuesday: pause, breathe, hum, give thanks', cta: 'Follow @shiningsoundhealing on Instagram', href: 'https://www.instagram.com/shiningsoundhealing/' },
+      gather: { label: 'Next gathering: date and place to come', cta: 'See gatherings', href: '#gatherings' },
+      away: { label: 'Away for a few days, back soon', cta: 'See the sessions', href: '#sessions' }
+    };
+    var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel'), nav = document.getElementById('nav'), box = $('status');
+    if (!strip || !link || !tryBtn || !panel) return;
+    var btns = [].slice.call(panel.querySelectorAll('[data-state]'));
+    function setState(k, announce) {
+      var s = STATES[k]; if (!s) return;
+      strip.dataset.state = k;
+      $('status-label').textContent = s.label; $('status-cta').textContent = s.cta; link.setAttribute('href', s.href);
+      var ext = /^https?:/.test(s.href);
+      if (ext) { link.setAttribute('target', '_blank'); link.setAttribute('rel', 'noopener'); } else { link.removeAttribute('target'); link.removeAttribute('rel'); }
+      $('status-new').hidden = !ext;
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.state === k ? 'true' : 'false'); });
+      if (announce) $('status-live').textContent = 'The banner now reads: ' + s.label + '. ' + s.cta + '.';
+      place();
+    }
+    function place() {
+      var b = box.getBoundingClientRect().bottom + (panel.hidden ? 26 : 0);
+      nav.style.setProperty('--navtop', Math.max(0, Math.round(b)) + 'px');
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
+    function openPanel(open) { panel.hidden = !open; tryBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); place(); }
+    tryBtn.addEventListener('click', function () { openPanel(panel.hidden); });
+    panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); tryBtn.focus(); openPanel(false); } });
+    window.addEventListener('scroll', place, { passive: true }); window.addEventListener('resize', place);
+    place();
+  })();
+</script>
+
+<script>
+  /* moon calendar: phases worked out here from the mean synodic month, no network */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var grid = $('mo-grid'); if (!grid) return;
+    var SYN = 29.530588853, EPOCH = Date.UTC(2000, 0, 6, 18, 14), DAY = 86400000;
+    var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var WD = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var FULLNAME = ['Wolf', 'Snow', 'Worm', 'Pink', 'Flower', 'Strawberry', 'Buck', 'Sturgeon', 'Corn', 'Hunter’s', 'Beaver', 'Cold'];
+    function age(t) { var a = ((t - EPOCH) / DAY) % SYN; return a < 0 ? a + SYN : a; }
+    function eventTime(k, half) { return EPOCH + (k + half) * SYN * DAY; } /* half 0 = new, 0.5 = full */
+    function dkey(d) { return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+    function fullName(t) {
+      var d = new Date(t), eq = Date.UTC(d.getUTCFullYear(), 8, 22, 13, 0);
+      var dist = function (x) { return Math.abs(x - eq); };
+      if (dist(t) <= dist(t - SYN * DAY) && dist(t) < dist(t + SYN * DAY)) return 'Harvest';
+      return FULLNAME[d.getMonth()];
+    }
+    /* events by local date key, for lunations around a window */
+    function events(fromT, toT) {
+      var out = {}, k0 = Math.floor((fromT - EPOCH) / (SYN * DAY)) - 1, k1 = Math.ceil((toT - EPOCH) / (SYN * DAY)) + 1;
+      for (var k = k0; k <= k1; k++) {
+        [[0, 'new'], [0.5, 'full']].forEach(function (h) {
+          var t = eventTime(k, h[0]), d = new Date(t);
+          out[dkey(d)] = { type: h[1], t: t, name: h[1] === 'full' ? fullName(t) + ' Moon' : 'New moon' };
+        });
+      }
+      return out;
+    }
+    function svg(a, size) {
+      var p = a / SYN, r = 12, c = 14, k = Math.cos(2 * Math.PI * p), rx = (r * Math.abs(k)).toFixed(2), lit;
+      var base = '<circle cx="14" cy="14" r="12" fill="#1b2036" stroke="#e6b655" stroke-width="1.3"/>';
+      if (p < 0.02 || p > 0.98) lit = '';
+      else if (Math.abs(p - 0.5) < 0.02) lit = '<circle cx="14" cy="14" r="12" fill="#f1ece0"/>';
+      else {
+        var sweep = k > 0 ? 0 : 1;
+        lit = '<path d="M14 2 A12 12 0 0 1 14 26 A' + rx + ' 12 0 0 ' + sweep + ' 14 2Z" fill="#f1ece0"' + (p > 0.5 ? ' transform="translate(28 0) scale(-1 1)"' : '') + '/>';
+      }
+      return '<svg viewBox="0 0 28 28" aria-hidden="true" focusable="false">' + base + lit + '<circle cx="14" cy="14" r="12" fill="none" stroke="#e6b655" stroke-width="1.3"/></svg>';
+    }
+    function phaseWord(a) {
+      var p = a / SYN;
+      if (p < 0.03 || p > 0.97) return 'new moon';
+      if (p < 0.22) return 'waxing crescent';
+      if (p < 0.28) return 'first quarter';
+      if (p < 0.47) return 'waxing gibbous';
+      if (p < 0.53) return 'full moon';
+      if (p < 0.72) return 'waning gibbous';
+      if (p < 0.78) return 'last quarter';
+      return 'waning crescent';
+    }
+    var now = new Date(), todayKey = dkey(now), view = new Date(now.getFullYear(), now.getMonth(), 1), pressed = null;
+    var card = $('mo-card');
+    function fmt(d) { return WD[d.getDay()].slice(0, 3) + ', ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getDate(); }
+    function until(d) {
+      var a = new Date(now.getFullYear(), now.getMonth(), now.getDate()), b = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      var n = Math.round((b - a) / DAY);
+      return n === 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days';
+    }
+    function nextLines() {
+      var ev = events(now.getTime(), now.getTime() + 62 * DAY), nf = null, nn = null, keys = Object.keys(ev).map(Number).sort();
+      keys.forEach(function (key) {
+        var e = ev[key], d = new Date(e.t), dl = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        if (key < todayKey) return;
+        if (e.type === 'full' && !nf) nf = [dl, e]; if (e.type === 'new' && !nn) nn = [dl, e];
+      });
+      $('mn-full').textContent = nf ? fmt(nf[0]) + ', ' + nf[1].name + ', ' + until(nf[0]) : '';
+      $('mn-new').textContent = nn ? fmt(nn[0]) + ', ' + until(nn[0]) : '';
+    }
+    function render() {
+      var y = view.getFullYear(), m = view.getMonth(), first = new Date(y, m, 1), n = new Date(y, m + 1, 0).getDate();
+      $('mo-title').textContent = MONTHS[m] + ' ' + y;
+      var ev = events(first.getTime(), new Date(y, m + 1, 1).getTime()), h = '', i;
+      for (i = 0; i < first.getDay(); i++) h += '<div class="mc blank"></div>';
+      for (var d = 1; d <= n; d++) {
+        var dt = new Date(y, m, d, 12), a = age(dt.getTime()), key = dkey(dt), e = ev[key], isToday = key === todayKey;
+        var label = MONTHS[m] + ' ' + d + ', ' + (e ? e.name : phaseWord(a)) + (isToday ? ', today' : '');
+        var inner = '<span class="n">' + d + '</span>' + svg(e ? (e.type === 'full' ? SYN / 2 : 0) : a) + (e ? '<span class="lb" aria-hidden="true">' + (e.type === 'full' ? 'Full' : 'New') + '</span>' : '');
+        if (e) h += '<button type="button" class="mc' + (isToday ? ' today' : '') + '" data-k="' + key + '" data-type="' + e.type + '" data-name="' + e.name + '" data-label="' + (MONTHS[m] + ' ' + d) + '" aria-pressed="false" aria-label="' + label + '">' + inner + '</button>';
+        else h += '<div class="mc' + (isToday ? ' today' : '') + '" role="img" aria-label="' + label + '">' + inner + '</div>';
+      }
+      grid.innerHTML = h;
+      if (pressed) { var b = grid.querySelector('[data-k="' + pressed + '"]'); if (b) b.setAttribute('aria-pressed', 'true'); }
+    }
+    grid.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button.mc'); if (!b) return;
+      [].forEach.call(grid.querySelectorAll('button.mc'), function (x) { x.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', 'true'); pressed = b.getAttribute('data-k');
+      var full = b.getAttribute('data-type') === 'full';
+      card.innerHTML = '<h4></h4><p>' + (full ? 'The full moon of the month.' : 'The moon is not visible in the sky tonight.') + '</p><p><b>Gathering:</b> <span class="ph">(date and place to come)</span></p>';
+      card.querySelector('h4').textContent = b.getAttribute('data-name') + ', ' + b.getAttribute('data-label');
+    });
+    function go(delta) { view = new Date(view.getFullYear(), view.getMonth() + delta, 1); render(); }
+    $('mo-prev').addEventListener('click', function () { go(-1); });
+    $('mo-next').addEventListener('click', function () { go(1); });
+    $('mo-now').addEventListener('click', function () { view = new Date(now.getFullYear(), now.getMonth(), 1); render(); });
+    var sx = null, sy = null;
+    grid.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    grid.addEventListener('touchend', function (e) {
+      if (sx === null) return; var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
+    window.__moon = { age: age, events: events, fullName: fullName };
+    nextLines(); render();
+  })();
+</script>
 </body>
 </html>
