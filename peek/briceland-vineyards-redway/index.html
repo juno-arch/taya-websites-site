@@ -225,7 +225,7 @@
   /* about */
   .meet { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); gap: 72px; align-items: start; }
   .meet .matted .photo { aspect-ratio: 2 / 3; }
-  .meet .matted .photo img { object-position: 50% 30%; }
+  .meet .matted .photo img { object-position: 50% 40%; }
   .creds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; list-style: none; }
   .creds li { font-size: 14.5px; padding: 6px 14px; border-radius: 999px; background: var(--mist); color: var(--ink); }
   .path { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 64px; }
@@ -669,9 +669,10 @@
   .line figcaption { margin-top: 10px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.45; }
   .line figcaption b { display: block; font-family: 'Old Standard TT', Georgia, serif; font-size: 19px; font-weight: 700; color: var(--ink); }
   .line figcaption b::before { counter-increment: stp; content: counter(stp) "  "; color: var(--gold-ink); font-weight: 400; }
-  .line figure:nth-child(7) { grid-column: 2 / 3; }
-  @media (max-width: 900px) { .line { grid-template-columns: repeat(3, minmax(0, 1fr)); } .line figure:nth-child(7) { grid-column: auto; } }
-  @media (max-width: 560px) { .line { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+  .line figure:nth-child(1) { grid-column: span 2; }
+  .line figure:nth-child(1) a { aspect-ratio: 8 / 5; }
+  @media (max-width: 900px) { .line { grid-template-columns: repeat(3, minmax(0, 1fr)); } .line figure:nth-child(1) { grid-column: 1 / -1; } .line figure:nth-child(1) a { aspect-ratio: 16 / 9; } }
+  @media (max-width: 560px) { .line { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .line figure:nth-child(1) { grid-column: 1 / -1; } }
 
   .meet .matted .photo { aspect-ratio: 4 / 3; }
   .meet { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
@@ -1060,7 +1061,7 @@
   <div class="wrap">
     <div class="meet">
       <div class="matted reveal">
-        <figure class="photo"><picture><source type="image/webp" srcset="images/winery.webp"><img src="images/winery.jpg" width="1400" height="1050" alt="The winery up the gravel drive, with its green metal roof, a butterfly bush in purple bloom, young vines and the Briceland Vineyards sign" loading="lazy"></picture></figure>
+        <figure class="photo"><picture><source type="image/webp" srcset="images/founders.webp"><img src="images/founders.jpg" width="859" height="1308" alt="Joe Collins and Maggie Carey, the founders, at the winery among stacked cartons of wine, with Maggie smiling" loading="lazy"></picture></figure>
       </div>
       <div>
         <p class="label with-pill"><span>The winery</span> <span class="tag" data-go="maiden">Every build</span></p>
@@ -1072,7 +1073,7 @@
         </ul>
       </div>
     </div>
-    <p class="sec-note mock-note wf-note">The story is from your Winery page, with the Prince of Pinot facts from your Briceland Buzz page, and Rosie&rsquo;s name from Prince of Pinot and your guests&rsquo; reviews. Is that how you want her named here? I left the photo of the two of you off until you say so.</p>
+    <p class="sec-note mock-note wf-note">The story is from your Winery page, with the Prince of Pinot facts from your Briceland Buzz page, and Rosie&rsquo;s name from Prince of Pinot and your guests&rsquo; reviews. Is that how you want her named here? The photo of Joe and Maggie is from a Tripadvisor listing for your winery, captioned as the founders. Is it okay to use, or do you have a favorite of them?</p>
   </div>
 </section>
 
