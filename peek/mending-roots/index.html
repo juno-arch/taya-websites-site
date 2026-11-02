@@ -2099,7 +2099,7 @@
         ['Initial Herbal Intake', '60 to 90 min', '$150'],
         ['Follow-Up', '30 to 45 min', '$75'],
         ['Phone Session', '25 min', '$35'] ] },
-      sauna: { name: 'Sauna & light', cat: 'Infrared%20Sauna', svcs: [
+      sauna: { name: 'Sauna & light', cat: '', svcs: [
         ['Infrared Sauna', '30 min', '$40'],
         ['Infrared Sauna', '50 min', '$50'],
         ['Red Light', '20 min', '$25'],
@@ -2129,7 +2129,7 @@
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     
     function paintBookLinks() {
-      var mother = viewNow() === 'mother';
+      var mother = viewNow() === 'mother' || viewNow() === 'maiden';
       document.querySelectorAll('a[data-book]').forEach(function (a) {
         var vh = a.querySelector('.vh-acuity');
         if (mother) {
