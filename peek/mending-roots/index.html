@@ -1641,6 +1641,7 @@
 
   
   <div class="wrap bk-alt" data-show="mother" data-fold data-thing="Gift button" tabindex="-1" hidden>
+    <figure class="photo gift-photo reveal"><img src="images/boutique.jpg" alt="The Wellness Boutique corner at Mending Roots: shelves of tinctures and body care strung with fairy lights, a monstera, and two mountain prints" loading="lazy"></figure>
     <div class="entry">
       <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Gift certificates <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
       <h2>gift</h2>
@@ -2902,10 +2903,18 @@
   .grp-more { margin: 4px 0 14px; }
 </style>
 
+<style id="wf-gift-photo">
+  #gift .bk-alt { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 56px; align-items: center; }
+  #gift .bk-alt > .entry, #gift .bk-alt > .bn-row { grid-column: 1; }
+  #gift .bk-alt > .gift-photo { grid-column: 2; grid-row: 1 / span 2; aspect-ratio: 4 / 3; border-radius: 22px; }
+  #gift .gift-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; }
+  @media (max-width: 780px) { #gift .bk-alt { grid-template-columns: minmax(0, 1fr); gap: 28px; } #gift .bk-alt > .gift-photo { grid-column: 1; grid-row: auto; } }
+</style>
+
 <style id="wf-tami-build">
   /* Tami picked Tended (Nov 2): her page shows only her build, nothing that points to the other two */
   [data-view="mother"] button.build, [data-view="mother"] .legend, [data-view="mother"] .fa-note,
-  [data-view="mother"] .bk-side, [data-view="mother"] .gift-notes, [data-view="mother"] .pv, [data-view="mother"] .pol-note, [data-view="mother"] .ev-note, [data-view="mother"] #love, [data-view="mother"] .sample { display: none !important; }
+  [data-view="mother"] .bk-side, [data-view="mother"] .gift-notes, [data-view="mother"] .pv, [data-view="mother"] .pol-note, [data-view="mother"] .ev-note, [data-view="mother"] #love, [data-view="mother"] .sample, [data-view="mother"] #book, [data-view="mother"] a[href="#book"]:not(.btn) { display: none !important; }
 </style>
 
 <style id="wf-swipe">
