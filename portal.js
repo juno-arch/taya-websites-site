@@ -1302,7 +1302,9 @@
         // the five steps (add 22 / 25): same source as the Studio's timeline; an older server sends none, and the six stages above are drawn
         steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), until: str(s && s.until, 30),
           turn: s && (s.turn === 'you' || s.turn === 'me') ? s.turn : '', state: s && (s.state === 'done' || s.state === 'now') ? s.state : 'next' })),
-        care_since: str(tl.care_since, 30)
+        care_since: str(tl.care_since, 30),
+        // (Nov 2 2026, ADD 40) "Last update: <day>, <one line>" under the current step; the server sends it only when Pollen's switch is on
+        last_update: tl.last_update && typeof tl.last_update === 'object' && str(tl.last_update.text, 200) ? { date: str(tl.last_update.date, 30), text: str(tl.last_update.text, 200) } : null
       },
       things: {
         draft: th.draft && safeUrl(th.draft.url) ? { url: safeUrl(th.draft.url), note: str(th.draft.note, 200) } : null,
@@ -2263,6 +2265,7 @@
       const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
       if (s.state === 'now' && say) body.append(make('p', 'say', say));
       if (s.state === 'now' && s.turn) body.append(make('p', 'turn', s.turn === 'you' ? 'Your turn' : 'My turn'));
+      if (s.state === 'now' && me.timeline.last_update) body.append(make('p', 'say last-update', 'Last update' + (shortDate(me.timeline.last_update.date) ? ' ' + shortDate(me.timeline.last_update.date) : '') + ': ' + me.timeline.last_update.text));
       li.append(dot, body);
       return li;
     }));
@@ -3016,7 +3019,7 @@
     const st = o.settings && typeof o.settings === 'object' ? o.settings : {};
     return {
       owner: { name: str(o.name, 80), active: !!o.active, zone: str(o.zone, 20), hours: cleanWeek(o.hours), locations: arr(o.locations).map((x) => str(x, 10)).filter((x) => BK_WHERE[x]),
-        payments: !!o.payments, payments_test: !!o.payments_test, feed_url: safeUrl(o.feed_url),
+        payments: !!o.payments, payments_test: !!o.payments_test, sample: o.sample === true, feed_url: safeUrl(o.feed_url),
         today: /^\d{4}-\d{2}-\d{2}$/.test(str(o.today)) ? str(o.today) : todayISO, now: str(o.now, 30),
         settings: { notice_hours: +st.notice_hours || 0, horizon_days: +st.horizon_days || 60, buffer_min: +st.buffer_min || 0, cancel_window_hours: +st.cancel_window_hours || 0,
           max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0,
@@ -3066,6 +3069,7 @@
     sec.hidden = false;
     $('#bk-off').hidden = bk.owner.active;
     $('#bk-test').hidden = !bk.owner.payments_test;
+    $('#bk-sample').hidden = !bk.owner.sample; // (Nov 2 2026, ADD 39) practice bookings: the replay button
     $('#bk-zone').textContent = 'Times here are ' + (bk.owner.zone || 'Pacific') + ' time.';
     calLinks();
     if (!sec.querySelector('#bk-up .bk-form')) {
@@ -3111,6 +3115,13 @@
     if (key === 'clients' && bk) loadClients(false);
   }
   // (Oct 22 2026) a small bridge for portal-schedule.js (the Schedule tab): the owner's own calls, switching tabs, the overview, a toast
+  // (Nov 2 2026, ADD 39) replay the practice bookings (the button shows only for a look-around portal)
+  if ($('#b-bk-sample')) $('#b-bk-sample').addEventListener('click', async () => {
+    const btn = $('#b-bk-sample'), say = $('#bk-sample-say');
+    btn.disabled = true; say.textContent = '';
+    try { await bookCall('/sample-reset', {}); say.textContent = 'Back to the practice set.'; await loadBookings(); } catch (_) { say.textContent = 'That did not work. Try once more.'; }
+    btn.disabled = false;
+  });
   window.WFBk = { call: bookCall, select: (k) => selectTab(k, true, false), data: () => bk, toast: (t) => toast(t), reload: () => loadBookings(), signedOut: () => quietSignOut(false) };
   function onTabKey(ev) {
     const i = BK_TABS.indexOf(bkTab);
@@ -3277,7 +3288,7 @@
       try {
         await bookCall('/cancel', { id: b.id, message: cleanText(m.ta.value, 600), tell: true });
         f.remove();
-        toast('Canceled. ' + b.name + ' has an email saying so.');
+        toast(bk && bk.owner.sample ? 'Canceled. This one was practice, so no email went out.' : 'Canceled. ' + b.name + ' has an email saying so.');
         await loadBookings();
         focusEl($('#h-bookings'), true);
       } catch (e2) {
