@@ -125,7 +125,7 @@
     getting_started: 'Your answers, photos and a few little setup bits.',
     call: 'A few easy questions by email. I do the writing after.',
     draft: 'I’m building your draft. You’ll get a private link to peek.',
-    changes: 'Two rounds, each one email with everything in it.',
+    changes: 'Send changes by email; one email with everything in it is easiest.',
     launch: 'Your site goes live at your own web address, and I hand you your logins.',
     settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
   };
@@ -1840,7 +1840,7 @@
         const m = make('a', 'later', 'Send me your changes');
         m.href = 'mailto:' + TAYA + '?subject=' + encodeURIComponent('Changes for my draft');
         act.append(m);
-        body.append(make('p', 'hint', 'One email per round, with everything in it. Two rounds are included.'));
+        body.append(make('p', 'hint', 'One email with everything in it is easiest.'));
       }
     } else if (kind === 'upload') {
       uploadBlock(item, body, act, sentLine);

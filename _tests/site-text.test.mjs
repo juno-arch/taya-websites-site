@@ -311,8 +311,8 @@ for (const page of ['index.html', 'welcome.html']) {
   atLeast(page, /deposit covers the work (?:done )?so far[^.]*within a year/i, 1, 'doesn’t say what happens to the deposit if a project closes');
   atLeast(page, /(?:from|after) (?:when|the day) you say yes|days after you say yes/i, 1, 'doesn’t say the 30 and 60 days count from when you say yes');
 }
-// more rounds of changes during the build are quoted first
-atLeast('index.html', /more rounds[^.]{0,60}quote/i, 1, 'doesn’t say extra rounds of changes are quoted first');
+// big new changes are quoted first (ADD 54, Nov 2 2026: no "two rounds" wording any more)
+atLeast('index.html', /anything big and new[^.]{0,40}quote/i, 1, 'doesn’t say big new changes are quoted first');
 // card fees: Stripe's rate, said the same way everywhere ("per payment", or "a payment" in the In Bloom tools section's
 // words, written and fact-checked Oct 14 2026)
 for (const page of PAGES) {
@@ -387,8 +387,8 @@ for (const page of PAGES) {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
-      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
-      crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own back end, built around your business, with its own sign-in/, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
+      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your domain address, like you@yourbusiness\.com, covered/, /A small shop, up to 5 products/, /Gift cards, through Gift Up/, /A DoorDash button on your site/, /seasonal refresh/],
+      crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own back end, built around your business, with its own sign-in/, /Fuller direct ordering for food businesses/, /flyer for one event a month/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
     for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[k]} card doesn’t list ${re}`);
@@ -399,7 +399,7 @@ for (const page of PAGES) {
     // what every plan's subscription also includes: once, right under the three cards, word for word
     const EVERY_PLAN = ['I follow your socials and update your site as you post, or you email me', 'Changes usually within 2 business days',
       'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
-      'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
+      'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me', 'Private visitor counts, no tracking'];
     const html = read('index.html').replace(/<!--[\s\S]*?-->/g, '');
     const every = html.match(/<\/article>\s*<\/div>\s*<div class="every-plan\b[^>]*>([\s\S]*?)<\/div>\s*<div class="panel\b/);
     if (!every) fail('index.html: no "Every plan’s subscription also includes" card right under the three plan cards');

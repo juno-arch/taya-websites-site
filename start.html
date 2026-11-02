@@ -748,6 +748,14 @@
   .kind-note img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: block; }
   .few textarea.short { min-height: 76px; }
   /* the moods sit two to a row on a phone, so the look part stays short */
+  /* the required choices screen after the deposit (Nov 2 2026, ADD 51) */
+  .fx-card .fx-note { color: var(--soft, #6b5a63); font-size: .95em; margin: 4px 0 14px; }
+  .fx-row { padding: 14px 0; border-top: 1px solid rgba(0,0,0,.09); }
+  .fx-row p { margin: 0 0 10px; }
+  .fx-opts { display: flex; gap: 10px; flex-wrap: wrap; }
+  .fx-b { min-height: 44px; padding: 10px 18px; border-radius: 999px; border: 2px solid currentColor; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+  .fx-b[aria-pressed="true"] { background: #7a3b5c; border-color: #7a3b5c; color: #fff; }
+  .fx-err { color: #8a2d2d; margin: 10px 0 0; }
   #s-look .opts.chips { grid-template-columns: repeat(auto-fill, minmax(min(136px, 100%), 1fr)); }
   #s-look .opts.chips .opt { padding: 11px 12px; }
   .acct .t.together { color: var(--gold); }
@@ -1201,7 +1209,7 @@
           <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
           <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
           <li><span class="k">Timing</span><span>Your timeline starts the day your deposit clears. Please send your answers and photos within a week. A draft follows in about a week after that, and your site is ready in about <span data-a="weeks">2, 3 or 4 weeks</span> from your deposit. If your content comes later, your launch date moves back by the same number of days.</span></li>
-          <li><span class="k">Changes</span><span>While I’m building, you get two rounds of changes, each one batch with everything in it (notes on your draft, or one email); any more rounds, I quote first. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need, and your subscription covers them.</span></li>
+          <li><span class="k">Changes</span><span>While I’m building, send me anything you’d like changed (notes on your draft, or one email with everything in it); anything big and new I quote first, and nothing starts until you say yes. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need, and your subscription covers them.</span></li>
           <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
           <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">your subscription, at your build’s monthly price</span>. If anything breaks, or I got something wrong, I fix it.</span></li>
           <li><span class="k">Yours</span><span>Everything is in your name. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.</span></li>
@@ -1211,7 +1219,7 @@
           <summary>Read the whole agreement</summary>
           <div class="agreement-doc">
             <h3>Our agreement</h3>
-            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of October 30, 2026.</p>
+            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of November 2, 2026.</p>
             <ol>
               <li><b>What I’ll make.</b> Your <span data-a="build">build</span>: <span data-a="does">the site we choose together</span>
                   Every build comes with your words written for you from your answers, a phone-first design,
@@ -1222,8 +1230,8 @@
                   which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By card or US bank account.</li>
               <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. Your timeline starts
                   the day your deposit clears. Please send your answers, photos (or a yes to free stock photos) and account steps within a week.
-                  A draft follows in about a week after that, on a private link. You get two rounds of changes; each round
-                  is one batch, with everything in it: notes on your draft, or one email. Any more rounds, I quote first, and nothing starts until you say yes. Your site
+                  A draft follows in about a week after that, on a private link. I make your changes as we go, from notes on your draft or one email with everything in it.
+                  Anything big and new I quote first, and nothing starts until you say yes. Your site
                   is ready in about <span data-a="weeks">2, 3 or 4 weeks</span> from your deposit. If your content comes later, your launch date moves back by the same number of days.</li>
               <li><b>If life gets busy.</b> If your content isn’t in 30 days after you say yes, I’ll nudge you gently. At 60 days the project closes,
                   so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
@@ -1744,7 +1752,7 @@
       <ol class="next-path">
         <li><b>A few easy questions by email,</b> if I need anything more. I do the writing.</li>
         <li><b>Your first draft,</b> about a week after your answers and photos are in, on a private link you can open on your phone.</li>
-        <li><b>Two rounds of changes,</b> by email.</li>
+        <li><b>Changes,</b> by email, before and after launch.</li>
         <li><b>Launch,</b> with your “Your site” sheet, your brand sheet, and the logins to anything I set up for you.</li>
         <li><b>30 days of settling in.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
         <li><b>After that, your subscription,</b> <span data-a="care">at your build’s monthly price</span>: I follow your socials and update your website and Google profile as you post, or you email me what’s changing, and I do the rest.</li>
@@ -1987,12 +1995,12 @@
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
     collection: 'webfaery_intake',
-    agreementVersion: '2026-10-30',   // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
+    agreementVersion: '2026-11-02',   // the agreement's words changed with the Oct 5 pricing, each build's words with the Oct 6 booking
                                       // ladder, Planted's again that afternoon, and on Oct 10 2026 (no login): a round of changes is
                                       // "notes on your draft, or one email", and live sites take a tap. The full words of each version
                                       // are public at /agreement/<version>.html (made from this page's words; left as they are once used).
                                       // The server keeps it as plain text (agreement_version, max 40) and only shows it back.
-    agreementSha256: 'd22d935a159084a5703b286bfe8053b87b5a2f47681c10a33355de9166dee51d', // sha256 of agreement/2026-10-30.html: the check code
+    agreementSha256: 'e3521af5f930a6822d70d86fedabeef431db350f3b6d8354b4890f4aa8071b66', // sha256 of agreement/2026-11-02.html: the check code
                                       // the server keeps with a signature (a site test keeps it, the file and the server's equal)
     maxUploadMB: 30                              // a little under the server's limit
   };
@@ -2012,18 +2020,18 @@
     maiden: ['Hosting, your web address, security and backups',
       'Your magic site, yours for good: whenever something small needs changing, you just message me through it', 'A “your changes are up” email the moment it’s live',
       'A monthly check-in about your business, so you don’t have to think about what to update', 'New reviews added as they come in'],
-    mother: ['Post once, show up everywhere: keep posting where you already post, and it lands on your website and your Google profile too (I don’t post on your socials for you). I only post what you’ve made or said yes to.', 'Contact form and newsletter sign\u2011up, with sending covered',
-      'Your Instagram feed on your site, filling itself in as you post', 'Email from your own address (you@yourbusiness.com), covered',
+    mother: ['Post once, show up everywhere: when you post on Instagram or Facebook, I make your new post show up on your website and your Google profile too. I only post what you’ve made or said yes to.', 'Contact form and newsletter sign\u2011up, with sending covered',
+      'Your Instagram feed on your site, filling itself in as you post', 'Email from your domain address, like you@yourbusiness.com, covered', 'A small shop, up to 5 products, with buy buttons (it runs through your own Stripe account, and Stripe’s normal card fee applies)', 'Gift cards, through Gift Up in your own account (their small fee applies)', 'A DoorDash button on your site for food and drink businesses, linking to your DoorDash page',
       'A seasonal refresh: new photos and wording as the year turns'],
-    crone: ['Booking, payments or your shop kept running (Stripe, sold\u2011out stamps)', 'Order direct for food businesses (DoorDash’s free online ordering on your site)',
-      'A flyer for one event a month, made and posted for you', 'Private visitor counts, no tracking',
+    crone: ['Booking, payments or your shop kept running (Stripe, sold\u2011out stamps)', 'Fuller direct ordering for food businesses: DoorDash’s free online ordering built into your site, beyond the Tended button',
+      'A flyer for one event a month, made and posted for you',
       'A yearly refresh: new photos from your year, your story updated, every page checked on phones']
   };
   // what every plan's subscription also includes, shown once after the tiers (Pollen, Oct 6 2026; the same lines, in
   // the same words, as the "Every plan’s subscription also includes" card under the plans on webfaery.love)
   const CARE_EVERY = ['I follow your socials and update your site as you post, or you email me', 'Changes usually within 2 business days',
     'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
-    'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
+    'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me', 'Private visitor counts, no tracking'];
   // how each care reads as a whole (gently in the garden's words: planted and kept healthy, tended as the seasons
   // change, in full bloom doing business for you)
   const CARE_HEAD = {
@@ -3577,7 +3585,11 @@
         mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
       d = await res.json().catch(() => null);
     } catch (e) { res = null; }
-    if (res && res.ok && d && d.ok && d.sent) { restCard('You’ve sent it, thank you!', 'Your getting-started page is with me. I’ll be in touch by email soon 💛 Anything you need, just email me at taya@webfaery.love.', ''); return; }
+    if (res && res.ok && d && d.ok && d.sent) {
+      const thanks = () => restCard('You’ve sent it, thank you!', 'Your getting-started page is with me. I’ll be in touch by email soon 💛 Anything you need, just email me at taya@webfaery.love.', '');
+      if (d.features && d.features.due) featuresScreen(d.features, thanks); else thanks();
+      return;
+    }
     if (res && res.ok && d && d.ok) {
       who = d; owner = d.owner || ''; serverPrices = d.prices || null;
       const qs = new URLSearchParams();
@@ -3592,6 +3604,8 @@
       if (d.site) linkKnown.site = d.site;
       if (linkKnown.email && !linkKnown.full) linkKnown.nameBySig = true;
       boot(qs);
+      if (d.features && d.features.due) featuresScreen(d.features, null);
+      watchDeposit();
       return;
     }
     if (res && res.status === 401 && d && d.error === 'bad_link') {
@@ -3603,6 +3617,82 @@
     // the server can't be reached: the page works on this device for now, and says so
     wfKey = ''; boot(new URLSearchParams(location.search));
     savedText.textContent = 'I can’t reach my server right now, so this saves on this device for now';
+  }
+  // The required choices screen (Nov 2 2026, ADD 51). The server decides when it is due (new clients, after the deposit tick, until it is
+  // answered) and which lines are theirs, so a returning client lands back on it. Every line needs a yes or a no; nothing else on the page
+  // can be used until they are all answered.
+  let fxOpen = false;
+  function featuresScreen(f, after) {
+    if (fxOpen || !f || !Array.isArray(f.lines) || !f.lines.length) { if (after) after(); return; }
+    fxOpen = true;
+    const main = document.getElementById('main');
+    const wrap = main && main.querySelector('.wrap');
+    if (!wrap) { fxOpen = false; if (after) after(); return; }
+    const hiddenBefore = [...wrap.children].map((n) => n.hidden);
+    [...wrap.children].forEach((n) => { n.hidden = true; });
+    const qcBox = document.getElementById('qc'), qcWas = qcBox ? qcBox.hidden : false; if (qcBox) qcBox.hidden = true;
+    const card = make('div', 'card fx-card'); card.setAttribute('role', 'region'); card.setAttribute('aria-label', 'Your choices');
+    card.append(make('h2', null, 'What would you like on your site?'));
+    card.append(make('p', null, 'Thank you for your deposit! Tap Yes please or No thanks for each one. It takes a minute. You can change your mind any time by emailing me, and it doesn’t change your price.'));
+    if (f.note) card.append(make('p', 'fx-note', f.note));
+    const answers = {};
+    const send = make('button', 'btn', 'Save my choices'); send.type = 'button'; send.disabled = true;
+    const err = make('p', 'fx-err'); err.setAttribute('role', 'alert'); err.hidden = true;
+    f.lines.forEach((ln) => {
+      const row = make('div', 'fx-row'); row.setAttribute('role', 'group');
+      const q = make('p', null, ln.text); q.id = 'fx-' + ln.key; row.setAttribute('aria-labelledby', q.id);
+      const opts = make('div', 'fx-opts');
+      [['Yes please', true], ['No thanks', false]].forEach((o) => {
+        const b = make('button', 'fx-b', o[0]); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', () => {
+          answers[ln.key] = o[1];
+          [...opts.children].forEach((x) => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+          send.disabled = !f.lines.every((l) => typeof answers[l.key] === 'boolean');
+        });
+        opts.append(b);
+      });
+      row.append(q, opts); card.append(row);
+    });
+    const foot = make('p'); foot.style.marginTop = '18px'; foot.append(send);
+    card.append(foot, err);
+    wrap.prepend(card);
+    window.scrollTo(0, 0);
+    send.addEventListener('click', async () => {
+      send.disabled = true; err.hidden = true;
+      let r = null, j = null;
+      try {
+        r = await fetch(cloud.BASE + '/start-features', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ k: wfKey, items: answers }),
+          mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+        j = await r.json().catch(() => null);
+      } catch (e) { r = null; }
+      if (r && r.ok && j && j.ok) {
+        fxOpen = false; card.remove();
+        if (after) { after(); return; }
+        [...wrap.children].forEach((n, i) => { n.hidden = !!hiddenBefore[i]; });
+        if (qcBox) qcBox.hidden = qcWas;
+        return;
+      }
+      err.textContent = r && r.status === 400 ? 'One of the choices didn’t go through. Please check each one has an answer.' : 'That didn’t save. Please try again in a moment.';
+      err.hidden = false; send.disabled = !f.lines.every((l) => typeof answers[l.key] === 'boolean');
+    });
+  }
+  // They tick "I’ve paid my deposit": once that is saved, ask the server whether the choices screen is due now.
+  let fxWatching = false;
+  function watchDeposit() {
+    const box = form.querySelector('input[name="deposit_paid"]');
+    if (fxWatching || !box || !wfKey) return;
+    fxWatching = true;
+    box.addEventListener('change', async () => {
+      if (!box.checked) return;
+      try { await cloud.save(); } catch (e) { /* the next visit asks again */ }
+      await new Promise((r) => setTimeout(r, 600));
+      try {
+        const res = await fetch(cloud.BASE + '/start-who', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ k: wfKey }),
+          mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+        const d2 = await res.json().catch(() => null);
+        if (res.ok && d2 && d2.ok && d2.features && d2.features.due) featuresScreen(d2.features, null);
+      } catch (e) { /* off */ }
+    });
   }
   function restCard(title, words, href) {
     const main = document.getElementById('main');

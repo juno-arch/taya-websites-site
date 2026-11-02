@@ -81,7 +81,7 @@ const usd = (n) => '$' + n.toLocaleString('en-US');
 // what every plan's subscription also includes (Pollen, Oct 6 2026; pricing-oct2026.md), word for word as on the main page
 const EVERY_PLAN = ['I follow your socials and update your site as you post, or you email me', 'Changes usually within 2 business days',
   'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
-  'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
+  'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me', 'Private visitor counts, no tracking'];
 const failures = [];
 
 // find each question by its words, and sort its answers by their words

@@ -1726,6 +1726,13 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
       showPick();
       pickBtn.addEventListener('click', openCard);
     }
+    // (Nov 2 2026, ADD 51) what they said no to on the choices screen after their deposit comes out of the page: elements tagged data-feature="<key>"
+    if (d.features && d.features.items && typeof d.features.items === 'object') {
+      Object.keys(d.features.items).forEach((k) => {
+        if (d.features.items[k] !== false || !/^[a-z0-9_]{1,30}$/.test(k)) return;
+        document.querySelectorAll('[data-feature="' + k + '"]').forEach((n) => { n.hidden = true; n.style.display = 'none'; });
+      });
+    }
     renderPins(); renderPanel();
   }).catch((x) => {
     if (answerTrouble(x)) return;
