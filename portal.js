@@ -375,7 +375,12 @@
     '/api/webfaery/portal/resources' // the approved how-to videos and guides, a read (hub DEPLOY.md section 101)
   ];
   const previewReads = (url) => PREVIEW_READS.includes(String(url).slice(SERVER.length).split('?')[0]);
-  const stayQuiet = () => new Promise(() => { /* read only view: nothing to send, nothing to show */ });
+  // Try-it mode (Nov 2 2026): in a Studio preview every button and field works, but a save or send goes nowhere: it says so and fails like
+  // a refused save, so the page's own busy states clear. Nothing leaves the page, and the server refuses a preview's changes anyway.
+  const stayQuiet = () => {
+    try { toast('Preview only: nothing was saved or sent.'); } catch (e) { /* the toast is a nicety */ }
+    return Promise.reject(fail('preview'));
+  };
   const post = async (path, body, key, base) => {
     const url = (base || BASE) + path;
     if (PREVIEW && !previewReads(url)) return stayQuiet();
@@ -400,7 +405,7 @@
   // pictures and files go as a form, with a progress report while they travel
   // [papers b24] base: another route family (the business papers' /add); BASE when not given, as before
   const sendForm = (path, fields, files, key, onProgress, base) => new Promise((resolve, reject) => {
-    if (PREVIEW) return; // a Studio preview sends no files (every form is a change): it quietly never answers
+    if (PREVIEW) { stayQuiet().catch(reject); return; } // a Studio preview sends no files: it says so
     const fd = new FormData();
     fields.forEach(([k, v]) => fd.append(k, v));
     files.forEach((f) => fd.append('files', f, f.name));
@@ -541,6 +546,7 @@
   // what people read when something goes sideways
   const words = (err, where) => {
     const c = err && err.code;
+    if (c === 'preview') return 'Preview only: nothing was saved or sent.';
     if (c === 'code') return 'That code didn’t work. Check the numbers, and use the code in the newest email.';
     if (c === 'slow_down' && (err.retry || 0) >= 2880) return 'Sign-in is paused for this email, to keep it safe. Email me at ' + TAYA + ' and I’ll open it back up.';
     if (c === 'slow_down') {
@@ -1957,13 +1963,11 @@
       b.setAttribute('role', 'radio');
       b.setAttribute('aria-checked', 'false');
       b.dataset.value = label;
-      b.disabled = PREVIEW;
       b.addEventListener('click', () => { picked = label; refresh(); if (label === OTHER) ta.focus(); });
       buttons.push(b);
       group.append(b);
     });
     ta.addEventListener('input', refresh);
-    if (PREVIEW) ta.readOnly = true;
     const row = make('div', 'row');
     row.append(send);
     if (sentBefore) {
@@ -2063,7 +2067,7 @@
       }
     };
     if (PREVIEW) {
-      ta.readOnly = true;                           // a preview only reads: show the draft, send nothing
+      /* try-it mode: the box takes typing; nothing is saved or sent */
     } else if (editing) {
       // changing an answer already sent: keep it in this tab until Send, so the sent words stand until they commit
       ta.addEventListener('input', () => drafts.set('ans:' + item.id, ta.value));
@@ -7408,7 +7412,8 @@
     '.o-slip-btn, .bk-cl-btn, .bk-cd, .rc-row, #in-bk-cl-q, #in-nl-which, #in-rc-month, #in-rc-exmonth';
   let roEndTimer = 0, roWatch = null;
   function roMark() {
-    if (!PREVIEW) return;
+    return; // try-it mode (Nov 2 2026): nothing is switched off any more; saves are caught in post()
+    // eslint-disable-next-line no-unreachable
     $$('#main button, #main input, #main select, #main textarea, #main a[data-pay], #more button').forEach((el) => {
       if (el.matches(RO_READ) || el.classList.contains('ro-off')) return;
       el.classList.add('ro-off');
@@ -7437,7 +7442,7 @@
       roStop(ev);
     }, true));
     // every form here sends something, and a dropped file would be one more: neither goes anywhere in a preview
-    ['submit', 'drop'].forEach((type) => document.addEventListener(type, (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); }, true));
+    ['drop'].forEach((type) => document.addEventListener(type, (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); }, true));
     roWatch = new MutationObserver(() => roMark());
     roWatch.observe(document.getElementById('main'), { childList: true, subtree: true });
     const more = document.getElementById('more');
@@ -7446,7 +7451,7 @@
   function previewStart(data) {
     const c = (me && me.client) || {};
     const bar = $('#pv-bar');
-    bar.textContent = 'Viewing as ' + (c.business || c.first_name || 'this client') + '. Read only: nothing here changes anything.';
+    bar.textContent = 'Viewing as ' + (c.business || c.first_name || 'this client') + '. Try the buttons: nothing is saved or sent.';
     bar.hidden = false;
     roMark();
     const s = data && data.session;
