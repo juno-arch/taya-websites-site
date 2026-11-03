@@ -1325,6 +1325,7 @@
       pay: arr(d.pay).filter((p) => p && ['deposit', 'balance', 'care'].includes(p.key)).map((p) => ({
         key: p.key, amount: Math.max(0, Math.round(+p.amount || 0)), period: p.period === 'year' ? 'year' : 'month',
         state: ['paid', 'due', 'later', 'active'].includes(p.state) ? p.state : 'later', paid_on: str(p.paid_on, 30), starts_on: str(p.starts_on, 30),
+        next_on: /^\d{4}-\d{2}-\d{2}$/.test(str(p.next_on, 10)) ? str(p.next_on, 10) : '', next_amount: Math.max(0, Math.round(+p.next_amount || 0)),
         url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
@@ -5101,6 +5102,8 @@
         const s = make('span', 'p-paid');
         s.append(icon('i-check'), make('span', null, 'Active' + (p.paid_on ? ' since ' + shortDate(p.paid_on) : '')));
         st.append(s);
+        // Stripe's own next charge (it comes from Stripe, so it matches what Stripe will bill)
+        if (p.next_on && !isPast(p.next_on)) st.append(make('span', 'p-later', 'Next payment ' + shortDate(p.next_on) + (p.next_amount ? ', ' + money(p.next_amount) : '')));
         const canManage = (me.care_manage_live && typeof api.careManage === 'function') || !!me.care_manage_url;
         if (me.care_trouble) {
           const tr = make('p', 'p-trouble');
