@@ -766,7 +766,23 @@
       li.append(i, nm);
       if (k[1]) li.append(make('p', 'acct-line', k[1]));
       li.append(make('p', 'acct-holder', ACCT_HOLDERS[a.holder]));
-      if (a.login_user) li.append(make('p', 'acct-user', 'Sign in as: ' + a.login_user)); // the user name or email only
+      if (a.login_user) { // the user name or email only, hidden until the little eye is tapped
+        const row = make('p', 'acct-user'), val = make('span', 'acct-user-val', '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022');
+        const eye = make('button', 'acct-eye'), NS = 'http://www.w3.org/2000/svg';
+        eye.type = 'button'; eye.dataset.read = '1'; eye.setAttribute('aria-pressed', 'false'); eye.setAttribute('aria-label', 'Show the sign-in name');
+        const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true');
+        const pa = document.createElementNS(NS, 'path'); pa.setAttribute('d', 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'); pa.setAttribute('class', 'eye-lid');
+        const ci = document.createElementNS(NS, 'circle'); ci.setAttribute('cx', '12'); ci.setAttribute('cy', '12'); ci.setAttribute('r', '3');
+        const sl = document.createElementNS(NS, 'path'); sl.setAttribute('d', 'M4 20L20 4'); sl.setAttribute('class', 'eye-slash');
+        svg.append(pa, ci, sl); eye.append(svg);
+        eye.addEventListener('click', () => {
+          const on = eye.getAttribute('aria-pressed') !== 'true';
+          eye.setAttribute('aria-pressed', on ? 'true' : 'false');
+          eye.setAttribute('aria-label', on ? 'Hide the sign-in name' : 'Show the sign-in name');
+          val.textContent = on ? a.login_user : '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+        });
+        row.append('Sign in as: ', val, eye); li.append(row);
+      }
       if (a.renews_on) li.append(make('p', 'acct-renew', acctRenews(a)));
       if (a.note) li.append(make('p', 'acct-note', a.note));
       if (a.howto) {
