@@ -2402,7 +2402,7 @@
     const live = cur === 'care' || cur === 'resting';
     // the five steps come from the server (the same source as the Studio's timeline); an older server sends the six stages
     const five = arr(me.timeline.steps).length === 5;
-    const list = five ? me.timeline.steps.map((s) => ({ key: s.key, label: s.label, date: s.date || '', until: s.until || '', turn: s.turn || '', say: s.say || '', state: s.state }))
+    const list = five ? me.timeline.steps.map((s) => ({ key: s.key, label: s.label, date: s.date || '', est: str(s.est, 10), until: s.until || '', turn: s.turn || '', say: s.say || '', state: s.state }))
       : STAGES.map(([key, label], i) => {
         const s = me.timeline.stages.find((x) => x.key === key) || {};
         return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
@@ -2423,7 +2423,9 @@
       // the draft link is already here: its date is when it's finished, not when it arrives
       const draftHere = (s.key === 'draft' || s.key === 'build') && s.state === 'now' && !!me.things.draft;
       let when = '';
-      if (d) {
+      const estD = s.state !== 'done' ? shortDate(s.est) : '';
+      if (estD) when = 'Est. ' + estD; // ADD 64: a projection, same day as the Coming up box
+      else if (d) {
         if (s.state === 'done') when = d;
         else if (s.key === 'settling_in') when = (s.state === 'now' ? 'Until ' : 'Until about ') + d;
         else if (s.key === 'call' || s.key === 'setup') when = isPast(s.date) ? d : 'About ' + d;
@@ -2431,7 +2433,7 @@
         else if (s.state === 'now') when = isPast(s.date) ? 'Since ' + d : 'About ' + d;
         else when = 'About ' + d;
       }
-      body.append(make('span', 'when', when));
+      body.append(make('span', estD ? 'when est' : 'when', when));
       const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
       if (s.state === 'now' && say) body.append(make('p', 'say', say));
       if (s.state === 'now' && s.turn) body.append(make('p', 'turn', s.turn === 'you' ? 'Your turn' : 'My turn'));
