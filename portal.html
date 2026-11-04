@@ -74,6 +74,7 @@
   <symbol id="i-play" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 9.2v5.6l4.6-2.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z M14 3v5h5 M9 13h6 M9 16.5h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-sign" viewBox="0 0 24 24"><path d="M4 19.5h16 M6 16c2.2-4.6 3.9-9.8 5.4-9.5 1.8.4-1.7 8.9.2 9.2 1.3.2 2.4-3.4 3.6-3.2 1 .2.4 2.6 1.4 2.8.7.1 1.4-.6 2-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8.5" cy="14.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M11.2 12 19 4.2M16 7.2l2.6 2.6M13.6 9.6l1.8 1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.6a8.4 8.4 0 1 0 0 16.8c1.3 0 1.9-.8 1.9-1.7 0-1.2-1-1.5-1-2.6 0-1 .8-1.7 1.9-1.7h2.1a3.5 3.5 0 0 0 3.5-3.5c0-4-3.8-7.3-8.4-7.3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.7" cy="11.3" r="1.2" fill="currentColor"/><circle cx="10.4" cy="7.6" r="1.2" fill="currentColor"/><circle cx="14.9" cy="7.8" r="1.2" fill="currentColor"/></symbol>
   <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 12l8-8M16 7l2.5 2.5M14 9l2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
   <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3Z M9 8h6 M9 11.5h6 M9 15h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -846,6 +847,16 @@
       <h2 id="h-brand" tabindex="-1">Brand kit</h2>
       <p class="bkit-lede">The colors, fonts and logo your site wears, so anything you make can match.</p>
       <div id="bkit-body"></div>
+    </section>
+
+    <!-- Your accounts (Nov 4 2026, ADD 58): a plain ledger of the accounts their site runs on and who holds each login. No passwords or
+         keys, only where to sign in. Read only for them, set from the Studio. Hidden until one row is set. Its code is the "Your accounts"
+         block in portal.js. -->
+    <section class="p-card" id="sec-accounts" data-page="accounts" aria-labelledby="h-accounts" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-accounts" tabindex="-1">Your accounts</h2>
+      <p class="acct-lede">Every account your site runs on, and who holds the login for each. Your passwords stay with you; none are kept here.</p>
+      <ul class="acct-list" id="acct-body"></ul>
     </section>
 
     <!-- your visitors (Oct 15 2026): their own site's private visitor counts, the last 30 days next to the 30 before;

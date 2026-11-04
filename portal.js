@@ -698,6 +698,59 @@
     if (b.sheet === true) out.sheet = true;
     return Object.keys(out).length ? out : null;
   }
+  /* ---- Your accounts (Nov 4 2026, ADD 58) ---- */
+  const ACCT_KINDS = {
+    domain: ['Domain', 'Your website address.'], hosting: ['Hosting', 'Where your site lives.'], google: ['Google Business Profile', 'How you show up on Google and Maps.'],
+    stripe: ['Stripe', 'Where your payments arrive.'], booking: ['Booking tool', 'Where your bookings are kept.'], newsletter: ['Newsletter', 'Where your newsletter is written and sent.'],
+    instagram: ['Instagram', 'Yours to post on.'], facebook: ['Facebook', 'Yours to post on.'], email: ['Email', 'Your mailbox.'], other: ['Another account', '']
+  };
+  const ACCT_HOLDERS = { you: 'You hold the login.', taya: 'Taya manages the login for you.', both: 'You and Taya can both sign in.' };
+  const ACCT_ICONS = { domain: 'i-globe', stripe: 'i-receipt', booking: 'i-cal', newsletter: 'i-mail' };
+  function cleanAccounts(list) {
+    const out = arr(list).slice(0, 12).map((r) => {
+      if (!r || typeof r !== 'object' || !ACCT_KINDS[str(r.kind, 20)] || !ACCT_HOLDERS[str(r.holder, 10)]) return null;
+      const o = { kind: str(r.kind, 20), holder: str(r.holder, 10), where: str(r.where, 40), url: safeUrl(r.url), howto: safeUrl(r.howto), note: str(r.note, 140), renews_on: '' };
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str(r.renews_on, 10))) o.renews_on = str(r.renews_on, 10);
+      return o;
+    }).filter(Boolean);
+    return out.length ? out : null;
+  }
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const acctDate = (iso) => { const p = iso.split('-'); return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; };
+  // "renews on <date>, in your <registrar> account": it says where the renewal happens, not that we do it
+  const acctRenews = (a) => 'Renews on ' + acctDate(a.renews_on) + (a.where ? ', in your ' + a.where + ' account' : ', in your account') + '.';
+  function renderAccounts() {
+    const sec = $('#sec-accounts');
+    const body = $('#acct-body');
+    const list = me && me.accounts;
+    if (!list) { setHidden(sec, true); body.replaceChildren(); return; }
+    const rows = list.map((a) => {
+      const li = make('li', 'acct-row');
+      const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(ACCT_ICONS[a.kind] || 'i-key'));
+      const k = ACCT_KINDS[a.kind];
+      li.append(i, make('p', 'acct-name', k[0] + (a.where && k[0].toLowerCase().indexOf(a.where.toLowerCase()) < 0 ? ', ' + a.where : '')));
+      if (k[1]) li.append(make('p', 'acct-line', k[1]));
+      li.append(make('p', 'acct-holder', ACCT_HOLDERS[a.holder]));
+      if (a.renews_on) li.append(make('p', 'acct-renew', acctRenews(a)));
+      if (a.note) li.append(make('p', 'acct-note', a.note));
+      if (a.url || a.howto) {
+        const acts = make('div', 'acct-acts');
+        [[a.url, 'Sign in', 'sign in to your ' + k[0].toLowerCase()], [a.howto, 'How to', 'how to use your ' + k[0].toLowerCase()]].forEach(([u, label, aria]) => {
+          if (!u) return;
+          const l = make('a', 'open-btn', null);
+          l.href = u; l.target = '_blank'; l.rel = 'noopener noreferrer';
+          l.dataset.read = '1'; // opens another site: stays on in a Studio preview
+          l.setAttribute('aria-label', label + ': ' + aria + ' (opens in a new tab)');
+          l.append(make('span', null, label), icon('i-out'));
+          acts.append(l);
+        });
+        li.append(acts);
+      }
+      return li;
+    });
+    body.replaceChildren(...rows);
+    setHidden(sec, false);
+  }
   // the bar is dark: a logo made for dark ground sits on it as it is; one made for light paper sits on a small paper plate.
   // No picture, a failed picture, or no name yet: the business name, as before.
   function applyHeaderLogo(brand, biz) {
@@ -763,6 +816,7 @@
     { id: 'messages', label: 'Messages', icon: 'i-talk' },
     { id: 'resources', label: 'Resources', icon: 'i-play' },
     { id: 'brand', label: 'Brand kit', short: 'Brand', icon: 'i-palette' },
+    { id: 'accounts', label: 'Your accounts', short: 'Accounts', icon: 'i-key' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -777,7 +831,7 @@
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
     // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
     // (Oct 21 2026) Resources: after their papers, before Payments
-    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'brand', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'brand', 'payments', 'ask']);
+    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'brand', 'accounts', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'brand', 'accounts', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -1078,6 +1132,8 @@
     $('#sec-visits').hidden = true;
     $('#sec-brand').hidden = true;
     $('#bkit-body').replaceChildren();
+    $('#sec-accounts').hidden = true;
+    $('#acct-body').replaceChildren();
     rcReset();
     cqReset();
     papers = null;
@@ -1401,6 +1457,7 @@
         url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
+      accounts: cleanAccounts(d.accounts), // (Nov 4 2026, ADD 58) their ledger of accounts; null until Taya sets a row
       brand: cleanBrand(d.brand), // their accent color (Oct 16 2026, a strict #rrggbb) and, since Nov 4 2026, their heading font, colors and logos
       // Web Faery billing (Oct 16 2026): Stripe said the last subscription payment didn't go through, and whether the
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
@@ -1534,6 +1591,7 @@
     renderTimeline();
     renderThings();
     renderBrandKit();
+    renderAccounts();
     renderTexts();
     renderPassword();
     renderPay();

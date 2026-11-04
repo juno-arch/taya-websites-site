@@ -279,6 +279,18 @@ const demoOn = /const DEMO = true;/.test(js);
   if (!/id="sec-brand" data-page="brand"[^>]*hidden/.test(html)) fail('portal.html: the Brand kit section should start hidden');
   if (!/function renderBrandKit\(/.test(js) || !/setHidden\(sec, true\)/.test(js.slice(js.indexOf('function renderBrandKit('), js.indexOf('function renderBrandKit(') + 1500))) fail('portal.js: the Brand kit tab should hide until something is set');
   if (/innerHTML/.test(js.slice(js.indexOf('function renderBrandKit('), js.indexOf('function renderBrandKit(') + 6000))) fail('portal.js: the Brand kit must draw with textContent only');
+  // (Nov 4 2026, ADD 58) Your accounts: hidden until a row is set, textContent only, renewal wording says where it renews, no passwords asked for
+  if (!/id="sec-accounts" data-page="accounts"[^>]*hidden/.test(html)) fail('portal.html: the Your accounts section should start hidden');
+  const acStart = js.indexOf('function cleanAccounts(');
+  const acEnd = js.indexOf('// the bar is dark: a logo made for dark ground');
+  if (acStart < 0 || acEnd < acStart) fail('portal.js: the Your accounts block is missing');
+  else {
+    const ac = js.slice(acStart, acEnd);
+    if (/innerHTML/.test(ac)) fail('portal.js: Your accounts must draw with textContent only');
+    if (!/', in your '/.test(ac) || /we renew|we.ll renew|renewed for you/i.test(ac)) fail('portal.js: Your accounts should say "renews on <date>, in your <registrar> account", never that we renew it');
+    if (!/setHidden\(sec, true\)/.test(ac)) fail('portal.js: the Your accounts tab should hide until a row is set');
+    if (/password|passcode/i.test(ac.replace(/Your passwords stay/g, ''))) fail('portal.js: Your accounts must not ask for or show passwords');
+  }
   if (!/function applyAccent\(/.test(js) || !/removeAttribute\('data-wf-brand'\)/.test(js)) fail('portal.js: applyAccent should clear the accent before it paints a new one');
   const css = read('portal.css');
   const brandCss = (css.split('/* ============ brand accent')[1] || '');
