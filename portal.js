@@ -720,6 +720,12 @@
     }).filter(Boolean);
     return out.length ? out : null;
   }
+  // (Nov 4 2026, ADD 71) their Google review link: https on a Google host only, else nothing (no link, no row)
+  function cleanReviewLink(u) {
+    const s = safeUrl(u);
+    if (!s) return '';
+    try { const h = new URL(s).hostname.toLowerCase(); return h === 'g.page' || h === 'maps.app.goo.gl' || h === 'google.com' || h.endsWith('.google.com') ? s : ''; } catch (e) { return ''; }
+  }
   const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const acctDate = (iso) => { const p = iso.split('-'); return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; };
   // "renews on <date>, in your <registrar> account": it says where the renewal happens, not that we do it
@@ -753,8 +759,9 @@
     const sec = $('#sec-accounts');
     const body = $('#acct-body');
     const list = me && me.accounts;
-    if (!list) { setHidden(sec, true); body.replaceChildren(); return; }
-    const rows = list.map((a) => {
+    const review = me && me.review_link;
+    if (!list && !review) { setHidden(sec, true); body.replaceChildren(); return; }
+    const rows = (list || []).map((a) => {
       const li = make('li', 'acct-row');
       const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(ACCT_ICONS[a.kind] || 'i-key'));
       const k = ACCT_KINDS[a.kind];
@@ -805,6 +812,20 @@
       }
       return li;
     });
+    if (review) { // (ADD 71) shown first: the thing they hand to customers
+      const li = make('li', 'acct-row');
+      const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon('i-leaf'));
+      li.append(i, make('p', 'acct-name', 'Your Google review link'));
+      li.append(make('p', 'acct-line', 'Share this link with your customers, and they can leave you a Google review in a few taps.'));
+      const acts = make('div', 'acct-acts');
+      const b = make('button', 'open-btn', null);
+      b.type = 'button'; b.dataset.read = '1';
+      b.setAttribute('aria-label', 'Copy your Google review link');
+      b.append(make('span', null, 'Copy link'));
+      b.addEventListener('click', () => bkitCopy(review, 'your review link'));
+      acts.append(b); li.append(acts);
+      rows.unshift(li);
+    }
     body.replaceChildren(...rows);
     setHidden(sec, false);
   }
@@ -1521,6 +1542,7 @@
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
       coming_up: cleanComing(d.coming_up), // (Nov 4 2026, ADD 61) launch date + next payment; null unless the server sends it
+      review_link: cleanReviewLink(d.review_link), // (Nov 4 2026, ADD 71) their Google review link; '' until the server sends one
       accounts: cleanAccounts(d.accounts), // (Nov 4 2026, ADD 58) their ledger of accounts; null until Taya sets a row
       brand: cleanBrand(d.brand), // their accent color (Oct 16 2026, a strict #rrggbb) and, since Nov 4 2026, their heading font, colors and logos
       // Web Faery billing (Oct 16 2026): Stripe said the last subscription payment didn't go through, and whether the
