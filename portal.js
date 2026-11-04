@@ -709,7 +709,7 @@
   function cleanAccounts(list) {
     const out = arr(list).slice(0, 12).map((r) => {
       if (!r || typeof r !== 'object' || !ACCT_KINDS[str(r.kind, 20)] || !ACCT_HOLDERS[str(r.holder, 10)]) return null;
-      const o = { kind: str(r.kind, 20), holder: str(r.holder, 10), where: str(r.where, 40), url: safeUrl(r.url), howto: safeUrl(r.howto), note: str(r.note, 140), renews_on: '' };
+      const o = { kind: str(r.kind, 20), holder: str(r.holder, 10), where: str(r.where, 40), url: safeUrl(r.url), howto: safeUrl(r.howto), note: str(r.note, 140), renews_on: '', login_user: str(r.login_user, 80) };
       if (/^\d{4}-\d{2}-\d{2}$/.test(str(r.renews_on, 10))) o.renews_on = str(r.renews_on, 10);
       return o;
     }).filter(Boolean);
@@ -719,6 +719,31 @@
   const acctDate = (iso) => { const p = iso.split('-'); return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; };
   // "renews on <date>, in your <registrar> account": it says where the renewal happens, not that we do it
   const acctRenews = (a) => 'Renews on ' + acctDate(a.renews_on) + (a.where ? ', in your ' + a.where + ' account' : ', in your account') + '.';
+  /* ---- Coming up (Nov 4 2026, ADD 61) ---- */
+  function cleanComing(c) {
+    if (!c || typeof c !== 'object') return null;
+    const day = (s) => /^\d{4}-\d{2}-\d{2}$/.test(str(s, 10));
+    const launch = c.launch && day(c.launch.on) && str(c.launch.text, 120) ? { on: str(c.launch.on, 10), text: str(c.launch.text, 120) } : null;
+    const p = c.payment;
+    const payment = p && ['balance', 'care', 'care_start'].includes(p.kind) && str(p.text, 160) ? { kind: p.kind, text: str(p.text, 160) } : null;
+    return launch || payment ? { launch: launch, payment: payment } : null;
+  }
+  function renderComing() {
+    const sec = $('#sec-coming');
+    const body = $('#coming-body');
+    const c = me && me.coming_up;
+    if (!c) { setHidden(sec, true); body.replaceChildren(); return; }
+    const rows = [];
+    if (c.launch) rows.push(['i-cal', c.launch.text]);
+    if (c.payment) rows.push(['i-receipt', c.payment.text]);
+    body.replaceChildren(...rows.map((r) => {
+      const li = make('li', 'coming-row');
+      const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(r[0]));
+      li.append(i, make('p', 'coming-line', r[1]));
+      return li;
+    }));
+    setHidden(sec, false);
+  }
   function renderAccounts() {
     const sec = $('#sec-accounts');
     const body = $('#acct-body');
@@ -728,14 +753,25 @@
       const li = make('li', 'acct-row');
       const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(ACCT_ICONS[a.kind] || 'i-key'));
       const k = ACCT_KINDS[a.kind];
-      li.append(i, make('p', 'acct-name', k[0] + (a.where && k[0].toLowerCase().indexOf(a.where.toLowerCase()) < 0 ? ', ' + a.where : '')));
+      const title = k[0] + (a.where && k[0].toLowerCase().indexOf(a.where.toLowerCase()) < 0 ? ', ' + a.where : '');
+      const nm = make('p', 'acct-name');
+      if (a.url) {
+        // (Nov 4 2026, ADD 62) the title is the link to that service's sign-in page
+        const l = make('a', 'acct-link', title);
+        l.href = a.url; l.target = '_blank'; l.rel = 'noopener noreferrer';
+        l.dataset.read = '1'; // opens another site: stays on in a Studio preview
+        l.setAttribute('aria-label', 'Sign in to your ' + k[0].toLowerCase() + ' (opens in a new tab)');
+        nm.append(l);
+      } else nm.textContent = title;
+      li.append(i, nm);
       if (k[1]) li.append(make('p', 'acct-line', k[1]));
       li.append(make('p', 'acct-holder', ACCT_HOLDERS[a.holder]));
+      if (a.login_user) li.append(make('p', 'acct-user', 'Sign in as: ' + a.login_user)); // the user name or email only
       if (a.renews_on) li.append(make('p', 'acct-renew', acctRenews(a)));
       if (a.note) li.append(make('p', 'acct-note', a.note));
-      if (a.url || a.howto) {
+      if (a.howto) {
         const acts = make('div', 'acct-acts');
-        [[a.url, 'Sign in', 'sign in to your ' + k[0].toLowerCase()], [a.howto, 'How to', 'how to use your ' + k[0].toLowerCase()]].forEach(([u, label, aria]) => {
+        [[a.howto, 'How to', 'how to use your ' + k[0].toLowerCase()]].forEach(([u, label, aria]) => {
           if (!u) return;
           const l = make('a', 'open-btn', null);
           l.href = u; l.target = '_blank'; l.rel = 'noopener noreferrer';
@@ -1134,6 +1170,8 @@
     $('#bkit-body').replaceChildren();
     $('#sec-accounts').hidden = true;
     $('#acct-body').replaceChildren();
+    $('#sec-coming').hidden = true;
+    $('#coming-body').replaceChildren();
     rcReset();
     cqReset();
     papers = null;
@@ -1457,6 +1495,7 @@
         url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
+      coming_up: cleanComing(d.coming_up), // (Nov 4 2026, ADD 61) launch date + next payment; null unless the server sends it
       accounts: cleanAccounts(d.accounts), // (Nov 4 2026, ADD 58) their ledger of accounts; null until Taya sets a row
       brand: cleanBrand(d.brand), // their accent color (Oct 16 2026, a strict #rrggbb) and, since Nov 4 2026, their heading font, colors and logos
       // Web Faery billing (Oct 16 2026): Stripe said the last subscription payment didn't go through, and whether the
@@ -1592,6 +1631,7 @@
     renderThings();
     renderBrandKit();
     renderAccounts();
+    renderComing();
     renderTexts();
     renderPassword();
     renderPay();

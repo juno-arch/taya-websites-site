@@ -290,6 +290,9 @@ const demoOn = /const DEMO = true;/.test(js);
     if (!/', in your '/.test(ac) || /we renew|we.ll renew|renewed for you/i.test(ac)) fail('portal.js: Your accounts should say "renews on <date>, in your <registrar> account", never that we renew it');
     if (!/setHidden\(sec, true\)/.test(ac)) fail('portal.js: the Your accounts tab should hide until a row is set');
     if (/password|passcode/i.test(ac.replace(/Your passwords stay/g, ''))) fail('portal.js: Your accounts must not ask for or show passwords');
+    if (!/acct-link/.test(ac) || !/rel = 'noopener noreferrer'/.test(ac) || !/Sign in as: /.test(ac)) fail('portal.js: Your accounts rows should link their title to the sign-in page and show "Sign in as: <user>" (ADD 62)');
+    if (/innerHTML/.test(js.slice(js.indexOf('function cleanComing('), js.indexOf('function renderAccounts(')))) fail('portal.js: Coming up must draw with textContent only (ADD 61)');
+    if (/TBD|hurry|urgent|never/i.test(js.slice(js.indexOf('function cleanComing('), js.indexOf('function renderAccounts(')))) fail('portal.js: Coming up must not say TBD or press for urgency (ADD 61)');
   }
   if (!/function applyAccent\(/.test(js) || !/removeAttribute\('data-wf-brand'\)/.test(js)) fail('portal.js: applyAccent should clear the accent before it paints a new one');
   const css = read('portal.css');
