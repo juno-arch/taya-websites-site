@@ -3403,6 +3403,7 @@
       windows: cleanWins(x.windows), time_off: list(x.time_off), blocks: list(x.blocks), busy: list(x.busy), full: !!x.full,
       bookings: arr(x.bookings).slice(0, 40).map((b) => (b ? { time: str(b.time, 20), name: str(b.name, 120), service_name: str(b.service_name, 80) } : null)).filter(Boolean) };
   }
+  const shortTime = (t) => str(t, 20).replace(/\s*([ap])\.?m\.?/i, (m, x) => x.toLowerCase()).replace(/:00(?=[ap]|$)/, '');
   const dayWord = (d) => (d.state === 'closed' ? 'Off' : d.full ? 'Full' : '');
   function dayAria(d) {
     const bits = [d.label];
@@ -3431,10 +3432,11 @@
       b.setAttribute('aria-label', dayAria(d));
       b.append(make('span', 'bk-cd-n', String(+d.date.slice(8, 10))));
       const w = dayWord(d);
-      const count = d.bookings.length && d.state !== 'past' ? String(d.bookings.length) : '';
-      const line = make('span', 'bk-cd-w', w || (count ? count + ' ' : ''));
-      if (!w && count) line.append(make('span', 'bk-cd-long', 'booked'));
+      const live = d.bookings.length && d.state !== 'past';
+      const line = make('span', 'bk-cd-w', w);
+      if (!w && live) line.textContent = shortTime(d.bookings[0].time);
       b.append(line);
+      if (!w && live && d.bookings.length > 1) b.append(make('span', 'bk-cd-w bk-cd-more', '+' + (d.bookings.length - 1)));
       if (d.busy.length && d.state !== 'past' && d.state !== 'closed') { const dot = make('span', 'bk-cd-busy'); dot.setAttribute('aria-hidden', 'true'); b.append(dot); }
       b.addEventListener('click', () => { bkDay = d.date; renderMonth(); renderDayInfo(true); });
       kids.push(b);
@@ -7311,31 +7313,38 @@
       stamp.append(when, make('span', 'msg-via', 'via email'));
       head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), stamp);
     } else head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), when);
-    li.append(head);
-    if (m.email && m.subject) { const s = make('p', 'msg-subject'); s.append(make('b', '', m.subject)); li.append(s); }
+    const det = make('div', 'msg-det');
+    det.hidden = true;
+    det.append(head);
+    if (m.email && m.subject) { const s = make('p', 'msg-subject'); s.append(make('b', '', m.subject)); det.append(s); }
+    const title = m.email && m.subject ? m.subject : String(m.body || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80) || 'Message';
+    const sum = make('button', 'msg-sum');
+    sum.type = 'button';
+    sum.setAttribute('aria-expanded', 'false');
+    sum.append(make('span', 'msg-sum-when', msgWhen(m.created).replace(/, \d{1,2}:\d{2} [AP]M$/, '')), make('span', 'msg-sum-title', title));
+    sum.addEventListener('click', () => { const o = det.hidden; det.hidden = !o; sum.setAttribute('aria-expanded', o ? 'true' : 'false'); li.classList.toggle('is-open', o); });
+    li.append(sum, det);
     if (!m.email && richOn()) { // [rich b23] the markup drawn by WFRich.render (createElement and textContent only), then the files
       const rbody = make('div', 'msg-body msg-rich');
       rbody.append(window.WFRich.render(m.body, document));
-      li.append(rbody);
-      if (m.files && m.files.length) li.append(richFiles(m));
+      det.append(rbody);
+      if (m.files && m.files.length) det.append(richFiles(m));
       return li;
     }
     const body = make('p', 'msg-body', m.body);
-    li.append(body);
-    if (m.body.length > MSG_FOLD || m.folded) li.append(msgFold(m, body, li));
-    if (m.email && m.files) li.append(make('p', 'msg-files', m.files === 1 ? '1 attachment, in the email itself' : m.files + ' attachments, in the email itself'));
+    det.append(body);
+    if (m.body.length > MSG_FOLD || m.folded) det.append(msgFold(m, body, li));
+    if (m.email && m.files) det.append(make('p', 'msg-files', m.files === 1 ? '1 attachment, in the email itself' : m.files + ' attachments, in the email itself'));
     return li;
   }
   function renderMessages() {
     const list = $('#msg-thread');
     const none = $('#msg-none');
     const list0 = msgs || [];
-    list.replaceChildren(...list0.map(msgRow));
+    list.replaceChildren(...list0.slice().reverse().map(msgRow)); // newest first, like an inbox
     list.hidden = !list0.length;
     none.textContent = 'No messages yet. Whatever you write here comes straight to me.';
     none.hidden = list0.length > 0;
-    // the newest is at the bottom, right above the box
-    if (list0.length && page === 'messages') { const last = list.lastElementChild; if (last && last.getBoundingClientRect().top > window.innerHeight) last.scrollIntoView({ block: 'nearest' }); }
   }
   function msgCount() {
     const n = $('#in-msg').value.length;
