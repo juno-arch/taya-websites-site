@@ -70,6 +70,7 @@
   const GIFT = SERVER + '/api/webfaery/gift';         // gift certificates (Oct 10 2026): only clients whose site sells them
   const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
   const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
+  const GOOGLE = SERVER + '/api/webfaery/google';    // how they show up on Google (Nov 4 2026): only clients whose site is tracked get any
   const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
   const RECEIPTS = SERVER + '/api/webfaery/receipts'; // a client's own receipts box (Oct 15 2026): only clients Taya switched it on for get any
   const CRITIQUE = SERVER + '/api/webfaery/critique'; // their critique of Web Faery (Oct 23 2026): only clients on a trade or free deal get the card
@@ -367,6 +368,7 @@
     '/api/webfaery/news/owner/overview', '/api/webfaery/news/owner/issue', '/api/webfaery/news/owner/people',
     '/api/webfaery/news/owner/export', '/api/webfaery/news/owner/images',
     '/api/webfaery/v/mine',
+    '/api/webfaery/google/mine',
     '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
     '/api/webfaery/papers/mine',
     '/api/webfaery/critique/mine', // their critique card, a read (hub DEPLOY.md section 128); save and send stay refused
@@ -468,6 +470,9 @@
     giftRedeem: (b) => postJSON('/redeem', b, token, GIFT),
     // their own site's visitor counts (Oct 15 2026): { visits: null } unless their site is counted
     visits: () => postJSON('/mine', {}, token, VISITS),
+    // how they show up on Google (Nov 4 2026): { google: null } unless tracked and the switch is on; privacy changes only what is tracked
+    google: () => postJSON('/mine', {}, token, GOOGLE),
+    googlePrivacy: (b) => postJSON('/privacy', b, token, GOOGLE),
     // their own business papers (Oct 15 2026): { papers: [] } unless Taya added some
     papers: () => postJSON('/mine', {}, token, PAPERS),
     // (Oct 20 2026, hub section 98) they add their own: one file with an optional name, kind and "good until" day; a
@@ -1188,6 +1193,8 @@
     $('#acct-body').replaceChildren();
     $('#sec-coming').hidden = true;
     $('#coming-body').replaceChildren();
+    google = null;
+    $('#sec-google').hidden = true;
     rcReset();
     cqReset();
     papers = null;
@@ -1381,6 +1388,7 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadGoogle();
       loadReceipts();
       loadPapers();
       loadCritique();
@@ -1410,6 +1418,7 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadGoogle();
       loadReceipts();
       loadPapers();
       loadCritique();
@@ -6400,6 +6409,107 @@
     if (me) renderGlance();
   }
 
+  /* ---- how you show up on Google (Nov 4 2026) ----
+     Search Console numbers for their own site: this month next to last month, the phrases and pages that brought people.
+     Hidden unless the server sends them (switch portal_google, the site tracked, they have not stopped it, a month is in).
+     A privacy drop-down stops or restarts tracking and deletes the past numbers (two confirmations). Hub: webfaery-google-lib.js. */
+  let googleOff = false; // they stopped tracking: only the privacy drop-down shows, with the way back on
+  let google = null;   // { months: [ { month, clicks, impressions, position, queries, pages } ] } (cleaned), newest first
+  const G_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const gMonth = (m) => (/^\d{4}-(0[1-9]|1[0-2])$/.test(m || '') ? G_MONTHS[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4) : '');
+  async function loadGoogle() {
+    if (typeof api.google !== 'function') { google = null; renderGoogle(); return; }
+    try {
+      const d = await api.google();
+      google = cleanGoogle(d);
+      googleOff = !google && !!d && d.opted_out === true;
+      renderGoogle();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!google) $('#sec-google').hidden = true;
+    }
+  }
+  function cleanGoogle(d) {
+    const g = d && typeof d === 'object' && d.google && typeof d.google === 'object' ? d.google : null;
+    const list = g ? arr(g.months).slice(0, 2) : [];
+    const months = list.map((x) => {
+      if (!x || typeof x !== 'object' || !gMonth(x.month)) return null;
+      const top = (v) => arr(v).slice(0, 5).map((y) => (y && typeof y === 'object' && cleanLine(y.k, 200) ? { k: cleanLine(y.k, 200), clicks: vsCount(y.clicks), impressions: vsCount(y.impressions) } : null)).filter(Boolean);
+      return { month: x.month, clicks: vsCount(x.clicks), impressions: vsCount(x.impressions), position: Math.max(0, Math.round((+x.position || 0) * 10) / 10), queries: top(x.queries), pages: top(x.pages) };
+    }).filter(Boolean);
+    return months.length ? { months } : null;
+  }
+  function renderGoogle() {
+    const sec = $('#sec-google');
+    const g = google;
+    sec.classList.toggle('gg-off', googleOff);
+    ['#gg-glance', '#gg-lede-wrap', '#gg-data'].forEach((id) => setHidden($(id), googleOff));
+    $('#gg-stop').textContent = googleOff ? 'Turn tracking back on' : 'Stop tracking my site';
+    $('#gg-wipe').hidden = googleOff;
+    if (googleOff) { $('#gg-lede').textContent = 'Tracking is stopped. No numbers are being collected.'; setHidden($('#gg-lede-wrap'), false); setHidden(sec, false); return; }
+    if (!g) { setHidden(sec, true); return; }
+    const cur = g.months[0], prev = g.months[1] || null;
+    $('#gg-lede').textContent = cur.clicks === 0
+      ? 'Google did not send anyone to your site in ' + gMonth(cur.month) + '.'
+      : 'In ' + gMonth(cur.month) + ', Google sent people to your site ' + vsTimes(cur.clicks) + '.';
+    const vs = (key) => (prev ? 'the month before: ' + vsNum(prev[key]) : gMonth(cur.month));
+    const cells = [
+      ['Visits from Google', vsNum(cur.clicks), vs('clicks')],
+      ['Times you appeared', vsNum(cur.impressions), vs('impressions')],
+      ['Average spot', cur.position ? String(cur.position) : 'none yet', cur.position ? 'lower is closer to the top' : gMonth(cur.month)]
+    ];
+    $('#gg-glance').replaceChildren(...cells.map(([label, big, small]) => {
+      const d = make('div');
+      d.append(make('dt', null, label), make('dd', null, big), make('dd', 'd', small));
+      return d;
+    }));
+    const rows = (id, none, items, pages) => {
+      $(id).replaceChildren(...items.map((x) => vsRow(pages && x.k === '/' ? 'Home page' : x.k, '', vsTimes(x.clicks))));
+      setHidden($(id), !items.length);
+      setHidden($(none), items.length > 0);
+    };
+    rows('#gg-queries', '#gg-queries-none', cur.queries, false);
+    rows('#gg-pages', '#gg-pages-none', cur.pages, true);
+    setHidden(sec, false);
+  }
+  async function googlePrivacy(body, doneWord) {
+    const note = $('#gg-note');
+    try {
+      await api.googlePrivacy(body);
+      note.textContent = doneWord;
+      await loadGoogle();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      note.textContent = words(err) || 'That did not go through. Please try again in a moment.';
+    }
+  }
+  // asks in the row: each tap moves to the next question, a pause puts the button back
+  function askSteps(btn, steps, then) {
+    const label = btn.textContent;
+    let i = 0, timer = 0;
+    const reset = () => { i = 0; btn.textContent = label; btn.classList.remove('armed'); };
+    btn.addEventListener('click', () => {
+      clearTimeout(timer);
+      if (i < steps.length) { btn.textContent = steps[i++]; btn.classList.add('armed'); timer = setTimeout(reset, 8000); return; }
+      reset();
+      then();
+    });
+    return reset;
+  }
+  function wireGoogle() {
+    const stop = $('#gg-stop'), wipe = $('#gg-wipe');
+    if (!stop || stop.dataset.wired) return;
+    stop.dataset.wired = '1';
+    const stopSteps = ['Tap again to stop tracking'];
+    stop.addEventListener('click', (ev) => {
+      if (!googleOff) return;
+      ev.stopImmediatePropagation();
+      googlePrivacy({ off: false }, 'Done. Tracking is back on; numbers appear after the next monthly update.');
+    }, true);
+    askSteps(stop, stopSteps, () => { googlePrivacy({ off: true }, 'Done. No new numbers will be collected.'); });
+    askSteps(wipe, ['Tap again to delete the past numbers', 'This cannot be undone. Tap once more'], () => { googlePrivacy({ wipe: true }, 'Done. The past numbers are deleted.'); });
+  }
+
   /* ---- your receipts (Oct 15 2026) ----
      A receipts box, not accounting or tax advice. Only for a client Taya switched it on for: the server answers
      receipts: null for everyone else, and the section and its tab stay hidden. Three tabs, each with its own address
@@ -7895,6 +8005,7 @@
     wireBookings();
     wireNews();
     wireReceipts();
+    wireGoogle();
     wirePapers(); // their own business papers (Oct 20 2026, hub section 98)
     wireCritique(); // their critique of Web Faery (Oct 23 2026, hub section 128)
     wirePages();

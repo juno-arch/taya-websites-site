@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="fonts/brand/brand-fonts.css?v=20261104a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261014a">
 <link rel="stylesheet" href="wf-backend.css?v=20261014a">
-<link rel="stylesheet" href="portal.css?v=20261104g">
+<link rel="stylesheet" href="portal.css?v=20261104h">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <link rel="stylesheet" href="portal-schedule.css?v=20261022b">
 <!--
@@ -122,7 +122,7 @@
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261022b"></script>
-<script src="portal.js?v=20261104f"></script>
+<script src="portal.js?v=20261104g"></script>
 
 <main class="page" id="main" tabindex="-1">
   <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
@@ -888,6 +888,30 @@
       <ul class="ledger vs-list" id="vs-devices"></ul>
       <p class="vs-none" id="vs-devices-none" hidden>Nothing counted yet.</p>
       <p class="vs-fine">Counted privately: no cookies, nothing that identifies anyone. Visitors are an estimate: each person counts once a day, so someone who comes back on another day counts again.</p>
+    </section>
+
+    <!-- how you show up on Google (Nov 4 2026): Search Console numbers for their own site, this month next to last month.
+         Hidden unless the server sends them (switch portal_google). Its code is the "how you show up on Google" block in portal.js. -->
+    <section class="p-card" id="sec-google" data-page="visitors" aria-labelledby="h-google" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-google" tabindex="-1">How you show up on Google</h2>
+      <div id="gg-lede-wrap"><p class="vs-lede" id="gg-lede"></p></div>
+      <dl class="glance vs-glance" id="gg-glance"></dl>
+      <div id="gg-data">
+        <h3 class="small-h vs-h">What people searched before they found you</h3>
+        <ul class="ledger vs-list" id="gg-queries"></ul>
+        <p class="vs-none" id="gg-queries-none" hidden>Nothing to show yet. Google hides a phrase when only a few people used it.</p>
+        <h3 class="small-h vs-h">Pages they landed on</h3>
+        <ul class="ledger vs-list" id="gg-pages"></ul>
+        <p class="vs-none" id="gg-pages-none" hidden>No pages to show yet.</p>
+        <p class="vs-fine">These numbers come from Google Search Console and trail a few days behind. A visit is someone clicking your site in Google search results. An average spot of 1 is the very top.</p>
+      </div>
+      <details class="howto gg-privacy">
+        <summary>Privacy</summary>
+        <p class="vs-fine">Web Faery reads these numbers from Google about your own site, once a month. They are shown only to you and Taya, never sold or shared. You can stop it, or delete the past numbers, any time.</p>
+        <p class="gg-actions"><button type="button" class="btn" id="gg-stop">Stop tracking my site</button> <button type="button" class="btn" id="gg-wipe">Delete my past numbers</button></p>
+        <p class="vs-fine" id="gg-note" role="status"></p>
+      </details>
     </section>
 
     <!-- your receipts (Oct 15 2026): a receipts box, only for a client Taya switched it on for (the server answers
