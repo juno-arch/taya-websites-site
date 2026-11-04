@@ -1017,6 +1017,43 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 .todo .todo-video video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 12px; background: #000; }
 .todo .todo-video .open-btn { margin-top: 6px; }
 
+/* Visitors before launch (add 35): only the heading and the one line */
+#sec-visits.vs-soon > :not(.kicker):not(h2):not(.vs-lede) { display: none; }
+
+/* ============ their brand: heading font, header logo, Brand kit (Nov 4 2026, ADD 56 + 57) ============
+   Only with data-wf-hfont on <html> (portal.js applyHeadingFont): their heading face on h1 to h3, nothing else. The faces are
+   in fonts/brand/brand-fonts.css (swap: the heading shows in the fallback serif first, then settles). The little kicker lines
+   keep Web Faery's own. font-synthesis off, so a one-weight face is never faked bold. Long names wrap rather than push the page. */
+:root[data-wf-hfont] :is(h1, h2, h3):not(.kicker) { font-family: var(--wf-b-hfont), var(--wf-font-display); font-synthesis: none; overflow-wrap: anywhere; }
+/* the logo in the bar: never stretched, 32px tall at most; a logo made for light paper sits on a small paper plate */
+.brand .biz-logo { height: 32px; max-width: min(46vw, 200px); width: auto; object-fit: contain; display: block; }
+.brand .biz-logo.on-plate { background: var(--wf-b-sheet, #fcfbff); border-radius: 8px; padding: 3px 8px; box-sizing: content-box; height: 26px; }
+.brand.has-logo { gap: 10px; }
+.brand.has-logo .biz { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* the name stays for screen readers */
+@media (max-width: 600px) { .brand .biz-logo { max-width: 52vw; } }
+
+#sec-brand .bkit-lede { margin: 0 0 4px; color: var(--wf-b-ink-soft); }
+.bkit-swatches { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.bkit-sw { width: 100%; display: grid; grid-template-columns: 40px 1fr; grid-template-areas: "chip name" "chip hex"; column-gap: 12px; align-items: center; text-align: left; padding: 10px 12px; border: 1px solid var(--wf-b-rule); border-radius: 12px; background: var(--wf-b-sheet); color: var(--wf-b-ink); font: inherit; cursor: pointer; min-height: 56px; }
+.bkit-sw:hover { background: var(--wf-b-leaf-tint); }
+.bkit-chip { grid-area: chip; width: 40px; height: 40px; border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); }
+.bkit-name { grid-area: name; font-weight: 500; font-size: 15px; line-height: 1.25; overflow-wrap: anywhere; }
+.bkit-hex { grid-area: hex; font-family: var(--wf-font-mono); font-size: 13px; color: var(--wf-b-ink-soft); }
+.bkit-hint, .bkit-soon { margin: 10px 0 0; font-size: 14px; color: var(--wf-b-ink-soft); }
+.bkit-soon { margin-top: 22px; }
+.bkit-fonts, .bkit-logos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+.bkit-font, .bkit-logo { border: 1px solid var(--wf-b-rule); border-radius: 14px; padding: 14px 16px; background: var(--wf-b-sheet); display: flex; flex-direction: column; gap: 8px; align-items: flex-start; min-width: 0; }
+.bkit-flabel { font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--wf-b-ink-soft); }
+.bkit-fname { margin: 0; font-size: 15px; font-weight: 500; }
+.bkit-sample { margin: 0; font-size: 26px; line-height: 1.2; overflow-wrap: anywhere; }
+.bkit-flink { font-size: 14px; }
+.bkit-plate { width: 100%; min-height: 96px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 14px; box-sizing: border-box; border: 1px solid var(--wf-b-rule); }
+.bkit-plate.light { background: #ffffff; }
+.bkit-plate.dark { background: #1d1f24; border-color: #1d1f24; }
+.bkit-plate img { display: block; max-width: 100%; height: 64px; width: auto; object-fit: contain; }
+.bkit-sheet { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 10px; }
+.bkit-sheet p { margin: 0; }
+
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
    --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).
@@ -1034,5 +1071,3 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 :root[data-wf-brand-bar] .tabs a[aria-current="page"]::after,
 :root[data-wf-brand-bar] .dock [aria-current="page"]::before { background: var(--wf-b-brand-bar); box-shadow: none; }
 
-/* Visitors before launch (add 35): only the heading and the one line */
-#sec-visits.vs-soon > :not(.kicker):not(h2):not(.vs-lede) { display: none; }

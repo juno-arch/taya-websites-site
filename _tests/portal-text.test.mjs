@@ -258,7 +258,27 @@ const demoOn = /const DEMO = true;/.test(js);
   // the page: loaded before portal.js, OFF until me.brand.accent, and only the small accents in portal.css
   const brandAt = html.indexOf('src="portal-brand.js'), portalAt = html.indexOf('src="portal.js');
   if (brandAt < 0 || brandAt > portalAt) fail('portal.html: portal-brand.js should load just before portal.js');
-  if (!/setBrand\(c\.business \|\| '', me\.brand && me\.brand\.accent\)/.test(js)) fail('portal.js: render() should pass me.brand.accent to setBrand');
+  if (!/setBrand\(c\.business \|\| '', me\.brand\)/.test(js)) fail('portal.js: render() should pass me.brand to setBrand');
+  // (Nov 4 2026, ADD 56/57) their heading font, header logo and Brand kit: nothing applies without a brand, and every font is a local file
+  const fontKeys = [...(js.match(/const BRAND_FONTS = \{([\s\S]*?)\n  \};/) || ['', ''])[1].matchAll(/'([a-z0-9-]+)': \[/g)].map((m) => m[1]);
+  if (fontKeys.length < 5) fail('portal.js: BRAND_FONTS is missing');
+  const fontsCss = read('fonts/brand/brand-fonts.css');
+  for (const k of fontKeys) {
+    if (!fs.existsSync(path.join(root, 'fonts/brand/' + k + '.woff2'))) fail('fonts/brand/' + k + '.woff2 is missing');
+    if (!new RegExp('url\\(' + k + '\\.woff2\\)').test(fontsCss)) fail('brand-fonts.css has no face for ' + k);
+  }
+  if (/https?:\/\//.test(fontsCss.replace(/\/\*[\s\S]*?\*\//g, ''))) fail('brand-fonts.css: fonts must be served from this site, no outside address');
+  if (!/href="fonts\/brand\/brand-fonts\.css\?v=/.test(html)) fail('portal.html: brand-fonts.css is not linked');
+  const hubFonts = process.env.HUB_DIR && fs.existsSync(path.join(process.env.HUB_DIR, 'pb_hooks/webfaery-brandlook-lib.js')) ? fs.readFileSync(path.join(process.env.HUB_DIR, 'pb_hooks/webfaery-brandlook-lib.js'), 'utf8') : '';
+  if (hubFonts) { const hk = [...(hubFonts.match(/const FONTS = \{([\s\S]*?)\n\};/) || ['', ''])[1].matchAll(/'([a-z0-9-]+)':/g)].map((m) => m[1]); if (hk.sort().join() !== fontKeys.slice().sort().join()) fail('the hub FONTS list and portal.js BRAND_FONTS differ'); }
+  const cssAll = read('portal.css');
+  const hf = cssAll.split('\n').filter((l) => /--wf-b-hfont|\.biz-logo|has-logo|\.bkit-/.test(l) && /\{/.test(l) && !/^\s*\/?\*/.test(l));
+  if (!hf.length) fail('portal.css: the brand font / logo / Brand kit rules are missing');
+  for (const l of hf.filter((x) => /--wf-b-hfont/.test(x))) if (!/:root\[data-wf-hfont\]/.test(l)) fail('portal.css: the heading font applies without data-wf-hfont: ' + l.trim().slice(0, 80));
+  if (/fonts\.googleapis|fonts\.gstatic/.test(js + html + cssAll)) fail('the portal must not call a font service');
+  if (!/id="sec-brand" data-page="brand"[^>]*hidden/.test(html)) fail('portal.html: the Brand kit section should start hidden');
+  if (!/function renderBrandKit\(/.test(js) || !/setHidden\(sec, true\)/.test(js.slice(js.indexOf('function renderBrandKit('), js.indexOf('function renderBrandKit(') + 1500))) fail('portal.js: the Brand kit tab should hide until something is set');
+  if (/innerHTML/.test(js.slice(js.indexOf('function renderBrandKit('), js.indexOf('function renderBrandKit(') + 6000))) fail('portal.js: the Brand kit must draw with textContent only');
   if (!/function applyAccent\(/.test(js) || !/removeAttribute\('data-wf-brand'\)/.test(js)) fail('portal.js: applyAccent should clear the accent before it paints a new one');
   const css = read('portal.css');
   const brandCss = (css.split('/* ============ brand accent')[1] || '');

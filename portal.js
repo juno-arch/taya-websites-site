@@ -645,7 +645,7 @@
   };
   // the bar: signed in with a business name, their name leads ("your site, from Web Faery" beside it, on wider
   // screens) and goes to their Home; signed out, or no name yet, the Web Faery wordmark, going to webfaery.love
-  function setBrand(biz, accent) {
+  function setBrand(biz, brand) {
     const b = $('#top-brand');
     $('#top-biz').textContent = biz;
     $('#top-biz').hidden = !biz;
@@ -653,7 +653,70 @@
     b.classList.toggle('is-biz', !!biz);
     b.setAttribute('href', biz ? '#home' : 'index.html');
     $('#top-via').textContent = biz ? 'your site, from Web Faery' : '';
-    applyAccent(accent || ''); // signed out (setBrand('')): back to Web Faery's own look
+    brand = biz && brand ? brand : null;
+    applyAccent(brand && brand.accent || ''); // signed out (setBrand('')): back to Web Faery's own look
+    applyHeadingFont(brand && brand.heading || '');
+    applyHeaderLogo(brand, biz);
+  }
+  /* (Nov 4 2026, ADD 56) Their brand, beyond the accent. Each part shows ONLY when Taya has set it (me.brand), so a client with
+     none gets exactly Web Faery's look. Fonts are the free Google Fonts in BRAND_FONTS, served from this site (fonts/brand/),
+     keyed by name: the server sends only a key from this list, never a URL or CSS. Headings only (h1 to h3); body text, buttons,
+     layout, paper and ground colors stay Web Faery's. */
+  const BRAND_FONTS = {
+    'fraunces': ['Fraunces', 'serif'], 'petrona': ['Petrona', 'serif'], 'righteous': ['Righteous', 'sans-serif'],
+    'cormorant-garamond': ['Cormorant Garamond', 'serif'], 'young-serif': ['Young Serif', 'serif'], 'archivo': ['Archivo', 'sans-serif'],
+    'playfair-display': ['Playfair Display', 'serif'], 'figtree': ['Figtree', 'sans-serif'], 'karla': ['Karla', 'sans-serif'],
+    'public-sans': ['Public Sans', 'sans-serif'], 'source-sans-3': ['Source Sans 3', 'sans-serif']
+  };
+  const fontStack = (key) => (BRAND_FONTS[key] ? '"WFB ' + BRAND_FONTS[key][0] + '", ' + BRAND_FONTS[key][1] : '');
+  function applyHeadingFont(key) {
+    const html = document.documentElement;
+    html.style.removeProperty('--wf-b-hfont');
+    html.removeAttribute('data-wf-hfont');
+    if (!BRAND_FONTS[key]) return;
+    html.style.setProperty('--wf-b-hfont', fontStack(key));
+    html.setAttribute('data-wf-hfont', '');
+  }
+  // a logo as an image address: only a plain svg (drawn, never run) or a png, webp or jpeg picture
+  function logoSrc(l) {
+    if (!l || typeof l !== 'object') return '';
+    if (l.kind === 'svg') return typeof l.text === 'string' && l.text.length < 110000 && !/<\s*(script|foreignObject|iframe)|\son[a-z]+\s*=|javascript:/i.test(l.text) ? 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(l.text) : '';
+    if (l.kind === 'png' || l.kind === 'webp' || l.kind === 'jpeg') return typeof l.b64 === 'string' && /^[A-Za-z0-9+/]+={0,2}$/.test(l.b64) && l.b64.length < 150000 ? 'data:image/' + l.kind + ';base64,' + l.b64 : '';
+    return '';
+  }
+  function cleanBrand(b) {
+    if (!b || typeof b !== 'object') return null;
+    const out = {};
+    if (/^#[0-9a-f]{6}$/i.test(str(b.accent, 7))) out.accent = str(b.accent, 7).toLowerCase();
+    if (BRAND_FONTS[str(b.heading, 30)]) out.heading = str(b.heading, 30);
+    if (BRAND_FONTS[str(b.body, 30)]) out.body = str(b.body, 30);
+    const colors = arr(b.colors).slice(0, 8).map((c) => (c && /^#[0-9a-f]{6}$/i.test(str(c.hex, 7)) ? { name: str(c.name, 30), hex: str(c.hex, 7).toLowerCase() } : null)).filter(Boolean);
+    if (colors.length) out.colors = colors;
+    const logos = {};
+    ['light', 'dark'].forEach((k) => { const l = b.logos && b.logos[k]; if (logoSrc(l)) logos[k] = l.kind === 'svg' ? { kind: 'svg', text: l.text } : { kind: l.kind, b64: l.b64 }; });
+    if (Object.keys(logos).length) out.logos = logos;
+    if (b.sheet === true) out.sheet = true;
+    return Object.keys(out).length ? out : null;
+  }
+  // the bar is dark: a logo made for dark ground sits on it as it is; one made for light paper sits on a small paper plate.
+  // No picture, a failed picture, or no name yet: the business name, as before.
+  function applyHeaderLogo(brand, biz) {
+    const host = $('#top-brand');
+    let img = $('#top-logo');
+    const l = brand && brand.logos && (brand.logos.dark || brand.logos.light);
+    const src = l ? logoSrc(l) : '';
+    if (!src || !biz) { if (img) img.remove(); host.classList.remove('has-logo'); return; }
+    if (!img) {
+      img = make('img', 'logo biz-logo');
+      img.id = 'top-logo';
+      img.decoding = 'async';
+      img.addEventListener('error', () => { img.remove(); host.classList.remove('has-logo'); });
+      host.insertBefore(img, $('#top-wm'));
+    }
+    img.alt = biz;
+    img.classList.toggle('on-plate', !(brand.logos && brand.logos.dark));
+    if (img.getAttribute('src') !== src) img.src = src;
+    host.classList.add('has-logo');
   }
   // Oct 16 2026: their own accent color, only when Taya has set one (me.brand.accent, a strict #rrggbb). It touches only
   // the small accents (italic heading words, link underlines, the Heads up edge, small icons, the focus ring, and the
@@ -699,6 +762,7 @@
     { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
     { id: 'messages', label: 'Messages', icon: 'i-talk' },
     { id: 'resources', label: 'Resources', icon: 'i-play' },
+    { id: 'brand', label: 'Brand kit', short: 'Brand', icon: 'i-palette' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -713,7 +777,7 @@
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
     // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
     // (Oct 21 2026) Resources: after their papers, before Payments
-    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'payments', 'ask']);
+    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'brand', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'brand', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -1012,6 +1076,8 @@
     visits = null;
     visitsSoon = false;
     $('#sec-visits').hidden = true;
+    $('#sec-brand').hidden = true;
+    $('#bkit-body').replaceChildren();
     rcReset();
     cqReset();
     papers = null;
@@ -1335,7 +1401,7 @@
         url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
-      brand: d.brand && /^#[0-9a-f]{6}$/i.test(str(d.brand.accent, 7)) ? { accent: str(d.brand.accent, 7).toLowerCase() } : null, // their accent color (Oct 16 2026), only a strict #rrggbb
+      brand: cleanBrand(d.brand), // their accent color (Oct 16 2026, a strict #rrggbb) and, since Nov 4 2026, their heading font, colors and logos
       // Web Faery billing (Oct 16 2026): Stripe said the last subscription payment didn't go through, and whether the
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
       care_trouble: d.care_trouble === true,
@@ -1456,7 +1522,7 @@
     hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
       (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_SIGN[c.build], nowLine());
     $('#me-email').textContent = c.email || 'you';
-    setBrand(c.business || '', me.brand && me.brand.accent);
+    setBrand(c.business || '', me.brand);
     // forget "I tapped Pay" once Taya has marked it
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
     // the header's "Getting started" only while that page is still theirs to fill in
@@ -1467,6 +1533,7 @@
     renderList();
     renderTimeline();
     renderThings();
+    renderBrandKit();
     renderTexts();
     renderPassword();
     renderPay();
@@ -2345,6 +2412,110 @@
   }
 
   /* ---- your things ---- */
+  /* ---- Brand kit (Nov 4 2026, ADD 57) ----
+     Read only for them, set from the Studio. Shows only the parts that are set (colors, fonts, logo, brand sheet); the tab is hidden
+     until at least one is. Fonts are the same self-hosted faces as the headings (BRAND_FONTS). Tap a color to copy its code. */
+  async function bkitCopy(text, what) {
+    try { await navigator.clipboard.writeText(text); toast('Copied ' + what + '.', 2600); } catch (e) { toast(what.charAt(0).toUpperCase() + what.slice(1) + ': ' + text, 6000); }
+  }
+  function bkitDownload(l, name, label) {
+    const b = make('button', 'open-btn', null);
+    b.type = 'button';
+    b.dataset.read = '1'; // saves a file they already have: stays on in a Studio preview
+    b.append(make('span', null, label), icon('i-doc'));
+    b.setAttribute('aria-label', label + ' of your logo');
+    b.addEventListener('click', () => {
+      try {
+        let blob;
+        if (l.kind === 'svg') blob = new Blob([l.text], { type: 'image/svg+xml' });
+        else { const bin = atob(l.b64); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); blob = new Blob([u], { type: 'image/' + l.kind }); }
+        const a = make('a'); a.href = URL.createObjectURL(blob); a.download = name + '.' + (l.kind === 'jpeg' ? 'jpg' : l.kind); a.rel = 'noopener';
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      } catch (e) { toast('That didn’t download. Ask me and I’ll email it.'); }
+    });
+    return b;
+  }
+  function renderBrandKit() {
+    const sec = $('#sec-brand');
+    const body = $('#bkit-body');
+    const br = me && me.brand;
+    const colors = br && br.colors ? br.colors.slice() : [];
+    if (br && br.accent && !colors.some((c) => c.hex === br.accent)) colors.unshift({ name: 'Accent', hex: br.accent });
+    const hasFonts = !!(br && (br.heading || br.body));
+    const hasLogo = !!(br && br.logos && (br.logos.light || br.logos.dark));
+    const hasSheet = !!(br && br.sheet) || !!(me && me.things && me.things.brand_sheet);
+    if (!me || (!colors.length && !hasFonts && !hasLogo && !hasSheet)) { setHidden(sec, true); body.replaceChildren(); return; }
+    const parts = [];
+    if (colors.length) {
+      const h = make('h3', 'small-h', 'Colors');
+      const ul = make('ul', 'bkit-swatches');
+      colors.forEach((c) => {
+        const li = make('li');
+        const b = make('button', 'bkit-sw');
+        b.type = 'button';
+        b.dataset.read = '1'; // copying a code changes nothing
+        const chip = make('span', 'bkit-chip'); chip.style.background = c.hex; chip.setAttribute('aria-hidden', 'true');
+        b.append(chip, make('span', 'bkit-name', c.name || c.hex.toUpperCase()), make('span', 'bkit-hex', c.hex.toUpperCase()));
+        b.setAttribute('aria-label', (c.name || 'Color') + ' ' + c.hex.toUpperCase() + ', tap to copy');
+        b.addEventListener('click', () => bkitCopy(c.hex.toUpperCase(), (c.name || 'color') + ' code'));
+        li.append(b); ul.append(li);
+      });
+      parts.push(h, ul, make('p', 'bkit-hint', 'Tap a color to copy its code.'));
+    }
+    if (hasFonts) {
+      parts.push(make('h3', 'small-h', 'Fonts'));
+      const wrap = make('div', 'bkit-fonts');
+      [['Headings', br.heading], ['Body text', br.body]].forEach(([label, key]) => {
+        if (!key || !BRAND_FONTS[key]) return;
+        const name = BRAND_FONTS[key][0];
+        const card = make('div', 'bkit-font');
+        card.append(make('span', 'bkit-flabel', label));
+        const nm = make('p', 'bkit-fname', name);
+        const sample = make('p', 'bkit-sample', 'Everything grows from here.');
+        sample.style.fontFamily = fontStack(key);
+        card.append(nm, sample);
+        const a = make('a', 'bkit-flink', 'Free to use. Get it from Google Fonts');
+        a.href = 'https://fonts.google.com/specimen/' + encodeURIComponent(name).replace(/%20/g, '+');
+        a.target = '_blank'; a.rel = 'noopener noreferrer';
+        card.append(a);
+        wrap.append(card);
+      });
+      parts.push(wrap);
+    }
+    if (hasLogo) {
+      parts.push(make('h3', 'small-h', 'Logo'));
+      const wrap = make('div', 'bkit-logos');
+      [['light', 'On light backgrounds', 'logo'], ['dark', 'On dark backgrounds', 'logo-dark']].forEach(([k, label, file]) => {
+        const l = br.logos[k];
+        if (!l || !logoSrc(l)) return;
+        const card = make('div', 'bkit-logo');
+        const plate = make('div', 'bkit-plate ' + k);
+        const img = make('img'); img.src = logoSrc(l); img.alt = (me.client.business || 'Your') + ' logo, ' + label.toLowerCase(); img.decoding = 'async';
+        img.addEventListener('error', () => { card.remove(); });
+        plate.append(img);
+        const fmt = l.kind === 'svg' ? 'SVG' : l.kind.toUpperCase().replace('JPEG', 'JPG');
+        card.append(plate, make('span', 'bkit-flabel', label), bkitDownload(l, ((me.client.business || 'logo').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'logo') + '-' + file, 'Download ' + fmt));
+        wrap.append(card);
+      });
+      parts.push(wrap);
+    }
+    if (hasSheet) {
+      parts.push(make('h3', 'small-h', 'Brand sheet'));
+      const row = make('div', 'bkit-sheet');
+      row.append(make('p', null, 'Your colors, fonts and logo files, all on one sheet.'), fileButton('brand_sheet', null, 'Open', 'brand sheet'));
+      parts.push(row);
+    }
+    const missing = [];
+    if (!colors.length) missing.push('colors');
+    if (!hasFonts) missing.push('fonts');
+    if (!hasLogo) missing.push('logo');
+    if (!hasSheet) missing.push('brand sheet');
+    if (missing.length) parts.push(make('p', 'bkit-soon', 'Still to come at launch: ' + missing.join(', ') + '.'));
+    body.replaceChildren(...parts);
+    setHidden(sec, false);
+  }
+
   function renderThings() {
     const c = me.client;
     const th = me.things;
