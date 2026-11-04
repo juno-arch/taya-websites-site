@@ -1491,7 +1491,7 @@
         current: str(tl.current, 20) || 'getting_started',
         stages: arr(tl.stages).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), date: str(s && s.date, 30), state: str(s && s.state, 8) })),
         // the five steps (add 22 / 25): same source as the Studio's timeline; an older server sends none, and the six stages above are drawn
-        steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), until: str(s && s.until, 30),
+        steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), est: str(s && s.est, 10), until: str(s && s.until, 30),
           turn: s && (s.turn === 'you' || s.turn === 'me') ? s.turn : '', state: s && (s.state === 'done' || s.state === 'now') ? s.state : 'next' })),
         care_since: str(tl.care_since, 30),
         // (Nov 2 2026, ADD 40) "Last update: <day>, <one line>" under the current step; the server sends it only when Pollen's switch is on
@@ -5377,6 +5377,9 @@
     sec.hidden = false;
     const t = taps.mine();
     const settle = shortDate(stageDate('settling_in'));
+    // (ADD 65) the estimates the timeline shows, from the same server day as Coming up: launch, and launch + the settling window
+    const estDay = (key) => { const st = arr(me.timeline && me.timeline.steps).find((x) => x.key === key); return st && st.state !== 'done' ? shortDate(str(st.est, 10)) : ''; };
+    const launchAbout = estDay('launch'), settleAbout = estDay('settling_in');
     $('#pays').replaceChildren(...pays.map((p) => {
       const tapped = p.state === 'due' && !!t[p.key];
       const div = make('div', 'payrow st-' + (tapped ? 'tapped' : p.state));
@@ -5429,8 +5432,8 @@
       } else {
         let later = 'I’ll send the link soon';
         if (p.key === 'deposit' && !me.things.agreement) later = 'After you sign our agreement';
-        if (p.key === 'balance') later = 'Due at launch';
-        if (p.key === 'care') later = 'Starts after settling in' + (starts || settle ? ', about ' + (starts || settle) : '');
+        if (p.key === 'balance') later = 'Due at launch' + (launchAbout ? ', about ' + launchAbout : '');
+        if (p.key === 'care') later = 'Starts after settling in' + (starts || settle || settleAbout ? ', about ' + (starts || settle || settleAbout) : '');
         st.append(make('span', 'p-later', later));
       }
       div.append(st);
