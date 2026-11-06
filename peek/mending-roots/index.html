@@ -1116,7 +1116,7 @@
     <a class="mark" href="#top" aria-label="Mending Roots Collective, back to top"><span class="emb" aria-hidden="true"></span><span><b>Mending Roots</b><small>Collective</small></span></a>
     <nav aria-label="Sections">
       <a href="#collective">Collective</a>
-      <a href="#services">Find a service</a>
+      <a href="#services" data-open-finder>Find a service</a>
       <a href="#sauna">Sauna</a>
       <a href="#events">Events</a>
       <a href="#visit">Visit</a>
@@ -1143,9 +1143,30 @@
   <div class="wrap gutter secbar-in">
     <span class="emb"></span>
     <nav aria-label="Jump to a section">
-      <a href="#collective">Collective</a><a href="#services">Services</a><a href="#sauna">Sauna</a><a href="#events">Events</a><a href="#book">Book</a><a href="#shop" data-show="crone all">Boutique</a><a href="#gift" data-show="mother crone all">Gifts</a><a href="#faq" data-show="mother crone all">Questions</a><a href="#visit">Visit</a>
+      <a href="#collective">Collective</a><a href="#services" data-open-finder>Find a service</a><a href="#sauna">Sauna</a><a href="#events">Events</a><a href="#book">Book</a><a href="#shop" data-show="crone all">Boutique</a><a href="#gift" data-show="mother crone all">Gifts</a><a href="#faq" data-show="mother crone all">Questions</a><a href="#visit">Visit</a>
     </nav>
     <a class="btn" href="#book" data-book="">Book</a>
+  </div>
+</div>
+
+<div class="nf" id="nav-finder" role="region" aria-label="Find a service" hidden>
+  <div class="wrap gutter nf-in">
+    <div class="nf-top"><b>Find a service</b><button type="button" class="linkbtn" id="nf-close">Close</button></div>
+      <div class="finder" id="finder">
+        <label class="finder-l" for="finder-q">Search</label>
+        <input class="finder-q" id="finder-q" type="search" placeholder="Try massage, cupping, herbal&hellip;" autocomplete="off">
+        <p class="finder-l" id="fl-type">Type</p>
+        <div class="fchips" role="group" aria-labelledby="fl-type" data-fg="type">
+          <button type="button" class="pick" data-v="all" aria-pressed="true">All <span>22</span></button><button type="button" class="pick" data-v="massage" aria-pressed="false">Massage &amp; bodywork <span>10</span></button><button type="button" class="pick" data-v="align" aria-pressed="false">Alignment &amp; scar release <span>2</span></button><button type="button" class="pick" data-v="scan" aria-pressed="false">Body scan <span>1</span></button><button type="button" class="pick" data-v="herbal" aria-pressed="false">Herbal consults <span>5</span></button><button type="button" class="pick" data-v="sauna" aria-pressed="false">Sauna &amp; red light <span>4</span></button>
+        </div>
+        <p class="finder-l" id="fl-who">Practitioner</p>
+        <div class="fchips" role="group" aria-labelledby="fl-who" data-fg="who">
+          <button type="button" class="pick" data-v="all" aria-pressed="true">Everyone</button><button type="button" class="pick" data-v="tami" aria-pressed="false">Tami <span>8</span></button><button type="button" class="pick" data-v="jen" aria-pressed="false">Jennifer <span>5</span></button><button type="button" class="pick" data-v="yem" aria-pressed="false">Yemaya <span>5</span></button><button type="button" class="pick" data-v="sauna" aria-pressed="false">Sauna &amp; light <span>4</span></button>
+        </div>
+        <p class="finder-n" id="finder-n" role="status" aria-live="polite"></p>
+        <p class="finder-none" id="finder-none" hidden>Nothing matches. <button type="button" class="linkbtn" id="finder-clear">Show everything</button></p>
+      </div>
+    <div class="nf-foot"><button type="button" class="btn" id="nf-show">Show 22 services</button></div>
   </div>
 </div>
 
@@ -1262,6 +1283,16 @@
         <p class="fun"><b>Coming up</b> December &amp; January class and workshop info coming soon!</p>
         <div class="acts"><a class="btn quiet" href="lena/">Read Lena’s full page</a><a class="btn quiet ext" href="https://vitalstories.org/lena" target="_blank" rel="noopener">Meet Lena<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens her Vital Stories page in a new tab)</span></a></div>
       </article>
+      <article class="person wide soon reveal">
+        <figure class="pic soon-pic" aria-hidden="true"><span class="emb"></span></figure>
+        <div class="person-top"><div><h3>Bernadette</h3><p class="role">Joining the collective</p><span class="soon-badge">Coming soon</span></div></div>
+        <p class="about">Her page will be here soon.</p>
+      </article>
+      <article class="person wide soon reveal">
+        <figure class="pic soon-pic" aria-hidden="true"><span class="emb"></span></figure>
+        <div class="person-top"><div><h3>A new practitioner</h3><p class="role">Joining the collective in January</p><span class="soon-badge">Coming in January</span></div></div>
+        <p class="about">More about her will be here soon.</p>
+      </article>
       <article class="person wide room reveal">
         <figure class="pic"><img src="images/movement-room.jpg" alt="The collective's open movement room: a blue mat on the floor, plants, and shelves of props" loading="lazy"></figure>
         <div class="person-top"><div><h3>Room for you</h3><p class="role">For licensed healing arts practitioners who&rsquo;d like to join us</p></div></div>
@@ -1285,20 +1316,7 @@
       <h2 id="svc-title">of·fer·ings</h2>
       <p class="pron"><i>/ô·fər·ingz/</i><em>noun</em></p>
       <p class="def">Every session in the collective, with its length and price. Search or filter, then book with the person who offers it.</p>
-      <div class="finder" id="finder">
-        <label class="finder-l" for="finder-q">Search</label>
-        <input class="finder-q" id="finder-q" type="search" placeholder="Try massage, cupping, herbal&hellip;" autocomplete="off">
-        <p class="finder-l" id="fl-type">Type</p>
-        <div class="fchips" role="group" aria-labelledby="fl-type" data-fg="type">
-          <button type="button" class="pick" data-v="all" aria-pressed="true">All <span>22</span></button><button type="button" class="pick" data-v="massage" aria-pressed="false">Massage &amp; bodywork <span>10</span></button><button type="button" class="pick" data-v="align" aria-pressed="false">Alignment &amp; scar release <span>2</span></button><button type="button" class="pick" data-v="scan" aria-pressed="false">Body scan <span>1</span></button><button type="button" class="pick" data-v="herbal" aria-pressed="false">Herbal consults <span>5</span></button><button type="button" class="pick" data-v="sauna" aria-pressed="false">Sauna &amp; red light <span>4</span></button>
-        </div>
-        <p class="finder-l" id="fl-who">Practitioner</p>
-        <div class="fchips" role="group" aria-labelledby="fl-who" data-fg="who">
-          <button type="button" class="pick" data-v="all" aria-pressed="true">Everyone</button><button type="button" class="pick" data-v="tami" aria-pressed="false">Tami <span>8</span></button><button type="button" class="pick" data-v="jen" aria-pressed="false">Jennifer <span>5</span></button><button type="button" class="pick" data-v="yem" aria-pressed="false">Yemaya <span>5</span></button><button type="button" class="pick" data-v="sauna" aria-pressed="false">Sauna &amp; light <span>4</span></button>
-        </div>
-        <p class="finder-n" id="finder-n" role="status" aria-live="polite"></p>
-        <p class="finder-none" id="finder-none" hidden>Nothing matches. <button type="button" class="linkbtn" id="finder-clear">Show everything</button></p>
-      </div>
+      <p class="svc-status"><span id="svc-status">22 services</span> <button type="button" class="linkbtn" data-open-finder>Search or filter</button></p>
     </div>
     <div class="svc-photo-wrap">
       <figure class="photo svc-photo reveal">
@@ -2974,6 +2992,9 @@
       var filtering = sel.type !== 'all' || sel.who !== 'all' || sel.q;
       n.textContent = filtering ? 'Showing ' + shown + ' of ' + rows.length + ' services' : rows.length + ' services';
       none.hidden = shown !== 0;
+      var st = document.getElementById('svc-status'), sh = document.getElementById('nf-show');
+      if (st) st.textContent = filtering ? 'Showing ' + shown + ' of ' + rows.length + ' services' : rows.length + ' services';
+      if (sh) sh.textContent = 'Show ' + shown + ' service' + (shown === 1 ? '' : 's');
     }
     [].slice.call(root.querySelectorAll('[data-fg]')).forEach(function (grp) {
       var btns = [].slice.call(grp.querySelectorAll('.pick'));
@@ -2989,5 +3010,35 @@
       apply();
     });
     apply();
+  })();
+</script>
+<style id="wf-navfinder">
+  .nf { position: fixed; top: 0; left: 0; right: 0; z-index: 40; background: var(--ground); border-bottom: 1px solid var(--hair-2); box-shadow: 0 24px 44px -26px var(--shadow); max-height: 88vh; overflow-y: auto; }
+  .nf-in { padding-block: 14px 22px; max-width: 760px; }
+  .nf-top { display: flex; justify-content: space-between; align-items: center; }
+  .nf-top b { font: 600 13px/1.4 var(--label); letter-spacing: .22em; text-transform: uppercase; color: var(--ink); }
+  .nf-foot { margin-top: 18px; }
+  .nf .finder { margin-top: 4px; }
+  .svc-status { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; font-size: 15px; color: var(--ink-soft); }
+  .svc-status .linkbtn { padding: 4px 0; min-height: 36px; }
+  .person.soon .soon-pic { display: grid; place-items: center; background: var(--ground-2); color: var(--umber); }
+  .person.soon .soon-pic .emb { width: 84px; height: 84px; opacity: .45; }
+</style>
+<script>
+  (function () {
+    var panel = document.getElementById('nav-finder'); if (!panel) return;
+    var last = null, q = document.getElementById('finder-q');
+    function open(from) { last = from || null; panel.hidden = false; if (q) q.focus({ preventScroll: true }); }
+    function close(scroll) {
+      panel.hidden = true;
+      if (scroll) { var m = document.getElementById('menu'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      else if (last && last.focus) last.focus({ preventScroll: true });
+    }
+    [].slice.call(document.querySelectorAll('[data-open-finder]')).forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); if (panel.hidden) open(a); else close(false); });
+    });
+    document.getElementById('nf-close').addEventListener('click', function () { close(false); });
+    document.getElementById('nf-show').addEventListener('click', function () { close(true); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) close(false); });
   })();
 </script>
