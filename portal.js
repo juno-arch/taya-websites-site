@@ -745,12 +745,22 @@
     const c = me && me.coming_up;
     if (!c) { setHidden(sec, true); body.replaceChildren(); return; }
     const rows = [];
-    if (c.launch) rows.push(['i-cal', c.launch.text]);
-    if (c.payment) rows.push(['i-receipt', c.payment.text]);
+    if (c.launch) rows.push(['i-cal', c.launch.text, 'project', 'Take me to your project']);
+    if (c.payment) rows.push(['i-receipt', c.payment.text, 'payments', 'Take me to payments']);
     body.replaceChildren(...rows.map((r) => {
       const li = make('li', 'coming-row');
       const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(r[0]));
       li.append(i, make('p', 'coming-line', r[1]));
+      // (Nov 6 2026) every line in Coming up has a "Take me there" button to the page where it lives
+      if (r[2] && PAGES.some((pg) => pg.id === r[2])) {
+        const acts = make('div', 'acct-acts');
+        const b = make('button', 'open-btn', null);
+        b.type = 'button'; b.dataset.read = '1';
+        b.setAttribute('aria-label', r[3]);
+        b.append(make('span', null, 'Take me there'));
+        b.addEventListener('click', () => goPage(r[2]));
+        acts.append(b); li.append(acts);
+      }
       return li;
     }));
     setHidden(sec, false);
