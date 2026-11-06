@@ -1116,7 +1116,7 @@
     <a class="mark" href="#top" aria-label="Mending Roots Collective, back to top"><span class="emb" aria-hidden="true"></span><span><b>Mending Roots</b><small>Collective</small></span></a>
     <nav aria-label="Sections">
       <a href="#collective">Collective</a>
-      <a href="#services">Services</a>
+      <a href="#services">Find a service</a>
       <a href="#sauna">Sauna</a>
       <a href="#events">Events</a>
       <a href="#visit">Visit</a>
@@ -1284,13 +1284,35 @@
       <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Services &amp; prices</p>
       <h2 id="svc-title">of·fer·ings</h2>
       <p class="pron"><i>/ô·fər·ingz/</i><em>noun</em></p>
-      <p class="def">Every session, its length and its price, sorted by who you&rsquo;ll see.</p>
+      <p class="def">Every session, its length and its price. Start with what you need, how long you have, or who you&rsquo;d like to see.</p>
       <div class="chips" role="group" aria-label="Show services for">
         <button type="button" class="pick" data-f="all" aria-pressed="true">Everyone</button>
         <button type="button" class="pick" data-f="tami" aria-pressed="false">Tami <span>8</span></button>
         <button type="button" class="pick" data-f="jen" aria-pressed="false">Jennifer <span>5</span></button>
         <button type="button" class="pick" data-f="yem" aria-pressed="false">Yemaya <span>5</span></button>
         <button type="button" class="pick" data-f="sauna" aria-pressed="false">Sauna &amp; light <span>4</span></button>
+      </div>
+      <div class="finder" id="finder">
+        <p class="finder-l" id="fl-need">What are you looking for?</p>
+        <div class="fchips" role="group" aria-labelledby="fl-need" data-fg="need">
+          <button type="button" class="pick" data-v="all" aria-pressed="true">Anything</button>
+          <button type="button" class="pick" data-v="pain" aria-pressed="false">Pain &amp; tension</button>
+          <button type="button" class="pick" data-v="stress" aria-pressed="false">Stress &amp; rest</button>
+          <button type="button" class="pick" data-v="posture" aria-pressed="false">Posture &amp; movement</button>
+          <button type="button" class="pick" data-v="preg" aria-pressed="false">Pregnancy &amp; women&rsquo;s health</button>
+          <button type="button" class="pick" data-v="recover" aria-pressed="false">Recovery &amp; healing</button>
+          <button type="button" class="pick" data-v="herbs" aria-pressed="false">Herbs &amp; plants</button>
+          <button type="button" class="pick" data-v="track" aria-pressed="false">Track my body</button>
+        </div>
+        <p class="finder-l" id="fl-time">How much time do you have?</p>
+        <div class="fchips" role="group" aria-labelledby="fl-time" data-fg="time">
+          <button type="button" class="pick" data-v="all" aria-pressed="true">Any length</button>
+          <button type="button" class="pick" data-v="short" aria-pressed="false">30 minutes or less</button>
+          <button type="button" class="pick" data-v="hour" aria-pressed="false">About an hour</button>
+          <button type="button" class="pick" data-v="long" aria-pressed="false">90 minutes or more</button>
+        </div>
+        <p class="finder-n" id="finder-n" role="status" aria-live="polite"></p>
+        <p class="finder-none" id="finder-none" hidden>Nothing matches both. <button type="button" class="linkbtn" id="finder-clear">Show everything</button></p>
       </div>
     </div>
     <div class="svc-photo-wrap">
@@ -2952,3 +2974,77 @@
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
 <script src="/note-motion.js?v=1" defer></script>
+<style id="wf-finder">
+  .finder { margin-top: 26px; }
+  .finder-l { margin-top: 18px; font: 600 12px/1.4 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--umber); }
+  .fchips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .fchips .pick { font-weight: 500; font-size: 14.5px; }
+  .finder-n { margin-top: 14px; font-size: 14px; color: var(--ink-soft); }
+  .finder-none { margin-top: 10px; }
+  .svc.f-off { display: none; }
+  .grp.f-empty { display: none; }
+  #services .svc-head > .chips { margin-top: 26px; }
+  #services .svc-head > .chips::before { content: "Who would you like to see?"; flex-basis: 100%; font: 600 12px/1.4 var(--label); letter-spacing: .2em; text-transform: uppercase; color: var(--umber); }
+</style>
+<script>
+  (function () {
+    var root = document.getElementById('finder'); if (!root) return;
+    var NEED = {
+      'reset relaxation': ['stress'], 'integrative therapeutic': ['pain'], 'integrative structural': ['pain', 'posture'],
+      'cupping': ['pain', 'recover'], 'post-op': ['recover'], 'postural alignment': ['posture', 'pain'], 'scar release': ['recover', 'pain'],
+      'inbody': ['track'], 'lomi lomi': ['stress'], 'intuitive therapeutic': ['pain', 'stress'], 'relaxation massage': ['stress'],
+      'lymphatic breast': ['preg', 'recover'], 'prenatal': ['preg'], 'connection call': ['herbs'], 'initial herbal': ['herbs', 'stress'],
+      'follow-up': ['herbs'], 'new client package': ['herbs'], 'phone session': ['herbs'], 'infrared sauna': ['stress', 'recover'],
+      'red light': ['recover'], 'sauna + red': ['stress', 'recover'], 'add to a session': ['recover']
+    };
+    var rows = [].slice.call(document.querySelectorAll('#menu .svc')), groups = [].slice.call(document.querySelectorAll('#menu .grp'));
+    rows.forEach(function (li) {
+      var h = (li.querySelector('h4') || {}).textContent || ''; h = h.toLowerCase();
+      var needs = []; Object.keys(NEED).forEach(function (k) { if (h.indexOf(k) === 0 || h.indexOf(k) > -1) needs = needs.concat(NEED[k]); });
+      var spans = [].slice.call(li.querySelectorAll('.svc-p .pp i')), lo = 1e9, hi = 0;
+      spans.forEach(function (i) { var t = i.textContent, m; var re = /(\d+)(?:\s*to\s*(\d+))?\s*min/g; while ((m = re.exec(t))) { var a = +m[1], b = +(m[2] || m[1]); lo = Math.min(lo, a); hi = Math.max(hi, b); } });
+      li._need = needs; li._lo = lo; li._hi = hi;
+    });
+    var sel = { need: 'all', time: 'all' };
+    function timeOk(li, v) {
+      if (v === 'all') return true;
+      if (li._hi === 0) return false;
+      if (v === 'short') return li._lo <= 30;
+      if (v === 'hour') return li._lo <= 75 && li._hi >= 45;
+      return li._hi >= 90;
+    }
+    function apply() {
+      var shown = 0;
+      rows.forEach(function (li) {
+        var ok = (sel.need === 'all' || li._need.indexOf(sel.need) > -1) && timeOk(li, sel.time);
+        li.classList.toggle('f-off', !ok);
+      });
+      groups.forEach(function (g) {
+        var any = g.querySelector('.svc:not(.f-off)');
+        g.classList.toggle('f-empty', !any);
+        if (any && !g.hidden) shown += g.querySelectorAll('.svc:not(.f-off)').length;
+      });
+      var n = document.getElementById('finder-n'), none = document.getElementById('finder-none');
+      var filtering = sel.need !== 'all' || sel.time !== 'all';
+      n.textContent = filtering ? 'Showing ' + shown + ' of ' + rows.length + ' services' : '';
+      none.hidden = shown !== 0;
+    }
+    [].slice.call(root.querySelectorAll('[data-fg]')).forEach(function (grp) {
+      var btns = [].slice.call(grp.querySelectorAll('.pick'));
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          btns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          sel[grp.dataset.fg] = b.dataset.v; apply();
+        });
+      });
+    });
+    [].slice.call(document.querySelectorAll('#services .svc-head > .chips .pick')).forEach(function (b) { b.addEventListener('click', function () { setTimeout(apply, 0); }); });
+    document.getElementById('finder-clear').addEventListener('click', function () {
+      sel = { need: 'all', time: 'all' };
+      [].slice.call(root.querySelectorAll('[data-fg]')).forEach(function (grp) { [].slice.call(grp.querySelectorAll('.pick')).forEach(function (x, i) { x.setAttribute('aria-pressed', i === 0 ? 'true' : 'false'); }); });
+      var all = document.querySelector('#services .svc-head > .chips .pick[data-f="all"]'); if (all) all.click();
+      apply();
+    });
+    apply();
+  })();
+</script>
