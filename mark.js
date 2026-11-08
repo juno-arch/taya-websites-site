@@ -76,6 +76,101 @@ function foundingLeftWords() {
 }
 document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textContent = foundingLeftWords(); });
 
+/* Pollen's link (ADD 81, Nov 7 2026): a link ONLY Pollen has, made in her Studio on a tap ("Open as Pollen" on a client still in
+   the build stages) and good for 30 minutes: webfaery.love/peek/SLUG/?mark=1#pm=PASS. It is not the client's link and carries no
+   client key. The pass comes out of the address bar at once, is kept for this tab only (sessionStorage, gone when the tab closes)
+   and is sent only to the two pollen routes, which check it on the server every time (signed, 30 minutes, that client only, still
+   in the build stages). With it this page shows her gold bar: the client's waiting changes with "Make this change" on each, which
+   queues the change for the build desk (the same step as the Studio card; it never deploys or sends anything). Without a pass
+   (every client, every other visitor) this block does nothing at all, and a client's own link (#wf= / ?k=) always wins. */
+(function () {
+  'use strict';
+  if (window.__wfMark) return;
+  const pm = location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?/);
+  if (!pm) return;
+  const PAGE = '/peek/' + pm[1] + '/';
+  const STORE = 'wf-pm-v1:' + PAGE;
+  const PASS_RE = /^v1\.[a-z0-9]{15}\.\d{10,14}\.[0-9a-f]{64}$/;
+  if (new URLSearchParams(location.search).has('k') || /[#&](wf|pre)=/.test(location.hash)) return; // someone else's link always wins, whatever else is in the address
+  const hm = /[#&]pm=([^&]*)/.exec(location.hash);
+  let pass = '';
+  if (hm) {
+    if (PASS_RE.test(hm[1])) pass = hm[1];
+    let rest = location.hash.replace(hm[0], '');
+    if (rest && rest.charAt(0) !== '#') rest = '#' + rest.slice(1);
+    try { history.replaceState(history.state, '', location.pathname + location.search + rest); } catch (e) {}
+    if (pass) { try { sessionStorage.setItem(STORE, pass); } catch (e) {} }
+  } else {
+    try { const v = sessionStorage.getItem(STORE) || ''; if (PASS_RE.test(v)) pass = v; } catch (e) {}
+  }
+  if (!pass) return; // not her link: nothing happens
+  window.__wfMark = true; // her page: the client's own note bar stays out of it (put back by a clean reload if the pass turns out not to be hers)
+  let base = 'https://bookings.gardenfaery.love/api/webfaery/pollen/';
+  if (/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) {
+    const t = new URLSearchParams(location.search).get('pmapi') || '';
+    if (/^http:\/\/127\.0\.0\.1:\d{2,5}$/.test(t)) base = t + '/api/webfaery/pollen/';
+  }
+  const mk = (tag, css, text) => { const n = document.createElement(tag); if (css) n.style.cssText = css; if (text !== undefined) n.textContent = text; return n; };
+  const bar = mk('div', 'position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;max-height:60vh;overflow:auto;background:#2e3271;color:#f3efff;border:2px solid #f6c56f;border-radius:14px;padding:12px 14px;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:0 10px 40px rgba(38,42,94,.45)');
+  bar.setAttribute('data-wf-pollen', '1');
+  bar.hidden = true; // nothing is drawn until the server has said this pass is genuine: a forged one leaves the page exactly as it was
+  const head = mk('div', 'display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 6px');
+  head.append(mk('strong', 'color:#ffe0a0', 'Only you see this'));
+  const closeB = mk('button', 'background:none;border:1px solid rgba(243,239,255,.5);color:#f3efff;border-radius:8px;padding:2px 10px;cursor:pointer', 'Hide'); closeB.type = 'button';
+  closeB.addEventListener('click', () => { bar.hidden = true; });
+  head.append(closeB);
+  const list = mk('div');
+  bar.append(head, list);
+  const say = (t) => { list.textContent = ''; list.append(mk('div', 'color:#ffe0a0', t)); };
+  async function post(path, body) {
+    let res;
+    try { res = await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ pm: pass, page: PAGE }, body)), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
+    catch (e) { return { status: 0, data: null }; }
+    let data = null; try { data = await res.json(); } catch (e) { data = null; }
+    return { status: res.status, data: data };
+  }
+  const WHY = { expired: 'Your link ran out. Open it again from the Studio.', bad_link: 'This link is not good any more. Open it again from the Studio.', not_in_build: 'This client is past the build stages.', slow_down: 'Too many tries. Wait a little.' };
+  function fail(r) {
+    const code = r.data && r.data.error;
+    if (r.status === 401 || r.status === 403 || r.status === 429) { try { sessionStorage.removeItem(STORE); } catch (e) {} }
+    // only a genuinely signed pass gets a spoken answer (the server checks the signature before it says expired or not_in_build);
+    // a wrong one, a stranger's guess or a throttle answer leaves nothing on the page at all
+    if (code === 'expired' || code === 'not_in_build') { show(); say(WHY[code]); return; }
+    if (bar.hidden) { bar.remove(); if (r.status === 401 || r.status === 403 || r.status === 429) location.reload(); return; } // not hers: the plain page, as it always was
+    say(WHY[code] || 'Could not reach the Studio. Try again in a moment.');
+  }
+  function show() { if (!bar.isConnected) document.body.appendChild(bar); bar.hidden = false; }
+  function draw(items) {
+    list.textContent = '';
+    if (!items.length) { list.append(mk('div', 'color:#d9d3f0', 'No changes are waiting for this client.')); return; }
+    items.forEach((it, i) => {
+      const row = mk('div', 'display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid rgba(243,239,255,.2)');
+      const txt = mk('div', 'flex:1;min-width:0');
+      txt.append(mk('div', 'overflow-wrap:anywhere', (i + 1) + '. ' + it.text));
+      if (it.flagged && it.can_make) txt.append(mk('div', 'color:#ffe0a0;font-size:12px', 'Mentions money, legal wording or deleting. Check it yourself first.'));
+      row.append(txt);
+      const st = it.route_status;
+      if (it.can_make || it.can_retry) {
+        const b = mk('button', 'background:#f6c56f;color:#2c2160;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600;white-space:nowrap', it.can_retry ? 'Try again' : 'Make this change'); b.type = 'button';
+        b.addEventListener('click', async () => {
+          b.disabled = true; b.textContent = 'Sending…';
+          const r = await post('make', { id: it.id, action: it.can_retry ? 'retry' : 'make' });
+          if (r.status === 200) load(); else if (r.status === 409) load(); else { fail(r); }
+        });
+        row.append(b);
+      } else {
+        row.append(mk('span', 'color:#86d0c8;white-space:nowrap', st === 'done' ? 'Done' : st === 'failed' ? 'Could not send' : 'Sent to the build desk'));
+      }
+      list.append(row);
+    });
+  }
+  async function load() {
+    const r = await post('changes', {});
+    if (r.status === 200 && r.data && Array.isArray(r.data.items)) { show(); draw(r.data.items); } else fail(r);
+  }
+  load();
+})();
+
 (function () {
   'use strict';
   if (window.__wfMark) return;
