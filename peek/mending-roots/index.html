@@ -299,20 +299,6 @@
     font: 600 12.5px/1.6 var(--label); letter-spacing: 0.34em; text-transform: uppercase; color: var(--umber); }
   .sunrise .motto span::before { content: "\2726"; margin-right: 10px; color: var(--ember); letter-spacing: 0; }
   .sunrise .motto span:first-child::before { content: none; }
-  .sun.pre .ray { opacity: 0; }
-  .sun.pre .glow { opacity: 0; }
-  .sun.rise .ray { animation: ray-up 1.1s cubic-bezier(.3,.2,.25,1) var(--d, 0s) both; }
-  .sun.rise .glow { animation: glow-in 4s ease 1.6s both; }
-  .sun.lit .ray { animation: ray-walk 18s ease-in-out var(--w, 0s) infinite; }
-  .sun.lit .glow { animation: glow-breathe 18s ease-in-out infinite; }
-  @keyframes ray-up { from { opacity: 0; } to { opacity: 0.9; } }
-  @keyframes glow-in { from { opacity: 0; } to { opacity: 0.16; } }
-  @keyframes ray-walk { 0%, 100% { opacity: 0.9; stroke: currentColor; } 4% { opacity: 1; stroke: var(--ember); } 9% { opacity: 0.9; stroke: currentColor; } }
-  @keyframes glow-breathe { 0%, 100% { opacity: 0.16; } 50% { opacity: 0.3; } }
-  @media (prefers-reduced-motion: reduce) {
-    .sun.pre .ray, .sun.pre .glow, .sun.rise .ray, .sun.rise .glow, .sun.lit .ray, .sun.lit .glow { animation: none; opacity: 0.9; }
-    .sun .glow, .sun.pre .glow { opacity: 0.16; }
-  }
   @media (max-width: 560px) { .sunrise { margin-top: 64px; } .sunrise .motto { gap: 4px 14px; letter-spacing: 0.26em; } }
 
   
@@ -503,17 +489,6 @@
   @media (prefers-reduced-motion: reduce) { .secbar { transition: none; } }
   section[id], footer { scroll-margin-top: 60px; }
 
-  .dawn { position: fixed; inset: 0; z-index: 60; pointer-events: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center;
-    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(211, 107, 38, 0.55), rgba(242, 196, 155, 0.35) 45%, rgba(33, 23, 16, 0.86) 100%);
-    color: #FBF4EA; opacity: 0; transition: opacity 1.4s ease; }
-  .dawn.up { opacity: 1; }
-  .dawn.down { opacity: 0; transition-duration: 1.8s; }
-  .dawn-sun { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, #FFE3C2 0 40%, #F2C49B 55%, rgba(242, 196, 155, 0) 72%);
-    box-shadow: 0 0 120px 40px rgba(242, 160, 100, 0.45); transform: translateY(60px); transition: transform 4s cubic-bezier(.2,.7,.3,1); }
-  .dawn.up .dawn-sun { transform: none; }
-  .dawn-w { font-family: var(--display); font-weight: 500; font-size: clamp(38px, 8vw, 72px); line-height: 1.05; padding: 0 16px; text-shadow: 0 2px 30px rgba(33, 23, 16, 0.6); }
-  .dawn-s { font: 600 12px/1.6 var(--label); letter-spacing: 0.3em; text-transform: uppercase; color: #F2C49B; }
-  @media (prefers-reduced-motion: reduce) { .dawn, .dawn.down { transition: none; } .dawn-sun, .dawn.up .dawn-sun { transform: none; transition: none; } }
   
   .field { display: grid; gap: 6px; font-size: 13.5px; letter-spacing: 0.01em; color: var(--ink-soft); min-width: 0; }
   .field input, .field textarea, .field select { font: inherit; font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--field);
@@ -921,7 +896,7 @@
   .c-emb { width: 58px; height: 58px; margin: 0 auto 8px; color: var(--umber); }
   .fav .emb { width: 24px; height: 24px; }
   .foot-mark .emb { width: 46px; height: 46px; color: var(--umber); }
-  .emb-btn { display: grid; place-items: center; width: 52px; height: 52px; margin: -3px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+  .emb-btn { display: grid; place-items: center; width: 52px; height: 52px; margin: -3px; padding: 0; border: 0; border-radius: 50%; background: none; }
   .foot-links { display: flex; flex-wrap: wrap; gap: 4px 20px; }
   .foot-links a { color: var(--ink); padding: 8px 0; display: inline-block; }
   .foot-legal { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 4px 18px; }
@@ -1885,7 +1860,7 @@
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
-      <div class="foot-mark"><button type="button" class="emb-btn" id="egg-sun" aria-label="Mending Roots emblem"><span class="emb" aria-hidden="true"></span></button><span><b>Mending Roots</b><small>Collective &middot; Eureka, California</small></span></div>
+      <div class="foot-mark"><span class="emb-btn" aria-hidden="true"><span class="emb"></span></span><span><b>Mending Roots</b><small>Collective &middot; Eureka, California</small></span></div>
       <nav class="foot-links" aria-label="Footer">
         <a href="#collective">Collective</a><a href="#services">Services</a><a href="#events">Events</a><a href="#book">Book</a><a href="#shop" data-show="crone all">Boutique</a><a href="#gift" data-show="mother crone all">Gift certificates</a><a href="#visit">Visit</a>
       </nav>
@@ -2538,25 +2513,6 @@
 <script>
   
   (function () {
-    var sun = document.getElementById('sun');
-    if (!sun || !('IntersectionObserver' in window)) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var lit = function () { sun.classList.remove('rise'); sun.classList.add('lit'); };
-    if (sun.getBoundingClientRect().top < window.innerHeight * 0.85) { lit(); return; }
-    sun.classList.add('pre');
-    var io = new IntersectionObserver(function (es) {
-      if (!es.some(function (e) { return e.isIntersecting; })) return;
-      io.disconnect();
-      sun.classList.remove('pre'); sun.classList.add('rise');
-      setTimeout(lit, 6200);
-    }, { threshold: 0.5 });
-    io.observe(sun);
-  })();
-</script>
-
-<script>
-  
-  (function () {
     var grid = document.getElementById('m-grid'), title = document.getElementById('m-title'), dayBox = document.getElementById('m-day');
     var prev = document.getElementById('m-prev'), next = document.getElementById('m-next');
     if (!grid || !title || !dayBox) return;
@@ -2642,32 +2598,6 @@
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
     window.addEventListener('resize', tick);
     tick();
-  })();
-</script>
-
-<script>
-  (function () {
-    var btn = document.getElementById('egg-sun'), taps = 0, timer = null, typed = '', busy = false;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function bloom() {
-      if (busy) return; busy = true;
-      var d = document.createElement('div'); d.className = 'dawn'; d.setAttribute('role', 'status');
-      d.innerHTML = '<div class="dawn-sun" aria-hidden="true"></div><p class="dawn-w">Heal. Grow. Flourish.</p><p class="dawn-s">Green blessings from the collective</p>';
-      document.body.appendChild(d);
-      requestAnimationFrame(function () { d.classList.add('up'); });
-      setTimeout(function () { d.classList.remove('up'); d.classList.add('down'); }, reduce ? 3200 : 5200);
-      setTimeout(function () { d.remove(); busy = false; }, reduce ? 3400 : 7000);
-    }
-    if (btn) btn.addEventListener('click', function () {
-      taps++; clearTimeout(timer); timer = setTimeout(function () { taps = 0; }, 1200);
-      if (taps >= 3) { taps = 0; bloom(); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.ctrlKey || e.metaKey || e.altKey || !e.key || e.key.length !== 1) return;
-      var t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
-      typed = (typed + e.key.toLowerCase()).slice(-8);
-      if (typed === 'flourish') { typed = ''; bloom(); }
-    });
   })();
 </script>
 
