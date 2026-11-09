@@ -350,9 +350,11 @@
   .space a { display: block; }
   .space .photo { aspect-ratio: 1; }
   .space figure:first-child { grid-column: span 2; grid-row: span 2; }
-  .space figure:first-child .photo { aspect-ratio: auto; height: 100%; min-height: 280px; }
+  .space figure:first-child { display: flex; flex-direction: column; }
+  .space figure:first-child a { flex: 1 1 auto; min-height: 280px; }
+  .space figure:first-child .photo { aspect-ratio: auto; height: 100%; min-height: 0; }
   .space figcaption { font-size: 13.5px; color: var(--ink-soft); margin-top: 6px; }
-  @media (max-width: 760px) { .space { grid-template-columns: repeat(2, minmax(0, 1fr)); } .space figure:first-child .photo { min-height: 0; aspect-ratio: 1; } }
+  @media (max-width: 760px) { .space { grid-template-columns: repeat(2, minmax(0, 1fr)); } .space figure:first-child a { min-height: 0; flex: none; } .space figure:first-child .photo { min-height: 0; height: auto; aspect-ratio: 1; } }
 
   /* people */
   .people { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 28px; list-style: none; }
