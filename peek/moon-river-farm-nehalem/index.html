@@ -586,10 +586,7 @@
   footer .foot-mark { color: #eef3e3; }
   footer .tag { background: rgba(238, 243, 227, 0.1); color: #eef3e3; border-color: rgba(238, 243, 227, 0.28); }
   footer button.tag:hover { background: rgba(238, 243, 227, 0.2); border-color: #f4d98e; }
-  .foot-moon { width: 44px; height: 44px; padding: 0; margin: 0 -2px 0 -8px; border: 0; background: none; cursor: pointer; border-radius: 50%; display: grid; place-items: center; }
-  .foot-moon svg { width: 26px; height: 26px; display: block; }
   .foot-logo { display: block; height: 44px; width: auto; margin-bottom: 18px; }
-  .foot-row { display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
 
   /* where to buy */
   .buy-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 64px; align-items: start; }
@@ -675,22 +672,6 @@
   .roles b { display: block; font-family: 'Lexend Deca', 'Segoe UI', sans-serif; font-weight: 600; font-size: 19px; }
   .roles span { color: var(--ink-soft); font-size: 17px; }
   .work-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
-
-  /* the secret: type "moon", or tap the footer moon three times. A moon rises over the river and fills. */
-  .rise { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; text-align: center; cursor: pointer;
-    background: radial-gradient(70% 60% at 50% 40%, #1f4029 0, #0b150e 74%); color: #eef3e3; }
-  .rise-in { display: grid; place-items: center; gap: 20px; padding: 24px; width: 100%; }
-  .rise svg { width: min(70vw, 340px); height: auto; overflow: visible; }
-  .rise .rmoon { transform: translateY(70px); opacity: 0; transition: transform 3.6s cubic-bezier(.2,.7,.2,1), opacity 1.4s ease; }
-  .rise.go .rmoon { transform: none; opacity: 1; }
-  .rise .rshade { transition: transform 4s ease-in-out 0.8s; }
-  .rise.go .rshade { transform: translateX(-176px); }
-  .rise .rwave { opacity: 0; transition: opacity 1.6s ease 1.2s; }
-  .rise.go .rwave { opacity: 1; }
-  .rise-cue { font-family: 'Lexend Deca', 'Segoe UI', sans-serif; font-weight: 600; font-size: clamp(24px, 4.6vw, 36px); line-height: 1.25; min-height: 2.5em; max-width: 22ch; opacity: 0; transition: opacity 1.4s ease; }
-  .rise.go .rise-cue.on { opacity: 1; }
-  .rise-small { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.75; }
-  @media (prefers-reduced-motion: reduce) { .rise .rmoon, .rise .rshade, .rise .rwave, .rise-cue { transition: none; } }
 
   .wash .creds li { background: var(--paper); }
 
@@ -1250,7 +1231,6 @@
 
 <footer class="gutter">
   <div class="wrap">
-    <div class="foot-row"><button type="button" class="foot-moon" id="foot-moon" aria-label="The moon"><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8" fill="#f6efd0"/></svg></button></div>
     <picture><source type="image/webp" srcset="images/logo.webp"><img class="foot-logo" src="images/logo.png" width="115" height="44" alt="Moon River Farm"></picture>
     <p>19350 Barber Rd., Nehalem, Oregon 97131 <span aria-hidden="true">&middot;</span> <a href="tel:+15037536327">(503) 753-6327</a></p>
     <p class="foot-reach"><a href="mailto:farmers@moonriverfarmers.com">farmers@moonriverfarmers.com</a></p>
@@ -1277,18 +1257,6 @@
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is moonriverfarmers.com: I hold and renew it for you, and it stays legally yours (or you can keep it at Squarespace if you&rsquo;d rather). If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">4 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
     <p class="views-note" id="vp-note"></p>
-  </div>
-</div>
-
-<div class="rise" id="rise" role="dialog" aria-label="The moon, a little secret" tabindex="-1" hidden>
-  <div class="rise-in">
-    <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-      <defs><clipPath id="rclip"><circle cx="100" cy="86" r="62"/></clipPath><radialGradient id="rhalo"><stop offset="0.6" stop-color="#f6efd0" stop-opacity="0.35"/><stop offset="1" stop-color="#f6efd0" stop-opacity="0"/></radialGradient></defs>
-      <g class="rmoon"><circle cx="100" cy="86" r="86" fill="url(#rhalo)"/><circle cx="100" cy="86" r="62" fill="#f6efd0"/><g clip-path="url(#rclip)"><circle class="rshade" cx="100" cy="86" r="64" fill="#10241a"/></g></g>
-      <g class="rwave" fill="none" stroke="#f6efd0" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round"><path d="M30 168c14-8 28-8 42 0s28 8 42 0 28-8 42 0 14 4 14 4"/><path d="M52 184c10-6 20-6 30 0s20 6 30 0 20-6 30 0" stroke-opacity="0.35"/></g>
-    </svg>
-    <p class="rise-cue" id="rise-cue" role="status"></p>
-    <p class="rise-small">Tap anywhere to come back</p>
   </div>
 </div>
 
@@ -1429,7 +1397,7 @@
 </script>
 
 <script>
-  /* CSA sign up (In Bloom), waitlist (Tended), contact, newsletter, and the secret moon */
+  /* CSA sign up (In Bloom), waitlist (Tended), contact, and newsletter */
   (function () {
     function $(id) { return document.getElementById(id); }
     function all(root, sel) { return [].slice.call(root.querySelectorAll(sel)); }
@@ -1514,35 +1482,6 @@
         form.hidden = true; done.hidden = false; quietFocus($('nl-done-h'));
       });
       $('nl-again').addEventListener('click', function () { form.reset(); hint.textContent = ''; done.hidden = true; form.hidden = false; quietFocus(form.querySelector('[type="submit"]')); });
-    })();
-
-    /* Easter egg: type "moon" anywhere, or tap the footer moon three times. A moon rises over the river and fills. */
-    (function () {
-      var ov = $('rise'), cue = $('rise-cue'), foot = $('foot-moon');
-      if (!ov || !cue) return;
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var timers = [], open = false, back = null, LINE = 'Full moon, full box. See you at the stand.';
-      function clear() { timers.forEach(clearTimeout); timers = []; }
-      function show() {
-        if (open) return; open = true; back = document.activeElement;
-        ov.hidden = false; ov.classList.remove('go'); cue.classList.remove('on'); cue.textContent = LINE;
-        try { ov.focus({ preventScroll: true }); } catch (e) { ov.focus(); }
-        timers.push(setTimeout(function () { ov.classList.add('go'); }, reduce ? 0 : 80));
-        timers.push(setTimeout(function () { cue.classList.add('on'); }, reduce ? 0 : 3200));
-      }
-      function hide() {
-        if (!open) return; open = false; clear(); ov.hidden = true; ov.classList.remove('go');
-        if (back && back.focus) { try { back.focus({ preventScroll: true }); } catch (e) {} }
-      }
-      ov.addEventListener('click', hide);
-      document.addEventListener('keydown', function (e) { if (open && (e.key === 'Escape' || e.key === 'Esc' || e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); hide(); } });
-      var buf = '';
-      document.addEventListener('keydown', function (e) {
-        if (open || !e.key || e.key.length !== 1) return;
-        var t = e.target; if (t && /^(input|textarea|select)$/i.test(t.tagName)) return;
-        buf = (buf + e.key.toLowerCase()).slice(-4); if (buf === 'moon') { buf = ''; show(); }
-      });
-      if (foot) { var taps = 0, tapT = null; foot.addEventListener('click', function () { taps++; clearTimeout(tapT); tapT = setTimeout(function () { taps = 0; }, 1600); if (taps >= 3) { taps = 0; show(); } }); }
     })();
   })();
 </script>
