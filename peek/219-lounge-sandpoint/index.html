@@ -595,23 +595,9 @@
   .rating i { font-style: normal; color: var(--pumpkin-text); letter-spacing: 2px; }
   .gal .photo.big { grid-column: span 2; grid-row: span 2; }
 
-  /* the Niner's hidden barstool (easter egg) */
-  .egg { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: rgba(10, 6, 4, 0.86); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); cursor: pointer; padding: 20px; overflow: hidden; }
-  .egg-sign { position: absolute; left: 50%; top: 16%; width: 168px; translate: -50% 0; opacity: 0; }
-  .egg.show .egg-sign { animation: sign-on 2.4s steps(1, end) 0.15s both; }
-  @keyframes sign-on { 0% { opacity: 0; } 8% { opacity: 1; } 14% { opacity: 0.15; } 22% { opacity: 1; } 28% { opacity: 0.35; } 40%, 100% { opacity: 1; } }
-  .egg-sign img { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 22px rgba(236, 202, 91, 0.6)); }
-  .egg-card { display: grid; justify-items: center; gap: 12px; text-align: center; color: var(--on-wall); max-width: 480px; margin-top: 150px; }
-  .egg-card .big { font-family: 'Limelight', serif; font-size: clamp(30px, 6vw, 46px); line-height: 1.12; color: var(--glow); }
-  .egg-card p { font-size: 16.5px; color: rgba(243, 234, 214, 0.9); }
-  .egg-card small { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
-  .egg.show .egg-card { animation: egg-in 1.4s cubic-bezier(.2,.8,.3,1) 0.9s both; }
-  @keyframes egg-in { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .egg.show .egg-sign { animation: none; opacity: 1; } .egg.show .egg-card { animation: none; } }
   .foot-mark { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
   .foot-mark img { width: 92px; height: auto; display: block; }
   .foot-mark span { font-family: 'Limelight', serif; font-size: 26px; color: var(--ink); line-height: 1.1; }
-  .foot-egg { display: inline-grid; place-items: center; vertical-align: -6px; margin-left: 6px; width: 34px; height: 34px; color: var(--ink-soft); background: none; border: 0; padding: 0; cursor: pointer; border-radius: 50%; }
   .age-line { margin-top: 12px; font-size: 14.5px; }
 
   @media (max-width: 860px) { .plates { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -1159,7 +1145,7 @@
 <footer class="gutter">
   <div class="wrap">
     <span class="foot-mark"><img src="images/logo-219.png" width="324" height="244" alt="219 Lounge"><span>The Niner</span></span>
-    <p>219 N First Ave, Sandpoint, Idaho<button type="button" class="foot-egg" id="foot-egg" aria-label="A little sign on the wall"><svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><ellipse cx="13" cy="10" rx="11.5" ry="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="13" y="13.4" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="9" text-anchor="middle" fill="currentColor">219</text></svg></button></p>
+    <p>219 N First Ave, Sandpoint, Idaho</p>
     <p style="margin-top:6px">Sun to Thu 11 am to midnight, Fri and Sat 11 am to 2 am &middot; <a class="tel" href="tel:+12082635673">(208) 263-5673</a> &middot; <a href="https://www.instagram.com/219cocktaillounge/" target="_blank" rel="noopener">@219cocktaillounge</a></p>
     <p class="age-line">Shows are 21+, no cover.</p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
@@ -1182,15 +1168,6 @@
     <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site comes with one, matching its build: $12, $45 or $90 a month. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting, your domain and backups included. If you cancel, your site is still yours, with every file and login.</span></div>
     <p class="views-spots">Founding price: I&rsquo;m taking 5 founding clients this year, and <span class="wf-founding-left">3 of 5 spots are still open. While one is, the build is half off, and your deposit holds yours</span>.</p>
     <p class="views-note" id="vp-note"></p>
-  </div>
-</div>
-
-<div class="egg" id="egg" role="dialog" aria-label="A little sign flickers on" tabindex="-1" hidden>
-  <div class="egg-sign"><img src="images/logo-219.png" width="324" height="244" alt=""></div>
-  <div class="egg-card">
-    <p class="big">Last call is a long way off.</p>
-    <p>You found the Niner&rsquo;s sign. Pouring since 1937, and as the owners like to say, the real owners are the customers and the crew.</p>
-    <small>Tap anywhere to come back</small>
   </div>
 </div>
 
@@ -1541,21 +1518,6 @@
       $('nl-hint').textContent = '';
     }, function () { $('nl-to').textContent = $('nl-mail').value.trim(); }, 'nl-again');
 
-    /* the sign: tap the little footer sign three times, or type "niner" */
-    (function () {
-      var ov = $('egg'), open = false, back = null;
-      function show() { if (open) return; open = true; back = document.activeElement; ov.hidden = false; ov.classList.remove('show'); void ov.offsetWidth; ov.classList.add('show'); quietFocus(ov); }
-      function hide() { if (!open) return; open = false; ov.hidden = true; ov.classList.remove('show'); if (back && back.focus) quietFocus(back); }
-      ov.addEventListener('click', hide);
-      document.addEventListener('keydown', function (e) { if (open && (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); hide(); } });
-      var taps = 0, tt = null;
-      $('foot-egg').addEventListener('click', function () { taps++; clearTimeout(tt); tt = setTimeout(function () { taps = 0; }, 1600); if (taps >= 3) { taps = 0; show(); } });
-      var buf = '';
-      document.addEventListener('keydown', function (e) {
-        if (open || !e.key || e.key.length !== 1) return; var t = e.target; if (t && /^(input|textarea|select)$/i.test(t.tagName)) return;
-        buf = (buf + e.key.toLowerCase()).slice(-5); if (buf === 'niner') { buf = ''; show(); }
-      });
-    })();
   })();
 
 /* views bar (Planted, Tended, In Bloom, Everything; keys stay maiden / mother / crone): Web Faery kit */
