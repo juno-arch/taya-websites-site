@@ -701,8 +701,8 @@ html.lava-on .field::before { animation-duration: 6s; } html.lava-on .field::aft
    stills under prefers-reduced-motion. */
 body::before { content: ''; position: fixed; inset: 0 0 auto 0; height: 5px; z-index: 70; pointer-events: none;
   background: linear-gradient(90deg, #ff4fa3, #ff8c46, #ffd93d, #b6f23a, #14d3c6, #7cc8ff, #c9a8ff, #ff4fa3); }
-.sec-head::before { content: ''; display: block; width: 92px; height: 16px; margin: 0 0 16px; background: var(--zig, #14d3c6);
-  -webkit-mask: url(images/lava/zig.svg) left center / 23px 16px repeat-x; mask: url(images/lava/zig.svg) left center / 23px 16px repeat-x; }
+.sec-head::before { content: ''; display: block; width: 96px; height: 22px; margin: 0 0 16px; background: var(--zig, #14d3c6);
+  -webkit-mask: url(images/pattern/zig.svg) left center / 30px 22px repeat-x; mask: url(images/pattern/zig.svg) left center / 30px 22px repeat-x; }
 .sec-head.center::before { margin-inline: auto; }
 .prices .sec-head { --zig: #ff8ec7; } .how .sec-head { --zig: #ffd93d; } .about .sec-head { --zig: #c9a8ff; }
 .tier-art img { object-position: 50% 50%; }
@@ -780,3 +780,121 @@ html { overflow-x: clip; }
 .door-mark { text-shadow: 0 0 6px rgb(20 6 24 / .95), 0 2px 18px rgb(20 6 24 / .95), 0 0 2px rgb(20 6 24 / .9); }
 .door-mark, .door-hint { padding: 6px 16px; border-radius: 999px; background: rgb(var(--wf-ground-rgb) / .55); width: fit-content; margin-inline: auto; }
 .door-hint { left: 0; right: 0; }
+
+/* =============================== pattern bands (Nov 10, second pass) ===============================
+   No pictures from the board and no floating cards. Each section is a full-width band with its own pattern
+   from the board's textures (the collage's checkerboard, the rainbow swirl, the disco ball mosaic, leopard
+   spots, teal zigzags, lava lamp wax), the way Linnea's mockup gives each section its own edge: a bold
+   ribbon of the pattern across the top, a flat color, and a faint copy of the pattern behind the words. */
+.twilight { background: var(--wf-ground); }
+.twilight::before { display: none; }
+.field { background: var(--base, var(--wf-ground)); color: var(--wf-ink); padding-top: calc(var(--wf-section-pad) + 44px); overflow: clip; }
+.field::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; animation: none; transform: none;
+  background: var(--rib); background-size: var(--rib-size, auto); }
+.field::after { content: ''; position: absolute; inset: 44px 0 0 0; z-index: -1; pointer-events: none; animation: none; transform: none;
+  background: var(--body-pat); background-size: var(--body-size, auto); opacity: var(--body-op, .22); }
+.field > .ceiling { z-index: 0; }
+/* light bands: ink on color */
+.field.light { --wf-ink: #2a1236; --wf-ink-soft: #3e2148; --wf-eyebrow: #b80f64; --wf-italic: #b80f64; --wf-link: #00697a; --wf-text-shadow: none; --wf-text-shadow-strong: none; --wf-gold-hi: #00697a; }
+.field.light a { color: #00697a; }
+.field.light a.btn { color: #fff; } .field.light a.btn.ghost { color: #2a1236; }
+.field.light .btn.ghost { background: transparent; border-color: #2a1236; color: #2a1236; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.field.light .btn.ghost:hover { background: rgb(42 18 54 / .08); box-shadow: none; }
+.field.light :focus-visible { outline-color: #2a1236; }
+.field.light .sec-head { text-shadow: none; }
+/* flat, not hovering: the old cards become plain parts of the band */
+.field .card, .field .faq details { background: none; box-shadow: none; border-radius: 0; padding-inline: 0; }
+.field .card::before, .field .faq details::before, .field .glint { display: none; }
+.field .card { padding-block: 0; }
+.field .faq details { border-top: 3px solid currentColor; border-top-color: rgb(42 18 54 / .35); padding-block: 0; }
+.field.light .card { --wf-c-ink: #2a1236; --wf-c-text: #3a1f45; --wf-c-soft: #55385f; --wf-c-rose: #b80f64; --wf-c-link: #00697a; --wf-c-rule: rgb(42 18 54 / .3); --wf-c-gold: #7a3d00; }
+.field.dark .card, .field.dark .faq details { --wf-c-ink: #fff1ec; --wf-c-text: #fbe6ee; --wf-c-soft: #ecd0e2; --wf-c-rose: #7ff3e8; --wf-c-link: #7ff3e8; --wf-c-rule: rgb(255 255 255 / .28); --wf-c-gold: #ffd93d; --wf-c-ghost-edge: #fff1ec; }
+.field.dark .card .btn.ghost { color: #fff1ec; }
+.field .money { background: rgb(255 255 255 / .55); border: 3px solid #2a1236; border-radius: 0; }
+.field.dark .money { background: rgb(255 255 255 / .08); border-color: #7ff3e8; }
+.field .founding-line { border-radius: 0; background: rgb(255 255 255 / .6); border: 3px solid #2a1236; }
+.field.dark .founding-line { background: rgb(255 255 255 / .1); border-color: #ffd93d; color: #fff1ec; }
+.field .faq summary::after { border-color: currentColor; }
+
+/* the patterns */
+.work { --base: #ffc4b0; --rib: conic-gradient(#1a0a16 25%, #fff 0 50%, #1a0a16 0 75%, #fff 0) 0 0 / 44px 44px; --body-pat: conic-gradient(#fff 25%, transparent 0 50%, #fff 0 75%, transparent 0) 0 0 / 96px 96px; --body-op: .14; }
+.prices { --base: #f1deff; --rib: url(images/pattern/swirl.svg); --rib-size: 240px 238px; --body-pat: url(images/pattern/swirl.svg); --body-size: 360px 357px; --body-op: .16; }
+.tools { --base: #c7ecff; --rib: url(images/pattern/disco.svg); --rib-size: 88px 88px; --body-pat: url(images/pattern/disco.svg); --body-size: 192px 192px; --body-op: .16; }
+.how { --base: #1e1018; --rib: url(images/pattern/leopard.svg) 0 0 / 110px 110px, linear-gradient(#e8a46a, #e8a46a); --body-pat: radial-gradient(circle at 20% 30%, rgb(255 79 163 / .55), transparent 40%), radial-gradient(circle at 80% 70%, rgb(20 211 198 / .4), transparent 40%); --body-op: .5; }
+.about { --base: #ffe36e; --rib: repeating-linear-gradient(90deg, #ff4fa3 0 44px, #ff8c46 0 88px, #ffd93d 0 132px, #b6f23a 0 176px, #14d3c6 0 220px, #7cc8ff 0 264px, #c9a8ff 0 308px); --body-pat: repeating-conic-gradient(from 0deg at 50% 120%, #fff 0 6deg, transparent 0 12deg); --body-op: .3; }
+.faq-sec { --base: #b9f2e8; --rib: url(images/pattern/zig.svg) 0 0 / 60px 44px, linear-gradient(#ff8ec7, #ff8ec7); --body-pat: url(images/pattern/zig.svg); --body-size: 90px 66px; --body-op: .1; }
+.work, .prices, .tools, .about, .faq-sec { }
+.field.dark { color: var(--wf-ink); }
+.how .sec-head, .how-main { position: relative; z-index: 1; }
+/* lava light behind the dark band */
+.how::after { animation: lava-a 38s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) { .how::after { animation: none; } }
+
+/* work: the pieces sit straight on the band */
+.work .piece { padding-block: clamp(10px, 2vw, 24px); }
+.work .piece + .piece { border-top: 3px solid rgb(42 18 54 / .35); margin-top: clamp(20px, 3vw, 36px); padding-top: clamp(28px, 4vw, 48px); }
+.work .browser { border: 3px solid #2a1236; border-radius: 0; box-shadow: 8px 8px 0 #2a1236; }
+.work .phone { border: 3px solid #2a1236; border-radius: 0; box-shadow: 6px 6px 0 #2a1236; }
+.kind { border-top-color: rgb(42 18 54 / .3); }
+
+/* prices: three columns, each with its own pattern header */
+.tiers { gap: 0; border: 3px solid #2a1236; background: rgb(255 255 255 / .5); }
+.tier { border-left: 3px solid #2a1236; }
+.tier:first-child { border-left: 0; }
+.tier-art { border-radius: 0; aspect-ratio: auto; height: 150px; display: flex; align-items: flex-end; border-bottom: 3px solid #2a1236; }
+.tier-art::after { display: none; }
+.tier-art h3 { position: static; padding: 10px 22px; margin: 0 0 0 0; background: #2a1236; color: #fff; text-shadow: none; font-size: clamp(26px, 2.4vw, 34px); }
+.tier.maiden .tier-art { background: #f6f0ff url(images/pattern/zig.svg) 0 0 / 60px 44px; }
+.tier.mother .tier-art { background: #ffb8d8 url(images/pattern/leopard.svg) 0 0 / 110px 110px; }
+.tier.crone .tier-art { background: url(images/pattern/swirl.svg) 0 0 / 240px 238px; }
+.tier-body { padding: 22px 26px 26px; }
+@media (max-width: 1080px) { .tiers { max-width: 640px; } .tier { border-left: 0; border-top: 3px solid #2a1236; } .tier:first-child { border-top: 0; } .tier-art { height: 120px; } }
+
+/* how it works: steps run full width on the dark band */
+.how-grid { display: block; }
+.how-head { margin-bottom: clamp(26px, 3vw, 40px); }
+.steps li { border-top: 3px solid rgb(255 255 255 / .3); padding: 24px 0; }
+.steps li:last-child { border-bottom: 3px solid rgb(255 255 255 / .3); }
+.num { border-radius: 0; transform: rotate(-6deg); }
+.how-main { margin-top: 0; }
+
+/* the questions: each one a flat row under a ruled line */
+.faq { gap: 0; }
+.faq details:last-child { border-bottom: 3px solid rgb(42 18 54 / .35); }
+.faq summary { padding: 18px 2px; }
+
+/* about: the words straight on the sunshine band */
+.about-text { border-top: 3px solid rgb(42 18 54 / .4); }
+.about-text p { color: #2a1236; }
+.about .ready-line, .about .ready-line b { color: #2a1236; }
+
+/* In Bloom */
+.tools .tools-card { max-width: none; }
+
+/* contact: a full-width lava band */
+.scene { background: #1e1018 url(images/pattern/lava.svg) center / cover; isolation: isolate; overflow: clip; }
+.scene::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; display: block; background: url(images/pattern/zig.svg) 0 0 / 60px 44px, #ff4fa3; transform: none; }
+.scene::after { display: none; }
+.scene > .ceiling { z-index: 0; }
+.scene-body { margin-top: 0; min-height: 0; display: block; padding: calc(44px + clamp(56px, 8vw, 110px)) var(--wf-gut) clamp(60px, 8vw, 110px); }
+.contact-card { max-width: 560px; background: none; box-shadow: none; padding: 0; border-radius: 0; --wf-c-ink: #fff1ec; --wf-c-text: #fbe6ee; --wf-c-soft: #ecd0e2; --wf-c-rose: #7ff3e8; --wf-c-link: #7ff3e8; --wf-c-ghost-edge: #fff1ec; }
+.contact-card::before, .contact-card .glint { display: none; }
+.contact-card .btn.ghost { color: #fff1ec; }
+.contact-card h2 { text-shadow: 0 2px 18px rgb(20 6 24 / .7); }
+
+/* a disco ball in the footer, made of the same mosaic */
+.disco { overflow: hidden; background: url(images/pattern/disco.svg) center / 28px 28px; box-shadow: 0 0 0 3px #fff, 0 0 24px 2px rgb(255 142 199 / .55); }
+.disco i { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 34% 28%, rgb(255 255 255 / .9) 0 8%, transparent 30%), radial-gradient(circle at 70% 78%, rgb(60 10 80 / .55), transparent 65%); }
+html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate; }
+@keyframes disco-pulse { to { transform: scale(1.12) rotate(8deg); } }
+.hero-art { object-position: 50% 50%; }
+.door-art { object-position: 50% 50%; }
+.field > .ceiling, .scene > .ceiling { z-index: -1; }
+.scene { background: linear-gradient(rgb(var(--wf-ground-rgb) / .5), rgb(var(--wf-ground-rgb) / .5)), #1e1018 url(images/pattern/lava.svg) center / cover; }
+
+/* QA fixes, pass two */
+.how .ready-line { color: #fff1ec; } .how .ready-line b { color: #7ff3e8; }
+.field.light { --wf-eyebrow: #a30d58; --wf-italic: #a30d58; --wf-link: #00596a; }
+.field.light a { color: #00596a; }
+.field.light .card { --wf-c-rose: #a30d58; --wf-c-link: #00596a; }
+.hero .btn.ghost { background: rgb(var(--wf-ground-rgb) / .72); }

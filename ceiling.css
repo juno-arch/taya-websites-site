@@ -12,3 +12,7 @@
 html.lava-on .ceiling i { animation-duration: 1.4s; }
 @media (prefers-reduced-motion: reduce) { .ceiling i { animation: none; opacity: .85; } }
 @media print { .ceiling { display: none; } }
+/* where words sit on top of the stars, they glow more softly so the words stay easy to read */
+.hero-c i, .field > .ceiling i, .scene > .ceiling i { animation-name: star-glow-soft; opacity: .5; }
+@keyframes star-glow-soft { 0%, 100% { opacity: .18; } 40%, 60% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .hero-c i, .field > .ceiling i, .scene > .ceiling i { animation: none; opacity: .45; } }
