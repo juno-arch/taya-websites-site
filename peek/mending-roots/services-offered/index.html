@@ -12,7 +12,7 @@ function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
 addEventListener("scroll",function(){reveal();req();},{passive:true});addEventListener("resize",function(){reveal();req();});setInterval(reveal,600);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
-function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me|square\.site|squareup\.com)\//i.test(h);}
+function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me|square\.site|squareup\.com|square\.link)\//i.test(h);}
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(!a||!isBk(a)||e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();fr.src=a.href;d.showModal();});
 d.querySelector(".bk-x").addEventListener("click",function(){d.close();});
 d.addEventListener("click",function(e){if(e.target===d)d.close();});
