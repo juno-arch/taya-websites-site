@@ -1168,6 +1168,21 @@
   .hero.short .hero-card { margin-inline: auto; text-align: center; }
   .hero.short .hero-kicker { justify-content: center; }
   .hero.short .hero-kicker::after { display: none; }
+  .doc .wrap.wide { max-width: 1180px; }
+  .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
+  .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
+  .prod { display: flex; flex-direction: column; gap: 8px; color: var(--ink); text-decoration: none; }
+  .prod .pic { display: block; aspect-ratio: 1; border-radius: 16px; overflow: hidden; background: var(--ground-2); position: relative; }
+  .doc .prod .pic img { width: 100%; max-width: none; height: 100%; object-fit: cover; border-radius: 0; transition: transform .35s ease; }
+  .prod:hover .pic img { transform: scale(1.04); }
+  .prod b { font-weight: 600; line-height: 1.3; font-size: 16px; }
+  .prod .pr { color: var(--ink-soft); font-size: 15px; }
+  .prod .fl { position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(33,23,15,.78); color: #fff; font: 600 11px/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; }
+  .prod[hidden] { display: none; }
+  .bk-modal { width: min(920px, 96vw); height: min(88vh, 900px); padding: 0; border: 0; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
+  .bk-modal::backdrop { background: rgba(20,14,9,.66); }
+  .bk-modal iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .bk-x { position: absolute; right: 10px; top: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(33,23,15,.85); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
   .doc .addon-h { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--hair-2); }
 </style>
 <header class="hero short gutter" id="top">
@@ -2410,3 +2425,10 @@ Sessions are available in 30 and 60 minute increments.  </p>
     window.addEventListener('resize', close);
   })();
 </script>
+<dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
+<script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
+function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(!a||!isBk(a)||e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();fr.src=a.href;d.showModal();});
+d.querySelector(".bk-x").addEventListener("click",function(){d.close();});
+d.addEventListener("click",function(e){if(e.target===d)d.close();});
+d.addEventListener("close",function(){fr.src="about:blank";});})();</script>
