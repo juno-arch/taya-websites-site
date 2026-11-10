@@ -891,3 +891,27 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 .field.light a { color: #00596a; }
 .field.light .card { --wf-c-rose: #a30d58; --wf-c-link: #00596a; }
 .hero .btn.ghost { background: rgb(var(--wf-ground-rgb) / .72); }
+
+/* pass 4: one pattern per card, the whole card. No ribbon strip, no heavy veil; the pattern shows as it is. */
+.field { padding-top: var(--wf-section-pad); }
+.field::before { display: none; }
+.field.light { text-shadow: 0 0 6px rgb(255 255 255 / .9), 0 0 2px rgb(255 255 255 / .9); }
+.field.light .btn, .field.light .money, .field.light .founding-line { text-shadow: none; }
+.work { --veil: rgb(255 255 255 / .12); }
+.prices { --tex: url(images/texture/confetti.png); --tsize: 444px auto; --veil: rgb(255 255 255 / .0); }
+.tools { --veil: rgb(255 255 255 / .1); }
+.about { --veil: rgb(255 255 255 / .1); }
+.faq-sec { --veil: rgb(255 255 255 / .12); }
+.field.light .faq details, .field.light .piece p { text-shadow: 0 0 6px #fff, 0 0 3px #fff; }
+
+/* pass 4b: each price card is one whole pattern; words sit on cream highlighter strips so they read */
+.tiers { background: none; }
+.tier.maiden { background: url(images/texture/zig.jpg) 0 0 / 300px auto; }
+.tier.mother { background: url(images/texture/fur.jpg) 0 0 / 380px auto; }
+.tier.crone { background: url(images/texture/swirl.jpg) 0 0 / 520px auto; }
+.tier .tier-art { background: none !important; height: auto; border-bottom: 0; }
+.field.light { text-shadow: none; }
+.field.light :is(p, li, h2, summary, .eyebrow, .money, small, .kind, dd, dt, span.note) { background: rgb(255 247 251 / .93); box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: .05em .35em; width: fit-content; max-width: 100%; }
+.field.light .btn, .field.light .btn * { background-clip: border-box; }
+.field.light .btn { background-color: #c8156f; padding: revert; }
+.field.light .btn.ghost { background: rgb(255 247 251 / .93); }
