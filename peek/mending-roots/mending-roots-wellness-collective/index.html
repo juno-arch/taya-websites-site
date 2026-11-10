@@ -1233,6 +1233,58 @@
   .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
   .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
   .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
+  .person-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center; text-align: left; }
+  .person-row .pr-text > * { margin-inline: 0; max-width: 56ch; }
+  .person-row h2 { margin-top: 0; text-align: left; }
+  .person-row h2::after { margin-left: 0; }
+  .person-row h3 { text-align: left; }
+  .person-row h3::before { margin: 0 0 8px; }
+  .person-row .btn { margin-top: 18px; }
+  .person-row ul { margin-inline: 0; }
+  .pr-photo { margin: 0; justify-self: end; width: 100%; max-width: 420px; border-radius: 26px 26px 120px 26px; overflow: hidden; box-shadow: 0 22px 50px rgba(33,23,15,.25); }
+  .doc .pr-photo img { display: block; width: 100%; max-width: none; height: auto; border-radius: 0; margin: 0; }
+  @media (max-width: 760px) { .person-row { grid-template-columns: 1fr; } .pr-photo { order: -1; justify-self: center; max-width: 320px; } }
+  .doc ul:not(.chips) li { margin-inline: 0; }
+  .person-row h3::before { display: none; }
+  .doc.sec { padding-block: 38px 30px; }
+  .band { height: clamp(150px, 22vw, 280px); }
+  .cardgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; align-items: start; text-align: left; }
+  .cardx { padding: 26px 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); }
+  .doc.sec.alt .cardx { background: var(--ground); }
+  .cardx > * { max-width: none !important; margin-inline: 0 !important; }
+  .cardx > * + * { margin-top: 12px; }
+  .cardx h2 { font-size: clamp(24px, 2.4vw, 30px); margin-top: 0; text-align: left; }
+  .cardx h2::after { margin-left: 0; margin-top: 10px; }
+  .cardx h3 { text-align: left; font-size: 20px; margin-top: 18px; }
+  .cardx h3::before { margin: 0 0 6px; }
+  .cardx p { font-size: 16.5px; }
+  .acc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px 16px; align-items: start; max-width: none; }
+  .acc-grid details { margin-top: 0; max-width: none; }
+  .imgrow { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: none; }
+  .imgrow img { flex: 1 1 260px; max-width: 360px !important; width: 100%; height: auto; }
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; max-width: none; text-align: left; }
+  .quotes .qcard { margin: 0 !important; max-width: none !important; padding: 22px 22px 20px; border-radius: 18px; background: var(--ground-2); border: 1px solid var(--hair-2); font-size: 16px; line-height: 1.6; }
+  .doc.sec.alt .quotes .qcard { background: var(--ground); }
+  .tabs { max-width: 860px; margin-inline: auto; text-align: left; }
+  .tab-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+  .tab { font: 600 14px/1.3 var(--label); letter-spacing: .04em; padding: 11px 18px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .tab:hover { background: var(--ground-2); } .tab.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .tab-panel { display: none; padding: 26px 28px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); }
+  .tab-panel.on { display: block; }
+  .doc .tab-panel > * { margin-inline: 0; max-width: none; text-align: left; }
+  .doc .tab-panel > * + * { margin-top: 14px; }
+  .doc .tab-panel h3 { margin-top: 8px; }
+  .svc-list ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 0 36px; }
+  @media (max-width: 900px) { .svc-list ul { grid-template-columns: 1fr; } }
+  .cf-two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: start; margin-top: 24px; }
+  .cf-info > * { margin-inline: auto; }
+  .cf-name { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cf-form form { max-width: none; }
+  @media (max-width: 820px) { .cf-two { grid-template-columns: 1fr; } }
+  .svc-grid { grid-template-columns: 1fr !important; }
+  .svc-photo-wrap { display: none !important; }
+  .svc-list { grid-column: 1 / -1; }
+  .person-row { gap: clamp(20px, 4vw, 48px); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1313,73 +1365,45 @@
 
 
 <section class="gutter doc sec"><div class="wrap">
-
-<p class="lede-first rv" style="--d:0.05s">Welcome to Mending Roots Collective. We are a wellness space where different holistic practitioners are sharing space and creating a healing environment to help serve our community. We offer quality, compassionate, and individualized care to those who seek our services.</p>
-<img alt="" class="rv" loading="lazy" src="images/old/IMG_9902-610x813.jpeg" style="--d:0.10s"/>
-
+<p>Welcome to Mending Roots Collective. We are a wellness space where different holistic practitioners are sharing space and creating a healing environment to help serve our community. We offer quality, compassionate, and individualized care to those who seek our services.</p>
 </div></section>
-<section class="gutter doc sec alt"><div class="wrap">
-<h2 class="rv" style="--d:0.05s">
+<section class="gutter doc sec alt"><div class="wrap wide"><article class="person-row"><div class="pr-text rv">
+<h2>
 
 						Tami Hornidge					
 </h2>
-<p class="rv" style="--d:0.10s">Practitioner and creator of Mending Roots Body Therapies and Mending Roots Collective. </p>
-<p class="rv" style="--d:0.15s">Fun Facts:<br/>
-Gave birth at home 3 times<br/>
-Lived in Germany as a child in the ’80s<br/>
-Loves to sing and enjoys a good karaoke party<br/>
-The forest, connecting with plants, and her hands in the earth is how she fills her cup back up<br/>
-Enjoys a good cup of coffee and doing red light therapy in the early morning before the sun rises<br/>
-Working on learning Japanese and connecting with her Japanese heritage</p>
+<p>Practitioner and creator of Mending Roots Body Therapies and Mending Roots Collective. </p>
+<h3>Fun Facts</h3><ul><li>Gave birth at home 3 times</li><li>Lived in Germany as a child in the ’80s</li><li>Loves to sing and enjoys a good karaoke party</li><li>The forest, connecting with plants, and her hands in the earth is how she fills her cup back up</li><li>Enjoys a good cup of coffee and doing red light therapy in the early morning before the sun rises</li><li>Working on learning Japanese and connecting with her Japanese heritage</li></ul>
 <a class="btn" href="about-mending-roots/">
 						Learn more about Tami &amp; Mending Roots Body Therapies offerings					</a>
-<img alt="" class="rv" loading="lazy" src="images/old/jennifertexeira-610x813.png" style="--d:0.20s"/>
-
-</div></section>
-<section class="gutter doc sec"><div class="wrap">
-<h2 class="rv" style="--d:0.05s">
+</div><figure class="pr-photo rv"><img alt="" loading="lazy" src="images/old/IMG_9902-610x813.jpeg"/></figure></article></div></section>
+<section class="gutter doc sec"><div class="wrap wide"><article class="person-row"><div class="pr-text rv">
+<h2>
 
 						Jennifer Teixeira					
 </h2>
-<h3 class="rv" style="--d:0.10s">Practitioner and creator of Humboldt Womens Massage</h3>
-<p class="rv" style="--d:0.15s">Fun Facts:<br/>
-She serves as a High Priestess in a feminist coven, embracing her spiritual side and advocating for women’s empowerment.<br/>
-She comes from a large Azorean American family and has family in the Americas and Portugal.<br/>
-Jennifer finds joy in working with plants, whether it’s gardening or exploring the healing properties of herbs.<br/>
-She absolutely loves relaxing in a good hot spring, where she can unwind and feel the healing power of water.<br/>
-She has 1 son and two dog children. </p>
+<h3>Practitioner and creator of Humboldt Womens Massage</h3>
+<h3>Fun Facts</h3><ul><li>She serves as a High Priestess in a feminist coven, embracing her spiritual side and advocating for women’s empowerment.</li><li>She comes from a large Azorean American family and has family in the Americas and Portugal.</li><li>Jennifer finds joy in working with plants, whether it’s gardening or exploring the healing properties of herbs.</li><li>She absolutely loves relaxing in a good hot spring, where she can unwind and feel the healing power of water.</li><li>She has 1 son and two dog children.</li></ul>
 <a class="btn" href="jenniferteixeira/">
 						Learn more about Jennifer &amp; Humboldt Womens Massage offerings					</a>
-<img alt="" class="rv" loading="lazy" src="images/old/yemaya-610x702.webp" style="--d:0.20s"/>
-
-</div></section>
-<section class="gutter doc sec alt"><div class="wrap">
-<h2 class="rv" style="--d:0.05s">
+</div><figure class="pr-photo rv"><img alt="" loading="lazy" src="images/old/jennifertexeira-610x813.png"/></figure></article></div></section>
+<section class="gutter doc sec alt"><div class="wrap wide"><article class="person-row"><div class="pr-text rv">
+<h2>
 
 						Yemaya Kimmel					
 </h2>
-<h3 class="rv" style="--d:0.10s">Practitioner &amp; Creator of Yemaya’s Apothecary</h3>
-<p class="rv" style="--d:0.15s">Fun Facts:<br/>
-Born in New Orleans, LA<br/>
-Gave birth at home 3 times<br/>
-Traveled across the country in a solar powered biodiesel school bus.<br/>
-Swimming-especially in nature-is her happy place<br/>
-Plays French horn, piano, guitar, drums, &amp; sings<br/>
-You can find her performing with local groups Asha Nan &amp; Redwood Interfaith Gospel Choir<br/>
-Has been learning Greek &amp; connecting with her Greek heritage.<br/>
-Recently found out she has a sister in Crete who she’s never met</p>
+<h3>Practitioner &amp; Creator of Yemaya’s Apothecary</h3>
+<h3>Fun Facts</h3><ul><li>Born in New Orleans, LA</li><li>Gave birth at home 3 times</li><li>Traveled across the country in a solar powered biodiesel school bus.</li><li>Swimming-especially in nature-is her happy place</li><li>Plays French horn, piano, guitar, drums, &amp; sings</li><li>You can find her performing with local groups Asha Nan &amp; Redwood Interfaith Gospel Choir</li><li>Has been learning Greek &amp; connecting with her Greek heritage.</li><li>Recently found out she has a sister in Crete who she’s never met</li></ul>
 <a class="btn" href="yemayas-apothecary/">
 						Learn more about Yemaya &amp; Yemaya's Apothecary offerings					</a>
-<img alt="" class="rv" loading="lazy" src="images/old/Screenshot-2026-09-06-at-8.09.39-PM.png" style="--d:0.20s"/>
-
-</div></section>
-<section class="gutter doc sec"><div class="wrap">
-<h2 class="rv" style="--d:0.05s">
+</div><figure class="pr-photo rv"><img alt="" loading="lazy" src="images/old/yemaya-610x702.webp"/></figure></article></div></section>
+<section class="gutter doc sec"><div class="wrap wide"><article class="person-row"><div class="pr-text rv">
+<h2>
 
 						Sunny Loya					
 </h2>
-<h3 class="rv" style="--d:0.10s">Action Lab Health Coaching</h3>
-<p class="rv" style="--d:0.15s">Fun Facts<br/>
+<h3>Action Lab Health Coaching</h3>
+<p>Fun Facts<br/>
 I have a wig collection that I am always looking for opportunities to use.<br/>
 I once slept in a hammock high in the canopy of an old-growth Sitka spruce tree, even though I am terrified of heights.<br/>
 I love slow fashion and make many of my own clothes.<br/>
@@ -1387,15 +1411,13 @@ I am happy when I’ve got dirt on my hands, especially when combined with physi
 I spent 25 years as a botanist before turning my lifelong hobbies of fitness and healthy lifestyle into a new career</p>
 <a class="btn" href="https://actionlabhealthcoaching.com/coaching-services" rel="noopener" target="_blank">
 						Learn more about Sunny and Action Lab’s offerings					</a>
-<img alt="" class="rv" loading="lazy" src="images/old/Lena-930x620.jpg" style="--d:0.20s"/>
-
-</div></section>
-<section class="gutter doc sec alt"><div class="wrap">
-<h2 class="rv" style="--d:0.05s">
+</div><figure class="pr-photo rv"><img alt="" loading="lazy" src="images/old/Screenshot-2026-09-06-at-8.09.39-PM.png"/></figure></article></div></section>
+<section class="gutter doc sec alt"><div class="wrap wide"><article class="person-row"><div class="pr-text rv">
+<h2>
 
 						Lena Hyde Nuñez					
 </h2>
-<p class="rv" style="--d:0.10s">Fun Facts<br/>
+<p>Fun Facts<br/>
 Is an Afro-Cuban priest initiated to the goddess of the ocean<br/>
 Has a radio show on Arcata’s Humboldt Hot Air (94.7FM) on Fridays at noon, during which she only plays songs about water<br/>
 Grew up without a television but fell in love with filmmaking and studied cinematography as an adult<br/>
@@ -1404,8 +1426,7 @@ Has been meditating since 1995, when she moved two blocks from the Zen Center in
 Loves camping and facilitating dreamwork experiences near oceans and rivers</p>
 <a class="btn" href="lena-hyde-nunez/">
 						Learn more about Lena's Somatic offerings.					</a>
-
-</div></section>
+</div><figure class="pr-photo rv"><img alt="" loading="lazy" src="images/old/Lena-930x620.jpg"/></figure></article></div></section>
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
@@ -2492,8 +2513,10 @@ Loves camping and facilitating dreamwork experiences near oceans and rivers</p>
 <script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
 document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+document.querySelectorAll(".tabs").forEach(function(t){var bs=[].slice.call(t.querySelectorAll(".tab")),ps=[].slice.call(t.querySelectorAll(".tab-panel"));bs.forEach(function(b,i){b.addEventListener("click",function(){bs.forEach(function(x,k){x.classList.toggle("on",k===i);ps[k].classList.toggle("on",k===i);});});});});
 var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
-function frame(){tick=false;var vh=innerHeight,y=scrollY;
+var rvs=[].slice.call(document.querySelectorAll(".rv"));
+function frame(){tick=false;var vh=innerHeight,y=scrollY;rvs=rvs.filter(function(e){if(e.classList.contains("in"))return false;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.94&&r.bottom>0){e.classList.add("in");return false;}return true;});
 bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
 if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
 function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}

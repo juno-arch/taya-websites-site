@@ -1233,6 +1233,58 @@
   .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
   .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
   .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
+  .person-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center; text-align: left; }
+  .person-row .pr-text > * { margin-inline: 0; max-width: 56ch; }
+  .person-row h2 { margin-top: 0; text-align: left; }
+  .person-row h2::after { margin-left: 0; }
+  .person-row h3 { text-align: left; }
+  .person-row h3::before { margin: 0 0 8px; }
+  .person-row .btn { margin-top: 18px; }
+  .person-row ul { margin-inline: 0; }
+  .pr-photo { margin: 0; justify-self: end; width: 100%; max-width: 420px; border-radius: 26px 26px 120px 26px; overflow: hidden; box-shadow: 0 22px 50px rgba(33,23,15,.25); }
+  .doc .pr-photo img { display: block; width: 100%; max-width: none; height: auto; border-radius: 0; margin: 0; }
+  @media (max-width: 760px) { .person-row { grid-template-columns: 1fr; } .pr-photo { order: -1; justify-self: center; max-width: 320px; } }
+  .doc ul:not(.chips) li { margin-inline: 0; }
+  .person-row h3::before { display: none; }
+  .doc.sec { padding-block: 38px 30px; }
+  .band { height: clamp(150px, 22vw, 280px); }
+  .cardgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; align-items: start; text-align: left; }
+  .cardx { padding: 26px 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); }
+  .doc.sec.alt .cardx { background: var(--ground); }
+  .cardx > * { max-width: none !important; margin-inline: 0 !important; }
+  .cardx > * + * { margin-top: 12px; }
+  .cardx h2 { font-size: clamp(24px, 2.4vw, 30px); margin-top: 0; text-align: left; }
+  .cardx h2::after { margin-left: 0; margin-top: 10px; }
+  .cardx h3 { text-align: left; font-size: 20px; margin-top: 18px; }
+  .cardx h3::before { margin: 0 0 6px; }
+  .cardx p { font-size: 16.5px; }
+  .acc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px 16px; align-items: start; max-width: none; }
+  .acc-grid details { margin-top: 0; max-width: none; }
+  .imgrow { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: none; }
+  .imgrow img { flex: 1 1 260px; max-width: 360px !important; width: 100%; height: auto; }
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; max-width: none; text-align: left; }
+  .quotes .qcard { margin: 0 !important; max-width: none !important; padding: 22px 22px 20px; border-radius: 18px; background: var(--ground-2); border: 1px solid var(--hair-2); font-size: 16px; line-height: 1.6; }
+  .doc.sec.alt .quotes .qcard { background: var(--ground); }
+  .tabs { max-width: 860px; margin-inline: auto; text-align: left; }
+  .tab-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+  .tab { font: 600 14px/1.3 var(--label); letter-spacing: .04em; padding: 11px 18px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .tab:hover { background: var(--ground-2); } .tab.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .tab-panel { display: none; padding: 26px 28px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); }
+  .tab-panel.on { display: block; }
+  .doc .tab-panel > * { margin-inline: 0; max-width: none; text-align: left; }
+  .doc .tab-panel > * + * { margin-top: 14px; }
+  .doc .tab-panel h3 { margin-top: 8px; }
+  .svc-list ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 0 36px; }
+  @media (max-width: 900px) { .svc-list ul { grid-template-columns: 1fr; } }
+  .cf-two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: start; margin-top: 24px; }
+  .cf-info > * { margin-inline: auto; }
+  .cf-name { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cf-form form { max-width: none; }
+  @media (max-width: 820px) { .cf-two { grid-template-columns: 1fr; } }
+  .svc-grid { grid-template-columns: 1fr !important; }
+  .svc-photo-wrap { display: none !important; }
+  .svc-list { grid-column: 1 / -1; }
+  .person-row { gap: clamp(20px, 4vw, 48px); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1315,7 +1367,7 @@
 <section class="gutter doc sec"><div class="wrap">
 
 <p class="lede-first rv" style="--d:0.05s">We offer Red Light Therapy, Full Spectrum Infrared Sauna, &amp; Halo Therapy to help support your body. They are great therapies to add on to another therapy session or to do on its own. Read on to learn about the many benefits of these therapies.</p>
-<details class="rv" style="--d:0.10s"><summary>Red Light Therapy</summary>
+<div class="acc-grid"><details class="rv" style="--d:0.10s"><summary>Red Light Therapy</summary>
 <h3>What’s Red Light Therapy?</h3>
 <p>Red and near-infrared light are part of the electromagnetic spectrum, and more specifically, part of the spectrum of light emitted by the sun. These wavelengths of light are “bioactive” in humans.</p><p>Unlike other wavelengths of light, red and NIR are able to penetrate deeper into the body’s cells to activate mitochondrial function. This then leads to enhanced cellular energy output. This effect on our cells can have many positive outcomes with regular use of this therapy.</p><p>Basically, if your cells are functioning better, then they can do their jobs in your body better!</p>
 <p>We use a Mito Red Pro Panel. They have excellent irradiance, are low EMF, and cover a variety of wavelengths. They offer Enhanced Spectral Energy Output (ESPEO). Your body will receive the full therapeutic spectrum of Red Light and Near Infrared just as nature intended.</p>
@@ -1323,16 +1375,14 @@
 <p>These panels are very efficient at what they do, so maximum therapy time is 20 minutes for the body. We offer therapy sessions in times of 10 minutes or 20 minutes. This therapy can be done alone or added on to another therapy, which is recommended!</p>
 <h3>Benefits of Red Light Therapy</h3>
 <ul><li>Improves skin health and helps the skin’s natural production of collagen</li><li>Promotes wound healing and repair</li><li>Speeds up muscle recovery</li><li>Reduces swelling and inflammation</li><li>Increases body’s production of melatonin and helps improve sleep</li><li>Improves joint health</li></ul>
-</details>
-<details class="rv" style="--d:0.15s"><summary>Infrared Sauna</summary>
+</details><details class="rv" style="--d:0.15s"><summary>Infrared Sauna</summary>
 <h3>What is an Infrared Sauna?</h3>
 <p>Infrared saunas heat up the body by using the wavelengths of near, mid, and far. Far Infrared penetrates the deepest and is what makes the body start to increase in temperature. This is where you start to experience most of the benefits of the Infrared sauna.</p>
 <p>This sauna also has LED Chromotherapy lights. The visible light creates photons that are absorbed into the skin. The different colors can have different chemical reactions which can have various therapeutic biochemical benefits in the body.</p>
 <p>Sessions are offered in 30 min &amp; 50 min sessions in a single-person sauna. It is recommended to combine both infrared sauna and red light therapy for a great support and recovery session for your body.</p>
 <h3>Benefits</h3>
 <ul class="feat"><li><strong>Pain Relief</strong> – Infrared saunas dramatically increase blood flow and penetrate deeper into your tissue. The increase in oxygenated blood flow to your affected areas in your body will help with managing pain and give relief.</li><li><strong>Relieves Stress &amp; Tension</strong> – Infrared sauna sessions have shown in studies to increase serotonin levels in the body. An increase in serotonin will help your body feel more relaxed, happier, and calmer. It’s the body’s natural “feel good” chemical.</li><li><strong>Improves Recovery &amp; Circulation</strong> – The heat from an infrared sauna will increase your body temperature, which then makes your blood vessels dilate and blood flow will increase. The increase in blood flow will help get the oxygen and nutrients faster to the parts of the body that need them. This will help your body in recovery for better optimal function and regeneration.</li><li><strong>Detoxification</strong> – The skin is the largest organ of our body and when we sweat, this helps the body to remove toxins from our body. Sweating is the preferred way our body likes to remove unwanted contaminants such as heavy metals &amp; mycotoxins.</li><li><strong>Weight loss</strong> – The infrared sauna will cause an increase in heart rates and when doing that your body will also increase the metabolic rate. This means your body will be more efficient at burning calories!</li><li><strong>Lower Blood Pressure</strong> – When your blood vessels are more dilated from infrared sauna use, your body is having to use less pressure to pump your blood through your body. Studies have shown that with regular infrared sauna use, this will help with cardiovascular health.</li><li><strong>Helps your immune system</strong> – The infrared sauna will increase your body’s core temperature. In doing so, your body is tricked into thinking it is running a low-grade fever and will trigger an immune response in your body. This also helps the body to fight off unwanted pathogens in the body such as viruses, bacteria, mold, and parasites.</li><li><strong>Promotes healthier skin</strong> – Regular sauna use has shown to help with skin hydration and complexion. Combined with regular Red Light Therapy it may also enhance collagen production of your skin.</li></ul>
-</details>
-<details class="rv" style="--d:0.20s"><summary>Contraindications</summary>
+</details><details class="rv" style="--d:0.20s"><summary>Contraindications</summary>
 <h3>Red Light Therapy Contraindications</h3>
 <h3>Do not use if you have any of the following</h3><ul class="chips"><li>Recent burns</li><li>Malignant cancers</li><li>Hyperthyroidism (neck &amp; chest)</li><li>Epilepsy</li><li>Pregnancy (abdominal)</li><li>Eye disease</li><li>Light Sensitivity</li><li>Fever/infections (relative contraindication)</li><li>Systemic Lupus Erythematosus (relative contraindication)</li><li>Use of photosensitizing medications (relative contraindication)</li></ul>
 <p>Please consult with your doctor if you are unsure if red light therapy is right for you.</p>
@@ -1347,7 +1397,9 @@
 menstrual flow.-Recent acute joint injury<br/>
 -Implants (Metal pins, rods, artificial joints, or any other surgical implants generally reflect infrared waves and thus are not heated by this system)</p>
 <p>Please consult with your doctor if you are unsure and want to make sure that infrared sauna therapy is right for you.</p>
-</details>
+</details></div>
+
+
 <div class="pcards"><div class="pcard rv"><h3 class="rv" style="--d:0.25s">Infrared Sauna Pricing</h3>
 <div class="prices"><span class="prow"><span>30 minutes</span><b>$40</b></span><span class="prow"><span>50 minutes</span><b>$50</b></span></div>
 <p class="rv" style="--d:0.00s">Save $15!<br/>
@@ -2447,8 +2499,10 @@ Add a 20 minute red light therapy session to your massage/bodywork session for o
 <script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
 document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+document.querySelectorAll(".tabs").forEach(function(t){var bs=[].slice.call(t.querySelectorAll(".tab")),ps=[].slice.call(t.querySelectorAll(".tab-panel"));bs.forEach(function(b,i){b.addEventListener("click",function(){bs.forEach(function(x,k){x.classList.toggle("on",k===i);ps[k].classList.toggle("on",k===i);});});});});
 var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
-function frame(){tick=false;var vh=innerHeight,y=scrollY;
+var rvs=[].slice.call(document.querySelectorAll(".rv"));
+function frame(){tick=false;var vh=innerHeight,y=scrollY;rvs=rvs.filter(function(e){if(e.classList.contains("in"))return false;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.94&&r.bottom>0){e.classList.add("in");return false;}return true;});
 bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
 if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
 function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}

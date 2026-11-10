@@ -1233,6 +1233,58 @@
   .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
   .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
   .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
+  .person-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center; text-align: left; }
+  .person-row .pr-text > * { margin-inline: 0; max-width: 56ch; }
+  .person-row h2 { margin-top: 0; text-align: left; }
+  .person-row h2::after { margin-left: 0; }
+  .person-row h3 { text-align: left; }
+  .person-row h3::before { margin: 0 0 8px; }
+  .person-row .btn { margin-top: 18px; }
+  .person-row ul { margin-inline: 0; }
+  .pr-photo { margin: 0; justify-self: end; width: 100%; max-width: 420px; border-radius: 26px 26px 120px 26px; overflow: hidden; box-shadow: 0 22px 50px rgba(33,23,15,.25); }
+  .doc .pr-photo img { display: block; width: 100%; max-width: none; height: auto; border-radius: 0; margin: 0; }
+  @media (max-width: 760px) { .person-row { grid-template-columns: 1fr; } .pr-photo { order: -1; justify-self: center; max-width: 320px; } }
+  .doc ul:not(.chips) li { margin-inline: 0; }
+  .person-row h3::before { display: none; }
+  .doc.sec { padding-block: 38px 30px; }
+  .band { height: clamp(150px, 22vw, 280px); }
+  .cardgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; align-items: start; text-align: left; }
+  .cardx { padding: 26px 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); }
+  .doc.sec.alt .cardx { background: var(--ground); }
+  .cardx > * { max-width: none !important; margin-inline: 0 !important; }
+  .cardx > * + * { margin-top: 12px; }
+  .cardx h2 { font-size: clamp(24px, 2.4vw, 30px); margin-top: 0; text-align: left; }
+  .cardx h2::after { margin-left: 0; margin-top: 10px; }
+  .cardx h3 { text-align: left; font-size: 20px; margin-top: 18px; }
+  .cardx h3::before { margin: 0 0 6px; }
+  .cardx p { font-size: 16.5px; }
+  .acc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px 16px; align-items: start; max-width: none; }
+  .acc-grid details { margin-top: 0; max-width: none; }
+  .imgrow { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: none; }
+  .imgrow img { flex: 1 1 260px; max-width: 360px !important; width: 100%; height: auto; }
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; max-width: none; text-align: left; }
+  .quotes .qcard { margin: 0 !important; max-width: none !important; padding: 22px 22px 20px; border-radius: 18px; background: var(--ground-2); border: 1px solid var(--hair-2); font-size: 16px; line-height: 1.6; }
+  .doc.sec.alt .quotes .qcard { background: var(--ground); }
+  .tabs { max-width: 860px; margin-inline: auto; text-align: left; }
+  .tab-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+  .tab { font: 600 14px/1.3 var(--label); letter-spacing: .04em; padding: 11px 18px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .tab:hover { background: var(--ground-2); } .tab.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .tab-panel { display: none; padding: 26px 28px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); }
+  .tab-panel.on { display: block; }
+  .doc .tab-panel > * { margin-inline: 0; max-width: none; text-align: left; }
+  .doc .tab-panel > * + * { margin-top: 14px; }
+  .doc .tab-panel h3 { margin-top: 8px; }
+  .svc-list ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 0 36px; }
+  @media (max-width: 900px) { .svc-list ul { grid-template-columns: 1fr; } }
+  .cf-two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: start; margin-top: 24px; }
+  .cf-info > * { margin-inline: auto; }
+  .cf-name { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cf-form form { max-width: none; }
+  @media (max-width: 820px) { .cf-two { grid-template-columns: 1fr; } }
+  .svc-grid { grid-template-columns: 1fr !important; }
+  .svc-photo-wrap { display: none !important; }
+  .svc-list { grid-column: 1 / -1; }
+  .person-row { gap: clamp(20px, 4vw, 48px); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1322,10 +1374,10 @@
 </div></section>
 <section class="gutter doc sec alt"><div class="wrap">
 <h2 class="rv" style="--d:0.05s">More free 10 min classes being offered by Lena.</h2>
-<h3 class="rv" style="--d:0.10s">11:30am: Free your Pelvis, Free your Step</h3><p class="rv" style="--d:0.15s">Liberating your pelvis transforms the way you walk and helps liberate the rest of your body. In this 10-minute Feldenkrais Method® class, Lena will offer an Awareness Through Movement® lesson and guide you through some small movements to help you let go of hidden holding patterns in the hips and lower back.</p><h3 class="rv" style="--d:0.20s">11:45am: Connecting to the Unseen World</h3><p class="rv" style="--d:0.25s">As Lena’s grandmother would say, “Our dead are playing a role in our lives, even when we think they’re not.” Join Lena for a brief 10-minute introduction to Ancestral Healing, exploring how to recognize what wants to be remembered.</p><h3 class="rv" style="--d:0.00s">12pm: Somatic Dreamwork</h3><p class="rv" style="--d:0.05s">In this 10-minute intro session, Lena will show you how to pay attention to the physical sensations of the dream image to unlock the insights and guidance your dreams offer. It’s a glimpse into both Lena’s Somatic Dreamwork sessions and the December 11th workshop, Dreaming into Darkness and Light for Winter Solstice.</p><h3 class="rv" style="--d:0.10s">12:30pm: Allowing Your Eyes to Lead</h3><p class="rv" style="--d:0.15s">Discover the surprising connection between your vision and how you move. In this 10-minute Feldenkrais Method® class, Lena will teach a mini Awareness Through Movement® lesson. Subtle movements of your eyes and head reveal how your visual focus shapes the organization of your whole body.</p><h3 class="rv" style="--d:0.20s">12:45pm: Rituals for Women in Transition</h3><p class="rv" style="--d:0.25s">This 10-minute session offers a taste of Lena’s 8-week series, Somatics + Rituals for Perimenopause, Menopause and Postmenopause, starting in January 2027. You’ll learn how rituals can support you as you cross thresholds into your next chapter, so you can intentionally integrate what has come before and honor the sacredness of what’s yet to come.</p>
-<p class="rv" style="--d:0.00s">Fall into Wellness Open House<br/>
+<div class="cardgrid"><article class="cardx"><h3 class="rv" style="--d:0.10s">11:30am: Free your Pelvis, Free your Step</h3><p class="rv" style="--d:0.15s">Liberating your pelvis transforms the way you walk and helps liberate the rest of your body. In this 10-minute Feldenkrais Method® class, Lena will offer an Awareness Through Movement® lesson and guide you through some small movements to help you let go of hidden holding patterns in the hips and lower back.</p></article><article class="cardx"><h3 class="rv" style="--d:0.20s">11:45am: Connecting to the Unseen World</h3><p class="rv" style="--d:0.25s">As Lena’s grandmother would say, “Our dead are playing a role in our lives, even when we think they’re not.” Join Lena for a brief 10-minute introduction to Ancestral Healing, exploring how to recognize what wants to be remembered.</p></article><article class="cardx"><h3 class="rv" style="--d:0.00s">12pm: Somatic Dreamwork</h3><p class="rv" style="--d:0.05s">In this 10-minute intro session, Lena will show you how to pay attention to the physical sensations of the dream image to unlock the insights and guidance your dreams offer. It’s a glimpse into both Lena’s Somatic Dreamwork sessions and the December 11th workshop, Dreaming into Darkness and Light for Winter Solstice.</p></article><article class="cardx"><h3 class="rv" style="--d:0.10s">12:30pm: Allowing Your Eyes to Lead</h3><p class="rv" style="--d:0.15s">Discover the surprising connection between your vision and how you move. In this 10-minute Feldenkrais Method® class, Lena will teach a mini Awareness Through Movement® lesson. Subtle movements of your eyes and head reveal how your visual focus shapes the organization of your whole body.</p></article><article class="cardx"><h3 class="rv" style="--d:0.20s">12:45pm: Rituals for Women in Transition</h3><p class="rv" style="--d:0.25s">This 10-minute session offers a taste of Lena’s 8-week series, Somatics + Rituals for Perimenopause, Menopause and Postmenopause, starting in January 2027. You’ll learn how rituals can support you as you cross thresholds into your next chapter, so you can intentionally integrate what has come before and honor the sacredness of what’s yet to come.</p><p class="rv" style="--d:0.00s">Fall into Wellness Open House<br/>
 November 21<br/>
-11am-5pm</p>
+11am-5pm</p></article></div>
+
 <p class="rv" style="--d:0.05s">Come and spend a wellness-inspired day with us at Mending Roots. We will have many offerings, and it’s a great way to see all the friendly faces that make up our Mending Roots Collective. </p>
 <p class="rv" style="--d:0.10s">All Scar Release spots have been filled.</p>
 
@@ -1335,7 +1387,7 @@ November 21<br/>
 
 						December					
 </h2>
-<h3 class="rv" style="--d:0.10s">Dreaming into Darkness and Light</h3><p class="rv" style="--d:0.15s"><i>Seasonal Somatic Dream Workshops</i><br/>A Dream Journey for Late Fall and Winter Solstice</p><p class="rv" style="--d:0.20s"><b>Friday, December 11th, 5:30 to 7:30pm</b><br/>Mending Roots, 3034 H Street, Suite C, Eureka</p><p class="rv" style="--d:0.25s">Sliding scale price: $30 to $50<br/>Contact Lena Nuñez: <a href="mailto:vitalstories@inkpeople.org">vitalstories@inkpeople.org</a>, 415.424.2069</p><p class="rv" style="--d:0.00s">As nights get longer and sunlight hours lessen, you’re invited into the restful underworld of dreams. Late Fall opens more portals into liminal spaces where dreams can meet the deep rest and nourishment of Winter Solstice. It’s a powerful time to listen to the wisdom of the dreaming body.</p><p class="rv" style="--d:0.05s">In this immersion, we’ll weave gentle somatic movement, drawing from methods such as Feldenkrais and Body-Mind Centering, with imagery, and dream exploration to honor our process of letting go to make room for what we want to call to us for the new year.</p><p class="rv" style="--d:0.10s">We use somatic methods to help us release habitual patterns of tension so that we can relax into a parasympathetic state of deep rest and we can then enter the dreamwork in a full and relaxed way, rather than making dreamwork an analytical exercise.</p><h3 class="rv" style="--d:0.15s">Workshop Journey</h3><p class="rv" style="--d:0.20s"><b>Somatic Release</b><br/>We unlock patterns in our body, while deepening relaxation, ease and freedom of breath.<br/>We shed habitual tension and regulate our nervous systems.</p><p class="rv" style="--d:0.25s"><b>Entering into the Imaginal Realm</b><br/>Dream Recall: We integrate the body and the fall and solstice dream landscape.<br/>We enter into the dream image to allow what’s present in the dream to emerge more fully (rather than seeking interpretations which replicate our habitual ways of thinking).</p><h3 class="rv" style="--d:0.00s">Invitation: bring an offering for the Solstice Dream Altar</h3><p class="rv" style="--d:0.05s">You are invited to bring an offering to contribute to our solstice altar. Bring a dried leaf or flower, a pomegranate, etc., or personal items that represent your dreams, what you’re releasing or what you want to nourish.</p><p class="rv" style="--d:0.10s">Bring a journal or notebook. Please also bring a dream you wish to work with, if you have one. (For anyone who doesn’t remember your dreams: no worries, we’ll work with solstice imagery.)</p>
+<div class="cardgrid"><article class="cardx"><h3 class="rv" style="--d:0.10s">Dreaming into Darkness and Light</h3><p class="rv" style="--d:0.15s"><i>Seasonal Somatic Dream Workshops</i><br/>A Dream Journey for Late Fall and Winter Solstice</p><p class="rv" style="--d:0.20s"><b>Friday, December 11th, 5:30 to 7:30pm</b><br/>Mending Roots, 3034 H Street, Suite C, Eureka</p></article><article class="cardx"><h3 class="rv" style="--d:0.15s">Workshop Journey</h3><p class="rv" style="--d:0.20s"><b>Somatic Release</b><br/>We unlock patterns in our body, while deepening relaxation, ease and freedom of breath.<br/>We shed habitual tension and regulate our nervous systems.</p><p class="rv" style="--d:0.25s"><b>Entering into the Imaginal Realm</b><br/>Dream Recall: We integrate the body and the fall and solstice dream landscape.<br/>We enter into the dream image to allow what’s present in the dream to emerge more fully (rather than seeking interpretations which replicate our habitual ways of thinking).</p></article><article class="cardx"><h3 class="rv" style="--d:0.00s">Invitation: bring an offering for the Solstice Dream Altar</h3><p class="rv" style="--d:0.05s">You are invited to bring an offering to contribute to our solstice altar. Bring a dried leaf or flower, a pomegranate, etc., or personal items that represent your dreams, what you’re releasing or what you want to nourish.</p><p class="rv" style="--d:0.10s">Bring a journal or notebook. Please also bring a dream you wish to work with, if you have one. (For anyone who doesn’t remember your dreams: no worries, we’ll work with solstice imagery.)</p></article></div><p class="rv" style="--d:0.25s">Sliding scale price: $30 to $50<br/>Contact Lena Nuñez: <a href="mailto:vitalstories@inkpeople.org">vitalstories@inkpeople.org</a>, 415.424.2069</p><p class="rv" style="--d:0.00s">As nights get longer and sunlight hours lessen, you’re invited into the restful underworld of dreams. Late Fall opens more portals into liminal spaces where dreams can meet the deep rest and nourishment of Winter Solstice. It’s a powerful time to listen to the wisdom of the dreaming body.</p><p class="rv" style="--d:0.05s">In this immersion, we’ll weave gentle somatic movement, drawing from methods such as Feldenkrais and Body-Mind Centering, with imagery, and dream exploration to honor our process of letting go to make room for what we want to call to us for the new year.</p><p class="rv" style="--d:0.10s">We use somatic methods to help us release habitual patterns of tension so that we can relax into a parasympathetic state of deep rest and we can then enter the dreamwork in a full and relaxed way, rather than making dreamwork an analytical exercise.</p>
 <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=100018093" rel="noopener" target="_blank">
 						Register for the Dream workshop here					</a>
 
@@ -2426,8 +2478,10 @@ November 21<br/>
 <script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
 document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+document.querySelectorAll(".tabs").forEach(function(t){var bs=[].slice.call(t.querySelectorAll(".tab")),ps=[].slice.call(t.querySelectorAll(".tab-panel"));bs.forEach(function(b,i){b.addEventListener("click",function(){bs.forEach(function(x,k){x.classList.toggle("on",k===i);ps[k].classList.toggle("on",k===i);});});});});
 var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
-function frame(){tick=false;var vh=innerHeight,y=scrollY;
+var rvs=[].slice.call(document.querySelectorAll(".rv"));
+function frame(){tick=false;var vh=innerHeight,y=scrollY;rvs=rvs.filter(function(e){if(e.classList.contains("in"))return false;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.94&&r.bottom>0){e.classList.add("in");return false;}return true;});
 bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
 if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
 function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
