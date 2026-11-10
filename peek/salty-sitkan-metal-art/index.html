@@ -847,7 +847,7 @@
       </div>
       <div class="crit-view">
         <figure class="photo crit-photo" id="crit-photo"><picture><img id="crit-img" src="images/king.jpg" width="1200" height="900" alt=""></picture></figure>
-        <div class="crit-ph" id="crit-ph" hidden><p>Photo of this creature: <span class="ph">(a photo of your finished one)</span></p></div>
+        <div class="crit-ph" id="crit-ph" hidden></div>
         <p class="crit-name" id="crit-name" aria-live="polite"></p>
         <p class="crit-info" id="crit-info"></p>
       </div>
@@ -1039,7 +1039,7 @@
         <details><summary>How many people does a class need?</summary><div class="ans"><p>Classes run with a minimum of 4 guests. Groups of 8 or more can ask Mike about a whole class discount. Because the workshop is compact, spectators can&rsquo;t join without a class registration.</p></div></details>
         <details><summary>Can the class be wheelchair accessible?</summary><div class="ans"><p>At this time the class is not wheelchair accessible. It&rsquo;s a moderately active class with power tools and torches.</p></div></details>
         <details><summary>Can you ship my piece home?</summary><div class="ans"><p>Yes, guests have had their pieces shipped home instead of carrying them for the rest of the trip. <span class="ph">(how it works, and the price)</span></p></div></details>
-        <details><summary>I live in Sitka. Can I take a class?</summary><div class="ans"><p>Yes. Local groups are welcome, and Mike can talk about a local rate for your group. <span class="ph">(your note on local class days)</span></p></div></details>
+        <details><summary>I live in Sitka. Can I take a class?</summary><div class="ans"><p>Yes. Local groups are welcome, and Mike can talk about a local rate for your group.</p></div></details>
       </div>
     </div>
     <aside class="news" id="news" aria-labelledby="nl-h" data-thing="a newsletter">
@@ -1323,7 +1323,7 @@
           img = document.getElementById('crit-img');
           photo.hidden = false; ph.hidden = true;
           photo.classList.toggle('tall', !!c.t);
-        } else { photo.hidden = true; ph.hidden = false; }
+        } else { photo.hidden = true; ph.hidden = true; }
         photo.classList.remove('swap');
       }, 220);
     }
@@ -1507,7 +1507,7 @@
         h += '<p class="q">Round trip shuttle from the cruise terminal</p><div class="plan-tools" role="group" aria-label="Shuttle">';
         ['Yes', 'No'].forEach(function (t) { h += '<button type="button" class="pill-btn" data-shuttle="' + t + '" aria-pressed="' + (R.shuttle === t ? 'true' : 'false') + '">' + (t === 'Yes' ? 'Yes, included' : 'No thanks') + '</button>'; });
         h += '</div><div class="fld-row" style="margin-top:16px"><label class="fld" for="rs-name">Name<input id="rs-name" type="text" autocomplete="off" value="' + esc(R.name) + '"></label><label class="fld" for="rs-mail">Email<input id="rs-mail" type="email" autocomplete="off" value="' + esc(R.email) + '"></label></div>';
-        h += '<p class="hint" role="status">' + esc(R.hint) + '</p></div><div><div class="sheet"><span class="sheet-grip" aria-hidden="true"></span><div class="sheet-h"><span>Your reservation</span></div>' + sheetLines() + '</div><p class="demo-note">Classes run with a minimum of 4 guests. <span class="ph">(what happens if fewer sign up)</span></p></div></div>';
+        h += '<p class="hint" role="status">' + esc(R.hint) + '</p></div><div><div class="sheet"><span class="sheet-grip" aria-hidden="true"></span><div class="sheet-h"><span>Your reservation</span></div>' + sheetLines() + '</div><p class="demo-note">Classes run with a minimum of 4 guests.</p></div></div>';
         h += '<div class="go-row"><button type="button" class="gbtn ghost" data-rs-act="cancel">Back</button><button type="button" class="gbtn" data-rs-act="pay">Continue to payment</button></div>';
       } else if (st === 'pay') {
         h += '<h3 data-focus tabindex="-1">Pay for ' + R.qty + (R.qty === 1 ? ' guest' : ' guests') + '</h3><div class="rs-grid"><div><div class="sheet"><span class="sheet-grip" aria-hidden="true"></span><div class="sheet-h"><span>Checkout</span><span class="demo-pill">Stripe preview</span></div>' + sheetLines() + '<div class="sheet-slot">Card number, expiry and security code go here, on Stripe&rsquo;s own secure form.</div></div></div><div><p>Full payment is due when you reserve. A full refund if you cancel 24 hours before the class, and if the shop or your ship cancels.</p><p class="demo-note">Payment goes to your own Stripe, and you get a short heads-up email for each booking.</p></div></div>';
@@ -1553,7 +1553,7 @@
         cs.textContent = 'No class today'; sub.textContent = 'Next class: ' + short(nx) + ' at ' + f12s(mins(D[nx][0])) + '.'; sp.setAttribute('data-s', 'off');
         if (nav && !override) nav.textContent = 'Next class ' + MN[parts(nx).m - 1].slice(0, 3) + ' ' + parts(nx).d;
       } else {
-        cs.textContent = 'Classes are paused'; sub.innerHTML = 'Back with the ships next spring. <span class="ph">(next season&rsquo;s first day)</span>'; sp.setAttribute('data-s', 'off');
+        cs.textContent = 'Classes are paused'; sub.innerHTML = 'Back with the ships next spring.'; sp.setAttribute('data-s', 'off');
         if (nav && !override) nav.textContent = 'Class days';
       }
       if (announce) $('clock-live').textContent = cs.textContent + '. ' + sub.textContent;
