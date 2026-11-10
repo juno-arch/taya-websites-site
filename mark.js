@@ -477,7 +477,8 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const h = s.querySelector('h1, h2'); const t = h ? h.textContent.replace(/\s+/g, ' ').trim() : (s.id || '');
     return t.length > 40 ? t.slice(0, 38) + '…' : t;
   };
-  const spotOf = (n) => { const sec = section(n), l = label(n); return (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
+  const pgTag = () => { const m = location.pathname.match(/^\/peek\/[a-z0-9-]+\/(.+?)\/?$/); if (!m) return ''; const h = document.querySelector('h1'); const t = ((h && h.textContent) || '').replace(/\s+/g, ' ').trim().slice(0, 40) || m[1].replace(/\/index\.html$/, '').replace(/-/g, ' '); return t + ' page · '; }; // a note on a sub-page of a mockup says which page
+  const spotOf = (n) => { const sec = section(n), l = label(n); return pgTag() + (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
   // a short CSS path to the spot (from the nearest id, else from body), so a note finds its exact element again
   const cssPath = (n) => {
     const parts = [];
@@ -1030,7 +1031,8 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const h = s.querySelector('h1, h2'); const t = h ? h.textContent.replace(/\s+/g, ' ').trim() : (s.id || '');
     return t.length > 40 ? t.slice(0, 38) + '…' : t;
   };
-  const spotOf = (n) => { const sec = section(n), l = label(n); return (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
+  const pgTag = () => { const m = location.pathname.match(/^\/peek\/[a-z0-9-]+\/(.+?)\/?$/); if (!m) return ''; const h = document.querySelector('h1'); const t = ((h && h.textContent) || '').replace(/\s+/g, ' ').trim().slice(0, 40) || m[1].replace(/\/index\.html$/, '').replace(/-/g, ' '); return t + ' page · '; }; // a note on a sub-page of a mockup says which page
+  const spotOf = (n) => { const sec = section(n), l = label(n); return pgTag() + (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
   // a short CSS path to the spot (from the nearest id, else from body), so a pin finds its exact element again
   // (the same rule as Taya's own notes above)
   const cssPath = (n) => {
