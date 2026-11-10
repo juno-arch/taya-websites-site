@@ -1259,6 +1259,10 @@
   .doc.sec.cb3 + .doc.sec.cb0 { --wv: var(--c3); } .doc.sec.cb0 + .doc.sec.cb1 { --wv: var(--c0); } .doc.sec.cb1 + .doc.sec.cb2 { --wv: var(--c1); } .doc.sec.cb2 + .doc.sec.cb3 { --wv: var(--c2); }
   .doc.sec + .doc.sec { position: relative; }
   .doc.sec + .doc.sec::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: clamp(22px, 3.4vw, 40px); background: var(--wv, transparent); -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 0 H1200 V16 C1060 40 920 40 780 20 S480 -2 340 18 S110 36 0 14 Z'/></svg>") center top / 100% 100% no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 0 H1200 V16 C1060 40 920 40 780 20 S480 -2 340 18 S110 36 0 14 Z'/></svg>") center top / 100% 100% no-repeat; pointer-events: none; }
+  .doc.ctr .wrap { max-width: 920px; text-align: center; }
+  .doc.ctr .wrap > p, .doc.ctr .wrap > h2, .doc.ctr .wrap > h3, .doc.ctr .wrap > img, .doc.ctr .wrap > ul { margin-inline: auto; }
+  .doc.ctr .wrap > h2::after { margin-inline: auto; } .doc.ctr .wrap > img { max-width: min(100%, 640px); }
+  .doc.ctr .wrap > div:not(.split):not(.cardgrid) { margin-inline: auto; }
   .doc details h3::before { margin: 0 auto 8px; }
   .doc details h3 { text-align: center; }
   .pat-photos { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin: 6px auto; }
@@ -1423,7 +1427,7 @@
   .bk-x { position: absolute; right: 10px; top: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(33,23,15,.85); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
   .doc .addon-h { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--hair-2); }
 </style>
-<header class="hero short gutter" id="top">
+<header class="hero short center gutter" id="top">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="top wrap">
@@ -1479,7 +1483,7 @@
 </div>
 
 
-<section class="gutter doc sec cb0"><div class="wrap">
+<section class="gutter doc ctr sec cb0"><div class="wrap">
 
 <p class="lede-first rv" style="--d:0.05s">We offer Red Light Therapy, Full Spectrum Infrared Sauna, &amp; Halo Therapy to help support your body. They are great therapies to add on to another therapy session or to do on its own. Read on to learn about the many benefits of these therapies.</p>
 <div class="acc-grid"><details class="rv" style="--d:0.10s"><summary>Red Light Therapy</summary>
