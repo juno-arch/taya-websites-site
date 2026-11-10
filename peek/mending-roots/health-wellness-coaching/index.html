@@ -1204,6 +1204,14 @@
     html.rvjs .rv.in { opacity: 1; transform: none; }
   }
   .doc img.rv { transition-property: opacity, transform; }
+  .laptop { display: block; width: min(100%, 720px); margin: 8px auto 0; text-decoration: none; transition: transform .35s cubic-bezier(.22,1,.36,1); }
+  .laptop:hover { transform: translateY(-4px); }
+  .lp-screen { position: relative; display: block; padding: 14px 14px 18px; background: #1b1815; border-radius: 18px 18px 4px 4px; box-shadow: 0 0 0 1px #45403a inset, 0 30px 60px rgba(33,23,15,.28); }
+  .lp-screen::before { content: ""; position: absolute; left: 50%; top: 5px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: #3a352f; }
+  .doc .lp-screen img { display: block; width: 100%; max-width: none; height: auto; border-radius: 2px; margin: 0; }
+  .lp-base { position: relative; display: block; width: 116%; margin: 0 -8% 0; height: 16px; background: linear-gradient(#d8d3cc, #aaa49c 70%, #8f8a83); border-radius: 0 0 18px 18px; box-shadow: 0 14px 24px rgba(33,23,15,.22); }
+  .lp-base::after { content: ""; position: absolute; left: 50%; top: 0; width: 18%; height: 6px; margin-left: -9%; background: #8a847c; border-radius: 0 0 8px 8px; }
+  @media (max-width: 760px) { .lp-screen { padding: 8px 8px 11px; border-radius: 12px 12px 3px 3px; } .lp-base { height: 11px; } }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1278,7 +1286,7 @@
 
 <section class="gutter doc sec"><div class="wrap">
 
-<a class="site-preview" href="https://www.actionlabhealthcoaching.com/" rel="noopener" style="display:block;width:min(100%,440px)" target="_blank"><img alt="Preview of the Action Lab Health Coaching website" class="rv" src="images/action-lab-preview.jpg" style="max-width:100%;width:100%;height:auto;border-radius:0;display:block;--d:0.05s"/></a>
+<a aria-label="Open the Action Lab Health Coaching website" class="laptop" href="https://www.actionlabhealthcoaching.com/" rel="noopener" target="_blank"><span class="lp-screen"><img alt="Preview of the Action Lab Health Coaching website" class="rv" src="images/action-lab-preview.jpg" style="--d:0.05s"/></span><span class="lp-base"></span></a>
 <a class="btn" href="https://actionlabhealthcoaching.com" rel="noopener" target="_blank">
 						Visit Action Lab's website to learn more and to book your session with Sunny.					</a>
 
