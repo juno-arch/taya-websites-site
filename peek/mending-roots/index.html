@@ -11,7 +11,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Mending Roots Collective in Eureka, California: holistic practitioners sharing one healing space on H Street. Massage and bodywork, postural alignment, scar release, herbal wellness consultations, health coaching, an infrared sauna with red light, and a wellness boutique.">
+<meta name="description" content="Mending Roots Collective in Eureka, California: holistic practitioners sharing one healing space on H Street.">
 <link rel="icon" href="images/emblem.png" type="image/png">
 <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1064,7 +1064,7 @@
 </svg>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="open"><a href="#book" id="status-link"><b id="status-label">Now welcoming new clients</b> <em><span id="status-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="open"><a href="services/offered/#book" id="status-link"><b id="status-label">Now welcoming new clients</b> <em><span id="status-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
@@ -1087,19 +1087,72 @@
   <p class="vh" role="status" id="status-live"></p>
 </div>
 
+
+<style id="wf-pages">
+  .hero.short { min-height: 0; }
+  .hero.short .hero-words { padding-block: 34px 56px; }
+  .hero.short .hero-card { max-width: 760px; }
+  .hero.short.go .hero-photo { animation-duration: 1.6s; }
+  .hero.short.go .hero-veil { animation-delay: .1s; animation-duration: 1s; }
+  .hero.short.go .hero-card { animation-delay: .15s; animation-duration: 1.2s; }
+  .hero.short.go .hero-kicker { animation-delay: .4s; animation-duration: 1s; }
+  .hero.short.go .pg-h1 { animation: glide 1.4s cubic-bezier(.22,1,.36,1) .5s both; }
+  .hero.short.go .hero-def { animation-delay: .9s; animation-duration: 1.2s; }
+  .hero.short.wait .pg-h1 { opacity: 0; }
+  .pg-h1 { font-family: var(--display); font-weight: 500; font-size: clamp(38px, 7vw, 72px); line-height: 1; letter-spacing: .005em; color: var(--on-photo); text-wrap: balance; }
+  .top nav { align-items: center; }
+  .top nav .dd-btn, .top nav a { font-size: 15px; }
+  .top { flex-wrap: wrap; }
+  .foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; }
+  .foot-links a, .foot-links .dd-btn { color: inherit; text-decoration: none; padding: 8px 10px; }
+  .doc { padding-block: 56px 28px; }
+  .doc .wrap > * + * { margin-top: 18px; }
+  .doc h2 { font-family: var(--display); font-weight: 500; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; margin-top: 44px; }
+  .doc h3 { font-family: var(--display); font-weight: 600; font-size: 24px; line-height: 1.2; margin-top: 32px; }
+  .doc p, .doc li { max-width: 68ch; line-height: 1.65; }
+  .doc ul.plain { padding-left: 1.2em; list-style: disc; }
+  .doc ul.plain li + li { margin-top: 6px; }
+  .doc .lede { font-size: 20px; line-height: 1.55; max-width: 60ch; color: var(--ink); }
+  .doc .quote { font-family: var(--display); font-style: italic; font-size: 24px; line-height: 1.35; max-width: 34ch; color: var(--sage-deep); }
+  .pg-img { display: block; width: 100%; max-width: 760px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 20px; background: var(--ground-2); }
+  .doors { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 26px; }
+  .door { display: flex; flex-direction: column; gap: 8px; padding: 22px 22px 20px; border-radius: 20px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  .door:hover { transform: translateY(-2px); border-color: var(--ember); box-shadow: 0 12px 30px rgba(33, 23, 15, .1); }
+  .door b { font-family: var(--display); font-weight: 600; font-size: 24px; line-height: 1.15; }
+  .door span { color: var(--ink-soft); line-height: 1.5; font-size: 16px; }
+  .door em { margin-top: auto; padding-top: 6px; font-style: normal; font: 600 12px/1.3 var(--label); letter-spacing: .16em; text-transform: uppercase; color: var(--rust); }
+  .who-card { display: grid; grid-template-columns: 112px 1fr; gap: 6px 20px; padding: 22px; border-radius: 20px; border: 1px solid var(--hair-2); background: var(--ground); align-items: start; }
+  .who-card img { width: 112px; height: 112px; object-fit: cover; border-radius: 50%; grid-row: span 3; }
+  .who-card h3 { margin: 0; }
+  .who-card .acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; grid-column: 1 / -1; }
+  .who-list { display: grid; gap: 16px; margin-top: 26px; }
+  .who-card ul { padding-left: 1.1em; list-style: disc; line-height: 1.6; }
+  .promo { background: var(--ground-2); border-radius: 28px; padding: 34px 32px; }
+  .promo .free { display: inline-block; margin-top: 8px; padding: 5px 12px; border-radius: 999px; background: var(--ember); color: #fff; font: 600 12px/1.3 var(--label); letter-spacing: .14em; text-transform: uppercase; }
+  .acts-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 26px; }
+  .tier { padding: 24px; border-radius: 20px; border: 1px solid var(--hair-2); background: var(--ground); }
+  .tier h3 { margin: 0 0 10px; }
+  .tier .tier-p { margin-top: 14px; font-weight: 600; }
+  .tier .save { display: inline-block; margin-top: 10px; font: 600 12px/1.3 var(--label); letter-spacing: .12em; text-transform: uppercase; color: var(--rust); }
+  .doc details { border-top: 1px solid var(--hair-2); padding: 14px 0; max-width: 76ch; }
+  .doc details:last-of-type { border-bottom: 1px solid var(--hair-2); }
+  .doc summary { cursor: pointer; font-weight: 600; font-size: 18px; }
+  .doc details > * + * { margin-top: 12px; }
+  .doc .svc-list { margin-top: 18px; }
+  .doc .svc-grp-note { color: var(--ink-soft); }
+  .rates-simple { display: grid; gap: 10px; max-width: 520px; }
+  .rates-simple div { display: flex; justify-content: space-between; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--hair-2); }
+  @media (max-width: 680px) { .top nav { justify-content: flex-start; gap: 0 2px; } .top nav .dd-btn, .top nav a { padding: 8px 9px; } }
+  @media (max-width: 560px) { .who-card { grid-template-columns: 76px 1fr; } .who-card img { width: 76px; height: 76px; } .promo { padding: 26px 20px; } .doc { padding-block: 40px 20px; } }
+</style>
 <header class="hero gutter" id="top">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="top wrap">
     <a class="mark" href="#top" aria-label="Mending Roots Collective, back to top"><span class="emb" aria-hidden="true"></span><span><b>Mending Roots</b><small>Collective</small></span></a>
-    <nav aria-label="Sections">
-      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="tami/">Tami</a></li><li><a href="jennifer/">Jennifer</a></li><li><a href="yemaya/">Yemaya</a></li><li><a href="sunny/">Sunny</a></li><li><a href="lena/">Lena</a></li><li class="all"><a href="#collective">About the collective</a></li></ul></div>
-      <a href="#services">Services</a>
-      <a href="#sauna">Sauna</a>
-      <a href="#events">Events</a>
-      <a href="#visit">Visit</a>
-    </nav>
-    <a class="btn top-book" href="#book" data-book="">Book</a>
+    <nav aria-label="Sections"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="collective/">Meet the collective</a></li><li><a href="tami/">Tami Hornidge</a></li><li><a href="jennifer/">Jennifer Teixeira</a></li><li><a href="yemaya/">Yemaya Kimmel</a></li><li><a href="sunny/">Sunny Loya</a></li><li><a href="lena/">Lena Hyde Nuñez</a></li><li class="all"><a href="join/">Be a part of our collective</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">All services</a></li><li><a href="services/offered/">Services offered</a></li><li><a href="services/coaching/">Health &amp; wellness coaching</a></li><li><a href="services/herbal/">Herbal wellness consultations</a></li><li><a href="services/inbody/">InBody body composition scans</a></li><li><a href="services/sauna/">Infrared sauna &amp; red light therapy</a></li><li><a href="services/massage/">Massage therapy &amp; bodywork</a></li><li><a href="services/postural-alignment/">Postural alignment therapy</a></li><li><a href="services/scar-release/">Scar release therapy</a></li><li class="all"><a href="services/by-practitioner/">Services by practitioner</a></li></ul></div><a href="events/">Classes &amp; workshops</a><a href="shop/">Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
+    <a class="btn top-book" href="services/offered/#book">Book</a>
   </div>
   <div class="hero-words wrap">
     <div class="hero-card">
@@ -1111,19 +1164,16 @@
       </h1>
       <p class="hero-def"><span class="hw">mend·ing</span><span class="pos">verb</span>to restore to health. Holistic practitioners sharing one healing space on H Street: bodywork, postural alignment, herbal care, an infrared sauna and a wellness boutique.</p>
       <div class="cta">
-        <a class="btn" href="#book" data-book=""><span class="emb" aria-hidden="true"></span>Book a session</a>
-        <a class="soft" href="#collective">Meet the collective</a>
+        <a class="btn" href="services/offered/#book"><span class="emb" aria-hidden="true"></span>Book a session</a>
+        <a class="soft" href="collective/#collective">Meet the collective</a>
       </div>
     </div>
   </div>
-</header>
-<div class="secbar" id="secbar" aria-hidden="true">
+</header><div class="secbar" id="secbar" aria-hidden="true">
   <div class="wrap gutter secbar-in">
     <span class="emb"></span>
-    <nav aria-label="Jump to a section">
-      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="tami/">Tami</a></li><li><a href="jennifer/">Jennifer</a></li><li><a href="yemaya/">Yemaya</a></li><li><a href="sunny/">Sunny</a></li><li><a href="lena/">Lena</a></li><li class="all"><a href="#collective">About the collective</a></li></ul></div><a href="#services">Services</a><a href="#sauna">Sauna</a><a href="#events">Events</a><a href="#book">Book</a><a href="#shop" data-show="crone all">Boutique</a><a href="#gift" data-show="mother crone all">Gifts</a><a href="#faq" data-show="mother crone all">Questions</a><a href="#visit">Visit</a>
-    </nav>
-    <a class="btn" href="#book" data-book="">Book</a>
+    <nav aria-label="Menu"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="collective/">Meet the collective</a></li><li><a href="tami/">Tami Hornidge</a></li><li><a href="jennifer/">Jennifer Teixeira</a></li><li><a href="yemaya/">Yemaya Kimmel</a></li><li><a href="sunny/">Sunny Loya</a></li><li><a href="lena/">Lena Hyde Nuñez</a></li><li class="all"><a href="join/">Be a part of our collective</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">All services</a></li><li><a href="services/offered/">Services offered</a></li><li><a href="services/coaching/">Health &amp; wellness coaching</a></li><li><a href="services/herbal/">Herbal wellness consultations</a></li><li><a href="services/inbody/">InBody body composition scans</a></li><li><a href="services/sauna/">Infrared sauna &amp; red light therapy</a></li><li><a href="services/massage/">Massage therapy &amp; bodywork</a></li><li><a href="services/postural-alignment/">Postural alignment therapy</a></li><li><a href="services/scar-release/">Scar release therapy</a></li><li class="all"><a href="services/by-practitioner/">Services by practitioner</a></li></ul></div><a href="events/">Classes &amp; workshops</a><a href="shop/">Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
+    <a class="btn" href="services/offered/#book">Book</a>
   </div>
 </div>
 
@@ -1172,521 +1222,13 @@
       <p class="oh-copy">Come and spend a wellness inspired day with us, and meet all the friendly faces that make up the collective. Free InBody scans, free red light, a morning lymph routine class and more.</p>
     </div>
     <div class="oh-act">
-      <a class="btn" href="#events">See the day</a>
+      <a class="btn" href="events/#events">See the day</a>
     </div>
   </div>
 </section>
-
-
-<section class="gutter bleed-sec" id="collective" aria-labelledby="col-title">
-  <div class="wrap">
-    <div class="split">
-      <figure class="photo roots-photo reveal">
-        <img src="images/room-green.jpg" alt="One of the collective's treatment rooms: a massage table under an olive green blanket, a warm lamp, and anatomy charts on the wall" loading="lazy">
-      </figure>
-      <div class="entry">
-        <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Meet the collective</p>
-        <h2 id="col-title">col·lec·tive</h2>
-        <p class="pron"><i>/kə·ˈlek·tiv/</i><em>noun</em></p>
-        <p class="def">A wellness space where different holistic practitioners share space and create a healing environment to serve our community.</p>
-        <p class="lead">We offer quality, compassionate and individualized care to those who seek our services.</p>
-      </div>
-    </div>
-
-    
-    <div class="sunrise" aria-hidden="true">
-      <div class="sun" id="sun"><svg viewBox="0 0 230 230" focusable="false"><circle class="glow" cx="115" cy="115" r="76"/><line class="ray" style="--d:0.15s;--w:0.00s" x1="39.8" y1="142.4" x2="25.7" y2="147.5"/><line class="ray" style="--d:0.26s;--w:0.18s" x1="36.4" y1="130.0" x2="27.6" y2="131.7"/><line class="ray" style="--d:0.37s;--w:0.36s" x1="35.0" y1="117.3" x2="20.0" y2="117.8"/><line class="ray" style="--d:0.48s;--w:0.54s" x1="35.7" y1="104.6" x2="26.8" y2="103.4"/><line class="ray" style="--d:0.59s;--w:0.72s" x1="38.4" y1="92.1" x2="24.0" y2="87.8"/><line class="ray" style="--d:0.70s;--w:0.90s" x1="43.0" y1="80.1" x2="34.9" y2="76.2"/><line class="ray" style="--d:0.81s;--w:1.08s" x1="49.5" y1="69.1" x2="37.2" y2="60.5"/><line class="ray" style="--d:0.92s;--w:1.26s" x1="57.6" y1="59.3" x2="51.2" y2="53.0"/><line class="ray" style="--d:1.03s;--w:1.44s" x1="67.2" y1="50.8" x2="58.3" y2="38.8"/><line class="ray" style="--d:1.14s;--w:1.62s" x1="78.1" y1="44.0" x2="73.9" y2="36.1"/><line class="ray" style="--d:1.25s;--w:1.80s" x1="89.8" y1="39.1" x2="85.1" y2="24.8"/><line class="ray" style="--d:1.36s;--w:1.98s" x1="102.3" y1="36.0" x2="100.8" y2="27.1"/><line class="ray" style="--d:1.47s;--w:2.16s" x1="115.0" y1="35.0" x2="115.0" y2="20.0"/><line class="ray" style="--d:1.58s;--w:2.34s" x1="127.7" y1="36.0" x2="129.2" y2="27.1"/><line class="ray" style="--d:1.69s;--w:2.52s" x1="140.2" y1="39.1" x2="144.9" y2="24.8"/><line class="ray" style="--d:1.80s;--w:2.70s" x1="151.9" y1="44.0" x2="156.1" y2="36.1"/><line class="ray" style="--d:1.91s;--w:2.88s" x1="162.8" y1="50.8" x2="171.7" y2="38.8"/><line class="ray" style="--d:2.02s;--w:3.06s" x1="172.4" y1="59.3" x2="178.8" y2="53.0"/><line class="ray" style="--d:2.13s;--w:3.24s" x1="180.5" y1="69.1" x2="192.8" y2="60.5"/><line class="ray" style="--d:2.24s;--w:3.42s" x1="187.0" y1="80.1" x2="195.1" y2="76.2"/><line class="ray" style="--d:2.35s;--w:3.60s" x1="191.6" y1="92.1" x2="206.0" y2="87.8"/><line class="ray" style="--d:2.46s;--w:3.78s" x1="194.3" y1="104.6" x2="203.2" y2="103.4"/><line class="ray" style="--d:2.57s;--w:3.96s" x1="195.0" y1="117.3" x2="210.0" y2="117.8"/><line class="ray" style="--d:2.68s;--w:4.14s" x1="193.6" y1="130.0" x2="202.4" y2="131.7"/><line class="ray" style="--d:2.79s;--w:4.32s" x1="190.2" y1="142.4" x2="204.3" y2="147.5"/></svg><span class="emb"></span></div>
-      <p class="motto"><span>Heal</span><span>Grow</span><span>Flourish</span></p>
-    </div>
-
-    <details class="more"><summary>Our story and what "mending roots" means</summary><div class="more-body"><h5>mend·ing</h5><p>/ˈmendiNG/<br>: to put into good shape or working order again : to restore to health</p><p>root</p><p>/ro͞ot/</p><p>: the basic cause, source, or origin of something</p><p>Our bodies are amazing and beautiful. If they are speaking to us in a way that doesn't feel good, it's because our body is trying to communicate with us to change something. Our body is a response to both our external and internal environment. If we can unravel and find the pathway in to what the body needs you will find that your body will feel more balanced and have more energy with a clearer mind.</p><p>Welcome to Mending Roots Collective. We are a wellness space where different holistic practitioners are sharing space and creating a healing environment to help serve our community. We offer quality, compassionate, and individualized care to those who seek our services.</p></div></details>
-    <div class="people">
-      <article class="person reveal">
-        <figure class="pic"><img src="images/tami.jpg" alt="Tami Hornidge, smiling, with dark bangs and glasses" loading="lazy"></figure>
-        <div class="person-top"><div><h3>Tami Hornidge</h3><p class="role">Practitioner and creator of Mending Roots Body Therapies and the Mending Roots Collective</p></div></div>
-        <p class="about">Licensed massage therapist since 2015, Certified Egoscue Postural Alignment Specialist, and Full Spectrum Health &amp; Detox Coach. She has passion for seeing the human body&rsquo;s true potential.</p>
-        <ul class="offers"><li>Massage &amp; bodywork</li><li>Postural alignment</li><li>Scar release</li><li>InBody scans</li><li>Cupping</li></ul>
-        <p class="fun"><b>Fun fact</b> The forest, connecting with plants and her hands in the earth is how she fills her cup back up.</p>
-        <div class="acts"><a class="btn quiet" href="tami/">Read Tami’s full page</a><a class="btn" href="#book" data-book="tami">Book with Tami</a></div>
-      </article>
-      <article class="person reveal">
-        <figure class="pic"><img src="images/jennifer.jpg" alt="Jennifer Teixeira outdoors in a meadow, wearing a dark headband" loading="lazy"></figure>
-        <div class="person-top"><div><h3>Jennifer Teixeira, LMT</h3><p class="role">Practitioner and creator of Humboldt Womens Massage</p></div></div>
-        <p class="about">Over 20 years as a massage therapist and more than 1000 hours of training. She facilitates resilience, renewal and rejuvenation, honoring the sacred essence of life.</p>
-        <ul class="offers"><li>Lomi Lomi</li><li>Intuitive therapeutic</li><li>Lymphatic breast</li><li>Prenatal</li></ul>
-        <p class="fun"><b>Fun fact</b> She absolutely loves relaxing in a good hot spring.</p>
-        <div class="acts"><a class="btn quiet" href="jennifer/">Read Jennifer’s full page</a><a class="btn" href="#book" data-book="jen">Book with Jennifer</a></div>
-      </article>
-      <article class="person reveal">
-        <figure class="pic"><img src="images/yemaya.jpg" alt="Yemaya Kimmel smiling among green leaves, in a blue headscarf" loading="lazy"></figure>
-        <div class="person-top"><div><h3>Yemaya Kimmel</h3><p class="role">Clinical Herbalist, creator of Yemaya&rsquo;s Apothecary</p></div></div>
-        <p class="about">Working with the healing plants for over 25 years. She specializes in helping women over 40 who are chronically stressed or overwhelmed find their way back into balance.</p>
-        <ul class="offers"><li>Herbal consults</li><li>Phone sessions</li><li>Free connection call</li></ul>
-        <p class="fun"><b>Fun fact</b> Swimming, especially in nature, is her happy place.</p>
-        <div class="acts"><a class="btn quiet" href="yemaya/">Read Yemaya’s full page</a><a class="btn" href="#book" data-book="yem">Book with Yemaya</a><a class="linkbtn" href="#book" data-book="yem" data-svc="0">Free 15 min call</a></div>
-      </article>
-      <article class="person wide reveal" id="sunny">
-        <figure class="pic"><img src="images/sunny.jpg" alt="Sunny Loya smiling outdoors, in a flowered top" loading="lazy"></figure>
-        <div class="person-top"><div><h3>Sunny Loya</h3><p class="role">Action Lab Health Coaching</p><span class="soon-badge">New to the collective</span></div></div>
-        <p class="about">A botanist turned health coach: Master Health Coach (Precision Nutrition), NASM Certified Wellness Coach and Personal Trainer. She helps people discover their own strengths and live the healthy life they envision.</p>
-        <ul class="offers"><li>Health &amp; wellness coaching</li><li>Free 20 min consultation</li></ul>
-        <div class="acts"><a class="btn quiet" href="sunny/">Read Sunny’s full page</a><a class="btn ext" href="https://app.acuityscheduling.com/schedule.php?owner=38912454" target="_blank" rel="noopener">Book at the collective<svg style="width:12px;height:12px" aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens Acuity in a new tab)</span></a><a class="btn quiet ext" href="https://actionlabhealthcoaching.com" target="_blank" rel="noopener">Meet Sunny<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens her coaching site in a new tab)</span></a></div>
-      </article>
-      <article class="person wide reveal" id="lena">
-        <figure class="pic"><img src="images/lena.jpg" alt="Lena Hyde Nu&ntilde;ez smiling by a river in the redwoods, in a rust-colored scarf" loading="lazy"></figure>
-        <div class="person-top"><div><h3>Lena Hyde Nu&ntilde;ez</h3><p class="role">Somatic Journeys</p><span class="soon-badge">New to the collective</span></div></div>
-        <p class="about">Lena's work begins with a simple belief: ancestral healing is the foundation of any healing journey.</p>
-        <ul class="offers"><li>Somatic dreamwork</li><li>Feldenkrais Method</li><li>Body-Mind Centering</li><li>Workshops &amp; classes</li></ul>
-        <p class="fun"><b>Coming up</b> December &amp; January class and workshop info coming soon!</p>
-        <div class="acts"><a class="btn quiet" href="lena/">Read Lena’s full page</a><a class="btn ext" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;calendarID=14752053" target="_blank" rel="noopener">Book with Lena<svg style="width:12px;height:12px" aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens Acuity in a new tab)</span></a><a class="btn quiet ext" href="https://vitalstories.org/lena" target="_blank" rel="noopener">Meet Lena<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens her Vital Stories page in a new tab)</span></a></div>
-      </article>
-      <article class="person wide soon reveal">
-        <figure class="pic soon-pic" aria-hidden="true"><span class="emb"></span></figure>
-        <div class="person-top"><div><h3>Bernadette</h3><p class="role">Joining the collective</p><span class="soon-badge">Coming soon</span></div></div>
-        <p class="about">Her page will be here soon.</p>
-      </article>
-      <article class="person wide soon reveal">
-        <figure class="pic soon-pic" aria-hidden="true"><span class="emb"></span></figure>
-        <div class="person-top"><div><h3>A new practitioner</h3><p class="role">Joining the collective in January</p><span class="soon-badge">Coming in January</span></div></div>
-        <p class="about">More about her will be here soon.</p>
-      </article>
-      <article class="person wide room reveal">
-        <figure class="pic"><img src="images/movement-room.jpg" alt="The collective's open movement room: a blue mat on the floor, plants, and shelves of props" loading="lazy"></figure>
-        <div class="person-top"><div><h3>Room for you</h3><p class="role">For licensed healing arts practitioners who&rsquo;d like to join us</p></div></div>
-        <div class="rates">
-          <div><span>Therapy room, full day each week</span><b>$150/mo</b></div>
-          <div><span>Therapy room, split day (8 to 2 or 2 to 8)</span><b>$100/mo</b></div>
-          <div><span>Movement room, full or split day</span><b>$100 or $75/mo</b></div>
-        </div>
-        <p class="about" style="margin-top:14px">Furniture, utilities, wifi, online scheduling and your own spot on this website come with the room. Call or text Tami at <span class="nw">(707) 440-9035</span> to visit the space.</p>
-        <details class="more"><summary>Everything about joining the collective</summary><div class="more-body"><p>Are you a healing arts wellness practitioner seeking a serene, thoughtfully maintained space to grow your practice?</p><p>We offer fully furnished treatment rooms inside a calm, professional wellness studio. We are located in the Henderson Center area of Eureka, CA. This space is designed for practitioners who value atmosphere, professionalism, business autonomy while also being a part of a collective of wellness professionals, and long-term stability. All of this without the stress of having to manage what comes with having to rent your own space. This gives you more freedom so you can focus on your practice and your clients! Reach out to Tami by calling/texting to introduce yourself and to schedule a time to visit our space. 707-440-9035</p><h5>Who is this space for</h5><p>You are:</p><ul><li>Licensed &amp; insured</li><li>Professional, reliable, and client-centered</li><li>Motivated to grow your independent practice &amp; share space with other wellness professionals</li><li>Aligned with a calm, high-quality wellness environment</li></ul><p>Well-suited for:</p><ul><li>Massage therapy</li><li>Bodywork</li><li>Energy work</li><li>Esthetics</li><li>Wellness &amp; Health Coaches</li><li>Acupuncture</li><li>Movement based therapies</li><li>Open to other healing arts as long as it is suited for our space and vibes well with our practice</li></ul><h5>Why this space works</h5><p>Many practitioners want independence — but not the stress of managing a full commercial lease, furnishing a room, handling laundry, utilities, and marketing alone.</p><p>This model allows you to:</p><ul><li>Keep your autonomy</li><li>Maintain your own pricing</li><li>Avoid long-term lease risk</li><li>Operate in a polished, client-ready setting</li><li>Be part of a supportive wellness environment</li></ul><h5>What's included</h5><p>Rent includes the following</p><ul><li>Use of the desired therapy room</li><li>Utilites</li><li>Wifi</li><li>Use of furniture and amenities in the room</li><li>Online scheduling</li><li>Therapy music and/or bluetooth speaker</li><li>Mending Roots website presence</li><li>20% practitioner discount on Wellness Boutique</li><li>Referrals to your therapy offerings to clients in need</li><li>Be a part of any collective advertising/community events (there may be additional costs if you choose to participate and we can discuss this as a collective effort)</li><li>Optional linen service (additional fee for therapies that need linens, we can share this service.)</li><li>Cross promoting on social media</li></ul><h5>What it costs</h5><p>WE CURRENTLY HAVE OPENINGS. PLEASE REACH OUT ABOUT WHICH DAYS ARE AVAILABLE</p><p>THERAPY ROOMS - We have rooms available for therapies that require a table and rooms that revolve around more talking based therapies.</p><ul><li>Full day - $150 a month per day*</li><li>Split day - 8am - 2pm - $100 a month per day*</li><li>2pm - 8pm - $100 a month per day*</li></ul><p>Example - if you are only using the room every Tuesday for a full day then your rent would be $150 per month.</p><p>If you are using the room every Tuesday and split day for a Thursday then your rent would be $250 a month.</p><p>Therapy Room Hourly Option - If space is available and you only need a room from time to time. Cost -$20 per hour of use. This also includes 30 min of transition time.*</p><p>*All new practitioners who become a part of the collective will need to pay a one time set up admin fee if you are being listed on the website &amp; scheduling software.</p><p>MOVEMENT ROOM - this space is open and not a private room. It is ideal for any movement based practitioners that want to work one on one with clients or hold small group led classes.</p><p>This room is rented by the hour - $15 per hour</p><p>When renting the space please consider the time needed for transition so you can hold the space for that time.</p></div></details>
-      </article>
-    </div>
-  </div>
-</section>
-
-
-<section class="gutter bleed-sec" id="services" aria-labelledby="svc-title" style="padding-top:40px">
-  <div class="wrap svc-grid">
-    <div class="svc-head entry">
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Services &amp; prices</p>
-      <h2 id="svc-title">of·fer·ings</h2>
-      <p class="pron"><i>/ô·fər·ingz/</i><em>noun</em></p>
-      <p class="def">Every session in the collective, with its length and price. Search or filter, then book with the person who offers it.</p>
-      <p class="svc-status"><span class="svc-hint">Tap a length and price to book it.</span></p>
-    </div>
-    <div class="svc-photo-wrap">
-      <figure class="photo svc-photo reveal">
-        <img src="images/massage-room.jpg" alt="A treatment room at Mending Roots: a massage table made up in white, a navy stool, and anatomy charts above" loading="lazy">
-      </figure>
-    </div>
-    <div class="svc-list" id="menu" aria-live="polite">
-      <div class="grp" data-who="all">
-        <ul>
-          <li data-who="tami" data-type="massage" class="svc"><div class="svc-t"><h4>Reset Relaxation Massage</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="tami/">Tami</a></p><p>A calm, full-body session to help you settle into rest and digest.</p><details class="more"><summary>About this session</summary><div class="more-body"><p class="sub">Melt the Stress Away</p><p>Let the stress and tension slip away while you let your body and mind unwind. Soothing and calming massage therapy techniques will be used to help engage your parasympathetic part of your nervous system. This is the part of your autonomic nervous system that is known as the rest and digest! You will leave feeling much lighter, in a better mood, and in a much calmer state. This will include a full body but may also be customized to your needs.  Pressure will  be individualized to the clients needs.</p></div></details></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281833" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$125</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281861" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>90 min</i><b>$185</b></a></p></li>
-          <li data-who="tami" data-type="massage" class="svc"><div class="svc-t"><h4>Integrative Therapeutic Massage</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="tami/">Tami</a></p><p>Focused deep tissue work for the places that hold on.</p><details class="more"><summary>About this session</summary><div class="more-body"><p class="sub">Focused Deep Tissue</p><p>Integrative therapeutic massage will combine different massage therapy techniques into the session based on your bodies needs. This session will help restore soft tissue imbalance in your body and will be individualized to every clients needs. Your body and mind will feel relaxed while also feeling the positive changes that come from this treatment. This is a restorative deep tissue treatment with focus on specific areas of complaint. Full intake will be done on first session.</p><p>30 minute sessions will be focused on area(s) of complaint - not a full body.</p><p>60 minute sessions can be full body but if you are having the need for more focused work than a 90 minute is recommended or book my integrative structural bodywork session.</p></div></details></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281702" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$75</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281637" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$140</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281619" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>90 min</i><b>$200</b></a></p></li>
-          <li data-who="tami" data-type="massage" class="svc"><div class="svc-t"><h4>Integrative Structural Bodywork</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="tami/">Tami</a></p><p>Done fully clothed, working with the way your body holds itself.</p><details class="more"><summary>About this session</summary><div class="more-body"><p>This is a restorative &amp; corrective body work treatment that will focus on pain management, retraining the muscles through movement, and release of  trigger points that form in muscles of the body and create pain patterns, loss of range of motion, &amp; muscle fatigue/weakness. The treatment will integrate the use of a compression tool, hands on muscle manipulation, muscle activation techniques, and body movement stretches.</p><p>Your initial treatment will consist of an assessment and treatment of the area of the body that is causing pain &amp; discomfort.  Treatment is done in clothing so make sure to wear comfortable clothing that your body can move in.</p></div></details></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Massage%20%26%20Bodywork%20Therapy%20w%2F%20Tami" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$140</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=92784127" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>90 min</i><b>$200</b></a></p></li>
-          <li data-who="tami" data-type="massage" class="svc"><div class="svc-t"><h4>Dynamic &amp; Static Cupping</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="tami/">Tami</a></p><p>Up to two areas.</p><details class="more"><summary>About this session</summary><div class="more-body"><p>Vacuum style cups will be left on the body for a certain amount of time. This treatment is good for localized problems your body may be experiencing.  A cup is positioned at the area to be treated; a vacuum is created within the cup to draw the skin and underlying tissue into the cup. The produced vacuum creates a suction effect that increases blood and lymphatic circulation systemically and to the local area, relaxes muscle tissue, draws stagnation out of the body and releases a myriad of pain causing factors.</p><p>Both static(leaving the cups still on the skin) and dynamic (moving the cups over the skin) will be used in treatment.</p><p>This treatment will focus on specific areas of the body such as back/hips/legs/arms.</p><p>Not a full body - can treat up to two areas</p></div></details></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=93949728" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$65</b></a></p></li>
-          <li data-who="tami" data-type="massage" class="svc"><div class="svc-t"><h4>Post-Op Recovery Session</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="tami/">Tami</a></p><p>Gentle support for your body as it heals after surgery.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=92784288" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$75</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=93656372" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$140</b></a></p></li>
-          <li data-who="jen" data-type="massage" class="svc"><div class="svc-t"><h4>Lomi Lomi</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="jennifer/">Jennifer</a></p><p>Long, flowing Hawaiian strokes.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=93980639" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$65</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=93980785" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$125</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=93980725" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>90 min</i><b>$185</b></a></p></li>
-          <li data-who="jen" data-type="massage" class="svc"><div class="svc-t"><h4>Intuitive Therapeutic Massage</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="jennifer/">Jennifer</a></p><p>With hot stones, heated towels and herbal oils.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312364" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$65</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312379" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$125</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312406" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>90 min</i><b>$185</b></a></p></li>
-          <li data-who="jen" data-type="massage" class="svc"><div class="svc-t"><h4>Relaxation Massage</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="jennifer/">Jennifer</a></p><p>&ldquo;Painting on the Heat&rdquo; with warm ocean stones.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312478" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$125</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312499" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>90 min</i><b>$185</b></a></p></li>
-          <li data-who="jen" data-type="massage" class="svc"><div class="svc-t"><h4>Lymphatic Breast Massage</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="jennifer/">Jennifer</a></p><p>On its own, or added to any session.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=94119396" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$65</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=94119432" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$125</b></a></p></li>
-          <li data-who="jen" data-type="massage" class="svc"><div class="svc-t"><h4>Prenatal Massage</h4><p class="svc-by"><span>Massage &amp; bodywork</span> &middot; with <a href="jennifer/">Jennifer</a></p><p>Comfort and support through pregnancy.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312622" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 min</i><b>$65</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91312600" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 min</i><b>$125</b></a></p></li>
-          <li data-who="tami" data-type="align" class="svc"><div class="svc-t"><h4>Postural Alignment Therapy <small>Egoscue Method</small></h4><p class="svc-by"><span>Alignment &amp; scar release</span> &middot; with <a href="tami/">Tami</a></p><p>An evaluation and a menu of gentle exercises to bring your body back into balance. Start with a free 20 minute consult.</p><details class="more"><summary>All about postural alignment</summary><div class="more-body"><h5>Are you ready to do the work to bring your body into functional alignment!</h5><p>Postural Alignment Therapy focuses on your body as a whole and getting to the root cause of your pain &amp; injury. It uses personalized gentle corrective exercises to address the muscular imbalance that leads to misalignment and pain/symptoms in your body.</p><p>Your body will relearn how to move in balance to live a more Pain-Free life!</p><h5>How does Egoscue Method Postural Alignment Therapy (PAT) work?</h5><p>The Egoscue Method PAT will address your whole body and work towards treating the underlying cause of your pain and symptoms. Gentle corrective exercises and stretches will be given to help move your body into postural alignment. Pain and injuries can occur when the body is experiencing misalignment in joints and muscles groups that are not working as they should.</p><p>Dysfunction in our postural muscles can be caused by work, injuries, lifestyle, and accidents. When our body is not working in balance, it can impact many of the systems of our bodies, muscle, skeletal, digestive, cardiovascular, nervous, &amp; lymphatic. By addressing the root cause and not just the symptom, your body will experience positive change and not just temporary relief.</p><h5>What to expect in a PAT session.</h5><p>Your first session will include a wellness history intake, postural evaluation, gait analysis, functional movement analysis, and a personalize exercise e-cise menu that you will continue to do at home. You will work as a team with your therapist to discover where your limitations are coming from in your body.</p><p>All follow up sessions will include new postural analysis, answer any questions/listen to your feedback, along with an updated e-cise menu to adapt to your bodies needs. Follow-up sessions are essential to continue the positive changes in your body. Lasting postural changes take time and the average client can expect to be seen over a 6 month period for a total of 16 sessions</p><h5>How much does Postural Alignment Therapy cost?</h5><ul><li>Initial Posture Therapy Session 90-120 min - $160</li>
-          <li data-who="tami" data-type="align" class="svc"><div class="svc-t"><h4>Scar Release Therapy <small>Dolphin Neurostim MPS</small></h4><p class="svc-by"><span>Alignment &amp; scar release</span> &middot; with <a href="tami/">Tami</a></p><p>For scar tissue, pain management and vagus nerve support.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281454" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>First visit, 60 min</i><b>$125</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281438" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>Follow-up, 30 min</i><b>$65</b></a><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=91281454" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>Follow-up, 60 min</i><b>$125</b></a></p></li>
-          <li data-who="tami" data-type="scan" class="svc star"><div class="svc-t"><h4>InBody Body Composition Scan <span class="free">First scan free</span></h4><p class="svc-by"><span>Body scan</span> &middot; with <a href="tami/">Tami</a></p><p>Lean mass, fat mass and body water in about ten minutes, to track how your body responds to the changes you make.</p><details class="more"><summary>Why body composition matters</summary><div class="more-body"><h5>First Scan Free!</h5><p>Understanding why body composition is important begins with recognizing its unique role in health assessment. Everybody is unique and this is a great tool to use to understand where your personal body composition is and not just focus on your weight.</p><ul><li>Measuring your body composition is vital because:</li>
-          <li data-who="yem" data-type="herbal" class="svc"><div class="svc-t"><h4>Connection Call</h4><p class="svc-by"><span>Herbal consults</span> &middot; with <a href="yemaya/">Yemaya</a></p><p>A free call to see whether herbal care is right for you.</p></div><p class="svc-p"><a class="pp" href="https://yemayasapothecary.as.me/schedule/cf17010e/appointment/60700880/calendar/5895293" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>15 min</i><b>Free</b></a></p></li>
-          <li data-who="yem" data-type="herbal" class="svc"><div class="svc-t"><h4>Initial Herbal Intake</h4><p class="svc-by"><span>Herbal consults</span> &middot; with <a href="yemaya/">Yemaya</a></p><p>A full conversation about your health. Your protocol arrives by email within a week.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=92483521" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>60 to 90 min</i><b>$150</b></a></p></li>
-          <li data-who="yem" data-type="herbal" class="svc"><div class="svc-t"><h4>Follow-Up</h4><p class="svc-by"><span>Herbal consults</span> &middot; with <a href="yemaya/">Yemaya</a></p><p>Check in, adjust, keep going.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=92483861" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>30 to 45 min</i><b>$75</b></a></p></li>
-          <li data-who="yem" data-type="herbal" class="svc"><div class="svc-t"><h4>New Client Package</h4><p class="svc-by"><span>Herbal consults</span> &middot; with <a href="yemaya/">Yemaya</a></p><p>Your intake plus one follow-up. Saves $25.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Herbal%20Wellness%20Consultations%20w%2FYemaya" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>Intake + follow-up</i><b>$200</b></a></p></li>
-          <li data-who="yem" data-type="herbal" class="svc"><div class="svc-t"><h4>Phone Session</h4><p class="svc-by"><span>Herbal consults</span> &middot; with <a href="yemaya/">Yemaya</a></p><p>Audio only, from wherever you are.</p></div><p class="svc-p"><a class="pp" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Herbal%20Wellness%20Consultations%20w%2FYemaya" target="_blank" rel="noopener" title="Book this on Acuity (opens in a new tab)"><i>25 min</i><b>$35</b></a></p></li>
-          <li data-who="sauna" data-type="sauna" class="svc"><div class="svc-t"><h4>Infrared Sauna</h4><p class="svc-by"><span>Sauna &amp; red light</span> &middot; Sauna &amp; light</p><p>Single-person full spectrum sauna with LED color light.</p></div><p class="svc-p"><span class="pp"><i>30 min</i><b>$40</b></span><span class="pp"><i>50 min</i><b>$50</b></span></p></li>
-          <li data-who="sauna" data-type="sauna" class="svc"><div class="svc-t"><h4>Red Light Therapy</h4><p class="svc-by"><span>Sauna &amp; red light</span> &middot; Sauna &amp; light</p><p>Mito Red Pro panel, red and near infrared.</p></div><p class="svc-p"><span class="pp"><i>10 min</i><b>$20</b></span><span class="pp"><i>20 min</i><b>$25</b></span></p></li>
-          <li data-who="sauna" data-type="sauna" class="svc"><div class="svc-t"><h4>Sauna + Red Light</h4><p class="svc-by"><span>Sauna &amp; red light</span> &middot; Sauna &amp; light</p><p>30 minutes of sauna, then 20 of red light. Saves $10.</p></div><p class="svc-p"><span class="pp"><i>50 min</i><b>$55</b></span></p></li>
-          <li data-who="sauna" data-type="sauna" class="svc"><div class="svc-t"><h4>Add to a session</h4><p class="svc-by"><span>Sauna &amp; red light</span> &middot; Sauna &amp; light</p><p>With any massage or bodywork.</p></div><p class="svc-p"><span class="pp"><i>Sauna, 30 min</i><b>+$25</b></span><span class="pp"><i>Red light, 20 min</i><b>+$15</b></span></p></li>
-        </ul>
-      </div>
-      <div class="svc-extra"><div class="grp-more"><details class="more"><summary>Why massage, and what it can do for you</summary><div class="more-body"><h5>“Embrace and love your body. It’s the most amazing thing you will ever own"</h5><p>Everyone can benefit from massage therapy. It is not just a luxury that you get when you go to the spa, it is a necessity for the health and longevity of your body. Massage has been around for centuries and in every culture around the world. More and more studies are being done to show and prove the effectiveness massage therapy can have on the body to help with different bodily ailments. Here is a list of some of the many benefits you may experience with regular massage therapy.</p><h5>Physical Benefits</h5><ul><li>Relaxes the body</li><li>Calms the nervous system</li><li>Lowers blood pressure</li><li>Slows respiration</li><li>Loosens tight muscles</li><li>Stretches connective tissue</li><li>Reduces chronic pain</li><li>Improves skin tone increases</li><li>Relieves tired and aching muscles</li><li>Improves muscle tone</li><li>Relieves cramped muscles</li><li>Speeds recovery from injury</li><li>Reduces tension headaches</li><li>Increases tissue metabolism</li><li>Decreases muscle deterioration</li><li>Speeds recovery from illness</li><li>Increases range of motion</li><li>Speeds elimination of metabolic waste</li><li>Increases blood and lymph circulation</li><li>Stimulates release of endorphin's</li><li>Strengthens immune system</li><li>Reduces swelling</li><li>Improves posture</li></ul><h5>Mental Benefits</h5><p>Reduces mental stress<br>Promotes quality of sleep<br>Improves productivity<br>Induces mental relaxation<br>Improves concentration<br>Reduces anxiety<br>Enhances self-image<br>Provides a feeling of well being<br>Nurtures and stimulates emotional growth.</p><h5>Massage Cupping Benefits</h5><ul><li>Release tight contracted muscle tissue</li><li>Joint Mobilization</li><li>Cellulite Reduction</li><li>Lymph Drainage</li><li>Scar Reduction</li><li>Detoxification - Movement of Stagnation</li><li>Skin Toning and Firming</li><li>Increases Circulation</li><li>Enhances Sport Performance</li></ul></div></details></div><div class="grp-more"><details class="more"><summary>All about herbal wellness consultations</summary><div class="more-body"><h5>Herbal Wellness Consultations</h5><p class="sub">One on One Herbal Consultations with Yemaya Kimmel, Clinical Herbalist</p><p>Yemaya works one on one with people who would like to safely &amp; effectively use herbal therapies, nutrition, and lifestyle changes to move toward greater wellness.  She specializes in working with women over 40 who are dealing with stress, burnout, &amp; chronic health issues related to aging.</p><p>Yemaya has been working with the healing plants for over 25 years, and she is passionate about helping you learn how to support your health with herbs.  If you would like to learn more about her Herbal Wellness Consultations, I invite you to read on!  Here is what an Herbal Consult is, how they work, and how they can help you achieve your wellness goals.  I also encourage you to reach out with any questions, and if you like we can schedule a FREE 15-minute Connection Call to discuss your concerns and determine if an Herbal Wellness Consultation would benefit you.</p><h5>Unlock Your Innate Healing Wisdom</h5><p>My philosophy as a clinical herbalist is rooted in the practice of vitalism.  This means that I strive to honor the wholeness and uniqueness of each individual. I believe that the healing process is a journey to be celebrated and that true healing comes from within.  Our bodies are wise and resilient; they communicate to us through their language of signs and symptoms.  When we learn how to listen to our body's messages, we can begin to understand what is needed.  We can then offer our body the tools it needs to nourish, tone, regenerate, and heal itself.  We are natural beings, and so when we work with plants and other natural therapies, we can shift patterns of dis-ease toward new patterns of balance, vitality, and wellness.</p><p>During our time together, we will work to understand your body's messages and use the map of your symptoms and unique constitution to get to the root cause of your situation.  We will then create a customized wellness plan designed specifically for you and your needs.  I will be there every step of the way to guide you and facilitate your healing process.  My intention is to support, empower, and provide you with the education and tools you need to do your healing work.</p><h5>My areas of expertise include:</h5><ul><li>digestive system issues</li><li>cardiovascular wellness</li><li>respiratory issues</li><li>nervous system complaints (including anxiety, nervousness, insomnia, etc.)</li><li>reproductive wellness &amp; menopause</li><li>musculoskeletal issues (including joint &amp; bone wellness)</li><li>autoimmune conditions</li><li>endocrine wellness</li></ul><h5>What is an Herbal Wellness Consultation?</h5><p>An Herbal Wellness Consultation is a one-on-one session with a clinical herbalist.  Since herbalism is not regulated in the US, the quality of service and extent of training varies greatly from herbalist to herbalist.  I personally have over 25 years of training and experience as an herbalist.  I am trained in anatomy, physiology, phytochemistry, clinical assessment, botanical research, and herbal therapeutics.</p><p>The goal of our time together is to discover the root cause(s) of the complaint(s), and to create a wellness plan that includes herbal remedies, as well as recommendations for nutritional and lifestyle changes.  Ideally these consultations are for people who want to achieve long lasting positive changes.  It is important to understand that this is a partnership.  I am there to guide, support, educate, and empower you, but you must commit to making the necessary changes in order to see results.  Our goal is not a "quick fix" this herb for that problem mentality but rather using herbs as allies on our journey to vitality and wellness.</p><h5>What can I expect from an Herbal Wellness Consultation?</h5><p>When you book your appointment, allow about 15 minutes to fill out an intake form.  The intake form is required in order to confirm your appointment.  It is completely confidential.  Please fill it out to the best of your ability.  The information you provide here is crucial for me to get a better understanding of your situation and to prepare for our time together.</p><p>The initial intake session will last between 60-90 minutes.  During that time we will dive into your health history and current state of wellness.  I will be asking questions with an intention of gaining a complete understanding of where you are in your wellness journey.  We will discuss your health concerns and goals, and begin to create a plan for how to reach them.</p><p>After the consultation, your customized wellness protocol will be created and emailed to you within one week.  This will have a complete list of recommendations, including nutritional and lifestyle, as well as recommended herbal formula(s) and/or nutritional supplements.  You will also have the option to purchase a customized herbal formula made specifically for you.  This service is for your convenience, and I strive to keep it as affordable as possible.  You are not required to purchase herbal formulas directly from me.  If you choose to buy your herbs elsewhere, I am happy to give you a list of high-quality alternatives.  It is important to understand that the source of your herbs matters greatly, as in order for our plan to work, the preparations need to be high quality.</p><p>After you've had a chance to start the protocol, we will have an opportunity to check in via email to make sure you have everything you need, understand the protocol, and answer any questions.  If you have any tea blends or recommended food preparations, this is also a time to make sure you have that down or need any additional guidance, more resources, etc.</p><p>Most consultations require 1 or more follow up appointments in addition to the intake appointment.  These appointments will be shorter, between 30-45 minutes in length.  The amount of follow ups needed varies greatly from person to person &amp; depends on the severity or complexity of your situation, as well as your personal needs.  The purpose of the follow up appointment is to do a more thorough check in, to see how you are doing, discuss what's working and not working for you, and make any necessary adjustments to your wellness protocol &amp;/or formulations.  It's also a time to discuss any other or new health issues that you'd like to address.</p><h5>How much do Herbal Wellness Consultations cost?</h5><p>Intake appointments are $150 and include a 60-90 minute consultation, recommendations for a protocol plan, resources for recommended products, wellness information, nutrition, etc., a brief check in via text or email (your choice), and email access for questions.</p><p>Follow Up Appointments are $75 and include a 30-45 minute follow up consultation, updated recommendations and resources, as well as email access for questions.</p><p>New Client Package is $200 and includes an intake appointment and follow up appointment.  This is the best deal-a $25 discount!</p><p>25 Minute Phone Sessions are $35.  This is a 25 minute phone call with Yemaya to discuss acute issues (like a cold, flu, or other short term acute wellness issue) or 1-2 simple questions regarding herbs and wellness. Please include your phone number in the notes and be available at the time of the call. PLEASE NOTE: This is an audio call (NO video) even though the calendar may say video conference.</p><p>Cancellation Policy:</p><p>I run a small, solo practice. Late cancellations may be charged because open spots are hard to fill on short notice. If you need to cancel or reschedule, please do so at least 24 hours in advance to avoid a late-cancellation fee. If a client cancels less than 24 hours before an appointment, there will be a $50 cancellation fee ($15 for 25 minute phone sessions). If a client does not show up for a scheduled appointment and does not call, text, or email BEFORE the scheduled appointment time, the client will be charged full price. I understand things come up, which is why it is important to reach out and communicate with as much advance notice as possible in order to avoid a fee. Fees may be waived at my discretion for emergencies (and contagious illness for in-person clients). For video calls, contact me immediately if you have trouble accessing the call. For phone sessions, I will call twice in a row if needed, and wait for a callback for up to 5 minutes before considering it a no show.</p><p>Please Note:  The cost of herbs, formulations, tinctures, or products is not included in the consultation price.</p><h5>What if I am taking medications? Can I still take herbs?</h5><p>What many people don't realize is that you do not have to choose between pharmaceutical medications &amp; herbs.  While some herbs may be off the table (depending on your meds) there are still many plants that can safely be used alongside your medications.  This is where working with an experienced clinical herbalist is essential.  I am trained in herb-drug interactions &amp; can help match you with herbal remedies that are safe for your situation.  I am also happy to consult with your health care team to make sure we are all on the same page, working synergistically to meet your health &amp; wellness goals.</p><h5>Disclosure</h5><p>**I am not a medical doctor.  I do not diagnose disease or prescribe medications.  Herbal Wellness Consultations are not intended to treat disease or replace medical care.  Herbal Wellness Consultations are educational and are intended to support your health.</p><h5>If any of these statements apply to you, you may benefit greatly from an Herbal Wellness Consultation:</h5><ul><li>I want to increase or maintain my health and vitality</li><li>I am tired of feeling exhausted, anxious, and overwhelmed</li><li>I would like to prevent illness</li><li>I want to overcome dis-ease</li><li>I want more out of life than these constant symptoms</li><li>I would like to improve my digestion</li><li>I need better quality sleep</li><li>I wish to increase my energy</li><li>I want to restore my balance and feel whole, present, and alive</li><li>I want to better understand my body and what it needs</li><li>I am ready to learn how to honor and nourish my body</li><li>I want to feel empowered and inspired to step into my highest potential of health and wellness</li></ul></div></details></div></div>
-    </div>
-  </div>
-</section>
-
-
-<section class="ember" id="sauna" aria-labelledby="sauna-title">
-  <figure class="photo sauna-photo reveal">
-    <img src="images/sunset.jpg" alt="The sun setting over the Pacific on the Humboldt coast, the sky streaked gold and blue" loading="lazy">
-  </figure>
-  <div class="wrap gutter">
-    <div class="entry">
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Sauna &amp; red light</p>
-      <h2 id="sauna-title">warmth</h2>
-      <p class="pron"><i>/wôrmth/</i><em>noun</em></p>
-      <p class="def">Deep, quiet heat and healing light for recovery, on its own or after your session.</p>
-    </div>
-    <div class="heat">
-      <article class="reveal"><h3>Infrared sauna</h3><p>A single-person full spectrum sauna with LED chromotherapy lights. Near, mid and far infrared warm you from the inside.</p><div class="pr"><span>30 min <b>$40</b></span><span>50 min <b>$50</b></span></div></article>
-      <article class="reveal"><h3>Red light</h3><p>A Mito Red Pro panel at 630, 660, 830 and 850 nm, for skin, sleep, sore muscles and joints.</p><div class="pr"><span>10 min <b>$20</b></span><span>20 min <b>$25</b></span></div></article>
-      <article class="reveal combo"><h3>Together</h3><p>Thirty minutes in the sauna, then twenty under red light, the pairing recommended for a full recovery session.</p><div class="pr"><span>50 min <b>$55</b></span><span>Saves <b>$10</b></span></div></article>
-    </div>
-    <div class="ember-more">
-      <figure class="photo rl-photo reveal">
-        <img src="images/sauna-room.jpg" alt="The sauna room at Mending Roots: the wooden infrared sauna, a glowing salt lamp, and rolled towels on a little table" loading="lazy">
-      </figure>
-      <div>
-        <p class="addon">Add <b>30 minutes of sauna for $25</b> or <b>20 minutes of red light for $15</b> to any massage or bodywork session.</p>
-        <p class="soonline" style="margin-top:16px">Halo salt therapy &middot; coming soon</p>
-        <details>
-          <summary>Before your first session</summary>
-          <p>Heat and light aren&rsquo;t right for everyone. If you&rsquo;re pregnant, take medication, have a heart or blood pressure condition, or aren&rsquo;t sure, please check with your doctor before you book. We&rsquo;re happy to talk it through with you.</p>
-        </details>
-        <details class="more"><summary>All about the sauna and red light</summary><div class="more-body"><p>We offer Red Light Therapy, Full Spectrum Infrared Sauna, &amp; Halo Therapy to help support your body. They are great therapies to add on to another therapy session or to do on its own. Here are the many benefits of these therapies.</p><h5>Red Light Therapy</h5><p>What's Red Light Therapy?</p><p>Red and near-infrared light are part of the electromagnetic spectrum, and more specifically, part of the spectrum of light emitted by the sun. These wavelengths of light are “bioactive” in humans. Unlike other wave lengths of light, red and NIR are able to penetrate deeper into the body's cells to activate mitochondria function. This then leads to enhance cellular energy output. This effect on our cells can have many positive outcomes with regular use of this therapy. Basically if your cells are functioning better then they can do their jobs in your body better!</p><p>We use a Mito Red Pro Panel. They have excellent irradiance, are low EMF, and cover a variety of wavelengths. They offer Enhanced Spectral Energy Output (ESPEO). Your body will receive the full therapeutic spectrum of Red Light and Near Infrared just as nature intended.</p><p>Wavelengths - 25% 630nm, 25% 660nm, 25% 830nm, 25% 850nm</p><p>These panels are very efficient at what they do so maximum therapy time is 20 minutes for the body. We offer therapy sessions in times of 10 minutes or 20 minutes. This therapy can be done alone or added on to another therapy which is recommended!</p><p>Benefits of Red Light Therapy</p><ul><li>Improves skin health and helps the skin's natural production of collagen</li><li>Promotes wound healing an repair</li><li>Speeds up muscle recovery</li><li>Reduces swelling and inflammation</li><li>Increases body's production of melatonin and helps improve sleep</li><li>Improves joint health</li></ul><h5>Infrared Sauna</h5><p>What is an Infrared Sauna?</p><p>Infrared saunas heat up the body by using using the wavelengths of near, mid, and far. Far Infrared penetrates the deepest and is what makes the body start to increase in temperature. This is where you start to experience most of the benefits of the Infrared sauna.</p><p>This sauna also has LED Chromotherapy lights. The visible light creates photons that are absorbed into the skin. The different colors can have different chemical reactions which can have various therapeutic biochemical benefits in the body.</p><p>Sessions are offered in 30 min &amp; 50 min sessions in a single person sauna. It is recommended to combine both infrared sauna and red light therapy for a great support and recovery session for your body.</p><p>Benefits</p><p>Pain Relief - Infrared saunas dramatically increase blood flow and penetrates deeper into your tissue. The increase in oxygenated blood flow to your to affected areas in your body will help with managing pain and give relief.</p><p>Relieves Stress &amp; Tension - Infrared sauna sessions have shown in studies to increase serotonin levels in the body. An increase in serotonin will help your body feel more relaxed, happier, and calmer. It's the body's natural "feel good" chemical.</p><p>Improves Recovery &amp; Circulation - The heat from an infrared sauna will increase your body temperature which then makes your blood vessels dilate and blood flow will increase. The increase in blood flow will help get the oxygen and nutrients faster to the parts of the body that needs them. This will help your body in recovery for better optimal function and regeneration.</p><p>Detoxification - The skin is the largest organ of our body and when we sweat, this helps the body to remove toxins from our body. Sweating is the preferred way our body likes to remove unwanted contaminants such as heavy metals &amp; mycotoxins.</p><p>Weight loss - The infrared sauna will cause an increase in heart rates and when doing that your body will also increase the metabolic rate. This means your body will be more efficient at burning calories!</p><p>Lower Blood Pressure - When your blood vessels are more dilated from infrared sauna use, your body is having to use less pressure to pump your blood through your body. Studies have shows that with regular infrared sauna use, this will help with cardiovascular health.</p><p>Helps your immune system - The infrared sauna will increase your body's core temperature. In doing so, your body is tricked into thinking it is running a low grade fever and will trigger an immune response in your body. This also helps the body to fight off unwanted pathogens in the body such as viruses, bacteria, mold, and parasites.</p><p>Promotes healthier skin - Regular sauna use has shown to help with skin hydration and complexion. Combined with regular Red Light Therapy it may also enhance collagen production of your skin.</p><h5>Contraindications</h5><p>Red Light Therapy Contraindications</p><p>Do not use if you have any of the following</p><ul><li>Recent burns</li><li>Malignant cancers</li><li>Hyperthyroidism (neck &amp; chest)</li><li>Epilepsy</li><li>Pregnancy (abdominal)</li><li>Eye disease</li><li>Light Sensitivity</li><li>Fever/infections (relativa contraindication)</li><li>Systemic Lupus Erthymatosus (relative contraindication)</li><li>Use of photosensitizing medications  (relatives contraindication)</li></ul><p>Please consult with your doctor if you are unsure if red light therapy is right for you.</p><p>Full Spectrum Infrared Sauna Contraindications</p><ul><li>Medications (Individuals who are using prescriptions drugs should seek the advice of their physician or pharmacist for possible changes in the drugs effect when the body is exposed to infrared waves or elevated body temperature. Diuretics, barbiturates, and beta-blockers may impair the body’s natural heat loss mechanisms. Anticholinergics such as amitriptyline may inhibit sweating and can predispose individuals to heat rash or, to a lesser extent, heat stroke. Some over-the-counter drugs, such as antihistamines, may also cause the body to be more prone to heat stroke.)</li></ul><ul><li>Cardiovascular conditions ( Individuals with cardiovascular conditions or problems (hypertension/hypotension), congestive heart failure, impaired coronary circulation or those who are taking medications which might affect blood pressure should exercise caution when exposed to prolonged heat. Heat stress increases cardiac output and blood flow in an effort to transfer internal body heat to the outside environment via the skin (perspiration) and respiratory system. This takes place primarily due to major changes in the heart rate, which has the potential to increase by thirty (30) beats per minute for each degree increase in core body temperature.)</li><li>Alcohol</li><li>Diseases causing the inability to sweat</li><li>Individuals prone to bleeding (hemophiliacs)</li><li>Insensitivity to heat</li><li>Menstruation (Heating of the low back area of those who are menstruating may temporarily increase)</li></ul><p>menstrual flow.-Recent acute joint injury</p><ul><li>Implants (Metal pins, rods, artificial joints, or any other surgical implants generally reflect infrared waves and thus are not heating by this system)</li></ul><p>Please consult with your doctor if you are unsure and want to make sure that infrared sauna therapy is right for you.</p><h5>Infrared Sauna Pricing</h5><p>Save $15!<br>Add a 30 minute infrared sauna to your massage/bodywork session for only $25!</p><h5>Red Light Therapy Pricing</h5><p>Save $10!<br>Add a 20 minute red light therapy session to your massage/bodywork session for only $15!</p><h5>Infrared Sauna &amp; Red Light Therapy Combo</h5></div></details>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="gutter ev-sec" id="events" aria-labelledby="ev-title">
-  <div class="wrap">
-    <div class="ev-top">
-      <div class="entry">
-        <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Classes &amp; workshops <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span></p>
-        <h2 id="ev-title">gath·er</h2>
-        <p class="pron"><i>/ˈga·thər/</i><em>verb</em></p>
-        <p class="def">Workshops, classes and open house days at Mending Roots, all in one place.</p>
-      </div>
-      <figure class="flyer reveal">
-        <img src="images/open-house-flyer.jpg" alt="The collective's Fall into Wellness flyer: November 21, 11am to 5pm, with watercolor autumn flowers" loading="lazy" width="610" height="854">
-        <figcaption class="vh">Your own flyer for the open house</figcaption>
-      </figure>
-    </div>
-
-    <div class="day-card reveal">
-      <div class="day-head">
-        <div class="date-ring sm" aria-hidden="true"><svg><use href="#ring"/></svg><div><span>Nov</span><b>21</b><span>Sat</span></div></div>
-        <div>
-          <h3>Fall into Wellness Open House</h3>
-          <p class="oh-when">Saturday, November 21 &middot; 11am to 5pm &middot; 3034 H Street, Suite C</p>
-        </div>
-      </div>
-      <ol class="sched">
-        <li><span class="t">All day</span><span class="n">Free InBody composition scan</span></li>
-        <li><span class="t">All day</span><span class="n">Free red light therapy</span></li>
-        <li class="cls"><span class="t">12pm</span><span class="n">Morning Lymph Routine class</span></li>
-        <li class="cls"><span class="t">3pm</span><span class="n">Morning Lymph Routine class</span></li>
-        <li><span class="t">All day</span><span class="n">Free 20 minute scar release <em class="need">Pre-registration required, limited space</em></span></li>
-        <li><span class="t">All day</span><span class="n">15 minute herbal consultations</span></li>
-        <li><span class="t">All day</span><span class="n">Wellness Boutique sale, new client and service specials, light refreshments</span></li>
-        <li class="more"><span class="t"></span><span class="n">&amp; more to be announced soon!</span></li>
-      </ol>
-      <div class="oh-reg" data-show="mother crone all" data-fold data-thing="open house sign-up">
-        <button type="button" class="btn" id="oh-open" aria-expanded="false" aria-controls="oh-panel">Pre-register</button>
-        <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended + In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span>
-      </div>
-      <p class="oh-call" data-show="maiden" data-fold tabindex="-1" hidden>To save a spot for scar release, email <a href="mailto:mendingrootstherapies@gmail.com">mendingrootstherapies@gmail.com</a> or call or text <a class="tel" href="tel:+17074409035">(707) 440-9035</a>.</p>
-      <div class="oh-panel-wrap" data-show="mother crone all" data-fold>
-    <div class="oh-panel pop" id="oh-panel" hidden>
-      <form class="oh-form" id="oh-form" novalidate>
-        <label class="field">Your name<input id="oh-name" autocomplete="off" placeholder="First and last name"></label>
-        <label class="field">Email<input id="oh-mail" type="email" autocomplete="off" placeholder="you@example.com"></label>
-        <div class="full">
-          <p class="legend-txt" id="oh-count-l">How many of you are coming?</p>
-          <div class="seg" role="group" aria-labelledby="oh-count-l">
-            <button type="button" data-n="1" aria-pressed="true">1</button><button type="button" data-n="2" aria-pressed="false">2</button><button type="button" data-n="3" aria-pressed="false">3</button><button type="button" data-n="4+" aria-pressed="false">4+</button>
-          </div>
-        </div>
-        <label class="check full"><input type="checkbox" id="oh-offers" checked>Email me when the offerings that need pre-registration are posted</label>
-        <div class="full"><button type="submit" class="btn">Save my spot (preview)</button></div>
-      </form>
-      <div class="done pop" id="oh-done" hidden>
-        <span class="ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
-        <b class="t" id="oh-donetitle" tabindex="-1">See you on November 21</b>
-        <p class="pv" id="oh-donetext">Preview: nothing was sent. On your real site this adds them to your guest list and sends a reminder the week before.</p>
-        <div class="done-acts"><button type="button" class="btn quiet" id="oh-again">Try it again</button><button type="button" class="linkbtn" id="oh-change">Change something</button></div>
-      </div>
-    </div>
-    </div>
-    </div>
-
-    <p class="ev-note wf-note"><span class="sample">For you</span> Plan another workshop or a class in the movement room? Email me the date and it shows up here and on the strip up top.</p>
-  </div>
-</section>
-
-
-<section class="gutter" id="book" aria-labelledby="book-title">
-  <div class="wrap">
-    <div data-show="crone all" data-fold data-thing="booking that runs itself">
-    <div class="entry">
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Online booking <span class="sample">preview</span> <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span></p>
-      <h2 id="book-title">book</h2>
-      <p class="pron"><i>/bŏŏk/</i><em>verb</em></p>
-      <p class="def">Choose who, choose what, pick a time. One place for everyone in the collective.</p>
-    </div>
-    <div class="bk">
-      <div class="bk-card" id="bk-card">
-        <div class="bk-steps" role="group" aria-label="Steps, choose one you've reached to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Who</button><button type="button" data-s="2" disabled>2 What</button><button type="button" data-s="3" disabled>3 When</button><button type="button" data-s="4" disabled>4 You</button></div>
-        <div id="bk-s1">
-          <p class="bk-q" id="bk-q1">Who would you like to see?</p>
-          <div class="bk-who" role="group" aria-labelledby="bk-q1">
-            <button type="button" class="bk-opt" data-who="tami" aria-pressed="false"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>TH</b></span><span><b class="n">Tami</b><span class="s">Massage, alignment, scar release, InBody</span></span></button>
-            <button type="button" class="bk-opt" data-who="jen" aria-pressed="false"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>JT</b></span><span><b class="n">Jennifer</b><span class="s">Massage for women</span></span></button>
-            <button type="button" class="bk-opt" data-who="yem" aria-pressed="false"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>YK</b></span><span><b class="n">Yemaya</b><span class="s">Herbal consultations</span></span></button>
-            <button type="button" class="bk-opt" data-who="sauna" aria-pressed="false"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>&#10043;</b></span><span><b class="n">Sauna &amp; light</b><span class="s">Infrared sauna and red light</span></span></button>
-          </div>
-        </div>
-        <div id="bk-s2" hidden>
-          <p class="bk-q" id="bk-q2">What would you like with Tami?</p>
-          <div class="bk-svcs" id="bk-svcs" role="group" aria-labelledby="bk-q2"></div>
-        </div>
-        <div id="bk-s3" hidden>
-          <p class="bk-q" id="bk-q3">When works for you?</p>
-          <div class="bk-days" id="bk-days" role="group" aria-labelledby="bk-q3"></div>
-          <div class="bk-times" id="bk-times"></div>
-        </div>
-        <div id="bk-s4" hidden>
-          <p class="bk-q">Last step</p>
-          <p class="bk-chosen" id="bk-chosen"></p>
-          <div class="bk-form">
-            <label class="field" for="bk-name">Your name<input id="bk-name" autocomplete="off" value="Maya R."></label>
-            <label class="field" for="bk-mail">Email or phone<input id="bk-mail" autocomplete="off" value="maya@example.com"></label>
-            <p class="bk-formnote" id="bk-formnote" hidden><svg aria-hidden="true"><use href="#i-doc"/></svg><span id="bk-formnote-t"></span></p>
-          </div>
-        </div>
-        <div class="bk-nav" id="bk-nav">
-          <button type="button" class="linkbtn" id="bk-back" hidden>Back</button>
-          <button type="button" class="btn" id="bk-go" disabled style="margin-left:auto">Next</button>
-        </div>
-        <div class="done bk-done pop" id="bk-done" hidden>
-          <span class="ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
-          <b class="t" id="bk-donetitle" tabindex="-1">You&rsquo;re booked</b>
-          <p id="bk-summary"></p>
-          <p class="pv" style="margin-top:10px" id="bk-donenote">A confirmation is on its way, with a reminder the day before.</p>
-          <div class="done-acts"><button type="button" class="btn quiet" id="bk-again">Try it again</button><button type="button" class="linkbtn" id="bk-change">Change something</button></div>
-        </div>
-      </div>
-      <aside class="bk-side wf-note" aria-label="About this booking preview">
-        <div class="bk-note"><b>What you see</b>Every new booking lands in that practitioner&rsquo;s own calendar and phone the moment it happens.</div>
-        <div class="bk-inbox" aria-live="polite"><div class="from" id="bk-inboxfrom">New booking</div><div id="bk-inboxtext">Waiting for a booking&hellip; try the preview</div></div>
-        <div class="bk-note"><b>One door for everyone</b>Every Book button on your site opens this same place, with the right practitioner already chosen.</div>
-        <div class="bk-note"><b>Each calendar stays hers</b>Tami, Jennifer and Yemaya keep their own hours. Clients just see one tidy list.</div>
-        <div class="bk-note"><b>Forms ride along</b>Yemaya&rsquo;s intake form goes out with her bookings on its own.</div>
-        <div class="bk-note"><b>Already have booking? Keep it.</b>Whatever you use now, your Book buttons can go straight to it. Starting fresh? Booking here runs on Cal.com, free and set up in your own name.</div>
-        <p class="bk-foot">Booking preview: nothing here books a real session. On your real site this runs on a free Cal.com booking page in your own name, with each practitioner&rsquo;s hours and one checkout shared with gift certificates and the boutique.</p>
-      </aside>
-    </div>
-    <p class="fa-note wf-note" data-show="all" data-fold><span>With the Tended build, this spot is a simple Book now button that opens your Acuity page.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
-    </div>
-
-    
-    <div class="bk-alt" data-show="mother" data-fold data-thing="Book now buttons" tabindex="-1" hidden>
-      <div class="entry">
-        <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Book online <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
-        <h2>book</h2>
-        <p class="pron"><i>/bŏŏk/</i><em>verb</em></p>
-        <p class="def">Choose who you&rsquo;d like to see, then pick a time on her calendar, any time of day.</p>
-      </div>
-      <div class="bn-row">
-        <a class="btn ext" href="https://app.acuityscheduling.com/schedule.php?owner=38912454" target="_blank" rel="noopener">Book now<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens Acuity in a new tab)</span></a>
-      </div>
-      <div class="bn-who" id="bn-who"></div>
-      <p class="pv">With Tended, these buttons open your Acuity page, the booking app you already use, with the right practitioner already chosen.</p>
-    </div>
-
-    
-    <div class="bk-alt" data-show="maiden" data-fold tabindex="-1" hidden>
-      <div class="entry">
-        <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>To book <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span></p>
-        <h2>call</h2>
-        <p class="pron"><i>/kôl/</i><em>verb</em></p>
-        <p class="def">Call or text <a class="tel" href="tel:+17074409035">(707) 440-9035</a>, or email <a href="mailto:mendingrootstherapies@gmail.com">mendingrootstherapies@gmail.com</a>, and we&rsquo;ll find a time with the right person.</p>
-      </div>
-      <div class="bn-row">
-        <a class="btn" href="tel:+17074409035" aria-label="Call Mending Roots at (707) 440-9035"><svg aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
-        <a class="btn quiet" href="sms:+17074409035" aria-label="Text Mending Roots at (707) 440-9035"><svg aria-hidden="true"><use href="#i-text"/></svg>Text</a>
-      </div>
-      <p class="pv">With Planted, people reach you by call, text or email.</p>
-    </div>
-  </div>
-</section>
-
-
-<section class="gutter bleed-sec" id="shop" aria-labelledby="shop-title" style="padding-top:40px" data-show="crone all" data-fold data-thing="boutique">
-  <div class="wrap">
-    <div class="shop-top">
-      <figure class="photo apo-photo reveal">
-        <img src="images/boutique.jpg" alt="The Wellness Boutique corner at Mending Roots: shelves of tinctures and body care strung with fairy lights, a monstera, and two mountain prints" loading="lazy">
-      </figure>
-      <div class="entry">
-        <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Wellness Boutique <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span></p>
-        <h2 id="shop-title">a·poth·e·car·y</h2>
-        <p class="pron"><i>/ə·päth·ə·ker·ē/</i><em>noun</em></p>
-        <p class="def">Wellness products we keep in stock and trust: medicinal mushroom tinctures, muscle liniments, magnesium butters and more.</p>
-        <p class="lead">Order here and pick it up at your next visit. Shipping may be available, just reach out to set it up.</p>
-      </div>
-    </div>
-    <div class="shelf" id="shelf">
-      <article class="lbl reveal" data-id="reishi" data-name="Wild Organic Reishi Tincture" data-price="38"><p class="kind">Tincture</p><h3>Wild Organic Reishi Tincture</h3><p class="size">4 oz</p><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$38</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="rtea" data-name="Wild Reishi Tea" data-price="10"><p class="kind">Tea</p><h3>Wild Reishi Tea</h3><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$10</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="soak" data-name="Muscle Recovery Mineral Soak" data-price="10"><p class="kind">Bath</p><h3>Muscle Recovery Mineral Soak</h3><p class="size">6 oz</p><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$10</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="sjw" data-name="St. John's Wort Infused Oil" data-price="27"><p class="kind">Body oil</p><h3>Fresh St. John&rsquo;s Wort Infused Oil</h3><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$27</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="arnica" data-name="Pure Arnica Infused Oil" data-price="37"><p class="kind">Body oil</p><h3>Pure Arnica Infused Oil</h3><p class="size">4 oz</p><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$37</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="candle" data-name="Beeswax Candle, Mandarin Spice" data-price="26"><p class="kind">Candle</p><h3>Beeswax Candle</h3><p class="size">Mandarin Spice</p><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$26</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="ball" data-name="Dragontree Massage Ball" data-price="9"><p class="kind">Self care</p><h3>Dragontree Massage Ball</h3><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$9</span><button type="button" class="btn add">Add</button></div></article>
-      <article class="lbl reveal" data-id="brush" data-name="Essential Dry Brush" data-price="20"><p class="kind">Self care</p><h3>Essential Dry Brush</h3><span class="rule" aria-hidden="true"></span><div class="foot"><span class="price">$20</span><button type="button" class="btn add">Add</button></div></article>
-    </div>
-    <div class="basket empty" id="basket" aria-live="polite">
-      <span class="sum" id="basket-sum">Your basket is empty. Tap Add on anything above.</span>
-      <button type="button" class="btn" id="basket-go" disabled>Check out</button>
-    </div>
-    <p class="shop-note">A few favorites from the shelf. We also carry Birch Boys, Global Healing, Plum Dragon, Rasa, Sunwarrior, The Dragon Tree and The Mighty XO. <a class="ext" href="https://mendingrootsmassage.square.site" target="_blank" rel="noopener">See the whole online store<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens your Square store in a new tab)</span></a></p>
-  </div>
-</section>
-
-
-<section class="gutter" id="gift" aria-labelledby="gift-title" style="background:var(--ground-2)" data-show="mother crone all" data-fold>
-  <div class="wrap gift-grid" data-show="crone all" data-fold data-thing="gift certificates">
-    <div>
-      <div class="entry">
-        <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Gift certificates <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span></p>
-        <h2 id="gift-title">gift</h2>
-        <p class="pron"><i>/gift/</i><em>noun</em></p>
-        <p class="def">An hour of rest for someone you love, sent by text or email, today or on the day you choose.</p>
-      </div>
-      <div class="cert" aria-hidden="true">
-        <span class="emb c-emb"></span>
-        <div class="mini">Gift certificate</div>
-        <div class="c-biz">Mending Roots Wellness Collective</div>
-        <div class="c-amt" id="cert-live">$150</div>
-        <div class="c-who">Rest and care, whenever they&rsquo;re ready</div>
-      </div>
-      <div class="gift-notes wf-note">
-        <div class="bk-note"><b>Paid straight to you</b>Money goes into your own Stripe account, set up in your name.</div>
-        <div class="bk-note"><b>Certificates send themselves</b>The buyer gets a certificate by email or text, ready to print or forward.</div>
-      </div>
-    </div>
-    <div class="gift-pick" id="gift-pick">
-      <div>
-        <p class="legend-txt" id="gift-amt-l">Choose an amount</p>
-        <div class="amts" role="group" aria-labelledby="gift-amt-l">
-          <button type="button" class="pick" data-amt="100" aria-pressed="false">$100</button>
-          <button type="button" class="pick" data-amt="150" aria-pressed="true">$150</button>
-          <button type="button" class="pick" data-amt="200" aria-pressed="false">$200</button>
-          <button type="button" class="pick" data-amt="250" aria-pressed="false">$250</button>
-          <button type="button" class="pick" data-amt="other" aria-pressed="false">Other</button>
-        </div>
-      </div>
-      <label class="field" id="gift-otherwrap" hidden>Any amount, in dollars<span class="money"><span aria-hidden="true">$</span><input id="gift-other" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="75"></span></label>
-      <p class="gift-hint" id="gift-hint" hidden>Type an amount first.</p>
-      <div>
-        <p class="legend-txt" id="gift-how-l">Send it by</p>
-        <div class="seg" role="group" aria-labelledby="gift-how-l">
-          <button type="button" data-how="email" aria-pressed="true">Email</button><button type="button" data-how="text" aria-pressed="false">Text</button>
-        </div>
-      </div>
-      <div>
-        <p class="legend-txt" id="gift-when-l">When should it arrive?</p>
-        <div class="seg" role="group" aria-labelledby="gift-when-l">
-          <button type="button" data-when="today" aria-pressed="true">Right away</button><button type="button" data-when="date" aria-pressed="false">On a date</button>
-        </div>
-      </div>
-      <label class="field" id="gift-datewrap" hidden>Delivery date<input id="gift-date" type="date" autocomplete="off"></label>
-      <button type="button" class="btn go" id="gift-go">Give $150</button>
-      <button type="button" class="linkbtn" id="gift-self">Or pay ahead for a session</button>
-    </div>
-  </div>
-  <div class="wrap" data-show="all" data-fold>
-    <p class="fa-note wf-note"><span>With the Tended build, this spot is a Gift button that opens <a class="ext" href="https://app.squareup.com/gift/24QFEC9Q38058/order" target="_blank" rel="noopener">your Square gift card page<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens in a new tab)</span></a>, the one you already use.</span><span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
-  </div>
-
-  
-  <div class="wrap bk-alt" data-show="mother" data-fold data-thing="Gift button" tabindex="-1" hidden>
-    <figure class="photo gift-photo reveal"><img src="images/boutique.jpg" alt="The Wellness Boutique corner at Mending Roots: shelves of tinctures and body care strung with fairy lights, a monstera, and two mountain prints" loading="lazy"></figure>
-    <div class="entry">
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Gift certificates <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span></p>
-      <h2>gift</h2>
-      <p class="pron"><i>/gift/</i><em>noun</em></p>
-      <p class="def">An hour of rest for someone you love, ready whenever they are.</p>
-    </div>
-    <div class="bn-row">
-      <a class="btn ext" href="https://app.squareup.com/gift/24QFEC9Q38058/order" target="_blank" rel="noopener">Buy a gift card<svg aria-hidden="true"><use href="#i-out"/></svg><span class="vh"> (opens Square in a new tab)</span></a>
-    </div>
-    <p class="pv">With Tended, this button opens your Square gift card page, the one you already use.</p>
-  </div>
-</section>
-
-
-<section class="gutter" id="intake" aria-labelledby="intake-title" data-show="crone all" data-fold data-thing="intake forms">
-  <div class="wrap intake-grid">
-    <div class="entry">
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Intake forms <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended + In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 id="intake-title">in·take</h2>
-      <p class="pron"><i>/in·tāk/</i><em>noun</em></p>
-      <p class="def">A few questions before your first visit, filled in from home, so your time together starts with you.</p>
-      <div class="tabs" role="tablist" aria-label="Intake form by practitioner">
-        <button type="button" class="tab" role="tab" id="tab-yem" aria-selected="true" aria-controls="fs" data-form="yem"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>YK</b></span><span><b class="n">Herbal wellness intake</b><span class="s">Yemaya &middot; needed when you book</span></span></button>
-        <button type="button" class="tab" role="tab" id="tab-tami" aria-selected="false" aria-controls="fs" data-form="tami" tabindex="-1"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>TH</b></span><span><b class="n">Wellness &amp; posture history</b><span class="s">Tami &middot; before your first session</span></span></button>
-        <button type="button" class="tab" role="tab" id="tab-jen" aria-selected="false" aria-controls="fs" data-form="jen" tabindex="-1"><span class="mono" aria-hidden="true"><svg><use href="#ring"/></svg><b>JT</b></span><span><b class="n">Massage intake</b><span class="s">Jennifer &middot; before your first session</span></span></button>
-      </div>
-    </div>
-    <div class="form-sheet" id="fs" role="tabpanel" aria-labelledby="tab-yem" tabindex="0">
-      <div data-panel="yem">
-        <div class="fs-head"><b>Herbal wellness intake</b><span>Yemaya&rsquo;s Apothecary</span></div>
-        <p class="fs-meta">About 15 minutes &middot; sent with your booking</p>
-        <div class="ic-f"><span>Name</span><i></i></div>
-        <div class="ic-f"><span>Email</span><i></i><span>Phone</span><i></i></div>
-        <div class="ic-f tall"><span>What would you most like support with?</span><i></i><i></i></div>
-        <div class="ic-f tall"><span>Medications and supplements you take now</span><i></i><i></i></div>
-        <div class="ic-f checks"><span>Lately I&rsquo;ve noticed</span><span class="ic-box">Stress</span><span class="ic-box">Poor sleep</span><span class="ic-box">Low energy</span><span class="ic-box">Digestion</span></div>
-        <div class="ic-f"><span>Signature</span><i></i><span>Date</span><i style="flex:0 1 70px"></i></div>
-      </div>
-      <div data-panel="tami" hidden>
-        <div class="fs-head"><b>Wellness &amp; posture history</b><span>Mending Roots Body Therapies</span></div>
-        <p class="fs-meta">About 10 minutes &middot; before your first session</p>
-        <div class="ic-f"><span>Name</span><i></i></div>
-        <div class="ic-f tall"><span>What brings you in?</span><i></i><i></i></div>
-        <div class="ic-f tall"><span>Injuries, surgeries and scars</span><i></i><i></i></div>
-        <div class="ic-f checks"><span>Pressure you like</span><span class="ic-box">Light</span><span class="ic-box">Medium</span><span class="ic-box">Deep</span></div>
-        <div class="ic-f checks"><span>Interested in</span><span class="ic-box">Postural alignment</span><span class="ic-box">Sauna add-on</span></div>
-        <div class="ic-f"><span>Signature</span><i></i><span>Date</span><i style="flex:0 1 70px"></i></div>
-      </div>
-      <div data-panel="jen" hidden>
-        <div class="fs-head"><b>Massage intake</b><span>Humboldt Womens Massage</span></div>
-        <p class="fs-meta">About 5 minutes &middot; before your first session</p>
-        <div class="ic-f"><span>Name</span><i></i></div>
-        <div class="ic-f"><span>If pregnant, how many weeks?</span><i></i></div>
-        <div class="ic-f tall"><span>Areas to focus on, or to avoid</span><i></i><i></i></div>
-        <div class="ic-f checks"><span>I&rsquo;d love</span><span class="ic-box">Hot stones</span><span class="ic-box">Heated towels</span><span class="ic-box">Unscented oil</span></div>
-        <div class="ic-f"><span>Signature</span><i></i><span>Date</span><i style="flex:0 1 70px"></i></div>
-      </div>
-      <p class="pv">Preview of the layout. On your real site each form fills in online and goes privately to that practitioner.</p>
-    </div>
-  </div>
-</section>
-
-
-<section class="gutter" id="faq" aria-labelledby="faq-title" style="padding-top:24px" data-show="mother crone all" data-fold data-thing="FAQ">
-  <div class="wrap faq-grid">
-    <div>
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Questions <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended + In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h2 class="h-plain" id="faq-title">Good to know before you come</h2>
-      <p class="faq-more">Something else on your mind? Call or text <span class="nw">(707) 440-9035</span>. No question is too small.</p>
-    </div>
-    <div class="faq">
-      <details><summary>Do you take insurance?</summary><div class="ans"><p>We don&rsquo;t take insurance. You can check whether your flexible spending account covers your session, or whether your insurance lets you submit a claim yourself.</p></div></details>
-      <details><summary>What should I wear for structural bodywork?</summary><div class="ans"><p>Comfortable clothes you can move in. Structural bodywork is done fully clothed.</p></div></details>
-      <details><summary>Can I add the sauna or red light to my massage?</summary><div class="ans"><p>Yes. Add 30 minutes of infrared sauna for $25, or 20 minutes of red light for $15, to any massage or bodywork session.</p></div></details>
-      <details><summary>Is the sauna safe for me?</summary><div class="ans"><p>Heat and light aren&rsquo;t right for everyone. If you&rsquo;re pregnant, take medication, or have a heart or blood pressure condition, please check with your doctor before booking.</p></div></details>
-      <details><summary>I take medications. Can I still work with an herbalist?</summary><div class="ans"><p>Yes. Yemaya is trained in how herbs and medications interact, and her intake form asks about everything you take.</p></div></details>
-      <details><summary>What if I need to cancel?</summary><div class="ans"><p>Please give at least 48 hours&rsquo; notice by email or text, so someone else can have your spot. Without notice, or if you don&rsquo;t show, the full price of the session is charged. If you&rsquo;re ill or have an emergency, the 48 hours are waived. For herbal consultations with Yemaya, 24 hours&rsquo; notice is enough; late cancellations are $50, or $15 for phone sessions.</p></div></details>
-      <details><summary>Does Jennifer see men?</summary><div class="ans"><p>Jennifer&rsquo;s practice is for women. She sees men by referral, or if you&rsquo;re already her client.</p></div></details>
-      <details><summary>Where do I park, and which door do I use?</summary><div class="ans"><p>We&rsquo;re in the building on the corner of H Street and Harris Street. Come in from Harris. There&rsquo;s off-street parking in front and behind.</p></div></details>
-      <details><summary>Is my first InBody scan really free?</summary><div class="ans"><p>It is. After that a scan is $25, or 4 for $60 and 8 for $120, used within six months.</p></div></details>
-      <details><summary>How long is a postural alignment course?</summary><div class="ans"><p>Most people come for about 16 sessions over about six months, with exercises to do at home in between.</p></div></details>
-    </div>
-  </div>
-</section>
-
+<section class="gutter" id="inbody-promo"><div class="wrap">
+<div class="promo"><p class="eyebrow">Now offering</p><h2 style="margin-top:6px">InBody body composition scans</h2><p>A body composition analyzer gives you a more accurate reading of what your body is made of: lean mass, fat mass, and cellular water. It is a great tool to help you on your wellness journey, track how your body is responding to lifestyle changes, and give you better insight into any imbalances in your body.</p><span class="free">First scan is free</span><div class="acts-row"><a class="btn" href="services/inbody/">About the scan</a></div></div>
+</div></section>
 
 <section class="gutter love" id="love" aria-labelledby="love-title">
   <div class="wrap">
@@ -1743,42 +1285,6 @@
     </div>
   </div>
 </section>
-
-
-<section class="gutter news" id="news" aria-labelledby="nl-title" data-show="mother crone all" data-fold data-thing="newsletter signup">
-  <div class="wrap">
-    <div class="news-card reveal">
-      <svg class="bg-ring" aria-hidden="true"><use href="#ring"/></svg>
-      <div>
-        <p class="eyebrow">Newsletter <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended + In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span></p>
-        <h2 id="nl-title">Letters from the collective</h2>
-        <p class="sub">Open house news, new practitioners joining the collective and seasonal herbal notes. Now and then, when there&rsquo;s something worth sharing.</p>
-      </div>
-      <div>
-        <form class="nl-form" id="nl" novalidate>
-          <div class="chips" role="group" aria-label="I'd love to hear about">
-            <button type="button" class="pick" aria-pressed="true">Events</button>
-            <button type="button" class="pick" aria-pressed="false">Sauna &amp; light</button>
-            <button type="button" class="pick" aria-pressed="false">Herbal notes</button>
-            <button type="button" class="pick" aria-pressed="false">Health coaching</button>
-          </div>
-          <div class="nl-row">
-            <label class="field"><span class="vh">Your email</span><input id="nl-mail" type="email" autocomplete="off" placeholder="you@example.com"></label>
-            <button type="submit" class="btn">Sign me up</button>
-          </div>
-        </form>
-        <div class="done pop" id="nl-done" hidden>
-          <span class="ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
-          <b class="t" id="nl-donetitle" tabindex="-1">You&rsquo;re on the list</b>
-          <p class="pv" id="nl-donetext">Preview: nothing was sent. On your real site this adds them to your own Buttondown mailing list.</p>
-          <div class="done-acts"><button type="button" class="btn quiet" id="nl-again">Try it again</button><button type="button" class="linkbtn" id="nl-change">Change something</button></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
 <section class="gutter" id="visit" aria-labelledby="visit-title">
   <div class="wrap visit-grid">
     <div class="entry">
@@ -1838,21 +1344,18 @@
     </div>
   </div>
 </section>
-
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-mark"><span class="emb-btn" aria-hidden="true"><span class="emb"></span></span><span><b>Mending Roots</b><small>Collective &middot; Eureka, California</small></span></div>
-      <nav class="foot-links" aria-label="Footer">
-        <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="tami/">Tami</a></li><li><a href="jennifer/">Jennifer</a></li><li><a href="yemaya/">Yemaya</a></li><li><a href="sunny/">Sunny</a></li><li><a href="lena/">Lena</a></li><li class="all"><a href="#collective">About the collective</a></li></ul></div><a href="#services">Services</a><a href="#events">Events</a><a href="#book">Book</a><a href="#shop" data-show="crone all">Boutique</a><a href="#gift" data-show="mother crone all">Gift certificates</a><a href="#visit">Visit</a>
-      </nav>
+      <nav class="foot-links" aria-label="Footer"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="collective/">Meet the collective</a></li><li><a href="tami/">Tami Hornidge</a></li><li><a href="jennifer/">Jennifer Teixeira</a></li><li><a href="yemaya/">Yemaya Kimmel</a></li><li><a href="sunny/">Sunny Loya</a></li><li><a href="lena/">Lena Hyde Nuñez</a></li><li class="all"><a href="join/">Be a part of our collective</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">All services</a></li><li><a href="services/offered/">Services offered</a></li><li><a href="services/coaching/">Health &amp; wellness coaching</a></li><li><a href="services/herbal/">Herbal wellness consultations</a></li><li><a href="services/inbody/">InBody body composition scans</a></li><li><a href="services/sauna/">Infrared sauna &amp; red light therapy</a></li><li><a href="services/massage/">Massage therapy &amp; bodywork</a></li><li><a href="services/postural-alignment/">Postural alignment therapy</a></li><li><a href="services/scar-release/">Scar release therapy</a></li><li class="all"><a href="services/by-practitioner/">Services by practitioner</a></li></ul></div><a href="events/">Classes &amp; workshops</a><a href="shop/">Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
     </div>
     <div class="foot-legal"><span>&copy; <span id="yr">2026</span> Mending Roots Body Therapies, LLC</span><span>3034 H Street, Suite C, Eureka, CA</span><span><a href="https://webfaery.love/portal.html">Log in</a></span></div>
     <p class="legend wf-note"><svg aria-hidden="true"><use href="#i-spark"/></svg><span>Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Planted<span class="tag-p"> <span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span> (full site, with your Acuity linked), <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg>In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling built in). The status banner up top comes with <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></span></p>
   </div>
 </footer>
 
-<a class="btn float-book" id="float-book" href="#book" aria-label="Book a session"><svg aria-hidden="true"><use href="#ring"/></svg>Book</a>
+<a class="btn float-book" id="float-book" href="services/offered/#book" aria-label="Book a session"><svg aria-hidden="true"><use href="#ring"/></svg>Book</a>
 <span class="ribbon">A mockup from Web Faery</span>
 
 
@@ -2010,7 +1513,8 @@
 <script>
   
   (function () {
-    function $(id) { return document.getElementById(id); }
+    var __nul = (function () { var f = function () { return p; }; var p = new Proxy(f, { get: function (t, k) { if (k === 'length') return 0; if (k === Symbol.iterator || k === 'then') return undefined; if (k === Symbol.toPrimitive) return function () { return ''; }; return p; }, set: function () { return true; }, apply: function () { return p; } }); return p; })();
+    function $(id) { return document.getElementById(id) || __nul; }
     var kb = function (e) { return e && e.detail === 0; };
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var yr = $('yr'); if (yr) yr.textContent = String(new Date().getFullYear());
@@ -2401,7 +1905,8 @@
 <script>
   
   (function () {
-    function $(id) { return document.getElementById(id); }
+    var __nul = (function () { var f = function () { return p; }; var p = new Proxy(f, { get: function (t, k) { if (k === 'length') return 0; if (k === Symbol.iterator || k === 'then') return undefined; if (k === Symbol.toPrimitive) return function () { return ''; }; return p; }, set: function () { return true; }, apply: function () { return p; } }); return p; })();
+    function $(id) { return document.getElementById(id) || __nul; }
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var STATES = {
       open: { label: 'Now welcoming new clients', cta: 'Book a session', href: '#book' },
@@ -2469,7 +1974,8 @@
   
   (function () {
     var root = document.documentElement;
-    function $(id) { return document.getElementById(id); }
+    var __nul = (function () { var f = function () { return p; }; var p = new Proxy(f, { get: function (t, k) { if (k === 'length') return 0; if (k === Symbol.iterator || k === 'then') return undefined; if (k === Symbol.toPrimitive) return function () { return ''; }; return p; }, set: function () { return true; }, apply: function () { return p; } }); return p; })();
+    function $(id) { return document.getElementById(id) || __nul; }
     var tab = $('theme-tab'), panel = $('theme-panel'), auto = $('theme-auto'), live = $('theme-live');
     if (!tab || !panel || !auto || !live) return;
     var btns = [].slice.call(tab.querySelectorAll('[data-theme]')), last = null;
@@ -2589,7 +2095,8 @@
   
   (function () {
     var root = document.documentElement, body = document.body;
-    function $(id) { return document.getElementById(id); }
+    var __nul = (function () { var f = function () { return p; }; var p = new Proxy(f, { get: function (t, k) { if (k === 'length') return 0; if (k === Symbol.iterator || k === 'then') return undefined; if (k === Symbol.toPrimitive) return function () { return ''; }; return p; }, set: function () { return true; }, apply: function () { return p; } }); return p; })();
+    function $(id) { return document.getElementById(id) || __nul; }
     var bar = $('views'), vp = $('vp'), pill = $('vp-pill'), panel = $('vp-panel'), live = $('views-live');
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
@@ -2831,7 +2338,7 @@
 <style id="wf-tami-build">
   /* Tami picked Tended (Nov 2): her page shows only her build, nothing that points to the other two */
   [data-view="mother"] button.build, [data-view="mother"] .legend, [data-view="mother"] .fa-note,
-  [data-view="mother"] .bk-side, [data-view="mother"] .gift-notes, [data-view="mother"] .pv, [data-view="mother"] .pol-note, [data-view="mother"] .ev-note, [data-view="mother"] #love, [data-view="mother"] .sample, [data-view="mother"] #book, [data-view="mother"] a[href="#book"]:not(.btn) { display: none !important; }
+  [data-view="mother"] .bk-side, [data-view="mother"] .gift-notes, [data-view="mother"] .pv, [data-view="mother"] .pol-note, [data-view="mother"] .ev-note, [data-view="mother"] #love, [data-view="mother"] .sample, [data-view="mother"] #book, [data-view="mother"] a[href="services/offered/#book"]:not(.btn) { display: none !important; }
 </style>
 
 <style id="wf-swipe">
