@@ -1064,7 +1064,7 @@
 </svg>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="open"><a href="services/offered/#book" id="status-link"><b id="status-label">Now welcoming new clients</b> <em><span id="status-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="open"><a href="services-offered/#book" id="status-link"><b id="status-label">Now welcoming new clients</b> <em><span id="status-cta">Book a session</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
@@ -1146,13 +1146,25 @@
   @media (max-width: 680px) { .top nav { justify-content: flex-start; gap: 0 2px; } .top nav .dd-btn, .top nav a { padding: 8px 9px; } }
   @media (max-width: 560px) { .who-card { grid-template-columns: 76px 1fr; } .who-card img { width: 76px; height: 76px; } .promo { padding: 26px 20px; } .doc { padding-block: 40px 20px; } }
 </style>
+<style id="wf-exact">
+  .doc img { max-width: min(100%, 640px); height: auto; border-radius: 16px; display: block; }
+  .doc img.logo { max-width: 220px; border-radius: 0; }
+  .doc .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; max-width: none; }
+  .doc .gal a { display: block; } .doc .gal img { width: 100%; max-width: none; aspect-ratio: 1; object-fit: cover; }
+  .doc h1 { font-family: var(--display); font-weight: 500; font-size: clamp(30px, 4.4vw, 46px); line-height: 1.1; margin-top: 40px; }
+  .doc blockquote { font-family: var(--display); font-style: italic; font-size: 22px; line-height: 1.4; max-width: 46ch; color: var(--sage-deep); border-left: 3px solid var(--ember); padding-left: 18px; }
+  .doc .btn { display: inline-flex; width: auto; margin-top: 6px; }
+  .doc a:not(.btn):not(.door) { color: var(--rust); }
+  .doc .center { text-align: center; margin-inline: auto; }
+  .doc .addon-h { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--hair-2); }
+</style>
 <header class="hero gutter" id="top">
   <div class="hero-photo" aria-hidden="true"></div>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="top wrap">
     <a class="mark" href="#top" aria-label="Mending Roots Collective, back to top"><span class="emb" aria-hidden="true"></span><span><b>Mending Roots</b><small>Collective</small></span></a>
-    <nav aria-label="Sections"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="collective/">Meet the collective</a></li><li><a href="tami/">Tami Hornidge</a></li><li><a href="jennifer/">Jennifer Teixeira</a></li><li><a href="yemaya/">Yemaya Kimmel</a></li><li><a href="sunny/">Sunny Loya</a></li><li><a href="lena/">Lena Hyde Nuñez</a></li><li class="all"><a href="join/">Be a part of our collective</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">All services</a></li><li><a href="services/offered/">Services offered</a></li><li><a href="services/coaching/">Health &amp; wellness coaching</a></li><li><a href="services/herbal/">Herbal wellness consultations</a></li><li><a href="services/inbody/">InBody body composition scans</a></li><li><a href="services/sauna/">Infrared sauna &amp; red light therapy</a></li><li><a href="services/massage/">Massage therapy &amp; bodywork</a></li><li><a href="services/postural-alignment/">Postural alignment therapy</a></li><li><a href="services/scar-release/">Scar release therapy</a></li><li class="all"><a href="services/by-practitioner/">Services by practitioner</a></li></ul></div><a href="events/">Classes &amp; workshops</a><a href="shop/">Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
-    <a class="btn top-book" href="services/offered/#book">Book</a>
+    <nav aria-label="Sections"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="mending-roots-collective/">About the collective</a></li><li><a href="mending-roots-wellness-collective/">Meet the collective!</a></li><li><a href="join-our-wellness-collective/">Be a part of our Wellness Collective!</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">Services</a></li><li><a href="services-offered/">Services offered</a></li><li><a href="health-wellness-coaching/">Health &amp; wellness coaching</a></li><li><a href="herbal-wellness-consultations-2/">Herbal wellness consultations</a></li><li><a href="inbody-body-composition-analyzer/">InBody body composition analyzer</a></li><li><a href="infrared-sauna-red-light-therapy/">Infrared sauna &amp; red light therapy</a></li><li><a href="massage-therapy-bodywork/">Massage therapy &amp; bodywork</a></li><li><a href="postural-alignment-therapy/">Postural alignment therapy</a></li><li><a href="dolphin-neurostim-mps-therapy/">Scar release therapy</a></li><li class="all"><a href="services-by-practitioner/">Services by practitioner</a></li></ul></div><a href="events-workshops-classes/">Classes &amp; Workshops</a><a href="wellness-boutique/">Wellness Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
+    <a class="btn top-book" href="services-offered/#book">Book</a>
   </div>
   <div class="hero-words wrap">
     <div class="hero-card">
@@ -1164,16 +1176,16 @@
       </h1>
       <p class="hero-def"><span class="hw">mend·ing</span><span class="pos">verb</span>to restore to health. Holistic practitioners sharing one healing space on H Street: bodywork, postural alignment, herbal care, an infrared sauna and a wellness boutique.</p>
       <div class="cta">
-        <a class="btn" href="services/offered/#book"><span class="emb" aria-hidden="true"></span>Book a session</a>
-        <a class="soft" href="collective/#collective">Meet the collective</a>
+        <a class="btn" href="services-offered/#book"><span class="emb" aria-hidden="true"></span>Book a session</a>
+        <a class="soft" href="mending-roots-wellness-collective/">Meet the collective</a>
       </div>
     </div>
   </div>
 </header><div class="secbar" id="secbar" aria-hidden="true">
   <div class="wrap gutter secbar-in">
     <span class="emb"></span>
-    <nav aria-label="Menu"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="collective/">Meet the collective</a></li><li><a href="tami/">Tami Hornidge</a></li><li><a href="jennifer/">Jennifer Teixeira</a></li><li><a href="yemaya/">Yemaya Kimmel</a></li><li><a href="sunny/">Sunny Loya</a></li><li><a href="lena/">Lena Hyde Nuñez</a></li><li class="all"><a href="join/">Be a part of our collective</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">All services</a></li><li><a href="services/offered/">Services offered</a></li><li><a href="services/coaching/">Health &amp; wellness coaching</a></li><li><a href="services/herbal/">Herbal wellness consultations</a></li><li><a href="services/inbody/">InBody body composition scans</a></li><li><a href="services/sauna/">Infrared sauna &amp; red light therapy</a></li><li><a href="services/massage/">Massage therapy &amp; bodywork</a></li><li><a href="services/postural-alignment/">Postural alignment therapy</a></li><li><a href="services/scar-release/">Scar release therapy</a></li><li class="all"><a href="services/by-practitioner/">Services by practitioner</a></li></ul></div><a href="events/">Classes &amp; workshops</a><a href="shop/">Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
-    <a class="btn" href="services/offered/#book">Book</a>
+    <nav aria-label="Menu"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="mending-roots-collective/">About the collective</a></li><li><a href="mending-roots-wellness-collective/">Meet the collective!</a></li><li><a href="join-our-wellness-collective/">Be a part of our Wellness Collective!</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">Services</a></li><li><a href="services-offered/">Services offered</a></li><li><a href="health-wellness-coaching/">Health &amp; wellness coaching</a></li><li><a href="herbal-wellness-consultations-2/">Herbal wellness consultations</a></li><li><a href="inbody-body-composition-analyzer/">InBody body composition analyzer</a></li><li><a href="infrared-sauna-red-light-therapy/">Infrared sauna &amp; red light therapy</a></li><li><a href="massage-therapy-bodywork/">Massage therapy &amp; bodywork</a></li><li><a href="postural-alignment-therapy/">Postural alignment therapy</a></li><li><a href="dolphin-neurostim-mps-therapy/">Scar release therapy</a></li><li class="all"><a href="services-by-practitioner/">Services by practitioner</a></li></ul></div><a href="events-workshops-classes/">Classes &amp; Workshops</a><a href="wellness-boutique/">Wellness Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
+    <a class="btn" href="services-offered/#book">Book</a>
   </div>
 </div>
 
@@ -1212,150 +1224,167 @@
 </div>
 
 
-<section class="oh gutter" id="openhouse" aria-labelledby="oh-title">
-  <div class="wrap oh-grid">
-    <div class="date-ring" aria-hidden="true"><svg><use href="#ring"/></svg><div><span>Nov</span><b>21</b><span>Sat</span></div></div>
-    <div>
-      <p class="eyebrow">Save the date <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span></p>
-      <h2 id="oh-title">Fall into Wellness Open House</h2>
-      <p class="oh-when">Saturday, November 21 &middot; 11am to 5pm</p>
-      <p class="oh-copy">Come and spend a wellness inspired day with us, and meet all the friendly faces that make up the collective. Free InBody scans, free red light, a morning lymph routine class and more.</p>
-    </div>
-    <div class="oh-act">
-      <a class="btn" href="events/#events">See the day</a>
-    </div>
-  </div>
-</section>
-<section class="gutter" id="inbody-promo"><div class="wrap">
-<div class="promo"><p class="eyebrow">Now offering</p><h2 style="margin-top:6px">InBody body composition scans</h2><p>A body composition analyzer gives you a more accurate reading of what your body is made of: lean mass, fat mass, and cellular water. It is a great tool to help you on your wellness journey, track how your body is responding to lifestyle changes, and give you better insight into any imbalances in your body.</p><span class="free">First scan is free</span><div class="acts-row"><a class="btn" href="services/inbody/">About the scan</a></div></div>
+<section class="gutter doc"><div class="wrap">
+
+
+<img class="logo" src="images/old/mending-roots-collective-logo.png" alt="Mending Roots Collective"> 
+
+
+
+<h2>
+
+						Fall into Wellness<br>
+Open House<br>
+November 21 ~ 11am – 5pm					
+</h2>
+
+
+<p>SAVE THE DATE!</p>
+
+
+<a class="btn" href="events-workshops-classes/">
+						Learn more about our Wellness Open House!					</a>
+
+
+
+
+
+
+<p>“Nurturing yourself is not selfish – it’s essential to your survival and your well-being.”<br>
+ – Renee Peterson Trudeau</p>
+
+
+
+
+
+
+
+
+
+<h2>
+
+						Heal					
+</h2>
+
+
+<p>/hēl/</p>
+<p>(of a person or treatment) To become sound or healthy again.</p>
+
+
+
+
+
+
+
+
+
+<h2>
+
+						Grow					
+</h2>
+
+
+<p>/ɡrō/</p>
+<p>(of a living thing) Come into self-awareness and evolve.</p>
+
+
+
+
+
+
+
+
+
+<h2>
+
+						Flourish					
+</h2>
+
+
+<p>/ˈfləriSH/</p>
+<p>(of a person) Thrive in a healthy or vigorous way, especially as the result of a positive environment.</p>
+
+
+
+
+
+
+<h2>
+
+						Now offering Inbody Body Composition Scans!					
+</h2>
+
+
+<p>A body composition analyzer gives you a more accurate reading of what your body is made of – lean mass, fat mass, and cellular water. It is a great tool to help you on your wellness journey, track how your body is responding to lifestyle changes, and give you better insight to any imbalances in your body</p>
+<p>First Scan is Free! Schedule today!</p>
+
+
+<a class="btn" href="inbody-body-composition-analyzer/">
+						Click here to learn more and schedule your Inbody scan					</a>
+
+
+
+
+
+
+<p>“Healing takes courage, and we all have courage, even if we have to dig a little to find it.” – Tori Amos</p>
+
+
+
+
+
+
+<h2>
+
+						Mending Roots Love					
+</h2>
+<p>Kind words from clients</p>
+
+
+<p>“Tami is a a very skilled and talented massage therapist. Try one massage and you will see why Tami is the best! She is very intuitive and knowledgeable. You should check out Mending Roots Massage if you want a top of the line professional massage!”</p>
+<p>“I’ve been a client of Tami’s since she entered this world of massage therapy and, to date, she is the most incredible healer that has worked on me. She is extremely adept at her practice and is extremely skilled in deep tissue work. She got me through a rough pregnancy with weekly massages and was able to support my postnatal care.”</p>
+<p>“I have fibromyalgia, and had given up on massages, because I could not find anyone who could adjust their techniques to the gentler level I needed. A friend introduced me to Tami, and I decided to give her a try. Best decision ever! With regular massages from Tami, I experienced great benefit to body AND soul. She is an amazing person with a true healing touch. I highly recommend her as a massage therapist and caring human being! “</p>
+
+
+
+
+
+
+<h2>
+
+						Contact us					
+</h2>
+
+
+<p>Sessions by appointment only.<br>
+Please view our online booking to see availability for each practitioner.</p>
+<p>Phone: (707) 440-9035</p>
+
+<p><strong>Mending Roots Body Therapies</strong><br>
+<strong>Mending Roots Collective</strong><br>
+3034 H Street<br>
+Suite C<br>
+Eureka, CA<br>
+95501</p>
+<p>We are located in the building on the corner of H Street &amp; Harris Street. Entrance to our location is off Harris Street.<br>
+Off street parking available in front and behind the building.</p>
+
+
+
+<p><a class="btn" href="visit/">Send us a message</a></p>
 </div></section>
-
-<section class="gutter love" id="love" aria-labelledby="love-title">
-  <div class="wrap">
-    <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Mending Roots Love <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span></p>
-    <div class="love-top">
-      <blockquote class="big reveal"><p id="love-title">&ldquo;An amazing person with a true healing touch.&rdquo;</p><cite>A client <span class="sample">From your site</span></cite></blockquote>
-      <div class="stars-row reveal">
-        <div class="rating"><span class="big">4.9</span><span><span class="st" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span><small>on Google, from 19 reviews</small></span></div>
-        <div class="rating"><span class="big">5.0</span><span><span class="st" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span><small>on Yelp, from 9 reviews</small></span></div>
-      </div>
-    </div>
-    <div class="reviews">
-      <figure class="review reveal"><span class="sample">From your site</span><blockquote><p>&ldquo;Try one massage and you will see why Tami is the best! She is very intuitive and knowledgeable.&rdquo;</p></blockquote><figcaption>A client</figcaption></figure>
-      <figure class="review reveal"><span class="sample">From your site</span><blockquote><p>&ldquo;She got me through a rough pregnancy with weekly massages and was able to support my postnatal care.&rdquo;</p></blockquote><figcaption>A client</figcaption></figure>
-      <figure class="review reveal"><span class="sample">From your site</span><blockquote><p>&ldquo;I could not find anyone who could adjust their techniques to the gentler level I needed&hellip; Best decision ever!&rdquo;</p></blockquote><figcaption>A client</figcaption></figure>
-    </div>
-
-    <div class="found-wrap" id="found">
-    <p class="not-site"><span class="sample">Google and text views</span> Included with every build. This is how your site looks from Google and in a text.</p>
-    <div class="found-h">
-      <p class="eyebrow">Google-ready <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span></p>
-      <h2 class="h-plain">Easy to find, lovely to share</h2>
-      <p class="lead">None of this appears on your site. It&rsquo;s how people find it: when someone nearby searches for a massage or a sauna, or a friend texts them your link, this is what they see.</p>
-    </div>
-    <div class="found-grid">
-      <figure class="fcard reveal">
-        <figcaption class="fcap">In search results</figcaption>
-        <div class="serp-q" aria-hidden="true"><svg><use href="#i-search"/></svg>massage eureka ca</div>
-        <div class="serp-site"><span class="fav" aria-hidden="true"><span class="emb"></span></span><span>Mending Roots Wellness Collective<small>mendingrootsmassage.com</small></span></div>
-        <div class="serp-title">Mending Roots Wellness Collective&nbsp;| Massage, Herbal Care &amp; Infrared Sauna in Eureka</div>
-        <p class="serp-desc">Bodywork, postural alignment, herbal consultations and an infrared sauna with red light, all under one roof on H Street. Book any practitioner online.</p>
-      </figure>
-      <figure class="fcard reveal">
-        <figcaption class="fcap">Texted to a friend</figcaption>
-        <div class="thread">
-          <div class="bubble">This is the place with the sauna I was telling you about!</div>
-          <div class="lp"><div class="lp-img" role="img" aria-label="Link preview photo: the mural room at Mending Roots, a sun over gold and blue mountains"></div><div class="lp-text"><b>Mending Roots Wellness Collective</b><small>mendingrootsmassage.com</small></div></div>
-        </div>
-      </figure>
-      <figure class="fcard gbp reveal">
-        <figcaption class="fcap">On the map</figcaption>
-        <b class="gbp-name">Mending Roots Body Therapies</b>
-        <span class="gbp-kind">Massage therapist &middot; Eureka, CA</span>
-        <div class="gbp-rate"><b>4.9</b><span class="st" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span><span style="color:var(--ink-soft)">(19)</span></div>
-        <ul class="gbp-list">
-          <li><svg aria-hidden="true"><use href="#i-pin"/></svg>3034 H St, Suite C, Eureka, CA</li>
-          <li><svg aria-hidden="true"><use href="#i-phone"/></svg>(707) 440-9035</li>
-          <li><svg aria-hidden="true"><use href="#i-clock"/></svg>By appointment</li>
-        </ul>
-        <div class="gbp-acts" aria-hidden="true"><span>Website</span><span>Book</span><span>Directions</span><span>Call</span></div>
-      </figure>
-    </div>
-    <p class="gbp-note"><span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span><span>Your Google Business Profile gets tidied up and linked to your new site too (that lives on Google, not on your site): your pin on the map, your hours, and your 19 reviews.</span></p>
-    </div>
-  </div>
-</section>
-<section class="gutter" id="visit" aria-labelledby="visit-title">
-  <div class="wrap visit-grid">
-    <div class="entry">
-      <figure class="photo visit-photo reveal"><img src="images/consult-room.jpg" alt="A quiet consult room at Mending Roots: two navy chairs, a woven rug, cushions and a mountain painting" loading="lazy"></figure>
-      <p class="eyebrow"><svg aria-hidden="true"><use href="#ring"/></svg>Visit</p>
-      <h2 id="visit-title">vis·it</h2>
-      <p class="pron"><i>/viz·it/</i><em>verb</em></p>
-      <p class="def">Come in off Harris Street, in the Henderson Center area of Eureka.</p>
-      <dl class="where">
-        <div><dt>Where</dt><dd>3034 H Street, Suite C<br>Eureka, CA 95501</dd></div>
-        <div><dt>The door</dt><dd>In the building on the corner of H and Harris. The entrance is on Harris Street.</dd></div>
-        <div><dt>Parking</dt><dd>Off-street, in front and behind the building</dd></div>
-        <div><dt>Call or text</dt><dd><b>(707) 440-9035</b></dd></div>
-        <div><dt>Email</dt><dd><a href="mailto:mendingrootstherapies@gmail.com" style="overflow-wrap:anywhere">mendingrootstherapies@gmail.com</a></dd></div>
-        <div><dt>Hours</dt><dd>By appointment. Each practitioner keeps her own hours.</dd></div>
-        <div><dt>Follow</dt><dd><a class="ext" href="https://www.instagram.com/mendingrootsbodytherapies/" target="_blank" rel="noopener">Instagram<svg aria-hidden="true"><use href="#i-out"/></svg></a> &nbsp;&middot;&nbsp; <a class="ext" href="https://www.facebook.com/mendingrootsbodytherapies" target="_blank" rel="noopener">Facebook<svg aria-hidden="true"><use href="#i-out"/></svg></a></dd></div>
-      </dl>
-      <p class="pol-note wf-note"><span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span><span>Your cancellation policy lives on your booking page, but late arrivals, gift certificates and boutique returns aren&rsquo;t written down anywhere yet. Tell me a few things and I&rsquo;ll write your policies for you, in your voice.</span></p>
-    </div>
-    <div class="contact-card" data-show="mother crone all" data-fold data-thing="contact form">
-      <p class="eyebrow">Contact <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Tended + In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> from $600</span></span></p>
-      <h3>Send us a note</h3>
-      <form class="cform" id="cf" novalidate>
-        <div class="cf-row">
-          <label class="field">Your name<input id="cf-name" autocomplete="off" placeholder="First and last name"></label>
-          <label class="field">Email<input id="cf-mail" type="email" autocomplete="off" placeholder="you@example.com"></label>
-        </div>
-        <label class="field">For
-          <select id="cf-for">
-            <option>Anyone at Mending Roots</option>
-            <option>Tami</option>
-            <option>Jennifer</option>
-            <option>Yemaya</option>
-            <option>Renting a room</option>
-          </select>
-        </label>
-        <label class="field">Message<textarea id="cf-msg" rows="4" placeholder="Hello Mending Roots,"></textarea></label>
-        <button type="submit" class="btn">Send note</button>
-      </form>
-      <div class="done pop" id="cf-done" hidden>
-        <span class="ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
-        <b class="t" id="cf-title" tabindex="-1">Thank you. Your note is on its way.</b>
-        <p class="pv" id="cf-text">Preview: nothing was sent. On your real site this goes straight to the right inbox.</p>
-        <div class="done-acts"><button type="button" class="btn quiet" id="cf-again">Try it again</button><button type="button" class="linkbtn" id="cf-change">Change something</button></div>
-      </div>
-    </div>
-    
-    <div class="contact-card reach-card" data-show="maiden" data-fold hidden>
-      <p class="eyebrow">Get in touch <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg><span class="vh">Web Faery build: </span>Every build</span></p>
-      <h3>Call, text or email</h3>
-      <p class="sub">Questions about a session, the sauna or renting a room? Call or text <a class="tel" href="tel:+17074409035" style="color:var(--rust)">(707) 440-9035</a>, or email <a href="mailto:mendingrootstherapies@gmail.com">mendingrootstherapies@gmail.com</a>.</p>
-      <div class="bn-row">
-        <a class="btn" href="tel:+17074409035" aria-label="Call Mending Roots at (707) 440-9035"><svg aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
-        <a class="btn quiet" href="sms:+17074409035" aria-label="Text Mending Roots at (707) 440-9035"><svg aria-hidden="true"><use href="#i-text"/></svg>Text</a>
-      </div>
-      <p class="pv" style="margin-top:16px">With Planted, people reach you by call, text or email.</p>
-    </div>
-  </div>
-</section>
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-mark"><span class="emb-btn" aria-hidden="true"><span class="emb"></span></span><span><b>Mending Roots</b><small>Collective &middot; Eureka, California</small></span></div>
-      <nav class="foot-links" aria-label="Footer"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="collective/">Meet the collective</a></li><li><a href="tami/">Tami Hornidge</a></li><li><a href="jennifer/">Jennifer Teixeira</a></li><li><a href="yemaya/">Yemaya Kimmel</a></li><li><a href="sunny/">Sunny Loya</a></li><li><a href="lena/">Lena Hyde Nuñez</a></li><li class="all"><a href="join/">Be a part of our collective</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">All services</a></li><li><a href="services/offered/">Services offered</a></li><li><a href="services/coaching/">Health &amp; wellness coaching</a></li><li><a href="services/herbal/">Herbal wellness consultations</a></li><li><a href="services/inbody/">InBody body composition scans</a></li><li><a href="services/sauna/">Infrared sauna &amp; red light therapy</a></li><li><a href="services/massage/">Massage therapy &amp; bodywork</a></li><li><a href="services/postural-alignment/">Postural alignment therapy</a></li><li><a href="services/scar-release/">Scar release therapy</a></li><li class="all"><a href="services/by-practitioner/">Services by practitioner</a></li></ul></div><a href="events/">Classes &amp; workshops</a><a href="shop/">Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
+      <nav class="foot-links" aria-label="Footer"><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Collective<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="mending-roots-collective/">About the collective</a></li><li><a href="mending-roots-wellness-collective/">Meet the collective!</a></li><li><a href="join-our-wellness-collective/">Be a part of our Wellness Collective!</a></li></ul></div><div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class="dd-menu" hidden><li><a href="services/">Services</a></li><li><a href="services-offered/">Services offered</a></li><li><a href="health-wellness-coaching/">Health &amp; wellness coaching</a></li><li><a href="herbal-wellness-consultations-2/">Herbal wellness consultations</a></li><li><a href="inbody-body-composition-analyzer/">InBody body composition analyzer</a></li><li><a href="infrared-sauna-red-light-therapy/">Infrared sauna &amp; red light therapy</a></li><li><a href="massage-therapy-bodywork/">Massage therapy &amp; bodywork</a></li><li><a href="postural-alignment-therapy/">Postural alignment therapy</a></li><li><a href="dolphin-neurostim-mps-therapy/">Scar release therapy</a></li><li class="all"><a href="services-by-practitioner/">Services by practitioner</a></li></ul></div><a href="events-workshops-classes/">Classes &amp; Workshops</a><a href="wellness-boutique/">Wellness Boutique</a><a href="memberships/">Memberships</a><a href="visit/">Visit</a></nav>
     </div>
     <div class="foot-legal"><span>&copy; <span id="yr">2026</span> Mending Roots Body Therapies, LLC</span><span>3034 H Street, Suite C, Eureka, CA</span><span><a href="https://webfaery.love/portal.html">Log in</a></span></div>
     <p class="legend wf-note"><svg aria-hidden="true"><use href="#i-spark"/></svg><span>Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Planted<span class="tag-p"> <span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="build" data-go="mother"><svg aria-hidden="true"><use href="#i-spark"/></svg>Tended<span class="tag-p"> <span aria-hidden="true">&middot;</span> $600</span></span> (full site, with your Acuity linked), <span class="build" data-go="crone"><svg aria-hidden="true"><use href="#i-spark"/></svg>In Bloom<span class="tag-p"> <span aria-hidden="true">&middot;</span> $900</span></span> (booking and selling built in). The status banner up top comes with <span class="build" data-go="maiden"><svg aria-hidden="true"><use href="#i-spark"/></svg>Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></span></p>
   </div>
 </footer>
 
-<a class="btn float-book" id="float-book" href="services/offered/#book" aria-label="Book a session"><svg aria-hidden="true"><use href="#ring"/></svg>Book</a>
+<a class="btn float-book" id="float-book" href="services-offered/#book" aria-label="Book a session"><svg aria-hidden="true"><use href="#ring"/></svg>Book</a>
 <span class="ribbon">A mockup from Web Faery</span>
 
 
@@ -2338,7 +2367,7 @@
 <style id="wf-tami-build">
   /* Tami picked Tended (Nov 2): her page shows only her build, nothing that points to the other two */
   [data-view="mother"] button.build, [data-view="mother"] .legend, [data-view="mother"] .fa-note,
-  [data-view="mother"] .bk-side, [data-view="mother"] .gift-notes, [data-view="mother"] .pv, [data-view="mother"] .pol-note, [data-view="mother"] .ev-note, [data-view="mother"] #love, [data-view="mother"] .sample, [data-view="mother"] #book, [data-view="mother"] a[href="services/offered/#book"]:not(.btn) { display: none !important; }
+  [data-view="mother"] .bk-side, [data-view="mother"] .gift-notes, [data-view="mother"] .pv, [data-view="mother"] .pol-note, [data-view="mother"] .ev-note, [data-view="mother"] #love, [data-view="mother"] .sample, [data-view="mother"] #book, [data-view="mother"] a[href="services-offered/#book"]:not(.btn) { display: none !important; }
 </style>
 
 <style id="wf-swipe">
