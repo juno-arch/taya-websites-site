@@ -1147,7 +1147,7 @@
   @media (max-width: 680px) { .top nav { justify-content: flex-start; gap: 0 2px; } .top nav .dd-btn, .top nav a { padding: 8px 9px; } }
   @media (max-width: 560px) { .who-card { grid-template-columns: 76px 1fr; } .who-card img { width: 76px; height: 76px; } .promo { padding: 26px 20px; } .doc { padding-block: 40px 20px; } }
 </style>
-<style id="wf-exact">
+<script>document.documentElement.classList.add('rvjs')</script><style id="wf-exact">
   .doc img { max-width: min(100%, 640px); height: auto; border-radius: 16px; display: block; }
   .doc img.logo { max-width: 220px; border-radius: 0; }
   .doc .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; max-width: none; }
@@ -1173,6 +1173,37 @@
   .sp-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--hair-2); }
   .sp-bar em { margin-left: 10px; font-style: normal; font-size: 13px; color: var(--ink-soft); }
   .site-preview iframe { display: block; width: 100%; height: min(70vh, 620px); border: 0; background: #fff; }
+  .doc.sec { padding-block: 52px 44px; }
+  .doc.sec.alt { background: var(--ground-2); }
+  .doc.sec:first-of-type { padding-top: 56px; }
+  .doc h2::after { content: ""; display: block; width: 46px; height: 2px; background: var(--ember); margin: 14px auto 0; }
+  .doc .lede, .doc p.lede-first { font-size: 21px; line-height: 1.6; color: var(--ink); max-width: 62ch; }
+  .doc ul.chips { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; max-width: none; text-align: center; }
+  .doc ul.chips li { max-width: none; padding: 14px 16px; border-radius: 14px; background: var(--ground); border: 1px solid var(--hair-2); line-height: 1.4; margin: 0; }
+  .doc ul.chips li::before { content: ""; display: block; width: 8px; height: 8px; margin: 0 auto 8px; border-radius: 50%; background: var(--ember); }
+  .doc.sec.alt ul.chips li { background: var(--ground); }
+  .doc details { background: var(--ground); border: 1px solid var(--hair-2); border-radius: 14px; padding: 16px 22px; margin-top: 12px; max-width: 760px; }
+  .doc details:last-of-type { border-bottom: 1px solid var(--hair-2); }
+  .doc summary { list-style: none; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .doc summary::-webkit-details-marker { display: none; }
+  .doc summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--ember); transition: rotate .25s ease; }
+  .doc details[open] summary::after { rotate: 45deg; }
+  .doc blockquote { position: relative; padding: 46px 20px 6px; }
+  .doc blockquote::before { content: "C"; position: absolute; left: 50%; top: -6px; translate: -50% 0; font: 500 84px/1 var(--display); color: var(--ember); opacity: .55; }
+  .band { position: relative; height: clamp(220px, 34vw, 400px); overflow: hidden; margin: 0; }
+  .band .band-img { position: absolute; inset: -12% 0; background-size: cover; background-position: center; will-change: transform; transform: translate3d(0, var(--py, 0px), 0); }
+  .band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33,23,15,.18), rgba(33,23,15,0) 40%, rgba(33,23,15,.2)); }
+  .pcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 8px; max-width: none; }
+  .pcard { padding: 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); text-align: center; }
+  .doc .pcard h3 { margin-top: 0; }
+  .doc .pcard p { margin-top: 10px; }
+  .award { position: fixed; right: clamp(10px, 3vw, 40px); bottom: clamp(96px, 20vh, 200px); width: clamp(62px, 7vw, 100px); z-index: 5; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.35)); opacity: 0; transition: opacity .6s ease; will-change: transform; }
+  .award.on { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    html.rvjs .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); transition-delay: var(--d, 0s); }
+    html.rvjs .rv.in { opacity: 1; transform: none; }
+  }
+  .doc img.rv { transition-property: opacity, transform; }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1245,51 +1276,34 @@
 </div>
 
 
-<section class="gutter doc"><div class="wrap">
+<section class="gutter doc sec"><div class="wrap">
 
-
-
-<h2>
+<h2 class="rv" style="--d:0.05s">
 
 						Herbal Wellness Consultations					
 </h2>
-<p>One on One Herbal Consultations with Yemaya Kimmel, Clinical Herbalist</p>
-
-
-<p>Yemaya works one on one with people who would like to safely &amp; effectively use herbal therapies, nutrition, and lifestyle changes to move toward greater wellness.  She specializes in working with women over 40 who are dealing with stress, burnout, &amp; chronic health issues related to aging.</p>
-<p>Yemaya has been working with the healing plants for over 25 years, and she is passionate about helping you learn how to support your health with herbs.  If you would like to learn more about her Herbal Wellness Consultations, I invite you to read on!  This page explains what an Herbal Consult with is, how they work, and how they can help you achieve your wellness goals.  I also encourage you to reach out with any questions, and if you like we can schedule a FREE 15-minute Connection Call to discuss your concerns and determine if an Herbal Wellness Consultation would benefit you.</p>
-
-
-
-
-
-
-<a class="btn" href="https://yemayasapothecary.as.me/schedule/cf17010e/appointment/60700880/calendar/5895293?appointmentTypelds[]=60700880" target="_blank" rel="noopener">
+<p class="lede-first rv" style="--d:0.10s">One on One Herbal Consultations with Yemaya Kimmel, Clinical Herbalist</p>
+<p class="rv" style="--d:0.15s">Yemaya works one on one with people who would like to safely &amp; effectively use herbal therapies, nutrition, and lifestyle changes to move toward greater wellness.  She specializes in working with women over 40 who are dealing with stress, burnout, &amp; chronic health issues related to aging.</p>
+<p class="rv" style="--d:0.20s">Yemaya has been working with the healing plants for over 25 years, and she is passionate about helping you learn how to support your health with herbs.  If you would like to learn more about her Herbal Wellness Consultations, I invite you to read on!  This page explains what an Herbal Consult with is, how they work, and how they can help you achieve your wellness goals.  I also encourage you to reach out with any questions, and if you like we can schedule a FREE 15-minute Connection Call to discuss your concerns and determine if an Herbal Wellness Consultation would benefit you.</p>
+<a class="btn" href="https://yemayasapothecary.as.me/schedule/cf17010e/appointment/60700880/calendar/5895293?appointmentTypelds[]=60700880" rel="noopener" target="_blank">
 						Schedule your FREE 15 minute connection call!					</a>
-<a class="btn" href="https://app.acuityscheduling.com/schedule/4df7e669/?categories[]=Herbal%20Wellness%20Consultations%20w%2FYemaya" target="_blank" rel="noopener">
+<a class="btn" href="https://app.acuityscheduling.com/schedule/4df7e669/?categories[]=Herbal%20Wellness%20Consultations%20w%2FYemaya" rel="noopener" target="_blank">
 						Book your Herbal Wellness Consulation!					</a>
 
-
-
-
-
-
-<h2>
+</div></section>
+<figure class="band" aria-hidden="true"><div class="band-img" style="background-image:url(images/consult-room.jpg)"></div></figure>
+<section class="gutter doc sec alt"><div class="wrap">
+<h2 class="rv" style="--d:0.05s">
 
 						Unlock Your Innate Healing Wisdom					
 </h2>
+<p class="rv" style="--d:0.10s">My philosophy as a clinical herbalist is rooted in the practice of vitalism.  This means that I strive to honor the wholeness and uniqueness of each individual. I believe that the healing process is a journey to be celebrated and that true healing comes from within.  Our bodies are wise and resilient; they communicate to us through their language of signs and symptoms.  When we learn how to listen to our body’s messages, we can begin to understand what is needed.  We can then offer our body the tools it needs to nourish, tone, regenerate, and heal itself.  We are natural beings, and so when we work with plants and other natural therapies, we can shift patterns of dis-ease toward new patterns of balance, vitality, and wellness.</p>
+<p class="rv" style="--d:0.15s">During our time together, we will work to understand your body’s messages and use the map of your symptoms and unique constitution to get to the root cause of your situation.  We will then create a customized wellness plan designed specifically for you and your needs.  I will be there every step of the way to guide you and facilitate your healing process.  My intention is to support, empower, and provide you with the education and tools you need to do your healing work. </p>
 
-
-<p>My philosophy as a clinical herbalist is rooted in the practice of vitalism.  This means that I strive to honor the wholeness and uniqueness of each individual. I believe that the healing process is a journey to be celebrated and that true healing comes from within.  Our bodies are wise and resilient; they communicate to us through their language of signs and symptoms.  When we learn how to listen to our body’s messages, we can begin to understand what is needed.  We can then offer our body the tools it needs to nourish, tone, regenerate, and heal itself.  We are natural beings, and so when we work with plants and other natural therapies, we can shift patterns of dis-ease toward new patterns of balance, vitality, and wellness.</p>
-<p>During our time together, we will work to understand your body’s messages and use the map of your symptoms and unique constitution to get to the root cause of your situation.  We will then create a customized wellness plan designed specifically for you and your needs.  I will be there every step of the way to guide you and facilitate your healing process.  My intention is to support, empower, and provide you with the education and tools you need to do your healing work. </p>
-
-
-
-
-
-<h2>My areas of expertise include:</h2>
-
-<ul>
+</div></section>
+<section class="gutter doc sec"><div class="wrap">
+<h2 class="rv" style="--d:0.05s">My areas of expertise include:</h2>
+<ul class="rv" style="--d:0.10s">
 <li>
 				digestive system issues
 			</li>
@@ -1314,47 +1328,36 @@
 <li>
 				endocrine wellness			</li>
 </ul>
-
-
-
-<img src="images/old/yemaya-best-in-show-610x813.webp" alt="" loading="lazy"> 
-<h3>What is an Herbal Wellness Consultation?</h3>
-<p>An Herbal Wellness Consultation is a one-on-one session with a clinical herbalist.  Since herbalism is not regulated in the US, the quality of service and extent of training varies greatly from herbalist to herbalist.  I personally have over 25 years of training and experience as an herbalist.  I am trained in anatomy, physiology, phytochemistry, clinical assessment, botanical research, and herbal therapeutics.  </p>
-<p>The goal of our time together is to discover the root cause(s) of the complaint(s), and to create a wellness plan that includes herbal remedies, as well as recommendations for nutritional and lifestyle changes.  Ideally these consultations are for people who want to achieve long lasting positive changes.  It is important to understand that this is a partnership.  I am there to guide, support, educate, and empower you, but you must commit to making the necessary changes in order to see results.  Our goal is not a “quick fix” this herb for that problem mentality but rather using herbs as allies on our journey to vitality and wellness. </p>
-<h3>What can I expect from an Herbal Wellness Consultation?</h3>
-<p>When you book your appointment, allow about 15 minutes to fill out an intake form.  The intake form is required in order to confirm your appointment.  It is completely confidential.  Please fill it out to the best of your ability.  The information you provide here is crucial for me to get a better understanding of your situation and to prepare for our time together.  </p>
-<p>The initial intake session will last between 60-90 minutes.  During that time we will dive into your health history and current state of wellness.  I will be asking questions with an intention of gaining a complete understanding of where you are in your wellness journey.  We will discuss your health concerns and goals, and begin to create a plan for how to reach them.</p>
-<p>After the consultation, your customized wellness protocol will be created and emailed to you within one week.  This will have a complete list of recommendations, including nutritional and lifestyle, as well as recommended herbal formula(s) and/or nutritional supplements.  You will also have the option to purchase a customized herbal formula made specifically for you.  This service is for your convenience, and I strive to keep it as affordable as possible.  You are not required to purchase herbal formulas directly from me.  If you choose to buy your herbs elsewhere, I am happy to give you a list of high-quality alternatives.  It is important to understand that the source of your herbs matters greatly, as in order for our plan to work, the preparations need to be high quality.  </p>
-<p>After you’ve had a chance to start the protocol, we will have an opportunity to check in via email to make sure you have everything you need, understand the protocol, and answer any questions.  If you have any tea blends or recommended food preparations, this is also a time to make sure you have that down or need any additional guidance, more resources, etc.</p>
-<p>Most consultations require 1 or more follow up appointments in addition to the intake appointment.  These appointments will be shorter, between 30-45 minutes in length.  The amount of follow ups needed varies greatly from person to person &amp; depends on the severity or complexity of your situation, as well as your personal needs.  The purpose of the follow up appointment is to do a more thorough check in, to see how you are doing, discuss what’s working and not working for you, and make any necessary adjustments to your wellness protocol &amp;/or formulations.  It’s also a time to discuss any other or new health issues that you’d like to address.  </p>
-<h3>How much do Herbal Wellness Consultations cost?</h3>
-<p>Intake appointments are $150 and include a 60-90 minute consultation, recommendations for a protocol plan, resources for recommended products, wellness information, nutrition, etc., a brief check in via text or email (your choice), and email access for questions. </p>
-<p>Follow Up Appointments are $75 and include a 30-45 minute follow up consultation, updated recommendations and resources, as well as email access for questions.</p>
-<p>New Client Package is $200 and includes an intake appointment and follow up appointment.  This is the best deal-a $25 discount!</p>
-<p>25 Minute Phone Sessions are $35.  This is a 25 minute phone call with Yemaya to discuss acute issues (like a cold, flu, or other short term acute wellness issue) or 1-2 simple questions regarding herbs and wellness. Please include your phone number in the notes and be available at the time of the call. PLEASE NOTE: This is an audio call (NO video) even though the calendar may say video conference.</p>
-<p>Cancellation Policy:<br>
+<h3 class="rv" style="--d:0.15s">What is an Herbal Wellness Consultation?</h3>
+<p class="rv" style="--d:0.20s">An Herbal Wellness Consultation is a one-on-one session with a clinical herbalist.  Since herbalism is not regulated in the US, the quality of service and extent of training varies greatly from herbalist to herbalist.  I personally have over 25 years of training and experience as an herbalist.  I am trained in anatomy, physiology, phytochemistry, clinical assessment, botanical research, and herbal therapeutics.  </p>
+<p class="rv" style="--d:0.25s">The goal of our time together is to discover the root cause(s) of the complaint(s), and to create a wellness plan that includes herbal remedies, as well as recommendations for nutritional and lifestyle changes.  Ideally these consultations are for people who want to achieve long lasting positive changes.  It is important to understand that this is a partnership.  I am there to guide, support, educate, and empower you, but you must commit to making the necessary changes in order to see results.  Our goal is not a “quick fix” this herb for that problem mentality but rather using herbs as allies on our journey to vitality and wellness. </p>
+<h3 class="rv" style="--d:0.00s">What can I expect from an Herbal Wellness Consultation?</h3>
+<p class="rv" style="--d:0.05s">When you book your appointment, allow about 15 minutes to fill out an intake form.  The intake form is required in order to confirm your appointment.  It is completely confidential.  Please fill it out to the best of your ability.  The information you provide here is crucial for me to get a better understanding of your situation and to prepare for our time together.  </p>
+<p class="rv" style="--d:0.10s">The initial intake session will last between 60-90 minutes.  During that time we will dive into your health history and current state of wellness.  I will be asking questions with an intention of gaining a complete understanding of where you are in your wellness journey.  We will discuss your health concerns and goals, and begin to create a plan for how to reach them.</p>
+<p class="rv" style="--d:0.15s">After the consultation, your customized wellness protocol will be created and emailed to you within one week.  This will have a complete list of recommendations, including nutritional and lifestyle, as well as recommended herbal formula(s) and/or nutritional supplements.  You will also have the option to purchase a customized herbal formula made specifically for you.  This service is for your convenience, and I strive to keep it as affordable as possible.  You are not required to purchase herbal formulas directly from me.  If you choose to buy your herbs elsewhere, I am happy to give you a list of high-quality alternatives.  It is important to understand that the source of your herbs matters greatly, as in order for our plan to work, the preparations need to be high quality.  </p>
+<p class="rv" style="--d:0.20s">After you’ve had a chance to start the protocol, we will have an opportunity to check in via email to make sure you have everything you need, understand the protocol, and answer any questions.  If you have any tea blends or recommended food preparations, this is also a time to make sure you have that down or need any additional guidance, more resources, etc.</p>
+<p class="rv" style="--d:0.25s">Most consultations require 1 or more follow up appointments in addition to the intake appointment.  These appointments will be shorter, between 30-45 minutes in length.  The amount of follow ups needed varies greatly from person to person &amp; depends on the severity or complexity of your situation, as well as your personal needs.  The purpose of the follow up appointment is to do a more thorough check in, to see how you are doing, discuss what’s working and not working for you, and make any necessary adjustments to your wellness protocol &amp;/or formulations.  It’s also a time to discuss any other or new health issues that you’d like to address.  </p>
+<h3 class="rv" style="--d:0.00s">How much do Herbal Wellness Consultations cost?</h3>
+<p class="rv" style="--d:0.05s">Intake appointments are $150 and include a 60-90 minute consultation, recommendations for a protocol plan, resources for recommended products, wellness information, nutrition, etc., a brief check in via text or email (your choice), and email access for questions. </p>
+<p class="rv" style="--d:0.10s">Follow Up Appointments are $75 and include a 30-45 minute follow up consultation, updated recommendations and resources, as well as email access for questions.</p>
+<p class="rv" style="--d:0.15s">New Client Package is $200 and includes an intake appointment and follow up appointment.  This is the best deal-a $25 discount!</p>
+<p class="rv" style="--d:0.20s">25 Minute Phone Sessions are $35.  This is a 25 minute phone call with Yemaya to discuss acute issues (like a cold, flu, or other short term acute wellness issue) or 1-2 simple questions regarding herbs and wellness. Please include your phone number in the notes and be available at the time of the call. PLEASE NOTE: This is an audio call (NO video) even though the calendar may say video conference.</p>
+<p class="rv" style="--d:0.25s">Cancellation Policy:<br/>
 I run a small, solo practice. Late cancellations may be charged because open spots are hard to fill on short notice. If you need to cancel or reschedule, please do so at least 24 hours in advance to avoid a late-cancellation fee. If a client cancels less than 24 hours before an appointment, there will be a $50 cancellation fee ($15 for 25 minute phone sessions). If a client does not show up for a scheduled appointment and does not call, text, or email BEFORE the scheduled appointment time, the client will be charged full price. I understand things come up, which is why it is important to reach out and communicate with as much advance notice as possible in order to avoid a fee. Fees may be waived at my discretion for emergencies (and contagious illness for in-person clients). For video calls, contact me immediately if you have trouble accessing the call. For phone sessions, I will call twice in a row if needed, and wait for a callback for up to 5 minutes before considering it a no show. </p>
-<p>Please Note:  The cost of herbs, formulations, tinctures, or products is not included in the consultation price.  </p>
-<h3>What if I am taking medications? Can I still take herbs?</h3>
-<p>What many people don’t realize is that you do not have to choose between pharmaceutical medications &amp; herbs.  While some herbs may be off the table (depending on your meds) there are still many plants that can safely be used alongside your medications.  This is where working with an experienced clinical herbalist is essential.  I am trained in herb-drug interactions &amp; can help match you with herbal remedies that are safe for your situation.  I am also happy to consult with your health care team to make sure we are all on the same page, working synergistically to meet your health &amp; wellness goals.</p>
-<h3>Disclosure</h3>
-<p>**I am not a medical doctor.  I do not diagnose disease or prescribe medications.  Herbal Wellness Consultations are not intended to treat disease or replace medical care.  Herbal Wellness Consultations are educational and are intended to support your health.</p>
-
-
-
-
-<a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Herbal%20Wellness%20Consultations%20w%2FYemaya" target="_blank" rel="noopener">
+<p class="rv" style="--d:0.00s">Please Note:  The cost of herbs, formulations, tinctures, or products is not included in the consultation price.  </p>
+<h3 class="rv" style="--d:0.05s">What if I am taking medications? Can I still take herbs?</h3>
+<p class="rv" style="--d:0.10s">What many people don’t realize is that you do not have to choose between pharmaceutical medications &amp; herbs.  While some herbs may be off the table (depending on your meds) there are still many plants that can safely be used alongside your medications.  This is where working with an experienced clinical herbalist is essential.  I am trained in herb-drug interactions &amp; can help match you with herbal remedies that are safe for your situation.  I am also happy to consult with your health care team to make sure we are all on the same page, working synergistically to meet your health &amp; wellness goals.</p>
+<h3 class="rv" style="--d:0.15s">Disclosure</h3>
+<p class="rv" style="--d:0.20s">**I am not a medical doctor.  I do not diagnose disease or prescribe medications.  Herbal Wellness Consultations are not intended to treat disease or replace medical care.  Herbal Wellness Consultations are educational and are intended to support your health.</p>
+<a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Herbal%20Wellness%20Consultations%20w%2FYemaya" rel="noopener" target="_blank">
 						Book your Herbal Wellness Consultation here!					</a>
-<a class="btn" href="https://yemayasapothecary.com/shop" target="_blank" rel="noopener">
+<a class="btn" href="https://yemayasapothecary.com/shop" rel="noopener" target="_blank">
 						Shop High Vibrational Botanicals					</a>
 
-
-
-
-
-<h2>If any of these statements apply to you, you may benefit greatly from an Herbal Wellness Consultation:</h2>
-
-<ul>
+</div></section>
+<section class="gutter doc sec alt"><div class="wrap">
+<h2 class="rv" style="--d:0.05s">If any of these statements apply to you, you may benefit greatly from an Herbal Wellness Consultation:</h2>
+<ul class="rv" style="--d:0.10s">
 <li>
 				I want to increase or maintain my health and vitality
 			</li>
@@ -1393,7 +1396,7 @@ I run a small, solo practice. Late cancellations may be charged because open spo
 </ul>
 
 </div></section>
-<footer class="gutter">
+<img class="award" id="award" src="images/award.png" alt="NCJ Best of Humboldt, Best in Show 2025"><footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-mark"><span class="emb-btn" aria-hidden="true"><span class="emb"></span></span><span><b>Mending Roots</b><small>Collective &middot; Eureka, California</small></span></div>
@@ -2476,6 +2479,15 @@ I run a small, solo practice. Late cancellations may be charged because open spo
     window.addEventListener('resize', close);
   })();
 </script>
+<script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
+document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
+function frame(){tick=false;var vh=innerHeight,y=scrollY;
+bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
+if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
+function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
+addEventListener("scroll",req,{passive:true});addEventListener("resize",req);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
 function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}

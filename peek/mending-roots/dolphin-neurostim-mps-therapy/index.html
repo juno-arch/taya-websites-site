@@ -1147,7 +1147,7 @@
   @media (max-width: 680px) { .top nav { justify-content: flex-start; gap: 0 2px; } .top nav .dd-btn, .top nav a { padding: 8px 9px; } }
   @media (max-width: 560px) { .who-card { grid-template-columns: 76px 1fr; } .who-card img { width: 76px; height: 76px; } .promo { padding: 26px 20px; } .doc { padding-block: 40px 20px; } }
 </style>
-<style id="wf-exact">
+<script>document.documentElement.classList.add('rvjs')</script><style id="wf-exact">
   .doc img { max-width: min(100%, 640px); height: auto; border-radius: 16px; display: block; }
   .doc img.logo { max-width: 220px; border-radius: 0; }
   .doc .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; max-width: none; }
@@ -1173,6 +1173,37 @@
   .sp-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--hair-2); }
   .sp-bar em { margin-left: 10px; font-style: normal; font-size: 13px; color: var(--ink-soft); }
   .site-preview iframe { display: block; width: 100%; height: min(70vh, 620px); border: 0; background: #fff; }
+  .doc.sec { padding-block: 52px 44px; }
+  .doc.sec.alt { background: var(--ground-2); }
+  .doc.sec:first-of-type { padding-top: 56px; }
+  .doc h2::after { content: ""; display: block; width: 46px; height: 2px; background: var(--ember); margin: 14px auto 0; }
+  .doc .lede, .doc p.lede-first { font-size: 21px; line-height: 1.6; color: var(--ink); max-width: 62ch; }
+  .doc ul.chips { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; max-width: none; text-align: center; }
+  .doc ul.chips li { max-width: none; padding: 14px 16px; border-radius: 14px; background: var(--ground); border: 1px solid var(--hair-2); line-height: 1.4; margin: 0; }
+  .doc ul.chips li::before { content: ""; display: block; width: 8px; height: 8px; margin: 0 auto 8px; border-radius: 50%; background: var(--ember); }
+  .doc.sec.alt ul.chips li { background: var(--ground); }
+  .doc details { background: var(--ground); border: 1px solid var(--hair-2); border-radius: 14px; padding: 16px 22px; margin-top: 12px; max-width: 760px; }
+  .doc details:last-of-type { border-bottom: 1px solid var(--hair-2); }
+  .doc summary { list-style: none; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .doc summary::-webkit-details-marker { display: none; }
+  .doc summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--ember); transition: rotate .25s ease; }
+  .doc details[open] summary::after { rotate: 45deg; }
+  .doc blockquote { position: relative; padding: 46px 20px 6px; }
+  .doc blockquote::before { content: "C"; position: absolute; left: 50%; top: -6px; translate: -50% 0; font: 500 84px/1 var(--display); color: var(--ember); opacity: .55; }
+  .band { position: relative; height: clamp(220px, 34vw, 400px); overflow: hidden; margin: 0; }
+  .band .band-img { position: absolute; inset: -12% 0; background-size: cover; background-position: center; will-change: transform; transform: translate3d(0, var(--py, 0px), 0); }
+  .band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33,23,15,.18), rgba(33,23,15,0) 40%, rgba(33,23,15,.2)); }
+  .pcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 8px; max-width: none; }
+  .pcard { padding: 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); text-align: center; }
+  .doc .pcard h3 { margin-top: 0; }
+  .doc .pcard p { margin-top: 10px; }
+  .award { position: fixed; right: clamp(10px, 3vw, 40px); bottom: clamp(96px, 20vh, 200px); width: clamp(62px, 7vw, 100px); z-index: 5; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.35)); opacity: 0; transition: opacity .6s ease; will-change: transform; }
+  .award.on { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    html.rvjs .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); transition-delay: var(--d, 0s); }
+    html.rvjs .rv.in { opacity: 1; transform: none; }
+  }
+  .doc img.rv { transition-property: opacity, transform; }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1246,100 +1277,77 @@
 </div>
 
 
-<section class="gutter doc"><div class="wrap">
+<section class="gutter doc sec"><div class="wrap">
 
-
-
-<h2>
+<h2 class="rv" style="--d:0.05s">
 
 						Dolphin Neurostim Therapy for Scar Release, Pain Management, &amp; Vagus Nerve Therapy					
 </h2>
-
-
-
-
-
-<img src="images/old/mpsapplication-scaled-e1710363727354-610x651.jpeg" alt="" loading="lazy"> 
-
-
-
-<p>The Dolphin Neurostim is the world’s first device specifically designed to reduce sympathetic stress for the reduction of soft tissue pain. Dolphin applies brief, concentrated DC micro-impulses to key neurological points (called MPS Therapy) that reduce nervous system stress to relax muscles and relieve pain. </p>
-<p>MPS Therapy can help treat the Autonomic Nervous System and reduce the  Sympathetic Nervous System (fight, flight, or freeze) and help engage the Parasympathetic Nervous System (rest &amp; digest), which is when your body will be in a place for healing to happen. </p>
-<p>This is a gentle and non-invasive effective treatment for chronic and acute pain.</p>
-
-
-<a class="btn" href="https://www.mpscourses.com/mps-pain-therapy" target="_blank" rel="noopener">
+<img alt="" class="rv" loading="lazy" src="images/old/mpsapplication-scaled-e1710363727354-610x651.jpeg" style="--d:0.10s"/>
+<p class="lede-first rv" style="--d:0.15s">The Dolphin Neurostim is the world’s first device specifically designed to reduce sympathetic stress for the reduction of soft tissue pain. Dolphin applies brief, concentrated DC micro-impulses to key neurological points (called MPS Therapy) that reduce nervous system stress to relax muscles and relieve pain. </p>
+<p class="rv" style="--d:0.20s">MPS Therapy can help treat the Autonomic Nervous System and reduce the  Sympathetic Nervous System (fight, flight, or freeze) and help engage the Parasympathetic Nervous System (rest &amp; digest), which is when your body will be in a place for healing to happen. </p>
+<p class="rv" style="--d:0.25s">This is a gentle and non-invasive effective treatment for chronic and acute pain.</p>
+<a class="btn" href="https://www.mpscourses.com/mps-pain-therapy" rel="noopener" target="_blank">
 						Click here to visit Dolphin Neurostim's website for more research information!					</a>
-<a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Scar%20Release%20Therapy" target="_blank" rel="noopener">
+<a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Scar%20Release%20Therapy" rel="noopener" target="_blank">
 						Book your session now!					</a>
-
-
-
-
-<details><summary>Scar Release Therapy</summary>
+<details class="rv" style="--d:0.00s"><summary>Scar Release Therapy</summary>
 <p>Scars are something we have all experienced and can be formed from surgeries &amp; medical procedures, injuries to the body such as broken bones, torn soft tissue, sprained joints, and any other area that was injured with trauma. Even emotional trauma can be considered a scar. </p>
 <p>As we accumulate scars and traumas in our bodies, this can lead to an increase of negative impacts we may begin to experience and not even realize it can be because of the scars. Scars negative impacts on our bodies are</p>
-<p>-Chronic Pain<br>
--Activate Stress<br>
--Injured Fascia<br>
--Stagnant Lymph Flow<br>
+<p>-Chronic Pain<br/>
+-Activate Stress<br/>
+-Injured Fascia<br/>
+-Stagnant Lymph Flow<br/>
 -Restriction of Functional Movements</p>
 <p>To treat scars, the Center For Pain &amp; Stress Research (CPSR) developed Scar Release Therapy (SRT), a clinically tested solution for reducing the ill-effects scars have on our bodies. SRT applies Microcurrent Point stimulation (MPS), a patented solution that increases inter-cellular metabolism, protein synthesis and healing functioning to re-awaken the skin’s ability to self-generate.</p>
 <p>Scar Release Therapy is painless, and visible changes in scar appearance is observed in real time. Once a scar has been released there is fascia release &amp; stress reduction, increasing blood circulation and lymph drainage. Scar Release Therapy is the highly recommended for treating scars on your body quickly and efficiently.</p>
-<p>Here are some common scars that are treated but all scars can be treated no matter how old or new they are.<br>
--C-section<br>
--Hysterectomy<br>
--Gallbladder<br>
--Cosmetic surgeries<br>
--Knee Surgery<br>
--Hip Surgery<br>
--Mastectomy<br>
--Breast Reduction/Implants/Explants<br>
--Broken bones<br>
+<p>Here are some common scars that are treated but all scars can be treated no matter how old or new they are.<br/>
+-C-section<br/>
+-Hysterectomy<br/>
+-Gallbladder<br/>
+-Cosmetic surgeries<br/>
+-Knee Surgery<br/>
+-Hip Surgery<br/>
+-Mastectomy<br/>
+-Breast Reduction/Implants/Explants<br/>
+-Broken bones<br/>
 -Broken Nose</p>
 </details>
-<details><summary>Pain Management</summary>
+<details class="rv" style="--d:0.05s"><summary>Pain Management</summary>
 <p>MPS Pain Therapy is an autonomic nervous system (ANS) based chronic pain therapy that treats the entire body using original protocols for the purpose of reducing sympathetic nervous system stress for muscular relaxation and pain relief such as back pain, lower back pain, neck pain, and arthritis pain.</p>
 <p>When our body is in a high stress state, our body is not in place to focus on healing it self. There are many reasons why a persons body can get stuck in the sympathetic state but the MPS tool can help the body to deregulate the sympathetic nervous system and bring it into a calmer state. </p>
-<p>Treatment for pain management using the the MPS will address the following<br>
--Treat the parasympathetic calming acupuncture points<br>
--Treat scars/adhesions in the body<br>
--Treat spine/radiculopathy (nerve root entrapment)<br>
+<p>Treatment for pain management using the the MPS will address the following<br/>
+-Treat the parasympathetic calming acupuncture points<br/>
+-Treat scars/adhesions in the body<br/>
+-Treat spine/radiculopathy (nerve root entrapment)<br/>
 -Treat distal acupuncture points for pain relief</p>
 </details>
-<details><summary>Vagus Nerve Therapy</summary>
+<details class="rv" style="--d:0.10s"><summary>Vagus Nerve Therapy</summary>
 <p>The Vagus Nerve is the 10th cranial nerve and the longest cranial nerve in the human body. It is also the most complex of all nerves in the body that proceeds from the brain, responsible for transmitting motor information from the brain to tissues and organs throughout the body. The vagus nerve represents 80% of our Parasympathetic Nervous System (PNS), directly controlling digestion, detoxification, and immunity.</p>
 <p>When we have a decrease in tone in our Vagus Nerve, this can have a big impact on our bodies. We can see negative changes in our digestive, breathing, heart rate, blood pressure, emotional state, immune response, and detoxification.</p>
 <p>By stimulating and bringing better tone to the Vagus Nerve it can help your body in communicating better with itself and all the many functions this important nerve has on our body.</p>
 </details>
-<details><summary>Long Haul Covid Treatment</summary>
+<details class="rv" style="--d:0.15s"><summary>Long Haul Covid Treatment</summary>
 <p>It has been shown in studies the negative impact Covid-19 can have on some peoples Vagus Nerve and can be attributed to why they continue to experience symptoms long after their initial infection. Dolphin Vagal Nerve Stimulation (VNS) is a promising new therapy to combat the lingering adverse effects patients are experiencing with COVID long-haul symptoms.</p>
 <p>The study published through the Canadian Journal of Health and Technologies showed that by stimulating the Vagus Nerve this can help with symptoms associated with Long Haul Covid-19 and Asthma related disorders. Please read the following study for more information.</p>
 <p>https://www.dolphinmps.com/vagus-nerve-stimulation-for-the-treatment-of-post-covid-19-condition/</p>
 </details>
-<details><summary>FAQ</summary>
+<details class="rv" style="--d:0.20s"><summary>FAQ</summary>
 <p>What is the Dolphin?</p>
 <p>The Dolphin Neurostim is a micro point stimulator device that uses a DC current to target specific treatment points and scar tissue in the body. The current that the Dolphin produces resonates more with our nervous system which can influence dramatic cellular changes in our organs, tissues, and fascia. The Dolphin uses way less stimulation compared to a traditional TENS unit that runs on an AC current and can be overstimulating to our body. It’s designed to reduced stress in our body so our body can heal.</p>
 <p>What should I feel in treatment?</p>
 <p>There may be very minimal stimulation if anything at all on some points around the body. More active points can have an increase in sensitivity, which can give a more tingly and pokey sensation. The more therapeutically active points can give mild discomfort and settings can be adjusted to help the body adapt.</p>
 <p>You do not need to feel the stimulation for therapeutic outcomes.</p>
 </details>
-
-
-
-
-<p>Initial Treatment 60 mins – $125<br>
+<p class="rv" style="--d:0.25s">Initial Treatment 60 mins – $125<br/>
 Follow Up Treatment – 30 min ($65) 60 min ($125)</p>
-<p>The number of sessions needed will all depend on the individual client. It can take as little as two sessions or it can take many more depending on the state of the clients body. You should notice change in the body after the first treatment.</p>
-<p>Please call or text 707-440-9035 for more information. If you are ready to book your session please click the link below.</p>
-
-
-<a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Scar%20Release%20Therapy" target="_blank" rel="noopener">
+<p class="rv" style="--d:0.00s">The number of sessions needed will all depend on the individual client. It can take as little as two sessions or it can take many more depending on the state of the clients body. You should notice change in the body after the first treatment.</p>
+<p class="rv" style="--d:0.05s">Please call or text 707-440-9035 for more information. If you are ready to book your session please click the link below.</p>
+<a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Scar%20Release%20Therapy" rel="noopener" target="_blank">
 						Click here to book your session!					</a>
 
-
-
 </div></section>
+<figure class="band" aria-hidden="true"><div class="band-img" style="background-image:url(images/consult-room.jpg)"></div></figure>
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
@@ -2423,6 +2431,15 @@ Follow Up Treatment – 30 min ($65) 60 min ($125)</p>
     window.addEventListener('resize', close);
   })();
 </script>
+<script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
+document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
+function frame(){tick=false;var vh=innerHeight,y=scrollY;
+bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
+if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
+function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
+addEventListener("scroll",req,{passive:true});addEventListener("resize",req);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
 function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}

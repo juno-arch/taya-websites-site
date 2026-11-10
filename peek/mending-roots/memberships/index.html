@@ -1147,7 +1147,7 @@
   @media (max-width: 680px) { .top nav { justify-content: flex-start; gap: 0 2px; } .top nav .dd-btn, .top nav a { padding: 8px 9px; } }
   @media (max-width: 560px) { .who-card { grid-template-columns: 76px 1fr; } .who-card img { width: 76px; height: 76px; } .promo { padding: 26px 20px; } .doc { padding-block: 40px 20px; } }
 </style>
-<style id="wf-exact">
+<script>document.documentElement.classList.add('rvjs')</script><style id="wf-exact">
   .doc img { max-width: min(100%, 640px); height: auto; border-radius: 16px; display: block; }
   .doc img.logo { max-width: 220px; border-radius: 0; }
   .doc .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; max-width: none; }
@@ -1173,6 +1173,37 @@
   .sp-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--hair-2); }
   .sp-bar em { margin-left: 10px; font-style: normal; font-size: 13px; color: var(--ink-soft); }
   .site-preview iframe { display: block; width: 100%; height: min(70vh, 620px); border: 0; background: #fff; }
+  .doc.sec { padding-block: 52px 44px; }
+  .doc.sec.alt { background: var(--ground-2); }
+  .doc.sec:first-of-type { padding-top: 56px; }
+  .doc h2::after { content: ""; display: block; width: 46px; height: 2px; background: var(--ember); margin: 14px auto 0; }
+  .doc .lede, .doc p.lede-first { font-size: 21px; line-height: 1.6; color: var(--ink); max-width: 62ch; }
+  .doc ul.chips { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; max-width: none; text-align: center; }
+  .doc ul.chips li { max-width: none; padding: 14px 16px; border-radius: 14px; background: var(--ground); border: 1px solid var(--hair-2); line-height: 1.4; margin: 0; }
+  .doc ul.chips li::before { content: ""; display: block; width: 8px; height: 8px; margin: 0 auto 8px; border-radius: 50%; background: var(--ember); }
+  .doc.sec.alt ul.chips li { background: var(--ground); }
+  .doc details { background: var(--ground); border: 1px solid var(--hair-2); border-radius: 14px; padding: 16px 22px; margin-top: 12px; max-width: 760px; }
+  .doc details:last-of-type { border-bottom: 1px solid var(--hair-2); }
+  .doc summary { list-style: none; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .doc summary::-webkit-details-marker { display: none; }
+  .doc summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--ember); transition: rotate .25s ease; }
+  .doc details[open] summary::after { rotate: 45deg; }
+  .doc blockquote { position: relative; padding: 46px 20px 6px; }
+  .doc blockquote::before { content: "C"; position: absolute; left: 50%; top: -6px; translate: -50% 0; font: 500 84px/1 var(--display); color: var(--ember); opacity: .55; }
+  .band { position: relative; height: clamp(220px, 34vw, 400px); overflow: hidden; margin: 0; }
+  .band .band-img { position: absolute; inset: -12% 0; background-size: cover; background-position: center; will-change: transform; transform: translate3d(0, var(--py, 0px), 0); }
+  .band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33,23,15,.18), rgba(33,23,15,0) 40%, rgba(33,23,15,.2)); }
+  .pcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 8px; max-width: none; }
+  .pcard { padding: 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); text-align: center; }
+  .doc .pcard h3 { margin-top: 0; }
+  .doc .pcard p { margin-top: 10px; }
+  .award { position: fixed; right: clamp(10px, 3vw, 40px); bottom: clamp(96px, 20vh, 200px); width: clamp(62px, 7vw, 100px); z-index: 5; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.35)); opacity: 0; transition: opacity .6s ease; will-change: transform; }
+  .award.on { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    html.rvjs .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); transition-delay: var(--d, 0s); }
+    html.rvjs .rv.in { opacity: 1; transform: none; }
+  }
+  .doc img.rv { transition-property: opacity, transform; }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1245,27 +1276,15 @@
 </div>
 
 
-<section class="gutter doc"><div class="wrap">
+<section class="gutter doc sec"><div class="wrap">
 
+<h2 class="rv" style="--d:0.05s">
 
-
-<h2>
-
-						New members save an additional 5% off signing up for a Wellness Membership. Offer is good until 1/31/2025<br>
+						New members save an additional 5% off signing up for a Wellness Membership. Offer is good until 1/31/2025<br/>
 Use Code: Member2025					
 </h2>
-
-
-
-
-
-
-<p>Upgrade your wellness with a Mending Roots Body Therapies membership! The different membership plans are designed to encourage you to take advantage of our different wellness services and products to help elevate your health and save money! Commit to yourself to prioritize your well-being!</p>
-
-
-
-
-<details><summary>Important Membership Information</summary>
+<p class="lede-first rv" style="--d:0.10s">Upgrade your wellness with a Mending Roots Body Therapies membership! The different membership plans are designed to encourage you to take advantage of our different wellness services and products to help elevate your health and save money! Commit to yourself to prioritize your well-being!</p>
+<details class="rv" style="--d:0.15s"><summary>Important Membership Information</summary>
 <p>This is a monthly membership with the option to make it a yearly membership. When you sign up, the membership will start from date of service. You will be charged once a month unless you opt for the yearly membership. You can cancel at any time. </p>
 <p>For monthly subscribers – cancel before your monthly renewal date to avoid being charged for membership renewal. No refunds once membership has been purchased for the month.</p>
 <p>For yearly subscribers – cancel before your end of year membership date to avoid being charged for membership renewal. If you purchase a yearly membership there will be no refunds if you stop using it at anytime during your yearly subscription.</p>
@@ -1273,80 +1292,45 @@ Use Code: Member2025
 <p>Service Discounts can not be used on the I AM WELLNESS coaching program since it is already heavily discounted.</p>
 <p>Membership offerings can not be redeemed for cash and can only be redeemed towards services and/or products. Membership offerings are subject to change.</p>
 </details>
-
-
-
-<img src="images/old/3.png" alt="" loading="lazy"> 
-
-
-
-<p>Basic Plan</p>
-
-
-<p>Bronze 33 Membership Includes:</p>
-<p>-$15 off one service every month<br>
--FREE 20 Min Red Light Therapy Session<br>
--15% off your total Wellness Boutique purchase<br>
+<img alt="" class="rv" loading="lazy" src="images/old/3.png" style="--d:0.20s"/>
+<p class="rv" style="--d:0.25s">Basic Plan</p>
+<p class="rv" style="--d:0.00s">Bronze 33 Membership Includes:</p>
+<p class="rv" style="--d:0.05s">-$15 off one service every month<br/>
+-FREE 20 Min Red Light Therapy Session<br/>
+-15% off your total Wellness Boutique purchase<br/>
 -5% off all services</p>
-<p>Monthly Price – $33<br>
+<p class="rv" style="--d:0.10s">Monthly Price – $33<br/>
 Yearly Price – $356 (save 10%)</p>
-
-
-<a class="btn" href="https://square.link/u/F538Xu9h" target="_blank" rel="noopener">
+<a class="btn" href="https://square.link/u/F538Xu9h" rel="noopener" target="_blank">
 						Sign up!					</a>
-
-
-
-
-
-<img src="images/old/2.png" alt="" loading="lazy"> 
-
-
-
-<p>Better Deal!<br>
+<img alt="" class="rv" loading="lazy" src="images/old/2.png" style="--d:0.15s"/>
+<p class="rv" style="--d:0.20s">Better Deal!<br/>
 Upfront savings of $16!</p>
-
-
-<p>Silver 66 Membership includes:</p>
-<p>-$22 off one service every month<br>
--Free 50 min Sauna/Red Light Therapy session every month<br>
--15% off your total Wellness Boutique Purchase<br>
+<p class="rv" style="--d:0.25s">Silver 66 Membership includes:</p>
+<p class="rv" style="--d:0.00s">-$22 off one service every month<br/>
+-Free 50 min Sauna/Red Light Therapy session every month<br/>
+-15% off your total Wellness Boutique Purchase<br/>
 -10% off all services</p>
-<p>Monthly Price – $66<br>
+<p class="rv" style="--d:0.05s">Monthly Price – $66<br/>
 Yearly Price – $712 (save 10%)</p>
-
-
-<a class="btn" href="https://square.link/u/TrnU3ds1" target="_blank" rel="noopener">
+<a class="btn" href="https://square.link/u/TrnU3ds1" rel="noopener" target="_blank">
 						Sign up!					</a>
-
-
-
-
-
-<img src="images/old/1.png" alt="" loading="lazy"> 
-
-
-
-<p>Best Deal!<br>
+<img alt="" class="rv" loading="lazy" src="images/old/1.png" style="--d:0.10s"/>
+<p class="rv" style="--d:0.15s">Best Deal!<br/>
 Upfront savings of $54!</p>
-
-
-<p>Gold 99 Membership includes:</p>
-<p>-$33 off one service every month<br>
--Free 50 min Sauna/Red Light Therapy session every month<br>
--Free Digital Postural Alignment Therapy (includes posture assessment &amp; an exercise menu)<br>
--15% off your total Wellness Boutique Purchase<br>
+<p class="rv" style="--d:0.20s">Gold 99 Membership includes:</p>
+<p class="rv" style="--d:0.25s">-$33 off one service every month<br/>
+-Free 50 min Sauna/Red Light Therapy session every month<br/>
+-Free Digital Postural Alignment Therapy (includes posture assessment &amp; an exercise menu)<br/>
+-15% off your total Wellness Boutique Purchase<br/>
 -15% off all services</p>
-<p>Monthly Price – $99<br>
+<p class="rv" style="--d:0.00s">Monthly Price – $99<br/>
 Yearly Price – $1069 (save 10%)</p>
-
-
-<a class="btn" href="https://square.link/u/vJ2umkFO" target="_blank" rel="noopener">
+<a class="btn" href="https://square.link/u/vJ2umkFO" rel="noopener" target="_blank">
 						Sign up!					</a>
-
-
 
 </div></section>
+<figure class="band" aria-hidden="true"><div class="band-img" style="background-image:url(images/sunset.jpg)"></div></figure>
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
@@ -2430,6 +2414,15 @@ Yearly Price – $1069 (save 10%)</p>
     window.addEventListener('resize', close);
   })();
 </script>
+<script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
+document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
+function frame(){tick=false;var vh=innerHeight,y=scrollY;
+bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
+if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
+function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
+addEventListener("scroll",req,{passive:true});addEventListener("resize",req);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
 function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}

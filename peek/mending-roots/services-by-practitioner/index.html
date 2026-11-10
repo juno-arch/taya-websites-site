@@ -1147,7 +1147,7 @@
   @media (max-width: 680px) { .top nav { justify-content: flex-start; gap: 0 2px; } .top nav .dd-btn, .top nav a { padding: 8px 9px; } }
   @media (max-width: 560px) { .who-card { grid-template-columns: 76px 1fr; } .who-card img { width: 76px; height: 76px; } .promo { padding: 26px 20px; } .doc { padding-block: 40px 20px; } }
 </style>
-<style id="wf-exact">
+<script>document.documentElement.classList.add('rvjs')</script><style id="wf-exact">
   .doc img { max-width: min(100%, 640px); height: auto; border-radius: 16px; display: block; }
   .doc img.logo { max-width: 220px; border-radius: 0; }
   .doc .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; max-width: none; }
@@ -1173,6 +1173,37 @@
   .sp-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--hair-2); }
   .sp-bar em { margin-left: 10px; font-style: normal; font-size: 13px; color: var(--ink-soft); }
   .site-preview iframe { display: block; width: 100%; height: min(70vh, 620px); border: 0; background: #fff; }
+  .doc.sec { padding-block: 52px 44px; }
+  .doc.sec.alt { background: var(--ground-2); }
+  .doc.sec:first-of-type { padding-top: 56px; }
+  .doc h2::after { content: ""; display: block; width: 46px; height: 2px; background: var(--ember); margin: 14px auto 0; }
+  .doc .lede, .doc p.lede-first { font-size: 21px; line-height: 1.6; color: var(--ink); max-width: 62ch; }
+  .doc ul.chips { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; max-width: none; text-align: center; }
+  .doc ul.chips li { max-width: none; padding: 14px 16px; border-radius: 14px; background: var(--ground); border: 1px solid var(--hair-2); line-height: 1.4; margin: 0; }
+  .doc ul.chips li::before { content: ""; display: block; width: 8px; height: 8px; margin: 0 auto 8px; border-radius: 50%; background: var(--ember); }
+  .doc.sec.alt ul.chips li { background: var(--ground); }
+  .doc details { background: var(--ground); border: 1px solid var(--hair-2); border-radius: 14px; padding: 16px 22px; margin-top: 12px; max-width: 760px; }
+  .doc details:last-of-type { border-bottom: 1px solid var(--hair-2); }
+  .doc summary { list-style: none; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .doc summary::-webkit-details-marker { display: none; }
+  .doc summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--ember); transition: rotate .25s ease; }
+  .doc details[open] summary::after { rotate: 45deg; }
+  .doc blockquote { position: relative; padding: 46px 20px 6px; }
+  .doc blockquote::before { content: "C"; position: absolute; left: 50%; top: -6px; translate: -50% 0; font: 500 84px/1 var(--display); color: var(--ember); opacity: .55; }
+  .band { position: relative; height: clamp(220px, 34vw, 400px); overflow: hidden; margin: 0; }
+  .band .band-img { position: absolute; inset: -12% 0; background-size: cover; background-position: center; will-change: transform; transform: translate3d(0, var(--py, 0px), 0); }
+  .band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33,23,15,.18), rgba(33,23,15,0) 40%, rgba(33,23,15,.2)); }
+  .pcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 8px; max-width: none; }
+  .pcard { padding: 26px 22px; border-radius: 20px; background: var(--ground-2); border: 1px solid var(--hair-2); text-align: center; }
+  .doc .pcard h3 { margin-top: 0; }
+  .doc .pcard p { margin-top: 10px; }
+  .award { position: fixed; right: clamp(10px, 3vw, 40px); bottom: clamp(96px, 20vh, 200px); width: clamp(62px, 7vw, 100px); z-index: 5; pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.35)); opacity: 0; transition: opacity .6s ease; will-change: transform; }
+  .award.on { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    html.rvjs .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); transition-delay: var(--d, 0s); }
+    html.rvjs .rv.in { opacity: 1; transform: none; }
+  }
+  .doc img.rv { transition-property: opacity, transform; }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -2328,6 +2359,15 @@
     window.addEventListener('resize', close);
   })();
 </script>
+<script>(function(){var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
+document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);else el.classList.add("in");});
+var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
+function frame(){tick=false;var vh=innerHeight,y=scrollY;
+bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
+if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
+function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
+addEventListener("scroll",req,{passive:true});addEventListener("resize",req);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
 function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}
