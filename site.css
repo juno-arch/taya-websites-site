@@ -701,10 +701,6 @@ html.lava-on .field::before { animation-duration: 6s; } html.lava-on .field::aft
    stills under prefers-reduced-motion. */
 body::before { content: ''; position: fixed; inset: 0 0 auto 0; height: 5px; z-index: 70; pointer-events: none;
   background: linear-gradient(90deg, #ff4fa3, #ff8c46, #ffd93d, #b6f23a, #14d3c6, #7cc8ff, #c9a8ff, #ff4fa3); }
-.sec-head::before { content: ''; display: block; width: 96px; height: 22px; margin: 0 0 16px; background: var(--zig, #14d3c6);
-  -webkit-mask: url(images/pattern/zig.svg) left center / 30px 22px repeat-x; mask: url(images/pattern/zig.svg) left center / 30px 22px repeat-x; }
-.sec-head.center::before { margin-inline: auto; }
-.prices .sec-head { --zig: #ff8ec7; } .how .sec-head { --zig: #ffd93d; } .about .sec-head { --zig: #c9a8ff; }
 .tier-art img { object-position: 50% 50%; }
 .hero-art { object-position: 62% 50%; }
 .site-foot { position: relative; padding-top: 74px; }
@@ -788,11 +784,10 @@ html { overflow-x: clip; }
    ribbon of the pattern across the top, a flat color, and a faint copy of the pattern behind the words. */
 .twilight { background: var(--wf-ground); }
 .twilight::before { display: none; }
-.field { background: var(--base, var(--wf-ground)); color: var(--wf-ink); padding-top: calc(var(--wf-section-pad) + 44px); overflow: clip; }
-.field::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; animation: none; transform: none;
-  background: var(--rib); background-size: var(--rib-size, auto); }
-.field::after { content: ''; position: absolute; inset: 44px 0 0 0; z-index: -1; pointer-events: none; animation: none; transform: none;
-  background: var(--body-pat); background-size: var(--body-size, auto); opacity: var(--body-op, .22); }
+.field { background: linear-gradient(var(--veil), var(--veil)), var(--tex) 0 0 / var(--tsize, auto); color: var(--wf-ink); padding-top: calc(var(--wf-section-pad) + 110px); overflow: clip; }
+.field::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 110px; z-index: 1; animation: none; transform: none; border-bottom: 3px solid #2a1236;
+  background: var(--rib, var(--tex)) 0 0 / var(--rsize, var(--tsize, auto)); }
+.field::after { display: none; }
 .field > .ceiling { z-index: 0; }
 /* light bands: ink on color */
 .field.light { --wf-ink: #2a1236; --wf-ink-soft: #3e2148; --wf-eyebrow: #b80f64; --wf-italic: #b80f64; --wf-link: #00697a; --wf-text-shadow: none; --wf-text-shadow-strong: none; --wf-gold-hi: #00697a; }
@@ -816,19 +811,17 @@ html { overflow-x: clip; }
 .field.dark .founding-line { background: rgb(255 255 255 / .1); border-color: #ffd93d; color: #fff1ec; }
 .field .faq summary::after { border-color: currentColor; }
 
-/* the patterns */
-.work { --base: #ffc4b0; --rib: conic-gradient(#1a0a16 25%, #fff 0 50%, #1a0a16 0 75%, #fff 0) 0 0 / 44px 44px; --body-pat: conic-gradient(#fff 25%, transparent 0 50%, #fff 0 75%, transparent 0) 0 0 / 96px 96px; --body-op: .14; }
-.prices { --base: #f1deff; --rib: url(images/pattern/swirl.svg); --rib-size: 240px 238px; --body-pat: url(images/pattern/swirl.svg); --body-size: 360px 357px; --body-op: .16; }
-.tools { --base: #c7ecff; --rib: url(images/pattern/disco.svg); --rib-size: 88px 88px; --body-pat: url(images/pattern/disco.svg); --body-size: 192px 192px; --body-op: .16; }
-.how { --base: #1e1018; --rib: url(images/pattern/leopard.svg) 0 0 / 110px 110px, linear-gradient(#e8a46a, #e8a46a); --body-pat: radial-gradient(circle at 20% 30%, rgb(255 79 163 / .55), transparent 40%), radial-gradient(circle at 80% 70%, rgb(20 211 198 / .4), transparent 40%); --body-op: .5; }
-.about { --base: #ffe36e; --rib: repeating-linear-gradient(90deg, #ff4fa3 0 44px, #ff8c46 0 88px, #ffd93d 0 132px, #b6f23a 0 176px, #14d3c6 0 220px, #7cc8ff 0 264px, #c9a8ff 0 308px); --body-pat: repeating-conic-gradient(from 0deg at 50% 120%, #fff 0 6deg, transparent 0 12deg); --body-op: .3; }
-.faq-sec { --base: #b9f2e8; --rib: url(images/pattern/zig.svg) 0 0 / 60px 44px, linear-gradient(#ff8ec7, #ff8ec7); --body-pat: url(images/pattern/zig.svg); --body-size: 90px 66px; --body-op: .1; }
-.work, .prices, .tools, .about, .faq-sec { }
+/* the real textures, cut from her board's pictures (images/texture/): each band lays one down like wallpaper,
+   raw across the top ribbon and under a soft veil of the band's color behind the words */
+.work { --tex: url(images/texture/kitchen.jpg); --tsize: 380px auto; --veil: rgb(255 196 176 / .8); --rib: url(images/texture/zig.jpg); --rsize: 300px auto; }
+.prices { --tex: url(images/texture/swirl.jpg); --tsize: 675px auto; --veil: rgb(250 238 255 / .8); }
+.tools { --tex: url(images/texture/disco.jpg); --tsize: 700px auto; --veil: rgb(220 242 255 / .82); }
+.how { --tex: url(images/texture/starry.jpg); --tsize: 675px auto; --veil: rgb(30 16 24 / .0); --rib: url(images/texture/fur.jpg); --rsize: 380px auto; }
+.about { --tex: url(images/texture/tiedye.jpg); --tsize: 736px auto; --veil: rgb(255 232 120 / .78); }
+.faq-sec { --tex: url(images/texture/portals.jpg); --tsize: 736px auto; --veil: rgb(200 246 238 / .82); }
 .field.dark { color: var(--wf-ink); }
 .how .sec-head, .how-main { position: relative; z-index: 1; }
 /* lava light behind the dark band */
-.how::after { animation: lava-a 38s ease-in-out infinite alternate; }
-@media (prefers-reduced-motion: reduce) { .how::after { animation: none; } }
 
 /* work: the pieces sit straight on the band */
 .work .piece { padding-block: clamp(10px, 2vw, 24px); }
@@ -844,9 +837,9 @@ html { overflow-x: clip; }
 .tier-art { border-radius: 0; aspect-ratio: auto; height: 150px; display: flex; align-items: flex-end; border-bottom: 3px solid #2a1236; }
 .tier-art::after { display: none; }
 .tier-art h3 { position: static; padding: 10px 22px; margin: 0 0 0 0; background: #2a1236; color: #fff; text-shadow: none; font-size: clamp(26px, 2.4vw, 34px); }
-.tier.maiden .tier-art { background: #f6f0ff url(images/pattern/zig.svg) 0 0 / 60px 44px; }
-.tier.mother .tier-art { background: #ffb8d8 url(images/pattern/leopard.svg) 0 0 / 110px 110px; }
-.tier.crone .tier-art { background: url(images/pattern/swirl.svg) 0 0 / 240px 238px; }
+.tier.maiden .tier-art { background: url(images/texture/zig.jpg) 0 0 / 220px auto; }
+.tier.mother .tier-art { background: url(images/texture/fur.jpg) 0 0 / 260px auto; }
+.tier.crone .tier-art { background: url(images/texture/swirl.jpg) 0 0 / 360px auto; }
 .tier-body { padding: 22px 26px 26px; }
 @media (max-width: 1080px) { .tiers { max-width: 640px; } .tier { border-left: 0; border-top: 3px solid #2a1236; } .tier:first-child { border-top: 0; } .tier-art { height: 120px; } }
 
@@ -872,25 +865,25 @@ html { overflow-x: clip; }
 .tools .tools-card { max-width: none; }
 
 /* contact: a full-width lava band */
-.scene { background: #1e1018 url(images/pattern/lava.svg) center / cover; isolation: isolate; overflow: clip; }
-.scene::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; display: block; background: url(images/pattern/zig.svg) 0 0 / 60px 44px, #ff4fa3; transform: none; }
+.scene { background: #1e1018 url(images/texture/swirl-low.jpg) 0 0 / 300px auto; isolation: isolate; overflow: clip; }
+.scene::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; display: block; background: url(images/texture/zig.jpg) 0 0 / 220px auto; height: 110px; border-bottom: 3px solid #2a1236; transform: none; }
 .scene::after { display: none; }
 .scene > .ceiling { z-index: 0; }
-.scene-body { margin-top: 0; min-height: 0; display: block; padding: calc(44px + clamp(56px, 8vw, 110px)) var(--wf-gut) clamp(60px, 8vw, 110px); }
+.scene-body { margin-top: 0; min-height: 0; display: block; padding: calc(110px + clamp(56px, 8vw, 110px)) var(--wf-gut) clamp(60px, 8vw, 110px); }
 .contact-card { max-width: 560px; background: none; box-shadow: none; padding: 0; border-radius: 0; --wf-c-ink: #fff1ec; --wf-c-text: #fbe6ee; --wf-c-soft: #ecd0e2; --wf-c-rose: #7ff3e8; --wf-c-link: #7ff3e8; --wf-c-ghost-edge: #fff1ec; }
 .contact-card::before, .contact-card .glint { display: none; }
 .contact-card .btn.ghost { color: #fff1ec; }
 .contact-card h2 { text-shadow: 0 2px 18px rgb(20 6 24 / .7); }
 
 /* a disco ball in the footer, made of the same mosaic */
-.disco { overflow: hidden; background: url(images/pattern/disco.svg) center / 28px 28px; box-shadow: 0 0 0 3px #fff, 0 0 24px 2px rgb(255 142 199 / .55); }
+.disco { overflow: hidden; background: url(images/texture/disco.jpg) center / 190px auto; box-shadow: 0 0 0 3px #fff, 0 0 24px 2px rgb(255 142 199 / .55); }
 .disco i { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 34% 28%, rgb(255 255 255 / .9) 0 8%, transparent 30%), radial-gradient(circle at 70% 78%, rgb(60 10 80 / .55), transparent 65%); }
 html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate; }
 @keyframes disco-pulse { to { transform: scale(1.12) rotate(8deg); } }
 .hero-art { object-position: 50% 50%; }
 .door-art { object-position: 50% 50%; }
 .field > .ceiling, .scene > .ceiling { z-index: -1; }
-.scene { background: linear-gradient(rgb(var(--wf-ground-rgb) / .5), rgb(var(--wf-ground-rgb) / .5)), #1e1018 url(images/pattern/lava.svg) center / cover; }
+.scene { background: linear-gradient(rgb(var(--wf-ground-rgb) / .6), rgb(var(--wf-ground-rgb) / .6)), url(images/texture/swirl-low.jpg) 0 0 / 300px auto; }
 
 /* QA fixes, pass two */
 .how .ready-line { color: #fff1ec; } .how .ready-line b { color: #7ff3e8; }
