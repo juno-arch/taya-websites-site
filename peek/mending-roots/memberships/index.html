@@ -1217,6 +1217,22 @@
   .ev .cardgrid .cardx, .ev .cardgrid .cardx:nth-child(even) { margin: 0; }
   .doc.ev ul.chips { justify-content: flex-start !important; margin-top: 14px; }
   .ev .wrap > * + * { margin-top: 16px; }
+  .prac-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(28px, 5vw, 64px); max-width: 920px; margin: 0 auto; }
+  .prac { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+  .doc .prac img.prac-photo { width: min(100%, 300px); aspect-ratio: 3/4; object-fit: cover; border-radius: 150px 150px 22px 22px; box-shadow: 0 18px 40px rgba(33,23,15,.22); margin: 0; }
+  .doc .prac img.prac-logo { width: min(100%, 230px); max-width: 230px; border-radius: 0; margin: 0; }
+  .doc .prac ul.prac-svcs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; list-style: none; padding: 0; margin: 0; max-width: 440px; }
+  .doc .prac ul.prac-svcs li { padding: 7px 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--cardline); font-size: 15px; line-height: 1.3; margin: 0; padding-left: 14px; }
+  .doc .prac ul.prac-svcs li::before { display: none; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .prac-logo { filter: invert(1) hue-rotate(180deg) brightness(1.15); } }
+  :root[data-theme="dark"] .prac-logo { filter: invert(1) hue-rotate(180deg) brightness(1.15); }
+  .band.gfx { height: clamp(150px, 20vw, 240px); background: var(--ground-2); }
+  .band.gfx::after { display: none; }
+  .band.gfx svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .band.gfx .g-rays line { stroke: var(--ember); stroke-width: 2.5; stroke-linecap: round; opacity: .5; }
+  .band.gfx .g-sun { fill: var(--ember); } .band.gfx .g-sun2 { fill: none; stroke: var(--ember); stroke-width: 2; opacity: .55; }
+  .band.gfx .g-h1 { fill: var(--sage-deep); opacity: .28; } .band.gfx .g-h2 { fill: var(--sage-deep); opacity: .5; } .band.gfx .g-h3 { fill: var(--sage-deep); opacity: .85; }
+  .band.gfx .g-leaf path { fill: var(--ember); opacity: .8; }
   .pat-photos { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin: 6px auto; }
   .tint { position: relative; margin: 0; width: clamp(150px, 26vw, 230px); aspect-ratio: 1; border-radius: 22px 22px 110px 22px; overflow: hidden; isolation: isolate; box-shadow: 0 16px 36px rgba(33,23,15,.22); }
   .doc .tint img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; border-radius: 0; filter: grayscale(1) contrast(1.05) brightness(1.05); transition: filter .6s ease; }
@@ -1475,7 +1491,7 @@ Upfront savings of $54!</p>
 						Sign up!					</a>
 </div></div>
 </div></section>
-<figure class="band" aria-hidden="true"><div class="band-img" style="background-image:url(images/sunset.jpg)"></div></figure>
+<figure class="band gfx" aria-hidden="true"><svg viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" focusable="false"><g class="g-rays"><line x1="600" y1="120" x2="706" y2="98"/><line x1="600" y1="120" x2="699" y2="76"/><line x1="600" y1="120" x2="687" y2="57"/><line x1="600" y1="120" x2="672" y2="40"/><line x1="600" y1="120" x2="654" y2="26"/><line x1="600" y1="120" x2="633" y2="17"/><line x1="600" y1="120" x2="611" y2="13"/><line x1="600" y1="120" x2="589" y2="13"/><line x1="600" y1="120" x2="567" y2="17"/><line x1="600" y1="120" x2="546" y2="26"/><line x1="600" y1="120" x2="528" y2="40"/><line x1="600" y1="120" x2="513" y2="57"/><line x1="600" y1="120" x2="501" y2="76"/><line x1="600" y1="120" x2="494" y2="98"/></g><circle class="g-sun" cx="600" cy="120" r="34"/><circle class="g-sun2" cx="600" cy="120" r="48"/><path class="g-h1" d="M0 150 C150 110 300 130 450 150 S750 120 900 140 S1100 120 1200 135 V220 H0Z"/><path class="g-h2" d="M0 175 C200 140 350 170 540 178 S900 150 1200 172 V220 H0Z"/><path class="g-h3" d="M0 198 C220 180 420 205 640 196 S1000 182 1200 196 V220 H0Z"/><g class="g-leaf"><path d="M110 168 q14 -26 30 0 q-14 10 -30 0z"/><path d="M1040 160 q14 -26 30 0 q-14 10 -30 0z"/><path d="M300 186 q10 -20 22 0 q-10 8 -22 0z"/><path d="M880 184 q10 -20 22 0 q-10 8 -22 0z"/></g></svg></figure>
 <footer class="gutter">
   <div class="wrap">
     <div class="foot-top">
