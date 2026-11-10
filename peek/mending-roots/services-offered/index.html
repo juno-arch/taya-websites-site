@@ -4,11 +4,12 @@ document.querySelectorAll(".rv").forEach(function(el){if(io&&!rm)io.observe(el);
 document.querySelectorAll(".tabs").forEach(function(t){var bs=[].slice.call(t.querySelectorAll(".tab")),ps=[].slice.call(t.querySelectorAll(".tab-panel"));bs.forEach(function(b,i){b.addEventListener("click",function(){bs.forEach(function(x,k){x.classList.toggle("on",k===i);ps[k].classList.toggle("on",k===i);});});});});
 var bands=[].slice.call(document.querySelectorAll(".band")),aw=document.getElementById("award"),tick=false;
 var rvs=[].slice.call(document.querySelectorAll(".rv"));
-function frame(){tick=false;var vh=innerHeight,y=scrollY;rvs=rvs.filter(function(e){if(e.classList.contains("in"))return false;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.94&&r.bottom>0){e.classList.add("in");return false;}return true;});
+function reveal(){var vh=innerHeight;rvs=rvs.filter(function(e){if(e.classList.contains("in"))return false;var r=e.getBoundingClientRect();if(r.width&&r.top<vh*.94&&r.bottom>0){e.classList.add("in");return false;}return true;});}
+function frame(){tick=false;var vh=innerHeight,y=scrollY;reveal();
 bands.forEach(function(b){var r=b.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;b.firstElementChild.style.setProperty("--py",(-p*70).toFixed(1)+"px");});
 if(aw){aw.classList.toggle("on",y>260);if(!rm){aw.style.transform="translateY("+(Math.sin(y/260)*10).toFixed(1)+"px) rotate("+(Math.sin(y/210)*9).toFixed(1)+"deg)";}}}
 function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
-addEventListener("scroll",req,{passive:true});addEventListener("resize",req);frame();})();</script>
+addEventListener("scroll",function(){reveal();req();},{passive:true});addEventListener("resize",function(){reveal();req();});setInterval(reveal,600);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
 function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}
