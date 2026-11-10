@@ -1012,7 +1012,6 @@
       <p class="label with-pill"><span>Start lessons</span> <span class="tag" data-go="maiden">Every build</span></p>
       <p class="measure soft">Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a> to schedule lessons, or email <a href="mailto:ferndalemusic@yahoo.com">ferndalemusic@yahoo.com</a>.</p>
     </div>
-    <p class="tier-note"><b>Classes and workshops:</b> <span class="ph">your next workshop</span></p>
   </div>
 </section>
 
@@ -1185,7 +1184,6 @@
       <details><summary>Can I bring my kids?</summary><div class="ans"><p>Yes. Shows at The Old Steeple are all ages.</p></div></details>
       <details><summary>Is the hall accessible?</summary><div class="ans"><p>Yes. The Old Steeple is ADA accessible, with accessible restrooms.</p></div></details>
       <details><summary>When do doors open?</summary><div class="ans"><p>Shows start at 7:30 pm. Doors open at <span class="ph">your doors time</span>.</p></div></details>
-      <details><summary>Where do I park?</summary><div class="ans"><p><span class="ph">(your parking note here)</span></p></div></details>
       <details><summary>Where can I stay?</summary><div class="ans"><p>Right here, when there isn&rsquo;t a show: the Green Room is a private suite inside the church. Ferndale&rsquo;s Victorian Village has more inns a few blocks away.</p></div></details>
       <details><summary>How old do you have to be for lessons?</summary><div class="ans"><p>Lessons are for all ages. Vicky teaches ukulele to everyone from 4 to 94.</p></div></details>
       <details><summary>When are you open?</summary><div class="ans"><p>On concert dates, and by appointment. Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a>.</p></div></details>
@@ -1624,7 +1622,7 @@
         var who = Object.keys(TEACH).filter(function (k) { return TEACH[k].indexOf(s.inst) > -1; });
         if (!who.length) {
           var b = document.createElement('button'); b.type = 'button'; b.className = 'bk-opt'; b.setAttribute('aria-pressed', 'false');
-          b.innerHTML = '<b>' + s.inst + ' teacher</b><span class="ph">who teaches ' + s.inst.toLowerCase() + '</span>';
+          b.innerHTML = '<b>' + s.inst + ' teacher</b>';
           b.addEventListener('click', function () { pick([b], b); s.teacher = s.inst + ' teacher'; S.paint(); }); teachBox.appendChild(b); return;
         }
         who.forEach(function (k) {
