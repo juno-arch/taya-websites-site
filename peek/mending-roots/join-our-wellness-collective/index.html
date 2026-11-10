@@ -1332,6 +1332,19 @@
   .doc.sec.cb3 .btn { background: #FBF3E8; color: #5A2C16; border-color: #FBF3E8; }
   .doc.sec.cb3 a:not(.btn) { color: #FFE2BE; }
   .doc.sec.cb3 .person-row .btn { background: #FBF3E8; }
+  .doc ul.chips { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 9px; max-width: none !important; padding: 0; list-style: none; }
+  .doc ul.chips li { flex: 0 1 auto; padding: 8px 16px !important; border-radius: 999px !important; line-height: 1.35; max-width: 100%; font-size: 16px; }
+  .doc ul.chips li::before { display: inline-block !important; width: 7px !important; height: 7px !important; margin: 0 9px 1px 0 !important; vertical-align: middle; }
+  .cardgrid { display: block !important; column-count: 2; column-gap: 20px; }
+  .cardgrid .cardx { break-inside: avoid; margin: 0 0 20px; display: block; }
+  .cardgrid .cardx:nth-child(even) { margin-top: 14px; }
+  .cardgrid.pcards-text .cardx p::before { content: ""; display: block; width: 22px; height: 22px; margin-bottom: 10px; background: var(--ember); -webkit-mask: var(--ic-leaf) center / contain no-repeat; mask: var(--ic-leaf) center / contain no-repeat; }
+  .quotes { display: block !important; column-count: 3; column-gap: 16px; }
+  .quotes .qcard { break-inside: avoid; margin: 0 0 16px !important; display: block; }
+  .acc-grid { display: block !important; column-count: 2; column-gap: 16px; }
+  .acc-grid details { break-inside: avoid; margin: 0 0 12px; }
+  @media (max-width: 900px) { .cardgrid, .acc-grid { column-count: 1; } .quotes { column-count: 1; } .cardgrid .cardx:nth-child(even) { margin-top: 0; } }
+  @media (min-width: 901px) and (max-width: 1100px) { .quotes { column-count: 2; } }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -2542,7 +2555,7 @@ function req(){if(!tick){tick=true;requestAnimationFrame(frame);}}
 addEventListener("scroll",function(){reveal();req();},{passive:true});addEventListener("resize",function(){reveal();req();});setInterval(reveal,600);frame();})();</script>
 <dialog class="bk-modal" id="bk-modal" aria-label="Booking"><button type="button" class="bk-x" aria-label="Close">&times;</button><iframe title="Booking" src="about:blank"></iframe></dialog>
 <script>(function(){var d=document.getElementById("bk-modal");if(!d||!d.showModal)return;var fr=d.querySelector("iframe");
-function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me)\//i.test(h);}
+function isBk(a){var h=a.getAttribute("href")||"";return /^https?:\/\/([a-z0-9-]+\.)?(acuityscheduling\.com|as\.me|square\.site|squareup\.com)\//i.test(h);}
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(!a||!isBk(a)||e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();fr.src=a.href;d.showModal();});
 d.querySelector(".bk-x").addEventListener("click",function(){d.close();});
 d.addEventListener("click",function(e){if(e.target===d)d.close();});
