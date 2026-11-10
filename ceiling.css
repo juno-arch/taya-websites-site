@@ -1,0 +1,14 @@
+/* Glow in the dark ceiling stars (Pollen, Nov 10 2026): the plastic stars we stuck on our ceilings as kids.
+   Pale yellow-green, a few sizes, each tipped a little, and each one slowly fading and glowing again, a bit
+   out of step with the others, like they are charging and running out of light. They sit behind everything
+   (behind the cards, the words and the photos), and hold still, glowing, under reduced motion. */
+.ceiling { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.ceiling i { position: absolute; left: var(--x); top: var(--y); width: calc(var(--s) * 2); height: calc(var(--s) * 2); margin: calc(var(--s) * -1) 0 0 calc(var(--s) * -1);
+  background: url(images/ceiling-star.svg) center / contain no-repeat; transform: rotate(var(--r)); opacity: .9;
+  animation: star-glow var(--d) ease-in-out var(--l) infinite; }
+@keyframes star-glow { 0%, 100% { opacity: .42; } 40%, 60% { opacity: 1; } }
+.ceiling.hero-c { z-index: 0; }
+.soil .ceiling { position: absolute; inset: 0; z-index: 0; }
+html.lava-on .ceiling i { animation-duration: 1.4s; }
+@media (prefers-reduced-motion: reduce) { .ceiling i { animation: none; opacity: .85; } }
+@media print { .ceiling { display: none; } }

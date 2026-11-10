@@ -23,7 +23,7 @@
   const HEX_RE = /^#[0-9a-f]{6}$/;
   // the back end's paper (--wf-b-sheet) and its ground (--wf-b-bg) in the light look; text sits on both
   const PAPERS = ['#fcfbff', '#efebf8'];
-  const BAR = '#2e3271';          // --wf-night: the bar and the phone dock
+  const BAR = '#2a1236';          // --wf-night: the bar and the phone dock
   const TEXT_RATIO = 4.5;         // WCAG AA, normal text
   const BAR_RATIO = 3;            // WCAG AA, non-text (the tab's line)
   const MIN_SATURATION = 0.12;    // below this it's a grey: no hue to bring in

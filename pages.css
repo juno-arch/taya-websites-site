@@ -9,23 +9,23 @@
    use them: they now point at the twilight values, and inside a card (or anything marked .cream) at the cream
    values, so words in a card always read as ink on cream.
    The brand name lives only in each page's title, header and footer, so a rename stays easy. */
-@import url("wf-tokens.css?v=20261014a");
+@import url("wf-tokens.css?v=20261110a");
 
 :root {
   color-scheme: dark;
   /* on the twilight */
-  --ink: var(--wf-ink); --ink-soft: var(--wf-ink-soft); --hairline: rgb(247 243 255 / .22);
-  --paper: var(--wf-dusk); --paper-2: #3a3f86; --card: var(--wf-dusk);   /* fields and boxes on the twilight; hovered */
+  --ink: var(--wf-ink); --ink-soft: var(--wf-ink-soft); --hairline: rgb(255 241 236 / .22);
+  --paper: var(--wf-dusk); --paper-2: #4a2150; --card: var(--wf-dusk);   /* fields and boxes on the twilight; hovered */
   --candle: var(--wf-gold-hi); --link: var(--wf-link); --on-link: var(--wf-on-gold);
   --acc: var(--wf-gold); --acc-line: rgb(255 210 122 / .55); --acc-glow: 246, 197, 111;
-  --btn: var(--wf-gold); --on-btn: var(--wf-on-gold); --btn-hover: var(--wf-gold-hi);
+  --btn: #c8156f; --on-btn: #fff; --btn-hover: #e5338a;
   --moonlight: var(--wf-lilac); --moonglow: rgb(201 191 232 / .35);
   --band: var(--wf-dusk); --band-text: var(--wf-ink); --band-soft: var(--wf-ink-soft);
-  --focus: var(--wf-gold-hi); --err: #ff9e94; --ok: #86d0c8; --field-edge: #8f8ad0;
+  --focus: var(--wf-gold-hi); --err: #ff9e94; --ok: #86d0c8; --field-edge: #b08abf;
   /* words over the paintings */
   --on-photo: var(--wf-hero-lede); --on-photo-soft: rgb(251 248 255 / .94);
   /* the veil over the paintings: the twilight's own ground (rgb numbers, for rgba(var(--veil), x)) */
-  --veil: 39, 44, 102;
+  --veil: 30, 16, 24;
 }
 /* inside a card: ink on cream. The same names, so a page's own styles (and the agreement's) keep working */
 .card, .cream {
@@ -98,7 +98,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
   content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
   background:
     radial-gradient(ellipse 80% 66% at 50% 68%, rgba(var(--veil), 0.7), rgba(var(--veil), 0) 78%),
-    linear-gradient(180deg, rgba(var(--veil), 0.72) 0%, rgba(var(--veil), 0.3) 30%, rgba(var(--veil), 0.46) 58%, rgba(var(--veil), 0.7) 100%);
+    linear-gradient(180deg, rgba(var(--veil), 0.72) 0%, rgba(var(--veil), 0.52) 30%, rgba(var(--veil), 0.64) 58%, rgba(var(--veil), 0.7) 100%);
 }
 .page-hero .bar {
   display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap;
@@ -227,7 +227,7 @@ ul.checks.never li::before { content: "\2717"; color: var(--ink-soft); }
 }
 .btn.secondary:hover { background: rgb(255 255 255 / .1); box-shadow: 0 0 24px -6px rgb(247 182 207 / .6); }
 .card .btn.secondary, .cream .btn.secondary { background: transparent; color: var(--wf-c-ink); border-color: var(--wf-c-ghost-edge); -webkit-backdrop-filter: none; backdrop-filter: none; }
-.card .btn.secondary:hover, .cream .btn.secondary:hover { background: rgb(84 72 160 / .08); box-shadow: none; }
+.card .btn.secondary:hover, .cream .btn.secondary:hover { background: rgb(184 15 100 / .08); box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .btn, .btn:hover { transition: none; transform: none; } }
 
 /* two-column money table, collapses to stacked rows on phones */

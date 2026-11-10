@@ -22,9 +22,9 @@ img { display: block; max-width: 100%; }
 a { color: var(--wf-link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--wf-gold-hi); outline-offset: 3px; border-radius: 6px; }
-h1, h2, h3 { font-family: var(--wf-font-display); font-weight: 400; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+h1, h2, h3 { font-family: var(--wf-font-display); font-weight: 700; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: .005em; }
 h2 { font-size: var(--wf-h2); }
-h2 em, h1 em { font-family: var(--wf-font-read); font-style: italic; font-weight: 400; color: var(--wf-italic); }
+h2 em, h1 em { font-family: var(--wf-font-display); font-style: normal; font-weight: 700; color: var(--wf-italic); }
 p { margin: 0 0 .8em; }
 ul { margin: 0; }
 .nowrap { white-space: nowrap; }
@@ -34,7 +34,7 @@ ul { margin: 0; }
 .skip:focus { top: 12px; }
 main:focus { outline: none; }
 
-.eyebrow { margin: 0 0 12px; font: 600 var(--wf-eyebrow-size)/1.3 var(--wf-font-read); letter-spacing: var(--wf-eyebrow-track); text-transform: uppercase; color: var(--wf-eyebrow); }
+.eyebrow { margin: 0 0 12px; font: 500 var(--wf-eyebrow-size)/1.3 var(--wf-font-mono); letter-spacing: var(--wf-eyebrow-track); text-transform: uppercase; color: var(--wf-eyebrow); }
 .lede { font-size: var(--wf-lede); color: var(--wf-ink-soft); margin: 14px 0 0; }
 .sec-head { text-shadow: var(--wf-text-shadow); }
 .sec-head h2 + .lede { margin-top: 14px; }
@@ -46,7 +46,7 @@ main:focus { outline: none; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 11px 26px;
   border-radius: var(--wf-r-pill); border: 1px solid var(--wf-btn-edge); color: var(--wf-btn-ink); text-decoration: none; cursor: pointer;
-  font: 400 18px/1.1 var(--wf-font-display); letter-spacing: .01em;
+  font: 700 18px/1.1 var(--wf-font-display); letter-spacing: .01em;
   background: var(--wf-btn-bg);
   box-shadow: var(--wf-shadow-btn);
   transition: box-shadow var(--wf-dur-quick) ease, transform var(--wf-dur-quick) ease;
@@ -56,7 +56,7 @@ main:focus { outline: none; }
 .btn.ghost:hover { background: rgb(255 255 255 / .1); box-shadow: 0 0 24px -6px rgb(247 182 207 / .6); }
 .card .btn { box-shadow: var(--wf-shadow-btn-card); }
 .card .btn.ghost { background: transparent; color: var(--wf-c-ink); border-color: var(--wf-c-ghost-edge); -webkit-backdrop-filter: none; backdrop-filter: none; }
-.card .btn.ghost:hover { background: rgb(84 72 160 / .08); box-shadow: none; }
+.card .btn.ghost:hover { background: rgb(184 15 100 / .08); box-shadow: none; }
 @media (prefers-reduced-motion: reduce) { .btn, .btn:hover { transition: none; transform: none; } }
 
 /* =============================== the door =============================== */
@@ -67,32 +67,32 @@ main:focus { outline: none; }
 html.door-up, html.door-up body { overflow: hidden; }
 html.door-up .site-head { visibility: hidden; opacity: 0; }
 .door-stage { position: absolute; inset: 0; transform-origin: var(--dx) var(--dy); will-change: transform; }
-.door-art { width: 100%; height: 100%; object-fit: cover; object-position: 51% 60%; }
+.door-art { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; }
 /* the door's own warm light, a little stronger than the painting's; it brightens when you tap */
 .door-glow {
   position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: .55;
   background:
-    radial-gradient(calc(var(--dr) * 1.1) calc(var(--dr) * 1.25) at var(--dx) var(--dy), rgb(255 214 140 / .55), rgb(255 170 110 / .18) 55%, transparent 80%),
-    radial-gradient(calc(var(--dr) * 3.2) calc(var(--dr) * 2.6) at var(--dx) var(--dy), rgb(247 160 200 / .22), transparent 70%);
+    radial-gradient(calc(var(--dr) * 1.1) calc(var(--dr) * 1.25) at var(--dx) var(--dy), rgb(255 255 255 / .6), rgb(255 79 163 / .3) 55%, transparent 80%),
+    radial-gradient(calc(var(--dr) * 3.2) calc(var(--dr) * 2.6) at var(--dx) var(--dy), rgb(20 211 198 / .3), transparent 70%);
   transition: opacity .7s ease;
 }
 .door-light {
   position: absolute; inset: 0; pointer-events: none; opacity: 0;
-  background: radial-gradient(circle at var(--dx) var(--dy), #fff6dc 0, #ffe2a6 12%, #f7b9d2 38%, #b9a8ea 70%, #8f86cf 100%);
+  background: radial-gradient(circle at var(--dx) var(--dy), #fff 0, #ffd1ec 12%, #ff8ec7 38%, #c9a8ff 70%, #5a2766 100%);
 }
 .door-mark {
   position: absolute; left: 0; right: 0; top: max(22px, env(safe-area-inset-top)); margin: 0; text-align: center; pointer-events: none;
   font: 400 clamp(26px, 3vw, 34px)/1 var(--wf-font-display); color: var(--wf-hero-lede); letter-spacing: .01em;
   text-shadow: 0 2px 18px rgb(30 26 80 / .9), 0 0 2px rgb(30 26 80 / .6);
 }
-.door-mark span { font-family: var(--wf-font-read); font-style: italic; color: var(--wf-italic); }
+.door-mark span { font-family: inherit; font-style: normal; color: var(--wf-italic); }
 .door-go { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .door-go:focus-visible { outline: none; }
 .door-ring { position: absolute; left: var(--dx); top: var(--dy); width: calc(var(--dr) * 2.7); height: calc(var(--dr) * 2.7); transform: translate(-50%, -52%); border-radius: 50%; pointer-events: none; opacity: 0; box-shadow: 0 0 0 3px var(--wf-gold-hi), 0 0 30px 6px rgb(255 224 160 / .6); }
 .door-go:focus-visible ~ .door-ring { opacity: 1; }
 .door-hint {
   position: absolute; left: 0; right: 0; bottom: calc(max(18px, env(safe-area-inset-bottom)) + 14px); margin: 0; text-align: center; pointer-events: none;
-  font: italic 400 clamp(18px, 1.6vw, 21px)/1.3 var(--wf-font-read); color: #fff4dc; letter-spacing: .02em;
+  font: 600 clamp(18px, 1.6vw, 21px)/1.3 var(--wf-font-display); color: #fff1ec; letter-spacing: .02em;
   text-shadow: 0 1px 14px rgb(30 26 80 / .95), 0 0 2px rgb(30 26 80 / .8);
 }
 .door-skip {
@@ -120,14 +120,15 @@ html.door-up .site-head { visibility: hidden; opacity: 0; }
 .site-head.solid { background: var(--wf-head-solid); -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); box-shadow: 0 10px 30px -18px var(--wf-shade); }
 .site-head.solid::before { opacity: 0; }
 .wf-banner { margin: 0; text-align: center; background: var(--wf-banner-bg); border-bottom: 1px solid var(--wf-banner-line); }
-.wf-banner a { display: block; height: var(--wf-banner-h); line-height: var(--wf-banner-h); color: var(--wf-gold-hi); text-decoration: none; font: 500 14px/var(--wf-banner-h) var(--wf-font-read); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+.wf-banner a { display: block; height: var(--wf-banner-h); line-height: var(--wf-banner-h); color: #fff; text-decoration: none; font: 500 13.5px/var(--wf-banner-h) var(--wf-font-mono); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
 .wf-banner a:hover { text-decoration: underline; }
 .wb-short { display: none; }
 .bar { display: flex; align-items: center; justify-content: space-between; height: var(--wf-bar-h); gap: 16px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; min-height: var(--wf-tap); color: var(--wf-ink); text-decoration: none; text-shadow: 0 1px 12px rgb(30 26 80 / .6); }
 .brand .logo { height: 40px; width: auto; }
 .wm { position: relative; font: 400 26px/1 var(--wf-font-display); letter-spacing: .01em; padding-right: 14px; }
-.wm > span { font-family: var(--wf-font-read); font-style: italic; color: var(--wf-italic); }
+.wm { font-weight: 700; }
+.wm > span { font-family: inherit; font-style: normal; color: var(--wf-italic); }
 /* the one tiny sparkle by the name: a four-point glint in lantern gold (it holds still) */
 .wm-spark { position: absolute; right: 0; top: -5px; width: 13px; height: 13px; border-radius: 50%;
   background: radial-gradient(closest-side, rgb(255 214 140 / .55), rgb(247 182 207 / .18) 60%, transparent); }
@@ -138,9 +139,10 @@ html.door-up .site-head { visibility: hidden; opacity: 0; }
 .site-head nav a:hover { color: var(--wf-gold-hi); }
 @media (max-width: 560px) {
   .wb-long { display: none; } .wb-short { display: inline; }
+  .site-head nav ul { gap: 0 8px; } .site-head nav a { font-size: 15px; letter-spacing: 0; }
   .wf-banner a { font-size: 12.5px; letter-spacing: .08em; }
   .nav-more { display: none; }
-  .wm { font-size: 23px; }
+  .wm { font-size: 20px; }
 }
 
 /* =============================== hero =============================== */
@@ -170,7 +172,7 @@ html.door-up .site-head { visibility: hidden; opacity: 0; }
 .hero-mirror { transform: translateY(100%) scaleY(-1); }
 .hero-veil { z-index: -2;
   background:
-    linear-gradient(90deg, rgb(var(--wf-ground-rgb) / .8) 0%, rgb(var(--wf-ground-rgb) / .66) max(30%, 380px), rgb(var(--wf-ground-rgb) / .3) max(50%, 660px), rgb(var(--wf-ground-rgb) / 0) max(64%, 840px)),
+    linear-gradient(90deg, rgb(var(--wf-ground-rgb) / .88) 0%, rgb(var(--wf-ground-rgb) / .74) max(30%, 380px), rgb(var(--wf-ground-rgb) / .3) max(50%, 660px), rgb(var(--wf-ground-rgb) / 0) max(64%, 840px)),
     linear-gradient(180deg, rgb(var(--wf-ground-rgb) / .25) 0%, rgb(var(--wf-ground-rgb) / 0) 22%); }
 /* the soft blur: two still layers at the hero's foot, the lower one stronger, so the trees soften as they fade */
 .hero-melt { position: absolute; left: 0; right: 0; bottom: 0; height: var(--fade-h); z-index: -1; pointer-events: none; }
@@ -186,7 +188,7 @@ html.door-up .site-head { visibility: hidden; opacity: 0; }
 .hero .eyebrow { color: var(--wf-hero-eyebrow); }
 .hero h1 { font-size: var(--wf-h1); line-height: 1.02; }
 .hero .h1a, .hero .h1b { display: block; }
-.hero .h1b { font-family: var(--wf-font-read); font-style: italic; color: var(--wf-italic); font-size: .74em; line-height: 1.12; margin-top: .14em; }
+.hero .h1b { font-family: var(--wf-font-display); font-style: normal; font-weight: 600; color: var(--wf-italic); font-size: .6em; line-height: 1.12; margin-top: .14em; }
 .hero-lede { font-size: clamp(19px, 1.55vw, 22px); line-height: 1.55; color: var(--wf-hero-lede); margin: 26px 0 30px; max-width: 26em; }
 .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 26px; }
 .quiet { color: var(--wf-ink); font-size: 18px; display: inline-flex; align-items: center; min-height: var(--wf-tap); }
@@ -236,7 +238,7 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .twilight {
   position: relative; isolation: isolate; margin-top: calc(-1 * var(--wf-melt));
   background: linear-gradient(180deg, rgb(var(--wf-ground-rgb) / 0) 0, rgb(var(--wf-ground-rgb) / 0) calc(var(--wf-melt) * .2), var(--wf-ground) var(--wf-melt),
-    var(--wf-ground) calc(var(--wf-melt) + 140px), #2f3376 9%, #353880 22%, #3a3b87 38%, #33367d 52%, #3b3a87 66%, #36377f 82%, var(--wf-ground) 100%);
+    var(--wf-ground) calc(var(--wf-melt) + 140px), #2a1230 9%, #34143a 28%, #2b1233 50%, #35133b 72%, var(--wf-ground) 100%);
 }
 .twilight::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--wf-stars);
   -webkit-mask: linear-gradient(180deg, transparent 0, transparent var(--wf-melt), #000 calc(var(--wf-melt) + 280px));
@@ -244,10 +246,24 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 /* soft lavender and pink light in each section, so the field has depth (each section places its own). The glows
    stay well inside their section (centers between 28% and 72% down), so no glow is cut off at a section edge. */
 .field { position: relative; isolation: isolate; padding: var(--wf-section-pad) 0; }
-.field::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+.field::before { content: ''; position: absolute; inset: -6% -4%; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(48% 38% at var(--gx1, 82%) var(--gy1, 30%), var(--wf-glow-lavender), transparent 70%),
-    radial-gradient(42% 34% at var(--gx2, 12%) var(--gy2, 70%), var(--wf-glow-pink), transparent 70%); }
+    radial-gradient(48% 38% at var(--gx1, 82%) var(--gy1, 30%), var(--lv1, rgb(255 79 163 / .24)), transparent 70%),
+    radial-gradient(42% 34% at var(--gx2, 12%) var(--gy2, 70%), var(--lv2, rgb(20 211 198 / .18)), transparent 70%);
+  animation: lava-a 38s ease-in-out infinite alternate; }
+.field::after { content: ''; position: absolute; inset: -6% -4%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(30% 26% at 64% 22%, var(--lv3, rgb(201 168 255 / .2)), transparent 70%),
+    radial-gradient(26% 22% at 28% 82%, var(--lv4, rgb(255 140 70 / .15)), transparent 70%);
+  animation: lava-b 53s ease-in-out infinite alternate; }
+@keyframes lava-a { 0% { transform: translate(-3%, 2%) scale(1); } 50% { transform: translate(2%, -3%) scale(1.12, .94); } 100% { transform: translate(4%, 3%) scale(.94, 1.1); } }
+@keyframes lava-b { 0% { transform: translate(3%, -2%) scale(1.08, .92); } 50% { transform: translate(-3%, 3%) scale(.94, 1.1); } 100% { transform: translate(2%, 2%) scale(1.1); } }
+html.lava-on .field::before { animation-duration: 6s; } html.lava-on .field::after { animation-duration: 8s; }
+@media (prefers-reduced-motion: reduce) { .field::before, .field::after { animation: none; } }
+.prices { --lv1: rgb(201 168 255 / .24); --lv2: rgb(255 79 163 / .2); --lv3: rgb(20 211 198 / .16); }
+.how { --lv1: rgb(255 140 70 / .2); --lv2: rgb(201 168 255 / .2); --lv3: rgb(255 79 163 / .18); }
+.tools { --lv1: rgb(20 211 198 / .2); --lv2: rgb(255 217 61 / .12); }
+.about { --lv1: rgb(255 142 199 / .22); --lv2: rgb(182 242 58 / .1); }
 .work { --gx1: 86%; --gy1: 46%; --gx2: 8%; --gy2: 72%; padding-top: clamp(56px, 7vw, 96px); }
 .prices { --gx1: 50%; --gy1: 28%; --gx2: 92%; --gy2: 64%; }
 .how { --gx1: 18%; --gy1: 36%; --gx2: 88%; --gy2: 70%; }
@@ -262,13 +278,13 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
    site.js as .glint) that twinkle at their own pace. With reduced motion both simply hold still.
    The questions are cards too (.faq details), styled here rather than by a class. */
 .card, .faq details {
-  position: relative; border-radius: var(--wf-r-card); padding: clamp(22px, 2.6vw, 34px);
+  position: relative; border-radius: var(--wf-r-card) var(--wf-r-card) var(--wf-r-card) 10px; padding: clamp(22px, 2.6vw, 34px);
   color: var(--wf-c-text);
   background: var(--wf-card-bg);
   box-shadow: var(--wf-shadow-card);
 }
 .card::before, .faq details::before {
-  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; padding: 1.5px;
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; padding: 3px;
   background: var(--wf-shimmer);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
@@ -322,12 +338,12 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .work .sec-head { max-width: 620px; }
 .piece { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 3.4vw, 48px); align-items: center; }
 .shots { position: relative; display: block; padding: 0 34px 34px 0; text-decoration: none; }
-.browser { margin: 0; border-radius: var(--wf-r-frame); overflow: hidden; background: var(--wf-frame); box-shadow: var(--wf-shadow-frame); border: 1px solid rgb(84 72 160 / .2); }
+.browser { margin: 0; border-radius: var(--wf-r-frame); overflow: hidden; background: var(--wf-frame); box-shadow: var(--wf-shadow-frame); border: 1px solid rgb(184 15 100 / .2); }
 .chrome { display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: var(--wf-frame-bar); color: var(--wf-frame-ink); font: 500 13px/1 var(--wf-font-read); }
 .dots { display: inline-flex; gap: 5px; } .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--wf-frame-dot); }
 .url { flex: 1; background: var(--wf-frame-url); border-radius: 8px; padding: 5px 10px; }
 .browser img, .phone img { width: 100%; height: auto; }
-.phone { position: absolute; right: 0; bottom: 0; width: 23%; margin: 0; border-radius: 18px; overflow: hidden; border: 4px solid var(--wf-frame); box-shadow: 0 18px 36px -16px rgb(38 42 94 / .7), 0 0 0 1px rgb(84 72 160 / .2); }
+.phone { position: absolute; right: 0; bottom: 0; width: 23%; margin: 0; border-radius: 18px; overflow: hidden; border: 4px solid var(--wf-frame); box-shadow: 0 18px 36px -16px rgb(42 18 54 / .7), 0 0 0 1px rgb(184 15 100 / .2); }
 .piece-text h3 { font-size: clamp(26px, 2.4vw, 32px); margin-bottom: 10px; }
 .piece-text > p:not(.eyebrow) { color: var(--wf-c-text); }
 .visit { display: inline-flex; align-items: center; gap: .3em; min-height: var(--wf-tap); margin: 0 0 6px; font-weight: 500; }
@@ -348,7 +364,7 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .does { color: var(--wf-c-ink); }
 .does-note { color: var(--wf-c-soft); font-size: 17px; font-style: italic; }
 .gets { margin: 6px 0 18px; padding-top: 14px; border-top: 1px solid var(--wf-c-rule); }
-.gets-k { font: 600 var(--wf-eyebrow-size)/1.4 var(--wf-font-read); letter-spacing: .14em; text-transform: uppercase; color: var(--wf-c-rose); margin-bottom: 8px; }
+.gets-k { font: 500 var(--wf-eyebrow-size)/1.4 var(--wf-font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--wf-c-rose); margin-bottom: 8px; }
 .gets-plus { font-weight: 500; margin-bottom: 6px; color: var(--wf-c-ink); }
 .gets-more { color: var(--wf-c-soft); font-size: 15.5px; font-style: italic; margin: 8px 0 0; }
 .money { margin-top: auto; padding: 16px 18px; border-radius: var(--wf-r-sheet); background: var(--wf-money-bg); border: 1px solid var(--wf-money-edge); }
@@ -443,7 +459,7 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
   --r: 3px; --stamp: var(--wf-gold);
   display: grid; place-items: center; flex: none;
   width: 45px; height: 54px; background: var(--stamp); color: var(--wf-c-ink);
-  box-shadow: inset 0 0 0 5px var(--stamp), inset 0 0 0 6px rgb(38 42 94 / .38);
+  box-shadow: inset 0 0 0 5px var(--stamp), inset 0 0 0 6px rgb(42 18 54 / .38);
   -webkit-mask:
     radial-gradient(var(--r), #0000 97%, #000) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) / calc(3 * var(--r)) calc(3 * var(--r)),
     linear-gradient(#000 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
@@ -461,7 +477,7 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
   color: var(--wf-c-ink); background: var(--wf-card-bg); border-radius: var(--wf-r-line);
   box-shadow: var(--wf-shadow-card);
 }
-.gb-note .gb-stamp { float: right; margin: -38px -8px 8px 14px; rotate: 5deg; filter: drop-shadow(0 1px 1px rgb(38 42 94 / .4)) drop-shadow(0 4px 6px rgb(22 20 66 / .25)); }
+.gb-note .gb-stamp { float: right; margin: -38px -8px 8px 14px; rotate: 5deg; filter: drop-shadow(0 1px 1px rgb(42 18 54 / .4)) drop-shadow(0 4px 6px rgb(22 20 66 / .25)); }
 .gb-note:nth-child(3n+2) .gb-stamp { rotate: -6deg; }
 .gb-note:nth-child(3n) .gb-stamp { rotate: 3deg; }
 /* "sample" (and "waiting to be read"), like a little rubber stamp inked onto the card */
@@ -543,14 +559,14 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
 .gb-thanks h3:focus { outline: none; }
 .gb-thanks > p { margin: 10px auto 0; max-width: 26em; color: var(--wf-c-text); }
 .gb-thanks .gb-notes { margin: 44px auto 0; max-width: 420px; text-align: left; }
-.gb-thanks .gb-notes > .gb-note figure { rotate: -.8deg; box-shadow: 0 0 0 1px var(--wf-c-rule), 0 18px 34px -22px rgb(38 42 94 / .55); }
+.gb-thanks .gb-notes > .gb-note figure { rotate: -.8deg; box-shadow: 0 0 0 1px var(--wf-c-rule), 0 18px 34px -22px rgb(42 18 54 / .55); }
 .gb-again {
   display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 28px; padding: 10px 26px;
   border-radius: var(--wf-r-pill); border: 1px solid var(--wf-c-ghost-edge); background: transparent; color: var(--wf-c-ink); cursor: pointer;
   font: 400 17px/1.2 var(--wf-font-display); letter-spacing: .01em;
   transition: background-color var(--wf-dur-quick) ease;
 }
-.gb-again:hover { background: rgb(84 72 160 / .08); }
+.gb-again:hover { background: rgb(184 15 100 / .08); }
 .gb-thanks.settle .gb-note { animation: gb-settle 1.1s cubic-bezier(.2, .7, .3, 1) both; }
 @keyframes gb-settle { from { opacity: 0; transform: translateY(-18px) rotate(-2deg); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
@@ -675,3 +691,92 @@ html.js .hero.rest .fade { opacity: 1; transform: none; filter: none; animation:
   .card, .faq details { box-shadow: none; border: 1px solid #ccc; }
   h1, h2, .site-foot a, .eyebrow, .lede, .about-text p, .ready-line, .gb-quiet { color: #262a5e !important; text-shadow: none !important; }
 }
+
+
+/* =============================== the lava lounge (Nov 2026) ===============================
+   The look: a warm cherry-black room lit by lava lamps, pink-cream cards with a rainbow edge, hot turquoise
+   and bubblegum. The signature motion is the lava itself: every section's light drifts and melts slowly
+   (above); the three price lamps hold more wax as the build grows; the neon sign in the contact room flickers
+   on once, as a nudge toward the mockup button; and a slim lamp at the edge fills as you scroll. All of it
+   stills under prefers-reduced-motion. */
+body::before { content: ''; position: fixed; inset: 0 0 auto 0; height: 5px; z-index: 70; pointer-events: none;
+  background: linear-gradient(90deg, #ff4fa3, #ff8c46, #ffd93d, #b6f23a, #14d3c6, #7cc8ff, #c9a8ff, #ff4fa3); }
+.sec-head::before { content: ''; display: block; width: 92px; height: 16px; margin: 0 0 16px; background: var(--zig, #14d3c6);
+  -webkit-mask: url(images/lava/zig.svg) left center / 23px 16px repeat-x; mask: url(images/lava/zig.svg) left center / 23px 16px repeat-x; }
+.sec-head.center::before { margin-inline: auto; }
+.prices .sec-head { --zig: #ff8ec7; } .how .sec-head { --zig: #ffd93d; } .about .sec-head { --zig: #c9a8ff; }
+.tier-art img { object-position: 50% 50%; }
+.hero-art { object-position: 62% 50%; }
+.site-foot { position: relative; padding-top: 74px; }
+.site-foot::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 10px;
+  background: linear-gradient(90deg, #ff4fa3, #ff8c46, #ffd93d, #b6f23a, #14d3c6, #7cc8ff, #c9a8ff, #ff4fa3); }
+.faq summary::after { color: var(--wf-c-rose); }
+.eyebrow { text-transform: uppercase; }
+/* the neon sign in the contact room */
+.neon { position: absolute; left: 0; right: 0; top: clamp(64px, 11vh, 120px); z-index: 0; margin: 0; text-align: center; pointer-events: none; }
+.neon span { display: inline-block; font: 700 clamp(40px, 7.2vw, 96px)/1 var(--wf-font-display); letter-spacing: .02em; color: #ffe3f1; transform: rotate(-3deg);
+  text-shadow: 0 0 4px #fff, 0 0 12px #ff4fa3, 0 0 28px #ff4fa3, 0 0 56px #ff4fa3, 0 0 90px #c8156f; }
+html.js .neon span { opacity: .18; text-shadow: none; }
+html.js .neon.on span { animation: neon-on 1.8s steps(1, end) forwards; }
+@keyframes neon-on { 0% { opacity: .18; } 8% { opacity: 1; } 14% { opacity: .2; } 22% { opacity: 1; } 30% { opacity: .3; } 46% { opacity: 1; } 100% { opacity: 1; text-shadow: 0 0 4px #fff, 0 0 12px #ff4fa3, 0 0 28px #ff4fa3, 0 0 56px #ff4fa3, 0 0 90px #c8156f; } }
+@media (prefers-reduced-motion: reduce) { html.js .neon span, html.js .neon.on span { opacity: 1; animation: none; text-shadow: 0 0 4px #fff, 0 0 12px #ff4fa3, 0 0 28px #ff4fa3, 0 0 56px #ff4fa3; } }
+@media (max-width: 900px), (orientation: portrait) { .neon { top: clamp(40px, 8vw, 80px); } }
+/* a disco ball in the footer (a crop of her disco-ball picture): tap it three times */
+.disco { display: block; width: 64px; height: 64px; margin: 22px auto 4px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; overflow: hidden; background: none; position: relative; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 0 3px #fff, 0 0 24px 2px rgb(255 142 199 / .55); }
+.disco img { position: absolute; left: 50%; top: 40%; width: 230%; height: auto; max-width: none; transform: translate(-50%, -50%); animation: disco-spin 20s linear infinite; }
+.disco:focus-visible { outline: 2px solid var(--wf-gold-hi); outline-offset: 4px; }
+html.lava-on .disco img { animation-duration: 2s; }
+@keyframes disco-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .disco img { animation: none; } }
+/* the lamp at the edge: wax rises as you scroll the page */
+.meter { position: fixed; right: 14px; top: 50%; z-index: 40; width: 20px; height: 168px; margin-top: -84px; pointer-events: none; border-radius: 10px 10px 8px 8px; overflow: hidden;
+  background: rgb(255 255 255 / .08); box-shadow: 0 0 0 2px rgb(255 241 236 / .5), 0 0 18px rgb(255 79 163 / .4); }
+.meter i { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--p, 0) * 100%); background: linear-gradient(180deg, #ff8ec7, #c8156f); transition: height .25s linear; }
+html.door-up .meter, .meter[hidden] { display: none; }
+@media (max-width: 700px) { .meter { right: 6px; width: 10px; height: 110px; margin-top: -55px; } }
+@media (prefers-reduced-motion: reduce) { .meter i { transition: none; } }
+@media print { .meter, .neon, .disco, body::before { display: none !important; } }
+
+/* ---------- her mood board, as the pictures (Nov 2026) ----------
+   The hero and the intro are a wall of her own board pictures, edge to edge, like Linnea's photo tiles; the strips
+   between sections are the same pictures set down like stickers. */
+.wall { position: absolute; inset: 0 0 var(--wf-melt) 0; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 1fr); gap: 4px; background: var(--wf-ground); overflow: hidden; }
+.wall img { width: 100%; height: 100%; object-fit: cover; animation: wall-drift 26s ease-in-out infinite alternate; }
+.wall img:nth-child(2n) { animation-duration: 32s; animation-direction: alternate-reverse; }
+.wall img:nth-child(3n) { animation-duration: 38s; }
+.wall img:nth-child(1) { object-position: 50% 6%; }
+@keyframes wall-drift { from { transform: scale(1.02); } to { transform: scale(1.1) translate(1.5%, -1.5%); } }
+@media (prefers-reduced-motion: reduce) { .wall img { animation: none; } }
+@media (max-aspect-ratio: 3/4) {
+  .wall { inset: 0; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); }
+  .wall img:nth-child(n+10) { display: none; }
+  .wall img:nth-child(9) { grid-column: span 3; }
+  .hero-veil { background: linear-gradient(180deg, rgb(var(--wf-ground-rgb) / .76) 0, rgb(var(--wf-ground-rgb) / .72) 62%, rgb(var(--wf-ground-rgb) / .35) 84%, rgb(var(--wf-ground-rgb) / .15) 100%); }
+}
+.hero-veil { background:
+  linear-gradient(90deg, rgb(var(--wf-ground-rgb) / .78) 0%, rgb(var(--wf-ground-rgb) / .62) max(30%, 380px), rgb(var(--wf-ground-rgb) / .2) max(52%, 680px), rgb(var(--wf-ground-rgb) / 0) 100%),
+  linear-gradient(180deg, rgb(var(--wf-ground-rgb) / .35), rgb(var(--wf-ground-rgb) / .1) 30%); }
+.door-art { object-fit: cover; }
+.door-hint { text-shadow: 0 1px 14px rgb(20 6 24 / 1), 0 0 3px rgb(20 6 24 / .9); }
+.tier-art img, .path-art img, .scene-art img { object-fit: cover; }
+.tier-art img { object-position: 50% 40%; }
+.path-art img { object-position: 50% 40%; }
+.scene-art img { object-position: 50% 30%; }
+.board-strip { display: flex; justify-content: center; gap: 0; padding: clamp(26px, 5vw, 56px) 0 clamp(30px, 5vw, 60px); overflow: hidden; }
+.board-strip img { flex: none; min-width: 0; width: clamp(130px, 19vw, 240px); height: auto; aspect-ratio: 3 / 4; object-fit: cover; border: 6px solid #fff; border-radius: 6px; box-shadow: 2px 4px 0 rgb(20 6 24 / .45), 0 14px 30px -12px rgb(0 0 0 / .6); margin-inline: clamp(-14px, -1.2vw, -6px);
+  transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+.board-strip img:nth-child(1) { rotate: -5deg; margin-top: 14px; } .board-strip img:nth-child(2) { rotate: 3deg; } .board-strip img:nth-child(3) { rotate: -2deg; margin-top: 18px; }
+.board-strip img:nth-child(4) { rotate: 4deg; } .board-strip img:nth-child(5) { rotate: -4deg; margin-top: 10px; }
+.board-strip.b img:nth-child(odd) { rotate: 4deg; } .board-strip.b img:nth-child(even) { rotate: -3deg; }
+.board-strip img:hover { transform: translateY(-8px) rotate(0deg) scale(1.04); z-index: 2; }
+@media (max-width: 700px) { .board-strip img:nth-child(n+5) { display: none; } .board-strip img { width: 30vw; } }
+@media (prefers-reduced-motion: reduce) { .board-strip img { transition: none; } }
+
+/* QA fixes (Nov 10): the drifting lava light stays inside its section (no sideways scroll), and the words on
+   the intro collage get a soft dark plate behind them */
+.twilight { overflow: clip; }
+html { overflow-x: clip; }
+.door-mark { text-shadow: 0 0 6px rgb(20 6 24 / .95), 0 2px 18px rgb(20 6 24 / .95), 0 0 2px rgb(20 6 24 / .9); }
+.door-mark, .door-hint { padding: 6px 16px; border-radius: 999px; background: rgb(var(--wf-ground-rgb) / .55); width: fit-content; margin-inline: auto; }
+.door-hint { left: 0; right: 0; }

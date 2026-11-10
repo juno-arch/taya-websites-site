@@ -207,9 +207,9 @@ const demoOn = /const DEMO = true;/.test(js);
   if (B.contrast('#2f6b4f', '#2f6b4f') !== 1) fail('portal-brand.js: a color on itself should be 1:1');
   if (!near(B.contrast('#767676', '#ffffff'), 4.54, 0.01)) fail(`portal-brand.js: #767676 on white should be about 4.54:1 (got ${B.contrast('#767676', '#ffffff')})`);
   if (!Number.isNaN(B.contrast('red', '#ffffff'))) fail('portal-brand.js: contrast of a non-hex should be NaN');
-  if (B.PAPERS.join() !== '#fcfbff,#efebf8' || B.BAR !== '#2e3271') fail('portal-brand.js: the paper, ground and bar colors drifted from wf-tokens.css');
+  if (B.PAPERS.join() !== '#fcfbff,#efebf8' || B.BAR !== '#2a1236') fail('portal-brand.js: the paper, ground and bar colors drifted from wf-tokens.css');
   const tokens = read('wf-tokens.css');
-  if (!/--wf-b-sheet: #fcfbff;/.test(tokens) || !/--wf-b-bg: #efebf8;/.test(tokens) || !/--wf-night: #2e3271;/.test(tokens)) fail('wf-tokens.css: the paper, ground or bar changed: update PAPERS / BAR in portal-brand.js');
+  if (!/--wf-b-sheet: #fcfbff;/.test(tokens) || !/--wf-b-bg: #efebf8;/.test(tokens) || !/--wf-night: #2a1236;/.test(tokens)) fail('wf-tokens.css: the paper, ground or bar changed: update PAPERS / BAR in portal-brand.js');
   // a dark green: used as it is
   const green = B.pick('#1f5130');
   if (!green || green.text !== '#1f5130' || green.darkened || !passesAll(green.text)) fail(`portal-brand.js: a dark green should be used as it is (got ${JSON.stringify(green)})`);

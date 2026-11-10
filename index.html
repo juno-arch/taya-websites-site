@@ -25,14 +25,13 @@
     }
   })();
 </script>
-<link rel="preload" as="image" type="image/webp" href="images/hero-phone.webp" media="(max-aspect-ratio: 3/4)" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="images/hero-wide.webp" media="not all and (max-aspect-ratio: 3/4)" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="fonts/gloock-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/spectral-400-italic-latin.woff2" crossorigin>
-<link rel="stylesheet" href="fonts/fonts.css?v=20261014a">
-<link rel="stylesheet" href="wf-tokens.css?v=20261014a">
-<link rel="stylesheet" href="site.css?v=20261015a">
-<script src="site.js?v=20261014a" defer></script>
+<link rel="stylesheet" href="fonts/fonts.css?v=20261110a">
+<link rel="stylesheet" href="wf-tokens.css?v=20261110a">
+<link rel="stylesheet" href="site.css?v=20261110a">
+<link rel="stylesheet" href="ceiling.css?v=20261110a">
+<script src="site.js?v=20261110a" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://webfaery.love/">
 <meta property="og:site_name" content="Web Faery">
@@ -85,19 +84,16 @@
      into the hero. "Skip" goes straight in. Without JavaScript the door stays hidden and the page simply starts
      at the hero.
      The door's position in the painting is data-door-x / data-door-y (0 to 1), used for the zoom and the glow. -->
-<div class="door" id="door" data-door-x="0.511" data-door-y="0.735" hidden>
+<div class="door" id="door" data-door-x="0.23" data-door-y="0.19" hidden>
   <div class="door-stage" id="door-stage">
-    <picture>
-      <source type="image/webp" srcset="images/door.webp">
-      <img class="door-art" id="door-art" src="images/door.jpg" width="1456" height="816" alt="" loading="lazy" decoding="async">
-    </picture>
+    <img class="door-art" id="door-art" src="images/board/pin06.jpg" width="736" height="1308" alt="" decoding="async">
     <div class="door-glow" aria-hidden="true"></div>
   </div>
   <div class="door-light" aria-hidden="true"></div>
   <p class="door-mark" aria-hidden="true">Web <span>Faery</span></p>
-  <button class="door-go" type="button" id="door-go"><span class="sr-only">Web Faery. Step inside through the faery door</span></button>
+  <button class="door-go" type="button" id="door-go"><span class="sr-only">Web Faery. Step inside through the glowing lava lamps</span></button>
   <span class="door-ring" aria-hidden="true"></span>
-  <p class="door-hint" aria-hidden="true">Tap the door to come in</p>
+  <p class="door-hint" aria-hidden="true">Tap the lights to come in</p>
   <a class="door-skip" href="#top" id="door-skip">Skip <span aria-hidden="true">&rarr;</span></a>
 </div>
 <script>
@@ -126,6 +122,7 @@
 </script>
 
 <div class="page" id="page">
+<div class="meter" id="meter" aria-hidden="true"><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head" id="site-head">
   <p class="wf-banner"><a href="intake.html"><span class="wb-long">Free mockup of your website, within a week</span><span class="wb-short">Free website mockup in a week</span> <span aria-hidden="true">&rarr;</span></a></p>
@@ -157,22 +154,10 @@
      The bottom of the hero melts into the twilight under Recent work (site.css, "hero"). -->
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="hero-paint" aria-hidden="true">
-    <picture>
-      <source media="(max-aspect-ratio: 3/4)" type="image/webp" srcset="images/hero-phone.webp">
-      <source media="(max-aspect-ratio: 3/4)" srcset="images/hero-phone.jpg">
-      <source type="image/webp" srcset="images/hero-wide.webp">
-      <img class="hero-art" id="hero-art" src="images/hero-wide.jpg" width="1456" height="816" alt="" decoding="async">
-    </picture>
-    <!-- the mirror shows on wide screens only; on tall ones it names the phone painting, already loaded above, so
-         nothing extra downloads -->
-    <picture class="hero-mirror">
-      <source media="(max-aspect-ratio: 3/4)" type="image/webp" srcset="images/hero-phone.webp">
-      <source media="(max-aspect-ratio: 3/4)" srcset="images/hero-phone.jpg">
-      <source type="image/webp" srcset="images/hero-wide.webp">
-      <img src="images/hero-wide.jpg" width="1456" height="816" alt="" decoding="async">
-    </picture>
+    <div class="wall"><img id="hero-art" src="images/board/pin06.jpg" width="736" height="1308" alt="" decoding="async"><img src="images/board/pin02.jpg" width="736" height="736" alt="" decoding="async"><img src="images/board/pin03.jpg" width="1080" height="1920" alt="" decoding="async"><img src="images/board/pin04.jpg" width="1458" height="1422" alt="" decoding="async"><img src="images/board/pin08.jpg" width="675" height="1200" alt="" decoding="async"><img src="images/board/pin10.jpg" width="675" height="1200" alt="" decoding="async"><img src="images/board/pin05.jpg" width="736" height="1308" alt="" decoding="async"><img src="images/board/pin11.jpg" width="736" height="1308" alt="" decoding="async"><img src="images/board/pin07.jpg" width="1080" height="1920" alt="" decoding="async"><img src="images/board/pin01.jpg" width="675" height="1200" alt="" decoding="async"></div>
   </div>
   <div class="hero-veil" aria-hidden="true"></div>
+  <div class="ceiling hero-c" aria-hidden="true"><i style="--x:76%;--y:70%;--s:30px;--r:-20deg;--d:8.2s;--l:-6.0s"></i><i style="--x:9%;--y:78%;--s:64px;--r:-28deg;--d:11.5s;--l:-4.7s"></i><i style="--x:30%;--y:25%;--s:64px;--r:17deg;--d:8.8s;--l:-8.4s"></i><i style="--x:51%;--y:82%;--s:46px;--r:27deg;--d:6.9s;--l:-6.3s"></i><i style="--x:50%;--y:95%;--s:64px;--r:-28deg;--d:10.0s;--l:-0.6s"></i><i style="--x:6%;--y:39%;--s:64px;--r:21deg;--d:6.2s;--l:-8.7s"></i><i style="--x:77%;--y:93%;--s:46px;--r:28deg;--d:8.3s;--l:-7.9s"></i><i style="--x:51%;--y:94%;--s:46px;--r:23deg;--d:9.5s;--l:-9.6s"></i><i style="--x:47%;--y:13%;--s:30px;--r:-26deg;--d:6.8s;--l:-2.2s"></i><i style="--x:81%;--y:39%;--s:46px;--r:-2deg;--d:9.0s;--l:-3.9s"></i><i style="--x:69%;--y:75%;--s:43px;--r:-2deg;--d:9.5s;--l:-9.0s"></i><i style="--x:36%;--y:78%;--s:22px;--r:14deg;--d:10.2s;--l:-7.0s"></i></div>
   <div class="hero-melt" aria-hidden="true"></div>
   <div class="hero-text wrap">
     <p class="eyebrow fade f1">Humboldt County, California</p>
@@ -193,6 +178,7 @@
      faint speckle of stars (CSS only, no pictures). The words sit straight on the field; the things you read
      closely (work, prices, steps, questions) are lavender-cream cards with a slow shimmer on their edge. -->
 <div class="twilight">
+<div class="ceiling" aria-hidden="true"><i style="--x:20%;--y:51%;--s:55px;--r:13deg;--d:6.3s;--l:-8.2s"></i><i style="--x:47%;--y:75%;--s:26px;--r:-25deg;--d:11.5s;--l:-2.1s"></i><i style="--x:56%;--y:54%;--s:26px;--r:-24deg;--d:7.4s;--l:-5.5s"></i><i style="--x:73%;--y:16%;--s:26px;--r:-14deg;--d:9.8s;--l:-5.8s"></i><i style="--x:74%;--y:75%;--s:26px;--r:-3deg;--d:6.3s;--l:-2.2s"></i><i style="--x:18%;--y:38%;--s:84px;--r:-2deg;--d:6.9s;--l:-1.2s"></i><i style="--x:72%;--y:88%;--s:55px;--r:-17deg;--d:6.6s;--l:-5.7s"></i><i style="--x:48%;--y:13%;--s:34px;--r:7deg;--d:10.3s;--l:-5.6s"></i><i style="--x:27%;--y:64%;--s:84px;--r:15deg;--d:9.2s;--l:-7.8s"></i><i style="--x:75%;--y:59%;--s:66px;--r:-5deg;--d:7.8s;--l:-7.9s"></i><i style="--x:11%;--y:74%;--s:34px;--r:-9deg;--d:9.2s;--l:-8.8s"></i><i style="--x:37%;--y:78%;--s:66px;--r:-24deg;--d:6.7s;--l:-4.2s"></i><i style="--x:20%;--y:63%;--s:55px;--r:-2deg;--d:6.2s;--l:-6.7s"></i><i style="--x:74%;--y:41%;--s:84px;--r:-7deg;--d:10.2s;--l:-5.9s"></i><i style="--x:59%;--y:9%;--s:84px;--r:25deg;--d:6.6s;--l:-2.7s"></i><i style="--x:8%;--y:94%;--s:26px;--r:16deg;--d:7.9s;--l:-5.8s"></i><i style="--x:37%;--y:92%;--s:66px;--r:-4deg;--d:11.3s;--l:-3.5s"></i><i style="--x:46%;--y:22%;--s:66px;--r:11deg;--d:6.7s;--l:-0.6s"></i><i style="--x:17%;--y:95%;--s:55px;--r:-13deg;--d:8.4s;--l:-9.2s"></i><i style="--x:11%;--y:22%;--s:66px;--r:0deg;--d:8.4s;--l:-2.8s"></i><i style="--x:56%;--y:71%;--s:34px;--r:-11deg;--d:10.2s;--l:-9.9s"></i><i style="--x:30%;--y:20%;--s:66px;--r:-23deg;--d:7.1s;--l:-2.3s"></i><i style="--x:2%;--y:63%;--s:34px;--r:25deg;--d:9.5s;--l:-2.6s"></i><i style="--x:19%;--y:54%;--s:26px;--r:6deg;--d:8.2s;--l:-5.7s"></i><i style="--x:89%;--y:66%;--s:34px;--r:11deg;--d:9.9s;--l:-7.4s"></i><i style="--x:88%;--y:72%;--s:66px;--r:-3deg;--d:8.4s;--l:-3.9s"></i><i style="--x:82%;--y:52%;--s:66px;--r:-25deg;--d:7.1s;--l:-9.8s"></i><i style="--x:21%;--y:15%;--s:66px;--r:-7deg;--d:9.6s;--l:-1.0s"></i><i style="--x:20%;--y:69%;--s:84px;--r:-22deg;--d:11.7s;--l:-6.1s"></i><i style="--x:27%;--y:79%;--s:26px;--r:-4deg;--d:6.9s;--l:-2.5s"></i><i style="--x:78%;--y:47%;--s:55px;--r:2deg;--d:6.7s;--l:-8.5s"></i><i style="--x:62%;--y:62%;--s:66px;--r:-9deg;--d:6.5s;--l:-1.0s"></i><i style="--x:95%;--y:34%;--s:55px;--r:2deg;--d:11.0s;--l:-1.6s"></i><i style="--x:27%;--y:68%;--s:26px;--r:-5deg;--d:6.9s;--l:-5.4s"></i><i style="--x:68%;--y:39%;--s:26px;--r:13deg;--d:11.2s;--l:-7.0s"></i><i style="--x:67%;--y:47%;--s:55px;--r:-18deg;--d:8.1s;--l:-2.2s"></i><i style="--x:65%;--y:43%;--s:84px;--r:12deg;--d:7.3s;--l:-8.1s"></i><i style="--x:31%;--y:52%;--s:34px;--r:19deg;--d:10.8s;--l:-2.0s"></i><i style="--x:46%;--y:94%;--s:66px;--r:-27deg;--d:11.9s;--l:-7.9s"></i><i style="--x:34%;--y:25%;--s:66px;--r:16deg;--d:9.6s;--l:-3.4s"></i><i style="--x:47%;--y:11%;--s:55px;--r:-14deg;--d:6.6s;--l:-4.7s"></i><i style="--x:27%;--y:62%;--s:55px;--r:11deg;--d:11.9s;--l:-6.1s"></i><i style="--x:62%;--y:84%;--s:26px;--r:-6deg;--d:10.8s;--l:-0.8s"></i><i style="--x:50%;--y:92%;--s:26px;--r:20deg;--d:7.2s;--l:-8.9s"></i><i style="--x:82%;--y:43%;--s:66px;--r:-23deg;--d:10.8s;--l:-9.7s"></i><i style="--x:60%;--y:52%;--s:66px;--r:19deg;--d:11.7s;--l:-7.2s"></i><i style="--x:17%;--y:4%;--s:34px;--r:-19deg;--d:9.5s;--l:-4.7s"></i><i style="--x:79%;--y:77%;--s:34px;--r:2deg;--d:9.9s;--l:-3.5s"></i><i style="--x:71%;--y:17%;--s:84px;--r:-27deg;--d:6.1s;--l:-9.7s"></i><i style="--x:68%;--y:96%;--s:26px;--r:-20deg;--d:8.6s;--l:-8.7s"></i><i style="--x:4%;--y:33%;--s:34px;--r:-15deg;--d:7.8s;--l:-2.4s"></i><i style="--x:42%;--y:34%;--s:84px;--r:6deg;--d:8.5s;--l:-1.3s"></i><i style="--x:59%;--y:85%;--s:55px;--r:9deg;--d:10.9s;--l:-5.2s"></i><i style="--x:17%;--y:69%;--s:84px;--r:-19deg;--d:9.1s;--l:-0.2s"></i><i style="--x:24%;--y:78%;--s:66px;--r:-28deg;--d:10.7s;--l:-1.5s"></i><i style="--x:61%;--y:80%;--s:34px;--r:18deg;--d:6.7s;--l:-0.6s"></i><i style="--x:68%;--y:72%;--s:84px;--r:2deg;--d:10.7s;--l:-1.1s"></i><i style="--x:8%;--y:32%;--s:84px;--r:-16deg;--d:7.7s;--l:-7.7s"></i><i style="--x:58%;--y:72%;--s:84px;--r:-27deg;--d:10.6s;--l:-9.1s"></i><i style="--x:42%;--y:79%;--s:66px;--r:4deg;--d:9.6s;--l:-2.0s"></i><i style="--x:58%;--y:66%;--s:55px;--r:6deg;--d:10.8s;--l:-5.1s"></i><i style="--x:90%;--y:67%;--s:34px;--r:28deg;--d:11.3s;--l:-9.3s"></i><i style="--x:26%;--y:58%;--s:84px;--r:-20deg;--d:8.5s;--l:-3.9s"></i><i style="--x:10%;--y:86%;--s:55px;--r:-13deg;--d:8.6s;--l:-2.1s"></i><i style="--x:16%;--y:20%;--s:55px;--r:17deg;--d:9.9s;--l:-3.7s"></i><i style="--x:18%;--y:60%;--s:55px;--r:-14deg;--d:10.5s;--l:-0.9s"></i><i style="--x:21%;--y:86%;--s:66px;--r:25deg;--d:7.3s;--l:-7.1s"></i><i style="--x:52%;--y:44%;--s:84px;--r:-2deg;--d:7.2s;--l:-3.2s"></i><i style="--x:3%;--y:44%;--s:55px;--r:7deg;--d:8.8s;--l:-7.0s"></i><i style="--x:43%;--y:67%;--s:66px;--r:11deg;--d:7.8s;--l:-9.6s"></i></div>
 
 <!-- ============ recent work ============ -->
 <section class="field work" id="work" aria-labelledby="work-title">
@@ -245,6 +231,7 @@
 <!-- ============ prices ============
      The three pictures tell a growth story, left to right: a bud just planted, flowers opening under the watering
      can, then the whole glade in bloom. -->
+<div class="board-strip a" aria-hidden="true"><img src="images/board/pin05.jpg" width="736" height="1308" alt="" loading="lazy" decoding="async"><img src="images/board/pin08.jpg" width="675" height="1200" alt="" loading="lazy" decoding="async"><img src="images/board/pin02.jpg" width="736" height="736" alt="" loading="lazy" decoding="async"><img src="images/board/pin04.jpg" width="1458" height="1422" alt="" loading="lazy" decoding="async"><img src="images/board/pin10.jpg" width="675" height="1200" alt="" loading="lazy" decoding="async"></div>
 <section class="field prices" id="prices" aria-labelledby="prices-title">
   <div class="wrap">
     <div class="sec-head center">
@@ -256,10 +243,7 @@
     <div class="tiers" id="care">
       <article class="tier maiden card" aria-labelledby="t-planted">
         <figure class="tier-art">
-          <picture>
-            <source type="image/webp" srcset="images/tier-planted-320.webp 320w, images/tier-planted-640.webp 640w, images/tier-planted.webp 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)">
-            <img src="images/tier-planted.jpg" srcset="images/tier-planted-640.jpg 640w, images/tier-planted.jpg 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)" width="960" height="1200" alt="" loading="lazy" decoding="async">
-          </picture>
+            <img src="images/board/pin04.jpg" width="1458" height="1422" alt="" loading="lazy" decoding="async">
           <h3 id="t-planted">Planted</h3>
         </figure>
         <div class="tier-body">
@@ -284,10 +268,7 @@
       </article>
       <article class="tier mother card" aria-labelledby="t-tended">
         <figure class="tier-art">
-          <picture>
-            <source type="image/webp" srcset="images/tier-tended-320.webp 320w, images/tier-tended-640.webp 640w, images/tier-tended.webp 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)">
-            <img src="images/tier-tended.jpg" srcset="images/tier-tended-640.jpg 640w, images/tier-tended.jpg 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)" width="960" height="1200" alt="" loading="lazy" decoding="async">
-          </picture>
+            <img src="images/board/pin02.jpg" width="736" height="736" alt="" loading="lazy" decoding="async">
           <h3 id="t-tended">Tended</h3>
         </figure>
         <div class="tier-body">
@@ -313,10 +294,7 @@
       </article>
       <article class="tier crone card" aria-labelledby="t-inbloom">
         <figure class="tier-art">
-          <picture>
-            <source type="image/webp" srcset="images/tier-inbloom-320.webp 320w, images/tier-inbloom-640.webp 640w, images/tier-inbloom.webp 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)">
-            <img src="images/tier-inbloom.jpg" srcset="images/tier-inbloom-640.jpg 640w, images/tier-inbloom.jpg 960w" sizes="(max-width: 1080px) min(560px, 92vw), min(400px, 30vw)" width="960" height="1200" alt="" loading="lazy" decoding="async">
-          </picture>
+            <img src="images/board/pin01.jpg" width="675" height="1200" alt="" loading="lazy" decoding="async">
           <h3 id="t-inbloom">In Bloom</h3>
         </figure>
         <div class="tier-body">
@@ -433,10 +411,7 @@
       <h2 id="how-title">Four steps, <em>start to finish.</em></h2>
     </div>
     <figure class="path-art" aria-hidden="true">
-      <picture>
-        <source type="image/webp" srcset="images/path.webp">
-        <img src="images/path.jpg" width="768" height="1136" alt="" loading="lazy" decoding="async">
-      </picture>
+        <img src="images/board/pin11.jpg" width="736" height="1308" alt="" loading="lazy" decoding="async">
     </figure>
     <div class="how-main">
       <ol class="steps" role="list">
@@ -700,15 +675,13 @@
   </div>
 </section>
 
+<div class="board-strip b" aria-hidden="true"><img src="images/board/pin09.jpg" width="445" height="792" alt="" loading="lazy" decoding="async"><img src="images/board/pin07.jpg" width="1080" height="1920" alt="" loading="lazy" decoding="async"><img src="images/board/pin11.jpg" width="736" height="1308" alt="" loading="lazy" decoding="async"><img src="images/board/pin01.jpg" width="675" height="1200" alt="" loading="lazy" decoding="async"><img src="images/board/pin06.jpg" width="736" height="1308" alt="" loading="lazy" decoding="async"></div>
 </div><!-- /twilight -->
 
 <!-- ============ contact ============ (painting: the little wooden mailbox with the glowing letter) -->
 <section class="scene contact" id="contact" aria-labelledby="contact-title">
   <div class="scene-art" aria-hidden="true">
-    <picture>
-      <source type="image/webp" srcset="images/contact.webp">
-      <img src="images/contact.jpg" width="1456" height="816" alt="" loading="lazy" decoding="async">
-    </picture>
+    <img src="images/board/pin03.jpg" width="1080" height="1920" alt="" loading="lazy" decoding="async">
   </div>
   <div class="scene-body wrap">
     <div class="card contact-card">
@@ -736,6 +709,7 @@
       <li><a href="texts.html">Texts and privacy</a></li>
       <li><a href="mailto:taya@webfaery.love">taya@webfaery.love</a></li>
     </ul>
+    <button class="disco" type="button" id="disco" aria-label="A little disco ball. Tap it three times for a surprise"><img src="images/board/pin03.jpg" width="1080" height="1920" alt="" loading="lazy"></button>
     <p class="fine">Hand-built in Humboldt County, California. No trackers on this site.</p>
   </div>
 </footer>
@@ -925,6 +899,22 @@
       card.classList.remove('thanked');
       note.focus();
     });
+  })();
+</script>
+<script>
+  /* the lava lamp at the edge fills as you scroll; the neon sign flickers on once; the disco ball (3 taps) or typing "lava" turns the lava up for a moment */
+  (function () {
+    var root = document.documentElement, m = document.getElementById('meter'), f = m && m.firstElementChild, tick = false;
+    function p() { tick = false; var h = root.scrollHeight - innerHeight; f.style.setProperty('--p', h > 0 ? Math.min(1, Math.max(0, scrollY / h)).toFixed(3) : 0); m.style.setProperty('--p', f.style.getPropertyValue('--p')); }
+    if (f) { addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(p); } }, { passive: true }); p(); }
+    var n = document.querySelector('.neon');
+    if (n && 'IntersectionObserver' in window) { new IntersectionObserver(function (e, o) { if (e[0].isIntersecting) { n.classList.add('on'); o.disconnect(); } }, { threshold: .3 }).observe(document.getElementById('contact')); }
+    else if (n) n.classList.add('on');
+    var t = 0, buf = '';
+    function lava() { root.classList.add('lava-on'); setTimeout(function () { root.classList.remove('lava-on'); }, 6000); }
+    var d = document.getElementById('disco');
+    if (d) d.addEventListener('click', function () { t++; clearTimeout(d._t); d._t = setTimeout(function () { t = 0; }, 1500); if (t >= 3) { t = 0; lava(); } });
+    addEventListener('keydown', function (e) { if (e.key && e.key.length === 1) { buf = (buf + e.key.toLowerCase()).slice(-4); if (buf === 'lava') lava(); } });
   })();
 </script>
 </body>

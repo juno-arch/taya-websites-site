@@ -141,7 +141,7 @@
   if (door && !door.hidden) {
     var art = $('#door-art'), stage = $('#door-stage'), entered = false;
     var FX = parseFloat(door.dataset.doorX) || .5, FY = parseFloat(door.dataset.doorY) || .7;
-    var POS = [.51, .6];   /* = .door-art's object-position in site.css */
+    var POS = [.5, .08];   /* = .door-art's object-position in site.css */
     if ('inert' in page) page.inert = true;
     var place = function () {
       var vw = innerWidth, vh = innerHeight, iw = art.naturalWidth || 1456, ih = art.naturalHeight || 816;
