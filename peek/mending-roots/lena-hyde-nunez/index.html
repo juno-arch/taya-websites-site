@@ -1219,6 +1219,20 @@
   .tint::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--ember); mix-blend-mode: color; opacity: .35; transition: opacity .6s ease; pointer-events: none; }
   .tint:hover img { filter: none; } .tint:hover::after, .tint:hover::before { opacity: 0; }
   .doc img[src*="egoscue-for-rack-card"] { max-width: min(100%, 440px); }
+  .doc h3 { font-weight: 700; letter-spacing: .01em; }
+  .doc h3::before { content: ""; display: block; width: 22px; height: 22px; margin: 0 auto 8px; background: var(--ember); -webkit-mask: var(--ic-spark) center / contain no-repeat; mask: var(--ic-spark) center / contain no-repeat; }
+  :root { --ic-spark: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z'/></svg>"); --ic-leaf: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M21 3C10 3 3 10 3 21c11 0 18-7 18-18z'/></svg>"); }
+  .doc ul:not(.chips):not(.feat):not(.pcards) { list-style: none; padding: 0; display: grid; gap: 8px; max-width: 640px; margin-inline: auto; text-align: left; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li { position: relative; padding-left: 30px; max-width: none; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li::before, .doc ul.feat li::before { content: ""; position: absolute; left: 0; top: .42em; width: 17px; height: 17px; background: var(--ember); -webkit-mask: var(--ic-leaf) center / contain no-repeat; mask: var(--ic-leaf) center / contain no-repeat; }
+  .doc ul.feat { list-style: none; padding: 0; display: grid; gap: 12px; max-width: 700px; margin-inline: auto; text-align: left; }
+  .doc ul.feat li { position: relative; padding: 14px 16px 14px 46px; border-radius: 14px; background: var(--ground-2); max-width: none; line-height: 1.55; }
+  .doc ul.feat li::before { left: 16px; top: 17px; }
+  .doc ul.feat strong, .doc p.lab strong { color: var(--rust); }
+  .prices { display: grid; gap: 8px; max-width: 420px; margin: 6px auto; }
+  .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
+  .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
+  .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1229,7 +1243,13 @@
   .prod b { font-weight: 600; line-height: 1.3; font-size: 16px; }
   .prod .pr { color: var(--ink-soft); font-size: 15px; }
   .prod .fl { position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(33,23,15,.78); color: #fff; font: 600 11px/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; }
-  .prod[hidden] { display: none; }
+  .prod[hidden], .more-row[hidden], #more-prods[hidden] { display: none; }
+  .chips-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; }
+  .chip { font: 600 13px/1 var(--label); letter-spacing: .06em; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .chip:hover { background: var(--ground-2); } .chip.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .more-row { text-align: center; margin-top: 28px; }
+  .prod-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 26px 22px; }
+  .prod b { font-size: 17px; }
   .bk-modal { width: min(920px, 96vw); height: min(88vh, 900px); padding: 0; border: 0; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
   .bk-modal::backdrop { background: rgba(20,14,9,.66); }
   .bk-modal iframe { display: block; width: 100%; height: 100%; border: 0; }
@@ -1298,10 +1318,10 @@
 						Learn more about Lena's Somatic Offerings!					</a>
 <a class="btn" href="https://app.acuityscheduling.com/schedule/4df7e669/?categories[]=Class%20%26amp%3B%20Workshops" rel="noopener" target="_blank">
 						Sign up for Lena's workshops					</a>
-<p class="lede-first rv" style="--d:0.10s">Lena’s work begins with a simple belief: ancestral healing is the foundation of any healing journey. Born on a Caribbean island, she started apprenticing at age five with her Cuban grandmother, who was a lineage holder and spiritual/herbal healer. As part of her traditional way of healing, Lena also grew up treating dreams as significant guides in everyday life. Today, she weaves this traditional wisdom with what she calls mind medicine (parts work, dreamwork, mindfulness, somatic writing, and creativity) and somatic bodywork methods.</p>
-<p class="rv" style="--d:0.15s">Lena holds an M.A. in psychology and is a graduate of The Moving on Center in Berkeley and the Novato Institute for Somatic Research. She studied with Bonnie Bainbridge-Cohen, founder of Body-Mind Centering, and is a guild certified Feldenkrais teacher. In addition to her grandmother, her mentors have included her elders in Cuba, dream researcher and psychologist Leslie Ellis, and systemic change leader Miki Kashtan.</p>
-<p class="rv" style="--d:0.20s">Lena is also the founder of Vital Stories, a nonprofit offering workshops for women that bring together somatics, ecology, writing, and other creative arts. She also supports social change leaders in the Bay Area, Latin America, and locally, in collaboration with the Ink People Center for Arts and Culture.</p>
-<p class="rv" style="--d:0.25s">Lena is a practitioner of the following methods:<br/>
+<p class="lede-first rv" style="--d:0.10s">Lena’s work begins with a simple belief: ancestral healing is the foundation of any healing journey. Born on a Caribbean island, she started apprenticing at age five with her Cuban grandmother, who was a lineage holder and spiritual/herbal healer.</p><p class="rv" style="--d:0.15s">As part of her traditional way of healing, Lena also grew up treating dreams as significant guides in everyday life. Today, she weaves this traditional wisdom with what she calls mind medicine (parts work, dreamwork, mindfulness, somatic writing, and creativity) and somatic bodywork methods.</p>
+<p class="rv" style="--d:0.20s">Lena holds an M.A. in psychology and is a graduate of The Moving on Center in Berkeley and the Novato Institute for Somatic Research. She studied with Bonnie Bainbridge-Cohen, founder of Body-Mind Centering, and is a guild certified Feldenkrais teacher.</p><p class="rv" style="--d:0.25s">In addition to her grandmother, her mentors have included her elders in Cuba, dream researcher and psychologist Leslie Ellis, and systemic change leader Miki Kashtan.</p>
+<p class="rv" style="--d:0.00s">Lena is also the founder of Vital Stories, a nonprofit offering workshops for women that bring together somatics, ecology, writing, and other creative arts. She also supports social change leaders in the Bay Area, Latin America, and locally, in collaboration with the Ink People Center for Arts and Culture.</p>
+<p class="rv" style="--d:0.05s">Lena is a practitioner of the following methods:<br/>
 Traditional Ancestral Healing and Afro-Cuban Divination<br/>
 Somatic Dreamwork<br/>
 Feldenkrais Method<br/>
@@ -1312,7 +1332,7 @@ Mindful Self-Compassion<br/>
 Satipatthana and Metta Meditation<br/>
 Family Constellations<br/>
 Nonviolent and Embodied Communication</p>
-<p class="rv" style="--d:0.00s">GCFT#86993</p>
+<p class="rv" style="--d:0.10s">GCFT#86993</p>
 
 </div></section>
 <footer class="gutter">

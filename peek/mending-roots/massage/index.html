@@ -1219,6 +1219,20 @@
   .tint::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--ember); mix-blend-mode: color; opacity: .35; transition: opacity .6s ease; pointer-events: none; }
   .tint:hover img { filter: none; } .tint:hover::after, .tint:hover::before { opacity: 0; }
   .doc img[src*="egoscue-for-rack-card"] { max-width: min(100%, 440px); }
+  .doc h3 { font-weight: 700; letter-spacing: .01em; }
+  .doc h3::before { content: ""; display: block; width: 22px; height: 22px; margin: 0 auto 8px; background: var(--ember); -webkit-mask: var(--ic-spark) center / contain no-repeat; mask: var(--ic-spark) center / contain no-repeat; }
+  :root { --ic-spark: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z'/></svg>"); --ic-leaf: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M21 3C10 3 3 10 3 21c11 0 18-7 18-18z'/></svg>"); }
+  .doc ul:not(.chips):not(.feat):not(.pcards) { list-style: none; padding: 0; display: grid; gap: 8px; max-width: 640px; margin-inline: auto; text-align: left; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li { position: relative; padding-left: 30px; max-width: none; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li::before, .doc ul.feat li::before { content: ""; position: absolute; left: 0; top: .42em; width: 17px; height: 17px; background: var(--ember); -webkit-mask: var(--ic-leaf) center / contain no-repeat; mask: var(--ic-leaf) center / contain no-repeat; }
+  .doc ul.feat { list-style: none; padding: 0; display: grid; gap: 12px; max-width: 700px; margin-inline: auto; text-align: left; }
+  .doc ul.feat li { position: relative; padding: 14px 16px 14px 46px; border-radius: 14px; background: var(--ground-2); max-width: none; line-height: 1.55; }
+  .doc ul.feat li::before { left: 16px; top: 17px; }
+  .doc ul.feat strong, .doc p.lab strong { color: var(--rust); }
+  .prices { display: grid; gap: 8px; max-width: 420px; margin: 6px auto; }
+  .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
+  .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
+  .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1229,7 +1243,13 @@
   .prod b { font-weight: 600; line-height: 1.3; font-size: 16px; }
   .prod .pr { color: var(--ink-soft); font-size: 15px; }
   .prod .fl { position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(33,23,15,.78); color: #fff; font: 600 11px/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; }
-  .prod[hidden] { display: none; }
+  .prod[hidden], .more-row[hidden], #more-prods[hidden] { display: none; }
+  .chips-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; }
+  .chip { font: 600 13px/1 var(--label); letter-spacing: .06em; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .chip:hover { background: var(--ground-2); } .chip.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .more-row { text-align: center; margin-top: 28px; }
+  .prod-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 26px 22px; }
+  .prod b { font-size: 17px; }
   .bk-modal { width: min(920px, 96vw); height: min(88vh, 900px); padding: 0; border: 0; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
   .bk-modal::backdrop { background: rgba(20,14,9,.66); }
   .bk-modal iframe { display: block; width: 100%; height: 100%; border: 0; }
@@ -1292,17 +1312,17 @@
 
 
 <section class="gutter doc sec"><div class="wrap">
-<p class="lede rv" style="--d:0.05s">Massage  &amp; Bodywork Therapy services &amp; rates</p>
+<p class="lede rv" style="--d:0.05s">Massage &amp; Bodywork Therapy services &amp; rates</p>
 
 </div></section>
 <figure class="band" aria-hidden="true"><div class="band-img" style="background-image:url(images/massage-room.jpg)"></div></figure>
 <section class="gutter doc sec alt"><div class="wrap">
 <h2 class="rv" style="--d:0.05s">
 
-						“Embrace and love your body. It’s the most amazing thing you will ever own”					
+						“Embrace and love your body. It’s the most amazing thing you will ever own.”					
 </h2>
-<p class="rv" style="--d:0.10s">Everyone can benefit from massage therapy. It is not just a luxury that you get when you go to the spa, it is a necessity for the health and longevity of your body. Massage has been around for centuries and in every culture around the world. More and more studies are being done to show and prove the effectiveness massage therapy can have on the body to help with different bodily ailments. Here is a list of some of the many benefits you may experience with regular massage therapy.</p>
-<details class="rv" style="--d:0.15s"><summary>Physical Benefits</summary>
+<p class="rv" style="--d:0.10s">Everyone can benefit from massage therapy. It is not just a luxury that you get when you go to the spa; it is a necessity for the health and longevity of your body. Massage has been around for centuries and in every culture around the world.</p><p class="rv" style="--d:0.15s">More and more studies are being done to show and prove the effectiveness massage therapy can have on the body to help with different bodily ailments. Here is a list of some of the many benefits you may experience with regular massage therapy.</p>
+<details class="rv" style="--d:0.20s"><summary>Physical Benefits</summary>
 <p>Relaxes the body<br/>
 Calms the nervous system<br/>
 Lowers blood pressure<br/>
@@ -1322,12 +1342,12 @@ Speeds recovery from illness<br/>
 Increases range of motion<br/>
 Speeds elimination of metabolic waste<br/>
 Increases blood and lymph circulation<br/>
-Stimulates release of endorphin’s<br/>
+Stimulates release of endorphins<br/>
 Strengthens immune system<br/>
 Reduces swelling<br/>
 Improves posture</p>
 </details>
-<details class="rv" style="--d:0.20s"><summary>Mental Benefits</summary>
+<details class="rv" style="--d:0.25s"><summary>Mental Benefits</summary>
 <p>Reduces mental stress<br/>
 Promotes quality of sleep<br/>
 Improves productivity<br/>
@@ -1335,10 +1355,10 @@ Induces mental relaxation<br/>
 Improves concentration<br/>
 Reduces anxiety<br/>
 Enhances self-image<br/>
-Provides a feeling of well being<br/>
+Provides a feeling of well-being<br/>
 Nurtures and stimulates emotional growth.</p>
 </details>
-<details class="rv" style="--d:0.25s"><summary>Massage Cupping Benefits</summary>
+<details class="rv" style="--d:0.00s"><summary>Massage Cupping Benefits</summary>
 <p>Release tight contracted muscle tissue<br/>
 Joint Mobilization<br/>
 Cellulite Reduction<br/>
@@ -1359,10 +1379,9 @@ Enhances Sport Performance</p>
 
 						Reset Relaxation Massage					
 </h2>
-<p class="rv" style="--d:0.10s">Melt the Stress Away</p>
-<p class="rv" style="--d:0.15s">Let the stress and tension slip away while you let your body and mind unwind. Soothing and calming massage therapy techniques will be used to help engage your parasympathetic part of your nervous system. This is the part of your autonomic nervous system that is known as the rest and digest! You will leave feeling much lighter, in a better mood, and in a much calmer state. This will include a full body but may also be customized to your needs.  Pressure will  be individualized to the clients needs.</p>
-<p class="rv" style="--d:0.20s">60 min – $125<br/>
-90 min – $185</p>
+<h3 class="rv" style="--d:0.10s">Melt the Stress Away</h3>
+<p class="rv" style="--d:0.15s">Let the stress and tension slip away while you let your body and mind unwind. Soothing and calming massage therapy techniques will be used to help engage your parasympathetic part of your nervous system. This is the part of your autonomic nervous system that is known as the rest and digest!</p><p class="rv" style="--d:0.20s">You will leave feeling much lighter, in a better mood, and in a much calmer state. This will include a full body but may also be customized to your needs. Pressure will be individualized to the client’s needs.</p>
+<div class="prices"><span class="prow"><span>60 min</span><b>$125</b></span><span class="prow"><span>90 min</span><b>$185</b></span></div>
 <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Massage%20%26%20Bodywork%20Therapy%20w%2F%20Tami" rel="noopener" target="_blank">
 						Book Now					</a>
 
@@ -1375,13 +1394,11 @@ Enhances Sport Performance</p>
 
 						Integrative Therapeutic Massage					
 </h2>
-<p class="rv" style="--d:0.10s">Focused Deep Tissue</p>
-<p class="rv" style="--d:0.15s">Integrative therapeutic massage will combine different massage therapy techniques into the session based on your bodies needs. This session will help restore soft tissue imbalance in your body and will be individualized to every clients needs. Your body and mind will feel relaxed while also feeling the positive changes that come from this treatment. This is a restorative deep tissue treatment with focus on specific areas of complaint. Full intake will be done on first session.</p>
-<p class="rv" style="--d:0.20s">30 minute sessions will be focused on area(s) of complaint – not a full body.</p>
-<p class="rv" style="--d:0.25s">60 minute sessions can be full body but if you are having the need for more focused work than a 90 minute is recommended or book my integrative structural bodywork session.</p>
-<p class="rv" style="--d:0.00s">30 min – $75<br/>
-60 min – $140<br/>
-90 min – $200</p>
+<h3 class="rv" style="--d:0.10s">Focused Deep Tissue</h3>
+<p class="rv" style="--d:0.15s">Integrative therapeutic massage will combine different massage therapy techniques into the session based on your body’s needs. This session will help restore soft tissue imbalance in your body and will be individualized to every client’s needs.</p><p class="rv" style="--d:0.20s">Your body and mind will feel relaxed while also feeling the positive changes that come from this treatment. This is a restorative deep tissue treatment with focus on specific areas of complaint. Full intake will be done on the first session.</p>
+<p class="rv" style="--d:0.25s">30 minute sessions will be focused on area(s) of complaint – not a full body.</p>
+<p class="rv" style="--d:0.00s">60 minute sessions can be full body, but if you are having the need for more focused work, then a 90 minute is recommended or book my integrative structural bodywork session.</p>
+<div class="prices"><span class="prow"><span>30 min</span><b>$75</b></span><span class="prow"><span>60 min</span><b>$140</b></span><span class="prow"><span>90 min</span><b>$200</b></span></div>
 <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Massage%20%26%20Bodywork%20Therapy%20w%2F%20Tami" rel="noopener" target="_blank">
 						Book Now					</a>
 
@@ -1394,10 +1411,9 @@ Enhances Sport Performance</p>
 
 						Integrative Structural Bodywork Therapy					
 </h2>
-<p class="rv" style="--d:0.10s">This is a restorative &amp; corrective body work treatment that will focus on pain management, retraining the muscles through movement, and release of  trigger points that form in muscles of the body and create pain patterns, loss of range of motion, &amp; muscle fatigue/weakness. The treatment will integrate the use of a compression tool, hands on muscle manipulation, muscle activation techniques, and body movement stretches. </p>
-<p class="rv" style="--d:0.15s">Your initial treatment will consist of an assessment and treatment of the area of the body that is causing pain &amp; discomfort.  Treatment is done in clothing so make sure to wear comfortable clothing that your body can move in.</p>
-<p class="rv" style="--d:0.20s">60 Minutes – $140<br/>
-90 Minutes – $200</p>
+<p class="rv" style="--d:0.10s">This is a restorative &amp; corrective body work treatment that will focus on pain management, retraining the muscles through movement, and release of trigger points that form in muscles of the body and create pain patterns, loss of range of motion, &amp; muscle fatigue/weakness.</p><p class="rv" style="--d:0.15s">The treatment will integrate the use of a compression tool, hands-on muscle manipulation, muscle activation techniques, and body movement stretches. </p>
+<p class="rv" style="--d:0.20s">Your initial treatment will consist of an assessment and treatment of the area of the body that is causing pain &amp; discomfort. Treatment is done in clothing, so make sure to wear comfortable clothing that your body can move in.</p>
+<div class="prices"><span class="prow"><span>60 Minutes</span><b>$140</b></span><span class="prow"><span>90 Minutes</span><b>$200</b></span></div>
 <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Massage%20%26%20Bodywork%20Therapy%20w%2F%20Tami" rel="noopener" target="_blank">
 						Book Now					</a>
 
@@ -1410,11 +1426,11 @@ Enhances Sport Performance</p>
 
 						Dynamic/Static Cupping					
 </h2>
-<p class="rv" style="--d:0.10s">Vacuum style cups will be left on the body for a certain amount of time. This treatment is good for localized problems your body may be experiencing.  A cup is positioned at the area to be treated; a vacuum is created within the cup to draw the skin and underlying tissue into the cup. The produced vacuum creates a suction effect that increases blood and lymphatic circulation systemically and to the local area, relaxes muscle tissue, draws stagnation out of the body and releases a myriad of pain causing factors. </p>
-<p class="rv" style="--d:0.15s">Both static(leaving the cups still on the skin) and dynamic (moving the cups over the skin) will be used in treatment.</p>
-<p class="rv" style="--d:0.20s">This treatment will focus on specific areas of the body such as back/hips/legs/arms. </p>
-<p class="rv" style="--d:0.25s">Not a full body – can treat up to two areas</p>
-<p class="rv" style="--d:0.00s">30 min – $65</p>
+<p class="rv" style="--d:0.10s">Vacuum-style cups will be left on the body for a certain amount of time. This treatment is good for localized problems your body may be experiencing. A cup is positioned at the area to be treated; a vacuum is created within the cup to draw the skin and underlying tissue into the cup.</p><p class="rv" style="--d:0.15s">The produced vacuum creates a suction effect that increases blood and lymphatic circulation systemically and to the local area, relaxes muscle tissue, draws stagnation out of the body, and releases a myriad of pain-causing factors. </p>
+<p class="rv" style="--d:0.20s">Both static (leaving the cups still on the skin) and dynamic (moving the cups over the skin) will be used in treatment.</p>
+<p class="rv" style="--d:0.25s">This treatment will focus on specific areas of the body such as back/hips/legs/arms. </p>
+<h3 class="rv" style="--d:0.00s">Not a full body – can treat up to two areas</h3>
+<div class="prices"><span class="prow"><span>30 min</span><b>$65</b></span></div>
 <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Massage%20%26%20Bodywork%20Therapy%20w%2F%20Tami" rel="noopener" target="_blank">
 						Book Now					</a>
 

@@ -1219,6 +1219,20 @@
   .tint::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--ember); mix-blend-mode: color; opacity: .35; transition: opacity .6s ease; pointer-events: none; }
   .tint:hover img { filter: none; } .tint:hover::after, .tint:hover::before { opacity: 0; }
   .doc img[src*="egoscue-for-rack-card"] { max-width: min(100%, 440px); }
+  .doc h3 { font-weight: 700; letter-spacing: .01em; }
+  .doc h3::before { content: ""; display: block; width: 22px; height: 22px; margin: 0 auto 8px; background: var(--ember); -webkit-mask: var(--ic-spark) center / contain no-repeat; mask: var(--ic-spark) center / contain no-repeat; }
+  :root { --ic-spark: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z'/></svg>"); --ic-leaf: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M21 3C10 3 3 10 3 21c11 0 18-7 18-18z'/></svg>"); }
+  .doc ul:not(.chips):not(.feat):not(.pcards) { list-style: none; padding: 0; display: grid; gap: 8px; max-width: 640px; margin-inline: auto; text-align: left; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li { position: relative; padding-left: 30px; max-width: none; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li::before, .doc ul.feat li::before { content: ""; position: absolute; left: 0; top: .42em; width: 17px; height: 17px; background: var(--ember); -webkit-mask: var(--ic-leaf) center / contain no-repeat; mask: var(--ic-leaf) center / contain no-repeat; }
+  .doc ul.feat { list-style: none; padding: 0; display: grid; gap: 12px; max-width: 700px; margin-inline: auto; text-align: left; }
+  .doc ul.feat li { position: relative; padding: 14px 16px 14px 46px; border-radius: 14px; background: var(--ground-2); max-width: none; line-height: 1.55; }
+  .doc ul.feat li::before { left: 16px; top: 17px; }
+  .doc ul.feat strong, .doc p.lab strong { color: var(--rust); }
+  .prices { display: grid; gap: 8px; max-width: 420px; margin: 6px auto; }
+  .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
+  .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
+  .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1229,7 +1243,13 @@
   .prod b { font-weight: 600; line-height: 1.3; font-size: 16px; }
   .prod .pr { color: var(--ink-soft); font-size: 15px; }
   .prod .fl { position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(33,23,15,.78); color: #fff; font: 600 11px/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; }
-  .prod[hidden] { display: none; }
+  .prod[hidden], .more-row[hidden], #more-prods[hidden] { display: none; }
+  .chips-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; }
+  .chip { font: 600 13px/1 var(--label); letter-spacing: .06em; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .chip:hover { background: var(--ground-2); } .chip.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .more-row { text-align: center; margin-top: 28px; }
+  .prod-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 26px 22px; }
+  .prod b { font-size: 17px; }
   .bk-modal { width: min(920px, 96vw); height: min(88vh, 900px); padding: 0; border: 0; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
   .bk-modal::backdrop { background: rgba(20,14,9,.66); }
   .bk-modal iframe { display: block; width: 100%; height: 100%; border: 0; }
@@ -1304,25 +1324,12 @@
 <p class="rv" style="--d:0.10s">Postural Alignment Specialist<br/>
 Certified Massage Therapist/Structural Bodyworker<br/>
 Full Spectrum Health &amp; Detox Coach</p>
-<p class="rv" style="--d:0.15s">Tami is owner and practitioner at Mending Roots Body Therapies.  She has been a licensed massage therapist since 2015. She studied in Harrisburg, Pennsylvania and graduated from HACC’s 900-hour intensive massage therapy program. She has continued on with many more hours of continuing education training since the start of her massage &amp; body work therapy career. She has also completed her studies to become certified in the Egoscue Method as Postural Alignment Specialist. She believes that through life we should always be learning and growing; that philosophy follows through into her massage therapy practice and also her personal life. She has passion for seeing the human bodies true potential. She loves to explore and continue her learning in herbal medicine, healing the body through foods &amp; movement, essential oils, and of course massage therapy and other bodywork modalities.</p>
-<p class="rv" style="--d:0.20s">Tami has been living in Humboldt County since 2017. She enjoys being outdoors, going on adventures with her family, walking barefoot, living a healthy vegan lifestyle, helping people see their true potential, gazing at the night sky, her extended cat family, being her authentic self, and living life with a big heart.</p>
-<p class="rv" style="--d:0.25s"><strong>She has training in :</strong><br/>
--Swedish<br/>
--Deep Tissue<br/>
--Trigger Point<br/>
--Connective Tissue (myofascial)<br/>
--Corrective Body Work<br/>
--Manual Lymphatic Drainage (MLD)<br/>
--Reflexology<br/>
--Nurturing the Mother Pregnancy Massage<br/>
--Vedic Thai Massage<br/>
--Massage Cupping<br/>
--Certified Egoscue Postural Alignment Specialist<br/>
--Holistic Nutrition Coach<br/>
--Certified Health Coach with Global Healing Institute</p>
-<p class="rv" style="--d:0.00s">CMT#99747</p>
-<img alt="" class="rv" loading="lazy" src="images/old/30706597_10211775872533646_1367348837781340160_n.jpg" style="--d:0.05s"/>
-<img alt="Mending Roots Logo" class="rv" loading="lazy" src="images/old/MRBYLogo-610x610.png" style="--d:0.10s"/>
+<p class="rv" style="--d:0.15s">Tami is owner and practitioner at Mending Roots Body Therapies. She has been a licensed massage therapist since 2015. She studied in Harrisburg, Pennsylvania, and graduated from HACC’s 900-hour intensive massage therapy program.</p><p class="rv" style="--d:0.20s">She has continued on with many more hours of continuing education training since the start of her massage &amp; body work therapy career. She has also completed her studies to become certified in the Egoscue Method as a Postural Alignment Specialist.</p><p class="rv" style="--d:0.25s">She believes that through life we should always be learning and growing; that philosophy follows through into her massage therapy practice and also her personal life. She has passion for seeing the human body’s true potential.</p><p class="rv" style="--d:0.00s">She loves to explore and continue her learning in herbal medicine, healing the body through foods &amp; movement, essential oils, and of course massage therapy and other bodywork modalities.</p>
+<p class="rv" style="--d:0.05s">Tami has been living in Humboldt County since 2017. She enjoys being outdoors, going on adventures with her family, walking barefoot, living a healthy vegan lifestyle, helping people see their true potential, gazing at the night sky, her extended cat family, being her authentic self, and living life with a big heart.</p>
+<h3 class="rv" style="--d:0.10s"><strong>She has training in:</strong></h3><ul class="chips rv" style="--d:0.15s"><li>Swedish</li><li>Deep Tissue</li><li>Trigger Point</li><li>Connective Tissue (myofascial)</li><li>Corrective Body Work</li><li>Manual Lymphatic Drainage (MLD)</li><li>Reflexology</li><li>Nurturing the Mother Pregnancy Massage</li><li>Vedic Thai Massage</li><li>Massage Cupping</li><li>Certified Egoscue Postural Alignment Specialist</li><li>Holistic Nutrition Coach</li><li>Certified Health Coach with Global Healing Institute</li></ul>
+<p class="rv" style="--d:0.20s">CMT#99747</p>
+<img alt="" class="rv" loading="lazy" src="images/old/30706597_10211775872533646_1367348837781340160_n.jpg" style="--d:0.25s"/>
+<img alt="Mending Roots Logo" class="rv" loading="lazy" src="images/old/MRBYLogo-610x610.png" style="--d:0.00s"/>
 <a class="btn" href="dolphin-neurostim-mps-therapy/">
 						Scar Release Therapy Dolphin Neurostim					</a>
 <a class="btn" href="massage/">

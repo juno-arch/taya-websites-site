@@ -1219,6 +1219,20 @@
   .tint::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--ember); mix-blend-mode: color; opacity: .35; transition: opacity .6s ease; pointer-events: none; }
   .tint:hover img { filter: none; } .tint:hover::after, .tint:hover::before { opacity: 0; }
   .doc img[src*="egoscue-for-rack-card"] { max-width: min(100%, 440px); }
+  .doc h3 { font-weight: 700; letter-spacing: .01em; }
+  .doc h3::before { content: ""; display: block; width: 22px; height: 22px; margin: 0 auto 8px; background: var(--ember); -webkit-mask: var(--ic-spark) center / contain no-repeat; mask: var(--ic-spark) center / contain no-repeat; }
+  :root { --ic-spark: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z'/></svg>"); --ic-leaf: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M21 3C10 3 3 10 3 21c11 0 18-7 18-18z'/></svg>"); }
+  .doc ul:not(.chips):not(.feat):not(.pcards) { list-style: none; padding: 0; display: grid; gap: 8px; max-width: 640px; margin-inline: auto; text-align: left; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li { position: relative; padding-left: 30px; max-width: none; }
+  .doc ul:not(.chips):not(.feat):not(.pcards) li::before, .doc ul.feat li::before { content: ""; position: absolute; left: 0; top: .42em; width: 17px; height: 17px; background: var(--ember); -webkit-mask: var(--ic-leaf) center / contain no-repeat; mask: var(--ic-leaf) center / contain no-repeat; }
+  .doc ul.feat { list-style: none; padding: 0; display: grid; gap: 12px; max-width: 700px; margin-inline: auto; text-align: left; }
+  .doc ul.feat li { position: relative; padding: 14px 16px 14px 46px; border-radius: 14px; background: var(--ground-2); max-width: none; line-height: 1.55; }
+  .doc ul.feat li::before { left: 16px; top: 17px; }
+  .doc ul.feat strong, .doc p.lab strong { color: var(--rust); }
+  .prices { display: grid; gap: 8px; max-width: 420px; margin: 6px auto; }
+  .prow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 11px 18px; border-radius: 12px; background: var(--ground-2); text-align: left; }
+  .prow b { color: var(--rust); font-weight: 700; white-space: nowrap; }
+  .doc.sec.alt .prow, .doc.sec.alt ul.feat li { background: var(--ground); }
   .doc .wrap.wide { max-width: 1180px; }
   .shop-find { display: block; width: 100%; max-width: 420px; margin: 0 auto 26px; padding: 12px 16px; font: inherit; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); }
   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; text-align: left; }
@@ -1229,7 +1243,13 @@
   .prod b { font-weight: 600; line-height: 1.3; font-size: 16px; }
   .prod .pr { color: var(--ink-soft); font-size: 15px; }
   .prod .fl { position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 999px; background: rgba(33,23,15,.78); color: #fff; font: 600 11px/1.4 var(--label); letter-spacing: .1em; text-transform: uppercase; }
-  .prod[hidden] { display: none; }
+  .prod[hidden], .more-row[hidden], #more-prods[hidden] { display: none; }
+  .chips-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; }
+  .chip { font: 600 13px/1 var(--label); letter-spacing: .06em; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--hair-2); background: var(--ground); color: var(--ink); cursor: pointer; transition: background .2s, color .2s; }
+  .chip:hover { background: var(--ground-2); } .chip.on { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .more-row { text-align: center; margin-top: 28px; }
+  .prod-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 26px 22px; }
+  .prod b { font-size: 17px; }
   .bk-modal { width: min(920px, 96vw); height: min(88vh, 900px); padding: 0; border: 0; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
   .bk-modal::backdrop { background: rgba(20,14,9,.66); }
   .bk-modal iframe { display: block; width: 100%; height: 100%; border: 0; }
@@ -1301,7 +1321,7 @@
 </h2>
 <img alt="" class="rv" loading="lazy" src="images/old/egoscue-for-rack-card.jpeg" style="--d:0.10s"/>
 <p class="lede-first rv" style="--d:0.15s">Postural Alignment Therapy focuses on your body as a whole and getting to the root cause of your pain &amp; injury. It uses personalized gentle corrective exercises to address the muscular imbalance that leads to misalignment and pain/symptoms in your body.</p>
-<p class="rv" style="--d:0.20s">Your body will relearn how to move in balance to live a more Pain-Free life! </p>
+<p class="rv" style="--d:0.20s">Your body will relearn how to move in balance to live a more pain-free life! </p>
 <a class="btn" href="https://app.acuityscheduling.com/schedule.php?owner=38912454&amp;appointmentType=category:Postural%20Alignment%20Therapy" rel="noopener" target="_blank">
 						Schedule your session!					</a>
 
@@ -1310,39 +1330,39 @@
 <section class="gutter doc sec alt"><div class="wrap">
 <h2 class="rv" style="--d:0.05s">
 
-						Clients before and afters photos with doing regular postural alignment therapy.					
+						Clients’ before and after photos with doing regular postural alignment therapy.					
 </h2>
-<div class="pat-photos"><figure class="tint"><img alt="" class="rv" loading="lazy" src="images/old/beforeafter-Jessie-610x610.jpg" style="--d:0.10s"/></figure><figure class="tint"><img alt="" class="rv" loading="lazy" src="images/old/IMG_4809-610x515.jpg" style="--d:0.15s"/></figure></div>
+<img alt="" class="rv" loading="lazy" src="images/old/beforeafter-Jessie-610x610.jpg" style="--d:0.10s"/>
+<img alt="" class="rv" loading="lazy" src="images/old/IMG_4809-610x515.jpg" style="--d:0.15s"/>
 <h3 class="rv" style="--d:0.20s">How does Egoscue Method Postural Alignment Therapy (PAT) work?</h3>
-<p class="rv" style="--d:0.25s">The Egoscue Method PAT will address your whole body and work towards treating the underlying cause of your pain and symptoms. Gentle corrective exercises and stretches will be given to help move your body into postural alignment. Pain and injuries can occur when the body is experiencing misalignment in joints and muscles groups that are not working as they should. </p>
-<p class="rv" style="--d:0.00s">Dysfunction in our postural muscles can be caused by work, injuries, lifestyle, and accidents. When our body is not working in balance, it can impact many of the systems of our bodies, muscle, skeletal, digestive, cardiovascular, nervous, &amp; lymphatic. By addressing the root cause and not just the symptom, your body will experience positive change and not just temporary relief.</p>
+<p class="rv" style="--d:0.25s">The Egoscue Method PAT will address your whole body and work towards treating the underlying cause of your pain and symptoms. Gentle corrective exercises and stretches will be given to help move your body into postural alignment. Pain and injuries can occur when the body is experiencing misalignment in joints and muscle groups that are not working as they should. </p>
+<p class="rv" style="--d:0.00s">Dysfunction in our postural muscles can be caused by work, injuries, lifestyle, and accidents. When our body is not working in balance, it can impact many of the systems of our bodies: muscle, skeletal, digestive, cardiovascular, nervous, &amp; lymphatic. By addressing the root cause and not just the symptom, your body will experience positive change and not just temporary relief.</p>
 <details class="rv" style="--d:0.05s"><summary>What to expect in a PAT session.</summary>
-<p>Your first session will include a wellness history intake, postural evaluation, gait analysis, functional movement analysis, and a personalize exercise e-cise menu that you will continue to do at home. You will work as a team with your therapist to discover where your limitations are coming from in your body.</p>
-<p>All follow up sessions will include new postural analysis, answer any questions/listen to your feedback, along with an updated e-cise menu to adapt to your bodies needs. Follow-up sessions are essential to continue the positive changes in your body. Lasting postural changes take time and the average client can expect to be seen over a 6 month period for a total of 16 sessions</p>
+<p>Your first session will include a wellness history intake, postural evaluation, gait analysis, functional movement analysis, and a personalized exercise e-cise menu that you will continue to do at home. You will work as a team with your therapist to discover where your limitations are coming from in your body.</p>
+<p>All follow-up sessions will include new postural analysis, answer any questions/listen to your feedback, along with an updated e-cise menu to adapt to your body’s needs. Follow-up sessions are essential to continue the positive changes in your body.</p><p>Lasting postural changes take time, and the average client can expect to be seen over a 6 month period for a total of 16 sessions.</p>
 </details>
 <details class="rv" style="--d:0.10s"><summary>How much does Postural Alignment Therapy cost?</summary>
-<p>-Initial Posture Therapy Session 90-120 min – $160<br/>
--Single Follow Up Session 60 min – $100</p>
+<ul><li>Initial Posture Therapy Session 90-120 min – $160</li><li>Single Follow Up Session 60 min – $100</li></ul>
 <p>Digital Therapy – $55<br/>
-This is for those who would just like a posture evaluation and an e-cise menu. There will be no one on one and communication will be through email. If you are interested in this service please reach out through our contact form (located on the bottom of the home page).</p>
+This is for those who would just like a posture evaluation and an e-cise menu. There will be no one-on-one and communication will be through email. If you are interested in this service, please reach out through our contact form (located on the bottom of the home page).</p>
 </details>
 <details class="rv" style="--d:0.15s"><summary>FAQ</summary>
-<p>How soon will I see results?</p>
-<p>How the body responds will vary from person to person. Imbalances and dysfunctions have been developing over time in the body and it will take time to correct imbalances that are unique to you. Muscles in your body need time to remember their job and be re-educated on how to start to move in a more functional way. As you continue through the therapy you will start to experience your body in a new way and start to experience lasting relief from they symptoms your body had been experiencing.</p>
-<p>Do I need to do my e-cises (postural exercises) daily?</p>
-<p>Yes! Your body has created poor movement patterns to compensate for the dysfunctions in your body. In order for the change to be lasting, your body will need to continuous stimuli to correct the old muscle patterns with new ones.</p>
-<p>Do I need to follow my whole menu?</p>
-<p>Yes! You need to do your menu in order given. To receive the fullest benefit, you should do your whole menu every day. I will work with you to create an individualized menu that works for your schedule and lifestyle.</p>
-<p>Will I feel sore after doing my menu?</p>
+<h3>How soon will I see results?</h3>
+<p>How the body responds will vary from person to person. Imbalances and dysfunctions have been developing over time in the body, and it will take time to correct imbalances that are unique to you.</p><p>Muscles in your body need time to remember their job and be re-educated on how to start to move in a more functional way. As you continue through the therapy, you will start to experience your body in a new way and start to experience lasting relief from the symptoms your body had been experiencing.</p>
+<h3>Do I need to do my e-cises (postural exercises) daily?</h3>
+<p>Yes! Your body has created poor movement patterns to compensate for the dysfunctions in your body. In order for the change to be lasting, your body will need continuous stimuli to correct the old muscle patterns with new ones.</p>
+<h3>Do I need to follow my whole menu?</h3>
+<p>Yes! You need to do your menu in the order given. To receive the fullest benefit, you should do your whole menu every day. I will work with you to create an individualized menu that works for your schedule and lifestyle.</p>
+<h3>Will I feel sore after doing my menu?</h3>
 <p>There is the possibility for you to feel some muscle soreness as you are re-training your muscles to move more functionally in your body. Your body will be going through changes as you are on your journey of postural alignment therapy.</p>
-<p>Do you take insurance?</p>
+<h3>Do you take insurance?</h3>
 <p>No, I do not accept insurance. You can check to see if this therapy would be allowed for your FLEX spending account or if your insurance would allow you to submit a claim.</p>
-<p>Is Postural Alignment Therapy good for only those in pain?</p>
+<h3>Is Postural Alignment Therapy good for only those in pain?</h3>
 <p>No, this is good for everyone! Whether you want to move out of pain, have better mobility, be proactive in managing your health, or just want better posture, PAT can be a part of your wellbeing.</p>
 <p>Can I still receive other services such as massage therapy, chiropractic, etc.?</p>
-<p>Yes! PAT compliments all those therapies and can actually make the other providers jobs easier when your body is in better alignment.</p>
-<p>Do I need equipment to do PAT?</p>
-<p>No, most of the e-cises can be done with no equipment or with items you have your home. I will help you with modifying so you can do them correctly in your home. If you would like to purchase equipment, I can direct you to where to purchase it online. I also carry some equipment that can be purchased directly from Mending Roots Body Therapies.</p>
+<p>Yes! PAT complements all those therapies and can actually make the other providers’ jobs easier when your body is in better alignment.</p>
+<h3>Do I need equipment to do PAT?</h3>
+<p>No, most of the e-cises can be done with no equipment or with items you have in your home. I will help you with modifying so you can do them correctly in your home. If you would like to purchase equipment, I can direct you to where to purchase it online. I also carry some equipment that can be purchased directly from Mending Roots Body Therapies.</p>
 </details>
 
 </div></section>
@@ -1351,7 +1371,7 @@ This is for those who would just like a posture evaluation and an e-cise menu. T
 
 						Please reach out if you have any questions regarding this therapy and if you would like to schedule a free 20 minute consultation by filling out the form below.					
 </h2>
-<form class="rv" onsubmit="return false" style="max-width:560px;--d:0.10s"><p class="rv" style="--d:0.15s"><label class="field">Name *<span style="display:inline-block;width:48%;margin-right:2%"><input type="text"/><small style="display:block">First</small></span><span style="display:inline-block;width:48%;margin-right:2%"><input type="text"/><small style="display:block">Last</small></span></label></p><p class="rv" style="--d:0.20s"><label class="field">Email *<input type="email"/></label></p><p class="rv" style="--d:0.25s"><label class="field">Phone *<input type="text"/></label></p><p class="rv" style="--d:0.00s"><label class="field">Message *<textarea rows="5"></textarea></label></p><p class="rv" style="--d:0.05s"><button class="btn" type="button">Send</button></p></form>
+<form class="rv" onsubmit="return false" style="max-width:560px;--d:0.10s"><h3 class="rv" style="--d:0.15s"><label class="field">Name *<span style="display:inline-block;width:48%;margin-right:2%"><input type="text"/><small style="display:block">First</small></span><span style="display:inline-block;width:48%;margin-right:2%"><input type="text"/><small style="display:block">Last</small></span></label></h3><h3 class="rv" style="--d:0.20s"><label class="field">Email *<input type="email"/></label></h3><h3 class="rv" style="--d:0.25s"><label class="field">Phone *<input type="text"/></label></h3><h3 class="rv" style="--d:0.00s"><label class="field">Message *<textarea rows="5"></textarea></label></h3><p class="rv" style="--d:0.05s"><button class="btn" type="button">Send</button></p></form>
 </div></section>
 <footer class="gutter">
   <div class="wrap">
