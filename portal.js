@@ -119,14 +119,14 @@
     crone: 'Keeps you in full bloom: everything in the Tended subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STAGES = [
-    ['getting_started', 'Getting started'], ['call', 'Your story'], ['draft', 'Draft'],
-    ['changes', 'Changes'], ['launch', 'Launch'], ['settling_in', 'Settling in']
+    ['getting_started', 'Getting started'], ['call', 'Setup'], ['draft', 'Build and review'],
+    ['changes', 'Build and review'], ['launch', 'Launch'], ['settling_in', 'Settling in']
   ];
   const STAGE_SAY = {
     getting_started: 'Your answers, photos and a few little setup bits.',
-    call: 'A few easy questions by email. I do the writing after.',
-    draft: 'I’m building your draft. You’ll get a private link to peek.',
-    changes: 'Send changes by email; one email with everything in it is easiest.',
+    call: 'I set up your accounts, in your name, and get everything ready to build.',
+    draft: 'I build your site. You look it over and tell me what to change.',
+    changes: 'I build your site. You look it over and tell me what to change.',
     launch: 'Your site goes live at your own web address, and I hand you your logins.',
     settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
   };
@@ -147,12 +147,12 @@
       steps: [
         'Go to business.google.com and sign in with the Google account that owns your profile.',
         'Open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love, choose Manager, and send it. You stay the owner. (Google moves its buttons around now and then; if it looks different, stop there and we’ll do it together.)',
-        'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Later, Google asks you for one quick check that it’s really your business (a short video, or a code it sends you).'
+        'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Google will later ask for one quick check that it’s your business (a short video, or a code).'
       ],
       after: {
-        maiden: 'Anything I set up for you is in your name, with your email. If a confirm-your-email message comes, just click it. Already use a booking app? Send me your booking link, and your Book now button opens it.',
-        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, with your email, and hand you the logins at launch. Already happy with a booking app? We keep that one. If a confirm-your-email message or two comes from them, just click them.',
-        other: 'If your build has a newsletter or booking, I set those up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
+        maiden: 'Anything I set up is in your name, with your email. If a confirm-your-email message comes, just click it. Already use a booking app? Send me the link, and your Book now button opens it.',
+        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, and hand you the logins at launch. Already happy with a booking app? Keep it. Just click any confirm-your-email message that comes.',
+        other: 'If your build has a newsletter or booking, I set those up in your name and hand you the logins at launch. Just click any confirm-your-email message that comes.'
       }
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
@@ -348,7 +348,7 @@
     // (field and at: kept for older server answers; the editors were retired Oct 5 2026)
     if (data && typeof data.field === 'string') e.field = data.field.slice(0, 20);
     if (data && Number.isInteger(data.at) && data.at >= 0 && data.at < 100) e.at = data.at;
-    // the shop's back end (Oct 10 2026) says what to fix in its own words, and 409 "taken" for a code name in use
+    // the shop's server (Oct 10 2026) says what to fix in its own words, and 409 "taken" for a code name in use
     if (data && typeof data.message === 'string') e.msg = cleanLine(data.message, 200);
     // a client's bookings (Oct 10 2026) say why too (no_payments, not_set_up)
     if (data && typeof data.why === 'string') e.why = data.why.slice(0, 20);
@@ -1522,7 +1522,8 @@
         current: str(tl.current, 20) || 'getting_started',
         stages: arr(tl.stages).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), date: str(s && s.date, 30), state: str(s && s.state, 8) })),
         // the five steps (add 22 / 25): same source as the Studio's timeline; an older server sends none, and the six stages above are drawn
-        steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), est: str(s && s.est, 10), until: str(s && s.until, 30),
+        steps: arr(tl.steps).slice(0, 7).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), est: str(s && s.est, 10), until: str(s && s.until, 30),
+          usual: s && Number.isFinite(+s.usual_days) && +s.usual_days >= 1 && +s.usual_days <= 120 ? Math.round(+s.usual_days) : 0,
           turn: s && (s.turn === 'you' || s.turn === 'me') ? s.turn : '', state: s && (s.state === 'done' || s.state === 'now') ? s.state : 'next' })),
         care_since: str(tl.care_since, 30),
         // (Nov 2 2026, ADD 40) "Last update: <day>, <one line>" under the current step; the server sends it only when Pollen's switch is on
@@ -2457,13 +2458,19 @@
     const cur = me.timeline.current;
     const ci = stageIndex(cur);
     const live = cur === 'care' || cur === 'resting';
-    // the five steps come from the server (the same source as the Studio's timeline); an older server sends the six stages
-    const five = arr(me.timeline.steps).length === 5;
-    const list = five ? me.timeline.steps.map((s) => ({ key: s.key, label: s.label, date: s.date || '', est: str(s.est, 10), until: s.until || '', turn: s.turn || '', say: s.say || '', state: s.state }))
-      : STAGES.map(([key, label], i) => {
-        const s = me.timeline.stages.find((x) => x.key === key) || {};
-        return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
+    // the steps come from the server (the same source as the Studio's timeline). Mockup sent and Choosing are always behind a client
+    // who is in their portal, so they show as done when the server does not send them. An older server sends only the stages, and the
+    // steps are worked out from the stage they are in.
+    const sent = arr(me.timeline.steps);
+    const FALLBACK = [['getting_started', 'Getting started'], ['setup', 'Setup'], ['build', 'Build and review'], ['launch', 'Launch'], ['settling_in', 'Settling in']];
+    const at = { getting_started: 0, call: 1, draft: 2, changes: 2, launch: 3, settling_in: 4 }[cur];
+    const own = sent.length ? sent.map((s) => ({ key: s.key, label: s.label, date: s.date || '', est: str(s.est, 10), until: s.until || '', turn: s.turn || '', say: s.say || '', usual: s.usual || 0, state: s.state }))
+      : FALLBACK.map(([key, label], i) => {
+        const st = me.timeline.stages.find((x) => x.key === (key === 'setup' ? 'call' : key === 'build' ? 'draft' : key)) || {};
+        return { key, label, date: st.date || '', est: '', until: '', turn: '', say: '', usual: 0, state: at === undefined || i < at ? 'done' : i === at ? 'now' : 'next' };
       });
+    const lead = own.some((x) => x.key === 'mockup') ? [] : [{ key: 'mockup', label: 'Mockup sent', state: 'done' }, { key: 'choosing', label: 'Choosing', state: 'done' }];
+    const list = lead.concat(own);
     $('#tl').replaceChildren(...list.map((s) => {
       const li = make('li', s.state);
       if (s.state === 'now') li.setAttribute('aria-current', 'step');
@@ -2476,7 +2483,7 @@
       if (s.state === 'now') name.append(make('span', 'now-pill', 'Now'));
       else if (s.state === 'done') name.append(make('span', 'sr-only', '(done)'));
       body.append(name);
-      const d = shortDate(five && s.key === 'settling_in' && s.until ? s.until : s.date);
+      const d = shortDate(s.key === 'settling_in' && s.until ? s.until : s.date);
       // the draft link is already here: its date is when it's finished, not when it arrives
       const draftHere = (s.key === 'draft' || s.key === 'build') && s.state === 'now' && !!me.things.draft;
       let when = '';
@@ -2491,6 +2498,7 @@
         else when = 'About ' + d;
       }
       body.append(make('span', estD ? 'when est' : 'when', when));
+      if (s.usual && s.state !== 'done') body.append(make('span', 'usual', 'Usually ' + s.usual + (s.usual === 1 ? ' day' : ' days')));
       const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
       if (s.state === 'now' && say) body.append(make('p', 'say', say));
       if (s.state === 'now' && s.turn) body.append(make('p', 'turn', s.turn === 'you' ? 'Your turn' : 'My turn'));
@@ -2498,7 +2506,7 @@
       li.append(dot, body);
       return li;
     }));
-    // once the site is live, the six finished steps fold away into one line
+    // once the site is live, the finished steps fold away into one line
     $('#h-where').textContent = cur === 'care' ? 'Live, and in good hands' : cur === 'resting' ? 'All done, and all yours' : 'Your site, step by step';
     $('#tl').hidden = live;
     const more = $('#b-tl-more');
@@ -3021,7 +3029,7 @@
   }
 
   /* ---- your shop's discount codes, free shipping and the packing slip line (Oct 10 2026) ----
-     Codes live on Web Faery's server, in the owner's own back end: % or $ off, a smallest order, first and last
+     Codes live on Web Faery's server, in the owner's own portal: % or $ off, a smallest order, first and last
      days, a limit, once per buyer, on or off. Checkout checks them and puts them on the Stripe receipt; a use
      counts once the order is paid. */
   let codes = null;          // { settings, codes: [...] } as the server last sent it (cleaned)
@@ -3598,7 +3606,7 @@
     f.append(confirmLine, err, btns);
   }
   function noshowWords(e) {
-    if (e.status === 409) return 'This booking can’t be marked right now: it may not have started yet, it already changed, or your Stripe isn’t connected here. Nothing was charged. Refresh and look again, or email Taya.';
+    if (e.status === 409) return 'This booking can’t be marked right now. It may not have started, it already changed, or your Stripe isn’t connected here. Nothing was charged. Refresh, or email me.';
     if (e.status === 502) return 'Stripe didn’t answer, so nothing was charged. Try again in a minute.';
     return bkWords(e);
   }
@@ -4383,7 +4391,7 @@
     const newWrap = make('label', 'dc-check');
     const newOnly = make('input'); newOnly.type = 'checkbox'; newOnly.id = 'in-bkq-new-' + key; newOnly.checked = !!(q && q.new_only);
     newWrap.append(newOnly, make('span', null, 'New clients only'));
-    const newHelp = make('p', 'orders-fine', 'Asked the first time someone books with you. People who have booked before aren’t asked again, until their answers are cleared after the time you keep them.');
+    const newHelp = make('p', 'orders-fine', 'The questions are asked the first time someone books with you, and again if their answers are cleared.');
     const headsWrap = make('label', 'dc-check');
     const heads = make('input'); heads.type = 'checkbox'; heads.id = 'in-bkq-heads-' + key; heads.checked = !!(q && q.heads);
     headsWrap.append(heads, make('span', null, 'Tell me first'));
@@ -4488,7 +4496,7 @@
     } catch (e) {
       if (e.code === 'signed_out') { quietSignOut(false); return; }
       const w = { format: 'That doesn’t look like a calendar address. It starts with https:// or webcal://.',
-        host: 'That address isn’t from a calendar I know yet (Google, iCloud, Outlook, Proton, Fastmail, Yahoo). Email Taya and she can add yours.',
+        host: 'That address isn’t from a calendar I know yet (Google, iCloud, Outlook, Proton, Fastmail, Yahoo). Email me and I can add yours.',
         too_many: 'Five calendars is the most for now.', already: 'That calendar is already connected.' };
       err.textContent = e.code === 'input' && w[e.why] ? w[e.why] : bkWords(e);
       err.hidden = false;
@@ -4521,7 +4529,7 @@
     if (c) {
       $('#in-bk-card-on').checked = c.on;
       $('#in-bk-card-on').disabled = !c.can && !c.on;
-      $('#bk-card-hint').textContent = !c.can && !c.on ? 'Saving a card needs your own Stripe connected first. Email Taya and she’ll set it up with you.' : 'Their card is saved with your Stripe and charged nothing when they book. If they miss their appointment, you can charge the no-show fee with one tap under Coming up.';
+      $('#bk-card-hint').textContent = !c.can && !c.on ? 'Saving a card needs your own Stripe connected first. Email Taya and she’ll set it up with you.' : 'Their card is saved with your Stripe and charged nothing when they book. If they miss it, charge the no-show fee with one tap under Coming up.';
       $('#in-bk-card-first').value = String(c.first);
       $('#in-bk-card-repeat').value = String(c.repeat);
       $('#in-bk-card-policy').value = c.policy;
@@ -4771,7 +4779,7 @@
     const none = !list.length;
     $('#bk-cl-empty').hidden = !none;
     $('#bk-cl-empty-text').textContent = cl.total === 0
-      ? 'No clients yet. Once people book with you, they gather here, one line each. Someone who booked by phone or came in person? Add them with Add a client.'
+      ? 'No clients yet. People gather here once they book. Booked by phone or in person? Tap Add a client.'
       : 'No one by that name or email. Check the spelling, or try part of it.';
     $('#bk-cl-count').textContent = q
       ? (none ? '' : plural(list.length, 'person', 'people') + ' found')
@@ -6649,7 +6657,7 @@
     $('#rc-total').textContent = rows.length ? plural(rows.length, 'receipt', 'receipts') + ' in ' + rcMonthName(rc.month) + ', ' + rcMoney(total) + ' in all.' : '';
     setHidden($('#rc-total'), !rows.length);
     const same = rows.filter((r) => r.maybe_same).length;
-    $('#rc-same-note').textContent = same ? 'Some of these look like the same receipt saved twice (the same day, place and total, or the same photo). Tap one to check, and delete the extra if it is one.' : '';
+    $('#rc-same-note').textContent = same ? 'These look like the same receipt saved twice. Tap one to check, and delete the extra.' : '';
     setHidden($('#rc-same-note'), !same);
     $('#rc-list').replaceChildren(...rows.map(rcRow));
     setHidden($('#rc-list'), !rows.length);
@@ -6792,7 +6800,7 @@
   }
   const RC_READ = {
     '': 'Here’s what the photo says, as best it could be read. Check each one, fix anything that’s off, then Save.',
-    cap: 'This month’s photo reads are used up, so this one wasn’t read. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
+    cap: 'This month’s photo reads are used up, so this one wasn’t read. Your photo is kept: type in the date, where it’s from and the total, then Save.',
     off: 'Photo reading is resting right now. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
     busy: 'Photo reading is resting right now. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
     unreadable: 'That photo was hard to read. It’s kept with the receipt: type in the date, where it’s from and the total, then Save. A flat, bright photo reads best.',

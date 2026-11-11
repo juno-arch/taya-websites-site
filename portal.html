@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <link rel="stylesheet" href="portal-schedule.css?v=20261022b">
 <link rel="stylesheet" href="ceiling.css?v=20261110zzzzr">
-<link rel="stylesheet" href="portal-newlook.css?v=20261110b">
+<link rel="stylesheet" href="portal-newlook.css?v=20261110d">
 <!--
-  portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
+  portal.html: a client's own page, their portal (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (or a password they chose), then move between short pages with the tabs
   (on a phone, the dock at the bottom). Only the tabs they have show:
     Home: whose turn it is, a note from Taya, and what needs them now
@@ -52,7 +52,7 @@
   routes in garden-faery-hub/pocketbase/pb_hooks/webfaery-portal.pb.js (deploy notes in
   garden-faery-hub/pocketbase/webfaery-portal-docs/, kept out of this public repo).
 
-  Files: wf-tokens.css (the colors, type and sizes every Web Faery page shares), wf-backend.css (the back ends'
+  Files: wf-tokens.css (the colors, type and sizes every Web Faery page shares), wf-backend.css (the portals'
   shared look: the bar, the tabs, buttons, fields, sheets), portal.css (this page's own parts), portal.js
   (everything that happens), portal-demo.js (a sample client, loaded only while DEMO = true in portal.js).
   Not in sitemap.xml.
@@ -126,7 +126,7 @@
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261022b"></script>
-<script src="portal.js?v=20261106a"></script>
+<script src="portal.js?v=20261110d"></script>
 <script src="zigzag.js?v=20261110a" defer></script>
 
 <main class="page" id="main" tabindex="-1">
@@ -319,7 +319,7 @@
           <legend class="field-label">Photos <span class="opt-tag">(up to 6, the first one leads)</span></legend>
           <ul class="pr-photos" id="pr-photos"></ul>
           <label class="pick pr-add-photo" id="pr-add-photo"><input type="file" id="in-pr-photos" class="pr-file" accept="image/*" multiple> <span>Add photos</span></label>
-          <p class="pr-hint">Straight from your phone is fine. They’re made smaller here before they send, and the camera details (like where a photo was taken) are left behind.</p>
+          <p class="pr-hint">Straight from your phone is fine. Photos are made smaller before they send, and camera details like location are left out.</p>
           <p class="err" id="pr-photo-err" hidden></p>
         </fieldset>
         <label class="field-label" for="in-pr-title">Name</label>
@@ -374,7 +374,7 @@
       <span class="kicker">Your shop</span>
       <h2 id="h-orders" tabindex="-1">Orders</h2>
       <p class="orders-test" id="orders-test" hidden>Test mode: these are practice orders, no real money.</p>
-      <p class="orders-fine">Newest first. Tick Packed once it’s in the mail, or tap Shipped to send the buyer their tracking. Each address stays here until 30 days after Packed, and your Stripe keeps the whole order.</p>
+      <p class="orders-fine">Newest first. Tick Packed once it’s in the mail, or tap Shipped to send the buyer their tracking. Addresses clear 30 days after Packed.</p>
       <ul class="orders" id="orders"></ul>
       <p class="empty" id="orders-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
         <span class="empty-body">No orders yet. They show up here as soon as someone checks out.</span></p>
@@ -488,7 +488,7 @@
       <div class="bk-panel" role="tabpanel" id="bk-p-upcoming" aria-labelledby="bk-tab-upcoming">
         <h3 class="small-h">Coming up</h3>
         <div class="bk-sample" id="bk-sample" hidden>
-          <p class="orders-fine">These are practice bookings so you can try everything: add one, move one, cancel one. They are labeled Sample, nothing is real and no email goes out to anyone.</p>
+          <p class="orders-fine">Practice bookings, labeled Sample. Try anything: nothing is real and no email goes out.</p>
           <button type="button" class="ghost small" id="b-bk-sample">Reset the sample bookings</button>
           <span class="orders-fine" id="bk-sample-say" role="status"></span>
         </div>
@@ -626,7 +626,7 @@
             <h3 class="small-h">Intake answers</h3>
             <label class="field-label" for="in-bk-keep">Keep intake answers after someone’s last visit for</label>
             <select id="in-bk-keep"></select>
-            <p class="orders-fine">After that, their answers and Heads up line are cleared and the booking itself stays. Answers live only in your bookings here and in your booking emails. If they book again after that, they’re asked the new client questions again.</p>
+            <p class="orders-fine">After that, their answers and Heads up line are cleared and the booking stays. If they book again, they get the new client questions again.</p>
           </div>
           <p class="err" id="bk-set-err" hidden></p>
           <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-set"><span>Save settings</span></button></div>
@@ -675,7 +675,7 @@
             <li class="bk-x-row" id="bk-x-intake" hidden>
               <label class="dc-check"><input type="checkbox" id="in-bk-x-intake" aria-describedby="bk-x-intake-what"> <span>New client intake</span></label>
               <p class="orders-fine" id="bk-x-intake-what">Questions just for people booking with you for the first time, and a Heads up line on a booking when an answer is one you want to know first.</p>
-              <p class="orders-fine">When this is on, the intake options show with your questions under Services. Switching it on adds no questions by itself. Switching it off keeps your questions and answers, and then every question is asked of everyone.</p>
+              <p class="orders-fine">When this is on, the intake options show under Services. Switching it on adds no questions. Switching it off keeps your questions and answers, and everyone is asked every question.</p>
             </li>
           </ul>
           <p class="err" id="bk-x-err" hidden></p>
@@ -708,7 +708,7 @@
 
         <h4 class="small-h">Your bookings in your calendar</h4>
         <p class="orders-fine">Each booking email to you has a calendar file. Open it to add the booking to your calendar; the emails when it moves or is canceled carry a file that moves or removes it.</p>
-        <p class="orders-fine">Tap Add to my calendar on an iPhone, iPad or Mac and your calendar offers to subscribe, so every booking lands on your phone and stays up to date. On an Android phone, use Add to Google Calendar. Or copy your private calendar link and add it as a subscribed calendar by hand. It holds every booking, with the address for home visits. Calendars look for changes on their own schedule: an iPhone every so often (on a Mac you can pick every 5 minutes), Google every several hours, sometimes a day. The emails are the quick way. Keep the link to yourself.</p>
+        <p class="orders-fine">Tap Add to my calendar on an iPhone, iPad or Mac to subscribe, so every booking lands on your phone. On Android, use Add to Google Calendar. Or copy your private link and add it as a subscribed calendar by hand. It holds every booking, with the address for home visits. Calendars update on their own schedule, sometimes a day later, so the emails are the quick way. Keep the link to yourself.</p>
         <div class="dc-btns">
           <a class="btn small" id="a-bk-subscribe" href="#" hidden><span>Add to my calendar</span></a>
           <a class="later" id="a-bk-gcal" href="#" target="_blank" rel="noopener noreferrer" hidden>Add to Google Calendar</a>
@@ -734,7 +734,7 @@
         <p class="err" id="bk-cl-err" hidden></p>
         <div class="dc-btns bk-cl-more"><button class="open-btn" type="button" id="b-bk-cl-more" hidden>Show more</button></div>
         <div class="nl-csv"><button class="later" type="button" id="b-bk-cl-csv">Download the list as a spreadsheet (CSV)</button></div>
-        <p class="orders-fine">For your own records: name, email, phone, visits, first and last visit, where they came from, and your note. A visit is a booking that went ahead; a no-show isn’t counted as one. People you add yourself count no visits until they book.</p>
+        <p class="orders-fine">For your own records: name, email, phone, visits, first and last visit, where they came from, and your note. A no-show isn’t counted as a visit.</p>
       </div>
     </section>
 
@@ -913,7 +913,7 @@
       </div>
       <details class="howto gg-privacy">
         <summary>Privacy</summary>
-        <p class="vs-fine">Web Faery reads these numbers from Google about your own site, once a month, using read-only access. This is on for every client site. Only you and Taya see them, and they are not sold or shared. You can stop it or delete the past numbers here any time.</p>
+        <p class="vs-fine">Web Faery reads these numbers from Google once a month, read-only. Only you and Taya see them, and they are not sold or shared. You can stop it or delete the past numbers here any time.</p>
         <p class="gg-actions"><button type="button" class="btn" id="gg-stop">Stop tracking my site</button> <button type="button" class="btn" id="gg-wipe">Delete my past numbers</button></p>
         <p class="vs-fine" id="gg-note" role="status"></p>
       </details>
@@ -1163,7 +1163,7 @@
       <h2 id="h-messages" tabindex="-1">Messages with Taya</h2>
       <p class="msg-intro" id="msg-intro-plain">Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. Words only for now: for photos or files, email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
       <!-- [rich b23] shown instead of the line above once the server has rich messages (portal.js richStart) -->
-      <p class="msg-intro" id="msg-intro-rich" hidden>Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. You can make words bold, add lists, links and emoji, and attach photos and files (up to 5 in a message, 10 MB each).</p>
+      <p class="msg-intro" id="msg-intro-rich" hidden>Write to me here any time, and I’ll answer here too. You get a short email when I write. Add bold, lists, links, emoji and attachments (up to 5 a message, 10 MB each).</p>
       <form id="f-msg" class="msg-form" novalidate>
         <label class="field-label" for="in-msg">Write to Taya</label>
         <textarea id="in-msg" name="message" maxlength="4000" rows="4" aria-describedby="msg-count msg-err"></textarea>

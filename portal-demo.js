@@ -72,7 +72,7 @@
   };
   function stages(dates, current) {
     var keys = ['getting_started', 'call', 'draft', 'changes', 'launch', 'settling_in'];
-    var labels = ['Getting started', 'Your story', 'Draft', 'Changes', 'Launch', 'Settling in'];
+    var labels = ['Getting started', 'Setup', 'Build and review', 'Build and review', 'Launch', 'Settling in'];
     var ci = keys.indexOf(current);
     if (ci < 0) ci = keys.length;
     return keys.map(function (k, i) { return { key: k, label: labels[i], date: dates[i] || '', state: i < ci ? 'done' : (i === ci ? 'now' : 'next') }; });
@@ -89,7 +89,7 @@
     if (ci === undefined) ci = 5;
     return keys.map(function (k, i) {
       return { key: k, label: labels[i], say: say[i], state: i < ci ? 'done' : (i === ci ? 'now' : 'next'), date: dates[[0, 1, 2, 4, 4][i]] || '',
-        until: k === 'settling_in' ? (dates[5] || '') : '', turn: i === ci ? (k === 'getting_started' ? 'you' : 'me') : '' };
+        until: k === 'settling_in' ? (dates[5] || '') : '', usual_days: [7, 5, 21, 2, 30][i], turn: i === ci ? (k === 'getting_started' ? 'you' : 'me') : '' };
     });
   }
   // the plan, counted from today: [started, call, draft, changes, launch, settled]

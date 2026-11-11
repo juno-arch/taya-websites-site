@@ -1,12 +1,12 @@
 /* =====================================================================================================
-   A light brand touch for a client's back end (portal.html), Oct 16 2026. OFF until Taya sets a color for
+   A light brand touch for a client's portal (portal.html), Oct 16 2026. OFF until Taya sets a color for
    that client (the server sends `brand: { accent: '#rrggbb' }` in `me` only then; hub DEPLOY.md section 80).
 
    This file only does the color math, no page work: portal.js asks pick() and paints the result.
      - contrast(a, b)       the WCAG contrast ratio of two #rrggbb colors (1 to 21)
      - darken(hex, papers)  the same hue, lightness stepped down 1% at a time until the color reads at 4.5:1 or
                             better on every paper color given; '' if it would have to go darker than LIGHT_FLOOR
-     - pick(accent, opts)   what the back end uses, or null for Web Faery's own look:
+     - pick(accent, opts)   what the portal uses, or null for Web Faery's own look:
                               { accent, text, darkened, bar }
                               text  the accent as it is if it passes 4.5:1 on the paper (and the page ground),
                                     else its darker shade; used for the italic heading words, link underlines,
@@ -21,7 +21,7 @@
   'use strict';
 
   const HEX_RE = /^#[0-9a-f]{6}$/;
-  // the back end's paper (--wf-b-sheet) and its ground (--wf-b-bg) in the light look; text sits on both
+  // the portal's paper (--wf-b-sheet) and its ground (--wf-b-bg) in the light look; text sits on both
   const PAPERS = ['#fcfbff', '#efebf8'];
   const BAR = '#2a1236';          // --wf-night: the bar and the phone dock
   const TEXT_RATIO = 4.5;         // WCAG AA, normal text

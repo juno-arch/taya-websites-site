@@ -110,7 +110,7 @@ main .p-card, .site-foot .foot-in {
   padding: 34px var(--zz-pad) 32px; margin-top: 26px; filter: drop-shadow(6px 6px 0 #f5967a); color: #2a1236;
 }
 main .p-card:nth-of-type(3n+2) { filter: drop-shadow(6px 6px 0 #ffd37a); }
-main .p-card:nth-of-type(3n) { filter: drop-shadow(6px 6px 0 #8fd1ad); }
+main .p-card:nth-of-type(3n) { filter: drop-shadow(6px 6px 0 #8fd1a0); }
 main .p-card::before, main .p-card::after, .site-foot .foot-in::before, .site-foot .foot-in::after {
   content: ""; display: block; position: absolute; z-index: -1; pointer-events: none;
 }
@@ -138,7 +138,7 @@ main #sec-pay::before, main #sec-pay::after, main #sec-change::before, main #sec
   background: #fff8f1; border: 2px solid #1a1420; border-radius: 16px; box-shadow: 4px 4px 0 #f5967a; color: #2a1236;
 }
 .dcs > li:nth-child(3n+2), .orders > li:nth-child(3n+2), .pays > *:nth-child(3n+2), .prs > li:nth-child(3n+2), .asks li:nth-child(3n+2) { box-shadow: 4px 4px 0 #ffd37a; }
-.dcs > li:nth-child(3n), .orders > li:nth-child(3n), .pays > *:nth-child(3n), .prs > li:nth-child(3n), .asks li:nth-child(3n) { box-shadow: 4px 4px 0 #8fd1ad; }
+.dcs > li:nth-child(3n), .orders > li:nth-child(3n), .pays > *:nth-child(3n), .prs > li:nth-child(3n), .asks li:nth-child(3n) { box-shadow: 4px 4px 0 #8fd1a0; }
 .order:not(.packed):not(.bk):not(.nl-row), .payrow.has-trouble, .payrow.st-due { border-color: #1a1420; box-shadow: 4px 4px 0 #ffd37a; background: #fff8f1; }
 .ledger { overflow: hidden; }
 .ledger > li, .things .thing, .todo { border-color: rgb(42 18 54 / .25); }
@@ -277,3 +277,12 @@ textarea { border-radius: 24px; padding: 14px 18px; }
 .toast { border-radius: 26px; }
 .tabs a { box-shadow: 2px 2px 0 rgb(26 20 32 / .0); }
 .tabs a:not([aria-current="page"]) { background: rgb(255 248 241 / .45); border-color: rgb(26 20 32 / .55); }
+
+/* "Usually 7 days" under a step that is now or still ahead: plain small words, a timeline is a dense list */
+.tl .usual { display: block; margin-top: 2px; font-size: 14px; color: #4a2f55; }
+/* the brand guide: the card shadow is 4px on phones */
+@media (max-width: 560px) {
+  main .p-card { filter: drop-shadow(4px 4px 0 #f5967a); }
+  main .p-card:nth-of-type(3n+2) { filter: drop-shadow(4px 4px 0 #ffd37a); }
+  main .p-card:nth-of-type(3n) { filter: drop-shadow(4px 4px 0 #8fd1a0); }
+}
