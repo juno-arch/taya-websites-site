@@ -1333,3 +1333,11 @@ body::before { display: none !important; }
 .portrait::before { background-image: var(--st3); left: -26px; top: -26px; transform: rotate(-12deg); }
 .portrait::after { background-image: var(--st5); right: -24px; bottom: -24px; transform: rotate(10deg); }
 .portrait img { filter: grayscale(1) contrast(1.06); }
+
+/* an overlay on the finished-site screenshots so they blend into the band: a peach-to-lilac tint, soft over the picture */
+.work .browser, .work .phone { position: relative; overflow: hidden; isolation: isolate; }
+.work .browser::after, .work .phone::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(135deg, #ffb48a 0%, #f59ab0 45%, #c9b0ff 100%); mix-blend-mode: soft-light; opacity: .85; }
+.work .browser::before, .work .phone::before { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(135deg, rgb(255 180 138 / .22), rgb(201 176 255 / .22)); mix-blend-mode: multiply; }
+.work .phone { position: absolute; }
