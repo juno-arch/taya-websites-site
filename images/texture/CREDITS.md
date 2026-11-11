@@ -1,4 +1,3 @@
-# images/texture
-
-Crops cut from the pictures on Pollen's own Pinterest board "Web Faery" (tayagrows/web-faery), Nov 10 2026: the lava lamp and zigzag collage (hero, zig, kitchen, swirl-low), the psychedelic swirl (swirl), the mosaic disco balls (disco), the leopard (fur, starry), the tie-dye and sun (tiedye) and the cat and portals print (portals).
-They are other artists' work and are not credited on the pins. Preview only: before this goes live, license them, replace them with Pollen's own art, or ask each artist.
+Pictures here come from Pollen's Pinterest board (tayagrows/web-faery) and from pictures she sent. They are other
+artists' work, used for the local preview only. License them or replace them before the site goes live.
+Sizes are the largest Pinterest serves (hero, foil, knit, marbles, confetti, cereal, bubbles, disco, fur, portals, swirl, tie-dye); water.png was sent by Pollen at about 390 px wide.
