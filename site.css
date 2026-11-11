@@ -1214,3 +1214,12 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 
 /* the glowing water photo is the full-width background of the About band */
 .about { background: url(images/texture/water.png) center / cover no-repeat; }
+
+/* About: no break at its top, and its photo runs down into a scalloped lower edge, filling the break below it */
+.about::before { display: none; }
+.about { padding-top: var(--wf-section-pad, 80px); padding-bottom: calc(var(--wf-section-pad, 80px) + 12px); position: relative; z-index: 2;
+  -webkit-mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 12px) no-repeat, radial-gradient(circle at 50% 0, #000 0 10px, transparent 10.5px) 0 100% / 24px 12px repeat-x;
+  mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 12px) no-repeat, radial-gradient(circle at 50% 0, #000 0 10px, transparent 10.5px) 0 100% / 24px 12px repeat-x; }
+.faq-sec { margin-top: -12px; }
+.faq-sec::before { display: none; }
+.faq-sec { padding-top: calc(var(--wf-section-pad, 80px) + 12px); }
