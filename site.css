@@ -1389,3 +1389,13 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
 .panel .after.every-plan > ul:not(.pills) { margin: 0 0 14px; }
 .panel .after.every-plan > ul:not(.pills) { columns: 1 !important; column-count: 1 !important; display: block; }
 .panel .after.every-plan .pill { font-size: 12.5px; line-height: 1.25; }
+
+/* Tended vs In Bloom: the heading on top, then the two ways side by side */
+.tools-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+.tools-grid .sec-head { grid-column: 1 / -1; position: relative; top: auto; max-width: 860px; justify-self: center; text-align: center; }
+.tools-grid .sec-head .pills { justify-content: center; }
+.tools-card h3 { margin: 4px 0 12px; font-size: clamp(26px, 2.4vw, 34px); line-height: 1.1; }
+.tools-card .pills { margin-top: 0; }
+.tools-note { font-style: italic; margin: 10px 0 0; }
+.tools-grid .tools-card { max-width: none; }
+@media (max-width: 900px) { .tools-grid { grid-template-columns: 1fr; } .tools-grid .sec-head { text-align: left; } }
