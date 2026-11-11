@@ -1301,3 +1301,9 @@ body::before { display: none !important; }
 .site-foot .wrap::before, .site-foot .wrap::after {
   -webkit-mask: var(--wv-top) 0 0 / 84px 36px repeat-x, var(--wv-bot) 0 100% / 84px 36px repeat-x, var(--wv-lef) 0 0 / 36px 84px repeat-y, var(--wv-rig) 100% 0 / 36px 84px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 36px) calc(100% - 36px) no-repeat;
   mask: var(--wv-top) 0 0 / 84px 36px repeat-x, var(--wv-bot) 0 100% / 84px 36px repeat-x, var(--wv-lef) 0 0 / 36px 84px repeat-y, var(--wv-rig) 100% 0 / 36px 84px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 36px) calc(100% - 36px) no-repeat; }
+
+/* pass 18: grass-cut cards with a single point at each corner (the shape comes from the script at the end of the page) */
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::before,
+.site-foot .wrap::before { inset: -3px; -webkit-mask: none; mask: none; clip-path: var(--zo, none); }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after,
+.site-foot .wrap::after { inset: 0; -webkit-mask: none; mask: none; clip-path: var(--zi, none); }
