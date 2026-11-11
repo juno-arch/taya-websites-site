@@ -1276,3 +1276,13 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 /* no rainbow stripe across the top, and the top banner is a soft lilac with deep-indigo words */
 body::before { display: none !important; }
 .wf-banner a { color: #1c1a3a; }
+
+/* fun dividers: a black squiggle with a star sticker between the two sites, and dotted lines inside the cards */
+.work .piece + .piece { border-top: 0; position: relative; margin-top: clamp(40px, 5vw, 64px); padding-top: clamp(40px, 5vw, 64px); }
+.work .piece + .piece::before { display: block; content: ''; position: absolute; left: 0; right: 0; top: 0; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='16'%3E%3Cpath d='M0 8Q11 -1 22 8T44 8' fill='none' stroke='%231a1420' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E") 0 0 / 44px 16px repeat-x; }
+.work .piece + .piece::after { display: block; content: ''; position: absolute; left: 50%; top: -17px; width: 50px; height: 50px; margin-left: -25px; background: var(--st4) center / contain no-repeat; transform: rotate(8deg);
+  filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(2px 3px 0 rgb(42 31 92 / .3)); }
+.kind { border-top: 3px dotted #1a1420; }
+.gets { border-top: 3px dotted #1a1420; }
+.field .faq details { border-top: 3px dotted #1a1420; }
+.work .piece + .piece::before { height: 24px; background-size: 66px 24px; top: -4px; }
