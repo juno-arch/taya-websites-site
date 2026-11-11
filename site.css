@@ -1094,3 +1094,48 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .hero-paint picture { inset: 0; }
 .hero-text { text-shadow: 0 1px 2px rgb(14 10 40 / .9), 0 0 14px rgb(14 10 40 / .75), 0 0 32px rgb(14 10 40 / .55); }
 .hero-text .pill, .hero-text .btn { text-shadow: none; }
+
+/* phones: the whole picture sits on top, edge to edge, and the words sit under it on the night color, so her face and the shiba are never covered */
+@media (max-width: 700px) {
+  .hero { display: block; min-height: 0; background: var(--wf-ground); }
+  .hero-paint { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 9; margin-top: calc(var(--wf-head-h) + 34px); z-index: 0; }
+  .hero-paint picture { position: absolute; inset: 0; }
+  .hero-art { object-position: 50% 50%; }
+  .hero-text { padding-top: 22px; padding-bottom: 36px; text-shadow: none; }
+}
+
+/* the word that changes (from the earlier hero): "for healers, bakers, dreamers, witches, faeries, orcs..." and back to "small local businesses" */
+.rot-on .rot {
+  position: relative; display: inline-grid; grid-template-columns: minmax(0, 1fr); justify-items: center;
+  vertical-align: baseline; box-sizing: content-box;
+  /* room around the letters so the italic overhang and the soft glow are never cut off,
+     given back by the negative margins so the line itself never moves */
+  padding: .42em .5em; margin: -.42em -.5em;
+  /* the letters rise into view from below the line and out of view above it, through soft edges;
+     the top edge fades in the gap between the two lines (fully gone by .19em, just under line one's
+     baseline; fully shown from .41em, just over this line's tallest letters), so a word leaving never
+     drifts over "Hand-built websites" */
+  -webkit-mask-image: linear-gradient(transparent .19em, #000 .41em, #000 calc(100% - .27em), transparent);
+  mask-image: linear-gradient(transparent .19em, #000 .41em, #000 calc(100% - .27em), transparent);
+  /* the slot eases to each word's width, so "for" and the full stop glide and the line re-centers */
+  transition: width .7s cubic-bezier(.22, 1, .36, 1);
+  transition: width .7s linear(0, 0.0554, 0.1808, 0.3318, 0.4817, 0.6158, 0.7277, 0.8164, 0.8833, 0.9316, 0.9649, 0.9867, 0.9999, 1.0071, 1.0104, 1.0111, 1.0104, 1.0089, 1.0072, 1.0056, 1.0041, 1.0029, 1.002, 1.0012, 1.0007, 1.0004, 1.0001, 1, 0.9999, 0.9999, 1);
+}
+.rot-on .rot-say {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+/* each word keeps its letters together on one line (the line itself always fits; see the font-size above) */
+.rot-w { grid-area: 1 / 1; display: inline-block; white-space: nowrap; }
+.rot-w > span { display: inline-block; }
+.rot-w > span::before, .rot-dot::before { content: attr(data-c); }
+/* each letter springs up into place, one after another (the script sets each one's --d) */
+.rot-w.in > span {
+  animation: rot-in .62s cubic-bezier(.3, 1.3, .5, 1) var(--d, 0ms) both;
+  animation-timing-function: linear(0, 0.0591, 0.197, 0.3672, 0.5384, 0.6914, 0.8169, 0.9122, 0.979, 1.0214, 1.0445, 1.0535, 1.0531, 1.0471, 1.0384, 1.0289, 1.0201, 1.0126, 1.0068, 1.0025, 0.9997, 0.998, 0.9972, 0.9971, 0.9973, 0.9977, 0.9982, 0.9987, 0.9992, 0.9995, 0.9998, 1, 1.0001, 1.0001, 1.0002, 1.0002, 1);
+}
+.rot-w.out > span {
+  animation: rot-out .38s cubic-bezier(.4, 0, .2, 1) var(--d, 0ms) both;
+  animation-timing-function: linear(0, 0.0912, 0.2731, 0.4632, 0.6265, 0.7529, 0.844, 0.9062, 0.9466, 0.9717, 0.9865, 0.9947, 0.9989, 1.0008, 1.0015, 1.0015, 1.0013, 1.001, 1.0007, 1.0005, 1);
+.hero .h1b { color: #f2c6f0; }
+.hero .fade { opacity: 1 !important; transform: none !important; animation: none !important; }

@@ -27,10 +27,10 @@
 </script>
 <link rel="preload" as="font" type="font/woff2" href="fonts/gloock-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/spectral-400-italic-latin.woff2" crossorigin>
-<link rel="stylesheet" href="fonts/fonts.css?v=20261110zy">
-<link rel="stylesheet" href="wf-tokens.css?v=20261110zy">
-<link rel="stylesheet" href="site.css?v=20261110zy">
-<link rel="stylesheet" href="ceiling.css?v=20261110zy">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261110zza">
+<link rel="stylesheet" href="wf-tokens.css?v=20261110zza">
+<link rel="stylesheet" href="site.css?v=20261110zza">
+<link rel="stylesheet" href="ceiling.css?v=20261110zza">
 <script src="site.js?v=20261110b" defer></script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://webfaery.love/">
@@ -159,11 +159,11 @@
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-melt" aria-hidden="true"></div>
   <div class="hero-text wrap">
-    <p class="eyebrow fade f1">Humboldt County, California</p>
-    <h1 id="hero-title"><span class="h1a fade f2">Hand-built websites</span> <span class="h1b fade f3">for small local businesses.</span></h1>
-    <p class="hero-lede fade f4">Yours to keep.</p>
-    <ul class="pills fade f4"><li class="pill p-pink">Free mockup in a week</li><li class="pill p-butter">Small monthly subscription</li><li class="pill p-mint">I follow your socials and update your site, or you email me</li></ul>
-    <div class="hero-cta fade f5">
+    <p class="eyebrow ">Humboldt County, California</p>
+    <h1 id="hero-title"><span class="h1a ">Hand-built websites</span> <span class="h1b">for <span class="rot" data-words="healers, bakers, dreamers, witches, faeries, orcs, small local businesses"><span class="rot-say">small local businesses</span></span>.</span></h1>
+    <p class="hero-lede ">Yours to keep.</p>
+    <ul class="pills "><li class="pill p-pink">Free mockup in a week</li><li class="pill p-butter">Small monthly subscription</li><li class="pill p-mint">I follow your socials and update your site, or you email me</li></ul>
+    <div class="hero-cta ">
       <div class="btns">
         <a class="btn" href="intake.html">Get a free mockup</a>
         <a class="btn ghost" href="#prices">See prices</a>
@@ -901,6 +901,99 @@
     if (d) d.addEventListener('click', function () { t++; clearTimeout(d._t); d._t = setTimeout(function () { t = 0; }, 1500); if (t >= 3) { t = 0; lava(); } });
     addEventListener('keydown', function (e) { if (e.key && e.key.length === 1) { buf = (buf + e.key.toLowerCase()).slice(-4); if (buf === 'lava') lava(); } });
   })();
+</script>
+<script>
+(function () {
+  (function () {
+    var hero = document.querySelector('.hero');
+    var rot = hero && hero.querySelector('.rot');
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!rot || !calm || calm.matches || !document.fonts) return;
+    var line = rot.parentNode, say = rot.querySelector('.rot-say');
+    var home = say.textContent.replace(/\s+/g, ' ').trim();
+    var words = (rot.getAttribute('data-words') || '').split(',').map(function (w) { return w.trim(); }).filter(Boolean);
+    if (words[words.length - 1] !== home) words.push(home);
+    if (words.length < 2) return;
+    /* how long each word stays (from one change to the next); the letters' own motion lives in the CSS
+       (.rot-w.in: .62s, .rot-w.out: .38s), and each letter's start is staggered here */
+    var SHOW = 1750, SHOW_HOME = 3400, OUT_TIME = 380;
+
+    var build = function (text) {
+      var w = document.createElement('span');
+      w.className = 'rot-w'; w.setAttribute('aria-hidden', 'true'); w.letters = [];
+      for (var i = 0; i < text.length; i++) {
+        var c = document.createElement('span'), ch = text.charAt(i);
+        c.setAttribute('data-c', ch === ' ' ? '\u00a0' : ch); /* a no-break space, so it keeps its width */
+        w.appendChild(c);
+        if (ch !== ' ') w.letters.push(c);
+      }
+      return w;
+    };
+    /* stagger a word's letters left to right; long words get a slightly quicker step so they don't drag.
+       Returns when the last letter starts. */
+    var stagger = function (w, lead, step, most) {
+      var n = w.letters.length;
+      step = Math.max(step * 0.7, Math.min(step, most / Math.max(1, n - 1)));
+      w.letters.forEach(function (c, i) { c.style.setProperty('--d', Math.round(lead + i * step) + 'ms'); });
+      return lead + (n - 1) * step;
+    };
+    var ems = function (el) { return el.getBoundingClientRect().width / parseFloat(getComputedStyle(rot).fontSize); };
+
+    var cur = build(home), at = words.length - 1, timer = 0, state = 'idle', inView = true;
+    rot.appendChild(cur);
+    /* the full stop moves into the hidden sentence (so it reads "...small local businesses." exactly),
+       and the one on screen is drawn by CSS */
+    var stop = rot.nextSibling, dot = document.createElement('span');
+    dot.className = 'rot-dot'; dot.setAttribute('aria-hidden', 'true'); dot.setAttribute('data-c', '.');
+    if (stop && stop.nodeType === 3 && stop.nodeValue === '.') { line.replaceChild(dot, stop); say.textContent = home + '.'; } else stop = null;
+    line.classList.add('rot-on');
+
+    var swap = function () {
+      at = (at + 1) % words.length;
+      var old = cur, next = build(words[at]);
+      var was = ems(old);
+      var left = stagger(old, 0, 16, 280);
+      old.className = 'rot-w out';
+      rot.appendChild(next);
+      var now = ems(next);
+      /* growing: the line opens first and the new letters follow (a touch later the more it has to open);
+         shrinking: the old letters clear out, then the line closes up around the new word */
+      stagger(next, now > was ? 90 + Math.min(90, (now - was) * 20) : Math.max(110, left - 60), 22, 330);
+      next.className = 'rot-w in';
+      rot.style.transitionDelay = now > was ? '0ms' : Math.round(left + 60) + 'ms';
+      rot.style.width = now + 'em';
+      cur = next;
+      setTimeout(function () { if (old.parentNode === rot) rot.removeChild(old); }, left + OUT_TIME + 80);
+    };
+    var tick = function () {
+      timer = 0;
+      if (state !== 'on' || document.hidden || !inView) return;
+      swap();
+      timer = setTimeout(tick, words[at] === home ? SHOW_HOME : SHOW);
+    };
+    var pause = function () { clearTimeout(timer); timer = 0; };
+    var resume = function () { if (state === 'on' && !timer && !document.hidden && inView) timer = setTimeout(tick, SHOW); };
+    var start = function (wait) {
+      if (state !== 'idle') return;
+      state = 'on';
+      document.fonts.ready.then(function () {
+        if (state !== 'on') return;
+        rot.style.width = ems(cur) + 'em';
+        pause(); timer = setTimeout(tick, wait);
+      });
+    };
+
+    start(1200);
+
+    document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); else resume(); });
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (es) {
+        inView = es[es.length - 1].isIntersecting;
+        if (inView) resume(); else pause();
+      }).observe(line);
+    }
+  })();
+})();
 </script>
 </body>
 </html>
