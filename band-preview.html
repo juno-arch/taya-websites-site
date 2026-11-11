@@ -33,13 +33,13 @@
   .sign .s3 a:focus-visible { outline: 3px solid #ffd37a; outline-offset: 4px; }
   .stk { position: absolute; width: clamp(54px, 8vw, 86px); aspect-ratio: 1; background: center / contain no-repeat; background-image: var(--img); pointer-events: none; z-index: 1;
     filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(3px 4px 0 rgb(42 31 92 / .4)); }
-  /* an iridescent shine on every sticker: a rainbow sheen, cut to the sticker's own shape, that slowly sweeps across it */
-  .stk::after { content: ""; position: absolute; inset: 0; pointer-events: none; -webkit-mask: var(--img) center / contain no-repeat; mask: var(--img) center / contain no-repeat;
-    background: linear-gradient(115deg, rgb(255 255 255 / 0) 14%, rgb(255 143 208 / .38) 28%, rgb(255 243 168 / .42) 40%, rgb(143 240 255 / .42) 52%, rgb(183 154 255 / .4) 64%, rgb(255 143 208 / .36) 76%, rgb(255 255 255 / 0) 88%) 0% 0% / 260% 100%;
-    opacity: 1; }
-  .stk::before { content: ""; position: absolute; inset: 0; pointer-events: none; -webkit-mask: var(--img) center / contain no-repeat; mask: var(--img) center / contain no-repeat;
-    background: linear-gradient(115deg, rgb(255 255 255 / 0) 38%, rgb(255 255 255 / .55) 47%, rgb(255 255 255 / 0) 56%) 0% 0% / 260% 100%; }
-  @media (prefers-reduced-motion: no-preference) { .stk::after, .stk::before { animation: shine 5.5s ease-in-out infinite; } .stk:nth-of-type(2n)::after, .stk:nth-of-type(2n)::before { animation-delay: -2.2s; } .stk:nth-of-type(3n)::after, .stk:nth-of-type(3n)::before { animation-delay: -4s; }
+  /* an iridescent shine on the highlights only: a small rainbow glint on the sticker's top left curve (where its white highlight already is) that slowly
+     slides along it, cut to the sticker's own shape. The rest of the sticker keeps its own colors. */
+  .stk::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    -webkit-mask: var(--img) center / contain no-repeat, radial-gradient(ellipse 46% 34% at 30% 26%, #000 25%, transparent 100%); -webkit-mask-composite: source-in;
+    mask: var(--img) center / contain no-repeat, radial-gradient(ellipse 46% 34% at 30% 26%, #000 25%, transparent 100%); mask-composite: intersect;
+    background: linear-gradient(115deg, rgb(255 255 255 / 0) 8%, #ff8fd0 26%, #fff3a8 40%, #8ff0ff 54%, #b79aff 68%, rgb(255 255 255 / 0) 88%) 0% 0% / 260% 100%; opacity: .9; mix-blend-mode: screen; }
+  @media (prefers-reduced-motion: no-preference) { .stk::after { animation: shine 5.5s ease-in-out infinite; } .stk:nth-of-type(2n)::after { animation-delay: -2.2s; } .stk:nth-of-type(3n)::after { animation-delay: -4s; }
     @keyframes shine { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 100% 0%; } } }
   @media (max-width: 640px) { .stk.hide-s { display: none; } .sign { width: min(100%, 320px); } }
   @media (prefers-reduced-motion: no-preference) { .sign { animation: sway 7s ease-in-out infinite; transform-origin: 50% -140px; } @keyframes sway { 0%, 100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.2deg); } } }
