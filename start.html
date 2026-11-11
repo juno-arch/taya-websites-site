@@ -1138,7 +1138,7 @@
           <p class="hint">So I know what your site needs, and which build it comes with. The price below follows along.</p>
           <div class="opts">
             <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Part of Tended and In Bloom, covered by your subscription.</span></small></span></label>
-            <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and your own Buttondown list for writing to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom, with sending covered by your subscription.</span></small></span></label>
+            <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and your own Buttondown list for writing to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom. Buttondown’s paid plan, if your list needs it, is yours to pay.</span></small></span></label>
           </div>
           <fieldset class="group" style="margin-top: 18px" data-if="x-booking">
             <legend class="main sub-legend" style="margin-top: 0">Online booking</legend>
@@ -1244,7 +1244,7 @@
               <li><b>Launch.</b> Your site goes live at your own web address, I hand you the logins to the accounts I set up for you, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
               <li><b>After launch.</b> <span data-a="after-long">Your subscription, at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span>
                   Your subscription doesn’t cover Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (like Square,
-                  Vagaro or Acuity), ads, or a newsletter list over 1,000 people.</li>
+                  Vagaro or Acuity), ads, or the paid plan of your newsletter tool, Buttondown.</li>
               <li><b>What’s yours.</b> Everything: your site, your words, your photos, your web address (with you as its legal owner, even while
                   I hold it and renew it for you as part of your subscription), your Google profile,
                   your newsletter list, and your booking and payment accounts. Any account I set up for you, like your newsletter or booking,
@@ -2456,7 +2456,7 @@
     const big = c.build === 'mother' || c.build === 'crone';
     $('[data-x="email"]').textContent = big ? 'Covered by your subscription.' : c.build === 'maiden' ? 'Part of Tended and In Bloom, so it would mean moving up to Tended.'
       : 'Part of Tended and In Bloom, covered by your subscription.';
-    $('[data-x="news"]').textContent = big ? 'Sending is covered by your subscription.' : 'Part of Tended and In Bloom, with sending covered by your subscription.';
+    $('[data-x="news"]').textContent = big ? 'Buttondown’s paid plan, if your list needs it, is yours to pay.' : 'Part of Tended and In Bloom. Buttondown’s paid plan, if your list needs it, is yours to pay.';
     // the booking ladder (Oct 6 2026 afternoon): a Cal.com I set up for them comes with Tended, and In Bloom's booking
     // runs right on the site, on Taya's server (Oct 15 2026); a Book now button to the app they already use comes with
     // every build, Planted too

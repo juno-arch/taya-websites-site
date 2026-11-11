@@ -1,7 +1,9 @@
 /* card borders cut like grass: a zigzag with a single point at every corner, as a clip-path sized to each card (redrawn when it changes) */
 (function () {
-  var SEL = '.gutter .card, .gutter .cream, .gutter .qcard, .gutter .verdict, .site-foot .foot-in, .nl-start .qc, .nl-start .intro, .nl-start .step, .nl-start .send-sec, .nl-start .sum-card, .nl-book .b-card, .nl-my .p-card.signin';
-  var TOOTH = 44, AMP = 15, OUT = 3;
+  var SEL = '.gutter .card, .gutter .cream, .gutter .qcard, .gutter .verdict, .site-foot .foot-in, main.page .p-card, .nl-start .qc, .nl-start .intro, .nl-start .step, .nl-start .send-sec, .nl-start .sum-card, .nl-book .b-card, .nl-my .p-card.signin';
+  /* a page that wants smaller teeth says so on <html> (data-zz-tooth, data-zz-amp): the client portal does */
+  var DS = document.documentElement.dataset;
+  var TOOTH = +DS.zzTooth || 44, AMP = +DS.zzAmp || 15, OUT = 3;
   function edge(len, n, amp, dir) { /* peaks at 0 and len, n teeth */
     var pts = [], step = len / n;
     for (var i = 0; i <= n * 2; i++) { var p = i * step / 2; pts.push([p, i % 2 === 0 ? 0 : amp]); }
@@ -32,20 +34,26 @@
     el.style.setProperty('--zi', str(poly(w, h, AMP, 0), 0, 0));
     el.style.setProperty('--zo', outer(w, h, AMP));
   }
-  var seen = typeof WeakSet === 'function' ? new WeakSet() : null, ro = null, timer = 0;
-  function scan() {
-    var els = document.querySelectorAll(SEL);
-    for (var i = 0; i < els.length; i++) {
-      draw(els[i]);
-      if (ro && seen && !seen.has(els[i])) { seen.add(els[i]); ro.observe(els[i]); }
+  function run() {
+    var seen = typeof WeakSet === 'function' ? new WeakSet() : null;
+    var ro = window.ResizeObserver ? new ResizeObserver(function (es) { es.forEach(function (e) { draw(e.target); }); }) : null;
+    function pick() {
+      var els = document.querySelectorAll(SEL);
+      for (var i = 0; i < els.length; i++) {
+        if (seen && seen.has(els[i])) continue;
+        if (seen) seen.add(els[i]);
+        draw(els[i]);
+        if (ro) ro.observe(els[i]);
+      }
+    }
+    pick();
+    /* pages that build their cards after load (the client portal) get each new one drawn too */
+    if (window.MutationObserver && document.body) {
+      var queued = false;
+      new MutationObserver(function () { if (queued) return; queued = true; requestAnimationFrame(function () { queued = false; pick(); }); })
+        .observe(document.body, { childList: true, subtree: true });
     }
   }
-  function run() {
-    if (window.ResizeObserver) ro = new ResizeObserver(function (es) { es.forEach(function (e) { draw(e.target); }); });
-    scan();
-    /* cards a page adds later (a summary after sending, a step drawn by script) get their edge too */
-    if (window.MutationObserver) new MutationObserver(function () { clearTimeout(timer); timer = setTimeout(scan, 60); }).observe(document.body, { childList: true, subtree: true });
-  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scan);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { var els = document.querySelectorAll(SEL); for (var i = 0; i < els.length; i++) draw(els[i]); });
 })();
