@@ -1047,3 +1047,10 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .field .every-plan, .about-text { --off: #a8ecd9; } .field .panel, .faq { --off: #c9b0ff; } .field .tier.maiden, .how-main, .scene .contact-card, .field .sec-head { --off: #ffb3d6; }
 .work .piece-text, .faq-sec .sec-head { --off: #9fd0ff; } .about .sec-head { --off: #fff0a6; }
 @media (max-width: 700px) { :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) { filter: drop-shadow(4px 4px 0 var(--off)); } }
+
+/* QA fixes: the tools card gets the same inner room as the other cards, and small pinks and teals darken on the peach and pink bands */
+.tools .tools-card { padding: clamp(44px, 6vw, 60px) clamp(34px, 5.5vw, 56px); }
+.field.light, .field.light :is(.sec-head, .piece-text, .how-main, .about-text, .faq, .tools-card) { --wf-eyebrow: #9a0d52; --wf-italic: #9a0d52; --wf-link: #005868; --wf-c-rose: #9a0d52; --wf-c-link: #005868; }
+.field.light a:not(.btn), .field .piece-text a:not(.btn), .field .contact-card a:not(.btn) { color: #005868; }
+.field .eyebrow, .work .kind footer, .how .ready-line b { color: #9a0d52; }
+.field.light em, .field.light h2 em { color: #9a0d52; }
