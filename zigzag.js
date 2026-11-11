@@ -1,6 +1,6 @@
 /* card borders cut like grass: a zigzag with a single point at every corner, as a clip-path sized to each card (redrawn when it changes) */
 (function () {
-  var SEL = '.gutter .card, .gutter .cream, .gutter .qcard, .gutter .verdict, .site-foot .foot-in, main.page .p-card';
+  var SEL = '.gutter .card, .gutter .cream, .gutter .qcard, .gutter .verdict, .site-foot .foot-in, main.page .p-card, .nl-start .qc, .nl-start .intro, .nl-start .step, .nl-start .send-sec, .nl-start .sum-card, .nl-book .b-card, .nl-my .p-card.signin';
   /* a page that wants smaller teeth says so on <html> (data-zz-tooth, data-zz-amp): the client portal does */
   var DS = document.documentElement.dataset;
   var TOOTH = +DS.zzTooth || 44, AMP = +DS.zzAmp || 15, OUT = 3;
