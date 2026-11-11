@@ -1066,7 +1066,7 @@
             <li>Google-ready: clear titles and descriptions, business details Google can read, and a photo preview when someone texts your link</li>
             <li>Your Google profile, set up</li>
             <li>A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer</li>
-            <li>A slim banner across the top for news like “Now booking” or “Away until Nov 3” (switch it anytime: post it, or email me, and it’s done)</li>
+            <li>A slim banner across the top for news like “Now booking” or “Closed for the holidays” (switch it anytime: post it, or email me, and it’s done)</li>
             <li>Your web address’s first year (then your subscription looks after it, so there’s nothing to renew)</li>
             <li>30 days of settling-in tweaks after launch</li>
             <li>A one-page “Your site” <span class="nowrap">hand-off</span> sheet</li>
@@ -1100,7 +1100,7 @@
           <legend class="main">What your site will do</legend>
           <p class="hint">So I know what your site needs, and which build it comes with. The price below follows along.</p>
           <div class="opts">
-            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my own address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Part of Tended and In Bloom, covered by your subscription.</span></small></span></label>
+            <label class="opt"><input type="checkbox" name="x_email" value="yes"><span><b>Send email from my domain address</b><small>Like hello@yourbusiness.com. <span class="x-cost" data-x="email">Part of Tended and In Bloom, covered by your subscription.</span></small></span></label>
             <label class="opt" data-if="x-news"><input type="checkbox" name="x_news" value="yes"><span><b>A newsletter</b><small>A sign-up on your site, and your own Buttondown list for writing to your people. <span class="x-cost" data-x="news">Part of Tended and In Bloom. Buttondown’s paid plan, if your list needs it, is yours to pay.</span></small></span></label>
           </div>
           <fieldset class="group" style="margin-top: 18px" data-if="x-booking">
@@ -1718,11 +1718,11 @@
     <div class="next-wrap">
       <p class="small-h">What happens next</p>
       <ol class="next-path">
-        <li><b>Setup.</b> A few easy questions by email, if I need anything more, and I set up the accounts that go with your build, in your name.</li>
-        <li><b>Build and review.</b> I do the writing and build your site. Your first draft comes about a week after your answers and photos are in, on a private link you can open on your phone. Send me what you’d like changed by email; one email with everything in it is easiest.</li>
-        <li><b>Launch.</b> Your launch date is set once your deposit clears. Two days before it, I send you a preview and you tell me go or not yet. Then your site goes live, with your “Your site” sheet, your brand sheet, and the logins to anything I set up for you.</li>
-        <li><b>Settling in, 30 days.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
-        <li><b>Care.</b> After that, your subscription, <span data-a="care">at your build’s monthly price</span>: I follow your socials and update your website and Google profile as you post, or you email me what’s changing, and I do the rest.</li>
+        <li><b>Setup.</b> I set up your accounts, in your name.</li>
+        <li><b>Build and review.</b> Your mockup becomes your real site, and you can ask for changes any time. Two days before launch I send you a preview, and you tell me go, or not yet.</li>
+        <li><b>Launch.</b> Your site goes live, and I hand you your brand sheet, your “Your site” sheet and your logins. Your launch date comes in an email once your deposit clears.</li>
+        <li><b>Settling in.</b> 30 days of tweaks are on me, and I check in to see how it feels.</li>
+        <li><b>Care.</b> Your subscription starts, <span data-a="care">at your build’s monthly price</span>. I follow your socials and update your website and Google profile as you post, or you email me what’s changing.</li>
       </ol>
       <p class="together-line" id="together-line" hidden></p>
     </div>
@@ -2008,7 +2008,7 @@
   };
   const CARE_SHORT = {
     maiden: 'It keeps your site planted and healthy: hosting, your web address and backups, and your changes as I follow your socials or whenever you email me.',
-    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes as I follow your socials or whenever you email me, your posts showing up everywhere, and email from your own address, covered.',
+    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes as I follow your socials or whenever you email me, your posts showing up everywhere, and email from your domain address, covered.',
     crone: 'Everything in the Tended subscription, plus keeping your booking, payments or shop in full bloom, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STORE_KEY = 'webfaery-start-v1';
@@ -2430,7 +2430,7 @@
     const bloom = [], tended = [];
     if (c.sell) bloom.push('taking payments online');
     if (c.news) tended.push('a newsletter');
-    if (c.email) tended.push('email from your own address');
+    if (c.email) tended.push('email from your domain address');
     if (c.booking === 'calcom') tended.push('booking set up for you with Cal.com');
     let say = '';
     if (b && c.build !== 'crone' && bloom.length) say = cap(listOf(bloom)) + (bloom.length > 1 ? ' are' : ' is') + ' part of In Bloom.';
@@ -3113,7 +3113,7 @@
     const c = choices(), m = priceModel(c), b = BUILDS[r.build], h = r.accounts.have;
     const careName = b ? 'A subscription, ' + money(careOf(r.build)) + ' a month, starting after the 30 days of settling in' : 'A subscription, at the monthly price of the build we choose';
     const bookingName = { none: 'No online booking', current: 'Keep my current booking app', calcom: r.build === 'crone' ? 'Booking right on my site' : 'Set me up with Cal.com' }[r.extras.booking] || 'No online booking';
-    const extras = [r.extras.send_email && 'email from my own address', r.extras.newsletter && 'a newsletter', bookingName !== 'No online booking' && bookingName.toLowerCase().replace('cal.com', 'Cal.com'), r.extras.selling && 'taking payments online'].filter(Boolean);
+    const extras = [r.extras.send_email && 'email from my domain address', r.extras.newsletter && 'a newsletter', bookingName !== 'No online booking' && bookingName.toLowerCase().replace('cal.com', 'Cal.com'), r.extras.selling && 'taking payments online'].filter(Boolean);
     const stepName = (id) => $('.step-name', $('[data-step="' + id + '"]')).textContent.replace(/^Step \d+: /, '');
     const fileList = (k) => files[k].length ? files[k].map((f) => f.name).join(', ') : '';
     const answerOf = (id) => { const q = qcById[id], a = q.a.find((x) => x[0] === have[id]); return a ? a[1] : ''; };
