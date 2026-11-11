@@ -1381,3 +1381,11 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
 .hero a.quiet { background: #fff7fb; color: #1a1420; }
 .contact-links { margin-top: 18px; }
 @media (prefers-reduced-motion: reduce) { a.quiet, a.visit, .contact-links a, .panel .quiz a, p > a[href="#care-includes"] { transition: none; } }
+
+/* the "every plan includes" list now sits inside the prices panel, as its right-hand column, not as a card of its own */
+.panel .after.every-plan { position: static; filter: none; background: none; padding: 0; margin: 0; border: 0; box-shadow: none; }
+.panel .after.every-plan::before, .panel .after.every-plan::after { display: none !important; }
+.panel .every-plan-k { font-family: var(--wf-font-read); font-weight: 700; font-size: var(--wf-text); margin: 0 0 10px; color: #2a1236; }
+.panel .after.every-plan > ul:not(.pills) { margin: 0 0 14px; }
+.panel .after.every-plan > ul:not(.pills) { columns: 1 !important; column-count: 1 !important; display: block; }
+.panel .after.every-plan .pill { font-size: 12.5px; line-height: 1.25; }

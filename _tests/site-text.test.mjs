@@ -391,8 +391,8 @@ for (const page of PAGES) {
       'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
       'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me'];
     const html = read('index.html').replace(/<!--[\s\S]*?-->/g, '');
-    const every = html.match(/<\/article>\s*<\/div>\s*<div class="every-plan\b[^>]*>([\s\S]*?)<\/div>\s*<div class="panel\b/);
-    if (!every) fail('index.html: no "Every plan’s subscription also includes" card right under the three plan cards');
+    const every = html.match(/<div class="after every-plan\b[^>]*>([\s\S]*?)<\/div>/);
+    if (!every) fail('index.html: no "Every plan’s subscription also includes" column in the prices panel');
     const lisOf = (chunk) => [...chunk.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => plainOf(m[1]).trim());
     if (every) {
       if (!/Every plan’s subscription also includes/.test(plainOf(every[1]))) fail('index.html: the every-plan card lacks its label, “Every plan’s subscription also includes”');
