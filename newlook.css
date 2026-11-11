@@ -1,0 +1,64 @@
+:root { --paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .52  0 0 0 0 .40  0 0 0 0 .34  0 0 0 .30 -.04'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E") 0 0 / 240px 240px, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .70  0 0 0 0 .58  0 0 0 0 .50  0 0 0 .20 -.02'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23f%29'/%3E%3C/svg%3E") 0 0 / 360px 360px; }
+
+/* The new look for the other pages (quiz, getting started, web address guide, texts, not found): the same night color, grass-cut paper cards,
+   pill buttons and the long bubble footer as the home page. The zigzag shape comes from zigzag.js. */
+html, body { background: #232a66; }
+.soil { background: #232a66 !important; animation: none; }
+.soil::before, .soil::after { display: none !important; }
+.page-hero::after { display: none !important; }
+.page-hero .words, .page-hero .bar { text-shadow: 0 1px 2px rgb(14 10 40 / .9), 0 0 14px rgb(14 10 40 / .75), 0 0 32px rgb(14 10 40 / .55); }
+.page-hero h1 em, .page-hero .eyebrow { color: #f2c6f0; }
+.page-hero .eyebrow { font-family: 'Silkscreen', 'Pixelify Sans', monospace; letter-spacing: .12em; text-transform: uppercase; }
+.page-hero .brand, .page-hero nav a { color: #fff; }
+
+.gutter :is(.card, .cream, .qcard, .verdict) { position: relative; isolation: isolate; background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  padding: clamp(44px, 6vw, 60px) clamp(30px, 5.5vw, 56px); margin-block: 22px; filter: drop-shadow(6px 6px 0 #f5967a);
+  --ink: #2a1236; --ink-soft: #3e2148; --c-ink: #2a1236; --c-text: #3a1f45; --c-soft: #55385f; --c-rose: #8f2c3a; --c-link: #00697a; --c-rule: rgb(42 18 54 / .3); color: #2a1236; }
+.gutter :is(.card, .cream, .qcard, .verdict):nth-of-type(3n+2) { filter: drop-shadow(6px 6px 0 #ffd37a); }
+.gutter :is(.card, .cream, .qcard, .verdict):nth-of-type(3n) { filter: drop-shadow(6px 6px 0 #b9a0ee); }
+.gutter :is(.card, .cream, .qcard, .verdict)::before, .gutter :is(.card, .cream, .qcard, .verdict)::after { content: ''; display: block; position: absolute; z-index: -1; pointer-events: none; -webkit-mask: none; mask: none; transform: none; animation: none; border: 0; }
+.gutter :is(.card, .cream, .qcard, .verdict)::before { inset: -3px; background: #1a1420; clip-path: var(--zo, none); }
+.gutter :is(.card, .cream, .qcard, .verdict)::after { inset: 0; background: var(--paper), #fff8f1; clip-path: var(--zi, none); }
+.gutter :is(.card, .cream, .qcard, .verdict) a:not(.btn) { color: #00697a; }
+.gutter :is(.card, .cream, .qcard, .verdict) .eyebrow, .gutter :is(.card, .cream, .qcard, .verdict) .kicker { color: #8f2c3a; }
+
+.btn, a.btn, button.btn { font-family: var(--wf-font-read); font-weight: 800; font-size: 16px; letter-spacing: 0; text-transform: none; text-shadow: none; background: #ffb48a; color: #1a1420; border: 2px solid #1a1420; border-radius: 999px; box-shadow: 4px 4px 0 #1a1420; padding: 13px 26px; transition: translate .15s ease, box-shadow .15s ease; }
+.btn.ghost, a.btn.ghost { background: #fff7fb; color: #1a1420; border-color: #1a1420; }
+.btn:hover { translate: -1px -1px; box-shadow: 5px 5px 0 #1a1420; filter: none; }
+.btn:active { translate: 3px 3px; box-shadow: 1px 1px 0 #1a1420; }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+footer.site-foot { margin-top: 56px; padding: 70px 22px calc(70px + env(safe-area-inset-bottom)); background: url(images/texture/footer-bubbles.jpg) 0 30% / 564px auto repeat-x, #cfc3e6; color: #2a1236; text-align: left; }
+.site-foot .foot-in { position: relative; isolation: isolate; max-width: 1060px; margin: 0 auto; padding: 30px 48px 24px; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "brand links" "fine fine"; align-items: center; gap: 6px 34px; filter: drop-shadow(6px 6px 0 #f5967a); }
+.site-foot .foot-in::before, .site-foot .foot-in::after { content: ''; display: block; position: absolute; z-index: -1; pointer-events: none; }
+.site-foot .foot-in::before { inset: -3px; background: #1a1420; clip-path: var(--zo, none); }
+.site-foot .foot-in::after { inset: 0; background: var(--paper), #fff8f1; clip-path: var(--zi, none); }
+.site-foot .brand { grid-area: brand; justify-self: start; }
+.site-foot .brand .wm { color: #2a1236; font-size: 28px; }
+.site-foot .brand .wm span { color: #8f2c3a; }
+.site-foot ul { grid-area: links; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 22px; margin: 0; padding: 0; }
+.site-foot li a { font-family: var(--wf-font-read); font-size: var(--wf-text, 19px); color: #00697a; text-decoration: underline; }
+.site-foot .fine { grid-area: fine; text-align: center; margin: 4px 0 0; padding-top: 10px; border-top: 3px dotted #1a1420; font-size: 17.5px; color: #3a1f45; }
+@media (max-width: 860px) { .site-foot .foot-in { grid-template-columns: 1fr; grid-template-areas: "brand" "links" "fine"; justify-items: center; text-align: center; padding: 36px 28px 28px; } .site-foot .brand { justify-self: center; } }
+
+/* make sure the older page rules never win over the new cards and footer */
+.gutter :is(.card, .cream, .qcard, .verdict)::after { display: block !important; content: '' !important; position: absolute !important; inset: 0 !important; z-index: -1 !important; background: var(--paper), #fff8f1 !important; opacity: 1 !important; width: auto !important; height: auto !important; border: 0 !important; box-shadow: none !important; }
+.gutter :is(.card, .cream, .qcard, .verdict)::before { display: block !important; content: '' !important; position: absolute !important; inset: -3px !important; z-index: -1 !important; background: #1a1420 !important; opacity: 1 !important; width: auto !important; height: auto !important; border: 0 !important; box-shadow: none !important; }
+.gutter :is(.card, .cream, .qcard, .verdict) { color: #2a1236 !important; }
+.gutter :is(.card, .cream, .qcard, .verdict) :is(h1, h2, h3, h4, p, li, span, label, summary, small, strong, b) { color: inherit; }
+.gutter :is(.card, .cream, .qcard, .verdict) :is(.why, .what, .because, .also, .founding, .ready, small) { color: #3a1f45; }
+.site-foot li a { color: #00697a !important; }
+.site-foot .fine, .site-foot .brand .wm { color: #2a1236 !important; }
+.site-foot .brand .wm span { color: #8f2c3a !important; }
+.site-foot .foot-in::after { display: block !important; content: '' !important; position: absolute !important; inset: 0 !important; z-index: -1 !important; background: var(--paper), #fff8f1 !important; }
+.site-foot .foot-in::before { display: block !important; content: '' !important; position: absolute !important; inset: -3px !important; z-index: -1 !important; background: #1a1420 !important; }
+.gutter :is(.card, .cream, .qcard, .verdict)::after, .site-foot .foot-in::after { background-color: #fff8f1 !important; background-image: var(--paper) !important; }
+
+:root { --p1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .52  0 0 0 0 .40  0 0 0 0 .34  0 0 0 .30 -.04'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E"); --p2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .70  0 0 0 0 .58  0 0 0 0 .50  0 0 0 .20 -.02'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23f%29'/%3E%3C/svg%3E"); }
+.gutter :is(.card, .cream, .qcard, .verdict)::after, .site-foot .foot-in::after { background-image: var(--p1), var(--p2) !important; background-size: 240px 240px, 360px 360px !important; background-repeat: repeat !important; }
+/* lighter, less navy: a soft lilac page with ink-colored words outside the cards */
+html, body { background: #d6c8f5 !important; }
+.soil { background: #d6c8f5 !important; }
+.gutter > .wrap > :is(.progress, .back, p, h2, h3, .eyebrow), .progress, .back { color: #2a1236 !important; }
+.page-hero { border-bottom: 3px solid #1a1420; -webkit-mask: none !important; mask: none !important; }
+.page-hero + * , .page-hero ~ .gutter { background: none; }
