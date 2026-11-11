@@ -14,7 +14,7 @@
 //   anyone quoted before Oct 5 keeps their quote, and the new subscription price if it's lower for them (one quiet
 //     line on the main page).
 //
-// Fails (exit 1) if any page (or a string in its scripts, faery.js or mark.js):
+// Fails (exit 1) if any page (or a string in its scripts, or mark.js):
 //   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490, $22 / $44 / $66,
 //     $400 / $650 / $950, $95), the subscription as optional, pay as you go, an hourly rate, a yearly subscription,
 //     the old name "care" for the subscription ("Tended care", "then care", "care comes with every site"...),
@@ -152,7 +152,7 @@ for (const page of PAGES) {
   }
 }
 
-// the words that live in scripts (each page's own scripts, Bramble in faery.js, the build picker in mark.js):
+// the words that live in scripts (each page's own scripts, the build picker in mark.js):
 // every '...' string, comments dropped first (a string never holds //, except web addresses)
 function literals(src) {
   const out = [];
@@ -171,7 +171,6 @@ for (const page of PAGES) {
   }
 }
 // Bramble's answers (her keys: are only words she listens for, never shown)
-for (const l of literals(read('faery.js'))) if (!/keys:\s*$/.test(l.before)) scriptStrings.push(['faery.js', l.s]);
 // mark.js keeps the "as sent" names, words and old "Care is optional" line for the mockups already emailed (never change those)
 {
   const mark = read('mark.js');
@@ -424,7 +423,7 @@ for (const page of PAGES) {
       const cardLis = [...html.matchAll(/<article class="tier (?:maiden|mother|crone)\b[\s\S]*?<\/article>/g)].flatMap((m) => lisOf(m[0]));
       const want = cardLis.concat(every ? lisOf(every[1]) : []);
       if (faqLis.join('|') !== want.join('|')) fail('index.html: the “What does your subscription include?” bullets don’t match the plan cards and the every-plan card, line for line');
-      for (const name of ['🌱 Planted, $12 a month', '🌿 Tended, $45 a month', '🌸 In Bloom, $90 a month', 'Every plan’s subscription also includes']) {
+      for (const name of ['Planted, $12 a month', 'Tended, $45 a month', 'In Bloom, $90 a month', 'Every plan’s subscription also includes']) {
         if (!plainOf(answer[1]).includes(name)) fail(`index.html: the “What does your subscription include?” answer lacks “${name}”`);
       }
     }

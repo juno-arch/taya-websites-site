@@ -63,7 +63,6 @@ a shop lives on Cloudflare Pages.
 | `soil.css` | The still twilight field and faint stars behind the smaller pages (the name stays because the agreement page links it) |
 | `mycelium.svg`, `mycelium.js`, `portal-myc.js` | The old mycelium network from the Sep 30 look. No page loads them now; kept so an older look can come back |
 | `_mycelium/` | Not published: the scripts that grew the old network (`python3 _mycelium/grow.py && python3 _mycelium/build.py`) |
-| `faery.js`, `faery.css`, `images/faery/` | Bramble, the little faery from the Sep 30 look. No page loads her now (the name and its sparkle stand in, with a slot for a logo); kept, and the site test still reads her words |
 | `favicon.ico`, `favicon.svg`, `apple-touch-icon.png` | The gold four-point sparkle on a twilight square, for browser tabs, search results and phone home screens |
 | `images/` | The paintings (door, hero-wide, hero-phone, path, tier-planted, tier-tended, tier-inbloom, contact), the Recent work screenshots, and `share.jpg`, the link preview picture (1200 x 630). The older photos stay for the pages that still use them |
 

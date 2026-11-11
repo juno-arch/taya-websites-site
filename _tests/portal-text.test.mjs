@@ -132,7 +132,7 @@ for (const m of html.matchAll(/\s(?:href|src|srcset)="([^"]+)"/g)) {
     if (file && !fs.existsSync(path.join(root, file))) fail(`portal.html: links to ${file}, which doesn't exist`);
   }
 }
-for (const f of ['portal.css', 'portal.js', 'portal-demo.js', 'faery.js', 'faery.css', 'soil.css', 'pages.css', 'taya.jpg', 'start.html']) {
+for (const f of ['portal.css', 'portal.js', 'portal-demo.js', 'soil.css', 'pages.css', 'taya.jpg', 'start.html']) {
   if (!fs.existsSync(path.join(root, f))) fail(`missing ${f}`);
 }
 // the icons the scripts draw must be in portal.html's sprite
