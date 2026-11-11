@@ -977,7 +977,7 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 
 /* soap bubbles from Pollen's pick replace the starry band; the glow stars step out of it */
 .how { --tex: url(images/texture/bubbles.jpg); --veil: rgb(255 255 255 / 0); }
-.how > .ceiling { display: none; }
+
 
 /* pass 8: calm full-color bands. The pictures shrink to a thin pattern strip at the top of each band, like a divider. */
 .work { --flat: #ffc9b3; } .prices { --flat: #e4d3ff; } .tools { --flat: #cfe8ff; } .how { --flat: #ffbfdf; }
@@ -987,7 +987,7 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
   background: var(--tex) center 30% / cover no-repeat; animation: none; transform: none; }
 .scene { background: #4b2a8c; padding-top: calc(var(--wf-section-pad, 80px) + 40px); }
 .scene::before { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 40px; z-index: 1; border-bottom: 3px solid #2a1236; background: url(images/texture/marbles.jpg) center 30% / cover no-repeat; transform: none; }
-.scene > .ceiling { display: none; }
+
 
 /* pass 9: colored pixel-font pills, like Linnea's mockup (Silkscreen) */
 .pills { list-style: none; margin: 14px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1031,3 +1031,19 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .prices, .how, .faq-sec { padding-top: calc(var(--wf-section-pad, 80px) + 14px); }
 .prices::before, .how::before, .faq-sec::before { height: 12px; border: 0; background: radial-gradient(circle at 50% 0, var(--prev) 0 9.5px, #2a1236 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
 .prices { --prev: #ffc9b3; } .how { --prev: #cfe8ff; } .faq-sec { --prev: #fff0a6; }
+
+/* stickers sit above the band color and under the cards */
+.field > .ceiling, .scene > .ceiling { z-index: 0; }
+.field .wrap, .scene .wrap { position: relative; z-index: 1; }
+/* sticky headings keep their place on wide screens; the card's own corner needs a containing block either way */
+.faq-grid .sec-head, .tools-grid .sec-head { position: sticky; top: calc(var(--wf-head-h) + 24px); }
+@media (max-width: 900px) { .faq-grid .sec-head, .tools-grid .sec-head { position: relative; top: auto; } }
+
+/* pass 12: card borders like Linnea's: a bold ink line and a hard pastel offset shadow (the rainbow edge is gone).
+   The shadow is a filter on the card, so it follows the wavy shape. */
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) { --off: #ffb3d6; filter: drop-shadow(6px 6px 0 var(--off)); }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::before { inset: -3px; background: #1a1420; }
+.piece-text, .tools-card { --off: #fff0a6; } .field .tier.mother { --off: #fff0a6; } .field .tier.crone { --off: #9fd0ff; }
+.field .every-plan, .about-text { --off: #a8ecd9; } .field .panel, .faq { --off: #c9b0ff; } .field .tier.maiden, .how-main, .scene .contact-card, .field .sec-head { --off: #ffb3d6; }
+.work .piece-text, .faq-sec .sec-head { --off: #9fd0ff; } .about .sec-head { --off: #fff0a6; }
+@media (max-width: 700px) { :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) { filter: drop-shadow(4px 4px 0 var(--off)); } }
