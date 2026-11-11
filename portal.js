@@ -147,12 +147,12 @@
       steps: [
         'Go to business.google.com and sign in with the Google account that owns your profile.',
         'Open your profile’s menu and choose Business Profile settings, then People and access, then Add. Type taya@webfaery.love, choose Manager, and send it. You stay the owner. (Google moves its buttons around now and then; if it looks different, stop there and we’ll do it together.)',
-        'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Later, Google asks you for one quick check that it’s really your business (a short video, or a code it sends you).'
+        'No profile yet? Nothing to do now. Just email me, and I’ll build it for you. Google will later ask for one quick check that it’s your business (a short video, or a code).'
       ],
       after: {
-        maiden: 'Anything I set up for you is in your name, with your email. If a confirm-your-email message comes, just click it. Already use a booking app? Send me your booking link, and your Book now button opens it.',
-        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, with your email, and hand you the logins at launch. Already happy with a booking app? We keep that one. If a confirm-your-email message or two comes from them, just click them.',
-        other: 'If your build has a newsletter or booking, I set those up for you in your name, with your email, and hand you the logins at launch. If a confirm-your-email message or two comes from them, just click them.'
+        maiden: 'Anything I set up is in your name, with your email. If a confirm-your-email message comes, just click it. Already use a booking app? Send me the link, and your Book now button opens it.',
+        mother: 'I set up your newsletter, and your booking if you’d like it, in your name, and hand you the logins at launch. Already happy with a booking app? Keep it. Just click any confirm-your-email message that comes.',
+        other: 'If your build has a newsletter or booking, I set those up in your name and hand you the logins at launch. Just click any confirm-your-email message that comes.'
       }
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
@@ -3606,7 +3606,7 @@
     f.append(confirmLine, err, btns);
   }
   function noshowWords(e) {
-    if (e.status === 409) return 'This booking can’t be marked right now: it may not have started yet, it already changed, or your Stripe isn’t connected here. Nothing was charged. Refresh and look again, or email Taya.';
+    if (e.status === 409) return 'This booking can’t be marked right now. It may not have started, it already changed, or your Stripe isn’t connected here. Nothing was charged. Refresh, or email me.';
     if (e.status === 502) return 'Stripe didn’t answer, so nothing was charged. Try again in a minute.';
     return bkWords(e);
   }
@@ -4391,7 +4391,7 @@
     const newWrap = make('label', 'dc-check');
     const newOnly = make('input'); newOnly.type = 'checkbox'; newOnly.id = 'in-bkq-new-' + key; newOnly.checked = !!(q && q.new_only);
     newWrap.append(newOnly, make('span', null, 'New clients only'));
-    const newHelp = make('p', 'orders-fine', 'Asked the first time someone books with you. People who have booked before aren’t asked again, until their answers are cleared after the time you keep them.');
+    const newHelp = make('p', 'orders-fine', 'The questions are asked the first time someone books with you, and again if their answers are cleared.');
     const headsWrap = make('label', 'dc-check');
     const heads = make('input'); heads.type = 'checkbox'; heads.id = 'in-bkq-heads-' + key; heads.checked = !!(q && q.heads);
     headsWrap.append(heads, make('span', null, 'Tell me first'));
@@ -4496,7 +4496,7 @@
     } catch (e) {
       if (e.code === 'signed_out') { quietSignOut(false); return; }
       const w = { format: 'That doesn’t look like a calendar address. It starts with https:// or webcal://.',
-        host: 'That address isn’t from a calendar I know yet (Google, iCloud, Outlook, Proton, Fastmail, Yahoo). Email Taya and she can add yours.',
+        host: 'That address isn’t from a calendar I know yet (Google, iCloud, Outlook, Proton, Fastmail, Yahoo). Email me and I can add yours.',
         too_many: 'Five calendars is the most for now.', already: 'That calendar is already connected.' };
       err.textContent = e.code === 'input' && w[e.why] ? w[e.why] : bkWords(e);
       err.hidden = false;
@@ -4529,7 +4529,7 @@
     if (c) {
       $('#in-bk-card-on').checked = c.on;
       $('#in-bk-card-on').disabled = !c.can && !c.on;
-      $('#bk-card-hint').textContent = !c.can && !c.on ? 'Saving a card needs your own Stripe connected first. Email Taya and she’ll set it up with you.' : 'Their card is saved with your Stripe and charged nothing when they book. If they miss their appointment, you can charge the no-show fee with one tap under Coming up.';
+      $('#bk-card-hint').textContent = !c.can && !c.on ? 'Saving a card needs your own Stripe connected first. Email Taya and she’ll set it up with you.' : 'Their card is saved with your Stripe and charged nothing when they book. If they miss it, charge the no-show fee with one tap under Coming up.';
       $('#in-bk-card-first').value = String(c.first);
       $('#in-bk-card-repeat').value = String(c.repeat);
       $('#in-bk-card-policy').value = c.policy;
@@ -4779,7 +4779,7 @@
     const none = !list.length;
     $('#bk-cl-empty').hidden = !none;
     $('#bk-cl-empty-text').textContent = cl.total === 0
-      ? 'No clients yet. Once people book with you, they gather here, one line each. Someone who booked by phone or came in person? Add them with Add a client.'
+      ? 'No clients yet. People gather here once they book. Booked by phone or in person? Tap Add a client.'
       : 'No one by that name or email. Check the spelling, or try part of it.';
     $('#bk-cl-count').textContent = q
       ? (none ? '' : plural(list.length, 'person', 'people') + ' found')
@@ -6657,7 +6657,7 @@
     $('#rc-total').textContent = rows.length ? plural(rows.length, 'receipt', 'receipts') + ' in ' + rcMonthName(rc.month) + ', ' + rcMoney(total) + ' in all.' : '';
     setHidden($('#rc-total'), !rows.length);
     const same = rows.filter((r) => r.maybe_same).length;
-    $('#rc-same-note').textContent = same ? 'Some of these look like the same receipt saved twice (the same day, place and total, or the same photo). Tap one to check, and delete the extra if it is one.' : '';
+    $('#rc-same-note').textContent = same ? 'These look like the same receipt saved twice. Tap one to check, and delete the extra.' : '';
     setHidden($('#rc-same-note'), !same);
     $('#rc-list').replaceChildren(...rows.map(rcRow));
     setHidden($('#rc-list'), !rows.length);
@@ -6800,7 +6800,7 @@
   }
   const RC_READ = {
     '': 'Here’s what the photo says, as best it could be read. Check each one, fix anything that’s off, then Save.',
-    cap: 'This month’s photo reads are used up, so this one wasn’t read. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
+    cap: 'This month’s photo reads are used up, so this one wasn’t read. Your photo is kept: type in the date, where it’s from and the total, then Save.',
     off: 'Photo reading is resting right now. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
     busy: 'Photo reading is resting right now. Your photo is kept with it: type in the date, where it’s from and the total, then Save.',
     unreadable: 'That photo was hard to read. It’s kept with the receipt: type in the date, where it’s from and the total, then Save. A flat, bright photo reads best.',
