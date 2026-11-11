@@ -1081,3 +1081,16 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .field.light, .field.light :is(.sec-head, .piece-text, .how-main, .about-text, .faq, .tools-card) { --wf-eyebrow: #8f2c3a; --wf-italic: #8f2c3a; --wf-c-rose: #8f2c3a; }
 .field .eyebrow, .work .kind footer, .how .ready-line b, .field.light em, .field.light h2 em { color: #8f2c3a; }
 .hero .btn.ghost { border-color: #fff1ec; }
+
+/* the hero picture runs all the way down (the shiba sleeps at its foot), with only a short soft fade into the page */
+.hero { --wf-melt: 0px; --fade-h: 90px; min-height: max(100svh, 640px); }
+.hero-art { object-position: 60% 100%; }
+@media (max-aspect-ratio: 3/4) { .hero { --fade-h: 90px; } .hero-art { object-position: 42% 100%; } }
+:root { --wf-melt: 0px; }
+
+/* no overlay on the hero picture: no dark veil, no blur melt, no fade at the foot. The words carry their own soft shadow instead. */
+.hero-veil, .hero-melt, .hero-mirror { display: none !important; }
+.hero-paint { -webkit-mask: none; mask: none; }
+.hero-paint picture { inset: 0; }
+.hero-text { text-shadow: 0 1px 2px rgb(14 10 40 / .9), 0 0 14px rgb(14 10 40 / .75), 0 0 32px rgb(14 10 40 / .55); }
+.hero-text .pill, .hero-text .btn { text-shadow: none; }
