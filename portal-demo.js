@@ -310,7 +310,7 @@
         'After launch: a $45 a month subscription, which keeps your site running.',
         'Billing starts after 30 days of settling in. If you ever cancel it,',
         'the site is still yours, with every file and login.', '',
-        'Changes by email, before and after launch. The site is yours.', '',
+        'Changes any time: I can follow your socials and update as you post, or you can email me. The site is yours.', '',
         'Signed ' + spoken(data.things.agreement ? data.things.agreement.signed_on : today()) + ' as Rosa Linden. Version 2026-10-05.', '', SAMPLE
       ]);
     },
