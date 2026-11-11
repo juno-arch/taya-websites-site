@@ -1428,3 +1428,21 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
 .tools-col + .tools-col { border-left: 3px dotted #1a1420; padding-left: clamp(24px, 4vw, 56px); margin-left: calc(clamp(24px, 4vw, 56px) * -.5); }
 .tools-one .tools-costs { margin-top: 28px; padding-top: 18px; border-top: 3px dotted #1a1420; width: 100%; }
 @media (max-width: 900px) { .tools-cols { grid-template-columns: 1fr; } .tools-col + .tools-col { border-left: 0; padding-left: 0; margin-left: 0; border-top: 3px dotted #1a1420; padding-top: 22px; } }
+
+/* the step numbers as real see-through soap bubbles: a clear middle, a thin rainbow skin around the rim, and bright reflections */
+.steps .num, .num { position: relative; width: 58px; height: 58px; border: 0; border-radius: 50%; color: #2a1236; text-shadow: 0 0 5px rgb(255 255 255 / .9), 0 0 2px rgb(255 255 255 / .9);
+  background:
+    radial-gradient(ellipse 22% 13% at 30% 22%, rgb(255 255 255 / .95), rgb(255 255 255 / 0) 100%),
+    radial-gradient(ellipse 26% 10% at 66% 84%, rgb(255 255 255 / .75), rgb(255 255 255 / 0) 100%),
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / .06) 0 52%, rgb(190 225 255 / .22) 70%, rgb(255 190 225 / .3) 86%, rgb(255 255 255 / .5) 100%);
+  box-shadow: inset 0 0 10px rgb(170 150 255 / .45), inset 4px 5px 9px rgb(255 255 255 / .55), inset -4px -5px 9px rgb(150 220 255 / .35), 0 3px 8px rgb(110 90 200 / .22); }
+.steps .num::before, .num::before { content: ''; position: absolute; inset: 0; border-radius: 50%; padding: 3px; pointer-events: none;
+  background: conic-gradient(from 140deg, #ff9fcf, #ffd86b, #9ff0c8, #8fd0ff, #c9a8ff, #ff9fcf);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: .8; }
+@media (max-width: 760px) { .steps .num, .num { width: 52px; height: 52px; } }
+.steps .num::before, .num::before { padding: 4px; opacity: 1; filter: saturate(1.15); }
+.steps .num, .num { background:
+    radial-gradient(ellipse 22% 13% at 30% 22%, rgb(255 255 255 / 1), rgb(255 255 255 / 0) 100%),
+    radial-gradient(ellipse 28% 10% at 66% 85%, rgb(255 255 255 / .9), rgb(255 255 255 / 0) 100%),
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / .04) 0 46%, rgb(150 215 255 / .32) 68%, rgb(255 170 215 / .42) 86%, rgb(255 255 255 / .6) 100%); }
+.tools-one > .tools-pay { margin: 26px 0 0; padding-top: 18px; border-top: 3px dotted #1a1420; width: 100%; max-width: none; }
