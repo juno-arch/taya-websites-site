@@ -1196,3 +1196,18 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .work { padding-top: var(--wf-section-pad, 80px); }
 .scene { padding-top: calc(var(--wf-section-pad, 80px) + 26px); }
 .scene::before { height: 26px; background: var(--tex) 0 40% / 190px auto repeat-x; }
+
+/* where a picture has to repeat to fill a width, a second copy sits half a picture over and fades in and out across the seams,
+   so the joins disappear and it reads as one big picture */
+.site-foot { position: relative; isolation: isolate; }
+.site-foot::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: url(images/texture/footer-bubbles.jpg) 282px 30% / 564px auto repeat-x;
+  -webkit-mask: linear-gradient(90deg, transparent 0, #000 30%, #000 70%, transparent 100%) 282px 0 / 564px 100% repeat-x;
+  mask: linear-gradient(90deg, transparent 0, #000 30%, #000 70%, transparent 100%) 282px 0 / 564px 100% repeat-x; }
+.scene::after { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 26px; z-index: 1; pointer-events: none; background: url(images/texture/foam.jpg) 95px 40% / 190px auto repeat-x; border-block: 2px solid #2a1236;
+  -webkit-mask: linear-gradient(90deg, transparent 0, #000 30%, #000 70%, transparent 100%) 95px 0 / 190px 100% repeat-x;
+  mask: linear-gradient(90deg, transparent 0, #000 30%, #000 70%, transparent 100%) 95px 0 / 190px 100% repeat-x; }
+.site-foot { background-position: 0 30%; }
+/* the hero's main button takes the peach of the monitor and lamp glow, with the night-indigo for its words */
+.hero .btn:not(.ghost), .btn:not(.ghost) { color: #1c1a3a; }
+.hero .btn.ghost { color: #fff1ec; border-color: #ffb48a; }
+.site-foot::before { height: auto; bottom: 0; border: 0; }
