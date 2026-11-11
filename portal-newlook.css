@@ -300,3 +300,17 @@ textarea { border-radius: 24px; padding: 14px 18px; }
 @media (min-width: 761px) { .top .wm-lamp { font-size: 30px; } .top .wm-lamp .lamp { height: 44px; } }
 .site-foot .wm-lamp { display: inline-flex; align-items: center; gap: 10px; padding-right: 0; font-size: 30px; color: #2a1236; text-shadow: 2px 2px 0 #f7a9b4; font-weight: 400; line-height: 1; }
 .site-foot .wm-lamp .lamp { height: 48px; width: auto; flex: none; }
+
+/* Nov 11 2026: the schedule's buttons (Today, arrows, Day / Week, Block off time, Book for a client) all one family: ink outline, hard shadow,
+   peach when it is the one that is on or the main action. portal-schedule.css flattened the ghost ones (higher specificity), so this matches it. */
+.sch-bar { gap: 14px 16px; margin: 6px 0 14px; }
+.sch-nav, .sch-views, .sch-tools { gap: 10px; }
+.sch .btn, .sch .btn.ghost, .sch button.btn { background: #fff8f1; color: #1a1420; border: 2px solid #1a1420; border-radius: 999px; box-shadow: 3px 3px 0 #1a1420; font-weight: 800; min-height: 44px; }
+.sch .btn:hover, .sch .btn.ghost:hover { background: #fff8f1; border-color: #1a1420; box-shadow: 4px 4px 0 #1a1420; translate: -1px -1px; }
+.sch .btn:active, .sch .btn.ghost:active { translate: 2px 2px; box-shadow: 1px 1px 0 #1a1420; }
+.sch .btn.ghost[aria-pressed="true"], .sch .btn[aria-pressed="true"] { background: #ffb48a; border-color: #1a1420; box-shadow: 1px 1px 0 #1a1420; translate: 2px 2px; }
+.sch .btn:not(.ghost):not([aria-pressed]) { background: #ffb48a; }
+.sch .btn:focus-visible { outline: 3px solid #00606f; outline-offset: 3px; }
+.sch-title { font-family: var(--nl-read, 'Instrument Sans', 'Nunito', system-ui, sans-serif); font-weight: 800; font-size: 19px; letter-spacing: 0; color: #2a1236; }
+@media (prefers-reduced-motion: reduce) { .sch .btn:hover, .sch .btn:active { translate: none; } .sch .btn.ghost[aria-pressed="true"] { translate: none; } }
+.sch-nav .btn:not(:nth-child(2)) { font-size: 22px; line-height: 1; padding-inline: 16px; }
