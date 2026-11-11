@@ -1250,3 +1250,16 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .site-foot::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 0, #232a66 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
 /* the About photo's scallops are built exactly like the others: the photo fills to radius 10, the black line sits just outside it */
 .about::after { background: radial-gradient(circle at 50% 0, transparent 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
+
+/* pass 16: buttons like Pollen's example: a flat pill, a bold sans label, a black outline and a hard black offset shadow */
+.btn, .btn.ghost, a.btn, button.btn { font-family: var(--wf-font-read); font-weight: 800; font-size: 16px; letter-spacing: 0; text-transform: none; text-shadow: none;
+  background: #ffb48a; color: #1a1420; border: 2px solid #1a1420; border-radius: 999px; box-shadow: 4px 4px 0 #1a1420; padding: 13px 26px;
+  -webkit-backdrop-filter: none; backdrop-filter: none; transition: translate .15s ease, box-shadow .15s ease; }
+.btn.ghost, a.btn.ghost { background: #fff7fb; color: #1a1420; border-color: #1a1420; }
+.btn:hover, .btn.ghost:hover { translate: -1px -1px; box-shadow: 5px 5px 0 #1a1420; filter: none; }
+.btn:active, .btn.ghost:active { translate: 3px 3px; box-shadow: 1px 1px 0 #1a1420; }
+.field.light .btn, .field.light .btn.ghost, :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) .btn.ghost { color: #1a1420; border-color: #1a1420; }
+.btn:focus-visible { outline: 3px solid #1a1420; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .btn, .btn.ghost { transition: none; } }
+.hero .btn.ghost { background: #fff7fb; color: #1a1420; border-color: #1a1420; }
+.hero .btn:not(.ghost) { background: #ffb48a; color: #1a1420; }
