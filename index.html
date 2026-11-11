@@ -17,7 +17,7 @@
     document.documentElement.classList.add('js');
     try { seen = sessionStorage.getItem('wf-door-seen') === '1'; } catch (e) {}
     var deep = location.hash && location.hash.length > 1 && location.hash !== '#top';
-    window.wfDoorShow = !deep && !seen && !/[?&]door=0\b/.test(location.search);
+    window.wfDoorShow = false; /* Nov 10: the opening door page is off; the site opens straight on the hero. */
     if (window.wfDoorShow) {
       var l = document.createElement('link');
       l.rel = 'preload'; l.as = 'image'; l.type = 'image/webp'; l.href = 'images/door.webp'; l.setAttribute('fetchpriority', 'high');
