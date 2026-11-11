@@ -66,13 +66,12 @@
 
   Words: warm but plain, no dashes, curly quotes. Taya doesn't make logos: with no logo, the client's
   name set in a lovely font (a simple wordmark, chosen with their site) is the answer, and a logo or
-  brand designer can make a real one anytime. The look (Oct 14 2026): the back ends' light twilight, shared with
-  the client's own page (portal.html) so the two feel like one place: wf-tokens.css (the colors, type and sizes),
-  wf-backend.css (the painted strip, buttons, fields, the footer), and the page's own parts below, whose old
-  token names now point at the twilight tokens.
+  brand designer can make a real one anytime. The look (Nov 10 2026): the lava lamp brand (lilac page, pink band, cream zigzag cards, pill buttons):
+  startbook-newlook.css, newlook.css and zigzag.js. The page's own parts below keep their old token names,
+  which that sheet points at the new colors.
 -->
 <style>
-  /* ============ tokens: the old names, pointed at the twilight back-end tokens (wf-tokens.css) ============
+  /* ============ tokens: the old names, pointed at the new brand colors (startbook-newlook.css sets them) ============
      Lines and labels in twilight blue, gold only for what needs them now (the step that's open, the deposit),
      teal for done. Inner panels are white on the paper card. The build cards keep a small twilight sky. */
   :root {
@@ -413,42 +412,6 @@
     .b-body { justify-items: center; padding: 16px 14px 20px; }
     .b-price { justify-content: center; }
     .b-check { top: auto; bottom: 14px; right: 14px; }
-  }
-
-  /* the build cards, matching the home page: an arched window with a fine gold keyline holding the build's
-     painting, the name and price centered below */
-  @media (min-width: 720px) {
-    .build {
-      --foot: 18px; --key: 7px; --moon-y: 25cqw; --rise: calc(25cqw + 36px);
-      container-type: inline-size; isolation: isolate; overflow: visible;
-      background: none; border: 0; border-radius: 0; box-shadow: none; grid-template-rows: auto 1fr;
-    }
-    .build::before, .build::after { content: ""; position: absolute; z-index: -1; pointer-events: none; transition: border-color 0.25s ease, box-shadow 0.35s ease; }
-    .build::before {
-      inset: 0; border-radius: 50cqw 50cqw var(--foot) var(--foot); border: 1px solid rgba(var(--acc-glow), 0.22);
-      background:
-        radial-gradient(38cqw 8cqw at 50% var(--rise), rgba(242, 199, 124, 0.13), rgba(242, 199, 124, 0)),
-        radial-gradient(circle at 50% var(--moon-y), rgba(236, 227, 211, 0.08), rgba(236, 227, 211, 0.03) 14cqw, rgba(236, 227, 211, 0) 30cqw),
-        var(--card);
-      box-shadow: 0 24px 44px -28px rgba(38, 42, 94, 0.45);
-    }
-    .build::after { inset: var(--key); border: 1px solid rgba(var(--acc-glow), 0.28); border-radius: calc(50cqw - var(--key)) calc(50cqw - var(--key)) calc(var(--foot) - var(--key)) calc(var(--foot) - var(--key)); }
-    .build:hover { border-color: transparent; }
-    .build:hover::before { border-color: rgba(var(--acc-glow), 0.5); }
-    .build:has(input:checked), .build.on { box-shadow: none; border-color: transparent; }
-    .build:has(input:checked)::before, .build.on::before { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc), 0 0 44px -8px rgba(var(--acc-glow), 0.5), 0 30px 60px -30px rgba(38, 42, 94, 0.28); }
-    .b-sky { height: 46cqw; margin: var(--key) var(--key) 0; border-radius: calc(50cqw - var(--key)) calc(50cqw - var(--key)) 0 0; }
-    /* the painting melts into the card below it */
-    .b-sky::after { content: ""; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(180deg, rgb(255 255 255 / 0), var(--card)); }
-    .b-name { font-size: 28px; }
-    .b-price strong { font-size: 34px; }
-    /* easier reading: more room inside the keyline, brighter and roomier words, every price on one line at the bottom */
-    .b-sky { height: 45cqw; }
-    .b-body { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 4px 22px 30px; }
-    .b-does { margin-top: 10px; font-size: 16px; line-height: 1.6; color: var(--ink-soft); }
-    .b-ready { margin-top: auto; padding-top: 16px; font-size: 11.5px; letter-spacing: 0.05em; white-space: nowrap; }
-    .b-price { margin-top: 8px; }
-    .build.fits .b-name::after { margin-top: 6px; }
   }
 
   @media (max-width: 719px) {
@@ -1609,7 +1572,7 @@
           </div>
           <ul class="made-list">
             <li data-if="made-news"><b>Your newsletter list, on Buttondown.</b> It’s your list, so it lives in your own account: free until it passes
-                100 people, and then your subscription covers it (up to 1,000).</li>
+                100 people. After that, Buttondown’s paid plan is yours to pay, straight to them.</li>
             <li data-if="made-cal"><b>Your booking, on Cal.com,</b> free for one person. Clients pick a time, and you both get reminders.
                 We’ll settle your sessions and hours together over email.</li>
           </ul>
@@ -1755,12 +1718,11 @@
     <div class="next-wrap">
       <p class="small-h">What happens next</p>
       <ol class="next-path">
-        <li><b>A few easy questions by email,</b> if I need anything more. I do the writing.</li>
-        <li><b>Your first draft,</b> about a week after your answers and photos are in, on a private link you can open on your phone.</li>
-        <li><b>Changes,</b> by email, before and after launch.</li>
-        <li><b>Launch,</b> with your “Your site” sheet, your brand sheet, and the logins to anything I set up for you.</li>
-        <li><b>30 days of settling in.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
-        <li><b>After that, your subscription,</b> <span data-a="care">at your build’s monthly price</span>: I follow your socials and update your website and Google profile as you post, or you email me what’s changing, and I do the rest.</li>
+        <li><b>Setup.</b> A few easy questions by email, if I need anything more, and I set up the accounts that go with your build, in your name.</li>
+        <li><b>Build and review.</b> I do the writing and build your site. Your first draft comes about a week after your answers and photos are in, on a private link you can open on your phone. Send me what you’d like changed by email; one email with everything in it is easiest.</li>
+        <li><b>Launch.</b> Your launch date is set once your deposit clears. Two days before it, I send you a preview and you tell me go or not yet. Then your site goes live, with your “Your site” sheet, your brand sheet, and the logins to anything I set up for you.</li>
+        <li><b>Settling in, 30 days.</b> Tweaks are on me, and I’ll check in to see how it’s all feeling.</li>
+        <li><b>Care.</b> After that, your subscription, <span data-a="care">at your build’s monthly price</span>: I follow your socials and update your website and Google profile as you post, or you email me what’s changing, and I do the rest.</li>
       </ol>
       <p class="together-line" id="together-line" hidden></p>
     </div>
@@ -2025,7 +1987,7 @@
     maiden: ['Hosting, your web address, security and backups',
       'Your magic site, yours for good: whenever something small needs changing, you just message me through it', 'A “your changes are up” email the moment it’s live',
       'A monthly check-in about your business, so you don’t have to think about what to update', 'New reviews added as they come in'],
-    mother: ['Post once, show up everywhere: when you post on Instagram or Facebook, I make your new post show up on your website and your Google profile too. I only post what you’ve made or said yes to.', 'Contact form and newsletter sign\u2011up, with sending covered',
+    mother: ['Post once, show up everywhere: when you post on Instagram or Facebook, I make your new post show up on your website and your Google profile too. I only post what you’ve made or said yes to.', 'Contact form and newsletter sign\u2011up',
       'Your Instagram feed on your site, filling itself in as you post', 'Email from your domain address, like you@yourbusiness.com, covered', 'A small shop, up to 5 products, with buy buttons (it runs through your own Stripe account, and Stripe’s normal card fee applies)', 'Gift cards, through Gift Up in your own account (their small fee applies)', 'A DoorDash button on your site for food and drink businesses, linking to your DoorDash page',
       'A seasonal refresh: new photos and wording as the year turns'],
     crone: ['Booking, payments or your shop kept running (Stripe, sold\u2011out stamps)', 'Fuller direct ordering for food businesses: DoorDash’s free online ordering built into your site, beyond the Tended button',
@@ -2046,7 +2008,7 @@
   };
   const CARE_SHORT = {
     maiden: 'It keeps your site planted and healthy: hosting, your web address and backups, and your changes as I follow your socials or whenever you email me.',
-    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes as I follow your socials or whenever you email me, your posts showing up everywhere, and email from your own address and newsletter sending covered.',
+    mother: 'Regular tending as the seasons change: hosting, your web address and backups, your changes as I follow your socials or whenever you email me, your posts showing up everywhere, and email from your own address, covered.',
     crone: 'Everything in the Tended subscription, plus keeping your booking, payments or shop in full bloom, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STORE_KEY = 'webfaery-start-v1';
