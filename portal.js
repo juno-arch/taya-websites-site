@@ -948,7 +948,7 @@
   }
   function pageList() {
     const bar = barIds(), g = hubGroups();
-    const hub = g.tools.length || g.wf.length ? ['webfaery'] : [];
+    const hub = g.tools.length || g.wf.length || bloomList().length ? ['webfaery'] : [];
     const order = bar.concat(hub, g.tools, g.wf, ['messages']);
     return order.filter((id, k) => (id === 'webfaery' || pageHas(id) || (id === 'messages' && pageHas('ask'))) && order.indexOf(id) === k).map(pageInfo);
   }
@@ -1029,7 +1029,7 @@
     const grp = hubGroups();
     counts.webfaery = grp.tools.concat(grp.wf).reduce((s, id) => s + (counts[id] || 0), 0);
     const canAsk = pageHas('messages') || pageHas('ask');
-    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (canAsk ? '|ask' : '') + '|m' + msgUnread();
+    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (canAsk ? '|ask' : '') + '|m' + msgUnread() + '|bl' + bloomList().map((b) => b.id).join('');
     if (sig !== pagesSig) {
       pagesSig = sig;
       $('#tabs').replaceChildren(...tabs.map((x) => tabLink(x, counts[x.id] || 0, false)));
@@ -1085,6 +1085,73 @@
     resources: 'Short how-to videos', orders: 'Your orders', bookings: 'Your bookings', products: 'Your products',
     newsletter: 'Your newsletter', visitors: 'Who’s visiting your site', gifts: 'Gift certificates', codes: 'Discount codes'
   };
+  // "See what else is in bloom" (Nov 11 2026): in the Web Faery tab, the tools this client doesn't have, as greyed
+  // previews with made-up examples. Nothing in a preview works; the only thing to tap is "Ask Taya about this", which
+  // opens Messages with one soft line typed in (never over words they already wrote). Shown the whole time, build included.
+  // WORDING IS A PLACEHOLDER until the voice check and Pollen's OK.
+  const BLOOM = [
+    { id: 'shop', has: ['orders', 'products'], title: 'A small shop',
+      say: 'Your products, your orders and what to pack, in one place.',
+      mock: ['Speckled mug', '$28', '2 orders to pack'], ask: 'I’m curious about the shop. Could you tell me more?' },
+    { id: 'bookings', has: ['bookings'], title: 'Online booking',
+      say: 'People can book a time with you online, and it lands in your calendar.',
+      mock: ['Tuesday 10:30', '', 'A first visit'], ask: 'I’m curious about online booking. Could you tell me more?' },
+    { id: 'newsletter', has: ['newsletter'], title: 'A newsletter',
+      say: 'Write an update and it goes out to your list.',
+      mock: ['Spring classes are open', '', 'A draft, ready to look over'], ask: 'I’m curious about a newsletter. Could you tell me more?' },
+    { id: 'gifts', has: ['gifts'], title: 'Gift certificates',
+      say: 'Sold on your site and spent at your door.',
+      mock: ['Gift certificate', '$50', 'For Sam'], ask: 'I’m curious about gift certificates. Could you tell me more?' }
+  ];
+  const bloomList = () => BLOOM.filter((b) => !b.has.some(pageHas));
+  function askAbout(line) {
+    goPage('messages');
+    let tries = 0;
+    const fill = () => {
+      tries++;
+      const rich = typeof msgRc !== 'undefined' && msgRc && msgRc.el ? msgRc.el.querySelector('[contenteditable]') : null;
+      const plain = $('#in-msg');
+      if (rich && !rich.closest('[hidden]')) {
+        if (!rich.textContent.trim()) { rich.textContent = line; rich.dispatchEvent(new Event('input', { bubbles: true })); }
+        return;
+      }
+      if (plain && !plain.hidden && !plain.disabled) {
+        if (!plain.value.trim()) { plain.value = line; plain.dispatchEvent(new Event('input', { bubbles: true })); }
+        return;
+      }
+      if (tries < 12) setTimeout(fill, 250);
+    };
+    setTimeout(fill, 150);
+  }
+  function renderBloom() {
+    const box = $('#wf-bloom');
+    if (!box) return;
+    const list = bloomList();
+    box.hidden = !list.length;
+    if (!list.length) { box.replaceChildren(); return; }
+    const head = make('h3', 'small-h', 'See what else is in bloom');
+    const lede = make('p', 'bloom-lede', 'These are other things a Web Faery site can do. They are previews with made-up examples, so nothing here works yet.');
+    const ul = make('ul', 'bloom-list');
+    list.forEach((b) => {
+      const li = make('li', 'bloom-card');
+      const top = make('div', 'bloom-top');
+      top.append(make('h4', 'bloom-title', b.title), make('span', 'bloom-tag', 'Preview'));
+      const mock = make('div', 'bloom-mock');
+      mock.setAttribute('aria-hidden', 'true');
+      mock.setAttribute('inert', '');
+      const row = make('div', 'bloom-row');
+      row.append(make('b', null, b.mock[0]), make('span', null, b.mock[1]));
+      mock.append(row, make('small', null, b.mock[2]));
+      const ask = make('button', 'later bloom-ask', 'Ask Taya about this');
+      ask.type = 'button';
+      ask.setAttribute('aria-label', 'Ask Taya about ' + b.title.toLowerCase());
+      ask.addEventListener('click', () => askAbout(b.ask));
+      li.append(top, make('p', 'bloom-say', b.say), mock);
+      if (pageHas('messages') || pageHas('ask')) li.append(ask); // Messages isn't there for every client yet
+      ul.append(li);
+    });
+    box.replaceChildren(head, lede, ul);
+  }
   function renderHub(grp, counts) {
     const box = $('#wf-hub');
     if (!box) return;
@@ -1110,6 +1177,9 @@
       return wrap;
     };
     box.replaceChildren(...[group(grp.tools.length ? 'More of your tools' : '', grp.tools), group(grp.tools.length ? 'Web Faery' : '', grp.wf)].filter(Boolean));
+    const hh = $('#h-wf');
+    if (hh) hh.hidden = !box.children.length;
+    renderBloom();
   }
   function openPage(id, how) {
     how = how || {};
