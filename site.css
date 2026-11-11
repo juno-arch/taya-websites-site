@@ -978,3 +978,13 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 /* soap bubbles from Pollen's pick replace the starry band; the glow stars step out of it */
 .how { --tex: url(images/texture/bubbles.jpg); --veil: rgb(255 255 255 / 0); }
 .how > .ceiling { display: none; }
+
+/* pass 8: calm full-color bands. The pictures shrink to a thin pattern strip at the top of each band, like a divider. */
+.work { --flat: #ffc9b3; } .prices { --flat: #e4d3ff; } .tools { --flat: #cfe8ff; } .how { --flat: #ffbfdf; }
+.about { --flat: #fff0a6; } .faq-sec { --flat: #c4f2e6; }
+.field { background: var(--flat); padding-top: calc(var(--wf-section-pad) + 40px); }
+.field::before { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 40px; z-index: 1; border-bottom: 3px solid #2a1236;
+  background: var(--tex) center 30% / cover no-repeat; animation: none; transform: none; }
+.scene { background: #4b2a8c; padding-top: calc(var(--wf-section-pad, 80px) + 40px); }
+.scene::before { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 40px; z-index: 1; border-bottom: 3px solid #2a1236; background: url(images/texture/marbles.jpg) center 30% / cover no-repeat; transform: none; }
+.scene > .ceiling { display: none; }
