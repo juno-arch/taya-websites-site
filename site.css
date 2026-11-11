@@ -1008,3 +1008,26 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 /* hero pills sit on the photo: keep them solid and readable */
 .hero-text .pill { text-shadow: none; }
 .tier-body .pills { margin-top: 6px; }
+/* the hero now holds pills too: start it from the top so nothing slides under the header */
+.hero { align-items: flex-start; min-height: max(100svh, 640px); }
+.hero-text { padding-top: calc(var(--wf-head-h) + 64px); }
+
+/* pass 10: the strip between bands has a wavy lower edge, with a wavy ink line under it */
+.field, .scene { padding-top: calc(var(--wf-section-pad, 80px) + 64px); }
+.field::before, .scene::before { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 64px; z-index: 1; border: 0; transform: none; animation: none;
+  -webkit-mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 32px) no-repeat, var(--wv-bot) 0 100% / 96px 32px repeat-x;
+  mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 32px) no-repeat, var(--wv-bot) 0 100% / 96px 32px repeat-x; }
+.field::after, .scene::after { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 68px; z-index: 0; background: #2a1236; pointer-events: none; opacity: 1; transform: none; animation: none; filter: none;
+  -webkit-mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 32px) no-repeat, var(--wv-bot) 0 100% / 96px 32px repeat-x;
+  mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 32px) no-repeat, var(--wv-bot) 0 100% / 96px 32px repeat-x; }
+
+/* pass 11: the breaks between bands, just like Linnea's: a scalloped lip, or a thin patterned strip with a line above and below.
+   They alternate down the page. The scallop is the band above, hanging into this one; the strip uses this band's own picture. */
+.field, .scene { padding-top: calc(var(--wf-section-pad, 80px) + 26px); }
+.field::after, .scene::after { display: none; }
+.field::before, .scene::before { display: block; content: ''; position: absolute; inset: 0 0 auto 0; z-index: 1; pointer-events: none; animation: none; transform: none; filter: none; -webkit-mask: none; mask: none;
+  height: 26px; box-sizing: border-box; border-block: 2px solid #2a1236; background: var(--tex) center 30% / cover no-repeat; }
+.scene::before { --tex: url(images/texture/marbles.jpg); }
+.prices, .how, .faq-sec { padding-top: calc(var(--wf-section-pad, 80px) + 14px); }
+.prices::before, .how::before, .faq-sec::before { height: 12px; border: 0; background: radial-gradient(circle at 50% 0, var(--prev) 0 9.5px, #2a1236 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
+.prices { --prev: #ffc9b3; } .how { --prev: #cfe8ff; } .faq-sec { --prev: #fff0a6; }
