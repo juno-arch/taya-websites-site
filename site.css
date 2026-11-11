@@ -1467,3 +1467,14 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
 /* no squiggle and star between the two sites in Recent work; they just sit one above the other with room between */
 .work .piece + .piece::before, .work .piece + .piece::after { display: none !important; }
 .work .piece + .piece { margin-top: clamp(48px, 6vw, 84px); padding-top: 0; }
+
+/* Recent work: each text card is exactly as tall as its screenshot, and the client's kind words sit in a card of their own underneath */
+.work .piece { align-items: stretch; }
+.work .piece .piece-text { align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+.work .piece > .kind { grid-column: 1 / -1; position: relative; isolation: isolate; margin: 40px 6px 0; padding: clamp(34px, 5vw, 50px) clamp(28px, 5vw, 52px); border: 0; background: none; filter: drop-shadow(6px 6px 0 #8fa9ee); color: #2a1236; }
+.work .piece > .kind::before, .work .piece > .kind::after { content: ''; display: block; position: absolute; z-index: -1; pointer-events: none; -webkit-mask: none; mask: none; }
+.work .piece > .kind::before { inset: -3px; background: #1a1420; clip-path: var(--zo, none); }
+.work .piece > .kind::after { inset: 0; background-color: #fff8f1; background-image: var(--p1, none); clip-path: var(--zi, none); }
+.work .piece > .kind p { margin: 0 0 10px; color: #3a1f45; }
+.work .piece > .kind footer { color: #8f2c3a; }
+.work .piece > .kind::after { background: var(--paper), #fff8f1; }
