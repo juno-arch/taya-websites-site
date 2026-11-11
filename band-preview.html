@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circuit band preview · Web Faery</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#d6c8f5">
+<link rel="stylesheet" href="fonts/fonts.css?v=20261110zj">
+<link rel="stylesheet" href="wf-tokens.css?v=20261110e">
+<link rel="stylesheet" href="ceiling.css?v=20261110zzzzs">
+<style>
+  html, body { margin: 0; background: #d6c8f5; }
+  body { font-family: 'Instrument Sans', 'Nunito', system-ui, sans-serif; color: #2a1236; }
+  .note { max-width: 720px; margin: 0 auto; padding: 36px 20px 28px; }
+  .note h1 { font: 400 clamp(28px, 5vw, 40px)/1.1 'Manufacturing Consent', system-ui, sans-serif; margin: 0 0 8px; }
+
+  /* the circuit band: a board drawn for Web Faery (images/texture/circuit-band.svg), a neon sign hung on two wires, die-cut stickers stuck on */
+  .pcb { position: relative; isolation: isolate; overflow: hidden; min-height: clamp(380px, 52vw, 520px); display: grid; place-items: center;
+    background: #7a1f6c url("images/texture/circuit-band.svg") center / cover no-repeat; border-block: 3px solid #1a1420; padding: 70px 20px 60px; }
+  .pcb::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 55%, rgb(20 8 30 / .0) 30%, rgb(20 8 30 / .38) 100%); pointer-events: none; }
+  .sign { position: relative; width: min(100%, 360px); box-sizing: border-box; padding: 26px 22px 22px; text-align: center; background: #141018; color: #fff8f1; border-radius: 24px;
+    border: 3px solid #1a1420; box-shadow: 8px 8px 0 #f5967a, inset 0 0 0 5px #141018, inset 0 0 0 7px #cfd3ff, inset 0 0 14px 7px rgb(160 170 255 / .45), 0 0 34px rgb(160 170 255 / .35);
+    transform: rotate(-1.4deg); }
+  .sign::before { content: ""; position: absolute; bottom: calc(100% + 2px); left: 14%; right: 14%; height: 520px; border-inline: 2.5px dashed #1a1420; pointer-events: none; }
+  .sign .s1 { display: block; font: 400 clamp(30px, 6vw, 40px)/1 'Manufacturing Consent', system-ui, sans-serif; color: #fff2a8; text-shadow: 0 0 6px #fff2a8, 0 0 16px #ffd37a, 0 0 30px #ffb48a; }
+  .sign .s2 { display: block; margin: 6px 0 10px; font: 400 clamp(76px, 15vw, 104px)/.95 'Manufacturing Consent', system-ui, sans-serif; color: #fbd6e8; text-shadow: 0 0 4px #ffb4d8, 0 0 14px #f7a9b4, 0 0 32px #f5967a, 0 0 56px #f5967a; }
+  .sign .s3 { display: block; font: 700 11.5px/1.5 'Silkscreen', ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: #fff8f1; }
+  .sign .s3 a { color: #f7c6e8; text-decoration: none; border-bottom: 2px solid #f5967a; padding: 12px 0 2px; margin-left: 4px; }
+  .sign .s3 a:hover { color: #fff; }
+  .sign .s3 a:focus-visible { outline: 3px solid #ffd37a; outline-offset: 4px; }
+  .stk { position: absolute; width: clamp(54px, 8vw, 86px); aspect-ratio: 1; background: center / contain no-repeat; pointer-events: none; z-index: 1;
+    filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(3px 4px 0 rgb(42 31 92 / .4)); }
+  @media (max-width: 640px) { .stk.hide-s { display: none; } .sign { width: min(100%, 320px); } }
+  @media (prefers-reduced-motion: no-preference) { .sign { animation: sway 7s ease-in-out infinite; transform-origin: 50% -140px; } @keyframes sway { 0%, 100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.2deg); } } }
+  .scallop { height: 38px; background: #f5ef9f; position: relative; }
+  .scallop::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px;
+    background: radial-gradient(circle at 12px 14px, #f5ef9f 10px, #1a1420 10px 12.5px, transparent 12.5px) 0 0 / 24px 14px repeat-x; }
+</style>
+</head>
+<body>
+<div class="note"><h1>Circuit band, first try</h1><p>A board drawn for Web Faery (not a photo), a glowing sign hung on two wires, and the same die-cut stickers as the rest of the site.</p></div>
+<section class="pcb" aria-label="Web Faery is open for new sites">
+  <div class="sign">
+    <span class="s1">web faery</span>
+    <span class="s2">open</span>
+    <span class="s3">New sites <a href="start.html">Start yours &rarr;</a></span>
+  </div>
+  <i class="stk" style="left:9%;top:16%;background-image:var(--st6);rotate:-9deg" aria-hidden="true"></i>
+  <i class="stk" style="right:10%;top:12%;background-image:var(--st3);rotate:8deg" aria-hidden="true"></i>
+  <i class="stk hide-s" style="left:5%;bottom:10%;background-image:var(--st2);rotate:11deg" aria-hidden="true"></i>
+  <i class="stk" style="right:6%;bottom:9%;background-image:var(--st0);rotate:-12deg" aria-hidden="true"></i>
+  <i class="stk hide-s" style="left:24%;bottom:6%;background-image:var(--st5);rotate:6deg" aria-hidden="true"></i>
+  <i class="stk hide-s" style="right:25%;top:7%;background-image:var(--st1);rotate:-6deg" aria-hidden="true"></i>
+</section>
+<div class="scallop"></div>
+</body>
+</html>
