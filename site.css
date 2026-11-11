@@ -1464,3 +1464,6 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
 /* no scallop under the rolling banner: the banner meets the Recent work band in a straight line */
 .work::before { display: none !important; }
 .work { padding-top: var(--wf-section-pad, 80px); }
+/* no squiggle and star between the two sites in Recent work; they just sit one above the other with room between */
+.work .piece + .piece::before, .work .piece + .piece::after { display: none !important; }
+.work .piece + .piece { margin-top: clamp(48px, 6vw, 84px); padding-top: 0; }
