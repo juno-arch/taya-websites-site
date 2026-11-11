@@ -930,7 +930,7 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .btn, .brand { letter-spacing: .01em; }
 
 /* pass 6: every block of words sits in one solid card with a wavy lava-wax border */
-:root { --wv-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='32'%3E%3Cpath d='M0 16Q24 -4 48 16T96 16V32H0Z'/%3E%3C/svg%3E"); --wv-bot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='32'%3E%3Cpath d='M0 16Q24 36 48 16T96 16V0H0Z'/%3E%3C/svg%3E"); --wv-lef: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='96'%3E%3Cpath d='M16 0Q-4 24 16 48T16 96H32V0Z'/%3E%3C/svg%3E"); --wv-rig: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='96'%3E%3Cpath d='M16 0Q36 24 16 48T16 96H0V0Z'/%3E%3C/svg%3E"); }
+:root { --wv-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='32'%3E%3Cpath d='M0 20 L6 4 L12 20 L18 4 L24 20 L30 4 L36 20 L42 4 L48 20 V32 H0Z'/%3E%3C/svg%3E"); --wv-bot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='32'%3E%3Cpath d='M0 12 L6 28 L12 12 L18 28 L24 12 L30 28 L36 12 L42 28 L48 12 V0 H0Z'/%3E%3C/svg%3E"); --wv-lef: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='48'%3E%3Cpath d='M20 0 L4 6 L20 12 L4 18 L20 24 L4 30 L20 36 L4 42 L20 48 H32 V0Z'/%3E%3C/svg%3E"); --wv-rig: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='48'%3E%3Cpath d='M12 0 L28 6 L12 12 L28 18 L12 24 L28 30 L12 36 L28 42 L12 48 H0 V0Z'/%3E%3C/svg%3E"); }
 .field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card { position: relative; isolation: isolate; background: none; box-shadow: none; border: 0; border-radius: 0; text-shadow: none;
   padding: clamp(44px, 6vw, 60px) clamp(34px, 5.5vw, 56px); margin-block: 10px;
   --wf-ink: #2a1236; --wf-ink-soft: #3e2148; --wf-eyebrow: #b80f64; --wf-italic: #b80f64; --wf-link: #00697a; --wf-gold-hi: #00697a; --wf-text-shadow: none; --wf-text-shadow-strong: none;
@@ -1287,3 +1287,17 @@ body::before { display: none !important; }
 .field .faq details { border-top: 3px dotted #1a1420; }
 .work .piece + .piece::before { height: 24px; background-size: 66px 24px; top: -4px; }
 .roll { animation-duration: 90s; }
+
+/* pass 17: card borders cut like grass: a sharp zigzag instead of waves (the tiles above are 48 by 32 and 32 by 48) */
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::before,
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after,
+.site-foot .wrap::before, .site-foot .wrap::after {
+  -webkit-mask: var(--wv-top) 0 0 / 48px 32px repeat-x, var(--wv-bot) 0 100% / 48px 32px repeat-x, var(--wv-lef) 0 0 / 32px 48px repeat-y, var(--wv-rig) 100% 0 / 32px 48px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 32px) calc(100% - 32px) no-repeat;
+  mask: var(--wv-top) 0 0 / 48px 32px repeat-x, var(--wv-bot) 0 100% / 48px 32px repeat-x, var(--wv-lef) 0 0 / 32px 48px repeat-y, var(--wv-rig) 100% 0 / 32px 48px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 32px) calc(100% - 32px) no-repeat;
+  clip-path: none; }
+/* bigger teeth */
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::before,
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after,
+.site-foot .wrap::before, .site-foot .wrap::after {
+  -webkit-mask: var(--wv-top) 0 0 / 84px 36px repeat-x, var(--wv-bot) 0 100% / 84px 36px repeat-x, var(--wv-lef) 0 0 / 36px 84px repeat-y, var(--wv-rig) 100% 0 / 36px 84px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 36px) calc(100% - 36px) no-repeat;
+  mask: var(--wv-top) 0 0 / 84px 36px repeat-x, var(--wv-bot) 0 100% / 84px 36px repeat-x, var(--wv-lef) 0 0 / 36px 84px repeat-y, var(--wv-rig) 100% 0 / 36px 84px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 36px) calc(100% - 36px) no-repeat; }
