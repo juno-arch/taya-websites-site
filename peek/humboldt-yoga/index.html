@@ -231,6 +231,8 @@
   .vseg .pr, .views-care .pr { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .vseg .pr strong, .views-care .pr strong { font-weight: 700; color: var(--brand-deep); }
   .vseg .pr s, .views-care .pr s { margin-left: 5px; }
+  .vseg .psub { display: block; max-width: 24ch; font-size: 12px; line-height: 1.3; color: var(--ink-soft); text-wrap: balance; }
+  .vseg button[aria-pressed="true"] .psub { color: inherit; }
   .vseg button:hover { background: var(--ground); }
   .vseg button[aria-pressed="true"] { background: var(--brand); color: var(--on-brand); }
   .vseg button[aria-pressed="true"] .pr, .vseg button[aria-pressed="true"] .pr strong { color: var(--on-brand); }
@@ -690,12 +692,12 @@
       <p class="views-price">Your founding price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included. Any outside tools you use, like booking or payment apps, stay your own accounts and cost, additional to these prices. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="views-note"></p>
   </div>
   <p class="vh" role="status" id="views-live"></p>
@@ -823,12 +825,12 @@
     <div class="rules">
       <div class="rule reveal"><b>Register once</b>Sign up with WellnessLiving for easy scheduling and payments, and get the mobile app to manage on the go.</div>
       <div class="rule reveal"><b>Doors lock at start</b>Arrive at least 5 minutes before class. The door locks on the hour, without exception.</div>
-      <div class="rule reveal"><b>Need to cancel?</b>Just do it online, at least <span class="ph">2 or 4 hours</span> ahead. Cancellations aren&rsquo;t taken by text, email or phone.</div>
+      <div class="rule reveal"><b>Need to cancel?</b>Just do it online, ahead of class. Cancellations aren&rsquo;t taken by text, email or phone.</div>
     </div>
-    <p class="tier-note wf-note"><span class="tag" data-go="maiden">Every build</span><span>What you see: your classes this week and the whole month, from your WellnessLiving schedule (this is your real week of Oct 4). With care, I keep it current: you email me a change and it&rsquo;s done. Mother adds a Book button to every class that opens your WellnessLiving page.</span></p>
+    <p class="tier-note wf-note"><span class="tag" data-go="maiden">Every build</span><span>What you see: your classes this week and the whole month, from your WellnessLiving schedule (this is your real week of Oct 4). With care, I keep it current: you email me a change and it&rsquo;s done. Tended adds a Book button to every class that opens your WellnessLiving page.</span></p>
 
     <div data-show="maiden" data-fold tabindex="-1" hidden>
-      <p class="demo-note wf-note">With Maiden, your schedule shows here and people reach you by email or phone to ask about a class. With Mother, every class gets a Book button that opens your WellnessLiving page.</p>
+      <p class="demo-note wf-note">With Planted, your schedule shows here and people reach you by email or phone to ask about a class. With Tended, every class gets a Book button that opens your WellnessLiving page.</p>
     </div>
   </div>
 </section>
@@ -879,7 +881,7 @@
 <section id="gift" class="gutter" data-show="crone all" data-fold data-thing="gift cards">
   <div class="wrap gift">
     <div>
-      <p class="label with-pill"><span>Gift a practice</span> <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <p class="label with-pill"><span>Gift a practice</span> <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
       <h2 class="reveal">Give someone <em>the hot room</em></h2>
       <p class="soft" style="margin-top:14px">A class pack or a month of yoga for someone you love, bought right here on your site. Try it:</p>
       <div class="gift-notes wf-note">
@@ -925,7 +927,7 @@
 <section id="new" class="newhere" data-show="mother crone all" data-fold data-thing="new to hot yoga">
   <figure class="photo reveal"><img src="images/savasana.jpg" alt="The studio at rest: students lying on their mats in the long hot room" width="1400" height="1050" loading="lazy"></figure>
   <div class="newhere-text">
-    <p class="label with-pill"><span>New to hot yoga</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>New to hot yoga</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Your first class, <em>gently answered</em></h2>
     <div class="faq-list">
       <details><summary>What should I bring?</summary><div class="ans"><p>A mat, a towel and clothes you can sweat in. Water, or a bottle to refill at our filling station, is a good idea too. Bring an extra towel if you sweat a lot. Mats and towels are here to rent, and there are products to buy.</p></div></details>
@@ -933,14 +935,14 @@
       <details><summary>Should I eat beforehand?</summary><div class="ans"><p>Avoid eating for 2 hours before class, and remember to hydrate.</p></div></details>
       <details><summary>Can I shower after?</summary><div class="ans"><p>Yes. We&rsquo;re open 30 minutes after every class, with showers and dressing rooms. To be kind to the next person, please keep showers to about 5 minutes.</p></div></details>
       <details><summary>How hot is the room?</summary><div class="ans"><p>Original Hot Yoga is 105&deg;F, Intermediate is 103&deg;F, and the Ghosh &amp; Ashtanga Fusion flow is warmed to 90&deg;F.</p></div></details>
-      <details><summary>How do I book or cancel?</summary><div class="ans"><p>Register with WellnessLiving, then book and cancel online or in the app. Cancel at least <span class="ph">2 or 4 hours</span> ahead to avoid fees.</p></div></details>
+      <details><summary>How do I book or cancel?</summary><div class="ans"><p>Register with WellnessLiving, then book and cancel online or in the app. Cancel ahead to avoid fees.</p></div></details>
     </div>
   </div>
 </section>
 
 <section id="teachers" class="gutter" data-show="mother crone all" data-fold data-thing="your teachers">
   <div class="wrap">
-    <p class="label with-pill"><span>Teachers</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>Teachers</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Practicing <em>with you</em></h2>
     <div class="teachers">
       <article class="teacher reveal">
@@ -993,7 +995,7 @@
 
 <section id="happenings" class="gutter" data-show="mother crone all" data-fold data-thing="events">
   <div class="wrap">
-    <p class="label with-pill"><span>Happenings</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>Happenings</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Eight years. <em>One incredible community.</em></h2>
     <div class="events">
       <article class="ev-big reveal">
@@ -1032,7 +1034,7 @@
       <div data-show="maiden" hidden>
         <h3>Questions <em>before class?</em></h3>
         <p>Email <a href="mailto:humboldtyoga707@gmail.com">humboldtyoga707@gmail.com</a>. We look forward to practicing with you!</p>
-        <p class="demo-note">With Maiden, people reach you by email or phone. With Mother, this is a Book button that opens your WellnessLiving page.</p>
+        <p class="demo-note">With Planted, people reach you by email or phone. With Tended, this is a Book button that opens your WellnessLiving page.</p>
       </div>
     </div>
   </div>
@@ -1045,7 +1047,7 @@
 <section id="contact" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap touch">
     <div data-thing="contact form">
-      <p class="label with-pill"><span>Write to us</span> <span class="tag" data-go="mother">Mother + Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Write to us</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Send a <em>note</em></h2>
       <p class="soft" style="margin-top:14px">Privates, Karma Yoga, a question about your first class: write any time.</p>
       <div class="cf-card">
@@ -1122,7 +1124,7 @@
       </div>
       <blockquote class="rumi"><p>&ldquo;Yesterday I was clever, so I wanted to change the world. Today I am wise, so I am changing myself.&rdquo;</p><cite>Rumi</cite></blockquote>
     </div>
-    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Maiden<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Mother<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site, Book buttons to WellnessLiving), <span class="tag" data-go="crone">Crone<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling gift cards too). The banner up top and the schedule come with <span class="tag" data-go="maiden">Every build</span>. Every photo here is your own, from your current site.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend wf-note">Tags show which Web Faery build includes each piece, at your founding price, half off: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site, Book buttons to WellnessLiving), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (selling gift cards too). The banner up top and the schedule come with <span class="tag" data-go="maiden">Every build</span>. Every photo here is your own, from your current site.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
   </div>
 </footer>
 
@@ -1136,12 +1138,12 @@
       <p class="views-price">Your founding price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false"><b>Maiden</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
-      <button type="button" data-view="mother" aria-pressed="false"><b>Mother</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false"><b>Crone</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="maiden" aria-pressed="false"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
-    <div class="views-care"><b>Care</b><span class="pr"><span class="vh">, </span><strong>$35</strong>/mo <s><span class="vh">regular price </span>$69</s></span><span class="care-what">Optional, after launch: email me any change and it&rsquo;s done. Or $350 a year. Half off for as long as you keep it, stop anytime.</span></div>
+    <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included. Any outside tools you use, like booking or payment apps, stay your own accounts and cost, additional to these prices. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
     <p class="views-note" id="vp-note"></p>
   </div>
 </div>
@@ -1379,9 +1381,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Maiden', price: '$300', what: 'one beautiful page: your classes, this week and the whole month, your prices, kind words and how to find you.', next: 'mother' },
-      mother: { name: 'Mother', price: '$600', what: 'a full site with a Book button to your WellnessLiving page on every class, your teachers, a first class guide, events, a contact form and newsletter signup.', next: 'crone' },
-      crone: { name: 'Crone', price: '$900', what: 'everything in Mother, plus gift cards sold right on your site. That’s every piece on this page.' },
+      maiden: { name: 'Planted', price: '$300', what: 'one beautiful page: your classes, this week and the whole month, your prices, kind words and how to find you.', next: 'mother' },
+      mother: { name: 'Tended', price: '$600', what: 'a full site with a Book button to your WellnessLiving page on every class, your teachers, a first class guide, events, a contact form and newsletter signup.', next: 'crone' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus gift cards sold right on your site. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1395,8 +1397,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Mother, ' + more('maiden', 'crone') + ' with Crone.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Crone.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {
@@ -1596,7 +1598,7 @@
   })();
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
-<script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
+<script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
 <script src="/note-motion.js?v=1" defer></script>
 </body>
 </html>

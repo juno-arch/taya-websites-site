@@ -25,8 +25,7 @@
   :root {
     /* Their brand, from crafteduniquelychocolate.netlify.app: royal purple #51277b, violet #7441ae, their green #568860,
        the sage #aaa074 under their buttons, mint #c8efcd on the purple band, plum ink #30223b, lavender #faf7fd.
-       Plus the chocolate itself: dark, milk and white. Photos and plain grounds carry the page (the mushroom and
-       sprout art backgrounds came off Oct 14, Pollen's note on How to order). */
+       Plus the chocolate itself: dark, milk and white. Photos and plain grounds carry the page. */
     --ground: #fcf9f4;      /* white chocolate */
     --ground-2: #f4eefa;    /* their lavender */
     --card: #ffffff;
@@ -117,7 +116,7 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn:not(.quiet) { color: #1b1222; } }
   @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
 
-  /* HERO (Oct 14, Pollen's note: "reimagine a full photo hero"): her own Christmas cookie bowl, edge to edge, with the words
+  /* HERO: her own Christmas cookie bowl, edge to edge, with the words
      fading in right on the photo under a veil of her plum (no card). One photo for phone and desktop. The photo and its veil
      are fixed colors, so dark mode leaves the photo exactly as it is. */
   .hero-band { --veil: 40, 16, 66; --hero-ground: #2b1444; --m-photo: min(128vw, 600px); --copy-l: max(20px, calc(50% - 560px));
@@ -413,6 +412,7 @@
 
   /* ABOUT */
   .about { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 52px; align-items: center; }
+  .about-solo { grid-template-columns: minmax(0, 1fr); max-width: 720px; }
   .about .photo { aspect-ratio: 350 / 393; width: 100%; max-width: 360px; justify-self: center; border: 4px solid var(--card); box-shadow: 10px 12px 0 var(--lav-shadow); }
   .sig { margin-top: 18px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 22px; color: var(--green-deep); }
 
@@ -781,7 +781,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: what you make, your gifts for work, how to order with a Start your order button that opens an email already listing what to send, your weekend treats, your gallery, kind words and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the order planner that sends you every detail in one email with the logo attached, the see-it-in-chocolate preview, your gallery sorted by occasion, a weekend treats email list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus the 50% deposit paid right on the site, and weekend treats people can claim and pay for online for Eureka pickup, with sold out stamps, all into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus the 50% deposit paid right on the site, and weekend treats people can claim and pay for online for Eureka pickup, with sold out stamps, all on my server, with your own back end, and paid into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done: a new batch of treats, a market night, holiday orders. Hosting and backups included, and you&rsquo;d keep crafteduniquelychocolate.com: I can hold and renew it for you so it&rsquo;s one less thing to remember (it stays legally yours), or you can keep it at Wix if you&rsquo;d rather. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -871,7 +871,7 @@
         <figure class="pull reveal"><blockquote>&ldquo;From corporate events featuring branded chocolates to personalized birthday gifts&hellip; Michelle brings a level of customization that makes every order feel one-of-a-kind.&rdquo;</blockquote><cite>Sheryl K., Michael Hansen Insurance Agency</cite></figure>
       </div>
       <div class="mosaic" data-lightbox>
-        <figure class="reveal"><img src="images/logo-chocolates.webp" data-full="images/logo-chocolates.webp" width="721" height="426" alt="Square chocolates printed with a company logo, each in its own clear wrap" loading="lazy"></figure>
+        <figure class="reveal"><img src="images/logo-chocolates.webp" data-full="images/logo-chocolates.webp" width="721" height="426" alt="A round chocolate covered Oreo printed with the Dell&rsquo;Arte International logo, beside square chocolates printed with the logo and a show poster, each in clear wrap" loading="lazy" style="object-position:50% 82%"></figure>
         <figure class="reveal"><img src="images/work-anniversary-640.webp" data-full="images/work-anniversary.webp" width="640" height="404" alt="A work anniversary box: chocolate covered Oreos printed for five years, with a high five frog" loading="lazy" style="object-position:30% 50%"></figure>
         <figure class="reveal"><img src="images/dental-set.webp" data-full="images/dental-set.webp" width="410" height="539" alt="A chocolate dental gift set: a white chocolate tooth, a toothbrush, toothpaste and a set of teeth" loading="lazy"></figure>
         <figure class="reveal" style="grid-column: span 2"><img src="images/thank-you-paws-640.webp" data-full="images/thank-you-paws.webp" width="640" height="640" alt="Chocolate covered Oreos with paw prints and Thank you, wrapped for a pet sitter" loading="lazy" style="object-position:50% 40%"></figure>
@@ -1130,8 +1130,7 @@
 </section>
 
 <section id="about" class="gutter">
-  <div class="wrap about">
-    <figure class="photo reveal" data-lightbox><img src="images/bigfoot-foot.webp" width="350" height="393" alt="A chocolate Bigfoot footprint painted with Bigfoot and flying saucers, in its wrap" loading="lazy" style="object-position:50% 50%"></figure>
+  <div class="wrap about about-solo">
     <div>
       <p class="label with-pill"><span>Hi, I&rsquo;m Michelle</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Chocolate that creates smiles <em>before the first bite</em></h2>
@@ -1290,7 +1289,7 @@
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: what you make, your gifts for work, how to order with a Start your order button that opens an email already listing what to send, your weekend treats, your gallery, kind words and how to find you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended as the seasons change: the order planner that sends you every detail in one email with the logo attached, the see-it-in-chocolate preview, your gallery sorted by occasion, a weekend treats email list, your FAQ, a contact form and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom, doing business for you: everything in Tended, plus the 50% deposit paid right on the site, and weekend treats people can claim and pay for online for Eureka pickup, with sold out stamps, all into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus the 50% deposit paid right on the site, and weekend treats people can claim and pay for online for Eureka pickup, with sold out stamps, all on my server, with your own back end, and paid into your own Stripe."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Each build above comes with its own, at the monthly price shown with it, to keep your site healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep crafteduniquelychocolate.com: I can hold and renew it for you (it stays legally yours). If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1686,7 +1685,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with what you make, your gifts for work, how to order (with a Start your order button that opens an email already listing your questions), your weekend treats, the gallery, kind words, your story and how to find you.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site, tended as the seasons change, with everything in Planted plus the order planner that sends you every detail in one tidy email (logo attached, with the 2 week chocolate bar), the see-it-in-chocolate preview, the gallery sorted by occasion, a weekend treats email list, your FAQ, a contact form and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus the 50% deposit paid right on the site, and weekend treats people can claim and pay for online for Eureka pickup, with sold out stamps. Payments go into your own Stripe, with a short heads-up email for each. That’s every piece on this page.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'your site in full bloom, with everything in Tended plus the 50% deposit paid right on the site, and weekend treats people can claim and pay for online for Eureka pickup, with sold out stamps, all on my server, with your own back end. Payments go into your own Stripe, with a short heads-up email for each. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1876,6 +1875,6 @@
   })();
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
-<script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
+<script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
 <script src="/lightbox.js?v=2" defer></script>
 <script src="/note-motion.js?v=1" defer></script>

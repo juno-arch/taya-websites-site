@@ -22,6 +22,8 @@
      - words typed into an answer or a change request and not sent yet, this tab only, so a sign-in
        after a quiet while doesn't lose them (cleared once sent, and at "Sign out")
    Without storage (a private window) it still works: they just sign in each visit.
+   A Studio preview (Oct 19 2026, portal.html#preview=<key>, Taya's "See exactly what they see") keeps its own short
+   lived read only key in this tab only (sessionStorage), never next to a real sign-in; see "read only view".
 
    ---- HOW IT TALKS TO THE SERVER ----
    All in the api block below (the demo has the same eight calls with the same shapes):
@@ -42,6 +44,10 @@
    (hub DEPLOY.md section 73, API.md section 23); each file comes as a 30 minute link from the server
    and one for "Update your card or subscription" (Oct 16 2026, never in the preview): careManage, /care-manage, a fresh
    Stripe billing portal link each tap (hub DEPLOY.md section 80, API.md section 26)
+   and two for Messages (Oct 20 2026): messages, /messages (their thread; the preview reads it too, marking nothing
+   read) and message, /message (one more from them; never in the preview) (hub DEPLOY.md section 94, API.md section 39)
+   and one for Resources (Oct 21 2026; the preview reads it too): resources, /resources, the how-to videos and guides
+   Taya approved, the same for every client (hub DEPLOY.md section 101, API.md section 45)
    Every call after sign-in sends the key in an X-WF-Session header, never in a web address.
    The full list of routes and answers: webfaery-portal-docs/API.md in the hub (next to DEPLOY.md).
 
@@ -64,11 +70,34 @@
   const GIFT = SERVER + '/api/webfaery/gift';         // gift certificates (Oct 10 2026): only clients whose site sells them
   const BOOKINGS = SERVER + '/api/webfaery/bookings'; // a client's own bookings (Oct 10 2026): only clients with booking get any
   const NEWS = SERVER + '/api/webfaery/news/owner';    // a client's own newsletter (Oct 12 2026): only clients with a list get any
+  const GOOGLE = SERVER + '/api/webfaery/google';    // how they show up on Google (Nov 4 2026): only clients whose site is tracked get any
   const VISITS = SERVER + '/api/webfaery/v';          // a client's own visitor counts (Oct 15 2026): only clients whose site is counted get any
   const RECEIPTS = SERVER + '/api/webfaery/receipts'; // a client's own receipts box (Oct 15 2026): only clients Taya switched it on for get any
+  const CRITIQUE = SERVER + '/api/webfaery/critique'; // their critique of Web Faery (Oct 23 2026): only clients on a trade or free deal get the card
   const PAPERS = SERVER + '/api/webfaery/papers';     // a client's own business papers (Oct 15 2026): only clients Taya added papers for get any
-  const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : 'wf-portal-v1';
   const TOKEN_RE = /^[A-Za-z0-9]{40,64}$/;
+  // A Studio preview (Oct 19 2026): Taya's "See exactly what they see" opens portal.html#preview=<key>, a short lived
+  // read only key for one client. It rides in the #fragment (a browser never sends that to a server, so it isn't
+  // logged), is kept for this tab only (sessionStorage), and leaves the address at once. The page then shows what that
+  // client sees, the same tabs and data, with everything that would change something switched off (section "read only
+  // view" below). Her own sign-in on this browser, if any, is left alone (a separate key, in this tab only).
+  const PREVIEW_STORE = 'wf-portal-preview-v1';
+  const PREVIEW = (() => {
+    if (DEMO) return false;
+    try {
+      const h = location.hash || '';
+      if (h.indexOf('#preview=') === 0) {
+        history.replaceState(null, '', location.pathname + location.search);
+        const t = h.slice(9);
+        if (!TOKEN_RE.test(t)) return false;
+        window.sessionStorage.setItem(PREVIEW_STORE, JSON.stringify({ token: t }));
+        return true;
+      }
+      const o = JSON.parse(window.sessionStorage.getItem(PREVIEW_STORE) || 'null');
+      return !!(o && typeof o.token === 'string' && TOKEN_RE.test(o.token));
+    } catch (e) { return false; }
+  })();
+  const STORE_KEY = DEMO ? 'wf-portal-demo-v1' : PREVIEW ? PREVIEW_STORE : 'wf-portal-v1';
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const RESEND_WAIT = 60;              // seconds before "Send a new code" wakes up (the server sends one a minute at most)
   const PENDING_MS = 10 * 60 * 1000;   // a code works for 10 minutes: a reload within that goes back to the code step
@@ -97,7 +126,7 @@
     getting_started: 'Your answers, photos and a few little setup bits.',
     call: 'A few easy questions by email. I do the writing after.',
     draft: 'I’m building your draft. You’ll get a private link to peek.',
-    changes: 'Two rounds, each one email with everything in it.',
+    changes: 'Send changes by email; one email with everything in it is easiest.',
     launch: 'Your site goes live at your own web address, and I hand you your logins.',
     settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
   };
@@ -229,7 +258,7 @@
   /* ================= keeping the sign-in key ================= */
   // (the preview keeps its pretend key for this tab only, so it never lingers)
   let token = '';
-  const box = () => (DEMO ? window.sessionStorage : window.localStorage);
+  const box = () => (DEMO || PREVIEW ? window.sessionStorage : window.localStorage);
   const store = {
     get() {
       try {
@@ -303,7 +332,7 @@
   };
 
   /* ================= the server (the only place that talks to it) ================= */
-  const KNOWN = ['input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big',
+  const KNOWN = ['signin', 'weak', 'current', 'same', 'input', 'code', 'signed_out', 'origin', 'no_care', 'not_found', 'slow_down', 'server', 'not_ready', 'too_big',
     'over_balance', 'not_paid', 'refunded', 'expired'];
   const fail = (code, status, retry) => { const e = new Error(code); e.code = code; e.status = status || 0; if (retry) e.retry = retry; return e; };
   const errorFrom = (status, data) => {
@@ -326,15 +355,48 @@
     if (status === 409 && data && data.error === 'taken') e.code = 'input';
     return e;
   };
+  // A Studio preview only reads: these calls go out, anything else stays here and quietly never answers (the server
+  // refuses it too, 403 read_only). The same list as the hub's PREVIEW_READS (webfaery-portal-lib.js).
+  const PREVIEW_READS = [
+    '/api/webfaery/portal/me', '/api/webfaery/portal/file', '/api/webfaery/portal/content-load',
+    '/api/webfaery/shop/orders', '/api/webfaery/shop/export', '/api/webfaery/shop/codes', '/api/webfaery/shop/slip',
+    '/api/webfaery/shop/products', '/api/webfaery/shop/post-kit',
+    '/api/webfaery/gift/owner', '/api/webfaery/gift/lookup',
+    '/api/webfaery/bookings/overview', '/api/webfaery/bookings/slots', '/api/webfaery/bookings/month',
+    '/api/webfaery/bookings/noshow-quote', '/api/webfaery/bookings/week', '/api/webfaery/bookings/clients', '/api/webfaery/bookings/client',
+    '/api/webfaery/bookings/clients-csv',
+    '/api/webfaery/news/owner/overview', '/api/webfaery/news/owner/issue', '/api/webfaery/news/owner/people',
+    '/api/webfaery/news/owner/export', '/api/webfaery/news/owner/images',
+    '/api/webfaery/v/mine',
+    '/api/webfaery/google/mine',
+    '/api/webfaery/receipts/mine', '/api/webfaery/receipts/file', '/api/webfaery/receipts/export',
+    '/api/webfaery/papers/mine',
+    '/api/webfaery/critique/mine', // their critique card, a read (hub DEPLOY.md section 128); save and send stay refused
+    '/api/webfaery/portal/messages',
+    '/api/webfaery/portal/message-file', // [rich b23] opening an attachment is a read (hub DEPLOY.md section 95)
+    '/api/webfaery/portal/resources' // the approved how-to videos and guides, a read (hub DEPLOY.md section 101)
+  ];
+  const previewReads = (url) => PREVIEW_READS.includes(String(url).slice(SERVER.length).split('?')[0]);
+  // Try-it mode (Nov 2 2026): in a Studio preview every button and field works, but a save or send goes nowhere: it says so and fails like
+  // a refused save, so the page's own busy states clear. Nothing leaves the page, and the server refuses a preview's changes anyway.
+  const stayQuiet = () => {
+    try { toast('Preview only: nothing was saved or sent.'); } catch (e) { /* the toast is a nicety */ }
+    return Promise.reject(fail('preview'));
+  };
   const post = async (path, body, key, base) => {
+    const url = (base || BASE) + path;
+    if (PREVIEW && !previewReads(url)) return stayQuiet();
     const headers = { 'Content-Type': 'application/json' };
     if (key) headers['X-WF-Session'] = key;
+    let res;
     try {
-      return await fetch((base || BASE) + path, {
+      res = await fetch(url, {
         method: 'POST', headers, body: JSON.stringify(body || {}),
         mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer'
       });
     } catch (e) { throw fail('network'); }
+    if (PREVIEW && res.status === 403) return stayQuiet(); // read_only (or anything else refused): no words about it
+    return res;
   };
   const postJSON = async (path, body, key, base) => {
     const res = await post(path, body, key, base);
@@ -343,12 +405,14 @@
     return data;
   };
   // pictures and files go as a form, with a progress report while they travel
-  const sendForm = (path, fields, files, key, onProgress) => new Promise((resolve, reject) => {
+  // [papers b24] base: another route family (the business papers' /add); BASE when not given, as before
+  const sendForm = (path, fields, files, key, onProgress, base) => new Promise((resolve, reject) => {
+    if (PREVIEW) { stayQuiet().catch(reject); return; } // a Studio preview sends no files: it says so
     const fd = new FormData();
     fields.forEach(([k, v]) => fd.append(k, v));
     files.forEach((f) => fd.append('files', f, f.name));
     const x = new XMLHttpRequest();
-    x.open('POST', BASE + path);
+    x.open('POST', (base || BASE) + path);
     x.setRequestHeader('X-WF-Session', key);
     x.timeout = 5 * 60 * 1000;
     if (onProgress && x.upload) x.upload.onprogress = (e) => { if (e.lengthComputable) onProgress(e.loaded / e.total); };
@@ -364,9 +428,13 @@
   const realApi = {
     requestCode: (who) => postJSON('/request-code', who),
     verifyCode: (who, code) => postJSON('/verify-code', Object.assign({}, who, { code })),
+    passwordSignIn: (email, password) => postJSON('/password-signin', { email, password }), // (Oct 25 2026) the same session the code gives
+    passwordState: () => postJSON('/password-state', {}, token),
+    passwordSet: (password, current) => postJSON('/password-set', current ? { password, current } : { password }, token),
     me: () => postJSON('/me', {}, token),
     logout: (key) => postJSON('/logout', {}, key),
     todo: (id, action, text) => postJSON('/todo', text == null ? { todo: id, action } : { todo: id, action, text }, token),
+    approveSite: () => postJSON('/approve-site', {}, token), // (Oct 21 2026) Stage 5 final site review
     async file(thing, name) {
       const res = await post('/file', name ? { thing, name } : { thing }, token);
       if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
@@ -402,10 +470,38 @@
     giftRedeem: (b) => postJSON('/redeem', b, token, GIFT),
     // their own site's visitor counts (Oct 15 2026): { visits: null } unless their site is counted
     visits: () => postJSON('/mine', {}, token, VISITS),
+    // how they show up on Google (Nov 4 2026): { google: null } unless tracked and the switch is on; privacy changes only what is tracked
+    google: () => postJSON('/mine', {}, token, GOOGLE),
+    googlePrivacy: (b) => postJSON('/privacy', b, token, GOOGLE),
     // their own business papers (Oct 15 2026): { papers: [] } unless Taya added some
     papers: () => postJSON('/mine', {}, token, PAPERS),
+    // (Oct 20 2026, hub section 98) they add their own: one file with an optional name, kind and "good until" day; a
+    // new name or Remove for one of THEIR OWN papers only (the server checks; Taya's have no id here)
+    papersAdd: (fields, file, onProgress) => sendForm('/add', fields, [file], token, onProgress, PAPERS),
+    papersRename: (id, title) => postJSON('/rename', { id, title }, token, PAPERS),
+    papersRemove: (id) => postJSON('/remove', { id }, token, PAPERS),
+    // their critique of Web Faery (Oct 23 2026): { eligible: false } unless they are on a trade or free deal
+    critique: () => postJSON('/mine', {}, token, CRITIQUE),
+    critiqueSave: (b) => postJSON('/save', b, token, CRITIQUE),
+    critiqueSend: () => postJSON('/send', {}, token, CRITIQUE),
+    // the how-to videos and guides Taya approved (Oct 21 2026): { resources: [] } until she approves one
+    resources: () => postJSON('/resources', {}, token),
     // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
-    careManage: () => postJSON('/care-manage', {}, token)
+    careManage: () => postJSON('/care-manage', {}, token),
+    // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
+    // more message from them; plain text both ways
+    messages: () => postJSON('/messages', {}, token),
+    // (Oct 20 2026, hub section 95) one long message whole (the thread sends long ones folded)
+    messageFull: (id) => postJSON('/messages', { full: id }, token),
+    message: (body, files) => postJSON('/message', files && files.length ? { body, files } : { body }, token),
+    // [rich b23] (hub DEPLOY.md section 97): attachments, two steps (upload, then the message names their ids)
+    messageUpload: (files, onProgress) => sendForm('/message-upload', [], files, token, onProgress),
+    messageUnattach: (id) => postJSON('/message-unattach', { id }, token),
+    async messageFile(id, inline) {
+      const res = await post('/message-file', inline ? { id, inline: true } : { id }, token);
+      if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
+      return res.blob();
+    }
   };
   let api = realApi;
   // a client's own bookings (Oct 10 2026): THE one place that part signs in. Today it is the portal's sign-in key;
@@ -416,6 +512,19 @@
     const res = await post(path, body || {}, token, BOOKINGS);
     if (!res.ok) throw errorFrom(res.status, await res.json().catch(() => ({})));
     return res.blob();
+  };
+  // an answer's draft sent as the page closes (Oct 19 2026): keepalive, so the browser still sends it while leaving.
+  // Fire and forget; a preview (read only) and the demo send nothing. The debounce and blur saves use api.todo instead.
+  const draftBeacon = (id, text) => {
+    if (PREVIEW || DEMO || !token) return;
+    try {
+      fetch(BASE + '/todo', {
+        method: 'POST', keepalive: true,
+        headers: { 'Content-Type': 'application/json', 'X-WF-Session': token },
+        body: JSON.stringify({ todo: id, action: 'draft', text }),
+        mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer'
+      });
+    } catch (e) { /* leaving the page: nothing to show */ }
   };
   // a client's own newsletter (Oct 12 2026): the one place that part signs in, the same way
   const newsCall = (path, body) => postJSON(path, body || {}, token, NEWS);
@@ -442,6 +551,7 @@
   // what people read when something goes sideways
   const words = (err, where) => {
     const c = err && err.code;
+    if (c === 'preview') return 'Preview only: nothing was saved or sent.';
     if (c === 'code') return 'That code didn’t work. Check the numbers, and use the code in the newest email.';
     if (c === 'slow_down' && (err.retry || 0) >= 2880) return 'Sign-in is paused for this email, to keep it safe. Email me at ' + TAYA + ' and I’ll open it back up.';
     if (c === 'slow_down') {
@@ -473,8 +583,9 @@
   let nonce = newNonce();
   let pics = [];           // pictures chosen for a change request
   const openAnswers = new Set(); // "Change my answer" boxes someone opened
+  let draftPagehideWired = false; // the answer autosave's one pagehide listener (Oct 19 2026), added once
 
-  const VIEWS = ['v-email', 'v-code', 'v-loading', 'v-offline', 'v-project'];
+  const VIEWS = ['v-email', 'v-pass', 'v-code', 'v-loading', 'v-offline', 'v-project', 'v-ended'];
   const show = (id) => {
     VIEWS.forEach((v) => { $('#' + v).hidden = v !== id; });
     if (id !== 'v-loading') document.documentElement.classList.remove('wf-arriving');
@@ -539,7 +650,7 @@
   };
   // the bar: signed in with a business name, their name leads ("your site, from Web Faery" beside it, on wider
   // screens) and goes to their Home; signed out, or no name yet, the Web Faery wordmark, going to webfaery.love
-  function setBrand(biz, accent) {
+  function setBrand(biz, brand) {
     const b = $('#top-brand');
     $('#top-biz').textContent = biz;
     $('#top-biz').hidden = !biz;
@@ -547,7 +658,206 @@
     b.classList.toggle('is-biz', !!biz);
     b.setAttribute('href', biz ? '#home' : 'index.html');
     $('#top-via').textContent = biz ? 'your site, from Web Faery' : '';
-    applyAccent(accent || ''); // signed out (setBrand('')): back to Web Faery's own look
+    brand = biz && brand ? brand : null;
+    applyAccent(brand && brand.accent || ''); // signed out (setBrand('')): back to Web Faery's own look
+    applyHeadingFont(brand && brand.heading || '');
+    applyHeaderLogo(brand, biz);
+  }
+  /* (Nov 4 2026, ADD 56) Their brand, beyond the accent. Each part shows ONLY when Taya has set it (me.brand), so a client with
+     none gets exactly Web Faery's look. Fonts are the free Google Fonts in BRAND_FONTS, served from this site (fonts/brand/),
+     keyed by name: the server sends only a key from this list, never a URL or CSS. Headings only (h1 to h3); body text, buttons,
+     layout, paper and ground colors stay Web Faery's. */
+  const BRAND_FONTS = {
+    'fraunces': ['Fraunces', 'serif'], 'petrona': ['Petrona', 'serif'], 'righteous': ['Righteous', 'sans-serif'],
+    'cormorant-garamond': ['Cormorant Garamond', 'serif'], 'young-serif': ['Young Serif', 'serif'], 'archivo': ['Archivo', 'sans-serif'],
+    'playfair-display': ['Playfair Display', 'serif'], 'figtree': ['Figtree', 'sans-serif'], 'karla': ['Karla', 'sans-serif'],
+    'public-sans': ['Public Sans', 'sans-serif'], 'source-sans-3': ['Source Sans 3', 'sans-serif']
+  };
+  const fontStack = (key) => (BRAND_FONTS[key] ? '"WFB ' + BRAND_FONTS[key][0] + '", ' + BRAND_FONTS[key][1] : '');
+  function applyHeadingFont(key) {
+    const html = document.documentElement;
+    html.style.removeProperty('--wf-b-hfont');
+    html.removeAttribute('data-wf-hfont');
+    if (!BRAND_FONTS[key]) return;
+    html.style.setProperty('--wf-b-hfont', fontStack(key));
+    html.setAttribute('data-wf-hfont', '');
+  }
+  // a logo as an image address: only a plain svg (drawn, never run) or a png, webp or jpeg picture
+  function logoSrc(l) {
+    if (!l || typeof l !== 'object') return '';
+    if (l.kind === 'svg') return typeof l.text === 'string' && l.text.length < 110000 && !/<\s*(script|foreignObject|iframe)|\son[a-z]+\s*=|javascript:/i.test(l.text) ? 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(l.text) : '';
+    if (l.kind === 'png' || l.kind === 'webp' || l.kind === 'jpeg') return typeof l.b64 === 'string' && /^[A-Za-z0-9+/]+={0,2}$/.test(l.b64) && l.b64.length < 150000 ? 'data:image/' + l.kind + ';base64,' + l.b64 : '';
+    return '';
+  }
+  function cleanBrand(b) {
+    if (!b || typeof b !== 'object') return null;
+    const out = {};
+    if (/^#[0-9a-f]{6}$/i.test(str(b.accent, 7))) out.accent = str(b.accent, 7).toLowerCase();
+    if (BRAND_FONTS[str(b.heading, 30)]) out.heading = str(b.heading, 30);
+    if (BRAND_FONTS[str(b.body, 30)]) out.body = str(b.body, 30);
+    const colors = arr(b.colors).slice(0, 8).map((c) => (c && /^#[0-9a-f]{6}$/i.test(str(c.hex, 7)) ? { name: str(c.name, 30), hex: str(c.hex, 7).toLowerCase() } : null)).filter(Boolean);
+    if (colors.length) out.colors = colors;
+    const logos = {};
+    ['light', 'dark'].forEach((k) => { const l = b.logos && b.logos[k]; if (logoSrc(l)) logos[k] = l.kind === 'svg' ? { kind: 'svg', text: l.text } : { kind: l.kind, b64: l.b64 }; });
+    if (Object.keys(logos).length) out.logos = logos;
+    if (b.sheet === true) out.sheet = true;
+    return Object.keys(out).length ? out : null;
+  }
+  /* ---- Your accounts (Nov 4 2026, ADD 58) ---- */
+  const ACCT_KINDS = {
+    domain: ['Domain', 'Your website address.'], hosting: ['Hosting', 'Where your site lives.'], google: ['Google Business Profile', 'How you show up on Google and Maps.'],
+    stripe: ['Stripe', 'Where your payments arrive.'], booking: ['Booking tool', 'Where your bookings are kept.'], newsletter: ['Newsletter', 'Where your newsletter is written and sent.'],
+    instagram: ['Instagram', 'Yours to post on.'], facebook: ['Facebook', 'Yours to post on.'], email: ['Email', 'Your mailbox.'], other: ['Another account', '']
+  };
+  const ACCT_HOLDERS = { you: 'You hold the login.', taya: 'Taya manages the login for you.', both: 'You and Taya can both sign in.' };
+  const ACCT_ICONS = { domain: 'i-globe', stripe: 'i-receipt', booking: 'i-cal', newsletter: 'i-mail' };
+  function cleanAccounts(list) {
+    const out = arr(list).slice(0, 12).map((r) => {
+      if (!r || typeof r !== 'object' || !ACCT_KINDS[str(r.kind, 20)] || !ACCT_HOLDERS[str(r.holder, 10)]) return null;
+      const o = { kind: str(r.kind, 20), holder: str(r.holder, 10), where: str(r.where, 40), url: safeUrl(r.url), howto: safeUrl(r.howto), note: str(r.note, 140), renews_on: '', login_user: str(r.login_user, 80) };
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str(r.renews_on, 10))) o.renews_on = str(r.renews_on, 10);
+      return o;
+    }).filter(Boolean);
+    return out.length ? out : null;
+  }
+  // (Nov 4 2026, ADD 71) their Google review link: https on a Google host only, else nothing (no link, no row)
+  function cleanReviewLink(u) {
+    const s = safeUrl(u);
+    if (!s) return '';
+    try { const h = new URL(s).hostname.toLowerCase(); return h === 'g.page' || h === 'maps.app.goo.gl' || h === 'google.com' || h.endsWith('.google.com') ? s : ''; } catch (e) { return ''; }
+  }
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const acctDate = (iso) => { const p = iso.split('-'); return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; };
+  // "renews on <date>, in your <registrar> account": it says where the renewal happens, not that we do it
+  const acctRenews = (a) => 'Renews on ' + acctDate(a.renews_on) + (a.where ? ', in your ' + a.where + ' account' : ', in your account') + '.';
+  /* ---- Coming up (Nov 4 2026, ADD 61) ---- */
+  function cleanComing(c) {
+    if (!c || typeof c !== 'object') return null;
+    const day = (s) => /^\d{4}-\d{2}-\d{2}$/.test(str(s, 10));
+    const launch = c.launch && day(c.launch.on) && str(c.launch.text, 120) ? { on: str(c.launch.on, 10), text: str(c.launch.text, 120) } : null;
+    const p = c.payment;
+    const payment = p && ['balance', 'care', 'care_start'].includes(p.kind) && str(p.text, 160) ? { kind: p.kind, text: str(p.text, 160) } : null;
+    return launch || payment ? { launch: launch, payment: payment } : null;
+  }
+  function renderComing() {
+    const sec = $('#sec-coming');
+    const body = $('#coming-body');
+    const c = me && me.coming_up;
+    if (!c) { setHidden(sec, true); body.replaceChildren(); return; }
+    const rows = [];
+    if (c.launch) rows.push(['i-cal', c.launch.text, 'project', 'Take me to your project']);
+    if (c.payment) rows.push(['i-receipt', c.payment.text, 'payments', 'Take me to payments']);
+    body.replaceChildren(...rows.map((r) => {
+      const li = make('li', 'coming-row');
+      const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(r[0]));
+      li.append(i, make('p', 'coming-line', r[1]));
+      // (Nov 6 2026) every line in Coming up has a "Take me there" button to the page where it lives
+      if (r[2] && PAGES.some((pg) => pg.id === r[2])) {
+        const acts = make('div', 'acct-acts');
+        const b = make('button', 'open-btn', null);
+        b.type = 'button'; b.dataset.read = '1';
+        b.setAttribute('aria-label', r[3]);
+        b.append(make('span', null, 'Take me there'));
+        b.addEventListener('click', () => goPage(r[2]));
+        acts.append(b); li.append(acts);
+      }
+      return li;
+    }));
+    setHidden(sec, false);
+  }
+  function renderAccounts() {
+    const sec = $('#sec-accounts');
+    const body = $('#acct-body');
+    const list = me && me.accounts;
+    const review = me && me.review_link;
+    if (!list && !review) { setHidden(sec, true); body.replaceChildren(); return; }
+    const rows = (list || []).map((a) => {
+      const li = make('li', 'acct-row');
+      const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon(ACCT_ICONS[a.kind] || 'i-key'));
+      const k = ACCT_KINDS[a.kind];
+      const title = k[0] + (a.where && k[0].toLowerCase().indexOf(a.where.toLowerCase()) < 0 ? ', ' + a.where : '');
+      const nm = make('p', 'acct-name');
+      if (a.url) {
+        // (Nov 4 2026, ADD 62) the title is the link to that service's sign-in page
+        const l = make('a', 'acct-link', title);
+        l.href = a.url; l.target = '_blank'; l.rel = 'noopener noreferrer';
+        l.dataset.read = '1'; // opens another site: stays on in a Studio preview
+        l.setAttribute('aria-label', 'Sign in to your ' + k[0].toLowerCase() + ' (opens in a new tab)');
+        nm.append(l);
+      } else nm.textContent = title;
+      li.append(i, nm);
+      if (k[1]) li.append(make('p', 'acct-line', k[1]));
+      li.append(make('p', 'acct-holder', ACCT_HOLDERS[a.holder]));
+      if (a.login_user) { // the user name or email only, hidden until the little eye is tapped
+        const row = make('p', 'acct-user'), val = make('span', 'acct-user-val', '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022');
+        const eye = make('button', 'acct-eye'), NS = 'http://www.w3.org/2000/svg';
+        eye.type = 'button'; eye.dataset.read = '1'; eye.setAttribute('aria-pressed', 'false'); eye.setAttribute('aria-label', 'Show the sign-in name');
+        const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('aria-hidden', 'true');
+        const pa = document.createElementNS(NS, 'path'); pa.setAttribute('d', 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'); pa.setAttribute('class', 'eye-lid');
+        const ci = document.createElementNS(NS, 'circle'); ci.setAttribute('cx', '12'); ci.setAttribute('cy', '12'); ci.setAttribute('r', '3');
+        const sl = document.createElementNS(NS, 'path'); sl.setAttribute('d', 'M4 20L20 4'); sl.setAttribute('class', 'eye-slash');
+        svg.append(pa, ci, sl); eye.append(svg);
+        eye.addEventListener('click', () => {
+          const on = eye.getAttribute('aria-pressed') !== 'true';
+          eye.setAttribute('aria-pressed', on ? 'true' : 'false');
+          eye.setAttribute('aria-label', on ? 'Hide the sign-in name' : 'Show the sign-in name');
+          val.textContent = on ? a.login_user : '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+        });
+        row.append('Sign in as: ', val, eye); li.append(row);
+      }
+      if (a.renews_on) li.append(make('p', 'acct-renew', acctRenews(a)));
+      if (a.note) li.append(make('p', 'acct-note', a.note));
+      if (a.howto) {
+        const acts = make('div', 'acct-acts');
+        [[a.howto, 'How to', 'how to use your ' + k[0].toLowerCase()]].forEach(([u, label, aria]) => {
+          if (!u) return;
+          const l = make('a', 'open-btn', null);
+          l.href = u; l.target = '_blank'; l.rel = 'noopener noreferrer';
+          l.dataset.read = '1'; // opens another site: stays on in a Studio preview
+          l.setAttribute('aria-label', label + ': ' + aria + ' (opens in a new tab)');
+          l.append(make('span', null, label), icon('i-out'));
+          acts.append(l);
+        });
+        li.append(acts);
+      }
+      return li;
+    });
+    if (review) { // (ADD 71) shown first: the thing they hand to customers
+      const li = make('li', 'acct-row');
+      const i = make('span', 'ico'); i.setAttribute('aria-hidden', 'true'); i.append(icon('i-leaf'));
+      li.append(i, make('p', 'acct-name', 'Your Google review link'));
+      li.append(make('p', 'acct-line', 'Share this link with your customers, and they can leave you a Google review in a few taps.'));
+      const acts = make('div', 'acct-acts');
+      const b = make('button', 'open-btn', null);
+      b.type = 'button'; b.dataset.read = '1';
+      b.setAttribute('aria-label', 'Copy your Google review link');
+      b.append(make('span', null, 'Copy link'));
+      b.addEventListener('click', () => bkitCopy(review, 'your review link'));
+      acts.append(b); li.append(acts);
+      rows.unshift(li);
+    }
+    body.replaceChildren(...rows);
+    setHidden(sec, false);
+  }
+  // the bar is dark: a logo made for dark ground sits on it as it is; one made for light paper sits on a small paper plate.
+  // No picture, a failed picture, or no name yet: the business name, as before.
+  function applyHeaderLogo(brand, biz) {
+    const host = $('#top-brand');
+    let img = $('#top-logo');
+    const l = brand && brand.logos && (brand.logos.dark || brand.logos.light);
+    const src = l ? logoSrc(l) : '';
+    if (!src || !biz) { if (img) img.remove(); host.classList.remove('has-logo'); return; }
+    if (!img) {
+      img = make('img', 'logo biz-logo');
+      img.id = 'top-logo';
+      img.decoding = 'async';
+      img.addEventListener('error', () => { img.remove(); host.classList.remove('has-logo'); });
+      host.insertBefore(img, $('#top-wm'));
+    }
+    img.alt = biz;
+    img.classList.toggle('on-plate', !(brand.logos && brand.logos.dark));
+    if (img.getAttribute('src') !== src) img.src = src;
+    host.classList.add('has-logo');
   }
   // Oct 16 2026: their own accent color, only when Taya has set one (me.brand.accent, a strict #rrggbb). It touches only
   // the small accents (italic heading words, link underlines, the Heads up edge, small icons, the focus ring, and the
@@ -570,7 +880,7 @@
     html.setAttribute('data-wf-brand', p.darkened ? 'darker' : 'own');
     if (p.bar) { html.style.setProperty('--wf-b-brand-bar', p.bar); html.setAttribute('data-wf-brand-bar', ''); }
   }
-  const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email. No passwords to remember.');
+  const heroSignedOut = () => hero('Your project', 'Come on ', 'in.', 'I’ll send a little code to your email, so there is no password to remember. If you like, you can choose a password once you are in.');
 
   /* ================= the pages (Oct 14 2026): one short page per area, with tabs =================
      Every section in #v-project says which page it belongs to (data-page). A page shows in the tabs when any of its
@@ -591,6 +901,10 @@
     { id: 'visitors', label: 'Visitors', icon: 'i-bars' },
     { id: 'receipts', label: 'Receipts', icon: 'i-tray' },
     { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
+    { id: 'messages', label: 'Messages', icon: 'i-talk' },
+    { id: 'resources', label: 'Resources', icon: 'i-play' },
+    { id: 'brand', label: 'Brand kit', short: 'Brand', icon: 'i-palette' },
+    { id: 'accounts', label: 'Your accounts', short: 'Accounts', icon: 'i-key' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
@@ -603,7 +917,9 @@
   // booking or newsletter comes first (that's what they'll open most)
   function pageList() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    const order = live ? ['home'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'project', 'payments', 'ask']) : ['home', 'project'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'payments', 'ask']);
+    // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
+    // (Oct 21 2026) Resources: after their papers, before Payments
+    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'brand', 'accounts', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'brand', 'accounts', 'payments', 'ask']);
     return order.filter(pageHas).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
@@ -647,7 +963,16 @@
       if (!inDock) a.append(' ');
       a.append(c);
     }
+    // (Oct 20 2026) a quiet dot on Messages while a message from Taya waits unread
+    if (p.id === 'messages' && msgUnread() > 0) a.append(msgDot());
     return a;
+  }
+  const msgUnread = () => (me && Number.isInteger(me.messages_unread) ? me.messages_unread : 0);
+  function msgDot() {
+    const n = msgUnread();
+    const d = make('span', 'msg-dot');
+    d.append(make('span', 'sr-only', n === 1 ? ', 1 new message' : ', ' + n + ' new messages'));
+    return d;
   }
   function hideTabs() {
     pagesSig = '';
@@ -668,7 +993,7 @@
     const list = pageList();
     const tabs = list.filter((x) => x.id !== 'ask');
     const counts = pageCounts();
-    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (pageHas('ask') ? '|ask' : '');
+    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (pageHas('ask') ? '|ask' : '') + '|m' + msgUnread();
     if (sig !== pagesSig) {
       pagesSig = sig;
       $('#tabs').replaceChildren(...tabs.map((x) => tabLink(x, counts[x.id] || 0, false)));
@@ -685,6 +1010,7 @@
         more.append(icon('i-more'), make('span', 'lbl', 'More'));
         const waiting = inMore.reduce((sum, x) => sum + (counts[x.id] || 0), 0);
         if (waiting) { const c = make('span', 'cnt', String(waiting)); c.append(make('span', 'sr-only', ' to do')); more.append(c); }
+        else if (msgUnread() > 0 && inMore.some((x) => x.id === 'messages')) more.append(msgDot());
         more.addEventListener('click', openMore);
         dockKids.push(more);
       }
@@ -730,6 +1056,7 @@
     const bar = $('#tabs'), cur = $('#tabs a[aria-current]');
     if (cur && bar.scrollWidth > bar.clientWidth + 1) bar.scrollLeft = Math.max(0, cur.offsetLeft - (bar.clientWidth - cur.offsetWidth) / 2);
     tabsEdges();
+    if (id === 'messages') msgOpened(); // (Oct 20 2026) their thread loads when they open it (that's when Taya's are read)
   }
   function tabsEdges() {
     const bar = $('#tabs');
@@ -837,6 +1164,9 @@
     if (!me) { setHidden(sec, true); return; }
     const t = taps.mine();
     const rows = []; // [page, due, title, small words]
+    // (Oct 20 2026) a message from Taya they haven't opened yet: "1 new message", first
+    const unreadMsgs = msgUnread();
+    if (unreadMsgs > 0 && pageHas('messages')) rows.push(['messages', true, plural(unreadMsgs, 'new message', 'new messages'), 'From Taya']);
     const open = me.list.open.filter((x) => x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key]));
     open.slice(0, 4).forEach((x) => rows.push([x.kind === 'pay' ? 'payments' : 'project', true, x.title, x.detail]));
     if (open.length > 4) rows.push(['project', false, plural(open.length - 4, 'more thing', 'more things') + ' on your list', '']);
@@ -886,12 +1216,31 @@
     bk = null;
     $('#sec-bookings').hidden = true;
     visits = null;
+    visitsSoon = false;
     $('#sec-visits').hidden = true;
+    $('#sec-brand').hidden = true;
+    $('#bkit-body').replaceChildren();
+    $('#sec-accounts').hidden = true;
+    $('#acct-body').replaceChildren();
+    $('#sec-coming').hidden = true;
+    $('#coming-body').replaceChildren();
+    google = null;
+    $('#sec-google').hidden = true;
     rcReset();
+    cqReset();
     papers = null;
     papersAt = 0;
+    ppUpload = null;
+    ppAsk = '';
+    ppEditing = '';
     $('#pp-list').replaceChildren();
+    ppOpenForm(false);
+    $('#pp-add').hidden = true;
     $('#sec-papers').hidden = true;
+    resources = null;
+    $('#rs-groups').replaceChildren();
+    $('#sec-resources').hidden = true;
+    msgReset();
     nl = null;
     nlEdit = null;
     nlPeopleShown = false;
@@ -907,6 +1256,9 @@
     n.hidden = !notice;
     showErr('email', '');
     stopResend();
+    pwState = null;
+    $('#in-ppass').value = ''; $('#in-pnew').value = ''; $('#in-pcur').value = '';
+    $('#pw-link').hidden = usePhone || PREVIEW;
     show('v-email');
     if (moveFocus) focusEl($('#h-email'));
   }
@@ -921,6 +1273,7 @@
     $('#l-email').textContent = on ? 'Your phone number' : 'Your email';
     $('#email-hint').textContent = on ? 'Use the number you gave me when we started.' : 'Use the email you gave me when we started.';
     $('#b-phone').textContent = on ? 'Use my email instead' : 'Text me a code instead';
+    $('#pw-link').hidden = on;
     showErr('email', '');
     input.focus();
   }
@@ -1032,6 +1385,7 @@
   function quietSignOut(moveFocus) {
     token = '';
     store.clear();
+    if (PREVIEW) { previewEnded(); return; } // a Studio preview has no sign-in door: it just ends
     toEmailStep('You were signed out after a quiet while. Here’s a fresh start.' +
       (drafts.any() ? ' Your words are kept: sign in again to send them.' : ''), moveFocus !== false);
   }
@@ -1058,14 +1412,19 @@
       me = clean(data);
       lastLoad = Date.now();
       show('v-project');   // (shown and drawn in the same moment, so nothing paints half done)
+      if (PREVIEW) previewStart(data);
       render();
       loadOrders();
       loadGifts();
       loadBookings();
       loadNews();
       loadVisits();
+      loadGoogle();
       loadReceipts();
       loadPapers();
+      loadCritique();
+      loadResources();
+      msgSync();
       if (fromSignIn) focusEl($('#hero-title'));
       if (paidReturn) { const k = paidReturn; paidReturn = ''; backFromPaying(k); }
       else if (backToPay) { backToPay = false; goPage('payments'); }
@@ -1090,8 +1449,12 @@
       loadBookings();
       loadNews();
       loadVisits();
+      loadGoogle();
       loadReceipts();
       loadPapers();
+      loadCritique();
+      loadResources();
+      msgSync();
     } catch (err) { if (err.code === 'signed_out') quietSignOut(false); }
   }
   const isTyping = () => pics.length > 0 ||
@@ -1132,7 +1495,11 @@
         start_step: str(x.start_step, 20), url: safeUrl(x.url), accept: str(x.accept, 10),
         status: x.status === 'sent' ? 'sent' : 'open', answer: str(x.answer, 1000),
         files_count: Math.max(0, Math.min(999, Math.round(+x.files_count || 0))), sent_on: str(x.sent_on, 30),
-        derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12)
+        derived: !!x.derived || /^d:/.test(str(x.id)), pay_key: str(x.pay_key, 12),
+        video: /^[a-z0-9-]{1,40}$/.test(str(x.video, 40)) ? str(x.video, 40) : '', // (Oct 21 2026) the hard step this to-do has a video for
+        choices: Array.isArray(x.choices) ? x.choices.map((c) => str(c, 90)).filter(Boolean).slice(0, 6) : [], // (Oct 22 2026) tap choices; the page adds Other (Oct 30: up to six, 90 characters)
+        media: /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.mp4$/.test(str(x.media, 120)) ? str(x.media, 120) : '', // (Oct 30 2026) a how-to video, shown as a player under the words
+        group: str(x.group, 60)
       };
     };
     const agreement = th.agreement && typeof th.agreement === 'object' ? {
@@ -1142,7 +1509,7 @@
     return {
       client: {
         first_name: str(c.first_name, 60), business: str(c.business, 160), build: str(c.build, 12),
-        build_label: str(c.build_label, 20), founding: !!c.founding, care: str(c.care, 12), care_active: !!c.care_active,
+        build_label: str(c.build_label, 20), founding: !!c.founding, no_charge: !!c.no_charge, care: str(c.care, 12), care_active: !!c.care_active,
         site_url: safeUrl(c.site_url), email: str(c.email, 200)
       },
       note: d.note && str(d.note.text).trim() ? { text: str(d.note.text, 600).trim(), date: str(d.note.date, 30) } : null,
@@ -1154,7 +1521,12 @@
       timeline: {
         current: str(tl.current, 20) || 'getting_started',
         stages: arr(tl.stages).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), date: str(s && s.date, 30), state: str(s && s.state, 8) })),
-        care_since: str(tl.care_since, 30)
+        // the five steps (add 22 / 25): same source as the Studio's timeline; an older server sends none, and the six stages above are drawn
+        steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), est: str(s && s.est, 10), until: str(s && s.until, 30),
+          turn: s && (s.turn === 'you' || s.turn === 'me') ? s.turn : '', state: s && (s.state === 'done' || s.state === 'now') ? s.state : 'next' })),
+        care_since: str(tl.care_since, 30),
+        // (Nov 2 2026, ADD 40) "Last update: <day>, <one line>" under the current step; the server sends it only when Pollen's switch is on
+        last_update: tl.last_update && typeof tl.last_update === 'object' && str(tl.last_update.text, 200) ? { date: str(tl.last_update.date, 30), text: str(tl.last_update.text, 200) } : null
       },
       things: {
         draft: th.draft && safeUrl(th.draft.url) ? { url: safeUrl(th.draft.url), note: str(th.draft.note, 200) } : null,
@@ -1162,6 +1534,12 @@
         brand_sheet: !!th.brand_sheet, handoff_sheet: !!th.handoff_sheet,
         receipts: arr(th.receipts).map((r) => ({ name: str(r && r.name, 200), label: str(r && r.label, 120) || 'Receipt' })).filter((r) => r.name).slice(0, 20)
       },
+      // (Oct 30 2026) launch date lines: new clients only, and only when the server sends them
+      launch: d.launch && typeof d.launch === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(str(d.launch.estimate_on, 10)) ? {
+        estimate_on: str(d.launch.estimate_on, 10), estimate_text: str(d.launch.estimate_text, 80), moves_text: str(d.launch.moves_text, 80),
+        overdue_text: str(d.launch.overdue_text, 160), can_request: d.launch.can_request === true,
+        requested: d.launch.requested && /^\d{4}-\d{2}-\d{2}$/.test(str(d.launch.requested.date, 10)) ? { date: str(d.launch.requested.date, 10) } : null
+      } : null,
       start_open: d.start_open !== false,   // Taya's getting-started switch (older servers: always open)
       sms: d.sms && typeof d.sms === 'object' ? { available: d.sms.available === true, on: d.sms.on === true, last4: /^\d{4}$/.test(str(d.sms.last4)) ? d.sms.last4 : '' } : null,
       // their magic mockup while getting started is closed, and whether they've finished it
@@ -1169,14 +1547,21 @@
       pay: arr(d.pay).filter((p) => p && ['deposit', 'balance', 'care'].includes(p.key)).map((p) => ({
         key: p.key, amount: Math.max(0, Math.round(+p.amount || 0)), period: p.period === 'year' ? 'year' : 'month',
         state: ['paid', 'due', 'later', 'active'].includes(p.state) ? p.state : 'later', paid_on: str(p.paid_on, 30), starts_on: str(p.starts_on, 30),
+        next_on: /^\d{4}-\d{2}-\d{2}$/.test(str(p.next_on, 10)) ? str(p.next_on, 10) : '', next_amount: Math.max(0, Math.round(+p.next_amount || 0)),
         url: /^https:\/\/(buy|checkout)\.stripe\.com\//.test(str(p.url)) ? safeUrl(p.url) : ''
       })),
       care_manage_url: /^https:\/\/billing\.stripe\.com\//.test(str(d.care_manage_url)) ? safeUrl(d.care_manage_url) : '',
-      brand: d.brand && /^#[0-9a-f]{6}$/i.test(str(d.brand.accent, 7)) ? { accent: str(d.brand.accent, 7).toLowerCase() } : null, // their accent color (Oct 16 2026), only a strict #rrggbb
+      coming_up: cleanComing(d.coming_up), // (Nov 4 2026, ADD 61) launch date + next payment; null unless the server sends it
+      review_link: cleanReviewLink(d.review_link), // (Nov 4 2026, ADD 71) their Google review link; '' until the server sends one
+      accounts: cleanAccounts(d.accounts), // (Nov 4 2026, ADD 58) their ledger of accounts; null until Taya sets a row
+      brand: cleanBrand(d.brand), // their accent color (Oct 16 2026, a strict #rrggbb) and, since Nov 4 2026, their heading font, colors and logos
       // Web Faery billing (Oct 16 2026): Stripe said the last subscription payment didn't go through, and whether the
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
+      manage_sub: d.manage_sub === true,
+      // portal messages (Oct 20 2026): how many of Taya's they haven't opened; null on a server without messages (no tab)
+      messages_unread: Number.isInteger(d.messages_unread) && d.messages_unread >= 0 ? Math.min(d.messages_unread, 999) : null,
       care: {
         can_ask: !!care.can_ask,
         requests: arr(care.requests).map((r) => ({
@@ -1203,6 +1588,7 @@
     const peek = [me.things && me.things.draft && me.things.draft.url, c.site_url]
       .map((u) => String(u || '').match(/^https:\/\/(?:www\.)?webfaery\.love\/peek\/([a-z0-9-]{1,40})\/?/)).find(Boolean);
     if (peek) q.set('mockup', peek[1]);
+    if (PREVIEW) q.set('wfpreview', '1'); // a Studio preview opens it read only: nothing it does is saved or sent
     const qs = q.toString();
     return START_PAGE + (qs ? '?' + qs : '') + (START_STEPS[step] ? '#' + START_STEPS[step] : '');
   };
@@ -1218,13 +1604,19 @@
   };
   // a link out of the portal (a draft, Stripe, their site): a new tab that can't reach back here.
   // tapKey: remember the tap ("Paid? Thank you!") so the same button doesn't glow at them again
+  // a Studio preview opens their pages read only (?wfpreview=1: the page's own switch, mark.js and start.html)
+  const previewHref = (href) => {
+    try { const u = new URL(href, location.href); if (/(^|\.)webfaery\.love$/.test(u.hostname)) { u.searchParams.set('wfpreview', '1'); return u.toString(); } } catch (e) { /* leave it */ }
+    return href;
+  };
   const outLink = (href, label, cls, what, tapKey) => {
     const a = make('a', cls || 'open-btn');
-    a.href = href;
+    a.href = PREVIEW ? previewHref(href) : href;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.append(make('span', null, label), icon('i-out'));
     if (what) a.dataset.what = what;
+    if (tapKey) a.dataset.pay = '1'; // a pay link: off in a Studio preview
     if (tapKey) a.addEventListener('click', () => { taps.set(tapKey); setTimeout(() => { if (me) { renderList(); renderPay(); } }, 400); });
     return a;
   };
@@ -1239,6 +1631,12 @@
     const soon = d && !isPast(d) ? shortDate(d) : '';
     if (cur === 'care') return 'Live, and in my care';
     if (cur === 'resting') return 'Live, and all yours';
+    // the five steps (same names as the timeline and the Studio)
+    const now5 = arr(me.timeline.steps).find((x) => x.state === 'now');
+    if (now5 && now5.key !== 'getting_started') {
+      const u = now5.key === 'settling_in' && now5.until ? ', until ' + shortDate(now5.until) : '';
+      return 'Now: ' + now5.label.toLowerCase() + u;
+    }
     if (cur === 'getting_started') return !me.start_open && me.mockup ? 'Now: your mockup' : 'Now: getting started';
     if (cur === 'call') return 'Now: gathering your story' + (d ? (isPast(d) ? '' : ', ' + shortDate(d)) : '');
     if (cur === 'draft') return 'Now: your draft' + (soon ? ', about ' + soon : '');
@@ -1277,7 +1675,7 @@
     hero('Your project', 'Hi, ', (c.first_name || 'friend') + '.',
       (c.business ? c.business + (build ? ' · ' : '') : '') + (build ? '\u0001' + build + ' build' : ''), BUILD_SIGN[c.build], nowLine());
     $('#me-email').textContent = c.email || 'you';
-    setBrand(c.business || '', me.brand && me.brand.accent);
+    setBrand(c.business || '', me.brand);
     // forget "I tapped Pay" once Taya has marked it
     me.pay.forEach((p) => { if (p.state === 'paid' || p.state === 'active') taps.drop(p.key); });
     // the header's "Getting started" only while that page is still theirs to fill in
@@ -1288,7 +1686,11 @@
     renderList();
     renderTimeline();
     renderThings();
+    renderBrandKit();
+    renderAccounts();
+    renderComing();
     renderTexts();
+    renderPassword();
     renderPay();
     renderChange();
     renderNeeds();
@@ -1348,6 +1750,117 @@
     });
   }
 
+
+  /* ================= a password to sign in with (Oct 25 2026) =================
+     Another way to the same portal; the emailed code stays (and is the way back when a password is forgotten).
+     It is set from inside a signed in portal, here. The page only ever holds what was just typed: nothing is kept in
+     storage, and the fields are emptied after every try. The server checks it (bcrypt) and answers the same to any miss. */
+  const PW_WEAK = {
+    short: 'Please use at least 12 characters. A few ordinary words in a row, like a little sentence, works well.',
+    long: 'That is longer than I can keep. Please use 200 characters or fewer.',
+    common: 'That one is on the lists of passwords people guess first. Try a few unrelated words in a row instead.',
+    pattern: 'That has a pattern that is easy to guess. Try a few unrelated words in a row instead.',
+    personal: 'That one is built from your name or email, which is easy to guess. Try a few unrelated words instead.'
+  };
+  let pwState = null;      // { set, set_on } from the server, or null while unknown
+  let pwWired = false;
+  const pwDay = (d) => { const m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(d); if (!m) return ''; const n = ['January','February','March','April','May','June','July','August','September','October','November','December'][+m[2] - 1]; return n ? 'on ' + n + ' ' + (+m[3]) : ''; };
+  const pwErr = (id, text) => { const p = $('#' + id); p.textContent = text || ''; p.hidden = !text; };
+  const showPw = (inputs, on) => inputs.forEach((i) => { i.type = on ? 'text' : 'password'; });
+
+  function toPassStep() {
+    $('#in-pemail').value = $('#in-email').value.trim();
+    $('#in-ppass').value = '';
+    $('#in-pshow').checked = false;
+    showPw([$('#in-ppass')], false);
+    pwErr('pass-err', '');
+    show('v-pass');
+    focusEl($('#h-pass'));
+    ($('#in-pemail').value ? $('#in-ppass') : $('#in-pemail')).focus();
+  }
+
+  async function onPass(e) {
+    e.preventDefault();
+    if (verifying) return;
+    const em = $('#in-pemail').value.trim().toLowerCase();
+    const pw = $('#in-ppass').value;
+    if (em.length < 3 || em.length > 200 || !EMAIL_RE.test(em)) { pwErr('pass-err', 'That email doesn’t look quite right. Check for a little typo?'); $('#in-pemail').focus(); return; }
+    if (!pw) { pwErr('pass-err', 'Type your password, or ask for a code instead.'); $('#in-ppass').focus(); return; }
+    verifying = true;
+    pwErr('pass-err', '');
+    const btn = $('#b-pass');
+    setBusy(btn, true, 'Signing in…');
+    try {
+      const r = await api.passwordSignIn(em, pw);
+      if (!r || !TOKEN_RE.test(str(r.token, 100))) throw fail('server', 500);
+      $('#in-ppass').value = '';
+      token = r.token;
+      store.set(token);
+      stopResend();
+      pending.clear();
+      who = null;
+      announce('You’re in.');
+      await loadProject(true);
+    } catch (err) {
+      $('#in-ppass').value = '';
+      pwErr('pass-err', err.code === 'signed_out' || err.code === 'signin'
+        ? 'That email and password don’t match. Check them and try again, or email yourself a code instead.'
+        : words(err) + (err.code === 'slow_down' ? ' The emailed code works in the meantime.' : ''));
+      $('#in-ppass').focus();
+    } finally { verifying = false; setBusy(btn, false); }
+  }
+
+  async function renderPassword() {
+    const sec = $('#sec-password');
+    if (PREVIEW || DEMO || !me) { sec.hidden = true; return; } // a Studio preview only reads; the demo has no server
+    wirePassword();
+    if (!pwState) {
+      try { const d = await api.passwordState(); pwState = { set: !!d.set, set_on: str(d.set_on, 10) }; }
+      catch (err) { sec.hidden = true; return; }
+      if (!me) return;
+    }
+    sec.hidden = false;
+    $('#h-password').textContent = pwState.set ? 'Your password' : 'Sign in with a password';
+    $('#pw-now').textContent = pwState.set
+      ? 'You have a password set' + (pwDay(pwState.set_on) ? ' (' + pwDay(pwState.set_on) + ')' : '') + '. You can use it with your email to sign in, or change it here.'
+      : 'Rather not wait for an emailed code? Choose a password and use it with your email to sign in.';
+    $('#pw-cur-wrap').hidden = !pwState.set;
+    $('#l-pnew').textContent = pwState.set ? 'Choose a new password' : 'Choose a password';
+    const bl = pwState.set ? 'Change my password' : 'Save my password';
+    $('#b-pw').querySelector('span').textContent = bl;
+    $('#b-pw').dataset.label = bl; // (setBusy puts this back after a save)
+    syncPages();
+  }
+
+  function wirePassword() {
+    if (pwWired) return; pwWired = true;
+    $('#in-pwshow').addEventListener('change', () => showPw([$('#in-pnew'), $('#in-pcur')], $('#in-pwshow').checked));
+    $('#f-password').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      pwErr('pw-err', '');
+      const pw = $('#in-pnew').value;
+      const cur = pwState && pwState.set ? $('#in-pcur').value : '';
+      if (!pw) { pwErr('pw-err', 'Type the password you would like to use.'); $('#in-pnew').focus(); return; }
+      if (Array.from(pw).length < 12) { pwErr('pw-err', PW_WEAK.short); $('#in-pnew').focus(); return; }
+      const b = $('#b-pw');
+      setBusy(b, true, 'Saving…');
+      try {
+        await api.passwordSet(pw, cur);
+        $('#in-pnew').value = ''; $('#in-pcur').value = '';
+        pwState = null;
+        setBusy(b, false);
+        toast('Your password is saved. Any other places you were signed in were signed out.', 9000);
+        await renderPassword();
+      } catch (err) {
+        if (err.code === 'weak') pwErr('pw-err', PW_WEAK[err.reason] || PW_WEAK.pattern);
+        else if (err.code === 'current') { pwErr('pw-err', 'I need your current password to change it. If you forgot it, sign out, sign in with an emailed code, and come back here.'); $('#in-pcur').focus(); }
+        else if (err.code === 'same') pwErr('pw-err', 'That is the password you have now. Pick a different one to change it.');
+        else if (err.code === 'signed_out') { quietSignOut(); return; }
+        else pwErr('pw-err', words(err));
+      } finally { setBusy(b, false); }
+    });
+  }
+
   /* ---- whose turn it is (the magic mockup step, Oct 2 2026) ---- */
   function renderTurn() {
     const sec = $('#sec-turn');
@@ -1380,7 +1893,15 @@
     const done = me.list.done;
     const cur = me.timeline.current;
     $('#h-list').textContent = !open.length ? 'All caught up' : open.length === 1 ? 'Just one thing' : 'Just these few things';
-    $('#todos').replaceChildren(...open.map(todoRow));
+    // (Oct 30 2026) a plain heading above each run of rows that share a group
+    const rowsOut = [];
+    let lastGroup = '';
+    open.forEach((x) => {
+      if (x.group && x.group !== lastGroup) { const g = make('li', 'todo-group'); g.append(make('h3', null, x.group)); rowsOut.push(g); }
+      lastGroup = x.group || '';
+      rowsOut.push(todoRow(x));
+    });
+    $('#todos').replaceChildren(...rowsOut);
     $('#todos').hidden = !open.length;
     $('#list-empty').hidden = open.length > 0;
     // their turn on the mockup: an empty list mustn't sit under "Your turn" saying "rest easy"
@@ -1434,6 +1955,23 @@
     const body = make('div');
     body.append(make('h3', null, item.title));
     if (item.detail) body.append(make('p', 'detail', item.detail));
+    // (Oct 30 2026) a how-to video right under the words, with a plain link for anyone whose phone will not play it
+    if (item.media && item.status !== 'sent') {
+      const wrap = make('div', 'todo-video');
+      const v = document.createElement('video');
+      v.controls = true;
+      v.preload = 'metadata';
+      v.setAttribute('playsinline', '');
+      v.src = item.media;
+      v.setAttribute('aria-label', 'Short video: ' + item.title);
+      const alt = make('a', 'open-btn', null);
+      alt.href = item.media;
+      alt.target = '_blank';
+      alt.rel = 'noopener noreferrer';
+      alt.append(make('span', null, 'Open the video in a new tab'), icon('i-out'));
+      wrap.append(v, alt);
+      body.append(wrap);
+    }
     const sentLine = (text) => {
       const p = make('p', 'thanks-line');
       p.append(icon('i-check'), make('span', null, text));
@@ -1487,6 +2025,40 @@
         body.append(d);
       }
       if (item.status !== 'sent' && !item.derived) act.append(doneButton(item));
+    } else if (kind === 'approve' && item.url) {
+      // (Oct 21 2026) Stage 5 final site review: look over the whole site, then approve it. Nothing goes live before this.
+      act.append(outLink(item.url, 'Open my site', 'open-btn', 'your whole site', ''));
+      const ask = make('button', 'btn small', 'Approve my site');
+      ask.type = 'button';
+      ask.addEventListener('click', () => {
+        const box = make('div', 'approve-ask');
+        box.append(make('p', 'hint', 'Once you approve, I can publish it. You can still send me small changes after it is live.'));
+        const yes = make('button', 'btn small', 'Yes, approve it');
+        yes.type = 'button';
+        const no = make('button', 'later', 'Not yet');
+        no.type = 'button';
+        no.addEventListener('click', () => { box.remove(); ask.hidden = false; ask.focus(); });
+        yes.addEventListener('click', async () => {
+          yes.disabled = true;
+          busy++;
+          try {
+            await api.approveSite();
+            me.list.open = me.list.open.filter((x) => x !== item);
+            me.list.done.push({ id: item.id, title: item.title });
+            renderList();
+            announce('Thank you! Your site is approved. I will let you know when it is live.');
+          } catch (err) {
+            yes.disabled = false;
+            if (err.code === 'signed_out') { quietSignOut(true); return; }
+            toast(words(err));
+          } finally { busy = Math.max(0, busy - 1); }
+        });
+        box.append(yes, no);
+        ask.hidden = true;
+        act.append(box);
+        yes.focus();
+      });
+      act.append(ask);
     } else if (kind === 'link' && item.url) {
       if (item.status === 'sent') body.append(sentLine('Sent, thank you! I’ll check it soon.'));
       const what = item.id === 'd:draft' ? 'your private draft' : 'that page';
@@ -1497,7 +2069,7 @@
         const m = make('a', 'later', 'Send me your changes');
         m.href = 'mailto:' + TAYA + '?subject=' + encodeURIComponent('Changes for my draft');
         act.append(m);
-        body.append(make('p', 'hint', 'One email per round, with everything in it. Two rounds are included.'));
+        body.append(make('p', 'hint', 'One email with everything in it is easiest.'));
       }
     } else if (kind === 'upload') {
       uploadBlock(item, body, act, sentLine);
@@ -1507,6 +2079,7 @@
       if (tapped) body.append(sentLine(PAY_THANKS));
       const b = make('button', tapped ? 'later' : 'btn small secondary', 'See payments');
       b.type = 'button';
+      b.dataset.read = '1'; // only moves to Payments
       b.addEventListener('click', () => {
         const sec = $('#sec-pay');
         goPage('payments');
@@ -1514,6 +2087,17 @@
         focusEl(target || sec);
       });
       act.append(b);
+    }
+    // (Oct 21 2026) a hard step with a video Taya approved for their build: a plain Watch link straight to it
+    const vid = item.video && resources ? resources.find((r) => r.step === item.video && r.kind === 'video') : null;
+    if (vid && item.status !== 'sent') {
+      const w = make('a', 'open-btn');
+      w.href = vid.url;
+      w.target = '_blank';
+      w.rel = 'noopener noreferrer';
+      w.append(make('span', null, 'Watch how'), icon('i-out'));
+      w.setAttribute('aria-label', 'Watch the video for ' + item.title + ' (opens in a new tab)');
+      act.append(w);
     }
     if (act.childNodes.length) body.append(act);
     li.append(mk, body);
@@ -1549,7 +2133,106 @@
   };
 
   /* ---- an answer, typed right here ---- */
+  // (Oct 22 2026, Pollen) a question with choices: tap one, or tap Other to write it. Every question has Other. The answer goes
+  // back as the chosen words, or "Other: <their words>"; Send waits until one is picked (and Other has words).
+  function choiceBlock(item, body, act) {
+    const sentBefore = item.status === 'sent' && item.answer;
+    if (sentBefore && !openAnswers.has(item.id)) {
+      const said = make('p', 'said');
+      said.append(make('span', 'sr-only', 'You said: '), item.answer);
+      body.append(said);
+      const p = make('p', 'thanks-line');
+      p.append(icon('i-check'), make('span', null, 'Sent, thank you! I’ll check it soon.'));
+      body.append(p);
+      const b = make('button', 'later', 'Change my answer');
+      b.type = 'button';
+      b.addEventListener('click', () => { openAnswers.add(item.id); replaceRow(item); });
+      act.append(b);
+      return;
+    }
+    const OTHER = 'Other';
+    const box = make('div', 'answer-box choice-box');
+    const gid = 'ch-' + item.id.replace(/[^A-Za-z0-9]/g, '');
+    const group = make('div', 'choices');
+    group.setAttribute('role', 'radiogroup');
+    group.setAttribute('aria-label', 'Your answer to: ' + item.title);
+    let picked = '';
+    const buttons = [];
+    const otherWrap = make('div', 'other-wrap');
+    otherWrap.hidden = true;
+    const ta = make('textarea', 'short');
+    ta.id = gid + '-other';
+    ta.maxLength = ANSWER_MAX - 10;
+    ta.rows = 3;
+    ta.placeholder = 'Type your answer here';
+    const tl = make('label', 'sr-only', 'Your own answer to: ' + item.title);
+    tl.htmlFor = ta.id;
+    otherWrap.append(tl, ta);
+    const err = make('p', 'err');
+    err.hidden = true;
+    const send = make('button', 'btn small', null);
+    send.type = 'button';
+    send.append(make('span', null, 'Send'));
+    send.disabled = true;
+    const refresh = () => {
+      buttons.forEach((b) => { const on = b.dataset.value === picked; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.classList.toggle('on', on); });
+      otherWrap.hidden = picked !== OTHER;
+      send.disabled = !picked || (picked === OTHER && !ta.value.trim());
+    };
+    item.choices.concat([OTHER]).forEach((label) => {
+      const b = make('button', 'choice-btn', label);
+      b.type = 'button';
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', 'false');
+      b.dataset.value = label;
+      b.addEventListener('click', () => { picked = label; refresh(); if (label === OTHER) ta.focus(); });
+      buttons.push(b);
+      group.append(b);
+    });
+    ta.addEventListener('input', refresh);
+    const row = make('div', 'row');
+    row.append(send);
+    if (sentBefore) {
+      const cancel = make('button', 'later', 'Keep what I sent');
+      cancel.type = 'button';
+      cancel.addEventListener('click', () => { openAnswers.delete(item.id); replaceRow(item); });
+      row.append(cancel);
+    }
+    send.addEventListener('click', async () => {
+      let text = picked;
+      if (picked === OTHER) {
+        const w = cleanText(ta.value, ANSWER_MAX);
+        if (!w) { err.textContent = 'A word or two is plenty.'; err.hidden = false; ta.focus(); return; }
+        text = 'Other: ' + w;
+        if (text.length > ANSWER_MAX) { err.textContent = 'That’s a lot! Could you keep it shorter? Email me the rest.'; err.hidden = false; return; }
+      }
+      err.hidden = true;
+      setBusy(send, true, 'Sending…');
+      busy++;
+      try {
+        await api.todo(item.id, 'answer', text);
+        item.status = 'sent';
+        item.answer = text;
+        item.sent_on = todayISO;
+        openAnswers.delete(item.id);
+        busy--;
+        replaceRow(item);
+        announce('Sent, thank you!');
+      } catch (e2) {
+        busy--;
+        setBusy(send, false);
+        refresh();
+        if (e2.code === 'signed_out') { quietSignOut(true); return; }
+        err.textContent = words(e2);
+        err.hidden = false;
+      }
+    });
+    box.append(group, otherWrap, err, row);
+    body.append(box);
+  }
+
   function answerBlock(item, body, act) {
+    if (item.choices && item.choices.length >= 2) { choiceBlock(item, body, act); return; }
     const kept = drafts.get('ans:' + item.id);
     if (kept && item.status === 'sent' && kept !== item.answer) openAnswers.add(item.id);
     const editing = openAnswers.has(item.id);
@@ -1575,12 +2258,61 @@
     ta.maxLength = ANSWER_MAX;
     ta.rows = 3;
     ta.placeholder = 'Type it here';
-    ta.value = kept || (editing ? item.answer : '');
-    ta.addEventListener('input', () => drafts.set('ans:' + item.id, ta.value));
+    // restore a saved draft (the server returns it as item.answer for an open item too), or the sent words while editing
+    ta.value = kept || item.answer || '';
     const err = make('p', 'err');
     err.hidden = true;
     err.id = id + '-err';
     ta.setAttribute('aria-describedby', err.id);
+    // autosave as they type (Oct 19 2026): a small quiet line for their own benefit. Send stays their "I am finished" signal.
+    const saveNote = make('p', 'save-note');
+    saveNote.hidden = true;
+    saveNote.setAttribute('aria-live', 'polite');
+    let lastSaved = ta.value;
+    let saveTimer = 0;
+    const setNote = (t) => { saveNote.textContent = t || ''; saveNote.hidden = !t; };
+    const saveDraft = async () => {
+      if (PREVIEW) return;
+      const v = cleanText(ta.value, ANSWER_MAX + 1);
+      if (v === null) return;                       // too long: Send says so; skip the autosave
+      if (v === lastSaved) return;                  // nothing new to save
+      if (v === '' && lastSaved === '') return;     // an empty box that held nothing saved: leave it be
+      setNote('Saving…');
+      try {
+        await api.todo(item.id, 'draft', v);
+        lastSaved = v;
+        ta.dataset.saved = v;
+        setNote('Draft saved');
+      } catch (e2) {
+        if (e2 && e2.code === 'signed_out') { setNote(''); return; }
+        setNote('Couldn’t save, still here');       // the next keystroke tries again
+      }
+    };
+    if (PREVIEW) {
+      /* try-it mode: the box takes typing; nothing is saved or sent */
+    } else if (editing) {
+      // changing an answer already sent: keep it in this tab until Send, so the sent words stand until they commit
+      ta.addEventListener('input', () => drafts.set('ans:' + item.id, ta.value));
+    } else {
+      // an open answer: autosave their words as they type, on blur, and as the page closes
+      ta.dataset.draft = item.id;
+      ta.dataset.saved = lastSaved;
+      ta.addEventListener('input', () => { drafts.set('ans:' + item.id, ta.value); clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 1500); });
+      ta.addEventListener('blur', () => { clearTimeout(saveTimer); saveDraft(); });
+      if (!draftPagehideWired) {
+        draftPagehideWired = true;
+        window.addEventListener('pagehide', () => {
+          if (PREVIEW || DEMO || !token) return;
+          $$('#todos textarea[data-draft]').forEach((t) => {
+            const v = cleanText(t.value, ANSWER_MAX + 1);
+            if (v === null) return;
+            const saved = t.dataset.saved || '';
+            if (v === saved || (v === '' && saved === '')) return;
+            draftBeacon(t.dataset.draft, v);
+          });
+        });
+      }
+    }
     const row = make('div', 'row');
     const send = make('button', 'btn small', null);
     send.type = 'button';
@@ -1617,7 +2349,7 @@
         err.hidden = false;
       }
     });
-    box.append(label, ta, err, row);
+    box.append(label, ta, err, saveNote, row);
     body.append(box);
   }
 
@@ -1725,10 +2457,13 @@
     const cur = me.timeline.current;
     const ci = stageIndex(cur);
     const live = cur === 'care' || cur === 'resting';
-    const list = STAGES.map(([key, label], i) => {
-      const s = me.timeline.stages.find((x) => x.key === key) || {};
-      return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
-    });
+    // the five steps come from the server (the same source as the Studio's timeline); an older server sends the six stages
+    const five = arr(me.timeline.steps).length === 5;
+    const list = five ? me.timeline.steps.map((s) => ({ key: s.key, label: s.label, date: s.date || '', est: str(s.est, 10), until: s.until || '', turn: s.turn || '', say: s.say || '', state: s.state }))
+      : STAGES.map(([key, label], i) => {
+        const s = me.timeline.stages.find((x) => x.key === key) || {};
+        return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
+      });
     $('#tl').replaceChildren(...list.map((s) => {
       const li = make('li', s.state);
       if (s.state === 'now') li.setAttribute('aria-current', 'step');
@@ -1741,21 +2476,25 @@
       if (s.state === 'now') name.append(make('span', 'now-pill', 'Now'));
       else if (s.state === 'done') name.append(make('span', 'sr-only', '(done)'));
       body.append(name);
-      const d = shortDate(s.date);
+      const d = shortDate(five && s.key === 'settling_in' && s.until ? s.until : s.date);
       // the draft link is already here: its date is when it's finished, not when it arrives
-      const draftHere = s.key === 'draft' && s.state === 'now' && !!me.things.draft;
+      const draftHere = (s.key === 'draft' || s.key === 'build') && s.state === 'now' && !!me.things.draft;
       let when = '';
-      if (d) {
+      const estD = s.state !== 'done' ? shortDate(s.est) : '';
+      if (estD) when = 'Est. ' + estD; // ADD 64: a projection, same day as the Coming up box
+      else if (d) {
         if (s.state === 'done') when = d;
         else if (s.key === 'settling_in') when = (s.state === 'now' ? 'Until ' : 'Until about ') + d;
-        else if (s.key === 'call') when = isPast(s.date) ? d : 'About ' + d;
+        else if (s.key === 'call' || s.key === 'setup') when = isPast(s.date) ? d : 'About ' + d;
         else if (draftHere) when = isPast(s.date) ? '' : 'Finished about ' + d;
         else if (s.state === 'now') when = isPast(s.date) ? 'Since ' + d : 'About ' + d;
         else when = 'About ' + d;
       }
-      body.append(make('span', 'when', when));
-      const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : STAGE_SAY[s.key];
+      body.append(make('span', estD ? 'when est' : 'when', when));
+      const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
       if (s.state === 'now' && say) body.append(make('p', 'say', say));
+      if (s.state === 'now' && s.turn) body.append(make('p', 'turn', s.turn === 'you' ? 'Your turn' : 'My turn'));
+      if (s.state === 'now' && me.timeline.last_update) body.append(make('p', 'say last-update', 'Last update' + (shortDate(me.timeline.last_update.date) ? ' ' + shortDate(me.timeline.last_update.date) : '') + ': ' + me.timeline.last_update.text));
       li.append(dot, body);
       return li;
     }));
@@ -1780,9 +2519,160 @@
       after.append(icon('i-full'), span);
       after.hidden = false;
     } else after.hidden = true;
+    renderLaunch();
+  }
+
+  /* ---- launch date (new clients only; the server sends `launch` only when it is on for them) ---- */
+  function renderLaunch() {
+    const box = $('#tl-launch');
+    if (!box) return;
+    box.replaceChildren();
+    const L = me.launch;
+    const live = me.timeline.current === 'care' || me.timeline.current === 'resting';
+    if (!L || live) { box.hidden = true; return; }
+    if (L.moves_text) box.append(make('p', 'tl-moves', L.moves_text));
+    box.append(make('p', 'tl-est', L.estimate_text));
+    if (L.overdue_text) box.append(make('p', 'tl-late', L.overdue_text));
+    if (L.requested) {
+      box.append(make('p', 'tl-asked', 'You asked for ' + (shortDate(L.requested.date) || L.requested.date) + '. I’ll write you back about it.'));
+    } else if (L.can_request) {
+      const open = make('button', 'later', 'Need a different launch date?');
+      open.type = 'button';
+      const form = make('form', 'tl-form');
+      form.hidden = true;
+      const l1 = make('label', null, 'The date you would like');
+      const d = make('input'); d.type = 'date'; d.required = true; d.id = 'in-launch-date';
+      l1.append(d);
+      const l2 = make('label', null, 'Anything I should know? (optional)');
+      const n = make('textarea'); n.maxLength = 300; n.rows = 2; n.id = 'in-launch-note';
+      l2.append(n);
+      const go = make('button', 'btn', 'Send my request'); go.type = 'submit';
+      form.append(l1, l2, go);
+      open.addEventListener('click', () => { form.hidden = !form.hidden; open.setAttribute('aria-expanded', String(!form.hidden)); if (!form.hidden) d.focus(); });
+      form.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        if (!d.value) { d.focus(); return; }
+        if (DEMO) { toast('Demo: nothing was saved.'); return; }
+        go.disabled = true;
+        try {
+          const res = await postJSON('/launch-request', { date: d.value, note: n.value.trim() }, token);
+          me.launch.requested = { date: str(res && res.requested && res.requested.date, 10) || d.value };
+          renderLaunch();
+          toast('Thanks, I got your request. I’ll write you back about it.');
+        } catch (e) {
+          toast(e.code === 'slow_down' ? 'That’s a lot of tries for now. Try again in a bit.' : e.code === 'input' ? 'Pick a day after today, within the next year.' : 'That didn’t go through. Try again?');
+        } finally { go.disabled = false; }
+      });
+      box.append(open, form);
+    }
+    box.hidden = false;
   }
 
   /* ---- your things ---- */
+  /* ---- Brand kit (Nov 4 2026, ADD 57) ----
+     Read only for them, set from the Studio. Shows only the parts that are set (colors, fonts, logo, brand sheet); the tab is hidden
+     until at least one is. Fonts are the same self-hosted faces as the headings (BRAND_FONTS). Tap a color to copy its code. */
+  async function bkitCopy(text, what) {
+    try { await navigator.clipboard.writeText(text); toast('Copied ' + what + '.', 2600); } catch (e) { toast(what.charAt(0).toUpperCase() + what.slice(1) + ': ' + text, 6000); }
+  }
+  function bkitDownload(l, name, label) {
+    const b = make('button', 'open-btn', null);
+    b.type = 'button';
+    b.dataset.read = '1'; // saves a file they already have: stays on in a Studio preview
+    b.append(make('span', null, label), icon('i-doc'));
+    b.setAttribute('aria-label', label + ' of your logo');
+    b.addEventListener('click', () => {
+      try {
+        let blob;
+        if (l.kind === 'svg') blob = new Blob([l.text], { type: 'image/svg+xml' });
+        else { const bin = atob(l.b64); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); blob = new Blob([u], { type: 'image/' + l.kind }); }
+        const a = make('a'); a.href = URL.createObjectURL(blob); a.download = name + '.' + (l.kind === 'jpeg' ? 'jpg' : l.kind); a.rel = 'noopener';
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      } catch (e) { toast('That didn’t download. Ask me and I’ll email it.'); }
+    });
+    return b;
+  }
+  function renderBrandKit() {
+    const sec = $('#sec-brand');
+    const body = $('#bkit-body');
+    const br = me && me.brand;
+    const colors = br && br.colors ? br.colors.slice() : [];
+    if (br && br.accent && !colors.some((c) => c.hex === br.accent)) colors.unshift({ name: 'Accent', hex: br.accent });
+    const hasFonts = !!(br && (br.heading || br.body));
+    const hasLogo = !!(br && br.logos && (br.logos.light || br.logos.dark));
+    const hasSheet = !!(br && br.sheet) || !!(me && me.things && me.things.brand_sheet);
+    if (!me || (!colors.length && !hasFonts && !hasLogo && !hasSheet)) { setHidden(sec, true); body.replaceChildren(); return; }
+    const parts = [];
+    if (colors.length) {
+      const h = make('h3', 'small-h', 'Colors');
+      const ul = make('ul', 'bkit-swatches');
+      colors.forEach((c) => {
+        const li = make('li');
+        const b = make('button', 'bkit-sw');
+        b.type = 'button';
+        b.dataset.read = '1'; // copying a code changes nothing
+        const chip = make('span', 'bkit-chip'); chip.style.background = c.hex; chip.setAttribute('aria-hidden', 'true');
+        b.append(chip, make('span', 'bkit-name', c.name || c.hex.toUpperCase()), make('span', 'bkit-hex', c.hex.toUpperCase()));
+        b.setAttribute('aria-label', (c.name || 'Color') + ' ' + c.hex.toUpperCase() + ', tap to copy');
+        b.addEventListener('click', () => bkitCopy(c.hex.toUpperCase(), (c.name || 'color') + ' code'));
+        li.append(b); ul.append(li);
+      });
+      parts.push(h, ul, make('p', 'bkit-hint', 'Tap a color to copy its code.'));
+    }
+    if (hasFonts) {
+      parts.push(make('h3', 'small-h', 'Fonts'));
+      const wrap = make('div', 'bkit-fonts');
+      [['Headings', br.heading], ['Body text', br.body]].forEach(([label, key]) => {
+        if (!key || !BRAND_FONTS[key]) return;
+        const name = BRAND_FONTS[key][0];
+        const card = make('div', 'bkit-font');
+        card.append(make('span', 'bkit-flabel', label));
+        const nm = make('p', 'bkit-fname', name);
+        const sample = make('p', 'bkit-sample', 'Everything grows from here.');
+        sample.style.fontFamily = fontStack(key);
+        card.append(nm, sample);
+        const a = make('a', 'bkit-flink', 'Free to use. Get it from Google Fonts');
+        a.href = 'https://fonts.google.com/specimen/' + encodeURIComponent(name).replace(/%20/g, '+');
+        a.target = '_blank'; a.rel = 'noopener noreferrer';
+        card.append(a);
+        wrap.append(card);
+      });
+      parts.push(wrap);
+    }
+    if (hasLogo) {
+      parts.push(make('h3', 'small-h', 'Logo'));
+      const wrap = make('div', 'bkit-logos');
+      [['light', 'On light backgrounds', 'logo'], ['dark', 'On dark backgrounds', 'logo-dark']].forEach(([k, label, file]) => {
+        const l = br.logos[k];
+        if (!l || !logoSrc(l)) return;
+        const card = make('div', 'bkit-logo');
+        const plate = make('div', 'bkit-plate ' + k);
+        const img = make('img'); img.src = logoSrc(l); img.alt = (me.client.business || 'Your') + ' logo, ' + label.toLowerCase(); img.decoding = 'async';
+        img.addEventListener('error', () => { card.remove(); });
+        plate.append(img);
+        const fmt = l.kind === 'svg' ? 'SVG' : l.kind.toUpperCase().replace('JPEG', 'JPG');
+        card.append(plate, make('span', 'bkit-flabel', label), bkitDownload(l, ((me.client.business || 'logo').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'logo') + '-' + file, 'Download ' + fmt));
+        wrap.append(card);
+      });
+      parts.push(wrap);
+    }
+    if (hasSheet) {
+      parts.push(make('h3', 'small-h', 'Brand sheet'));
+      const row = make('div', 'bkit-sheet');
+      row.append(make('p', null, 'Your colors, fonts and logo files, all on one sheet.'), fileButton('brand_sheet', null, 'Open', 'brand sheet'));
+      parts.push(row);
+    }
+    const missing = [];
+    if (!colors.length) missing.push('colors');
+    if (!hasFonts) missing.push('fonts');
+    if (!hasLogo) missing.push('logo');
+    if (!hasSheet) missing.push('brand sheet');
+    if (missing.length) parts.push(make('p', 'bkit-soon', 'Still to come at launch: ' + missing.join(', ') + '.'));
+    body.replaceChildren(...parts);
+    setHidden(sec, false);
+  }
+
   function renderThings() {
     const c = me.client;
     const th = me.things;
@@ -1849,6 +2739,7 @@
   function fileButton(thing, name, label, what, cls) {
     const b = make('button', cls || 'open-btn', null);
     b.type = 'button';
+    b.dataset.read = '1'; // opens a file: stays on in a Studio preview
     b.append(make('span', null, label));
     if (!cls) b.append(icon('i-doc'));
     b.setAttribute('aria-label', label + ' your ' + what.replace(/^your /i, ''));
@@ -2413,7 +3304,7 @@
   let bkMonth = '';          // the month on show, 'YYYY-MM'
   let bkMonthDays = [];
   let bkDay = '';            // the day open under the month
-  const BK_TABS = ['upcoming', 'calendar', 'hours', 'services', 'calendars', 'settings', 'clients'];
+  const BK_TABS = ['upcoming', 'schedule', 'calendar', 'hours', 'services', 'settings', 'clients'];
   const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
   const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
@@ -2425,6 +3316,7 @@
     try {
       bk = cleanBk(await bookCall('/overview'));
       renderBk();
+      try { document.dispatchEvent(new CustomEvent('wf-bk-updated')); } catch (e) { /* the Schedule tab just doesn't refresh by itself */ }
       if (bk && bkTab === 'calendar') loadMonth(bkMonth);
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
@@ -2460,7 +3352,7 @@
     const st = o.settings && typeof o.settings === 'object' ? o.settings : {};
     return {
       owner: { name: str(o.name, 80), active: !!o.active, zone: str(o.zone, 20), hours: cleanWeek(o.hours), locations: arr(o.locations).map((x) => str(x, 10)).filter((x) => BK_WHERE[x]),
-        payments: !!o.payments, payments_test: !!o.payments_test, feed_url: safeUrl(o.feed_url),
+        payments: !!o.payments, payments_test: !!o.payments_test, sample: o.sample === true, feed_url: safeUrl(o.feed_url),
         today: /^\d{4}-\d{2}-\d{2}$/.test(str(o.today)) ? str(o.today) : todayISO, now: str(o.now, 30),
         settings: { notice_hours: +st.notice_hours || 0, horizon_days: +st.horizon_days || 60, buffer_min: +st.buffer_min || 0, cancel_window_hours: +st.cancel_window_hours || 0,
           max_per_day: +st.max_per_day || 0, max_per_week: +st.max_per_week || 0, reminder_hours: +st.reminder_hours || 0, slot_step: +st.slot_step || 0,
@@ -2492,13 +3384,27 @@
         checked_at: str(c.checked_at, 30), ok_at: str(c.ok_at, 30), error: str(c.error, 40), busy_count: +c.busy_count || 0 } : null)).filter(Boolean)
     };
   }
+  // (Oct 21 2026) one tap to put the bookings in their phone's calendar: webcal:// opens the subscribe prompt on an iPhone, iPad
+  // or Mac, and Google Calendar's own add-by-link page serves Android and the web. Off in a Studio preview (it would hand out their link).
+  function calLinks() {
+    const sub = $('#a-bk-subscribe'), g = $('#a-bk-gcal');
+    const url = bk && bk.owner && bk.owner.feed_url;
+    const on = !!url && !PREVIEW;
+    sub.hidden = g.hidden = !on;
+    if (!on) { sub.removeAttribute('href'); g.removeAttribute('href'); return; }
+    const web = 'webcal://' + url.replace(/^https:\/\//, '');
+    sub.href = web;
+    g.href = 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(web);
+  }
   function renderBk() {
     const sec = $('#sec-bookings');
     if (!bk) { sec.hidden = true; return; }
     sec.hidden = false;
     $('#bk-off').hidden = bk.owner.active;
     $('#bk-test').hidden = !bk.owner.payments_test;
+    $('#bk-sample').hidden = !bk.owner.sample; // (Nov 2 2026, ADD 39) practice bookings: the replay button
     $('#bk-zone').textContent = 'Times here are ' + (bk.owner.zone || 'Pacific') + ' time.';
+    calLinks();
     if (!sec.querySelector('#bk-up .bk-form')) {
       $('#bk-up-empty').hidden = bk.upcoming.length > 0;
       $('#bk-up').replaceChildren(...bk.upcoming.map((b) => bkRow(b, false)));
@@ -2525,7 +3431,7 @@
   }
 
   // ---- the tabs
-  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); return m && BK_TABS.includes(m[1]) ? m[1] : ''; };
+  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); const k = m && m[1] === 'calendars' ? 'settings' : m && m[1]; return k && BK_TABS.includes(k) ? k : ''; }; // #bookings-calendars (the old tab) opens Settings
   function selectTab(key, focus, fromHash) {
     if (!BK_TABS.includes(key)) key = 'upcoming';
     bkTab = key;
@@ -2538,8 +3444,18 @@
     if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#bookings-' + key); } catch (e) { /* fine */ } }
     if (focus) focusEl($('#bk-tab-' + key));
     if (key === 'calendar' && bk) loadMonth(bkMonth);
+    if (key === 'schedule' && bk && window.WFSchedule) window.WFSchedule.show(); // (Oct 22 2026) the Day and Week grid, portal-schedule.js
     if (key === 'clients' && bk) loadClients(false);
   }
+  // (Oct 22 2026) a small bridge for portal-schedule.js (the Schedule tab): the owner's own calls, switching tabs, the overview, a toast
+  // (Nov 2 2026, ADD 39) replay the practice bookings (the button shows only for a look-around portal)
+  if ($('#b-bk-sample')) $('#b-bk-sample').addEventListener('click', async () => {
+    const btn = $('#b-bk-sample'), say = $('#bk-sample-say');
+    btn.disabled = true; say.textContent = '';
+    try { await bookCall('/sample-reset', {}); say.textContent = 'Back to the practice set.'; await loadBookings(); } catch (_) { say.textContent = 'That did not work. Try once more.'; }
+    btn.disabled = false;
+  });
+  window.WFBk = { call: bookCall, select: (k) => selectTab(k, true, false), data: () => bk, toast: (t) => toast(t), reload: () => loadBookings(), signedOut: () => quietSignOut(false) };
   function onTabKey(ev) {
     const i = BK_TABS.indexOf(bkTab);
     let n = -1;
@@ -2705,7 +3621,7 @@
       try {
         await bookCall('/cancel', { id: b.id, message: cleanText(m.ta.value, 600), tell: true });
         f.remove();
-        toast('Canceled. ' + b.name + ' has an email saying so.');
+        toast(bk && bk.owner.sample ? 'Canceled. This one was practice, so no email went out.' : 'Canceled. ' + b.name + ' has an email saying so.');
         await loadBookings();
         focusEl($('#h-bookings'), true);
       } catch (e2) {
@@ -2815,6 +3731,7 @@
       windows: cleanWins(x.windows), time_off: list(x.time_off), blocks: list(x.blocks), busy: list(x.busy), full: !!x.full,
       bookings: arr(x.bookings).slice(0, 40).map((b) => (b ? { time: str(b.time, 20), name: str(b.name, 120), service_name: str(b.service_name, 80) } : null)).filter(Boolean) };
   }
+  const shortTime = (t) => str(t, 20).replace(/\s*([ap])\.?m\.?/i, (m, x) => x.toLowerCase()).replace(/:00(?=[ap]|$)/, '');
   const dayWord = (d) => (d.state === 'closed' ? 'Off' : d.full ? 'Full' : '');
   function dayAria(d) {
     const bits = [d.label];
@@ -2843,10 +3760,11 @@
       b.setAttribute('aria-label', dayAria(d));
       b.append(make('span', 'bk-cd-n', String(+d.date.slice(8, 10))));
       const w = dayWord(d);
-      const count = d.bookings.length && d.state !== 'past' ? String(d.bookings.length) : '';
-      const line = make('span', 'bk-cd-w', w || (count ? count + ' ' : ''));
-      if (!w && count) line.append(make('span', 'bk-cd-long', 'booked'));
+      const live = d.bookings.length && d.state !== 'past';
+      const line = make('span', 'bk-cd-w', w);
+      if (!w && live) line.textContent = shortTime(d.bookings[0].time);
       b.append(line);
+      if (!w && live && d.bookings.length > 1) b.append(make('span', 'bk-cd-w bk-cd-more', '+' + (d.bookings.length - 1)));
       if (d.busy.length && d.state !== 'past' && d.state !== 'closed') { const dot = make('span', 'bk-cd-busy'); dot.setAttribute('aria-hidden', 'true'); b.append(dot); }
       b.addEventListener('click', () => { bkDay = d.date; renderMonth(); renderDayInfo(true); });
       kids.push(b);
@@ -4068,7 +4986,7 @@
     let url = bk && bk.owner.feed_url;
     const btn = fresh ? $('#b-bk-feed-new') : $('#b-bk-feed');
     try {
-      if (fresh) { url = safeUrl((await bookCall('/feed-new')).feed_url); if (bk) bk.owner.feed_url = url; }
+      if (fresh) { url = safeUrl((await bookCall('/feed-new')).feed_url); if (bk) { bk.owner.feed_url = url; calLinks(); } }
       if (!url) throw fail('server');
       await navigator.clipboard.writeText(url);
       note.textContent = fresh ? 'A new link is copied. The old one stops working, so update it on your phone.' : 'Copied. Paste it into your phone’s calendar as a subscribed calendar.';
@@ -4090,6 +5008,7 @@
   // the card's one door to the server: the signed-in key goes in a header (never a web address), JSON or a photo form
   async function prodDoor(path, body) {
     const form = body instanceof FormData;
+    if (PREVIEW && (form || !previewReads(SHOP + path))) return stayQuiet(); // a Studio preview only reads
     const headers = { 'X-WF-Session': token };
     if (!form) headers['Content-Type'] = 'application/json';
     let res;
@@ -4097,6 +5016,7 @@
       res = await fetch(SHOP + path, { method: 'POST', headers, body: form ? body : JSON.stringify(body || {}),
         mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
     } catch (e) { throw fail('network'); }
+    if (PREVIEW && res.status === 403) return stayQuiet();
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw errorFrom(res.status, data);
     return data;
@@ -4472,10 +5392,26 @@
     const c = me.client;
     const sec = $('#sec-pay');
     const pays = me.pay;
+    // a free or trade site with nothing to pay: say so, no amounts and no buttons (add 33)
+    if (!pays.length && c.no_charge) {
+      sec.hidden = false;
+      const row = make('div', 'payrow st-later');
+      row.id = 'pay-nocharge';
+      row.append(make('span', 'p-name', 'No charge'), make('span', 'p-sub', 'Your site is free, so there is nothing to pay. If that ever changes I will tell you first.'));
+      $('#pays').replaceChildren(row);
+      const fine = $('#pay-fine');
+      if (fine) fine.hidden = true;
+      return;
+    }
+    const fine0 = $('#pay-fine');
+    if (fine0) fine0.hidden = false;
     if (!pays.length) { sec.hidden = true; return; }
     sec.hidden = false;
     const t = taps.mine();
     const settle = shortDate(stageDate('settling_in'));
+    // (ADD 65) the estimates the timeline shows, from the same server day as Coming up: launch, and launch + the settling window
+    const estDay = (key) => { const st = arr(me.timeline && me.timeline.steps).find((x) => x.key === key); return st && st.state !== 'done' ? shortDate(str(st.est, 10)) : ''; };
+    const launchAbout = estDay('launch'), settleAbout = estDay('settling_in');
     $('#pays').replaceChildren(...pays.map((p) => {
       const tapped = p.state === 'due' && !!t[p.key];
       const div = make('div', 'payrow st-' + (tapped ? 'tapped' : p.state));
@@ -4503,6 +5439,8 @@
         const s = make('span', 'p-paid');
         s.append(icon('i-check'), make('span', null, 'Active' + (p.paid_on ? ' since ' + shortDate(p.paid_on) : '')));
         st.append(s);
+        // Stripe's own next charge (it comes from Stripe, so it matches what Stripe will bill)
+        if (p.next_on && !isPast(p.next_on)) st.append(make('span', 'p-later', 'Next payment ' + shortDate(p.next_on) + (p.next_amount ? ', ' + money(p.next_amount) : '')));
         const canManage = (me.care_manage_live && typeof api.careManage === 'function') || !!me.care_manage_url;
         if (me.care_trouble) {
           const tr = make('p', 'p-trouble');
@@ -4526,8 +5464,8 @@
       } else {
         let later = 'I’ll send the link soon';
         if (p.key === 'deposit' && !me.things.agreement) later = 'After you sign our agreement';
-        if (p.key === 'balance') later = 'Due at launch';
-        if (p.key === 'care') later = 'Starts after settling in' + (starts || settle ? ', about ' + (starts || settle) : '');
+        if (p.key === 'balance') later = 'Due at launch' + (launchAbout ? ', about ' + launchAbout : '');
+        if (p.key === 'care') later = 'Starts after settling in' + (starts || settle || settleAbout ? ', about ' + (starts || settle || settleAbout) : '');
         st.append(make('span', 'p-later', later));
       }
       div.append(st);
@@ -4541,8 +5479,9 @@
   function manageButton() {
     const b = make('button', 'later p-manage');
     b.type = 'button';
-    b.append(make('span', null, 'Update your card or subscription'), icon('i-out'));
-    b.setAttribute('aria-label', 'Update your card or subscription (opens your Stripe subscription page in a new tab)');
+    const label = me && me.manage_sub ? 'Manage your subscription' : 'Update your card or subscription'; // (add 34) the new wording waits for Settings
+    b.append(make('span', null, label), icon('i-out'));
+    b.setAttribute('aria-label', label + ' (opens your Stripe subscription page in a new tab)');
     b.addEventListener('click', () => openManage(b));
     return b;
   }
@@ -5378,6 +6317,7 @@
      scale from 0), the pages opened most, where people came from and what they used. Only for a client whose site is
      counted on Web Faery's server: the server answers visits: null for everyone else, and the section and its tab
      stay hidden. The server sends only their own site's numbers (nothing sent from here picks a site). */
+  let visitsSoon = false;    // (add 35) not counted yet and the site has not launched: the card says counting starts at launch
   let visits = null;         // { from, to, since, visitors, views, before, daily, pages, hosts, devices } (cleaned)
   const vsNum = (n) => Number(n || 0).toLocaleString('en-US');
   const vsCount = (v) => (Number.isInteger(+v) && +v >= 0 ? Math.min(+v, 1e9) : 0);
@@ -5392,6 +6332,7 @@
     try {
       const d = await api.visits();
       visits = cleanVisits(d);
+      visitsSoon = !visits && !!d && d.soon === true;
       renderVisits();
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
@@ -5465,6 +6406,8 @@
   function renderVisits() {
     const sec = $('#sec-visits');
     const v = visits;
+    sec.classList.toggle('vs-soon', !v && visitsSoon);
+    if (!v && visitsSoon) { $('#vs-lede').textContent = 'Counting starts when your site launches.'; setHidden(sec, false); if (me) renderGlance(); return; }
     if (!v) { setHidden(sec, true); if (me) renderGlance(); return; }
     $('#vs-lede').textContent = visitsLede(v);
     const cmp = vsComparable(v);
@@ -5499,6 +6442,107 @@
     setHidden($('#vs-devices-none'), devs.length > 0);
     setHidden(sec, false);
     if (me) renderGlance();
+  }
+
+  /* ---- how you show up on Google (Nov 4 2026) ----
+     Search Console numbers for their own site: this month next to last month, the phrases and pages that brought people.
+     Hidden unless the server sends them (switch portal_google, the site tracked, they have not stopped it, a month is in).
+     A privacy drop-down stops or restarts tracking and deletes the past numbers (two confirmations). Hub: webfaery-google-lib.js. */
+  let googleOff = false; // they stopped tracking: only the privacy drop-down shows, with the way back on
+  let google = null;   // { months: [ { month, clicks, impressions, position, queries, pages } ] } (cleaned), newest first
+  const G_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const gMonth = (m) => (/^\d{4}-(0[1-9]|1[0-2])$/.test(m || '') ? G_MONTHS[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4) : '');
+  async function loadGoogle() {
+    if (typeof api.google !== 'function') { google = null; renderGoogle(); return; }
+    try {
+      const d = await api.google();
+      google = cleanGoogle(d);
+      googleOff = !google && !!d && d.opted_out === true;
+      renderGoogle();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!google) $('#sec-google').hidden = true;
+    }
+  }
+  function cleanGoogle(d) {
+    const g = d && typeof d === 'object' && d.google && typeof d.google === 'object' ? d.google : null;
+    const list = g ? arr(g.months).slice(0, 2) : [];
+    const months = list.map((x) => {
+      if (!x || typeof x !== 'object' || !gMonth(x.month)) return null;
+      const top = (v) => arr(v).slice(0, 5).map((y) => (y && typeof y === 'object' && cleanLine(y.k, 200) ? { k: cleanLine(y.k, 200), clicks: vsCount(y.clicks), impressions: vsCount(y.impressions) } : null)).filter(Boolean);
+      return { month: x.month, clicks: vsCount(x.clicks), impressions: vsCount(x.impressions), position: Math.max(0, Math.round((+x.position || 0) * 10) / 10), queries: top(x.queries), pages: top(x.pages) };
+    }).filter(Boolean);
+    return months.length ? { months } : null;
+  }
+  function renderGoogle() {
+    const sec = $('#sec-google');
+    const g = google;
+    sec.classList.toggle('gg-off', googleOff);
+    ['#gg-glance', '#gg-lede-wrap', '#gg-data'].forEach((id) => setHidden($(id), googleOff));
+    $('#gg-stop').textContent = googleOff ? 'Turn tracking back on' : 'Stop tracking my site';
+    $('#gg-wipe').hidden = googleOff;
+    if (googleOff) { $('#gg-lede').textContent = 'Tracking is stopped. No numbers are being collected.'; setHidden($('#gg-lede-wrap'), false); setHidden(sec, false); return; }
+    if (!g) { setHidden(sec, true); return; }
+    const cur = g.months[0], prev = g.months[1] || null;
+    $('#gg-lede').textContent = cur.clicks === 0
+      ? 'Google did not send anyone to your site in ' + gMonth(cur.month) + '.'
+      : 'In ' + gMonth(cur.month) + ', Google sent people to your site ' + vsTimes(cur.clicks) + '.';
+    const vs = (key) => (prev ? 'the month before: ' + vsNum(prev[key]) : gMonth(cur.month));
+    const cells = [
+      ['Visits from Google', vsNum(cur.clicks), vs('clicks')],
+      ['Times you appeared', vsNum(cur.impressions), vs('impressions')],
+      ['Average spot', cur.position ? String(cur.position) : 'none yet', cur.position ? 'lower is closer to the top' : gMonth(cur.month)]
+    ];
+    $('#gg-glance').replaceChildren(...cells.map(([label, big, small]) => {
+      const d = make('div');
+      d.append(make('dt', null, label), make('dd', null, big), make('dd', 'd', small));
+      return d;
+    }));
+    const rows = (id, none, items, pages) => {
+      $(id).replaceChildren(...items.map((x) => vsRow(pages && x.k === '/' ? 'Home page' : x.k, '', vsTimes(x.clicks))));
+      setHidden($(id), !items.length);
+      setHidden($(none), items.length > 0);
+    };
+    rows('#gg-queries', '#gg-queries-none', cur.queries, false);
+    rows('#gg-pages', '#gg-pages-none', cur.pages, true);
+    setHidden(sec, false);
+  }
+  async function googlePrivacy(body, doneWord) {
+    const note = $('#gg-note');
+    try {
+      await api.googlePrivacy(body);
+      note.textContent = doneWord;
+      await loadGoogle();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      note.textContent = words(err) || 'That did not go through. Please try again in a moment.';
+    }
+  }
+  // asks in the row: each tap moves to the next question, a pause puts the button back
+  function askSteps(btn, steps, then) {
+    const label = btn.textContent;
+    let i = 0, timer = 0;
+    const reset = () => { i = 0; btn.textContent = label; btn.classList.remove('armed'); };
+    btn.addEventListener('click', () => {
+      clearTimeout(timer);
+      if (i < steps.length) { btn.textContent = steps[i++]; btn.classList.add('armed'); timer = setTimeout(reset, 8000); return; }
+      reset();
+      then();
+    });
+    return reset;
+  }
+  function wireGoogle() {
+    const stop = $('#gg-stop'), wipe = $('#gg-wipe');
+    if (!stop || stop.dataset.wired) return;
+    stop.dataset.wired = '1';
+    const stopSteps = ['Tap again to stop tracking'];
+    stop.addEventListener('click', (ev) => {
+      if (!googleOff) return;
+      ev.stopImmediatePropagation();
+      googlePrivacy({ off: false }, 'Done. Tracking is back on; numbers appear after the next monthly update.');
+    }, true);
+    askSteps(stop, stopSteps, () => { googlePrivacy({ off: true }, 'Done. No new numbers will be collected.'); });
+    askSteps(wipe, ['Tap again to delete the past numbers', 'This cannot be undone. Tap once more'], () => { googlePrivacy({ wipe: true }, 'Done. The past numbers are deleted.'); });
   }
 
   /* ---- your receipts (Oct 15 2026) ----
@@ -5962,6 +7006,152 @@
     ['#in-rc-date', '#in-rc-vendor', '#in-rc-amount'].forEach((s) => $(s).addEventListener('input', () => { rcAnyway = false; $('#rc-same').hidden = true; }));
   }
 
+  /* ---- your critique of Web Faery (Oct 23 2026, hub DEPLOY.md section 128) ----
+     A client on a trade or free deal (the server says so with eligible: true) sees one card: six short prompts, each a few
+     choices plus Other, and one free box. Every one is optional and saves the moment they answer, so they can leave and
+     come back. Send marks it sent and shows the thank you; Change an answer opens it again. Everyone else: the server says
+     eligible: false and the card stays hidden. A Studio preview reads it and changes nothing. Words go in as text only. */
+  let cq = null; // { prompts, answers, fix, status }
+  const cqTimers = {};
+  function cqReset() {
+    cq = null;
+    Object.keys(cqTimers).forEach((k) => { clearTimeout(cqTimers[k]); delete cqTimers[k]; });
+    const s = $('#sec-critique');
+    if (s) { s.hidden = true; $('#cq-prompts').replaceChildren(); }
+  }
+  async function loadCritique() {
+    if (typeof api.critique !== 'function') { cqReset(); return; }
+    try {
+      const d = await api.critique();
+      if (!d || d.eligible !== true || !Array.isArray(d.prompts)) { cqReset(); return; }
+      const prompts = d.prompts.slice(0, 8).map((q) => {
+        const key = /^[a-z_]{2,20}$/.test(str(q && q.key, 20)) ? q.key : '';
+        const title = cleanLine(q && q.title, 120);
+        const choices = arr(q && q.choices).map((c) => cleanLine(c, 60)).filter(Boolean).slice(0, 6);
+        return key && title && choices.length ? { key, title, choices } : null;
+      }).filter(Boolean);
+      const answers = {};
+      prompts.forEach((q) => {
+        const a = d.answers && d.answers[q.key];
+        if (a && typeof a === 'object') answers[q.key] = { choice: cleanLine(a.choice, 60), other: cleanLine(a.other, 400) };
+      });
+      cq = { prompts, answers, fix: cleanText(d.fix_first, 1500) || '', status: d.status === 'sent' ? 'sent' : 'draft',
+        lede: cleanLine(d.intro, 400), thanks: cleanLine(d.thanks, 120) || 'Thank you, this helps a lot.', readOnly: !!d.read_only };
+      renderCritique(false);
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!cq) { const s = $('#sec-critique'); if (s) s.hidden = true; }
+    }
+  }
+  function cqSay(text, bad) {
+    const st = $('#cq-status'), er = $('#cq-err');
+    if (bad) { er.textContent = text; er.hidden = !text; st.textContent = ''; } else { st.textContent = text || ''; er.hidden = true; }
+  }
+  // one save at a time, in the order they were made: two answers changed together must not write over each other on the server
+  let cqChain = Promise.resolve();
+  function cqSave(body) {
+    if (!cq || cq.readOnly) return Promise.resolve();
+    cqChain = cqChain.then(async () => {
+      cqSay('Saving…', false);
+      try {
+        await api.critiqueSave(body);
+        if (cq && cq.status === 'sent') { cq.status = 'draft'; renderCritique(true); }
+        cqSay('Saved.', false);
+      } catch (err) {
+        if (err.code === 'signed_out') { quietSignOut(false); return; }
+        cqSay('That one did not save. Try once more.', true);
+      }
+    });
+    return cqChain;
+  }
+  function renderCritique(keepFocus) {
+    const sec = $('#sec-critique');
+    if (!sec || !cq) return;
+    sec.hidden = false;
+    $('#cq-lede').textContent = cq.lede;
+    const sent = cq.status === 'sent';
+    $('#f-cq').hidden = sent;
+    $('#cq-thanks').hidden = !sent;
+    $('#cq-thanks-line').textContent = cq.thanks;
+    if (sent) return;
+    const host = $('#cq-prompts');
+    if (host.dataset.drawn === '1' && keepFocus) return;
+    host.replaceChildren();
+    host.dataset.drawn = '1';
+    cq.prompts.forEach((q) => {
+      const a = cq.answers[q.key] || { choice: '', other: '' };
+      const fs = document.createElement('fieldset');
+      fs.className = 'cq-q';
+      const lg = document.createElement('legend');
+      lg.className = 'field-label';
+      lg.textContent = q.title;
+      fs.append(lg);
+      q.choices.concat(['Other']).forEach((c, i) => {
+        const id = 'cq-' + q.key + '-' + i;
+        const row = document.createElement('div');
+        row.className = 'cq-choice';
+        const r = document.createElement('input');
+        r.type = 'radio'; r.name = 'cq-' + q.key; r.id = id; r.value = c;
+        r.checked = a.choice === c;
+        r.disabled = cq.readOnly;
+        r.addEventListener('change', () => { a.choice = c; cq.answers[q.key] = a; cqSave({ key: q.key, choice: c, other: a.other || '' }); });
+        const l = document.createElement('label');
+        l.htmlFor = id; l.textContent = c;
+        row.append(r, l);
+        fs.append(row);
+      });
+      const w = document.createElement('input');
+      w.type = 'text'; w.maxLength = 400; w.autocomplete = 'off';
+      w.id = 'cq-' + q.key + '-words';
+      w.placeholder = 'In your own words (optional)';
+      w.setAttribute('aria-label', q.title + ', in your own words');
+      w.value = a.other || '';
+      w.disabled = cq.readOnly;
+      w.addEventListener('input', () => {
+        a.other = w.value; cq.answers[q.key] = a;
+        clearTimeout(cqTimers[q.key]);
+        cqTimers[q.key] = setTimeout(() => cqSave({ key: q.key, choice: a.choice || '', other: a.other || '' }), 900);
+      });
+      fs.append(w);
+      host.append(fs);
+    });
+    const fix = $('#in-cq-fix');
+    fix.value = cq.fix || '';
+    fix.disabled = cq.readOnly;
+    $('#b-cq-send').disabled = cq.readOnly;
+  }
+  function wireCritique() {
+    const fix = $('#in-cq-fix');
+    if (!fix) return;
+    fix.addEventListener('input', () => {
+      if (!cq) return;
+      cq.fix = fix.value;
+      clearTimeout(cqTimers.fix);
+      cqTimers.fix = setTimeout(() => cqSave({ key: 'fix_first', text: cq.fix }), 900);
+    });
+    $('#f-cq').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (!cq || cq.readOnly) return;
+      const btn = $('#b-cq-send');
+      Object.keys(cqTimers).forEach((k) => clearTimeout(cqTimers[k]));
+      setBusy(btn, true, 'Sending…');
+      try {
+        await cqChain;
+        await api.critiqueSave({ key: 'fix_first', text: fix.value });
+        const d = await api.critiqueSend();
+        cq.status = 'sent';
+        if (d && d.thanks) cq.thanks = cleanLine(d.thanks, 120) || cq.thanks;
+        cqSay('', false);
+        renderCritique(false);
+        focusEl($('#cq-thanks-line'));
+      } catch (err) {
+        if (err.code === 'signed_out') { quietSignOut(false); return; }
+        cqSay(err && err.code === 'input' ? 'Answer at least one, then send.' : 'That did not send. Try once more.', true);
+      } finally { setBusy(btn, false); }
+    });
+    $('#b-cq-edit').addEventListener('click', () => { if (!cq) return; cq.status = 'draft'; $('#cq-prompts').dataset.drawn = ''; renderCritique(false); focusEl($('#h-critique')); });
+  }
+
   /* ---- your business papers (Oct 15 2026) ----
      Insurance, business license, permits, certifications Taya keeps for them on Web Faery's server (hub DEPLOY.md
      section 73). A ledger row each: the title, the kind and who issued it, their number, the days it is good for, who
@@ -5970,8 +7160,17 @@
      papers for: the server answers papers: [] for everyone else, and the section and its tab stay hidden. The server
      sends only their own active papers (nothing sent from here picks one). Each file comes as a link that works for 30
      minutes; a tap on a link older than 20 asks for fresh ones first. */
-  let papers = null;         // [{ kind, title, issuer, number, from, until, left, contact, notes, file }] (cleaned)
+  /* (Oct 20 2026, hub DEPLOY.md section 98) They add their own too: "Add a paper" under the list (a file, and if they
+     like a name, what it is and a "good until" day), shown only when the server sends `upload` (so with an older
+     server the card is exactly as before, and for anyone with no papers it stays hidden). Theirs say "Added by you" and
+     have Rename (a small field in the row) and Remove (asks once in the row, not a pop-up); Taya's have neither. Files
+     are checked by the server by their real bytes. A Studio preview sees the card with these switched off. */
+  let papers = null;         // [{ id, theirs, kind, title, issuer, number, from, until, left, contact, notes, file }] (cleaned)
   let papersAt = 0;          // when they came
+  let ppUpload = null;       // { readOnly, eachMb, filesLeft, mbLeft } when the server takes their own papers, else null
+  let ppAsk = '';            // the id of their paper whose "Remove it?" shows
+  let ppEditing = '';        // the id of their paper whose Rename field shows
+  const PP_ID = /^[a-z0-9]{15}$/;
   const PP_FRESH_MS = 20 * 60 * 1000;
   const PP_KINDS = { insurance: 'Insurance', license: 'Business license', permit: 'Permit', certification: 'Certification', other: 'Paper' };
   // only the server's own file links (or, in the preview, the sample's blob) become links
@@ -5987,6 +7186,7 @@
     try {
       const d = await api.papers();
       papers = cleanPapers(d);
+      ppUpload = cleanUpload(d);
       papersAt = Date.now();
       renderPapers();
     } catch (err) {
@@ -5996,11 +7196,13 @@
   }
   function cleanPapers(d) {
     const list = d && typeof d === 'object' ? arr(d.papers) : [];
-    return list.slice(0, 50).map((p) => {
+    return list.slice(0, 80).map((p) => {
       if (!p || typeof p !== 'object' || !cleanLine(p.title, 120)) return null;
       const f = p.file && typeof p.file === 'object' ? p.file : null;
       const link = f ? ppLink(f.link) : '';
+      const theirs = p.added_by === 'client' && PP_ID.test(str(p.id, 20));
       return {
+        id: theirs ? p.id : '', theirs,
         kind: Object.prototype.hasOwnProperty.call(PP_KINDS, p.kind) ? p.kind : 'other',
         title: cleanLine(p.title, 120), issuer: cleanLine(p.issuer, 120), number: cleanLine(p.member_or_number, 80),
         from: vsDay(p.valid_from), until: vsDay(p.valid_until),
@@ -6009,6 +7211,13 @@
         file: link ? { link, type: f.type === 'pdf' || f.type === 'image' ? f.type : 'file', name: cleanLine(f.name, 120) } : null
       };
     }).filter(Boolean);
+  }
+  // (section 98) the server takes their own papers: how much room is left; null when it doesn't (an older server)
+  function cleanUpload(d) {
+    const u = d && typeof d === 'object' && d.upload && typeof d.upload === 'object' ? d.upload : null;
+    if (!u) return null;
+    const n = (v, max) => (Number.isInteger(v) && v >= 0 ? Math.min(v, max) : 0);
+    return { readOnly: u.read_only === true || PREVIEW, eachMb: n(u.each_mb, 100) || 10, filesLeft: n(u.files_left, 1000), mbLeft: n(u.mb_left, 100000) };
   }
   // the renewal line: only when it is close (30 days or fewer) or has ended
   function ppDue(p) {
@@ -6026,9 +7235,10 @@
     return '';
   }
   function ppRow(p) {
-    const li = make('li', 'pp-item');
+    const li = make('li', 'pp-item' + (p.theirs ? ' theirs' : ''));
+    if (p.theirs) li.dataset.id = p.id;
     const what = make('div', 'what');
-    what.append(make('b', null, p.title), make('small', null, [PP_KINDS[p.kind], p.issuer].filter(Boolean).join(' · ')));
+    what.append(make('b', null, p.title), make('small', null, [PP_KINDS[p.kind], p.issuer, p.theirs ? 'Added by you' : ''].filter(Boolean).join(' · ')));
     const facts = make('dl', 'pp-facts');
     const fact = (label, value, cls) => {
       if (!value) return;
@@ -6044,12 +7254,124 @@
     const due = ppDue(p);
     if (due) what.append(make('p', due.cls, due.text));
     li.append(what);
-    if (p.file) {
+    if (p.file || p.theirs) {
       const acts = make('span', 'acts');
-      acts.append(ppDownload(p));
+      if (p.file) acts.append(ppDownload(p));
+      if (p.theirs) ppOwnActs(p, acts);
       li.append(acts);
     }
+    if (p.theirs && ppEditing === p.id) li.append(ppRenameForm(p));
+    if (p.theirs && ppAsk === p.id) li.append(ppAskRow(p));
     return li;
+  }
+  // (section 98) Rename and Remove, on their own papers only
+  function ppOwnActs(p, acts) {
+    const ren = make('button', 'later pp-ren', 'Rename');
+    ren.type = 'button';
+    ren.setAttribute('aria-label', 'Rename ' + p.title);
+    ren.addEventListener('click', () => { ppAsk = ''; ppEditing = p.id; renderPapers(); focusEl($('#in-pp-ren'), true); });
+    const rm = make('button', 'later pp-rm', 'Remove');
+    rm.type = 'button';
+    rm.setAttribute('aria-label', 'Remove ' + p.title);
+    rm.addEventListener('click', () => { ppEditing = ''; ppAsk = p.id; renderPapers(); focusEl($('#b-pp-keep'), true); });
+    acts.append(ren, rm);
+  }
+  function ppRenameForm(p) {
+    const f = make('form', 'pp-ren-form');
+    f.noValidate = true;
+    const lab = make('label', 'field-label', 'A new name');
+    lab.htmlFor = 'in-pp-ren';
+    const inp = make('input');
+    inp.id = 'in-pp-ren';
+    inp.type = 'text';
+    inp.maxLength = 120;
+    inp.autocomplete = 'off';
+    inp.value = p.title;
+    const err = make('p', 'err');
+    err.id = 'pp-ren-err';
+    err.hidden = true;
+    const btns = make('div', 'dc-btns');
+    const save = make('button', 'btn small');
+    save.type = 'submit';
+    save.append(make('span', null, 'Save the name'));
+    const no = make('button', 'later', 'Not now');
+    no.type = 'button';
+    no.addEventListener('click', () => { ppEditing = ''; renderPapers(); ppFocusRow(p.id, '.pp-ren'); });
+    btns.append(save, no);
+    f.append(lab, inp, err, btns);
+    f.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const title = cleanLine(inp.value, 120);
+      if (!title) { err.textContent = 'Give it a name first, even a short one.'; err.hidden = false; focusEl(inp); return; }
+      if (title === p.title) { ppEditing = ''; renderPapers(); ppFocusRow(p.id, '.pp-ren'); return; }
+      setBusy(save, true, 'Saving…');
+      try {
+        await api.papersRename(p.id, title);
+        ppEditing = '';
+        await loadPapers();
+        toast('Renamed.');
+        ppFocusRow(p.id, '.pp-ren');
+      } catch (e) {
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        setBusy(save, false);
+        err.textContent = ppWords(e);
+        err.hidden = false;
+      }
+    });
+    return f;
+  }
+  function ppAskRow(p) {
+    const box = make('div', 'pp-ask');
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', 'Remove ' + p.title + '?');
+    box.append(make('p', null, 'Remove “' + p.title + '” from your portal? Its file goes too.'));
+    const btns = make('div', 'dc-btns');
+    const yes = make('button', 'btn small');
+    yes.type = 'button';
+    yes.append(make('span', null, 'Yes, remove it'));
+    const keep = make('button', 'later', 'Keep it');
+    keep.type = 'button';
+    keep.id = 'b-pp-keep';
+    keep.addEventListener('click', () => { ppAsk = ''; renderPapers(); ppFocusRow(p.id, '.pp-rm'); });
+    yes.addEventListener('click', async () => {
+      setBusy(yes, true, 'Removing…');
+      try {
+        await api.papersRemove(p.id);
+        ppAsk = '';
+        await loadPapers();
+        toast('Removed.');
+        focusEl($('#h-papers'), true);
+      } catch (e) {
+        if (e.code === 'signed_out') { quietSignOut(false); return; }
+        setBusy(yes, false);
+        if (e.code === 'not_found') { ppAsk = ''; await loadPapers(); toast('That one was already gone.'); return; }
+        toast(ppWords(e));
+      }
+    });
+    btns.append(yes, keep);
+    box.append(btns);
+    return box;
+  }
+  function ppFocusRow(id, sel) {
+    const li = $$('#pp-list li.theirs').find((x) => x.dataset.id === id);
+    const b = li ? $(sel, li) : null;
+    if (b) focusEl(b, true);
+  }
+  // what people read when adding, renaming or removing doesn't go through
+  function ppWords(e) {
+    const r = e && e.reason;
+    const each = (ppUpload && ppUpload.eachMb) || 10;
+    if (e && (e.code === 'too_big' || (e.code === 'input' && r === 'size'))) return 'That file is bigger than ' + each + ' MB. A smaller copy, or a PDF of it, will fit.';
+    if (e && e.code === 'input' && r === 'type') return 'That kind of file can’t go here. A PDF, a photo, a Word, Excel or PowerPoint file, or plain text works.';
+    if (e && e.code === 'input' && r === 'too_many') return 'You’ve added 25 papers, which is all this card holds. Remove one you don’t need, or email it to me at ' + TAYA + '.';
+    if (e && e.code === 'input' && r === 'full') return 'Your papers are using all of their 200 MB. Remove one you don’t need, or email it to me at ' + TAYA + '.';
+    if (e && e.code === 'input' && r === 'count') return 'Pick one file to add.';
+    if (e && e.code === 'input' && e.field === 'valid_until') return 'That “good until” day doesn’t look right. Pick it from the calendar, or leave it empty.';
+    if (e && e.code === 'input' && e.field === 'title') return 'Give it a name first, even a short one.';
+    if (e && e.code === 'slow_down' && !e.retry) return 'Another file is still on its way. Try again in a moment.';
+    if (e && e.code === 'slow_down') return 'That’s a lot of papers in one go. Try again in an hour, or email them to me at ' + TAYA + '.';
+    if (e && e.code === 'not_ready') return 'Adding papers is resting right now. Email the copy to me at ' + TAYA + ' and I’ll put it here.';
+    return words(e);
   }
   function ppDownload(p) {
     const a = make('a', 'open-btn');
@@ -6075,16 +7397,514 @@
     a.setAttribute('aria-busy', 'true');
     try {
       await loadPapers();
-      const p = (papers || []).find((x) => x.title === old.title && x.kind === old.kind && x.file);
+      const p = (papers || []).find((x) => (old.theirs ? x.id === old.id : x.title === old.title && x.kind === old.kind) && x.file);
       if (p && win && !win.closed) win.location.href = p.file.link;
       else if (win) win.close();
     } finally { if (document.body.contains(a)) a.removeAttribute('aria-busy'); }
   }
+  // shown when there are papers, or (section 98) when the server takes their own; hidden otherwise, as before
   function renderPapers() {
     const sec = $('#sec-papers');
-    if (!papers || !papers.length) { setHidden(sec, true); return; }
-    $('#pp-list').replaceChildren(...papers.map(ppRow));
+    const list = papers || [];
+    if (!list.length && !ppUpload) { setHidden(sec, true); return; }
+    if (ppAsk && !list.some((x) => x.theirs && x.id === ppAsk)) ppAsk = '';
+    if (ppEditing && !list.some((x) => x.theirs && x.id === ppEditing)) ppEditing = '';
+    $('#pp-list').replaceChildren(...list.map(ppRow));
+    setHidden($('#pp-list'), !list.length);
+    setHidden($('#pp-none'), !!list.length || !ppUpload);
+    setHidden($('#pp-add'), !ppUpload);
+    if (ppUpload) {
+      const full = ppUpload.filesLeft < 1 || ppUpload.mbLeft < 1;
+      $('#pp-room').textContent = full
+        ? 'Your papers have used all their room (25 files, 200 MB). Remove one you don’t need to add another.'
+        : 'Room for ' + plural(ppUpload.filesLeft, 'more file', 'more files') + ', ' + ppUpload.mbLeft + ' MB in all. Only you and I can see them.';
+      $('#b-pp-send').disabled = full;
+    }
     setHidden(sec, false);
+  }
+
+  // ---- (section 98) Add a paper
+  function ppOpenForm(open) {
+    const f = $('#f-pp');
+    f.hidden = !open;
+    $('#b-pp-add').setAttribute('aria-expanded', String(open));
+    setHidden($('#b-pp-add'), open);
+    if (open) { ppErr(''); $('#pp-status').textContent = ''; focusEl($('#pp-form-h')); }
+    else { f.reset(); ppErr(''); $('#pp-status').textContent = ''; }
+  }
+  function ppErr(text) {
+    const e = $('#pp-err');
+    e.textContent = text;
+    e.hidden = !text;
+    if (text) focusEl(e, true);
+  }
+  async function ppOnAdd(ev) {
+    if (ev) ev.preventDefault();
+    if (!ppUpload || ppUpload.readOnly) return;
+    const btn = $('#b-pp-send');
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    const file = $('#in-pp-file').files && $('#in-pp-file').files[0];
+    if (!file) { ppErr('Pick a file first.'); return; }
+    if (file.size > ppUpload.eachMb * 1024 * 1024) { ppErr(ppWords({ code: 'input', reason: 'size' })); return; }
+    if (ppUpload.filesLeft < 1) { ppErr(ppWords({ code: 'input', reason: 'too_many' })); return; }
+    const until = $('#in-pp-until').value;
+    if (until && !/^\d{4}-\d{2}-\d{2}$/.test(until)) { ppErr(ppWords({ code: 'input', field: 'valid_until' })); return; }
+    const fields = [];
+    const title = cleanLine($('#in-pp-name').value, 120);
+    if (title) fields.push(['title', title]);
+    if (Object.prototype.hasOwnProperty.call(PP_KINDS, $('#in-pp-kind').value)) fields.push(['kind', $('#in-pp-kind').value]);
+    if (until) fields.push(['valid_until', until]);
+    ppErr('');
+    setBusy(btn, true, 'Adding…');
+    const status = $('#pp-status');
+    status.textContent = 'Sending your file…';
+    try {
+      const d = await api.papersAdd(fields, file, (f) => { status.textContent = 'Sending your file… ' + Math.min(99, Math.round(f * 100)) + '%'; });
+      const id = d && d.paper && PP_ID.test(str(d.paper.id, 20)) ? d.paper.id : '';
+      setBusy(btn, false);
+      ppOpenForm(false);
+      await loadPapers();
+      toast('Added. It’s in your papers now.');
+      if (id) ppFocusRow(id, '.pp-ren'); else focusEl($('#b-pp-add'), true);
+    } catch (e) {
+      setBusy(btn, false);
+      status.textContent = '';
+      if (e.code === 'signed_out') { quietSignOut(false); return; }
+      ppErr(ppWords(e));
+    }
+  }
+  function wirePapers() {
+    $('#b-pp-add').addEventListener('click', () => ppOpenForm(true));
+    $('#b-pp-cancel').addEventListener('click', () => { ppOpenForm(false); focusEl($('#b-pp-add'), true); });
+    $('#f-pp').addEventListener('submit', ppOnAdd);
+    $('#in-pp-file').addEventListener('change', () => {
+      const f = $('#in-pp-file').files && $('#in-pp-file').files[0];
+      ppErr(f && ppUpload && f.size > ppUpload.eachMb * 1024 * 1024 ? ppWords({ code: 'input', reason: 'size' }) : '');
+    });
+  }
+
+  /* ---- Resources (Oct 21 2026, hub DEPLOY.md section 101) ----
+     Short how-to videos and guides Taya made (finding and verifying their Google profile, setting hours, answering a
+     review, adding a photo, and more later), the same for every client. The server sends only the ones she approved,
+     already in order (topic, then her order, then title); with none it answers resources: [] and the section and its
+     tab stay hidden. A ledger row each, under a plain heading per topic: the title, one line about it, and Watch (a
+     video) or Read (a guide), a plain link that opens in a new tab. Nothing is embedded and no outside script runs.
+     Only https links on the hosts the server allows become links (checked again here). A Studio preview reads it too. */
+  let resources = null;      // [{ id, title, summary, url, kind, topic }] (cleaned), or null before the first load
+  const RS_TOPICS = ['google', 'email', 'site', 'shop', 'booking', 'other'];
+  const RS_HEADS = { google: 'Your Google profile', email: 'Email', site: 'Your site', shop: 'Your shop', booking: 'Bookings', other: 'More' };
+  const RS_HOSTS = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'www.youtube-nocookie.com', 'youtube-nocookie.com',
+    'vimeo.com', 'www.vimeo.com', 'player.vimeo.com', 'loom.com', 'www.loom.com', 'webfaery.love', 'www.webfaery.love', 'bookings.gardenfaery.love'];
+  const rsLink = (u) => {
+    const s = str(u, 300);
+    const m = /^https:\/\/([a-z0-9.-]+)(?::443)?(?:[/?#][^\s"\x27<>\\]*)?$/.exec(s);
+    return m && RS_HOSTS.includes(m[1]) ? s : '';
+  };
+  async function loadResources() {
+    if (typeof api.resources !== 'function') { resources = null; renderResources(); return; }
+    try {
+      const d = await api.resources();
+      resources = cleanResources(d);
+      renderResources();
+      refreshVideoTodos();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!resources) $('#sec-resources').hidden = true; // a quiet refresh that misses keeps what's on screen
+    }
+  }
+  function cleanResources(d) {
+    const list = d && typeof d === 'object' ? arr(d.resources) : [];
+    return list.slice(0, 200).map((r) => {
+      if (!r || typeof r !== 'object') return null;
+      const title = cleanLine(r.title, 120);
+      const url = rsLink(r.url);
+      if (!title || !url || !RS_TOPICS.includes(r.topic) || (r.kind !== 'video' && r.kind !== 'guide')) return null;
+      const lc = /^\d{4}-\d{2}-\d{2}$/.test(str(r.last_checked, 10)) ? str(r.last_checked, 10) : '';
+      return { title, summary: cleanLine(r.summary, 300), url, kind: r.kind, topic: r.topic,
+        step: /^[a-z0-9-]{1,40}$/.test(str(r.step, 40)) ? str(r.step, 40) : '', steps_text: str(r.steps_text, 1500), last_checked: lc };
+    }).filter(Boolean);
+  }
+  function rsRow(r) {
+    const li = make('li', 'rs-item');
+    const what = make('div', 'what');
+    what.append(make('b', null, r.title));
+    if (r.summary) what.append(make('small', null, r.summary));
+    const acts = make('span', 'acts');
+    const a = make('a', 'open-btn');
+    a.href = r.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.append(make('span', null, r.kind === 'video' ? 'Watch' : 'Read'), icon('i-out'));
+    a.setAttribute('aria-label', (r.kind === 'video' ? 'Watch ' : 'Read ') + r.title + ' (opens in a new tab)');
+    acts.append(a);
+    li.append(what, acts);
+    // (Oct 21 2026) a hard step's written steps (a video is never the only way) and when Taya last checked the screens
+    if (r.step) li.id = 'rs-step-' + r.step;
+    if (r.steps_text || r.last_checked) {
+      const d = make('details', 'howto rs-written');
+      d.append(make('summary', null, 'The steps in writing'));
+      if (r.steps_text) r.steps_text.split(/\n+/).filter(Boolean).forEach((line) => d.append(make('p', 'detail', line)));
+      if (r.last_checked) d.append(make('p', 'hint', 'I last checked this on ' + r.last_checked + '. If a screen looks different, tell me.'));
+      li.append(d);
+    }
+    return li;
+  }
+  function renderResources() {
+    const sec = $('#sec-resources');
+    if (!resources || !resources.length) { setHidden(sec, true); return; }
+    const groups = [];
+    RS_TOPICS.forEach((t) => {
+      const rows = resources.filter((r) => r.topic === t); // the server's order, kept inside each topic
+      if (!rows.length) return;
+      const g = make('div', 'rs-group');
+      const h = make('h3', 'rs-head', RS_HEADS[t]);
+      h.id = 'rs-h-' + t;
+      const ul = make('ul', 'ledger rs-list');
+      ul.setAttribute('aria-labelledby', h.id);
+      ul.append(...rows.map(rsRow));
+      g.append(h, ul);
+      groups.push(g);
+    });
+    $('#rs-groups').replaceChildren(...groups);
+    setHidden(sec, false);
+  }
+  // their to-dos that have a video pick it up once Resources has loaded
+  function refreshVideoTodos() {
+    if (!me || !me.list) return;
+    (me.list.open || []).filter((x) => x.video).forEach(replaceRow);
+  }
+
+  /* ================= Messages (Oct 20 2026, hub DEPLOY.md section 94) =================
+     Their thread with Taya, inside their portal, so nobody digs through email. Plain text both ways: every word is
+     drawn with textContent, line breaks kept. The tab shows only when the server sends messages_unread on /me (a
+     server without messages sends nothing, and the tab stays away); a quiet dot on it and a "1 new message" row on Home
+     while one of Taya's waits unread. The thread loads when they open the tab (the server marks Taya's read then), and
+     again on a quiet refresh while it is open. Enter makes a new line; the Send button sends. Words they typed and
+     haven't sent stay in this tab (drafts, sessionStorage) until sent or "Sign out". A Studio preview sees the thread,
+     the box is switched off, and nothing is marked read.
+     (Oct 20 2026, hub section 95) The thread can also carry their emails with Taya, once Taya switches that on for
+     them: each in its place by date, with the subject in bold and "via email" under the time; their own emails say
+     You, Taya's say Taya. Long words fold behind "Show more" after 600 characters (a body the server folded comes whole
+     on tap, a read, so a preview can do it too). A server without these fields sends portal messages only, drawn as
+     before. */
+  let msgs = null;           // [{ id, from: 'client' | 'taya', body, created, email?, subject?, folded?, files? }] (cleaned), or null before the first load
+  let msgsAt = 0;            // when they came
+  let msgsLoading = false;
+  const MSG_MAX = 4000;
+  const MSG_EMAIL_MAX = 20000; // an email's words can run longer than a portal message
+  const MSG_FOLD = 600;
+  const MSG_FRESH_MS = 30 * 1000;
+  // ---- [rich b23] (hub DEPLOY.md section 95): when the thread answer says rich: true (the server has the rich
+  // migration) and portal-rich.js is here, the box becomes the composer (Bold, Italic, Underline, lists, Link, Emoji,
+  // Attach, Clear formatting), the words are drawn from the restricted markup by WFRich.render (createElement and
+  // textContent only) and attachments show under them. Otherwise everything below runs as plain text, as before.
+  const RICH_MAX = 8000;
+  const RICH_STORE = STORE_KEY + '-msg-rich';
+  let msgRich = false;       // the server said rich: true
+  let msgRc = null;          // the composer, once made
+  const richOn = () => msgRich && !!window.WFRich;
+  function richFetch(id, inline) { return api.messageFile(id, inline); }
+  function richStart() {
+    if (msgRc || !richOn()) return;
+    $('#in-msg').hidden = true;
+    $('label[for="in-msg"]').hidden = true;
+    $('#msg-count').hidden = true;
+    $('#msg-intro-plain').hidden = true;
+    $('#msg-intro-rich').hidden = false;
+    const host = $('#msg-rich');
+    host.hidden = false;
+    msgRc = window.WFRich.composer({
+      host, id: 'msg-rc', label: 'Write to Taya', store: RICH_STORE, readOnly: PREVIEW,
+      upload: typeof api.messageUpload === 'function' ? (files, onP) => { busy++; return api.messageUpload(files, onP).finally(() => { busy--; }); } : null,
+      unattach: typeof api.messageUnattach === 'function' ? (id) => api.messageUnattach(id) : null,
+      fetchFile: typeof api.messageFile === 'function' ? richFetch : null,
+      errorWords: (err) => (err && err.code === 'signed_out' ? 'You’ve been signed out. Sign in again to attach files.' : err && err.code === 'slow_down' && err.retry >= 60 ? words(err) : ''),
+      onChange: () => { if (!$('#msg-err').hidden) showErr('msg', ''); }
+    });
+  }
+  function richStop() {
+    if (msgRc) { msgRc.clear(); msgRc.el.remove(); msgRc = null; }
+    try { sessionStorage.removeItem(RICH_STORE); } catch (e) { /* fine */ }
+    msgRich = false;
+    $('#msg-rich').hidden = true;
+    $('#in-msg').hidden = false;
+    $('label[for="in-msg"]').hidden = false;
+    $('#msg-count').hidden = false;
+    $('#msg-intro-plain').hidden = false;
+    $('#msg-intro-rich').hidden = true;
+  }
+  function richFiles(m) {
+    return window.WFRich.fileList(m.files, { fetchFile: richFetch, onError: (err) => { if (err.code === 'signed_out') quietSignOut(false); else toast(err.code === 'not_found' ? 'That file isn’t here anymore.' : words(err)); } });
+  }
+  // ---- [rich b23] end
+  function msgSync() {
+    const on = !!me && me.messages_unread !== null && typeof api.messages === 'function';
+    setHidden($('#sec-messages'), !on);
+    if (!on) return;
+    const box = $('#in-msg');
+    if (!box.value) box.value = drafts.get('message');
+    if (PREVIEW) box.disabled = true; // a Studio preview: the thread shows, the box stays off
+    msgCount();
+    if (page === 'messages' && !$('#v-project').hidden) msgOpened(true);
+  }
+  function msgReset() {
+    msgs = null;
+    msgsAt = 0;
+    $('#msg-thread').replaceChildren();
+    $('#msg-thread').hidden = true;
+    $('#msg-none').hidden = true;
+    $('#in-msg').value = '';
+    richStop(); // [rich b23] the composer and its kept words go with the sign-out too
+    showErr('msg', '');
+    $('#sec-messages').hidden = true;
+  }
+  // the tab was opened (or is open during a refresh): load the thread, unless it just came
+  function msgOpened(force) {
+    if (!me || $('#sec-messages').hidden || msgsLoading) return;
+    if (!force && msgs && Date.now() - msgsAt < MSG_FRESH_MS) return;
+    loadMessages();
+  }
+  async function loadMessages() {
+    msgsLoading = true;
+    if (!msgs) { $('#msg-none').textContent = 'Loading your messages…'; $('#msg-none').hidden = false; }
+    try {
+      const d = await api.messages();
+      msgRich = !!(d && d.rich === true); // [rich b23]
+      msgs = arr(d && d.messages).slice(-200).map(msgClean).filter(Boolean);
+      richStart(); // [rich b23]
+      msgsAt = Date.now();
+      // opening the thread reads Taya's messages (a Studio preview reads nothing): the dot and the Home row go
+      if (!PREVIEW && me && me.messages_unread) { me.messages_unread = 0; pagesSoon(); }
+      renderMessages();
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      if (!msgs) { $('#msg-none').textContent = 'Your messages didn’t load just now. Try again in a moment.'; $('#msg-none').hidden = false; }
+    } finally { msgsLoading = false; }
+  }
+  // "Oct 20, 2:14 PM" in their own time (and the year when it isn't this one)
+  function msgWhen(iso) {
+    const t = Date.parse(iso || '');
+    if (!Number.isFinite(t)) return '';
+    const d = new Date(t);
+    const h = d.getHours();
+    return MON[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== now.getFullYear() ? ', ' + d.getFullYear() : '') + ', ' +
+      (h % 12 === 0 ? 12 : h % 12) + ':' + pad(d.getMinutes()) + ' ' + (h < 12 ? 'AM' : 'PM');
+  }
+  // one message from the server, cleaned (an email keeps its subject, its fold and its attachment count)
+  function msgClean(m) {
+    if (!m || typeof m !== 'object') return null;
+    const email = m.source === 'email';
+    const body = cleanText(m.body, email ? MSG_EMAIL_MAX : (richOn() ? RICH_MAX : MSG_MAX));
+    const rf = !email && richOn() ? arr(m.files).slice(0, 5) : []; // [rich b23]
+    if (!body && !rf.length) return null;
+    const o = { id: str(m.id, 40), from: m.from === 'taya' ? 'taya' : 'client', body, created: str(m.created, 40) };
+    if (!email) o.files = rf;
+    if (email) {
+      o.email = true;
+      o.subject = cleanLine(m.subject, 200);
+      o.files = Number.isInteger(m.attachments) && m.attachments > 0 ? Math.min(m.attachments, 999) : 0;
+    }
+    if (m.folded === true) o.folded = true;
+    return o;
+  }
+  // the words, folded behind "Show more" after MSG_FOLD characters; one the server folded comes whole on tap
+  function msgFold(m, body, li) {
+    const short = () => m.body.slice(0, MSG_FOLD).replace(/\s+$/, '') + '…';
+    body.textContent = short();
+    const more = make('button', 'msg-more', 'Show more');
+    more.type = 'button';
+    more.setAttribute('aria-expanded', 'false');
+    let open = false;
+    more.addEventListener('click', async () => {
+      if (!open && m.folded && m.id) {
+        setBusy(more, true, 'Opening…');
+        try {
+          const d = await api.messageFull(m.id);
+          const full = msgClean(d && d.message);
+          if (full && full.body) { m.body = full.body; m.folded = false; }
+        } catch (err) {
+          if (err.code === 'signed_out') { quietSignOut(false); return; }
+          toast(words(err));
+          return;
+        } finally { setBusy(more, false); }
+      }
+      open = !open;
+      body.textContent = open ? m.body : short();
+      more.textContent = open ? 'Show less' : 'Show more';
+      more.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!open && li.getBoundingClientRect().top < 0) li.scrollIntoView({ block: 'start' });
+    });
+    return more;
+  }
+  function msgRow(m) {
+    const li = make('li', 'msg-row ' + (m.from === 'taya' ? 'from-taya' : 'from-you') + (m.email ? ' is-email' : ''));
+    const head = make('p', 'msg-head');
+    const when = make('span', 'msg-when', msgWhen(m.created));
+    if (m.email) {
+      const stamp = make('span', 'msg-stamp');
+      stamp.append(when, make('span', 'msg-via', 'via email'));
+      head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), stamp);
+    } else head.append(make('b', 'msg-who', m.from === 'taya' ? 'Taya' : 'You'), when);
+    const det = make('div', 'msg-det');
+    det.hidden = true;
+    det.append(head);
+    if (m.email && m.subject) { const s = make('p', 'msg-subject'); s.append(make('b', '', m.subject)); det.append(s); }
+    const title = m.email && m.subject ? m.subject : String(m.body || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80) || 'Message';
+    const sum = make('button', 'msg-sum');
+    sum.type = 'button';
+    sum.setAttribute('aria-expanded', 'false');
+    sum.append(make('span', 'msg-sum-when', msgWhen(m.created).replace(/, \d{1,2}:\d{2} [AP]M$/, '')), make('span', 'msg-sum-title', title));
+    sum.addEventListener('click', () => { const o = det.hidden; det.hidden = !o; sum.setAttribute('aria-expanded', o ? 'true' : 'false'); li.classList.toggle('is-open', o); });
+    li.append(sum, det);
+    if (!m.email && richOn()) { // [rich b23] the markup drawn by WFRich.render (createElement and textContent only), then the files
+      const rbody = make('div', 'msg-body msg-rich');
+      rbody.append(window.WFRich.render(m.body, document));
+      det.append(rbody);
+      if (m.files && m.files.length) det.append(richFiles(m));
+      return li;
+    }
+    const body = make('p', 'msg-body', m.body);
+    det.append(body);
+    if (m.body.length > MSG_FOLD || m.folded) det.append(msgFold(m, body, li));
+    if (m.email && m.files) det.append(make('p', 'msg-files', m.files === 1 ? '1 attachment, in the email itself' : m.files + ' attachments, in the email itself'));
+    return li;
+  }
+  function renderMessages() {
+    const list = $('#msg-thread');
+    const none = $('#msg-none');
+    const list0 = msgs || [];
+    list.replaceChildren(...list0.slice().reverse().map(msgRow)); // newest first, like an inbox
+    list.hidden = !list0.length;
+    none.textContent = 'No messages yet. Whatever you write here comes straight to me.';
+    none.hidden = list0.length > 0;
+  }
+  function msgCount() {
+    const n = $('#in-msg').value.length;
+    const c = $('#msg-count');
+    c.textContent = n > MSG_MAX - 400 ? (MSG_MAX - n) + ' characters left' : '';
+    c.classList.toggle('near', n > MSG_MAX - 100);
+  }
+  // [rich b23] Send from the composer: the markup and the attachments' ids (uploaded already, as they were attached)
+  async function onRichMessage() {
+    const btn = $('#b-msg');
+    showErr('msg', '');
+    if (msgRc.busy()) { showErr('msg', 'A file is still uploading. Send again in a moment.'); return; }
+    const v = msgRc.value();
+    if (!v.body && !v.files.length) { showErr('msg', 'Write a few words first.'); msgRc.focus(); return; }
+    if (v.body.length > RICH_MAX) { showErr('msg', 'That’s a little long for one message. Could you split it in two?'); msgRc.focus(); return; }
+    setBusy(btn, true, 'Sending…');
+    try {
+      const d = await api.message(v.body, v.files);
+      const m = d && d.message && typeof d.message === 'object' ? d.message : null;
+      if (!msgs) msgs = [];
+      msgs.push({ id: str(m && m.id, 40), from: 'client', body: m ? cleanText(m.body, RICH_MAX) : v.body, files: m ? arr(m.files).slice(0, 5) : [], created: str(m && m.created, 40) || new Date().toISOString() });
+      msgRc.clear();
+      renderMessages();
+      toast('Sent. Thank you!');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      showErr('msg', err.code === 'input' && err.field === 'files' ? 'One of the files couldn’t go with this message. Take it off and attach it again.'
+        : err.code === 'input' && err.reason === 'links' ? 'That’s a lot of links for one message (40 at most).'
+          : err.code === 'input' && err.reason === 'long' ? 'That’s a little long for one message. Could you split it in two?' : words(err));
+    } finally {
+      setBusy(btn, false);
+    }
+  }
+  async function onMessage(ev) {
+    ev.preventDefault();
+    if (PREVIEW) return;
+    if (msgRc) { onRichMessage(); return; } // [rich b23]
+    const box = $('#in-msg');
+    const btn = $('#b-msg');
+    const text = cleanText(box.value, MSG_MAX + 1);
+    showErr('msg', '');
+    if (!text) { showErr('msg', 'Write a few words first.'); box.focus(); return; }
+    if (text.length > MSG_MAX) { showErr('msg', 'That’s a little long for one message. Could you split it in two?'); box.focus(); return; }
+    setBusy(btn, true, 'Sending…');
+    try {
+      const d = await api.message(text);
+      const m = d && d.message && typeof d.message === 'object' ? d.message : null;
+      const body = m ? cleanText(m.body, MSG_MAX) : '';
+      if (!msgs) msgs = [];
+      msgs.push({ id: str(m && m.id, 40), from: 'client', body: body || text, created: str(m && m.created, 40) || new Date().toISOString() });
+      box.value = '';
+      drafts.set('message', '');
+      msgCount();
+      renderMessages();
+      toast('Sent. Thank you!');
+    } catch (err) {
+      if (err.code === 'signed_out') { quietSignOut(false); return; }
+      showErr('msg', words(err));
+    } finally {
+      setBusy(btn, false);
+    }
+  }
+
+  /* ================= read only view: a Studio preview (Oct 19 2026) =================
+     Only when the page opened with #preview=<key> (PREVIEW, near the top). The same page, tabs and data as the client
+     sees, plus a calm line at the top. Everything that would change something is shown switched off (aria-disabled,
+     a quiet look, the title "Read only view") and does nothing when pressed; reading stays on (the tabs, More, the
+     month arrows, opening a file or a receipt, the CSV downloads, the people and month pickers, searching their
+     clients). No sign-out. The server refuses a preview's changes anyway (403 read_only), and the api block above
+     sends none; anything refused is swallowed quietly. When the key's 10 minutes are up, the page says so. */
+  const RO_TITLE = 'Read only view';
+  const RO_READ = '[data-read], [role="tab"], summary, #more-btn, #more-close, #b-tl-more, #b-retry, #b-bk-prev, #b-bk-next, ' +
+    '#b-nl-prev, #b-nl-next, #b-bk-cl-more, #b-csv-orders, #b-csv-products, #b-bk-cl-csv, #b-nl-csv, #b-rc-csv, #b-rc-photo, ' +
+    '.o-slip-btn, .bk-cl-btn, .bk-cd, .rc-row, #in-bk-cl-q, #in-nl-which, #in-rc-month, #in-rc-exmonth';
+  let roEndTimer = 0, roWatch = null;
+  function roMark() {
+    return; // try-it mode (Nov 2 2026): nothing is switched off any more; saves are caught in post()
+    // eslint-disable-next-line no-unreachable
+    $$('#main button, #main input, #main select, #main textarea, #main a[data-pay], #more button').forEach((el) => {
+      if (el.matches(RO_READ) || el.classList.contains('ro-off')) return;
+      el.classList.add('ro-off');
+      el.setAttribute('aria-disabled', 'true');
+      el.title = RO_TITLE;
+      if (el.tagName === 'INPUT' && /^(file|checkbox|radio|range|color|date|time|month|week|datetime-local)$/i.test(el.type)) el.disabled = true;
+      else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.readOnly = true;
+      else if (el.tagName === 'SELECT') el.disabled = true;
+      if (el.tagName === 'A') el.tabIndex = -1;
+    });
+  }
+  // a press on anything switched off: nothing happens (capture, so the page's own handlers never hear it)
+  function roStop(ev) {
+    if (!PREVIEW) return;
+    const t = ev.target && ev.target.closest ? ev.target.closest('.ro-off, label') : null;
+    if (!t) return;
+    const off = t.classList.contains('ro-off') ? t : (t.control && t.control.classList.contains('ro-off') ? t.control : null);
+    if (!off) return;
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+  }
+  function previewWire() {
+    document.documentElement.classList.add('wf-preview');
+    ['click', 'input', 'change', 'paste', 'keydown'].forEach((type) => document.addEventListener(type, (ev) => {
+      if (type === 'keydown' && !['Enter', ' ', 'Spacebar'].includes(ev.key)) return;
+      roStop(ev);
+    }, true));
+    // every form here sends something, and a dropped file would be one more: neither goes anywhere in a preview
+    ['drop'].forEach((type) => document.addEventListener(type, (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); }, true));
+    roWatch = new MutationObserver(() => roMark());
+    roWatch.observe(document.getElementById('main'), { childList: true, subtree: true });
+    const more = document.getElementById('more');
+    if (more) roWatch.observe(more, { childList: true, subtree: true });
+  }
+  function previewStart(data) {
+    const c = (me && me.client) || {};
+    const bar = $('#pv-bar');
+    bar.textContent = 'Viewing as ' + (c.business || c.first_name || 'this client') + '. Try the buttons: nothing is saved or sent.';
+    bar.hidden = false;
+    roMark();
+    const s = data && data.session;
+    const ends = s && typeof s.expires_at === 'string' ? Date.parse(s.expires_at) : NaN;
+    clearTimeout(roEndTimer);
+    if (Number.isFinite(ends)) roEndTimer = setTimeout(() => quietSignOut(false), Math.max(0, Math.min(ends - Date.now(), 24 * 3600 * 1000)));
+  }
+  function previewEnded() {
+    clearTimeout(roEndTimer);
+    $('#pv-bar').hidden = true;
+    show('v-ended');
+    focusEl($('#h-ended'), true);
   }
 
   /* ================= no do-it-yourself editing (Oct 5 2026) =================
@@ -6185,6 +8005,10 @@
     $('#f-code').addEventListener('submit', onCode);
     $('#in-code').addEventListener('input', onCodeInput);
     $('#b-resend').addEventListener('click', onResend);
+    $('#b-use-pass').addEventListener('click', toPassStep);
+    $('#f-pass').addEventListener('submit', onPass);
+    $('#in-pshow').addEventListener('change', () => showPw([$('#in-ppass')], $('#in-pshow').checked));
+    $('#b-pass-code').addEventListener('click', () => { $('#in-email').value = $('#in-pemail').value.trim(); $('#in-ppass').value = ''; toEmailStep('', true); $('#in-email').focus(); });
     $('#b-restart').addEventListener('click', () => { stopResend(); pending.clear(); who = null; toEmailStep('', false); $('#in-email').focus(); });
     $('#b-retry').addEventListener('click', () => loadProject(true));
     $('#b-signout').addEventListener('click', signOut);
@@ -6198,6 +8022,9 @@
     $('#in-what').addEventListener('input', () => drafts.set('change', $('#in-what').value));
     $('#in-where').addEventListener('input', () => drafts.set('change-where', $('#in-where').value));
     $('#f-change').addEventListener('submit', onChange);
+    // Messages (Oct 20 2026): the button sends (Enter is a new line); unsent words stay in this tab
+    $('#f-msg').addEventListener('submit', onMessage);
+    $('#in-msg').addEventListener('input', () => { drafts.set('message', $('#in-msg').value); msgCount(); if (!$('#msg-err').hidden) showErr('msg', ''); });
     $('#in-what').addEventListener('input', whatCount);
     $('#in-pics').addEventListener('change', onPics);
     $('#b-another').addEventListener('click', askAnother);
@@ -6213,6 +8040,9 @@
     wireBookings();
     wireNews();
     wireReceipts();
+    wireGoogle();
+    wirePapers(); // their own business papers (Oct 20 2026, hub section 98)
+    wireCritique(); // their critique of Web Faery (Oct 23 2026, hub section 128)
     wirePages();
     $('#toast').addEventListener('click', () => { $('#toast').hidden = true; });
     if (SMS_SIGNIN) { $('#b-phone').hidden = false; $('#b-phone').addEventListener('click', () => setPhoneMode(!usePhone)); }
@@ -6234,6 +8064,7 @@
       }
     } catch (e) { /* fine */ }
     token = store.get();
+    if (PREVIEW && !token) { previewEnded(); return; }
     if (token) {
       hero('Your project', 'Welcome ', 'back.', '');
       await loadProject(null);
@@ -6266,6 +8097,7 @@
       return;
     }
     wire();
+    if (PREVIEW) previewWire();
     if (DEMO) {
       loadDemo().then((D) => { wireDemo(D); start(); }, () => {
         const nowhere = () => Promise.reject(fail('network'));

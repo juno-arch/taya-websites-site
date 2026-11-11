@@ -1,3 +1,15 @@
+/* Studio preview (Oct 20 2026, Pollen): a page opened from "See exactly what they see" carries ?wfpreview=1 and only reads.
+   Nothing it does is saved, picked, noted, uploaded or sent, so looking never changes a client's own record. */
+(function () {
+  if (!/[?&]wfpreview=1(?:&|$)/.test(location.search) || !window.fetch) return;
+  var real = window.fetch.bind(window);
+  var WRITES = /\/(mark|pick|ready|mockup-done|mockup-upload|photo-swap|draft-save|draft-upload|draft-remove|draft-clear|start-send)(?:\?|$)/;
+  window.fetch = function (url, opts) {
+    var m = String((opts && opts.method) || 'GET').toUpperCase();
+    if (m !== 'GET' && WRITES.test(String(url && url.url || url))) return Promise.resolve(new Response(JSON.stringify({ ok: false, error: 'preview' }), { status: 403, headers: { 'Content-Type': 'application/json' } }));
+    return real(url, opts);
+  };
+})();
 /* mark.js v5 (Oct 10 2026): no sign-in. Every client has one private link from Taya's emails, webfaery.love/my/#wf=KEY
    (the door, my/door.js), and this file runs in two places:
      on their mockup (webfaery.love/peek/SLUG/?mark=1, loaded by the peek page's own loader): the key comes from #wf=
@@ -56,13 +68,108 @@
    nothing. It shows only once the server answers with where her edits stand, so this file can go up first. */
 // Founding spots (Pollen, Oct 9): the ONE place to update the count. Juliet holds 1. At 0 the picker card drops
 // founding, and every <span class="wf-founding-left"> on a mockup reads "all 5 spots are taken".
-var FOUNDING_TOTAL = 5, FOUNDING_LEFT = 4;
+var FOUNDING_TOTAL = 5, FOUNDING_LEFT = 3;
 function foundingLeftWords() {
   return FOUNDING_LEFT > 0
     ? FOUNDING_LEFT + ' of ' + FOUNDING_TOTAL + (FOUNDING_LEFT === 1 ? ' spot is' : ' spots are') + ' still open. While one is, the build is half off, and your deposit holds yours'
     : 'all ' + FOUNDING_TOTAL + ' spots are taken';
 }
 document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textContent = foundingLeftWords(); });
+
+/* Pollen's link (ADD 81, Nov 7 2026): a link ONLY Pollen has, made in her Studio on a tap ("Open as Pollen" on a client still in
+   the build stages) and good for 30 minutes: webfaery.love/peek/SLUG/?mark=1#pm=PASS. It is not the client's link and carries no
+   client key. The pass comes out of the address bar at once, is kept for this tab only (sessionStorage, gone when the tab closes)
+   and is sent only to the two pollen routes, which check it on the server every time (signed, 30 minutes, that client only, still
+   in the build stages). With it this page shows her gold bar: the client's waiting changes with "Make this change" on each, which
+   queues the change for the build desk (the same step as the Studio card; it never deploys or sends anything). Without a pass
+   (every client, every other visitor) this block does nothing at all, and a client's own link (#wf= / ?k=) always wins. */
+(function () {
+  'use strict';
+  if (window.__wfMark) return;
+  const pm = location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?/);
+  if (!pm) return;
+  const PAGE = '/peek/' + pm[1] + '/';
+  const STORE = 'wf-pm-v1:' + PAGE;
+  const PASS_RE = /^v1\.[a-z0-9]{15}\.\d{10,14}\.[0-9a-f]{64}$/;
+  if (new URLSearchParams(location.search).has('k') || /[#&](wf|pre)=/.test(location.hash)) return; // someone else's link always wins, whatever else is in the address
+  const hm = /[#&]pm=([^&]*)/.exec(location.hash);
+  let pass = '';
+  if (hm) {
+    if (PASS_RE.test(hm[1])) pass = hm[1];
+    let rest = location.hash.replace(hm[0], '');
+    if (rest && rest.charAt(0) !== '#') rest = '#' + rest.slice(1);
+    try { history.replaceState(history.state, '', location.pathname + location.search + rest); } catch (e) {}
+    if (pass) { try { sessionStorage.setItem(STORE, pass); } catch (e) {} }
+  } else {
+    try { const v = sessionStorage.getItem(STORE) || ''; if (PASS_RE.test(v)) pass = v; } catch (e) {}
+  }
+  if (!pass) return; // not her link: nothing happens
+  window.__wfMark = true; // her page: the client's own note bar stays out of it (put back by a clean reload if the pass turns out not to be hers)
+  let base = 'https://bookings.gardenfaery.love/api/webfaery/pollen/';
+  if (/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) {
+    const t = new URLSearchParams(location.search).get('pmapi') || '';
+    if (/^http:\/\/127\.0\.0\.1:\d{2,5}$/.test(t)) base = t + '/api/webfaery/pollen/';
+  }
+  const mk = (tag, css, text) => { const n = document.createElement(tag); if (css) n.style.cssText = css; if (text !== undefined) n.textContent = text; return n; };
+  const bar = mk('div', 'position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;max-height:60vh;overflow:auto;background:#2e3271;color:#f3efff;border:2px solid #f6c56f;border-radius:14px;padding:12px 14px;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:0 10px 40px rgba(38,42,94,.45)');
+  bar.setAttribute('data-wf-pollen', '1');
+  bar.hidden = true; // nothing is drawn until the server has said this pass is genuine: a forged one leaves the page exactly as it was
+  const head = mk('div', 'display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 6px');
+  head.append(mk('strong', 'color:#ffe0a0', 'Only you see this'));
+  const closeB = mk('button', 'background:none;border:1px solid rgba(243,239,255,.5);color:#f3efff;border-radius:8px;padding:2px 10px;cursor:pointer', 'Hide'); closeB.type = 'button';
+  closeB.addEventListener('click', () => { bar.hidden = true; });
+  head.append(closeB);
+  const list = mk('div');
+  bar.append(head, list);
+  const say = (t) => { list.textContent = ''; list.append(mk('div', 'color:#ffe0a0', t)); };
+  async function post(path, body) {
+    let res;
+    try { res = await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ pm: pass, page: PAGE }, body)), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
+    catch (e) { return { status: 0, data: null }; }
+    let data = null; try { data = await res.json(); } catch (e) { data = null; }
+    return { status: res.status, data: data };
+  }
+  const WHY = { expired: 'Your link ran out. Open it again from the Studio.', bad_link: 'This link is not good any more. Open it again from the Studio.', not_in_build: 'This client is past the build stages.', slow_down: 'Too many tries. Wait a little.' };
+  function fail(r) {
+    const code = r.data && r.data.error;
+    if (r.status === 401 || r.status === 403 || r.status === 429) { try { sessionStorage.removeItem(STORE); } catch (e) {} }
+    // only a genuinely signed pass gets a spoken answer (the server checks the signature before it says expired or not_in_build);
+    // a wrong one, a stranger's guess or a throttle answer leaves nothing on the page at all
+    if (code === 'expired' || code === 'not_in_build') { show(); say(WHY[code]); return; }
+    if (bar.hidden) { bar.remove(); if (r.status === 401 || r.status === 403 || r.status === 429) location.reload(); return; } // not hers: the plain page, as it always was
+    say(WHY[code] || 'Could not reach the Studio. Try again in a moment.');
+  }
+  function show() { if (!bar.isConnected) document.body.appendChild(bar); bar.hidden = false; }
+  function draw(items) {
+    list.textContent = '';
+    if (!items.length) { list.append(mk('div', 'color:#d9d3f0', 'No changes are waiting for this client.')); return; }
+    items.forEach((it, i) => {
+      const row = mk('div', 'display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid rgba(243,239,255,.2)');
+      const txt = mk('div', 'flex:1;min-width:0');
+      txt.append(mk('div', 'overflow-wrap:anywhere', (i + 1) + '. ' + it.text));
+      if (it.flagged && it.can_make) txt.append(mk('div', 'color:#ffe0a0;font-size:12px', 'Mentions money, legal wording or deleting. Check it yourself first.'));
+      row.append(txt);
+      const st = it.route_status;
+      if (it.can_make || it.can_retry) {
+        const b = mk('button', 'background:#f6c56f;color:#2c2160;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600;white-space:nowrap', it.can_retry ? 'Try again' : 'Make this change'); b.type = 'button';
+        b.addEventListener('click', async () => {
+          b.disabled = true; b.textContent = 'Sending…';
+          const r = await post('make', { id: it.id, action: it.can_retry ? 'retry' : 'make' });
+          if (r.status === 200) load(); else if (r.status === 409) load(); else { fail(r); }
+        });
+        row.append(b);
+      } else {
+        row.append(mk('span', 'color:#86d0c8;white-space:nowrap', st === 'done' ? 'Done' : st === 'failed' ? 'Could not send' : 'Sent to the build desk'));
+      }
+      list.append(row);
+    });
+  }
+  async function load() {
+    const r = await post('changes', {});
+    if (r.status === 200 && r.data && Array.isArray(r.data.items)) { show(); draw(r.data.items); } else fail(r);
+  }
+  load();
+})();
 
 (function () {
   'use strict';
@@ -370,7 +477,8 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const h = s.querySelector('h1, h2'); const t = h ? h.textContent.replace(/\s+/g, ' ').trim() : (s.id || '');
     return t.length > 40 ? t.slice(0, 38) + '…' : t;
   };
-  const spotOf = (n) => { const sec = section(n), l = label(n); return (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
+  const pgTag = () => { const m = location.pathname.match(/^\/peek\/[a-z0-9-]+\/(.+?)\/?$/); if (!m) return ''; const h = document.querySelector('h1'); const t = ((h && h.textContent) || '').replace(/\s+/g, ' ').trim().slice(0, 40) || m[1].replace(/\/index\.html$/, '').replace(/-/g, ' '); return t + ' page · '; }; // a note on a sub-page of a mockup says which page
+  const spotOf = (n) => { const sec = section(n), l = label(n); return pgTag() + (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
   // a short CSS path to the spot (from the nearest id, else from body), so a note finds its exact element again
   const cssPath = (n) => {
     const parts = [];
@@ -665,6 +773,14 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   .wfm-pop .photo img { width: 54px; height: 54px; object-fit: cover; border-radius: 10px; }
   .wfm-pop .photo input { position: absolute; width: 1px; height: 1px; opacity: 0; }
   .wfm-pop .photo:focus-within { outline: 2px solid var(--wfm-focus); outline-offset: 2px; border-radius: 10px; }
+  .wfm-pop .swapbtn { margin-top: 8px; }
+  .wfm-card .swap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 10px 0 8px; }
+  .wfm-card .swap figure { margin: 0; min-width: 0; }
+  .wfm-card .swap .swapbox { display: flex; align-items: center; justify-content: center; min-height: 120px; max-height: 220px; border: 1px solid var(--wfm-edge); border-radius: 12px; overflow: hidden; background: var(--wfm-well); }
+  .wfm-card .swap img { display: block; width: 100%; height: auto; max-height: 220px; object-fit: contain; }
+  .wfm-card .swap figcaption { margin-top: 4px; font-size: 13px; color: var(--wfm-soft); }
+  .wfm-card .swap .swapmiss { padding: 10px; font-size: 13.5px; color: var(--wfm-soft); text-align: center; }
+  @media (max-width: 480px) { .wfm-card .swap { grid-template-columns: minmax(0, 1fr); } }
   .wfm-pop .wfm-btn.ghost, .wfm-panel .wfm-btn.ghost, .wfm-card .wfm-btn.ghost { color: var(--wfm-link); border-color: var(--wfm-edge); }
   .wfm-pop .wfm-btn.ghost:hover, .wfm-panel .wfm-btn.ghost:hover, .wfm-card .wfm-btn.ghost:hover { background: var(--wfm-well); color: var(--wfm-ink); }
   .wfm-pop :focus-visible, .wfm-panel :focus-visible, .wfm-card :focus-visible { outline: 2px solid var(--wfm-focus); outline-offset: 2px; }
@@ -915,7 +1031,8 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const h = s.querySelector('h1, h2'); const t = h ? h.textContent.replace(/\s+/g, ' ').trim() : (s.id || '');
     return t.length > 40 ? t.slice(0, 38) + '…' : t;
   };
-  const spotOf = (n) => { const sec = section(n), l = label(n); return (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
+  const pgTag = () => { const m = location.pathname.match(/^\/peek\/[a-z0-9-]+\/(.+?)\/?$/); if (!m) return ''; const h = document.querySelector('h1'); const t = ((h && h.textContent) || '').replace(/\s+/g, ' ').trim().slice(0, 40) || m[1].replace(/\/index\.html$/, '').replace(/-/g, ' '); return t + ' page · '; }; // a note on a sub-page of a mockup says which page
+  const spotOf = (n) => { const sec = section(n), l = label(n); return pgTag() + (sec && l && sec !== l ? sec + ' › ' : '') + (l ? '“' + l + '”' : sec || 'the page'); };
   // a short CSS path to the spot (from the nearest id, else from body), so a pin finds its exact element again
   // (the same rule as Taya's own notes above)
   const cssPath = (n) => {
@@ -975,6 +1092,132 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     } catch (e) { return f; }
   }
 
+  /* ---------------- replace a photo (Oct 25 2026) ---------------- */
+  // A new photo for one on their page. It goes to Taya (POST /photo-swap, the key in X-WF-Key) and waits for her yes:
+  // nothing on the page changes, here or anywhere, until she has looked and put it there herself.
+  const SWAP_MAX = 8 * 1048576, SWAP_MIN_SIDE = 500;
+  const photoIn = (n) => {
+    if (!n || !n.tagName) return null;
+    const i = n.tagName === 'IMG' ? n : (n.querySelector ? n.querySelector('img') : null);
+    return i && !ours(i) && (i.currentSrc || i.src) ? i : null;
+  };
+  const SWAP_WORDS = {
+    type: 'That kind of file won’t go here. A JPG or PNG works, or email it to me.',
+    big: 'That one is over 8 MB. Email it to me and I’ll make it easy.',
+    small: 'That picture is a little small to look good on your page. A bigger one, at least 500 pixels across, works better.',
+    dimensions: 'That picture is bigger than I can use. A smaller one, please, or email it to me.',
+    waiting: 'You’ve already sent me a few that I haven’t looked at yet. I’ll get to them, and then you can send more.',
+    preview: 'This is a preview, so nothing is sent.',
+    safe: 'That didn’t go through. Try once more, or email it to me.',
+  };
+  // jpg and png go as they are; a bigger or other kind is turned into a JPEG here (longest side 2400 px) when the browser can
+  async function swapPrepare(f) {
+    if (!f || !/^image\//.test(f.type)) return { err: 'type' };
+    let w = 0, h = 0, bmp = null;
+    try { if (window.createImageBitmap) { bmp = await createImageBitmap(f); w = bmp.width; h = bmp.height; } } catch (e) { bmp = null; }
+    if (bmp && Math.max(w, h) < SWAP_MIN_SIDE) return { err: 'small' };
+    if (/^image\/(jpeg|png)$/.test(f.type) && f.size <= SWAP_MAX) return { file: f };
+    if (!bmp) return { err: /^image\/(jpeg|png)$/.test(f.type) ? 'big' : 'type' };
+    try {
+      const k = Math.min(1, 2400 / Math.max(w, h));
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      const blob = await new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.88));
+      if (!blob) return { err: 'type' };
+      if (blob.size > SWAP_MAX) return { err: 'big' };
+      return { file: new File([blob], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg', lastModified: f.lastModified }) };
+    } catch (e) { return { err: 'type' }; }
+  }
+  async function sendSwap(img, file, note) {
+    const fd = new FormData();
+    fd.append('page', PAGE);
+    const src = img.currentSrc || img.src || '';
+    if (/^https:\/\//.test(src)) fd.append('src', src.slice(0, 600));
+    if (img.alt) fd.append('alt', img.alt.slice(0, 200));
+    fd.append('path', cssPath(img));
+    if (note) fd.append('note', note);
+    fd.append('files', file, file.name);
+    let res;
+    try { res = await fetch(BASE + '/photo-swap', { method: 'POST', headers: { 'X-WF-Key': key }, body: fd, mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
+    catch (e) { const x = new Error('network'); x.code = 'network'; throw x; }
+    let data = null; try { data = await res.json(); } catch (e) { data = null; }
+    if (res.ok && data && data.ok) return data;
+    const x = new Error('fail'); x.status = res.status; x.code = (data && data.error) || 'server'; x.reason = data && data.reason;
+    throw x;
+  }
+  function openSwap(img) {
+    const box = scrim('wfm-swap-h');
+    const h = el('h2', '', 'Replace this photo'); h.id = 'wfm-swap-h';
+    box.append(h, el('p', 'lead', 'Pick a new photo and I’ll take a look. Nothing on your site changes until I’ve said yes.'));
+    const pics = el('div', 'swap');
+    const fig = (cap) => { const f = el('figure'); const b = el('div', 'swapbox'); f.append(b, el('figcaption', '', cap)); pics.append(f); return b; };
+    const nowBox = fig('On your page now'), newBox = fig('Your new photo');
+    const cur = document.createElement('img'); cur.alt = ''; cur.src = img.currentSrc || img.src; nowBox.append(cur);
+    cur.addEventListener('error', () => { nowBox.textContent = ''; nowBox.append(el('span', 'swapmiss', 'The photo you picked.')); });
+    newBox.append(el('span', 'swapmiss', 'Not chosen yet'));
+    box.append(pics);
+    const drop = el('label', 'wfm-drop');
+    const input = el('input'); input.type = 'file'; input.accept = 'image/jpeg,image/png,image/*';
+    drop.append(input, el('b', '', 'Choose a new photo'), el('span', '', 'A JPG or PNG, at least 500 pixels across, up to 8 MB. Another kind of picture? Email it to me.'));
+    box.append(drop);
+    const msg = el('p', 'msg'); msg.hidden = true; msg.setAttribute('role', 'status');
+    const lab = el('label', '', 'Anything I should know? (optional)'); lab.htmlFor = 'wfm-swap-note';
+    const ta = el('textarea'); ta.id = 'wfm-swap-note'; ta.maxLength = 300; ta.placeholder = 'Like: this one shows the new front window.';
+    const any = el('div', 'anything'); any.append(lab, ta);
+    box.append(msg, any);
+    let chosen = null;
+    const foot = el('div', 'foot');
+    const cancel = el('button', 'wfm-btn ghost', 'Cancel'); cancel.type = 'button';
+    const go = el('button', 'wfm-btn', 'Send to Taya'); go.type = 'button'; go.disabled = true;
+    const btns = el('div', 'foot'); btns.style.margin = '0'; btns.append(cancel, go);
+    foot.append(el('p', 'soft', 'I’ll write you if I have a question.'), btns);
+    box.append(foot);
+    const say = (words, bad) => { msg.hidden = false; msg.className = 'msg' + (bad ? ' bad' : ''); msg.textContent = words; };
+    cancel.addEventListener('click', () => { if (!busy) closeCard(); });
+    let seq = 0; // the last pick wins, even if an earlier one is still being turned into a JPEG
+    input.addEventListener('change', async () => {
+      const f = input.files && input.files[0]; input.value = '';
+      const mine = ++seq;
+      chosen = null; go.disabled = true; msg.hidden = true;
+      if (!f) return;
+      const r = await swapPrepare(f);
+      if (mine !== seq) return;
+      if (r.err) { newBox.textContent = ''; newBox.append(el('span', 'swapmiss', 'Not chosen yet')); say(SWAP_WORDS[r.err], true); return; }
+      chosen = r.file;
+      newBox.textContent = '';
+      const im = document.createElement('img'); im.alt = 'Your new photo';
+      try { im.src = URL.createObjectURL(chosen); } catch (e) { /* the picture just doesn't show here */ }
+      newBox.append(im);
+      go.disabled = false;
+    });
+    go.addEventListener('click', async () => {
+      if (!chosen || busy) return;
+      busy = true; go.disabled = true; cancel.disabled = true; go.textContent = 'Sending…'; msg.hidden = true;
+      try {
+        await sendSwap(img, chosen, ta.value.trim());
+        busy = false;
+        say('Sent ✓ Thank you! I’ll take a look, and your site stays just as it is until I’ve said yes.', false);
+        go.hidden = true; cancel.disabled = false; cancel.textContent = 'Done'; chosen = null;
+      } catch (x) {
+        busy = false; cancel.disabled = false; go.textContent = 'Send to Taya';
+        if (answerTrouble(x)) { closeCard(); return; }
+        go.disabled = !chosen;
+        if (x.code === 'preview') say(SWAP_WORDS.preview, true);
+        else if (x.reason === 'type') say(SWAP_WORDS.type, true);
+        else if (x.reason === 'size' || x.status === 413) say(SWAP_WORDS.big, true);
+        else if (x.reason === 'small') say(SWAP_WORDS.small, true);
+        else if (x.reason === 'dimensions') say(SWAP_WORDS.dimensions, true);
+        else if (x.code === 'too_many_waiting') say(SWAP_WORDS.waiting, true);
+        else if (x.code === 'busy' || x.code === 'slow_down' || x.status === 429) say(DOOR_WORDS.busy, true);
+        else say(SWAP_WORDS.safe, true);
+      }
+    });
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (f) { try { const dt = new DataTransfer(); dt.items.add(f); input.files = dt.files; input.dispatchEvent(new Event('change')); } catch (er) { say(SWAP_WORDS.safe, true); } } });
+  }
+
   /* ---------------- the note ---------------- */
   let pop = null, popOpen = false, picked = null, priceFirst = false;
   const closePop = () => { if (pop) pop.remove(); pop = null; popOpen = false; if (picked) picked.classList.remove('wfm-pick'); picked = null; };
@@ -1012,6 +1255,13 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     row.append(cancel, send);
     pop.append(ta);
     if (!MOCK) pop.append(ph);
+    // a photo here? they can send a new one in its place (it waits for Taya's yes)
+    const imgHere = photoIn(n);
+    if (imgHere) {
+      const sw = el('button', 'wfm-btn ghost swapbtn', 'Replace this photo'); sw.type = 'button';
+      sw.addEventListener('click', () => openSwap(imgHere));
+      pop.append(sw);
+    }
     pop.append(err, row);
     document.body.appendChild(pop);
     const r = n.getBoundingClientRect();
@@ -1159,6 +1409,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
     const a = el('a', '', 'webfaery.love'); a.href = 'https://webfaery.love/'; a.target = '_blank'; a.rel = 'noopener';
     care.append(a, document.createTextNode('.'));
     box.append(care);
+    box.append(el('p', 'soft', 'Healing arts practitioners: ask me about a trade for a website build.'));
     const foot = el('div', 'foot');
     // a straight path (Pollen, Oct 2): pick a build, leave notes, done. No "show me everything".
     foot.append(el('p', 'soft', 'You can switch anytime, and nothing is final until we’ve emailed.'));
@@ -1571,6 +1822,13 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
       if (!myPick || myPick === 'all') openCard(); // "everything" from before: pick a real build now
       showPick();
       pickBtn.addEventListener('click', openCard);
+    }
+    // (Nov 2 2026, ADD 51) what they said no to on the choices screen after their deposit comes out of the page: elements tagged data-feature="<key>"
+    if (d.features && d.features.items && typeof d.features.items === 'object') {
+      Object.keys(d.features.items).forEach((k) => {
+        if (d.features.items[k] !== false || !/^[a-z0-9_]{1,30}$/.test(k)) return;
+        document.querySelectorAll('[data-feature="' + k + '"]').forEach((n) => { n.hidden = true; n.style.display = 'none'; });
+      });
     }
     renderPins(); renderPanel();
   }).catch((x) => {

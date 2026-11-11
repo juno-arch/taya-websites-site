@@ -206,7 +206,7 @@
   .played ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 0; font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5; color: var(--ink); }
   .played li:not(:last-child)::after { content: "\2726"; font-family: 'Jost', sans-serif; font-size: 10px; color: var(--amber); margin: 0 12px; vertical-align: 4px; }
 
-  /* THE JUKEBOX: "Live from The Old Steeple" (Pollen, Oct 8: "make it a juke box"). An arched redwood cabinet in the hall's own colors:
+  /* THE JUKEBOX: "Live from The Old Steeple". An arched redwood cabinet in the hall's own colors:
      a light band around the arch in the stained glass colors, bubble tubes up both sides, a record in the window with the countdown
      to showtime beside it, and title strips for each upcoming show. Tap a strip (A1, A2...) and that artist's own Bandcamp player
      opens below (nothing loads until the tap). The record spins, the bubbles rise and the arch lights drift only while an artist
@@ -269,7 +269,7 @@
     font: 600 12px/1 'Jost', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 22px;
     color: #2a1d17; background: linear-gradient(#fff6ea, #d9c7a6); border: 2px solid; border-color: #fffaf2 #8a6a4a #8a6a4a #fffaf2; }
   .amp-b:active { border-color: #8a6a4a #fffaf2 #fffaf2 #8a6a4a; background: #d9c7a6; }
-  /* the big round play/pause key: plays the picked artist, same as tapping their title strip (Pollen, Oct 8: "make this a play button") */
+  /* the big round play/pause key: plays the picked artist, same as tapping their title strip */
   .amp-play { flex: none; display: grid; place-items: center; width: 62px; height: 62px; padding: 0; margin: 0; box-sizing: border-box; cursor: pointer; border-radius: 50%; color: #fff6ea;
     background: radial-gradient(circle at 35% 30%, #f08a7d, #d9493a 55%, #8f1d16); border: 2px solid #f0b85a;
     box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.45); }
@@ -848,7 +848,7 @@
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room with a Book button to your Airbnb, reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: everything in Planted, plus a contact form, a newsletter sign-up, an FAQ, a wedding tour form, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus tickets and gift certificates sold on your site, and first lessons booked there too."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus tickets, gift certificates and first lessons right on your site, on my server, with your own back end and no separate booking app to pay for."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site has one: $12, $45 or $90 a month, matching your build: hosting, backups, your web address (I hold and renew it for you, and it&rsquo;s legally yours), and any change: I follow your socials and update as you post, or you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
@@ -998,7 +998,7 @@
         <div class="bk-side mock-note">
           <div class="bk-note"><b>What you see</b>Every first lesson lands in your inbox and on the teacher&rsquo;s calendar.</div>
           <div class="bk-inbox"><div class="from">New lesson</div><div id="ls-inbox">Waiting for a booking&hellip; try it on the left</div></div>
-          <div class="bk-note"><b>Each teacher, their own hours</b>Britt, Vicky and Jennifer each open their own Friday times, on Cal.com.</div>
+          <div class="bk-note"><b>Each teacher, their own hours</b>Britt, Vicky and Jennifer each open their own Friday times, in your own back end, which has its own sign-in.</div>
         </div>
       </div>
       <p class="tier-note mock-note" data-show="all" data-fold>With Tended, it&rsquo;s a &ldquo;Book a first lesson&rdquo; button to your own free Cal.com page. <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
@@ -1012,7 +1012,6 @@
       <p class="label with-pill"><span>Start lessons</span> <span class="tag" data-go="maiden">Every build</span></p>
       <p class="measure soft">Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a> to schedule lessons, or email <a href="mailto:ferndalemusic@yahoo.com">ferndalemusic@yahoo.com</a>.</p>
     </div>
-    <p class="tier-note"><b>Classes and workshops:</b> <span class="ph">your next workshop</span></p>
   </div>
 </section>
 
@@ -1122,7 +1121,7 @@
       <p class="label">Stay the night</p>
       <h2 class="reveal">The Green Room <em>at The Old Steeple</em></h2>
       <p class="soft" style="margin-top:16px">Once only for musicians playing the hall, the Green Room is a private suite inside the church: a vintage kitchen and dining room with a gas fireplace, a high ceilinged parlor, a bedroom and a bath, with instruments on the walls. Up to 3 guests, a few blocks from Main Street.</p>
-      <p class="stars"><b>4.98</b><i aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</i><span>from 58 reviews on Airbnb &middot; Cheri is a Superhost</span></p>
+      <p class="stars"><b>4.98</b><i aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</i><span>from 59 reviews on Airbnb &middot; Cheri is a Superhost</span></p>
       <div class="guest">
         <p>&ldquo;It truly felt like staying in a piece of history.&rdquo;</p>
         <small>Heather, Arcata, on Airbnb</small>
@@ -1185,7 +1184,6 @@
       <details><summary>Can I bring my kids?</summary><div class="ans"><p>Yes. Shows at The Old Steeple are all ages.</p></div></details>
       <details><summary>Is the hall accessible?</summary><div class="ans"><p>Yes. The Old Steeple is ADA accessible, with accessible restrooms.</p></div></details>
       <details><summary>When do doors open?</summary><div class="ans"><p>Shows start at 7:30 pm. Doors open at <span class="ph">your doors time</span>.</p></div></details>
-      <details><summary>Where do I park?</summary><div class="ans"><p><span class="ph">(your parking note here)</span></p></div></details>
       <details><summary>Where can I stay?</summary><div class="ans"><p>Right here, when there isn&rsquo;t a show: the Green Room is a private suite inside the church. Ferndale&rsquo;s Victorian Village has more inns a few blocks away.</p></div></details>
       <details><summary>How old do you have to be for lessons?</summary><div class="ans"><p>Lessons are for all ages. Vicky teaches ukulele to everyone from 4 to 94.</p></div></details>
       <details><summary>When are you open?</summary><div class="ans"><p>On concert dates, and by appointment. Call <a class="tel" href="tel:+17077867030">(707) 786-7030</a>.</p></div></details>
@@ -1343,7 +1341,7 @@
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room with a Book button to your Airbnb, reviews and how to reach you."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> <s><span class="vh">regular price </span>$600</s></span></button>
       <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site: everything in Planted, plus a contact form, a newsletter sign-up, an FAQ, a wedding tour form, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> <s><span class="vh">regular price </span>$1,200</s></span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Everything in Tended, plus tickets and gift certificates sold on your site, and first lessons booked there too."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Tended, plus tickets, gift certificates and first lessons right on your site, on my server, with your own back end and no separate booking app to pay for."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> <s><span class="vh">regular price </span>$1,800</s></span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="pr"><span class="vh">, </span>from <strong>$12</strong>/mo</span><span class="care-what">Every site has one: $12, $45 or $90 a month, matching your build: hosting, backups, your web address (I hold and renew it for you, and it&rsquo;s legally yours), and any change: I follow your socials and update as you post, or you email me. If you ever cancel, your site is still yours, with every file and login.</span></div>
@@ -1624,7 +1622,7 @@
         var who = Object.keys(TEACH).filter(function (k) { return TEACH[k].indexOf(s.inst) > -1; });
         if (!who.length) {
           var b = document.createElement('button'); b.type = 'button'; b.className = 'bk-opt'; b.setAttribute('aria-pressed', 'false');
-          b.innerHTML = '<b>' + s.inst + ' teacher</b><span class="ph">who teaches ' + s.inst.toLowerCase() + '</span>';
+          b.innerHTML = '<b>' + s.inst + ' teacher</b>';
           b.addEventListener('click', function () { pick([b], b); s.teacher = s.inst + ' teacher'; S.paint(); }); teachBox.appendChild(b); return;
         }
         who.forEach(function (k) {
@@ -1762,7 +1760,7 @@
     var V = {
       maiden: { name: 'Planted', price: '$300', what: 'one page: your upcoming shows, the hall, lessons and teachers, weddings, the Green Room with a Book button to your Airbnb, reviews and how to reach you.', next: 'mother' },
       mother: { name: 'Tended', price: '$600', what: 'a full site: a contact form, a newsletter signup that works, an FAQ, a wedding tour form, a Book a first lesson button to your own free Cal.com page, Get tickets buttons to the ticket page you use now, and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus tickets and gift certificates sold on your site, and first lessons booked there too.' },
+      crone: { name: 'In Bloom', price: '$900', what: 'everything in Tended, plus tickets, gift certificates and first lessons right on your site, on my server, with your own back end and no separate booking app to pay for.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1888,7 +1886,7 @@
   })();
 </script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=4";s.defer=true;document.head.appendChild(s);}</script>
-<script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), and repeat visits within 30 minutes. */addEventListener("load",function(){try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}});</script>
+<script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
 <script src="/note-motion.js?v=1" defer></script>
 <script src="/lightbox.js?v=2" defer></script>
 <script>

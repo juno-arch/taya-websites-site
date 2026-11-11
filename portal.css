@@ -198,6 +198,17 @@ html.wf-arriving .page { min-height: 100vh; min-height: 100svh; }
 .todo .said { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--wf-b-well); font-size: 15.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .todo .answer-box { margin-top: 12px; width: 100%; }
 .todo .answer-box .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 10px; }
+/* (Oct 22 2026) a question's choices: tap one (or Other, which opens a box); every tap is 44px tall */
+.todo .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.todo .choice-btn { min-height: 44px; padding: 8px 18px; border-radius: 12px; border: 1.5px solid var(--wf-b-edge); background: transparent; color: inherit; font: inherit; font-size: 16px; cursor: pointer; }
+.todo .choice-btn:hover:not(:disabled) { border-color: var(--wf-b-accent); }
+.todo .choice-btn:focus-visible { outline: 2px solid var(--wf-b-focus, var(--wf-b-accent)); outline-offset: 2px; }
+.todo .choice-btn.on { border-color: var(--wf-b-accent); background: var(--wf-b-well); font-weight: 600; }
+.todo .other-wrap { margin-top: 10px; }
+@media (max-width: 480px) { .todo .choices { flex-direction: column; } .todo .choice-btn { width: 100%; text-align: left; } }
+/* the autosave's small quiet line (Oct 19 2026) */
+.todo .answer-box .save-note { margin: 6px 0 0; font-size: 13.5px; color: var(--wf-b-ink-soft); }
+.todo .answer-box .save-note:empty { display: none; }
 .todo .progress { margin: 10px 0 0; font-size: 15px; color: var(--wf-b-ink-soft); }
 .todo .progress:empty { display: none; }
 .todo .hint { margin: 8px 0 0; font-size: 14.5px; line-height: 1.45; color: var(--wf-b-ink-soft); }
@@ -253,6 +264,8 @@ details.done-fold { margin-top: 10px; }
 .tl .when { display: block; margin-top: 1px; font-weight: 500; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--wf-b-ink-soft); }
 .tl .when:empty { display: none; }
 .tl .now .when { color: var(--wf-b-due-ink); }
+.tl .when.est, .tl .now .when.est { font-weight: 400; color: var(--wf-b-ink-soft); } /* ADD 64: a projected day, lighter than a real one, no alarm color */
+.tl .turn { margin: 4px 0 0; font-weight: 500; font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--wf-b-due-ink); }
 .tl .say { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--wf-b-ink-soft); }
 /* "Now": a word with a gold dot, not a pill */
 .now-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--wf-font-work); font-weight: 500; font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--wf-b-due-ink); }
@@ -261,6 +274,15 @@ details.done-fold { margin-top: 10px; }
 .tl-after svg { width: 22px; height: 22px; color: var(--wf-b-done); flex: none; margin-top: 1px; }
 .tl-after + .tl { margin-top: 18px; }
 .tl-more { margin-top: 6px; }
+.tl-launch { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background: var(--wf-b-well); }
+.tl-launch p { margin: 0 0 6px; font-size: 16px; line-height: 1.5; }
+.tl-launch .tl-est { font-weight: 600; }
+.tl-launch .tl-late { color: var(--wf-b-ink-soft, inherit); }
+.tl-form { display: grid; gap: 10px; margin-top: 10px; }
+.tl-form[hidden] { display: none; }
+.tl-form label { display: grid; gap: 4px; font-size: 15px; }
+.tl-form input, .tl-form textarea { font: inherit; min-height: 44px; padding: 8px 10px; border: 1px solid var(--wf-b-line, #c9c3b8); border-radius: 10px; background: #fff; max-width: 100%; box-sizing: border-box; }
+
 
 /* ============ your things ============ */
 .things { list-style: none; margin: 12px 0 0; padding: 0; }
@@ -420,8 +442,10 @@ details.done-fold { margin-top: 10px; }
 .dc-radio input, .dc-check input { width: 22px; height: 22px; margin: 0; flex: none; cursor: pointer; }
 .dc-amt { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 16.5px; }
 .dc-amt input { max-width: 9em; }
-.dc-dates { display: grid; grid-template-columns: 1fr; gap: 0 16px; }
-@media (min-width: 560px) { .dc-dates { grid-template-columns: 1fr 1fr; } }
+.dc-dates { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 16px; }
+.dc-dates > div { min-width: 0; }
+.dc-dates input[type="date"], .dc-dates input[type="time"] { min-width: 0; max-width: 100%; -webkit-appearance: none; appearance: none; }
+@media (min-width: 560px) { .dc-dates { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 @media (max-width: 420px) { .dc .o-act .open-btn, .order .o-act2 .open-btn { flex: 1 1 auto; } }
 @media print { #sec-codes, .order .o-act2, .ship-form { display: none !important; } }
 
@@ -584,7 +608,11 @@ details.done-fold { margin-top: 10px; }
 .bk-dayname { font-family: var(--wf-font-display); font-size: 17px; }
 .bk-wins { display: grid; gap: 6px; }
 .bk-win { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; align-items: center; gap: 6px 10px; }
-.bk-win input[type="time"] { width: 100%; min-width: 0; padding-left: 8px; padding-right: 6px; }
+.bk-win > * { min-width: 0; }
+/* iOS Safari gives a time box its own minimum width and ignores width:100%; drop that so both boxes fit their grid tracks */
+.bk-win input[type="time"] { display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; min-height: 44px; -webkit-appearance: none; appearance: none; padding-left: 8px; padding-right: 6px; }
+.bk-win input[type="time"]::-webkit-date-and-time-value { min-width: 0; text-align: center; margin: 0; }
+.bk-to { white-space: nowrap; }
 @media (max-width: 520px) {
   .bk-win { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 6px; }
   .bk-win .later { grid-column: 1 / -1; justify-self: start; }
@@ -631,6 +659,7 @@ details.done-fold { margin-top: 10px; }
 .bk-cd-n { font-size: 16px; line-height: 1.1; font-weight: 500; }
 .bk-cd-w { font-size: 12.5px; line-height: 1.2; color: var(--wf-b-ink-soft); white-space: nowrap; overflow: hidden; max-width: 100%; }
 .bk-cd-long { display: none; }
+.bk-cd-more { font-size: 11px; }
 @media (min-width: 760px) { .bk-cd { min-height: 64px; } .bk-cd-long { display: inline; } .bk-cd-w { font-size: 13.5px; } }
 .bk-cd-busy { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--wf-b-ink-soft); }
 .bk-cd-past { opacity: .5; }
@@ -778,6 +807,9 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
 /* ============ your visitors (Oct 15 2026): their own site's private counts ============
    Calm on purpose: one plain line, two numbers, a bar for each day in the quiet decoration lavender (no up-is-good
    green, no down-is-bad red), ledger rows for pages, sites and devices, tabular numbers throughout. */
+/* how you show up on Google (Nov 4 2026) */
+.gg-privacy { margin-top: 28px; }
+.gg-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
 .vs-lede { margin: 6px 0 14px; font-size: 17.5px; line-height: 1.5; max-width: 36em; }
 .vs-glance dd { font-variant-numeric: tabular-nums; }
 .vs-days { margin: 20px 0 0; }
@@ -852,6 +884,17 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
    Ledger rows like the rest of the back end. Color only with meaning: the gold "Renews in 3 weeks" line once 30 days
    or fewer are left, red only once one has ended; everything else in the usual inks. The number and the contact are
    selectable text (one tap selects the whole of it, for copying into a form or a phone). */
+/* Your critique of Web Faery (Oct 23 2026): six short prompts and one free box; every tap is 44px tall */
+.cq-lede { margin: 6px 0 14px; font-size: 17px; line-height: 1.5; max-width: 38em; }
+.cq-form { max-width: 38em; }
+.cq-q { border: 0; margin: 0 0 20px; padding: 0; min-width: 0; }
+.cq-q .field-label { display: block; margin: 0 0 6px; padding: 0; }
+.cq-choice { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.cq-choice input { width: 22px; height: 22px; flex: none; margin: 0; }
+.cq-choice label { flex: 1; min-height: 44px; display: flex; align-items: center; cursor: pointer; }
+.cq-q input[type="text"] { width: 100%; box-sizing: border-box; margin-top: 6px; }
+#in-cq-fix { width: 100%; box-sizing: border-box; }
+.cq-thanks p { font-size: 18px; margin: 6px 0 10px; }
 .pp-lede { margin: 6px 0 14px; font-size: 17px; line-height: 1.5; max-width: 38em; }
 .pp-list { box-shadow: none; }
 .pp-list > li.pp-item { align-items: flex-start; flex-wrap: wrap; padding: 16px 18px; }
@@ -870,6 +913,178 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
   .pp-facts { grid-template-columns: 1fr; gap: 0; }
   .pp-facts dd { margin-bottom: 6px; }
 }
+/* Oct 20 2026 (hub DEPLOY.md section 98): they add their own papers. The same quiet form as a receipt; their rows get
+   Rename and Remove as quiet links beside Download; the rename field and the "Remove it?" question open inside the
+   row, full width. Every tap target is at least 44 px tall. */
+.pp-item .acts { flex-wrap: wrap; }
+.pp-item .acts .later { min-height: 44px; }
+.pp-ren-form, .pp-ask { flex: 1 1 100%; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--wf-b-rule); }
+.pp-ren-form .field-label { margin-top: 0; }
+.pp-ren-form input { width: 100%; max-width: 30em; }
+.pp-ask p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--wf-b-ink); }
+.pp-ask .dc-btns, .pp-ren-form .dc-btns { margin-top: 10px; }
+.pp-ask .dc-btns > button, .pp-ren-form .dc-btns > button, .pp-form .dc-btns > button { min-height: 44px; }
+.pp-none { margin: 4px 0 0; font-size: 16px; line-height: 1.5; color: var(--wf-b-ink-soft); max-width: 38em; }
+.pp-add { margin-top: 16px; }
+.pp-add-open { min-height: 44px; }
+.pp-form .field-label { margin-top: 14px; }
+.pp-form input[type="text"], .pp-form select, .pp-form input[type="date"] { width: 100%; max-width: 24em; }
+.pp-file { display: block; width: 100%; max-width: 24em; min-height: 44px; padding: 8px 0; font: inherit; font-size: 15.5px; color: var(--wf-b-ink); }
+.pp-hint, .pp-room { margin: 6px 0 0; color: var(--wf-b-ink-soft); font-size: 14.5px; line-height: 1.5; max-width: 36em; }
+.pp-room { margin-top: 12px; }
+
+/* ============ Resources (Oct 21 2026, hub DEPLOY.md section 101): how-to videos and guides ============
+   A plain heading per topic, then ledger rows like the rest of the back end: the title, one line about it, and Watch or
+   Read (opens in a new tab). No new colors, nothing embedded. On a narrow phone the button drops under the words. */
+.rs-lede { margin: 6px 0 4px; font-size: 17px; line-height: 1.5; max-width: 38em; }
+.rs-group { margin: 18px 0 0; }
+.rs-head { margin: 0 0 8px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--wf-b-ink-soft); }
+.rs-list { box-shadow: none; }
+.rs-list > li.rs-item { align-items: flex-start; flex-wrap: wrap; padding: 14px 18px; }
+.rs-item .what { flex: 1 1 16em; }
+.rs-item .acts { padding-top: 2px; }
+.rs-item .rs-written { flex: 1 1 100%; }
+.rs-fine { margin: 18px 0 0; color: var(--wf-b-ink-soft); font-size: 14.5px; line-height: 1.5; max-width: 44em; }
+@media (max-width: 420px) {
+  .rs-item .acts { width: 100%; }
+  .rs-item .open-btn { flex: 1 1 auto; }
+}
+
+/* ============ Messages (Oct 20 2026, hub DEPLOY.md section 94): their thread with Taya, ledger rows, mobile first ============ */
+.msg-intro { margin: 6px 0 0; color: var(--wf-b-ink-soft); font-size: 15.5px; line-height: 1.5; max-width: 40em; }
+.msg-none { margin: 18px 0 0; color: var(--wf-b-ink-soft); font-size: 15.5px; }
+.msg-thread { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--wf-b-rule); }
+.msg-row { padding: 0; border-bottom: 1px solid var(--wf-b-rule); }
+.msg-form { margin-top: 18px; }
+.msg-sum { display: grid; grid-template-columns: 3.4em minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 10px 2px; border: 0; background: none; font: inherit; color: var(--wf-b-ink); text-align: left; cursor: pointer; }
+.msg-sum::after { content: '›'; font-size: 20px; color: var(--wf-b-ink-soft); transition: transform .2s ease; }
+.msg-sum[aria-expanded="true"]::after { transform: rotate(90deg); }
+.msg-sum-when { font-size: 14px; color: var(--wf-b-ink-soft); font-variant-numeric: tabular-nums; }
+.msg-sum-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 400; }
+.msg-sum:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 6px; }
+.msg-det { padding: 2px 2px 14px; }
+.msg-row.from-taya .msg-sum-title { font-weight: 600; }
+.msg-row.from-taya, .msg-row.from-taya.is-open { border-left: 0; padding-left: 0; }
+.msg-sum-when { white-space: nowrap; }
+.msg-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin: 0; }
+.msg-who { font-weight: 600; color: var(--wf-b-ink); }
+.msg-when { font-size: 13.5px; color: var(--wf-b-ink-soft); font-variant-numeric: tabular-nums; }
+.msg-body { margin: 4px 0 0; font-size: 16px; line-height: 1.55; color: var(--wf-b-ink); white-space: pre-wrap; overflow-wrap: anywhere; max-width: 40em; }
+.msg-form textarea { width: 100%; max-width: 100%; box-sizing: border-box; font-size: 16px; }
+#b-msg { min-height: 46px; }
+/* (Oct 20 2026, hub section 95) their emails with Taya in the same ledger: the subject in bold, "via email" under the
+   time, long words folded behind a quiet "Show more" (44px to tap). No new colors. */
+.msg-stamp { display: inline-flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+.msg-via { font-size: 13px; color: var(--wf-b-ink-soft); }
+.msg-subject { margin: 4px 0 0; font-size: 16px; color: var(--wf-b-ink); overflow-wrap: anywhere; max-width: 40em; }
+.msg-subject b { font-weight: 600; }
+.msg-files { margin: 4px 0 0; font-size: 14px; color: var(--wf-b-ink-soft); }
+.msg-more { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; color: var(--wf-b-ink-soft); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.msg-more:hover { color: var(--wf-b-ink); }
+.msg-more:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px; }
+.msg-more[aria-busy="true"] { opacity: .7; }
+/* the quiet dot on the Messages tab while one of Taya's waits unread */
+.msg-dot { display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: var(--wf-gold); vertical-align: 2px; flex: none; }
+@media (max-width: 760px) {
+  .dock .msg-dot { position: absolute; top: 6px; left: calc(50% + 9px); margin: 0; width: 8px; height: 8px; }
+}
+@media print { .msg-form { display: none !important; } }
+
+/* ============ read only view: a Studio preview (Oct 19 2026, hub DEPLOY.md section 90) ============
+   Only with portal.js's html.wf-preview: a calm line at the top, no sign-out, and every control that would change
+   something quiet and plainly off (it keeps its place, so the page looks the same as the client's). */
+.pv-bar {
+  margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--wf-b-rule); border-radius: var(--wf-r-sheet);
+  background: var(--wf-b-sheet); color: var(--wf-b-ink-soft); font-size: 15px; line-height: 1.45; overflow-wrap: anywhere;
+}
+html.wf-preview #b-signout-top, html.wf-preview #foot-out, html.wf-preview #b-signout { display: none !important; }
+html.wf-preview .ro-off { opacity: .55; cursor: not-allowed; }
+html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
+
+/* a password to sign in with (Oct 25 2026) */
+.pw-link { margin: 14px 0 0; }
+#v-pass input[type="password"], #f-password input[type="password"] {
+  width: 100%; max-width: 100%; min-height: 48px; padding: 10px 12px;
+  background: var(--wf-b-field); color: var(--wf-b-ink); border: 1px solid var(--wf-b-edge); border-radius: var(--wf-r-input);
+  font-family: var(--wf-font-work); font-weight: 400; font-size: 16.5px; line-height: 1.45;
+}
+#f-password input { max-width: 28em; }
+#v-pass .field-label { margin-top: 16px; }
+#v-pass #b-pass { margin-top: 18px; }
+#f-password .field-label { margin-top: 14px; }
+#f-password #b-pw { margin-top: 6px; }
+
+/* (Oct 30 2026) question rows: a heading above a group, and a how-to video under the words */
+#todos > li.todo-group { list-style: none; padding: 14px 0 2px; border: 0; }
+#todos > li.todo-group h3 { margin: 0; font-size: 1.05rem; }
+.todo .todo-video { margin: 8px 0 12px; max-width: 520px; }
+.todo .todo-video video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 12px; background: #000; }
+.todo .todo-video .open-btn { margin-top: 6px; }
+
+/* Visitors before launch (add 35): only the heading and the one line */
+#sec-visits.vs-soon > :not(.kicker):not(h2):not(.vs-lede) { display: none; }
+
+/* ============ their brand: heading font, header logo, Brand kit (Nov 4 2026, ADD 56 + 57) ============
+   Only with data-wf-hfont on <html> (portal.js applyHeadingFont): their heading face on h1 to h3, nothing else. The faces are
+   in fonts/brand/brand-fonts.css (swap: the heading shows in the fallback serif first, then settles). The little kicker lines
+   keep Web Faery's own. font-synthesis off, so a one-weight face is never faked bold. Long names wrap rather than push the page. */
+:root[data-wf-hfont] :is(h1, h2, h3):not(.kicker) { font-family: var(--wf-b-hfont), var(--wf-font-display); font-synthesis: none; overflow-wrap: anywhere; }
+/* the logo in the bar: never stretched, 32px tall at most; a logo made for light paper sits on a small paper plate */
+.brand .biz-logo { height: 32px; max-width: min(46vw, 200px); width: auto; object-fit: contain; display: block; }
+.brand .biz-logo.on-plate { background: var(--wf-b-sheet, #fcfbff); border-radius: 8px; padding: 3px 8px; box-sizing: content-box; height: 26px; }
+.brand.has-logo { gap: 10px; }
+.brand.has-logo .biz { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* the name stays for screen readers */
+@media (max-width: 600px) { .brand .biz-logo { max-width: 52vw; } }
+
+#sec-brand .bkit-lede { margin: 0 0 4px; color: var(--wf-b-ink-soft); }
+.bkit-swatches { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.bkit-sw { width: 100%; display: grid; grid-template-columns: 40px 1fr; grid-template-areas: "chip name" "chip hex"; column-gap: 12px; align-items: center; text-align: left; padding: 10px 12px; border: 1px solid var(--wf-b-rule); border-radius: 12px; background: var(--wf-b-sheet); color: var(--wf-b-ink); font: inherit; cursor: pointer; min-height: 56px; }
+.bkit-sw:hover { background: var(--wf-b-leaf-tint); }
+.bkit-chip { grid-area: chip; width: 40px; height: 40px; border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); }
+.bkit-name { grid-area: name; font-weight: 500; font-size: 15px; line-height: 1.25; overflow-wrap: anywhere; }
+.bkit-hex { grid-area: hex; font-family: var(--wf-font-mono); font-size: 13px; color: var(--wf-b-ink-soft); }
+.bkit-hint, .bkit-soon { margin: 10px 0 0; font-size: 14px; color: var(--wf-b-ink-soft); }
+.bkit-soon { margin-top: 22px; }
+.bkit-fonts, .bkit-logos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+.bkit-font, .bkit-logo { border: 1px solid var(--wf-b-rule); border-radius: 14px; padding: 14px 16px; background: var(--wf-b-sheet); display: flex; flex-direction: column; gap: 8px; align-items: flex-start; min-width: 0; }
+.bkit-flabel { font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--wf-b-ink-soft); }
+.bkit-fname { margin: 0; font-size: 15px; font-weight: 500; }
+.bkit-sample { margin: 0; font-size: 26px; line-height: 1.2; overflow-wrap: anywhere; }
+.bkit-flink { font-size: 14px; }
+.bkit-plate { width: 100%; min-height: 96px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 14px; box-sizing: border-box; border: 1px solid var(--wf-b-rule); }
+.bkit-plate.light { background: #ffffff; }
+.bkit-plate.dark { background: #1d1f24; border-color: #1d1f24; }
+.bkit-plate img { display: block; max-width: 100%; height: 64px; width: auto; object-fit: contain; }
+.bkit-sheet { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 10px; }
+.bkit-sheet p { margin: 0; }
+
+/* Your accounts (Nov 4 2026, ADD 58): a ledger, one row per account, no pills */
+#sec-accounts .acct-lede { margin: 0 0 4px; color: var(--wf-b-ink-soft); }
+.acct-list { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--wf-b-rule); }
+.acct-row { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; row-gap: 4px; padding: 14px 2px; border-bottom: 1px solid var(--wf-b-rule); }
+.acct-row > :not(.ico) { grid-column: 2; min-width: 0; }
+.acct-row > .ico { grid-row: 1 / span 6; grid-column: 1; width: 24px; height: 24px; color: var(--wf-b-ink-soft); margin-top: 2px; }
+.acct-row > .ico svg { width: 24px; height: 24px; }
+.acct-name { margin: 0; font-weight: 600; font-size: 16px; overflow-wrap: anywhere; }
+.acct-line, .acct-holder, .acct-renew, .acct-note { margin: 0; font-size: 15px; color: var(--wf-b-ink-soft); overflow-wrap: anywhere; }
+.acct-holder { color: var(--wf-b-ink); }
+.acct-acts { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 6px; }
+
+/* Coming up + account links (Nov 4 2026, ADD 61 / 62) */
+.coming { list-style: none; margin: 8px 0 0; padding: 0; }
+.coming-row { display: grid; grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; align-items: start; padding: 8px 2px; }
+.coming-row > .ico { width: 24px; height: 24px; color: var(--wf-b-ink-soft); margin-top: 1px; }
+.coming-row > .ico svg { width: 24px; height: 24px; }
+.coming-line { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
+.coming-row > .acct-acts { grid-column: 2; }
+.acct-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.acct-user { margin: 0; font-size: 15px; color: var(--wf-b-ink); overflow-wrap: anywhere; }
+.acct-user { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 6px; }
+.acct-eye { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin: -10px 0; padding: 0; background: none; border: 0; border-radius: 50%; color: var(--wf-b-ink-soft); cursor: pointer; }
+.acct-eye svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.acct-eye .eye-slash { display: block; }
+.acct-eye[aria-pressed="true"] .eye-slash { display: none; }
+.acct-eye:focus-visible { outline: 2px solid var(--wf-b-ink); outline-offset: 1px; }
 
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
@@ -887,3 +1102,5 @@ textarea.nl-body { min-height: 300px; font-size: 16.5px; line-height: 1.55; }
    else the gold line stays */
 :root[data-wf-brand-bar] .tabs a[aria-current="page"]::after,
 :root[data-wf-brand-bar] .dock [aria-current="page"]::before { background: var(--wf-b-brand-bar); box-shadow: none; }
+
+

@@ -10,3 +10,6 @@ Every photo except the hero is the venue's own, from their Instagram (@heirloomr
 Stock stand-in (tagged "Sample photo"): hero.jpg only. Swap in one of their own wide garden photos when we have a big enough file.
 
 Heads up: their brochure says the people and chairs in some of their images were AI-generated to help couples imagine their wedding and reception. That covers the guests in the rainbow ceremony photo (g-rainbow-ceremony.jpg) and the chairs (likely the whole table setup) on the cobblestone (cobblestone-reception.jpg, ig-cobblestone-tables.jpg). The garden, gazebo and buildings look like their real property. Worth confirming with them before launch, and maybe a small caption on those photos.
+
+## Oct 25 2026 audit pass
+Checked the blank fill-ins against their Facebook page, the Visit Redwoods listing and Visit Ferndale. Nothing new could be confirmed (no address, hours, tour days, pricing, rain, catering, parking, lodging published). The contact email on the Visit Redwoods listing (a dresdenstar.com address) was left off the page on purpose. List: ~/Documents/Garden-Faery/prospects/batch17-fixes/heirloom-rose-blanks.md

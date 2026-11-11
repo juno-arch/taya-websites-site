@@ -189,6 +189,16 @@ if (fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8').includes('portal')) 
 // the key only ever travels in a header, never in a web address
 if (/[?&](token|session|key)=/.test(js)) fail('portal.js: a key in a web address');
 
+// ---- a Studio preview (Oct 19 2026, added on purpose): the key only in the #fragment, kept for this tab only, taken
+// out of the address at once; its words; no sign-out; and the reads it may send match the hub's PREVIEW_READS ----
+if (!/h\.indexOf\('#preview='\) === 0\) \{\s*history\.replaceState\(null, '', location\.pathname \+ location\.search\);/.test(js)) fail('portal.js: a Studio preview key should leave the address at once');
+if (/[?&]preview=/.test(js) || !/window\.sessionStorage\.setItem\(PREVIEW_STORE/.test(js) || !/DEMO \|\| PREVIEW \? window\.sessionStorage/.test(js)) fail('portal.js: a Studio preview key stays in the #fragment and in this tab only (sessionStorage)');
+if (!js.includes("'. Try the buttons: nothing is saved or sent.'") || !js.includes("'Viewing as '")) fail('portal.js: the Studio preview line ("Viewing as …. Try the buttons: nothing is saved or sent.") is missing');
+if (!/<h2 id="h-ended" tabindex="-1">This view has ended\. Open it again from the Studio\.<\/h2>/.test(html)) fail('portal.html: the ended Studio preview words are missing');
+if (!js.includes("const RO_TITLE = 'Read only view';")) fail('portal.js: switched off controls in a Studio preview should say "Read only view"');
+if (!/html\.wf-preview #b-signout-top, html\.wf-preview #foot-out, html\.wf-preview #b-signout \{ display: none !important; \}/.test(read('portal.css'))) fail('portal.css: a Studio preview should show no sign-out');
+if (!/if \(PREVIEW && !previewReads\(url\)\) return stayQuiet\(\);/.test(js) || !js.includes('if (PREVIEW) { stayQuiet().catch(reject); return; }')) fail('portal.js: a Studio preview should send only reads');
+
 // ---- the preview ----
 if (!/if \(DEMO\) \{\s*loadDemo\(\)/.test(js)) fail('portal.js: portal-demo.js should load only when DEMO is true');
 if (/000000/.test(js)) fail('portal.js: the demo code should live only in portal-demo.js');
@@ -248,7 +258,42 @@ const demoOn = /const DEMO = true;/.test(js);
   // the page: loaded before portal.js, OFF until me.brand.accent, and only the small accents in portal.css
   const brandAt = html.indexOf('src="portal-brand.js'), portalAt = html.indexOf('src="portal.js');
   if (brandAt < 0 || brandAt > portalAt) fail('portal.html: portal-brand.js should load just before portal.js');
-  if (!/setBrand\(c\.business \|\| '', me\.brand && me\.brand\.accent\)/.test(js)) fail('portal.js: render() should pass me.brand.accent to setBrand');
+  if (!/setBrand\(c\.business \|\| '', me\.brand\)/.test(js)) fail('portal.js: render() should pass me.brand to setBrand');
+  // (Nov 4 2026, ADD 56/57) their heading font, header logo and Brand kit: nothing applies without a brand, and every font is a local file
+  const fontKeys = [...(js.match(/const BRAND_FONTS = \{([\s\S]*?)\n  \};/) || ['', ''])[1].matchAll(/'([a-z0-9-]+)': \[/g)].map((m) => m[1]);
+  if (fontKeys.length < 5) fail('portal.js: BRAND_FONTS is missing');
+  const fontsCss = read('fonts/brand/brand-fonts.css');
+  for (const k of fontKeys) {
+    if (!fs.existsSync(path.join(root, 'fonts/brand/' + k + '.woff2'))) fail('fonts/brand/' + k + '.woff2 is missing');
+    if (!new RegExp('url\\(' + k + '\\.woff2\\)').test(fontsCss)) fail('brand-fonts.css has no face for ' + k);
+  }
+  if (/https?:\/\//.test(fontsCss.replace(/\/\*[\s\S]*?\*\//g, ''))) fail('brand-fonts.css: fonts must be served from this site, no outside address');
+  if (!/href="fonts\/brand\/brand-fonts\.css\?v=/.test(html)) fail('portal.html: brand-fonts.css is not linked');
+  const hubFonts = process.env.HUB_DIR && fs.existsSync(path.join(process.env.HUB_DIR, 'pb_hooks/webfaery-brandlook-lib.js')) ? fs.readFileSync(path.join(process.env.HUB_DIR, 'pb_hooks/webfaery-brandlook-lib.js'), 'utf8') : '';
+  if (hubFonts) { const hk = [...(hubFonts.match(/const FONTS = \{([\s\S]*?)\n\};/) || ['', ''])[1].matchAll(/'([a-z0-9-]+)':/g)].map((m) => m[1]); if (hk.sort().join() !== fontKeys.slice().sort().join()) fail('the hub FONTS list and portal.js BRAND_FONTS differ'); }
+  const cssAll = read('portal.css');
+  const hf = cssAll.split('\n').filter((l) => /--wf-b-hfont|\.biz-logo|has-logo|\.bkit-/.test(l) && /\{/.test(l) && !/^\s*\/?\*/.test(l));
+  if (!hf.length) fail('portal.css: the brand font / logo / Brand kit rules are missing');
+  for (const l of hf.filter((x) => /--wf-b-hfont/.test(x))) if (!/:root\[data-wf-hfont\]/.test(l)) fail('portal.css: the heading font applies without data-wf-hfont: ' + l.trim().slice(0, 80));
+  if (/fonts\.googleapis|fonts\.gstatic/.test(js + html + cssAll)) fail('the portal must not call a font service');
+  if (!/id="sec-brand" data-page="brand"[^>]*hidden/.test(html)) fail('portal.html: the Brand kit section should start hidden');
+  if (!/function renderBrandKit\(/.test(js) || !/setHidden\(sec, true\)/.test(js.slice(js.indexOf('function renderBrandKit('), js.indexOf('function renderBrandKit(') + 1500))) fail('portal.js: the Brand kit tab should hide until something is set');
+  if (/innerHTML/.test(js.slice(js.indexOf('function renderBrandKit('), js.indexOf('function renderBrandKit(') + 6000))) fail('portal.js: the Brand kit must draw with textContent only');
+  // (Nov 4 2026, ADD 58) Your accounts: hidden until a row is set, textContent only, renewal wording says where it renews, no passwords asked for
+  if (!/id="sec-accounts" data-page="accounts"[^>]*hidden/.test(html)) fail('portal.html: the Your accounts section should start hidden');
+  const acStart = js.indexOf('function cleanAccounts(');
+  const acEnd = js.indexOf('// the bar is dark: a logo made for dark ground');
+  if (acStart < 0 || acEnd < acStart) fail('portal.js: the Your accounts block is missing');
+  else {
+    const ac = js.slice(acStart, acEnd);
+    if (/innerHTML/.test(ac)) fail('portal.js: Your accounts must draw with textContent only');
+    if (!/', in your '/.test(ac) || /we renew|we.ll renew|renewed for you/i.test(ac)) fail('portal.js: Your accounts should say "renews on <date>, in your <registrar> account", never that we renew it');
+    if (!/setHidden\(sec, true\)/.test(ac)) fail('portal.js: the Your accounts tab should hide until a row is set');
+    if (/password|passcode/i.test(ac.replace(/Your passwords stay/g, ''))) fail('portal.js: Your accounts must not ask for or show passwords');
+    if (!/acct-link/.test(ac) || !/rel = 'noopener noreferrer'/.test(ac) || !/Sign in as: /.test(ac)) fail('portal.js: Your accounts rows should link their title to the sign-in page and show "Sign in as: <user>" (ADD 62)');
+    if (/innerHTML/.test(js.slice(js.indexOf('function cleanComing('), js.indexOf('function renderAccounts(')))) fail('portal.js: Coming up must draw with textContent only (ADD 61)');
+    if (/TBD|hurry|urgent|never/i.test(js.slice(js.indexOf('function cleanComing('), js.indexOf('function renderAccounts(')))) fail('portal.js: Coming up must not say TBD or press for urgency (ADD 61)');
+  }
   if (!/function applyAccent\(/.test(js) || !/removeAttribute\('data-wf-brand'\)/.test(js)) fail('portal.js: applyAccent should clear the accent before it paints a new one');
   const css = read('portal.css');
   const brandCss = (css.split('/* ============ brand accent')[1] || '');
@@ -279,6 +324,218 @@ const demoOn = /const DEMO = true;/.test(js);
     if (!/Email Taya<\/a> and I will add it\./.test(block)) fail('portal.html: the book again note should say how a missing booking page address gets added');
   }
   if (!/const X_KEYS = \['thanks', 'nudge', 'addons', 'intake'\];/.test(js)) fail('portal.js: the extras should be the four owner switches only');
+}
+
+// ---- Messages (Oct 20 2026, hub DEPLOY.md section 94; added on purpose) ----
+// A Messages tab with their thread (plain text, textContent only), "Write to Taya" and a Send button; Enter is a new
+// line (no key handler sends); the thread is a preview read, the write is not; the box is off in a preview; unsent
+// words kept with the page's drafts (sessionStorage); and nothing hints at what Taya can see before they send.
+{
+  if (!pageIds.includes('messages') || !/\{ id: 'messages', label: 'Messages', icon: 'i-talk' \}/.test(js)) fail('portal.js: the Messages tab is missing from PAGES');
+  const sec = (html.match(/<section class="p-card" id="sec-messages"[\s\S]*?<\/section>/) || [''])[0];
+  if (!sec) fail('portal.html: the Messages section (#sec-messages) is missing');
+  else {
+    if (!/data-page="messages"/.test(sec) || !/ hidden>/.test(sec.split('\n')[0])) fail('portal.html: #sec-messages should belong to the messages tab and start hidden');
+    if (!/<h2 id="h-messages" tabindex="-1">Messages with Taya<\/h2>/.test(sec)) fail('portal.html: the Messages heading should be “Messages with Taya”');
+    if (!/<label class="field-label" for="in-msg">Write to Taya<\/label>/.test(sec)) fail('portal.html: the box should be labelled “Write to Taya”');
+    if (!/<textarea id="in-msg"[^>]*maxlength="4000"/.test(sec)) fail('portal.html: the message box should be a textarea of up to 4000 characters');
+    if (!/<button class="btn wide" type="submit" id="b-msg"><span>Send<\/span><\/button>/.test(sec)) fail('portal.html: the message box needs its Send button');
+    // (Oct 20 2026, rich messages, hub DEPLOY.md section 95; changed on purpose) attachments come only with the rich
+    // composer, which portal-rich.js makes: the page itself has no file input, the plain line still says to email files
+    const plainSec = sec.replace(/<!--[\s\S]*?-->/g, '').replace(/<p class="msg-intro" id="msg-intro-rich"[\s\S]*?<\/p>/, '');
+    if (/attach|<input type="file"/i.test(plainSec.replace(/photos or files, email me/, ''))) fail('portal.html: attachments outside the rich composer in Messages');
+    if (!/id="msg-intro-plain"[^>]*>[^<]*photos or files, email me/.test(sec)) fail('portal.html: the plain Messages line should still say to email photos or files');
+    if (!/<p class="msg-intro" id="msg-intro-rich" hidden>/.test(sec) || !/<div class="msg-composer" id="msg-rich" hidden><\/div>/.test(sec)) fail('portal.html: the rich line and the composer’s place should be in Messages, hidden');
+  }
+  const words = [htmlWords].concat(jsStrings).join('\n');
+  const hint = words.match(/as you type|while you(?:’|')?re typing|while you type|before you send|what you(?:’|')re typing|typing indicator|Taya can see/i);
+  if (hint) fail(`portal: nothing should hint at what Taya can see before they send ("${hint[0]}")`);
+  if (!/make\('p', 'msg-body', m\.body\)/.test(js)) fail('portal.js: a message body should be drawn with textContent (make)');
+  if (/#in-msg'\)\.addEventListener\('key/.test(js)) fail('portal.js: Enter in the message box should be a new line (no key handler sends)');
+  if (!js.includes("'/api/webfaery/portal/messages'") || js.includes("'/api/webfaery/portal/message'")) fail('portal.js: the thread is a preview read and the write is not');
+  if (!/if \(PREVIEW\) box\.disabled = true;/.test(js)) fail('portal.js: the message box should be off in a Studio preview');
+  if (!/drafts\.set\('message', \$\('#in-msg'\)\.value\)/.test(js)) fail('portal.js: unsent message words should stay with the page’s drafts (sessionStorage)');
+  if (!/plural\(unreadMsgs, 'new message', 'new messages'\)/.test(js)) fail('portal.js: Home should say “1 new message” while one of Taya’s waits');
+}
+
+// ---- Resources (Oct 21 2026, hub DEPLOY.md section 101; added on purpose) ----
+// A Resources tab with the how-to videos and guides Taya approved: hidden until the server sends at least one, grouped
+// by topic under plain headings, ledger rows (title, one line, Watch for a video and Read for a guide), each a plain link
+// that opens in a new tab with rel noopener noreferrer. Nothing embedded (no iframe, no video tag, no outside script,
+// no frame-src), only https links on the hosts the server allows, drawn with textContent; the read is a preview read.
+{
+  if (!pageIds.includes('resources') || !/\{ id: 'resources', label: 'Resources', icon: 'i-play' \}/.test(js)) fail('portal.js: the Resources tab is missing from PAGES');
+  const sec = (html.match(/<section class="p-card" id="sec-resources"[\s\S]*?<\/section>/) || [''])[0];
+  if (!sec) fail('portal.html: the Resources section (#sec-resources) is missing');
+  else {
+    if (!/data-page="resources"/.test(sec) || !/ hidden>/.test(sec.split('\n')[0])) fail('portal.html: #sec-resources should belong to the resources tab and start hidden');
+    if (!/<h2 id="h-resources" tabindex="-1">How-to videos and guides<\/h2>/.test(sec)) fail('portal.html: the Resources heading should be “How-to videos and guides”');
+    if (!/<p class="rs-lede">Short videos and guides I made for the everyday parts of being online, like your Google profile\. Each one opens in a new tab\.<\/p>/.test(sec)) fail('portal.html: the Resources line should say they open in a new tab');
+    if (!/<div class="rs-groups" id="rs-groups"><\/div>/.test(sec)) fail('portal.html: the Resources groups go in #rs-groups');
+    const secWords = sec.replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ');
+    if (/\bnever\b/i.test(secWords) || /\b(we|us|our)\b/i.test(secWords)) fail('portal.html: the Resources words should be I / me, without “never”');
+    if (/<iframe|<video|<embed|<object/i.test(sec)) fail('portal.html: nothing embedded in Resources');
+  }
+  if (/frame-src|youtube|vimeo|loom/i.test((csp && csp[1]) || '')) fail('portal.html: the security line should not open frames or video hosts for Resources');
+  const rsBlock = (js.match(/\/\* ---- Resources \(Oct 21 2026[\s\S]*?\/\* ================= Messages/) || [''])[0];
+  if (!rsBlock) fail('portal.js: the Resources block is missing');
+  if (/createElement\(|make\('(iframe|video|embed|object|script)'|window\.open|\.src =/.test(rsBlock)) fail('portal.js: Resources should embed nothing');
+  if (!js.includes("'/api/webfaery/portal/resources'")) fail('portal.js: the Resources read should be on PREVIEW_READS');
+  if (!/resources: \(\) => postJSON\('\/resources', \{\}, token\)/.test(js)) fail('portal.js: Resources should be one read, POST /portal/resources');
+  if (!/make\('span', null, r\.kind === 'video' \? 'Watch' : 'Read'\)/.test(js)) fail('portal.js: a video says Watch, a guide says Read');
+  if (!/a\.target = '_blank';\s*a\.rel = 'noopener noreferrer';\s*a\.append\(make\('span', null, r\.kind/.test(js)) fail('portal.js: a resource opens in a new tab with rel noopener noreferrer');
+  if (!/make\('b', null, r\.title\)/.test(js) || !/make\('small', null, r\.summary\)/.test(js)) fail('portal.js: a resource’s title and line should be drawn with textContent (make)');
+  if (!/const RS_HEADS = \{ google: 'Your Google profile', email: 'Email', site: 'Your site', shop: 'Your shop', booking: 'Bookings', other: 'More' \};/.test(js)) fail('portal.js: the Resources topic headings changed');
+  if (!/if \(!resources \|\| !resources\.length\) \{ setHidden\(sec, true\); return; \}/.test(js)) fail('portal.js: Resources should stay hidden until there is at least one');
+  if (!/return m && RS_HOSTS\.includes\(m\[1\]\) \? s : '';/.test(js)) fail('portal.js: only https links on the allowed hosts should become Resources links');
+}
+
+// ---- Their emails in Messages (Oct 20 2026, hub DEPLOY.md section 95; added on purpose) ----
+// An email row: the subject in bold and "via email" under the time, both drawn with textContent; long words folded
+// behind "Show more" after 600 characters; the whole text is a read on the same thread route (so a preview can open
+// it and nothing is written); an email is never counted toward the unread dot by the page itself.
+{
+  if (!/make\('span', 'msg-via', 'via email'\)/.test(js)) fail('portal.js: an email row should say “via email” under the time');
+  if (!/make\('b', '', m\.subject\)/.test(js)) fail('portal.js: an email’s subject should be bold, drawn with textContent (make)');
+  if (!/const MSG_FOLD = 600;/.test(js) || !/make\('button', 'msg-more', 'Show more'\)/.test(js)) fail('portal.js: long words should fold behind “Show more” after 600 characters');
+  if (!/messageFull: \(id\) => postJSON\('\/messages', \{ full: id \}, token\)/.test(js)) fail('portal.js: the whole text of a folded message should be a read on the thread route');
+  if (/messages_unread[^\n]*email/.test(js)) fail('portal.js: emails should not change the unread count on the page');
+}
+
+// ---- Rich messages (Oct 20 2026, hub DEPLOY.md section 95; added on purpose) ----
+// portal-rich.js: loaded before portal.js, no HTML from strings, its words pass the same rules; the renderer, run here in
+// plain Node with a pretend document, makes nothing but p, br, strong, em, u, ul, ol, li and a (https links only, rel
+// noopener noreferrer nofollow) whatever it is given; the markup comes back the same when written twice; 41 links, too
+// much text and anything shaped like HTML are handled; the attachment read is a preview read, the upload is not.
+{
+  const richFile = 'portal-rich.js';
+  if (!fs.existsSync(path.join(root, richFile)) || !fs.existsSync(path.join(root, 'portal-rich.css'))) fail('missing portal-rich.js or portal-rich.css');
+  else {
+    const rsrc = read(richFile);
+    const richAt = html.indexOf('src="portal-rich.js'), portalAt2 = html.indexOf('src="portal.js');
+    if (richAt < 0 || richAt > portalAt2) fail('portal.html: portal-rich.js should load before portal.js');
+    if (!/href="portal-rich\.css\?v=/.test(html)) fail('portal.html: portal-rich.css is not linked');
+    if (/\.innerHTML|outerHTML\s*=|insertAdjacentHTML|document\.write|\beval\(|new Function\(|createContextualFragment|DOMParser/.test(rsrc)) fail('portal-rich.js: builds the page from HTML strings or runs strings as code');
+    if (/\.innerHTML|outerHTML\s*=|insertAdjacentHTML|createContextualFragment|DOMParser/.test(js)) fail('portal.js: HTML from strings');
+    const richStrings = literals(rsrc).filter((s) => /[A-Za-z]{2,} [A-Za-z]{2,}/.test(s));
+    for (const s of richStrings) {
+      for (const [re, what] of FORBIDDEN) { const m = s.match(re); if (m) fail(`portal-rich.js: ${what}: "${s.slice(0, 80)}"`); }
+      if (/\\'/.test(s)) fail(`portal-rich.js: a straight apostrophe in "${s.slice(0, 80)}" (use ’)`);
+      if (/\bnever\b/i.test(s)) fail(`portal-rich.js: "never" in "${s.slice(0, 80)}"`);
+      if (/\b(we|us|our)\b/i.test(s)) fail(`portal-rich.js: I / me, not we / us / our: "${s.slice(0, 80)}"`);
+    }
+    if (!js.includes("'/api/webfaery/portal/message-file'") || js.includes("'/api/webfaery/portal/message-upload'") || js.includes("'/api/webfaery/portal/message-unattach'")) fail('portal.js: the attachment read should be a preview read, the upload and unattach not');
+    if (!/window\.WFRich\.render\(m\.body, document\)/.test(js)) fail('portal.js: rich bodies should be drawn by WFRich.render');
+
+    const R = createRequire(import.meta.url)(path.join(root, richFile));
+    // a pretend document: every element and attribute made is written down
+    const fakeDoc = () => {
+      const made = [], attrs = [];
+      const node = (tag) => ({
+        tag, kids: [],
+        appendChild(c) { this.kids.push(c); return c; },
+        setAttribute(k, v) { attrs.push([tag, k, String(v)]); },
+        set textContent(v) { this.kids = [{ tag: '#text', text: String(v) }]; },
+        get textContent() { return this.kids.map((c) => (c.tag === '#text' ? c.text : c.textContent)).join(''); },
+      });
+      return {
+        made, attrs,
+        createElement(t) { made.push(String(t).toLowerCase()); return node(String(t).toLowerCase()); },
+        createTextNode(t) { return { tag: '#text', text: String(t) }; },
+        createDocumentFragment() { return node('#frag'); },
+      };
+    };
+    const ALLOWED = ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'a'];
+    if (R.ALLOWED.join() !== ALLOWED.join()) fail('portal-rich.js: ALLOWED drifted');
+    const hostile = [
+      '<script>alert(1)</script>', '<img src=x onerror=alert(1)>', '"><svg onload=alert(1)>', '<iframe src="javascript:alert(1)">',
+      '[click](javascript:alert(1))', '[click](JAVASCRIPT:alert(1))', '[x](data:text/html;base64,PHNjcmlwdD4=)', '[x](//evil.example/a)',
+      '[x](http://plain.example)', '[x](https://good.example" onmouseover="alert(1))', '[x](https://good.example/a b)', '[x](https://user@evil.example)',
+      '[x](https://evil.example/\u0000)', '[<b>x</b>](https://ok.example)', '**' + '*__'.repeat(3000), '['.repeat(5000) + 'x](https://ok.example)',
+      '- <script>\n1. <img onerror=x>\n\n__**[a](https://a.example)**__', String.fromCharCode(0x202E) + 'gnp.exe', '&lt;script&gt;', '<a href="https://ok.example">x</a>',
+      '[ok](https://ok.example/path?q=1#frag)', 'x'.repeat(30000),
+    ];
+    const t0 = Date.now();
+    for (const h of hostile) {
+      const d = fakeDoc();
+      let frag = null;
+      try { frag = R.render(h, d); } catch (e) { fail(`portal-rich.js: render threw on ${JSON.stringify(h.slice(0, 40))}: ${e.message}`); continue; }
+      const bad = d.made.filter((t) => !ALLOWED.includes(t));
+      if (bad.length) fail(`portal-rich.js: render made <${bad[0]}> from ${JSON.stringify(h.slice(0, 40))}`);
+      for (const [tag, k, v] of d.attrs) {
+        if (tag !== 'a' || !['href', 'rel', 'target'].includes(k)) fail(`portal-rich.js: render set ${k} on <${tag}>`);
+        if (k === 'href' && !/^https:\/\/[A-Za-z0-9.-]+[^\s"'<>]*$/.test(v)) fail(`portal-rich.js: render made a link to ${JSON.stringify(v)}`);
+        if (k === 'rel' && v !== 'noopener noreferrer nofollow') fail('portal-rich.js: links need rel="noopener noreferrer nofollow"');
+        if (k === 'target' && v !== '_blank') fail('portal-rich.js: links open in a new tab');
+      }
+      if (/javascript:|data:text/i.test(JSON.stringify(d.attrs))) fail(`portal-rich.js: a javascript: or data: link from ${JSON.stringify(h.slice(0, 40))}`);
+      if (h === '<script>alert(1)</script>' && frag.textContent !== '<script>alert(1)</script>') fail('portal-rich.js: a script tag in the markup should show as letters');
+    }
+    if (Date.now() - t0 > 3000) fail(`portal-rich.js: rendering the hostile set took ${Date.now() - t0} ms (a markup bomb?)`);
+    // what it should make
+    const shape = (text) => { const d = fakeDoc(); const f = R.render(text, d); return { tags: d.made.join(','), text: f.textContent, attrs: d.attrs }; };
+    const s1 = shape('Hi **bold** *it* __under__ [site](https://webfaery.love/a)\nline two\n\n- one\n- two\n\n1. first\n2. second');
+    if (s1.tags !== 'p,strong,em,u,a,br,ul,li,li,ol,li,li') fail(`portal-rich.js: render shape ${s1.tags}`);
+    if (!s1.attrs.some(([t, k, v]) => t === 'a' && k === 'href' && v === 'https://webfaery.love/a')) fail('portal-rich.js: the https link should be a link');
+    if (shape('2 \\* 3 \\_ \\[x\\]').text !== '2 * 3 _ [x]') fail('portal-rich.js: backslash escapes should show the letter');
+    // the validator (the same core as the server's)
+    const N = R.normalize;
+    const okText = (s) => { const r = N(s); return r.ok ? r.text : '!' + r.reason; };
+    if (okText('<script>alert(1)</script>hi') !== 'alert(1)hi') fail(`portal-rich.js: normalize should drop tag shapes, got ${okText('<script>alert(1)</script>hi')}`);
+    if (okText('<img src=x onerror=alert(1)>') !== '!empty') fail('portal-rich.js: an img tag alone should leave nothing');
+    if (okText('[x](javascript:alert(1))') !== '\\[x\\](javascript:alert(1))') fail(`portal-rich.js: a javascript: link should stay plain letters, got ${okText('[x](javascript:alert(1))')}`);
+    if (okText('[x](data:text/html,hi)').includes('](data') && !okText('[x](data:text/html,hi)').startsWith('\\[')) fail('portal-rich.js: a data: link should stay plain letters');
+    const links = (n) => Array.from({ length: n }, (_, i) => '[l' + i + '](https://l' + i + '.example)').join(' ');
+    if (!N(links(40)).ok || N(links(41)).reason !== 'links') fail('portal-rich.js: 40 links are fine, 41 are refused');
+    if (N('x'.repeat(8000)).ok !== true || N('x'.repeat(8001)).reason !== 'long') fail('portal-rich.js: 8000 characters are fine, 8001 are refused');
+    if (N(42).reason !== 'type' || N('   \n ').reason !== 'empty') fail('portal-rich.js: not text or empty should be refused');
+    // 'https://a.example/' is 18 characters: 18 + 481 = 499 is a link, 18 + 482 = 500 is plain letters
+    if (!N('[x](https://a.example/' + 'p'.repeat(481) + ')').text.startsWith('[x](') || N('[x](https://a.example/' + 'p'.repeat(482) + ')').text.startsWith('[x](')) fail('portal-rich.js: link hrefs should be under 500 characters');
+    const t1 = Date.now();
+    N('**__*'.repeat(1500)); N('['.repeat(15000)); N('*'.repeat(15000)); N(('**a' + '__b').repeat(1500));
+    if (Date.now() - t1 > 2000) fail(`portal-rich.js: normalizing markup bombs took ${Date.now() - t1} ms`);
+    for (const s of ['***x***', '*a**b*', '**a***b*', '___x___', 'a\\*b', '- one\n- two\n\nthree\n\\- four', '1. a\n7. b', '**[x](https://a.example)** tail  ', '**un*closed', '[a\\]b](https://a.example)', ...hostile.slice(0, 20)]) {
+      const a = N(s), b = a.ok ? N(a.text) : null;
+      if (a.ok && (!b.ok || b.text !== a.text)) fail(`portal-rich.js: normalize should be stable: ${JSON.stringify(s.slice(0, 30))} gave ${JSON.stringify(a.text.slice(0, 40))} then ${JSON.stringify(b.ok ? b.text.slice(0, 40) : b.reason)}`);
+    }
+    if (okText('1. a\n7. b') !== '1. a\n2. b') fail('portal-rich.js: numbered items are numbered 1, 2, 3');
+    if (R.EMOJI.length !== 60 || new Set(R.EMOJI).size !== 60) fail(`portal-rich.js: the emoji grid should be 60 different ones (got ${R.EMOJI.length})`);
+  }
+}
+
+// ---- Business papers: they add their own (Oct 20 2026, hub DEPLOY.md section 98; added on purpose) ----
+// "Add a paper" on the card (a file, an optional name, kind and good until day), shown only when the server says it
+// takes them; Rename and Remove only on their own papers (the server's added_by, with an id), asked in the row (no
+// window.confirm); the add, rename and remove are not preview reads; the email fine print stays as a second way.
+{
+  const sec = (html.match(/<section class="p-card" id="sec-papers"[\s\S]*?<\/section>/) || [''])[0];
+  if (!sec) fail('portal.html: the business papers card (#sec-papers) is missing');
+  else {
+    if (!/<button type="button" class="later pp-add-open" id="b-pp-add" aria-expanded="false" aria-controls="f-pp">Add a paper<\/button>/.test(sec)) fail('portal.html: the papers card should have an “Add a paper” button');
+    if (!/<div class="pp-add" id="pp-add" hidden>/.test(sec) || !/<form class="rc-form pp-form" id="f-pp" novalidate hidden>/.test(sec)) fail('portal.html: Add a paper and its form start hidden (shown only when the server takes papers)');
+    if (!/<input id="in-pp-file" class="pp-file" type="file" accept="[^"]*\.pdf[^"]*\.docx[^"]*\.csv[^"]*image\/\*"/.test(sec) || /accept="[^"]*(?:\.svg|\.html|\.exe|\.zip)/.test(sec)) fail('portal.html: the paper file picker should take PDFs, photos, Office files and text, and not SVG, HTML, EXE or zip');
+    if (!/<select id="in-pp-kind">\s*<option value="">Pick one<\/option>\s*<option value="insurance">Insurance<\/option>\s*<option value="license">Business license<\/option>\s*<option value="permit">Permit<\/option>\s*<option value="certification">Certification<\/option>\s*<option value="other">Something else<\/option>\s*<\/select>/.test(sec)) fail('portal.html: the paper kinds should be insurance, license, permit, certification and something else, with none picked');
+    if (!/<input id="in-pp-name" type="text" maxlength="120"/.test(sec) || !/<input id="in-pp-until" type="date"/.test(sec)) fail('portal.html: the paper name (120) and the good until day should be there');
+    if (!/Name <span class="opt-tag">\(optional\)<\/span>/.test(sec) || !/Good until <span class="opt-tag">\(optional\)<\/span>/.test(sec)) fail('portal.html: the name and the good until day are optional, and say so');
+    if (!sec.includes('A PDF, a photo, a Word, Excel or PowerPoint file, or plain text, up to 10 MB.')) fail('portal.html: the papers hint should say what files work, up to 10 MB');
+    if (!sec.includes('Email the new copy to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll put it here.')) fail('portal.html: the “Email the new copy” fine print should stay as a second way');
+    if (!sec.includes('Nothing here yet. Add your first one below, and it stays here for whenever someone asks.')) fail('portal.html: the empty papers line is missing');
+  }
+  if (/\bconfirm\(/.test(js)) fail('portal.js: no window.confirm (ask in the row)');
+  for (const route of ["'/api/webfaery/papers/add'", "'/api/webfaery/papers/rename'", "'/api/webfaery/papers/remove'"]) if (js.includes(route)) fail('portal.js: ' + route + ' should not be a preview read');
+  if (!js.includes("'/api/webfaery/papers/mine',")) fail('portal.js: papers/mine should stay a preview read');
+  if (!/papersAdd: \(fields, file, onProgress\) => sendForm\('\/add', fields, \[file\], token, onProgress, PAPERS\)/.test(js)) fail('portal.js: a paper goes as one file in a form to papers/add');
+  if (!/const theirs = p\.added_by === 'client' && PP_ID\.test\(str\(p\.id, 20\)\);/.test(js) || !/if \(p\.theirs\) ppOwnActs\(p, acts\);/.test(js)) fail('portal.js: Rename and Remove only on their own papers (added_by client, with an id)');
+  if (!/if \(!list\.length && !ppUpload\) \{ setHidden\(sec, true\); return; \}/.test(js)) fail('portal.js: the papers card stays hidden with no papers unless the server takes their own');
+  const ppStrings = ['Added by you', 'Rename', 'Remove', 'Yes, remove it', 'Keep it', 'Save the name', 'Added. It’s in your papers now.', 'Removed.', 'Renamed.',
+    'Pick a file first.', 'Give it a name first, even a short one.', '” from your portal? Its file goes too.', 'more file'];
+  for (const s of ppStrings) if (!js.includes("'" + s + "'")) fail(`portal.js: the papers words “${s}” are missing`);
+  const ppAt = js.indexOf('/* ---- your business papers'), ppEnd = js.indexOf('/* ================= Messages', ppAt);
+  if (ppAt < 0 || ppEnd < 0) fail('portal.js: the business papers part is missing');
+  for (const s of literals(js.slice(ppAt, ppEnd)).filter((x) => /[A-Za-z]{2,} [A-Za-z]{2,}/.test(x))) {
+    if (/\bnever\b/i.test(s)) fail(`portal.js: "never" in "${s.slice(0, 80)}"`);
+    if (/\b(we|us|our)\b/i.test(s)) fail(`portal.js: I / me, not we / us / our: "${s.slice(0, 80)}"`);
+  }
 }
 
 if (failures.length) {

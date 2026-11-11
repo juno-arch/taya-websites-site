@@ -179,7 +179,7 @@ if (exists(agFile)) {
   check(!!vm && ag.includes('Version of ' + vm), `${agFile}: its version date doesn't match start.html’s ("${vm}")`);
 }
 // the server's copy (the hub beside this repo, or HUB_DIR): fails loudly when it can't be read
-const HUB = process.env.HUB_DIR || [path.join(root, '..', 'garden-faery-hub', 'pocketbase'), '/Users/moe/Documents/Garden-Faery/garden-faery-hub/pocketbase'].find((d) => fs.existsSync(path.join(d, 'pb_hooks')));
+const HUB = process.env.HUB_DIR || ['/Users/moe/Documents/Garden-Faery/garden-faery-hub/pending/integration-oct15', path.join(root, '..', 'garden-faery-hub', 'pocketbase'), '/Users/moe/Documents/Garden-Faery/garden-faery-hub/pocketbase'].find((d) => fs.existsSync(path.join(d, 'pb_hooks')));
 let lib = '';
 try { lib = fs.readFileSync(path.join(HUB, 'pb_hooks', 'webfaery-portal-lib.js'), 'utf8'); } catch (e) { fail(`can't read the server's webfaery-portal-lib.js (set HUB_DIR): ${e.message}`); }
 if (lib) {

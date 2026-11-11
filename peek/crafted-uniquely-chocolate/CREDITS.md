@@ -32,3 +32,5 @@ Left out on purpose: her "After Dark (18+)" gallery (family friendly mockup), th
 Words quoted on the page: Sheryl K. of Michael Hansen Insurance Agency (a testimonial Michelle posted on her Instagram, May 1 2026), and Instagram comments from @nedynedster, @ketoregisterednurse, @emergespatherapy and @southcoastsuccs on her posts. Her own words come from her site and her captions.
 
 Fonts: Fredoka (headings; the closest Google match to the heavy rounded headings on her site), M PLUS Rounded 1c (body; her site's Nunito is taken by another mockup), Caveat (Taya's notes only), all from Google Fonts.
+
+Oct 30 edit notes: (1) Gifts for work section: no clearer photo of a logo printed cookie exists on her Instagram grid, tagged tab or site, so the lead photo is her site's gallery-13 (a round Dell'Arte International logo Oreo with her logo chocolates), reframed to show the Oreo. (2) About section: no photo of Michelle found on her Instagram (grid, tagged, highlights) or site, so the stand-in Bigfoot photo is removed and the section runs as text only.

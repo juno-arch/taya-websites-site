@@ -1478,3 +1478,11 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
 .work .piece > .kind p { margin: 0 0 10px; color: #3a1f45; }
 .work .piece > .kind footer { color: #8f2c3a; }
 .work .piece > .kind::after { background: var(--paper), #fff8f1; }
+
+/* Recent work alternates: the screenshots on the left, then on the right, then on the left again */
+@media (min-width: 901px) {
+  .work .piece:nth-of-type(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+  .work .piece:nth-of-type(even) > .shots { grid-column: 2; grid-row: 1; }
+  .work .piece:nth-of-type(even) > .piece-text { grid-column: 1; grid-row: 1; }
+  .work .piece:nth-of-type(even) > .kind { grid-row: 2; }
+}

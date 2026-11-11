@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://webfaery.love/portal.html">
 <meta property="og:site_name" content="Web Faery">
 <meta property="og:title" content="Your project, in one calm place">
-<meta property="og:description" content="Your short list, where we are, your files and payments. Sign in with a little code, no passwords.">
+<meta property="og:description" content="Your short list, where we are, your files and payments. Sign in with a little code, or a password if you like.">
 <meta property="og:image" content="https://webfaery.love/images/share.jpg?v=20261014">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -25,18 +25,23 @@
 <meta name="theme-color" content="#2e3271">
 <meta name="color-scheme" content="light">
 <link rel="stylesheet" href="fonts/fonts.css?v=20261110e">
+<link rel="stylesheet" href="fonts/brand/brand-fonts.css?v=20261104a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261110e">
 <link rel="stylesheet" href="wf-backend.css?v=20261110e">
-<link rel="stylesheet" href="portal.css?v=20261016c">
+<link rel="stylesheet" href="portal.css?v=20261106a">
+<link rel="stylesheet" href="portal-rich.css?v=20261020a">
+<link rel="stylesheet" href="portal-schedule.css?v=20261022b">
 <!--
   portal.html: a client's own page, their back end (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
-  They sign in with a one-time code sent to their email (no passwords), then move between short pages with the tabs
+  They sign in with a one-time code sent to their email (or a password they chose), then move between short pages with the tabs
   (on a phone, the dock at the bottom). Only the tabs they have show:
     Home: whose turn it is, a note from Taya, and what needs them now
     Your project: their short list, where we are, their things (draft, agreement, sheets, receipts)
     Orders, Products, Codes, Bookings, Gift certificates, Newsletter: only for a client whose shop, booking,
       gift certificates or newsletter run on Web Faery's server
     Visitors, Receipts: only for a client whose site is counted, or whose receipts box Taya switched on (Oct 15 2026)
+    Messages: their thread with Taya, plain text (Oct 20 2026), when the server has messages switched on
+    Resources: how-to videos and guides Taya approved for every client (Oct 21 2026), once there is at least one
     Payments: paid and still to come
     Ask Taya: "Ask for a change", when they have a subscription
   Each tab has its own address (#orders, #bookings-hours, #newsletter-sent), so a link or a reload opens it again.
@@ -66,8 +71,10 @@
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8.5 8.5M17 13.5V18a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 9.2v5.6l4.6-2.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z M14 3v5h5 M9 13h6 M9 16.5h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-sign" viewBox="0 0 24 24"><path d="M4 19.5h16 M6 16c2.2-4.6 3.9-9.8 5.4-9.5 1.8.4-1.7 8.9.2 9.2 1.3.2 2.4-3.4 3.6-3.2 1 .2.4 2.6 1.4 2.8.7.1 1.4-.6 2-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8.5" cy="14.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M11.2 12 19 4.2M16 7.2l2.6 2.6M13.6 9.6l1.8 1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.6a8.4 8.4 0 1 0 0 16.8c1.3 0 1.9-.8 1.9-1.7 0-1.2-1-1.5-1-2.6 0-1 .8-1.7 1.9-1.7h2.1a3.5 3.5 0 0 0 3.5-3.5c0-4-3.8-7.3-8.4-7.3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.7" cy="11.3" r="1.2" fill="currentColor"/><circle cx="10.4" cy="7.6" r="1.2" fill="currentColor"/><circle cx="14.9" cy="7.8" r="1.2" fill="currentColor"/></symbol>
   <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 12l8-8M16 7l2.5 2.5M14 9l2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
   <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3Z M9 8h6 M9 11.5h6 M9 15h3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -84,6 +91,7 @@
   <symbol id="i-tag" viewBox="0 0 24 24"><path d="M4 12.6V5a1 1 0 0 1 1-1h7.6l7.4 7.4a1 1 0 0 1 0 1.4l-6.2 6.2a1 1 0 0 1-1.4 0Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/></symbol>
   <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9h17M12 9v11M12 9C10 5 6.5 5 6.5 7.2S10 9 12 9Zm0 0c2-4 5.5-4 5.5-1.8S14 9 12 9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4.5 7 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-talk" viewBox="0 0 24 24"><path d="M4.5 5h11a1 1 0 0 1 1 1v6.5a1 1 0 0 1-1 1H9.5L6 16.5v-3H4.5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z M16.5 9h3a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H18v2.8L14.7 17H11a1 1 0 0 1-1-1v-2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-ask" viewBox="0 0 24 24"><path d="M5 5.5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4.5 3.5v-3.5H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16M7 17v-5M12 17V7M17 17v-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   <!-- the Receipts tab (Oct 15 2026): a little tray of slips -->
@@ -110,10 +118,15 @@
   <nav class="tabs" id="tabs" aria-label="Your pages" hidden></nav>
 </header>
 <!-- portal-brand.js: the color math for a client's own accent (only when Taya has set one; portal.js applyAccent) -->
+<!-- portal-rich.js (Oct 20 2026, hub DEPLOY.md section 95): the Messages composer and the markup renderer (window.WFRich) -->
+<script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
-<script src="portal.js?v=20261016c"></script>
+<script src="portal-schedule.js?v=20261022b"></script>
+<script src="portal.js?v=20261106a"></script>
 
 <main class="page" id="main" tabindex="-1">
+  <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
+  <p class="pv-bar" id="pv-bar" role="status" hidden></p>
   <noscript><div class="p-card"><p>Your project page needs JavaScript to sign you in. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll tell you where things are.</p></div></noscript>
 
@@ -144,7 +157,7 @@
   <div class="hello" id="hello">
     <span class="kicker" id="hero-eyebrow">Your project</span>
     <h1 id="hero-title">Come on <em>in.</em></h1>
-    <p class="lede" id="hero-lede">I’ll send a little code to your email. No passwords to remember.</p>
+    <p class="lede" id="hero-lede">I’ll send a little code to your email, so there is no password to remember. If you like, you can choose a password once you are in.</p>
   </div>
 
   <!-- ============ sign in, step 1: their email ============ -->
@@ -165,11 +178,39 @@
       <button class="btn wide" type="submit" id="b-send"><span>Send my code</span></button>
     </form>
     <p class="si-small" id="email-hint">Use the email you gave me when we started.</p>
+    <p class="si-small">Trouble with your portal? Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
     <button type="button" class="later" id="b-phone" hidden>Text me a code instead</button>
+    <p class="si-small pw-link" id="pw-link" hidden><button type="button" class="later" id="b-use-pass">Sign in with a password instead</button></p>
     <div class="demo-hint" hidden>
       <p><b>Demo sign-in:</b> demo@webfaery.love, code 000000</p>
       <button type="button" class="later" data-fill="email">Fill it in for me</button>
     </div>
+  </section>
+
+  <!-- ============ sign in with a password (Oct 25 2026): another way to the same portal, the emailed code stays ============ -->
+  <section class="p-card signin" id="v-pass" aria-labelledby="h-pass" hidden>
+    <div class="si-head">
+      <img class="face" src="taya.jpg" width="256" height="256" alt="" decoding="async">
+      <div>
+        <span class="kicker">Sign in</span>
+        <h2 id="h-pass" tabindex="-1">Your email and password</h2>
+      </div>
+    </div>
+    <form id="f-pass" novalidate>
+      <label class="field-label" for="in-pemail">Your email</label>
+      <input id="in-pemail" name="email" type="email" autocomplete="username" inputmode="email" autocapitalize="off"
+             spellcheck="false" maxlength="200" aria-describedby="pass-err">
+      <label class="field-label" for="in-ppass">Your password</label>
+      <input id="in-ppass" name="password" type="password" autocomplete="current-password" autocapitalize="off"
+             spellcheck="false" maxlength="400" aria-describedby="pass-err">
+      <label class="texts-agree"><input type="checkbox" id="in-pshow"> <span>Show my password</span></label>
+      <p class="err" id="pass-err" hidden></p>
+      <button class="btn wide" type="submit" id="b-pass"><span>Sign me in</span></button>
+    </form>
+    <div class="si-links">
+      <button type="button" class="later" id="b-pass-code">Forgot it? Email me a code instead</button>
+    </div>
+    <p class="si-small">The emailed code always works too. Trouble? Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
   </section>
 
   <!-- ============ sign in, step 2: the code ============ -->
@@ -213,6 +254,11 @@
     <button type="button" class="btn" id="b-retry"><span>Try again</span></button>
   </section>
 
+  <!-- ============ a Studio preview that has run its 10 minutes (Oct 19 2026) ============ -->
+  <section class="p-card calm" id="v-ended" aria-labelledby="h-ended" hidden>
+    <h2 id="h-ended" tabindex="-1">This view has ended. Open it again from the Studio.</h2>
+  </section>
+
   <!-- ============ their project ============ -->
   <div id="v-project" hidden>
 
@@ -238,6 +284,12 @@
       <h2 class="sh" id="h-needs">Needs you</h2>
       <ul class="ledger" id="needs"></ul>
       <p class="needs-calm" id="needs-calm" hidden>Nothing needs you right now. Everything else is quietly running.</p>
+    </section>
+
+    <!-- Coming up (Nov 4 2026, ADD 61): launch date + next payment; hidden until the server sends me.coming_up (a line with no real date is never shown) -->
+    <section class="p-card" id="sec-coming" data-page="home" aria-labelledby="h-coming" hidden>
+      <h2 class="sh" id="h-coming">Coming up</h2>
+      <ul class="coming" id="coming-body"></ul>
     </section>
 
     <!-- numbers at a glance (Oct 14 2026): only for a client whose shop, booking or gift certificates run here -->
@@ -411,7 +463,7 @@
     <!-- your bookings (Oct 10 2026; part 2 Oct 12 2026: tabs, a month view, days off, different hours on a date,
          repeating blocks, their own calendars, questions, limits, settings): only for a client whose booking runs on
          Web Faery's server. Each tab can be opened by its own address: #bookings-upcoming, #bookings-calendar,
-         #bookings-hours, #bookings-services, #bookings-calendars, #bookings-settings, #bookings-clients (Oct 15 2026) -->
+         #bookings-hours, #bookings-services, #bookings-settings (Connected calendars is at the end of it; #bookings-calendars opens Settings), #bookings-clients (Oct 15 2026) -->
     <section class="p-card" id="sec-bookings" data-page="bookings" aria-labelledby="h-bookings" hidden>
       <span class="kicker">Your booking</span>
       <h2 id="h-bookings" tabindex="-1">Bookings</h2>
@@ -420,16 +472,21 @@
       <p class="orders-fine" id="bk-zone"></p>
       <div class="bk-tabs" role="tablist" aria-label="Bookings">
         <button type="button" role="tab" class="bk-tab" id="bk-tab-upcoming" data-tab="upcoming" aria-controls="bk-p-upcoming" aria-selected="true">Coming up</button>
+        <button type="button" role="tab" class="bk-tab" id="bk-tab-schedule" data-tab="schedule" aria-controls="bk-p-schedule" aria-selected="false" tabindex="-1">Schedule</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-calendar" data-tab="calendar" aria-controls="bk-p-calendar" aria-selected="false" tabindex="-1">Calendar</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-hours" data-tab="hours" aria-controls="bk-p-hours" aria-selected="false" tabindex="-1">Hours</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-services" data-tab="services" aria-controls="bk-p-services" aria-selected="false" tabindex="-1">Services</button>
-        <button type="button" role="tab" class="bk-tab" id="bk-tab-calendars" data-tab="calendars" aria-controls="bk-p-calendars" aria-selected="false" tabindex="-1">Your calendars</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-settings" data-tab="settings" aria-controls="bk-p-settings" aria-selected="false" tabindex="-1">Settings</button>
         <button type="button" role="tab" class="bk-tab" id="bk-tab-clients" data-tab="clients" aria-controls="bk-p-clients" aria-selected="false" tabindex="-1">Your clients</button>
       </div>
 
       <div class="bk-panel" role="tabpanel" id="bk-p-upcoming" aria-labelledby="bk-tab-upcoming">
         <h3 class="small-h">Coming up</h3>
+        <div class="bk-sample" id="bk-sample" hidden>
+          <p class="orders-fine">These are practice bookings so you can try everything: add one, move one, cancel one. They are labeled Sample, nothing is real and no email goes out to anyone.</p>
+          <button type="button" class="ghost small" id="b-bk-sample">Reset the sample bookings</button>
+          <span class="orders-fine" id="bk-sample-say" role="status"></span>
+        </div>
         <ul class="orders bks" id="bk-up"></ul>
         <p class="empty" id="bk-up-empty" hidden><svg aria-hidden="true"><use href="#i-leaf"/></svg>
           <span class="empty-body">Nothing booked yet. New bookings show up here, and each one comes to your email with a calendar file.</span></p>
@@ -437,6 +494,11 @@
           <summary>Past and canceled <span class="opt-tag">(the last 60 days)</span></summary>
           <ul class="orders bks" id="bk-past"></ul>
         </details>
+      </div>
+
+      <div class="bk-panel" role="tabpanel" id="bk-p-schedule" aria-labelledby="bk-tab-schedule" hidden>
+        <h3 class="small-h">Your schedule</h3>
+        <div class="sch" id="sch-root"></div>
       </div>
 
       <div class="bk-panel" role="tabpanel" id="bk-p-calendar" aria-labelledby="bk-tab-calendar" hidden>
@@ -523,38 +585,6 @@
           <p class="orders-fine">Adds the intake questions from your draft, after your own. Questions you already have stay as they are. You can change or remove any of them after.</p>
           <p class="dc-new"><button type="button" class="pick" id="b-bk-intake">Add a new client intake</button></p>
         </div>
-      </div>
-
-      <div class="bk-panel" role="tabpanel" id="bk-p-calendars" aria-labelledby="bk-tab-calendars" hidden>
-        <h3 class="small-h">Busy times from your calendar</h3>
-        <p class="orders-fine">Connect the calendar you already keep, and the times you’re busy there close for booking here. Only the busy times are kept: no titles, places or notes.</p>
-        <ul class="dcs" id="bk-cals"></ul>
-        <form class="dc-form" id="f-bk-cal" novalidate>
-          <label class="field-label" for="in-bk-cal-url">Your calendar’s private address</label>
-          <input id="in-bk-cal-url" class="keeps" type="text" inputmode="url" autocomplete="off" spellcheck="false" maxlength="2000" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics" aria-describedby="bk-cal-err">
-          <label class="field-label" for="in-bk-cal-label">A name for it <span class="opt-tag">(optional, only you see it)</span></label>
-          <input id="in-bk-cal-label" class="keeps" type="text" maxlength="60" autocomplete="off" placeholder="Like: Personal">
-          <p class="err" id="bk-cal-err" hidden></p>
-          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-cal"><span>Connect it</span></button></div>
-        </form>
-        <details class="bk-how">
-          <summary>Where to find that address</summary>
-          <div class="bk-how-body">
-            <p><strong>Google Calendar</strong> (on a computer): Settings, then your calendar’s name on the left, then Integrate calendar. Copy the “Secret address in iCal format”.</p>
-            <p><strong>Outlook</strong>: Settings, Calendar, Shared calendars, Publish a calendar. Pick your calendar and “Can view when I’m busy”, then copy the ICS link. That one shares only busy times.</p>
-            <p><strong>iPhone or Mac (iCloud)</strong>: in Calendar, share the calendar and turn on Public Calendar, then copy the link. Anyone with that link could see the calendar, so a calendar kept just for these busy times is a good idea.</p>
-            <p>Keep the address to yourself, like a password. If you ever share it by mistake, make a new one in your calendar and paste it here.</p>
-          </div>
-        </details>
-
-        <h3 class="small-h">Your bookings in your calendar</h3>
-        <p class="orders-fine">Each booking email to you has a calendar file. Open it to add the booking to your calendar; the emails when it moves or is canceled carry a file that moves or removes it.</p>
-        <p class="orders-fine">Or copy your private calendar link and add it as a subscribed calendar. It holds every booking, with the address for home visits. Calendars look for changes on their own schedule: an iPhone every so often (on a Mac you can pick every 5 minutes), Google every several hours, sometimes a day. The emails are the quick way. Keep the link to yourself.</p>
-        <div class="dc-btns">
-          <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
-          <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
-        </div>
-        <p class="orders-fine" id="bk-feed-note" role="status"></p>
       </div>
 
       <div class="bk-panel" role="tabpanel" id="bk-p-settings" aria-labelledby="bk-tab-settings" hidden>
@@ -647,6 +677,40 @@
           <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-x"><span>Save extras</span></button></div>
           <p class="orders-fine" id="bk-x-done" role="status"></p>
         </form>
+      
+        <!-- (Oct 22 2026, Pollen: "your calendars should have a different name or moved to settings") the old Your calendars tab, now Connected calendars at the end of Settings -->
+        <h3 class="small-h bk-cal-h">Connected calendars</h3>
+        <h4 class="small-h">Busy times from your calendar</h4>
+        <p class="orders-fine">Connect the calendar you already keep, and the times you’re busy there close for booking here. Only the busy times are kept: no titles, places or notes.</p>
+        <ul class="dcs" id="bk-cals"></ul>
+        <form class="dc-form" id="f-bk-cal" novalidate>
+          <label class="field-label" for="in-bk-cal-url">Your calendar’s private address</label>
+          <input id="in-bk-cal-url" class="keeps" type="text" inputmode="url" autocomplete="off" spellcheck="false" maxlength="2000" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics" aria-describedby="bk-cal-err">
+          <label class="field-label" for="in-bk-cal-label">A name for it <span class="opt-tag">(optional, only you see it)</span></label>
+          <input id="in-bk-cal-label" class="keeps" type="text" maxlength="60" autocomplete="off" placeholder="Like: Personal">
+          <p class="err" id="bk-cal-err" hidden></p>
+          <div class="dc-btns"><button class="btn small" type="submit" id="b-bk-cal"><span>Connect it</span></button></div>
+        </form>
+        <details class="bk-how">
+          <summary>Where to find that address</summary>
+          <div class="bk-how-body">
+            <p><strong>Google Calendar</strong> (on a computer): Settings, then your calendar’s name on the left, then Integrate calendar. Copy the “Secret address in iCal format”.</p>
+            <p><strong>Outlook</strong>: Settings, Calendar, Shared calendars, Publish a calendar. Pick your calendar and “Can view when I’m busy”, then copy the ICS link. That one shares only busy times.</p>
+            <p><strong>iPhone or Mac (iCloud)</strong>: in Calendar, share the calendar and turn on Public Calendar, then copy the link. Anyone with that link could see the calendar, so a calendar kept just for these busy times is a good idea.</p>
+            <p>Keep the address to yourself, like a password. If you ever share it by mistake, make a new one in your calendar and paste it here.</p>
+          </div>
+        </details>
+
+        <h4 class="small-h">Your bookings in your calendar</h4>
+        <p class="orders-fine">Each booking email to you has a calendar file. Open it to add the booking to your calendar; the emails when it moves or is canceled carry a file that moves or removes it.</p>
+        <p class="orders-fine">Tap Add to my calendar on an iPhone, iPad or Mac and your calendar offers to subscribe, so every booking lands on your phone and stays up to date. On an Android phone, use Add to Google Calendar. Or copy your private calendar link and add it as a subscribed calendar by hand. It holds every booking, with the address for home visits. Calendars look for changes on their own schedule: an iPhone every so often (on a Mac you can pick every 5 minutes), Google every several hours, sometimes a day. The emails are the quick way. Keep the link to yourself.</p>
+        <div class="dc-btns">
+          <a class="btn small" id="a-bk-subscribe" href="#" hidden><span>Add to my calendar</span></a>
+          <a class="later" id="a-bk-gcal" href="#" target="_blank" rel="noopener noreferrer" hidden>Add to Google Calendar</a>
+          <button class="btn small" type="button" id="b-bk-feed"><span>Copy calendar link</span></button>
+          <button class="later" type="button" id="b-bk-feed-new">Make a new link</button>
+        </div>
+        <p class="orders-fine" id="bk-feed-note" role="status"></p>
       </div>
 
       <!-- your clients (Oct 15 2026, hub DEPLOY.md section 74): read only, worked out from the bookings on the server -->
@@ -782,6 +846,25 @@
       </div>
     </section>
 
+    <!-- Brand kit (Nov 4 2026, ADD 57): their colors, fonts, logo and brand sheet, read only; set from the Studio. Hidden until
+         something is set. Its code is the "Brand kit" block in portal.js. -->
+    <section class="p-card" id="sec-brand" data-page="brand" aria-labelledby="h-brand" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-brand" tabindex="-1">Brand kit</h2>
+      <p class="bkit-lede">The colors, fonts and logo your site wears, so anything you make can match.</p>
+      <div id="bkit-body"></div>
+    </section>
+
+    <!-- Your accounts (Nov 4 2026, ADD 58): a plain ledger of the accounts their site runs on and who holds each login. No passwords or
+         keys, only where to sign in. Read only for them, set from the Studio. Hidden until one row is set. Its code is the "Your accounts"
+         block in portal.js. -->
+    <section class="p-card" id="sec-accounts" data-page="accounts" aria-labelledby="h-accounts" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-accounts" tabindex="-1">Your accounts</h2>
+      <p class="acct-lede">Every account your site runs on, and who holds the login for each. Your passwords stay with you; none are kept here.</p>
+      <ul class="acct-list" id="acct-body"></ul>
+    </section>
+
     <!-- your visitors (Oct 15 2026): their own site's private visitor counts, the last 30 days next to the 30 before;
          only for a client whose site is counted on Web Faery's server (the server answers visits: null for everyone
          else, and the section stays hidden). Its code is the "Your visitors" block in portal.js. -->
@@ -805,6 +888,30 @@
       <ul class="ledger vs-list" id="vs-devices"></ul>
       <p class="vs-none" id="vs-devices-none" hidden>Nothing counted yet.</p>
       <p class="vs-fine">Counted privately: no cookies, nothing that identifies anyone. Visitors are an estimate: each person counts once a day, so someone who comes back on another day counts again.</p>
+    </section>
+
+    <!-- how you show up on Google (Nov 4 2026): Search Console numbers for their own site, this month next to last month.
+         Hidden unless the server sends them (switch portal_google). Its code is the "how you show up on Google" block in portal.js. -->
+    <section class="p-card" id="sec-google" data-page="visitors" aria-labelledby="h-google" hidden>
+      <span class="kicker">Your site</span>
+      <h2 id="h-google" tabindex="-1">How you show up on Google</h2>
+      <div id="gg-lede-wrap"><p class="vs-lede" id="gg-lede"></p></div>
+      <dl class="glance vs-glance" id="gg-glance"></dl>
+      <div id="gg-data">
+        <h3 class="small-h vs-h">What people searched before they found you</h3>
+        <ul class="ledger vs-list" id="gg-queries"></ul>
+        <p class="vs-none" id="gg-queries-none" hidden>Nothing to show yet. Google hides a phrase when only a few people used it.</p>
+        <h3 class="small-h vs-h">Pages they landed on</h3>
+        <ul class="ledger vs-list" id="gg-pages"></ul>
+        <p class="vs-none" id="gg-pages-none" hidden>No pages to show yet.</p>
+        <p class="vs-fine">These numbers come from Google Search Console and trail a few days behind. A visit is someone clicking your site in Google search results. An average spot of 1 is the very top.</p>
+      </div>
+      <details class="howto gg-privacy">
+        <summary>Privacy</summary>
+        <p class="vs-fine">Web Faery reads these numbers from Google about your own site, once a month, using read-only access. This is on for every client site. Only you and Taya see them, and they are not sold or shared. You can stop it or delete the past numbers here any time.</p>
+        <p class="gg-actions"><button type="button" class="btn" id="gg-stop">Stop tracking my site</button> <button type="button" class="btn" id="gg-wipe">Delete my past numbers</button></p>
+        <p class="vs-fine" id="gg-note" role="status"></p>
+      </details>
     </section>
 
     <!-- your receipts (Oct 15 2026): a receipts box, only for a client Taya switched it on for (the server answers
@@ -906,7 +1013,51 @@
       <h2 id="h-papers" tabindex="-1">Your business papers</h2>
       <p class="pp-lede">Your insurance, licenses and permits in one place, for whenever someone asks. They’re private: only you and I can see them.</p>
       <ul class="ledger pp-list" id="pp-list"></ul>
+      <!-- Oct 20 2026 (hub DEPLOY.md section 98): they add their own papers. Shown only when the server says it can take
+           them (papers/mine sends `upload`); their own rows get Rename and Remove, Taya's stay as they are. -->
+      <p class="pp-none" id="pp-none" hidden>Nothing here yet. Add your first one below, and it stays here for whenever someone asks.</p>
+      <div class="pp-add" id="pp-add" hidden>
+        <button type="button" class="later pp-add-open" id="b-pp-add" aria-expanded="false" aria-controls="f-pp">Add a paper</button>
+        <form class="rc-form pp-form" id="f-pp" novalidate hidden>
+          <h3 class="small-h" id="pp-form-h" tabindex="-1">Add a paper</h3>
+          <label class="field-label" for="in-pp-file">The file</label>
+          <input id="in-pp-file" class="pp-file" type="file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.heic,.heif,.docx,.xlsx,.pptx,.txt,.csv,application/pdf,image/*" aria-describedby="pp-hint">
+          <p class="pp-hint" id="pp-hint">A PDF, a photo, a Word, Excel or PowerPoint file, or plain text, up to 10 MB.</p>
+          <label class="field-label" for="in-pp-name">Name <span class="opt-tag">(optional)</span></label>
+          <input id="in-pp-name" type="text" maxlength="120" autocomplete="off" placeholder="Empty keeps the file’s name">
+          <label class="field-label" for="in-pp-kind">What it is <span class="opt-tag">(optional)</span></label>
+          <select id="in-pp-kind">
+            <option value="">Pick one</option>
+            <option value="insurance">Insurance</option>
+            <option value="license">Business license</option>
+            <option value="permit">Permit</option>
+            <option value="certification">Certification</option>
+            <option value="other">Something else</option>
+          </select>
+          <label class="field-label" for="in-pp-until">Good until <span class="opt-tag">(optional)</span></label>
+          <input id="in-pp-until" type="date" min="2000-01-01" max="2100-12-31">
+          <p class="rc-status" id="pp-status" role="status"></p>
+          <p class="err" id="pp-err" tabindex="-1" hidden></p>
+          <div class="dc-btns">
+            <button class="btn small" type="submit" id="b-pp-send"><span>Add it</span></button>
+            <button class="later" type="button" id="b-pp-cancel">Not now</button>
+          </div>
+          <p class="pp-room" id="pp-room"></p>
+        </form>
+      </div>
       <p class="pp-fine">Renewed something, or got a new one? Email the new copy to <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and I’ll put it here. I’ll also send you a reminder a month and a week before one runs out.</p>
+    </section>
+
+    <!-- Resources (Oct 21 2026, hub DEPLOY.md section 101): short how-to videos and guides Taya made, the same for every
+         client, grouped by topic. Only the ones she approved come back from the server (POST /portal/resources); with
+         none, the section and its tab stay hidden. Each one is a plain link that opens in a new tab: nothing is
+         embedded and no outside script runs here. Its code is the "Resources" block in portal.js. -->
+    <section class="p-card" id="sec-resources" data-page="resources" aria-labelledby="h-resources" hidden>
+      <span class="kicker">Resources</span>
+      <h2 id="h-resources" tabindex="-1">How-to videos and guides</h2>
+      <p class="rs-lede">Short videos and guides I made for the everyday parts of being online, like your Google profile. Each one opens in a new tab.</p>
+      <div class="rs-groups" id="rs-groups"></div>
+      <p class="rs-fine">Want one on something else? Email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
     </section>
 
     <section class="p-card" id="sec-list" data-page="project" aria-labelledby="h-list">
@@ -927,13 +1078,58 @@
       <h2 id="h-where">Your site, step by step</h2>
       <p class="tl-after" id="tl-after" hidden></p>
       <ol class="tl" id="tl"></ol>
+      <div class="tl-launch" id="tl-launch" hidden></div>
       <button type="button" class="later tl-more" id="b-tl-more" aria-controls="tl" aria-expanded="false" hidden>See every step</button>
+    </section>
+
+    <!-- Your critique of Web Faery (Oct 23 2026, hub DEPLOY.md section 128): only for a client on a trade or free deal; the
+         server answers eligible: false for everyone else and this stays hidden. Six short prompts and one free box, all
+         optional, each saved as they go. Its code is the "critique" block in portal.js. -->
+    <section class="p-card" id="sec-critique" data-page="project" aria-labelledby="h-critique" hidden>
+      <span class="kicker">Your thoughts</span>
+      <h2 id="h-critique" tabindex="-1">Your critique of Web Faery</h2>
+      <p class="cq-lede" id="cq-lede"></p>
+      <form class="cq-form" id="f-cq" novalidate>
+        <div id="cq-prompts"></div>
+        <label class="field-label" for="in-cq-fix" id="cq-fix-label">One thing I should fix first</label>
+        <textarea id="in-cq-fix" rows="3" maxlength="1500" placeholder="In your own words"></textarea>
+        <p class="rc-status" id="cq-status" role="status"></p>
+        <p class="err" id="cq-err" tabindex="-1" hidden></p>
+        <div class="dc-btns">
+          <button class="btn small" type="submit" id="b-cq-send"><span>Send my critique</span></button>
+        </div>
+      </form>
+      <div class="cq-thanks" id="cq-thanks" hidden>
+        <p id="cq-thanks-line"></p>
+        <button class="later" type="button" id="b-cq-edit">Change an answer</button>
+      </div>
     </section>
 
     <section class="p-card" id="sec-things" data-page="project" aria-labelledby="h-things">
       <span class="kicker">Your things</span>
       <h2 id="h-things">All in one place</h2>
       <ul class="things" id="things"></ul>
+    </section>
+
+    <!-- a password for signing in (Oct 25 2026): set from inside a signed in portal, never from an email link alone -->
+    <section class="p-card" id="sec-password" data-page="project" aria-labelledby="h-password" hidden>
+      <span class="kicker">Sign in</span>
+      <h2 id="h-password">Sign in with a password</h2>
+      <p class="texts-why" id="pw-now"></p>
+      <form id="f-password" novalidate>
+        <div id="pw-cur-wrap" hidden>
+          <label class="field-label" for="in-pcur">Your current password</label>
+          <input id="in-pcur" name="current" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" maxlength="400" aria-describedby="pw-cur-hint pw-err">
+          <p class="texts-fine" id="pw-cur-hint">Forgot it? If you signed in with an emailed code a few minutes ago, leave this empty.</p>
+        </div>
+        <label class="field-label" for="in-pnew" id="l-pnew">Choose a password</label>
+        <input id="in-pnew" name="password" type="password" autocomplete="new-password" autocapitalize="off" spellcheck="false" maxlength="200" aria-describedby="pw-hint pw-err">
+        <p class="texts-fine" id="pw-hint">At least 12 characters. A few ordinary words in a row, like a little sentence, works well. Capitals and symbols are fine and not needed.</p>
+        <label class="texts-agree"><input type="checkbox" id="in-pwshow"> <span>Show what I type</span></label>
+        <p class="err" id="pw-err" hidden></p>
+        <button class="btn" type="submit" id="b-pw"><span>Save my password</span></button>
+      </form>
+      <p class="si-small">The emailed code still works, so you can always get in that way too.</p>
     </section>
 
     <!-- texts from Web Faery (Oct 2 2026): shows once texts are switched on on the server -->
@@ -953,6 +1149,27 @@
         <p class="err" id="texts-err" hidden></p>
         <button class="btn" type="submit" id="b-texts"><span>Text me</span></button>
       </form>
+    </section>
+
+    <!-- Messages (Oct 20 2026, hub DEPLOY.md section 94): their thread with Taya, plain text only. Shown only when the
+         server sends messages_unread on /me; the thread loads when they open this tab. -->
+    <section class="p-card" id="sec-messages" data-page="messages" aria-labelledby="h-messages" hidden>
+      <span class="kicker">Messages</span>
+      <h2 id="h-messages" tabindex="-1">Messages with Taya</h2>
+      <p class="msg-intro" id="msg-intro-plain">Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. Words only for now: for photos or files, email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>.</p>
+      <!-- [rich b23] shown instead of the line above once the server has rich messages (portal.js richStart) -->
+      <p class="msg-intro" id="msg-intro-rich" hidden>Write to me here any time, and I’ll answer here too. When I write, you’ll get a short email so you know to look. You can make words bold, add lists, links and emoji, and attach photos and files (up to 5 in a message, 10 MB each).</p>
+      <form id="f-msg" class="msg-form" novalidate>
+        <label class="field-label" for="in-msg">Write to Taya</label>
+        <textarea id="in-msg" name="message" maxlength="4000" rows="4" aria-describedby="msg-count msg-err"></textarea>
+        <!-- [rich b23] the composer goes here (portal-rich.js), in place of the box above -->
+        <div class="msg-composer" id="msg-rich" hidden></div>
+        <p class="count" id="msg-count" aria-live="polite"></p>
+        <p class="err" id="msg-err" hidden></p>
+        <button class="btn wide" type="submit" id="b-msg"><span>Send</span></button>
+      </form>
+      <p class="msg-none" id="msg-none" hidden></p>
+      <ol class="msg-thread" id="msg-thread" aria-label="Messages with Taya" hidden></ol>
     </section>
 
     <section class="p-card" id="sec-pay" data-page="payments" aria-labelledby="h-pay" tabindex="-1">
