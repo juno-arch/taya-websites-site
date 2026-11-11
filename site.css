@@ -1446,3 +1446,14 @@ a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, 
     radial-gradient(ellipse 28% 10% at 66% 85%, rgb(255 255 255 / .9), rgb(255 255 255 / 0) 100%),
     radial-gradient(circle at 50% 50%, rgb(255 255 255 / .04) 0 46%, rgb(150 215 255 / .32) 68%, rgb(255 170 215 / .42) 86%, rgb(255 255 255 / .6) 100%); }
 .tools-one > .tools-pay { margin: 26px 0 0; padding-top: 18px; border-top: 3px dotted #1a1420; width: 100%; max-width: none; }
+
+/* About's top scallop: the pink band above hangs down over the photo, so the photo runs right up behind it (no dark gap) */
+.about { background: none; }
+.about::before { top: 0; }
+.about > .ceiling { background: radial-gradient(circle at 50% 0, #f7a9b4 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
+
+/* the three hero buttons stack in one tidy column, all the same width */
+.hero .hero-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.hero .btns { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.hero .hero-cta .btn, .hero .hero-cta a.quiet { width: 240px; max-width: 100%; justify-content: center; text-align: center; margin: 0; }
+@media (max-width: 700px) { .hero .hero-cta, .hero .btns { align-items: stretch; } .hero .hero-cta .btn, .hero .hero-cta a.quiet { width: 100%; } }
