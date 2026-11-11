@@ -1166,3 +1166,14 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .site-foot .brand .wm { color: #2a1236; }
 .site-foot .brand .wm span { color: #8f2c3a; }
 .site-foot .fine { color: #3e2148; }
+
+/* fewer words in the hero, and a narrow column on the left so the words stay off the faery */
+@media (min-width: 701px) {
+  .hero-text { max-width: min(100%, 1180px); }
+  .hero-text > * { max-width: 300px; }
+  .hero h1 { font-size: clamp(38px, 4.2vw, 56px); }
+  .hero .h1a, .hero .h1b { display: block; }
+  .hero .btns { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .hero .eyebrow { max-width: 300px; }
+}
+.hero .hero-cta { margin-top: 26px; }
