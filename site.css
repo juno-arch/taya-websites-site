@@ -988,27 +988,3 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .scene { background: #4b2a8c; padding-top: calc(var(--wf-section-pad, 80px) + 40px); }
 .scene::before { display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 40px; z-index: 1; border-bottom: 3px solid #2a1236; background: url(images/texture/marbles.jpg) center 30% / cover no-repeat; transform: none; }
 .scene > .ceiling { display: none; }
-
-/* cute pictures from the board sit on a few cards like stickers on a laptop */
-.cute { position: absolute; z-index: 2; top: -54px; right: -22px; width: clamp(112px, 13vw, 168px); aspect-ratio: 1; object-fit: cover; border: 3px solid #2a1236; border-radius: 28px; box-shadow: 6px 6px 0 #2a1236; transform: rotate(6deg); background: #fff; }
-.faq-sec .cute { transform: rotate(-6deg); }
-.scene .cute { right: auto; left: -30px; transform: rotate(-7deg); }
-@media (max-width: 700px) { .cute { width: 92px; top: -44px; right: 6px; border-radius: 22px; box-shadow: 4px 4px 0 #2a1236; } .scene .cute { left: 6px; right: auto; } }
-.cute { --cs: clamp(112px, 13vw, 168px); width: var(--cs) !important; height: var(--cs) !important; max-width: none; }
-@media (max-width: 700px) { .cute { --cs: 92px; } }
-/* keep words clear of the sticker */
-.about-text, .faq-sec .sec-head { padding-right: calc(var(--cs, 150px) * .62 + 36px); }
-.scene .contact-card { padding-left: calc(var(--cs, 150px) * .62 + 36px); }
-.cute { top: -36px; right: -34px; }
-.scene .cute { right: auto; left: -34px; }
-.cute { --cs: clamp(112px, 13vw, 168px); }
-.about-text, .faq-sec .sec-head, .scene .contact-card { --cs: clamp(112px, 13vw, 168px); }
-@media (max-width: 700px) {
-  .about-text, .faq-sec .sec-head, .scene .contact-card { --cs: 92px; padding-right: clamp(34px, 5.5vw, 56px); padding-left: clamp(34px, 5.5vw, 56px); padding-top: 74px; }
-  .cute { top: -34px; right: 14px; } .scene .cute { left: 14px; right: auto; }
-}
-.about-text, .faq-sec .sec-head { padding-right: calc(var(--cs) - 4px); }
-.scene .contact-card { padding-left: calc(var(--cs) - 4px); }
-@media (max-width: 700px) { .about-text, .faq-sec .sec-head, .scene .contact-card { padding-right: clamp(34px, 5.5vw, 56px); padding-left: clamp(34px, 5.5vw, 56px); } }
-.scene .cute { left: -52px; }
-@media (max-width: 700px) { .scene .cute { left: 14px; } }
