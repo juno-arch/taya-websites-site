@@ -813,7 +813,7 @@ html { overflow-x: clip; }
 
 /* the real textures, cut from her board's pictures (images/texture/): each band lays one down like wallpaper,
    raw across the top ribbon and under a soft veil of the band's color behind the words */
-.work { --tex: url(images/texture/kitchen.jpg); --tsize: 380px auto; --veil: rgb(255 196 176 / .8); --rib: url(images/texture/zig.jpg); --rsize: 300px auto; }
+.work { --tex: url(images/texture/kitchen.jpg); --tsize: 380px auto; --veil: rgb(255 196 176 / .8); --rib: url(images/texture/portals.jpg); --rsize: 300px auto; }
 .prices { --tex: url(images/texture/swirl.jpg); --tsize: 675px auto; --veil: rgb(250 238 255 / .8); }
 .tools { --tex: url(images/texture/disco.jpg); --tsize: 700px auto; --veil: rgb(220 242 255 / .82); }
 .how { --tex: url(images/texture/starry.jpg); --tsize: 675px auto; --veil: rgb(30 16 24 / .0); --rib: url(images/texture/fur.jpg); --rsize: 380px auto; }
@@ -837,7 +837,7 @@ html { overflow-x: clip; }
 .tier-art { border-radius: 0; aspect-ratio: auto; height: 150px; display: flex; align-items: flex-end; border-bottom: 3px solid #2a1236; }
 .tier-art::after { display: none; }
 .tier-art h3 { position: static; padding: 10px 22px; margin: 0 0 0 0; background: #2a1236; color: #fff; text-shadow: none; font-size: clamp(26px, 2.4vw, 34px); }
-.tier.maiden .tier-art { background: url(images/texture/zig.jpg) 0 0 / 220px auto; }
+.tier.maiden .tier-art { background: url(images/texture/portals.jpg) 0 0 / 220px auto; }
 .tier.mother .tier-art { background: url(images/texture/fur.jpg) 0 0 / 260px auto; }
 .tier.crone .tier-art { background: url(images/texture/swirl.jpg) 0 0 / 360px auto; }
 .tier-body { padding: 22px 26px 26px; }
@@ -865,8 +865,8 @@ html { overflow-x: clip; }
 .tools .tools-card { max-width: none; }
 
 /* contact: a full-width lava band */
-.scene { background: #1e1018 url(images/texture/swirl-low.jpg) 0 0 / 300px auto; isolation: isolate; overflow: clip; }
-.scene::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; display: block; background: url(images/texture/zig.jpg) 0 0 / 220px auto; height: 110px; border-bottom: 3px solid #2a1236; transform: none; }
+.scene { background: #1e1018 url(images/texture/tiedye.jpg) 0 0 / 300px auto; isolation: isolate; overflow: clip; }
+.scene::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 44px; z-index: 1; display: block; background: url(images/texture/portals.jpg) 0 0 / 220px auto; height: 110px; border-bottom: 3px solid #2a1236; transform: none; }
 .scene::after { display: none; }
 .scene > .ceiling { z-index: 0; }
 .scene-body { margin-top: 0; min-height: 0; display: block; padding: calc(110px + clamp(56px, 8vw, 110px)) var(--wf-gut) clamp(60px, 8vw, 110px); }
@@ -883,7 +883,7 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 .hero-art { object-position: 50% 50%; }
 .door-art { object-position: 50% 50%; }
 .field > .ceiling, .scene > .ceiling { z-index: -1; }
-.scene { background: linear-gradient(rgb(var(--wf-ground-rgb) / .6), rgb(var(--wf-ground-rgb) / .6)), url(images/texture/swirl-low.jpg) 0 0 / 300px auto; }
+.scene { background: linear-gradient(rgb(var(--wf-ground-rgb) / .6), rgb(var(--wf-ground-rgb) / .6)), url(images/texture/tiedye.jpg) 0 0 / 300px auto; }
 
 /* QA fixes, pass two */
 .how .ready-line { color: #fff1ec; } .how .ready-line b { color: #7ff3e8; }
@@ -906,7 +906,7 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 
 /* pass 4b: each price card is one whole pattern; words sit on cream highlighter strips so they read */
 .tiers { background: none; }
-.tier.maiden { background: url(images/texture/zig.jpg) 0 0 / 300px auto; }
+.tier.maiden { background: url(images/texture/portals.jpg) 0 0 / 300px auto; }
 .tier.mother { background: url(images/texture/fur.jpg) 0 0 / 380px auto; }
 .tier.crone { background: url(images/texture/swirl.jpg) 0 0 / 520px auto; }
 .tier .tier-art { background: none !important; height: auto; border-bottom: 0; }
@@ -924,3 +924,7 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 
 /* knit flower stripes from Pollen's pick: the Questions band */
 .faq-sec { --tex: url(images/texture/knit.png); --tsize: 520px auto; --veil: rgb(255 255 255 / 0); }
+
+/* pass 5: the lava collage was too busy as a background; calmer textures take its place */
+.work { --tex: url(images/texture/disco.jpg); --tsize: 700px auto; --veil: rgb(255 255 255 / .1); }
+.scene::before { display: none; }
