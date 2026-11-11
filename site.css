@@ -1234,3 +1234,19 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .about::after { -webkit-mask: none; mask: none; opacity: 1; }
 .about::after { background: radial-gradient(circle at 50% 0, transparent 0 7px, #1a1420 7.5px 10.5px, transparent 11px) 0 0 / 24px 12px repeat-x; height: 12px; bottom: 0; }
 .about::after { top: auto; }
+
+/* pass 15: one connected look for every break. Each band's top edge is the band above hanging down in a black scalloped edge,
+   so the bands run straight into each other; the thin picture strips are gone. */
+.work::before, .prices::before, .tools::before, .how::before, .faq-sec::before, .scene::before {
+  display: block; content: ''; position: absolute; inset: 0 0 auto 0; height: 12px; z-index: 1; border: 0; pointer-events: none; animation: none; transform: none; filter: none; -webkit-mask: none; mask: none;
+  background: radial-gradient(circle at 50% 0, var(--prev) 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
+.scene::after { display: none; }
+.work { --prev: #ffe3a1; } .prices { --prev: #f9b9a0; } .tools { --prev: #d6c8f5; } .how { --prev: #b5e3c8; } .scene { --prev: #9ed6dc; }
+.work, .prices, .tools, .how, .scene { padding-top: calc(var(--wf-section-pad, 80px) + 14px); }
+/* About: the pink band above hangs into it, its photo starts under that edge, and its own photo hangs into the Questions band */
+.about { background: radial-gradient(circle at 50% 0, #f7a9b4 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; padding-top: calc(var(--wf-section-pad, 80px) + 14px); }
+.about::before { top: 12px; }
+/* the footer's top edge: the Contact band hangs into it */
+.site-foot::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 0, #232a66 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
+/* the About photo's scallops are built exactly like the others: the photo fills to radius 10, the black line sits just outside it */
+.about::after { background: radial-gradient(circle at 50% 0, transparent 0 9.5px, #1a1420 10px 12px, transparent 12.5px) 0 0 / 24px 12px repeat-x; }
