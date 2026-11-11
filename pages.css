@@ -315,3 +315,16 @@ h1 em, h2 em, h3 em { font-family: var(--wf-font-display); font-style: normal; f
 .card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 60px; z-index: 1; padding: 0; border-radius: 0; animation: none;
   background: url(images/texture/portals.jpg) 0 0 / 220px auto; -webkit-mask: none; mask: none; }
 .card.yours { box-shadow: 8px 8px 0 #ffd93d; }
+
+/* Nov 11 2026: the signed agreement pages (agreement/*.html) wear the new Web Faery look without their words or files changing
+   (each dated file is hash-locked, so the look comes from here, reached through :has on the .agreement card). Lilac page,
+   cream card with an ink outline and a hard coral shadow, pixel label, bold reading-font lead-ins. */
+html:has(.card.agreement), html:has(.card.agreement) body { background: #d6c8f5; }
+html:has(.card.agreement) .soil { display: none; }
+.card.agreement { background: #fff8f1; border: 2px solid #1a1420; border-radius: 18px; box-shadow: 6px 6px 0 #f5967a; color: #2a1236; --wf-c-ink: #2a1236; --wf-c-rose: #8f2c3a; }
+.card.agreement::before { display: none; }
+.card.agreement .kicker { font-family: 'Silkscreen', 'Pixelify Sans', ui-monospace, monospace; font-weight: 700; font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: #8f2c3a; }
+.card.agreement h1 { font-family: 'Manufacturing Consent', 'Germania One', system-ui, sans-serif; font-weight: 400; color: #2a1236; }
+.card.agreement li b { font-family: 'Instrument Sans', 'Nunito', system-ui, sans-serif !important; font-weight: 800 !important; color: #2a1236; }
+.card.agreement .between, .card.agreement .fine { color: #4a2f55; }
+.card.agreement a { color: #00606f; }
