@@ -1307,3 +1307,9 @@ body::before { display: none !important; }
 .site-foot .wrap::before { inset: -3px; -webkit-mask: none; mask: none; clip-path: var(--zo, none); }
 :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after,
 .site-foot .wrap::after { inset: 0; -webkit-mask: none; mask: none; clip-path: var(--zi, none); }
+
+/* paper texture on the card backgrounds: a fine speckle and soft horizontal fibres over the cream, drawn in code */
+:root { --paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .52  0 0 0 0 .40  0 0 0 0 .34  0 0 0 .30 -.04'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E") 0 0 / 240px 240px, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .70  0 0 0 0 .58  0 0 0 0 .50  0 0 0 .20 -.02'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23f%29'/%3E%3C/svg%3E") 0 0 / 360px 360px; }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after,
+.site-foot .wrap::after { background: var(--paper), #fff8f1; }
+.about .sec-head::after { background: var(--paper), #fff8f1; }
