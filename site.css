@@ -1223,3 +1223,14 @@ h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; 
 .faq-sec { margin-top: -12px; }
 .faq-sec::before { display: none; }
 .faq-sec { padding-top: calc(var(--wf-section-pad, 80px) + 12px); }
+
+/* About: the photo lives on its own layer so the scalloped lower edge can carry the black outline again */
+.about { background: none; -webkit-mask: none; mask: none; isolation: isolate; }
+.about::before { display: block; content: ''; position: absolute; inset: 0; height: auto; z-index: -1; border: 0; pointer-events: none; transform: none; animation: none;
+  background: url(images/texture/water.png) center / cover no-repeat;
+  -webkit-mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 12px) no-repeat, radial-gradient(circle at 50% 0, #000 0 10px, transparent 10.5px) 0 100% / 24px 12px repeat-x;
+  mask: linear-gradient(#000, #000) 0 0 / 100% calc(100% - 12px) no-repeat, radial-gradient(circle at 50% 0, #000 0 10px, transparent 10.5px) 0 100% / 24px 12px repeat-x; }
+.about::after { display: block; content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 0, transparent 0 8px, #1a1420 8.5px 10.5px, transparent 11px) 0 0 / 24px 12px repeat-x; }
+.about::after { -webkit-mask: none; mask: none; opacity: 1; }
+.about::after { background: radial-gradient(circle at 50% 0, transparent 0 7px, #1a1420 7.5px 10.5px, transparent 11px) 0 0 / 24px 12px repeat-x; height: 12px; bottom: 0; }
+.about::after { top: auto; }
