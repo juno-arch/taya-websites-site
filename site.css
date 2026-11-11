@@ -1356,3 +1356,12 @@ body::before { display: none !important; }
 .site-foot li a { min-height: 34px; font-size: 15px; }
 .site-foot .fine { font-size: 13.5px; }
 .site-foot .disco { transform: scale(.82); margin-block: -4px; }
+
+/* the footer card is reformatted as a long, low strip (the name, the links in a row, the disco ball), so it can't be mistaken for the Contact card */
+.site-foot { padding: 70px 0 calc(70px + env(safe-area-inset-bottom)); }
+.site-foot .wrap { max-width: 1060px; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "brand links disco" "fine fine fine"; align-items: center; gap: 6px 34px; padding: 30px 48px 24px; text-align: left; }
+.site-foot .brand { grid-area: brand; justify-self: start; }
+.site-foot ul { grid-area: links; justify-content: center; margin: 0; gap: 0 22px; }
+.site-foot .disco { grid-area: disco; justify-self: end; transform: scale(.85); margin: 0; }
+.site-foot .fine { grid-area: fine; text-align: center; margin: 4px 0 0; padding-top: 10px; border-top: 3px dotted #1a1420; font-size: 13.5px; }
+@media (max-width: 860px) { .site-foot .wrap { grid-template-columns: 1fr; grid-template-areas: "brand" "links" "disco" "fine"; justify-items: center; text-align: center; max-width: 440px; padding: 36px 28px 28px; } .site-foot .brand, .site-foot .disco { justify-self: center; } .site-foot ul { justify-content: center; } }
