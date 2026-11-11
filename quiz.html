@@ -271,7 +271,7 @@
       answers: [
         { t: 'No, my everyday email is fine' },
         { t: 'Email from my own address', sub: 'Like hello@yourbusiness.com' },
-        { t: 'A newsletter', sub: 'A sign-up on your site, and the sending covered' },
+        { t: 'A newsletter', sub: 'A sign-up on your site' },
         { t: 'Both, please' }
       ]
     }
@@ -311,7 +311,7 @@
         'Everything in the Planted subscription: hosting, your web address, backups, your magic site, a monthly check-in and new reviews',
         'Post once, show up everywhere: keep posting where you already post, and it lands on your website and your Google profile too (I don’t post on your socials for you). I only post what you’ve made or said yes to.',
         // (\u2011, a no-break hyphen, keeps sign-up and sold-out from breaking across two lines on a phone)
-        'Your contact form and newsletter sign\u2011up, with sending covered',
+        'Your contact form and newsletter sign\u2011up',
         'Your Instagram feed on your site, filling itself in as you post',
         'Email from your own address (you@yourbusiness.com), covered',
         'A seasonal refresh: new photos and wording as the year turns'
@@ -387,8 +387,8 @@
   // (pricing-oct2026.md, "Accounts and third-party services")
   var CARE_ALSO_PAYS = {
     'Planted': '',
-    'Tended': ' It also pays for email from your own address, your Instagram feed on your site, and your newsletter’s paid plan once your list passes 100 people (up to 1,000).',
-    'In Bloom': ' It also pays for email from your own address, your Instagram feed, your newsletter’s paid plan once your list passes 100 people (up to 1,000), and your booking, payments or shop running on my server.'
+    'Tended': ' It also pays for email from your own address and your Instagram feed on your site.',
+    'In Bloom': ' It also pays for email from your own address, your Instagram feed, and your booking, payments or shop running on my server.'
   };
 
   // Which accounts this client would have, all in their name (pricing-oct2026.md, "Account setup flow"). Their Google
@@ -431,7 +431,7 @@
     }
     var notCovered = ['paid plans of apps you already use (Square, Vagaro, Acuity and the like)', 'ads'];
     if (build === 'In Bloom') notCovered.unshift('Stripe’s card fee');
-    if (build !== 'Planted') notCovered.push('a newsletter list over 1,000 people');
+    if (build !== 'Planted') notCovered.push('the paid plan of your newsletter tool, Buttondown');
     var nc = notCovered.length > 2 ? notCovered.slice(0, -1).join(', ') + ', or ' + notCovered[notCovered.length - 1] : notCovered.join(' or ');
     lines.push(['Your subscription doesn’t pay for', nc.charAt(0).toUpperCase() + nc.slice(1) + '.']);
     lines.push(['Your accounts', accountsLine(p, build)]);
@@ -507,8 +507,8 @@
     if (picks[2] === 5) also = 'Need a full online store (catalog, inventory, shipping)? That’s quoted separately, before anything starts. ' + also;
     if (build === 'Tended' && picks[3] >= 1 && picks[0] === 0 && picks[1] !== 1 && picks[2] <= 2) also = 'One page would hold everything, but ' + [
       '', 'email from your own address comes with Tended, covered by your subscription. ',
-      'a newsletter lives in Tended: the sign-up on your site, and its sending covered by your subscription. ',
-      'a newsletter and email from your own address live in Tended: the sign-up on your site, its sending and your own address, all covered by your subscription. '
+      'a newsletter lives in Tended: the sign-up on your site (Buttondown’s paid plan, if your list needs it, is yours to pay). ',
+      'a newsletter and email from your own address live in Tended: the sign-up on your site, and your own address covered by your subscription. '
     ][picks[3]] + also;
     el('r-build-also').textContent = also;
 

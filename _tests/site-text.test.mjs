@@ -377,7 +377,7 @@ for (const page of PAGES) {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
-      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up, with sending covered/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
+      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up/, /Instagram feed/, /Email from your own address/, /seasonal refresh/],
       crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own back end, built around your business, with its own sign-in/, /Order direct for food businesses/, /flyer for one event a month/, /Private visitor counts/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
