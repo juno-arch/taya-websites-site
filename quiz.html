@@ -266,11 +266,11 @@
     },
     {
       part: 'email and a newsletter',
-      title: 'Would you like email from your own address, or a newsletter?',
+      title: 'Would you like email from your domain address, or a newsletter?',
       why: 'Both are optional. The Tended and In Bloom subscriptions cover them.',
       answers: [
         { t: 'No, my everyday email is fine' },
-        { t: 'Email from my own address', sub: 'Like hello@yourbusiness.com' },
+        { t: 'Email from my domain address', sub: 'Like hello@yourbusiness.com' },
         { t: 'A newsletter', sub: 'A sign-up on your site' },
         { t: 'Both, please' }
       ]
@@ -345,7 +345,7 @@
   var EVERY_BUILD = [
     'Your Google Business Profile set up: the listing that shows on Google Maps',
     'A one-page brand sheet: your colors and fonts (and your logo, if you have one), ready for any designer or print shop',
-    'A slim banner across the top of your site for news like “Now booking” or “Away until Nov 3”'
+    'A slim banner across the top of your site for news like “Now booking” or “Closed for the holidays”'
   ];
   // what every plan's subscription also includes (Oct 6 2026; the same lines, in the same words, as the
   // "Every plan’s subscription also includes" card under the plans on webfaery.love), shown under each build's own
@@ -390,8 +390,8 @@
   // (pricing-oct2026.md, "Accounts and third-party services")
   var CARE_ALSO_PAYS = {
     'Planted': '',
-    'Tended': ' It also pays for email from your own address and your Instagram feed on your site.',
-    'In Bloom': ' It also pays for email from your own address, your Instagram feed, and your booking, payments or shop running on my server.'
+    'Tended': ' It also pays for email from your domain address and your Instagram feed on your site.',
+    'In Bloom': ' It also pays for email from your domain address, your Instagram feed, and your booking, payments or shop running on my server.'
   };
 
   // Which accounts this client would have, all in their name (pricing-oct2026.md, "Account setup flow"). Their Google
@@ -413,7 +413,7 @@
   function costLines(p, build) {
     var b = BUILDS[build];
     var lines = [
-      ['The build', money(b.price) + ' (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or bank transfer.'],
+      ['The build', money(b.price) + ' (founding clients ' + money(b.founding) + '). Half to start, which holds your spot, and half at launch. Card or US bank account.'],
       ['Subscription', money(b.care) + ' a month, starting after your 30 days of settling in. It pays for hosting, backups and your web address (its first year comes with your build), so there’s nothing to renew.' + CARE_ALSO_PAYS[build]]
     ];
     if (build !== 'In Bloom' && p[2] === 2) {
@@ -509,9 +509,9 @@
     if (picks[2] === 3) also = 'Your Book button goes straight to your own Cal.com. If you’d ever like payments or deposits with your bookings, what you paid counts toward In Bloom.';
     if (picks[2] === 5) also = 'Need a full online store (catalog, inventory, shipping)? That’s quoted separately, before anything starts. ' + also;
     if (build === 'Tended' && picks[3] >= 1 && picks[0] === 0 && picks[1] !== 1 && picks[2] <= 2) also = 'One page would hold everything, but ' + [
-      '', 'email from your own address comes with Tended, covered by your subscription. ',
+      '', 'email from your domain address comes with Tended, covered by your subscription. ',
       'a newsletter lives in Tended: the sign-up on your site (Buttondown’s paid plan, if your list needs it, is yours to pay). ',
-      'a newsletter and email from your own address live in Tended: the sign-up on your site, and your own address covered by your subscription. '
+      'a newsletter and email from your domain address live in Tended: the sign-up on your site, and your domain address covered by your subscription. '
     ][picks[3]] + also;
     el('r-build-also').textContent = also;
 

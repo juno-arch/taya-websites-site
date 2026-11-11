@@ -17,7 +17,7 @@
     document.documentElement.classList.add('js');
     try { seen = sessionStorage.getItem('wf-door-seen') === '1'; } catch (e) {}
     var deep = location.hash && location.hash.length > 1 && location.hash !== '#top';
-    window.wfDoorShow = !deep && !seen && !/[?&]door=0\b/.test(location.search);
+    window.wfDoorShow = false; /* Nov 10: the opening door page is off; the site opens straight on the hero. */
     if (window.wfDoorShow) {
       var l = document.createElement('link');
       l.rel = 'preload'; l.as = 'image'; l.type = 'image/webp'; l.href = 'images/door.webp'; l.setAttribute('fetchpriority', 'high');
@@ -29,7 +29,7 @@
 <link rel="preload" as="font" type="font/woff2" href="fonts/spectral-400-italic-latin.woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=20261110zzzzs">
 <link rel="stylesheet" href="wf-tokens.css?v=20261110zzzzs">
-<link rel="stylesheet" href="site.css?v=20261110zzzzs">
+<link rel="stylesheet" href="site.css?v=20261110zzzzv">
 <link rel="stylesheet" href="ceiling.css?v=20261110zzzzs">
 <script src="site.js?v=20261110b" defer></script>
 <meta property="og:type" content="website">
@@ -65,12 +65,12 @@
   "makesOffer": [
     { "@type": "Offer", "name": "Planted: a one-page website", "description": "One page: who you are, what you offer, and how to reach you, with a tap to call, text or email, and a Book button to the booking app you already use, if you have one.", "price": "600", "priceCurrency": "USD" },
     { "@type": "Offer", "name": "Tended: a full website", "description": "A full site: your pages, a contact form, a newsletter sign-up, and a Book button that opens your booking page (the app you use now, or a free Cal.com set up for you).", "price": "1200", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "In Bloom: a website with booking, payments or a small shop", "description": "Everything in Tended, plus booking, payments or a small shop (up to 20 items) right on your site, running on my server, with your own back end built around what you offer. Orders and shipping addresses live in your own Stripe, with a short heads-up email for each. Happy with your booking app? You can keep it.", "price": "1800", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "In Bloom: a website with booking, payments or a small shop", "description": "Everything in Tended, plus booking, payments or a small shop (up to 20 items) right on your site, running on my server, with your own portal built around what you offer. Orders and shipping addresses live in your own Stripe, with a short heads-up email for each. Happy with your booking app? You can keep it.", "price": "1800", "priceCurrency": "USD" },
     { "@type": "Offer", "name": "Planted subscription", "description": "Hosting, your web address, security and backups; your magic site, yours for good: whenever something small needs changing, you just message me through it; a “your changes are up” email; a monthly check-in about your business; and new reviews added as they come in. Every plan’s subscription also includes: I follow your socials and update your site as you post, or you email me; changes usually within 2 business days; I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it; holiday heads-ups, with your hours updated on your site and your Google profile; private visitor counts, no tracking; and if a host changes its rules, moving your site is on me. Starts after the 30 days of settling in.", "price": "12", "priceCurrency": "USD",
       "priceSpecification": { "@type": "UnitPriceSpecification", "price": "12", "priceCurrency": "USD", "unitText": "MONTH" } },
     { "@type": "Offer", "name": "Tended subscription", "description": "Everything in the Planted subscription, plus post once, show up everywhere (when you post on Instagram or Facebook, I make your new post show up on your website and your Google profile too), contact form and newsletter sign-up, your Instagram feed on your site, email from your domain address, a small shop of up to 5 products, gift cards through Gift Up, a DoorDash button for food and drink businesses, and a seasonal refresh.", "price": "45", "priceCurrency": "USD",
       "priceSpecification": { "@type": "UnitPriceSpecification", "price": "45", "priceCurrency": "USD", "unitText": "MONTH" } },
-    { "@type": "Offer", "name": "In Bloom subscription", "description": "Everything in the Tended subscription, plus your booking, shop, gift certificates and waivers, running on my server; your own back end, built around your business, with its own sign-in; fuller direct ordering for food businesses; a flyer for one event a month, made and posted for you; and a yearly refresh.", "price": "90", "priceCurrency": "USD",
+    { "@type": "Offer", "name": "In Bloom subscription", "description": "Everything in the Tended subscription, plus your booking, shop, gift certificates and waivers, running on my server; your own portal, built around your business, with its own sign-in; fuller direct ordering for food businesses; a flyer for one event a month, made and posted for you; and a yearly refresh.", "price": "90", "priceCurrency": "USD",
       "priceSpecification": { "@type": "UnitPriceSpecification", "price": "90", "priceCurrency": "USD", "unitText": "MONTH" } }
   ]
 }
@@ -326,7 +326,7 @@
             <p class="gets-plus">Everything in Tended, plus:</p>
             <ul>
               <li>Your booking, shop, gift certificates and waivers, running on my server</li>
-              <li>Your own back end, built around your business, with its own <span class="nowrap">sign-in</span></li>
+              <li>Your own portal, built around your business, with its own <span class="nowrap">sign-in</span></li>
               <li>Fuller direct ordering for food businesses: DoorDash’s free online ordering built into your site, beyond the Tended button</li>
               <li>A flyer for one event a month, made and posted for you</li>
               <li>A yearly refresh: new photos from your year, your story updated, every page checked on phones</li>
@@ -365,7 +365,7 @@
           <p><a href="#care-includes">What each subscription includes</a></p>
         </div>
       </div>
-      <div class="prices-cta"><a class="btn" href="intake.html">Get a free mockup</a><p>See your own site first, free, within a week. No strings.</p></div>
+      <div class="prices-cta"><a class="btn" href="intake.html">Get a free mockup</a><p>See your own site first, free, within a week.</p></div>
       <p class="quiz">Not sure which build? <a href="quiz.html">Take the quiz</a></p>
       <div class="panel-fine">
         <p class="quoted pages-note">Planted is one scroll-down page. Tended and In Bloom can have up to 11 pages. If you would like more than 11, extra pages are added by the page, and we agree the price together before I add any.</p>
@@ -378,7 +378,7 @@
 
 <!-- ============ In Bloom: your tools, built right in ============
      Right under the prices: what In Bloom runs on Taya's own server (booking, a small shop, gift certificates,
-     waivers, the client's own back end), and what apps like these usually cost on their own. The words were
+     waivers, the client's own portal), and what apps like these usually cost on their own. The words were
      written and fact-checked Oct 14 2026; the other companies' prices are from their own pricing pages, October 2026
      (the small print, class="tools-costs", is the one place on the site with other companies' prices). -->
 <section class="field tools light" id="tools" aria-labelledby="tools-title">
@@ -399,12 +399,12 @@
           <li><b>Newsletter.</b> A sign-up on your site, sending through Buttondown in your name. If your list needs Buttondown’s paid plan, that bill is yours.</li>
           <li><b>A small shop and gift cards.</b> A shop of up to 5 products with buy buttons, through your own Stripe account (Stripe’s normal card fee applies), and gift cards through Gift Up in your own account (their small fee applies).</li>
         <li><b>A DoorDash button.</b> For food and drink businesses, linking to your DoorDash page.</li>
-        <li><b>Instagram and email.</b> Your Instagram feed fills in on your site as you post, and email comes from your own address, covered.</li>
+        <li><b>Instagram and email.</b> Your Instagram feed fills in on your site as you post, and email comes from your domain address, covered.</li>
           <li><b>Your accounts.</b> Every account is in your name. The ones I set up for you are made with your email, and I hand you the logins at launch.</li>
         </ul>
           <div class="tools-cost">
             <p class="gets-k">What it costs</p>
-            <p>Cal.com is free for one person. Your subscription covers your web address and your email from your own address. It doesn’t pay for the paid plan of a tool I set up (like Buttondown for your newsletter), for paid plans of apps you already use, or for card fees. What apps like these usually cost is in the small print below.</p>
+            <p>Cal.com is free for one person. Your subscription covers your web address and your email from your domain address. It doesn’t pay for the paid plan of a tool I set up (like Buttondown for your newsletter), for paid plans of apps you already use, or for card fees. What apps like these usually cost is in the small print below.</p>
           </div>
         </div>
         <div class="tools-col tools-bloom">
@@ -447,33 +447,55 @@
   <div class="wrap how-grid">
     <div class="sec-head how-head">
       <p class="eyebrow">How it works</p>
-      <h2 id="how-title">Four steps, <em>start to finish.</em></h2>
+      <h2 id="how-title">Start to finish, <em>step by step.</em></h2>
     </div>
     
     <div class="how-main">
-      <ol class="steps" role="list">
+      <ol class="steps timeline" role="list">
       <li class="card">
         <span class="num" aria-hidden="true">1</span>
-        <h3>A free mockup</h3>
-        <p>Tell me about your business and get a free mockup within a week. Pick a build and tap anywhere on it to leave notes.</p>
+        <h3>Mockup sent</h3>
+        <p>Tell me about your business and within a week you get a free mockup of your own site, on a private link. Tap anywhere on it to leave notes.</p>
+        <ul class="pills left turn"><li class="pill p-pink">Your part: look and leave notes</li></ul>
       </li>
       <li class="card">
         <span class="num" aria-hidden="true">2</span>
-        <h3>I draft</h3>
-        <p>A few easy questions by email, I write your words from them, then a first draft in about a week, on a private link.</p>
+        <h3>Choosing</h3>
+        <p>We talk through which build fits you (the quiz helps). You pick one.</p>
+        <ul class="pills left turn"><li class="pill p-butter">Your part: pick a build</li></ul>
       </li>
       <li class="card">
         <span class="num" aria-hidden="true">3</span>
-        <h3>You tweak</h3>
-        <p>Your changes. Send me what you’d like changed; one email with everything in it is easiest.</p>
+        <h3>Getting started</h3>
+        <p>One sitting in your portal: a few easy questions, the agreement, then half the build as a deposit, which holds your spot. Your launch date starts counting the day the deposit clears, and I email it to you.</p>
+        <ul class="pills left turn"><li class="pill p-mint">Your part: answer, sign, pay</li></ul>
       </li>
       <li class="card">
         <span class="num" aria-hidden="true">4</span>
-        <h3>It goes live</h3>
-        <p>Live at your own web address, with 30 days of settling-in tweaks on me. Then your subscription carries on.</p>
+        <h3>Setup</h3>
+        <p>I set up your accounts in your name: your web address, and whatever your build uses, like booking or Stripe. Anything tricky comes with a short video.</p>
+        <ul class="pills left turn"><li class="pill p-sky">Your part: only the tricky bits</li></ul>
+      </li>
+      <li class="card">
+        <span class="num" aria-hidden="true">5</span>
+        <h3>Build and review</h3>
+        <p>Your mockup becomes the real site, with your words written from your answers, and you can ask for changes any time. Two days before launch I send a preview of the whole site. Tell me “yes, go” or “not yet”, plus any changes you’d like. If it’s not yet, I’ll tell you whether your date still works or we pick a new one.</p>
+        <ul class="pills left turn"><li class="pill p-lav">Your part: look it over and say go</li></ul>
+      </li>
+      <li class="card">
+        <span class="num" aria-hidden="true">6</span>
+        <h3>Launch, then settling in</h3>
+        <p>Your site goes live at your own web address on your launch date. For the next 30 days, tweaks are on me. Your subscription starts after that.</p>
+        <ul class="pills left turn"><li class="pill p-peach">Together: 30 days of settling in</li></ul>
+      </li>
+      <li class="card">
+        <span class="num" aria-hidden="true">7</span>
+        <h3>Care</h3>
+        <p>Your subscription keeps it healthy: hosting, a monthly check-in, updates as you post, and changes by message, usually within 2 business days.</p>
+        <ul class="pills left turn"><li class="pill p-pink">Your part: tell me what’s new</li></ul>
       </li>
       </ol>
-      <p class="ready-line">Ready in about <b>2, 3 or 4 weeks</b> (Planted, Tended, In Bloom) from your deposit, and it moves if your content comes later.</p>
+      <p class="ready-line">Ready in about <b>2, 3 or 4 weeks</b> (Planted, Tended, In Bloom) from the day your deposit clears. I need your answers and photos within a week of it; if they come later, your launch date moves back by the same number of days.</p>
     </div>
   </div>
 </section>
@@ -509,14 +531,14 @@
       <details id="costs">
         <summary>How does paying work, and are there other costs?</summary>
         <div class="ans">
-        <p>Half to start (it holds your spot) and half at launch, by card or bank transfer. My first 5 founding clients get half off the build.</p>
+        <p>Half to start (it holds your spot) and half at launch, by card or US bank account. My first 5 founding clients get half off the build.</p>
         <p>After launch, there’s just your subscription: $12, $45 or $90 a month, matching your site. It starts after your 30 days of settling in, and if you ever cancel, your site is still yours and I hand you every file and login. Your web address’s first year comes with your build. After that, your subscription pays for these, so there’s nothing to renew:</p>
         <ul>
           <li><b>🌱 Planted:</b> hosting, backups and your web address.</li>
-          <li><b>🌿 Tended:</b> all that, plus email from your own address and your Instagram feed on your site.</li>
+          <li><b>🌿 Tended:</b> all that, plus email from your domain address and your Instagram feed on your site.</li>
           <li><b>🌸 In Bloom:</b> all that, plus your booking, shop, gift certificates and waivers, running on my server.</li>
         </ul>
-        <p>Your subscription doesn’t pay for Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (Square, Vagaro, Acuity and the like), ads, or the paid plan of your newsletter tool, Buttondown. New to online booking? With Tended, I set you up with Cal.com, free for one person and in your name, and with In Bloom, booking runs right on your site, on my server. Would you like email from your own address? It comes with Tended and In Bloom.</p>
+        <p>Your subscription doesn’t pay for Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (Square, Vagaro, Acuity and the like), ads, or the paid plan of your newsletter tool, Buttondown. New to online booking? With Tended, I set you up with Cal.com, free for one person and in your name, and with In Bloom, booking runs right on your site, on my server. Would you like email from your domain address? It comes with Tended and In Bloom.</p>
         <p>These are estimates as of October 2026.</p>
         </div>
       </details>
@@ -546,7 +568,7 @@
         <p class="plan"><b>🌸 In Bloom, $90 a month:</b> everything in Tended, plus:</p>
         <ul>
           <li>Your booking, shop, gift certificates and waivers, running on my server</li>
-          <li>Your own back end, built around your business, with its own <span class="nowrap">sign-in</span></li>
+          <li>Your own portal, built around your business, with its own <span class="nowrap">sign-in</span></li>
           <li>Fuller direct ordering for food businesses: DoorDash’s free online ordering built into your site, beyond the Tended button</li>
           <li>A flyer for one event a month, made and posted for you</li>
           <li>A yearly refresh: new photos from your year, your story updated, every page checked on phones</li>
@@ -582,7 +604,7 @@
       <details>
         <summary>How long does it take?</summary>
         <div class="ans">
-        <p>About 2 weeks for Planted, 3 for Tended and 4 for In Bloom, counted from your deposit, and it moves if your content comes later. You’ll see a draft in about a week, then I make your changes. Anything big and new I’ll quote first.</p>
+        <p>About 2 weeks for Planted, 3 for Tended and 4 for In Bloom. Your launch date starts counting the day your deposit clears, and I email it to you. I need your answers and photos within a week of that; if they come later, your launch date moves back by the same number of days. Two days before launch I send you a preview of the whole site, and you tell me “yes, go” or “not yet”. Anything big and new I’ll quote first.</p>
         <p>While I build, I set up what your site needs, like your newsletter or booking, in your name and with your email, then hand you the logins at launch. You’ll get one or two <span class="nowrap">confirm-your-email</span> messages from them; just click them. Your part is small: add me as a manager on your Google profile (about 2 minutes), or if you don’t have one yet, I build it, you do Google’s one quick check, and at launch I make you its owner. Taking payments? You make your own Stripe account, with my help over email.</p>
         <p>No rush, but if your content isn’t in 30 days after you say yes, I’ll nudge you kindly, and at 60 days the project closes so neither of us is left hanging. Your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</p>
         </div>
@@ -613,113 +635,6 @@
   </div>
 </section>
 
-<!-- ============ guestbook ============
-     The three notes are samples, each tagged "sample". Nothing is sent anywhere yet: the guestbook script at the
-     bottom of the page has LIVE = false (and says how to switch it on). When it's live, the script swaps the
-     samples for the notes Taya has approved; delete the three samples then too, so visitors without JavaScript
-     don't see them.
-     Hidden for now (the hidden on the section below): signing it would show a thank-you while the note goes nowhere.
-     To bring it back, take hidden off the section, and switch LIVE on at the same time. -->
-<section class="field guestbook" id="guestbook" aria-labelledby="gb-title" hidden>
-  <!-- the three stamps, drawn once and used everywhere below. To use Taya's own drawings, replace what's
-       inside each <symbol> (keep the ids), or put an <image href="stamps/fern.png" width="24" height="24"/> in it -->
-  <svg class="gb-sprite" aria-hidden="true" focusable="false">
-    <symbol id="gb-mushroom" viewBox="0 0 24 24"><path d="M3.5 12.2C3.5 7.6 7.3 4 12 4s8.5 3.6 8.5 8.2c0 .6-.4 1-1 1h-15c-.6 0-1-.4-1-1Z"/><path d="M9.4 13.2c-.1 2.3-.4 4.4-.8 5.9-.2.9.4 1.9 1.4 1.9h4c1 0 1.6-1 1.4-1.9-.4-1.5-.7-3.6-.8-5.9"/><circle cx="8.5" cy="9.3" r="1.1"/><circle cx="12.7" cy="6.9" r="1"/><circle cx="15.9" cy="10" r=".9"/></symbol>
-    <symbol id="gb-moon" viewBox="0 0 24 24"><path d="M19.6 14.4A8.2 8.2 0 1 1 9.6 4.4a6.4 6.4 0 0 0 10 10Z"/><path d="M17.2 3.2v3.2M15.6 4.8h3.2"/><circle cx="20.3" cy="9" r=".4"/></symbol>
-    <symbol id="gb-fern" viewBox="0 0 24 24"><path d="M11 21.5c.6-3.6.7-7.4.4-10.4-.3-3.2 1.3-6.4 4.6-6.9 2.2-.3 3.7 1 3.8 2.8.1 1.6-1.1 2.8-2.5 2.8-1.3 0-2.2-1-2.1-2.1.1-.9.8-1.5 1.6-1.4"/><path d="M11.3 18c-1.8-.1-3.6-1-4.7-2.6M11.4 14.4c-1.6-.1-3-.9-3.8-2.2M11.4 11c-1.2-.2-2.2-.8-2.8-1.8M11.3 18c1.5-.4 2.8-1.3 3.6-2.6M11.4 14.4c1.3-.4 2.4-1.1 3.1-2.2"/></symbol>
-  </svg>
-  <div class="wrap">
-    <div class="sec-head center">
-      <p class="eyebrow">Guestbook</p>
-      <h2 id="gb-title">Leave a note <em>under the stars.</em></h2>
-      <p class="lede">Remember guestbooks? I missed them. Say hello, tell me where you’re reading from, or leave a kind word for whoever wanders by next.</p>
-    </div>
-
-    <div class="gb-grid">
-      <div class="gb-board">
-        <h3 class="sr-only" id="gb-notes-title">Notes left so far</h3>
-        <ul class="gb-notes" id="gb-notes" role="list" aria-labelledby="gb-notes-title">
-          <li class="gb-note">
-            <figure>
-              <span class="gb-stamp is-mushroom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#gb-mushroom"/></svg></span>
-              <p class="gb-tag">Sample<span class="sr-only"> note</span></p>
-              <blockquote><p>Hello from down the road! The little faery door on this page made me smile. Just stopping by to say hi.</p></blockquote>
-              <figcaption><span class="gb-by">A neighbor<span>, Arcata</span></span> <time datetime="2026-09-24">Sep 24</time></figcaption>
-            </figure>
-          </li>
-          <li class="gb-note">
-            <figure>
-              <span class="gb-stamp is-moon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#gb-moon"/></svg></span>
-              <p class="gb-tag">Sample<span class="sr-only"> note</span></p>
-              <blockquote><p>Signing a guestbook like it’s 2003 again. Thank you for bringing these back.</p></blockquote>
-              <figcaption><span class="gb-by">A friend<span>, Eureka</span></span> <time datetime="2026-09-21">Sep 21</time></figcaption>
-            </figure>
-          </li>
-          <li class="gb-note">
-            <figure>
-              <span class="gb-stamp is-fern" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#gb-fern"/></svg></span>
-              <p class="gb-tag">Sample<span class="sr-only"> note</span></p>
-              <blockquote><p>It rained all morning and the ferns look so happy. Leaving a little green hello for the next visitor.</p></blockquote>
-              <figcaption><span class="gb-by">A visitor<span>, McKinleyville</span></span> <time datetime="2026-09-18">Sep 18</time></figcaption>
-            </figure>
-          </li>
-        </ul>
-        <p class="gb-quiet">Notes show up here once I’ve read them.</p>
-      </div>
-
-      <div class="card gb-sign">
-        <h3 class="gb-badge" id="gb-sign-title"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0c.4 2.6 1.6 4 5 5-3.4 1-4.6 2.4-5 5-.4-2.6-1.6-4-5-5 3.4-1 4.6-2.4 5-5Z"/></svg><span>Sign my guestbook</span><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0c.4 2.6 1.6 4 5 5-3.4 1-4.6 2.4-5 5-.4-2.6-1.6-4-5-5 3.4-1 4.6-2.4 5-5Z"/></svg></h3>
-        <!-- without JavaScript the form stays hidden and this shows instead (the script swaps them) -->
-        <p class="gb-nojs" id="gb-nojs">Turn on JavaScript to sign the guestbook, or email me a hello at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a>. I love those too.</p>
-        <form class="gb-form" id="gb-form" novalidate hidden aria-labelledby="gb-sign-title">
-          <div class="gb-row">
-            <div class="gb-field">
-              <label for="gb-name">First name</label>
-              <input id="gb-name" name="name" type="text" autocomplete="given-name" maxlength="40" required aria-required="true">
-            </div>
-            <p class="gb-err" id="gb-name-err" hidden>Add your first name, so I know who stopped by.</p>
-            <div class="gb-field">
-              <label for="gb-town">Town <span class="gb-opt">(optional)</span></label>
-              <input id="gb-town" name="town" type="text" autocomplete="address-level2" maxlength="40">
-            </div>
-          </div>
-          <div class="gb-field">
-            <label for="gb-note">Your note</label>
-            <textarea id="gb-note" name="note" rows="4" maxlength="280" required aria-required="true" aria-describedby="gb-count"></textarea>
-            <p class="gb-err" id="gb-note-err" hidden>Write a little note first.</p>
-            <p class="gb-count" id="gb-count">280 characters left</p>
-            <p class="sr-only" id="gb-count-live" aria-live="polite"></p>
-          </div>
-          <fieldset class="gb-stamps">
-            <legend>Pick a stamp</legend>
-            <div class="gb-stamp-row">
-              <label class="gb-pick"><input type="radio" name="stamp" value="mushroom" checked><span class="gb-lift" aria-hidden="true"><span class="gb-stamp is-mushroom"><svg viewBox="0 0 24 24"><use href="#gb-mushroom"/></svg></span></span><span class="gb-pick-name">Mushroom</span></label>
-              <label class="gb-pick"><input type="radio" name="stamp" value="moon"><span class="gb-lift" aria-hidden="true"><span class="gb-stamp is-moon"><svg viewBox="0 0 24 24"><use href="#gb-moon"/></svg></span></span><span class="gb-pick-name">Moon</span></label>
-              <label class="gb-pick"><input type="radio" name="stamp" value="fern"><span class="gb-lift" aria-hidden="true"><span class="gb-stamp is-fern"><svg viewBox="0 0 24 24"><use href="#gb-fern"/></svg></span></span><span class="gb-pick-name">Fern</span></label>
-            </div>
-          </fieldset>
-          <!-- a honeypot: people don't see this field, but form-filling bots do, and a filled one is quietly dropped -->
-          <div class="gb-hp" aria-hidden="true">
-            <label for="gb-website">Leave this empty</label>
-            <input id="gb-website" name="website" type="text" tabindex="-1" autocomplete="off">
-          </div>
-          <div class="gb-send">
-            <button class="btn" type="submit" id="gb-go"><span>Sign the guestbook</span></button>
-            <p>Only your first name and town are shown with your note.</p>
-          </div>
-          <p class="gb-status" id="gb-status" role="alert"></p>
-        </form>
-        <div class="gb-thanks" id="gb-thanks" hidden>
-          <h3 id="gb-thanks-title" tabindex="-1">Thank you!</h3>
-          <p>Your note is tucked in under the stars. It’ll appear once I’ve read it.</p>
-          <ul class="gb-notes" id="gb-yours" role="list" aria-label="Your note, as it will look"></ul>
-          <button class="gb-again" type="button" id="gb-again">Write another note</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 </div><!-- /twilight -->
 
 <!-- ============ contact ============ (painting: the little wooden mailbox with the glowing letter) -->
@@ -730,7 +645,7 @@
     <div class="card contact-card">
       <p class="eyebrow">Say hello</p>
       <h2 id="contact-title">Tell me about <em>your work.</em></h2>
-      <p class="lede">Tell me a little about your business, and within a week I’ll send you a free mockup of your own website. No strings. Rather just say hi? Email me; I write back personally.</p>
+      <p class="lede">Tell me a little about your business, and within a week I’ll send you a free mockup of your own website. Rather just say hi? Email me; I write back personally.</p>
       <div class="btns">
         <a class="btn" href="intake.html">Get a free mockup</a>
         <a class="btn ghost" href="mailto:taya@webfaery.love">Email taya@webfaery.love</a>
@@ -772,175 +687,6 @@
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[href^="#"]');
       if (a) openFor(a.getAttribute('href'));
-    });
-  })();
-</script>
-<script>
-  /* ============ guestbook ============
-     Not switched on yet (LIVE = false): nothing is sent or stored anywhere. Signing checks the note, then shows
-     the thank-you with the note as it would look, only in this visitor's own browser tab.
-
-     To switch the real guestbook on, set LIVE = true (the one change needed here). Then:
-       - signing sends { name, town, note, stamp, approved: false } to the "guestbook" collection on the
-         PocketBase server (SERVER below)
-       - the list shows only approved notes, newest first, in place of the three samples
-     The server does the real guarding, with the collection's API rules: anyone may create a note but only
-     with approved = false (create rule: @request.body.approved = false), and only approved notes can be
-     listed or viewed (list and view rule: approved = true). Taya approves a note by ticking approved in the
-     PocketBase dashboard. Fields: name (text, max 40), town (text, max 40), note (text, max 280),
-     stamp (select: mushroom, moon, fern), approved (bool). No trackers, no cookies. */
-  (function () {
-    var LIVE = false;
-    var SERVER = 'https://bookings.gardenfaery.love';
-    var COLLECTION = 'guestbook';
-    var MAX = 280;
-    var STAMPS = ['mushroom', 'moon', 'fern'];
-
-    var $ = function (id) { return document.getElementById(id); };
-    var form = $('gb-form'), notes = $('gb-notes'), thanks = $('gb-thanks');
-    if (!form || !notes || !thanks) return;
-    var card = form.closest('.gb-sign');
-    var name = $('gb-name'), town = $('gb-town'), note = $('gb-note'), trap = $('gb-website');
-    var count = $('gb-count'), countLive = $('gb-count-live'), status = $('gb-status'), go = $('gb-go');
-    var api = SERVER + '/api/collections/' + COLLECTION + '/records';
-
-    /* with JavaScript on, the form takes the place of the "turn on JavaScript" line */
-    form.hidden = false;
-    $('gb-nojs').hidden = true;
-
-    /* ---- one note card, the same shape as the samples in the page (words set as text, not as HTML) ---- */
-    var make = function (tag, cls, text) {
-      var el = document.createElement(tag);
-      if (cls) el.className = cls;
-      if (text != null) el.textContent = text;
-      return el;
-    };
-    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var noteCard = function (n, tagText) {
-      var stamp = STAMPS.indexOf(n.stamp) > -1 ? n.stamp : STAMPS[0];
-      var li = make('li', 'gb-note'), fig = make('figure');
-      var s = make('span', 'gb-stamp is-' + stamp);
-      s.setAttribute('aria-hidden', 'true');
-      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('viewBox', '0 0 24 24');
-      var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-      use.setAttribute('href', '#gb-' + stamp);
-      svg.appendChild(use); s.appendChild(svg); fig.appendChild(s);
-      if (tagText) fig.appendChild(make('p', 'gb-tag', tagText));
-      var q = make('blockquote');
-      q.appendChild(make('p', null, n.note));
-      fig.appendChild(q);
-      var cap = make('figcaption'), by = make('span', 'gb-by', n.name);
-      if (n.town) by.appendChild(make('span', null, ', ' + n.town));
-      cap.appendChild(by);
-      cap.appendChild(document.createTextNode(' '));
-      var d = new Date(String(n.created || '').replace(' ', 'T'));
-      if (isNaN(d)) d = new Date();
-      var t = make('time', null, MONTHS[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== new Date().getFullYear() ? ', ' + d.getFullYear() : ''));
-      var two = function (x) { return (x < 10 ? '0' : '') + x; };
-      t.setAttribute('datetime', d.getFullYear() + '-' + two(d.getMonth() + 1) + '-' + two(d.getDate()));
-      cap.appendChild(t);
-      fig.appendChild(cap);
-      li.appendChild(fig);
-      return li;
-    };
-
-    /* ---- live only: the approved notes take the place of the samples ---- */
-    if (LIVE && window.fetch) {
-      notes.textContent = '';
-      notes.setAttribute('aria-busy', 'true');
-      var none = function (words) {
-        var li = make('li');
-        li.appendChild(make('p', 'gb-empty', words));
-        notes.appendChild(li);
-      };
-      fetch(api + '?perPage=12&sort=-created&fields=name,town,note,stamp,created&filter=' + encodeURIComponent('approved=true'))
-        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-        .then(function (data) {
-          var items = (data && data.items) || [];
-          items.forEach(function (n) { notes.appendChild(noteCard(n)); });
-          if (!items.length) none('No notes yet. Yours could be the first!');
-        }, function () { none('The notes are resting just now. Try again in a little while.'); })
-        .then(function () { notes.removeAttribute('aria-busy'); });
-    }
-
-    /* ---- the character count, read out only now and then (at 40, 20 and 0 left), not on every key ---- */
-    var said = null;
-    var tally = function () {
-      var left = MAX - note.value.length;
-      count.textContent = left === 1 ? '1 character left' : left + ' characters left';
-      count.classList.toggle('near', left <= 40);
-      var step = left <= 0 ? 0 : left <= 20 ? 20 : left <= 40 ? 40 : null;
-      if (step !== said) { said = step; countLive.textContent = step === null ? '' : count.textContent; }
-    };
-    note.addEventListener('input', tally);
-    tally();
-
-    /* ---- gentle checks: a first name and a note ---- */
-    var mark = function (field, bad) {
-      var err = $(field.id + '-err');
-      if (!err) return;
-      err.hidden = !bad;
-      if (bad) field.setAttribute('aria-invalid', 'true'); else field.removeAttribute('aria-invalid');
-      var ids = (field.getAttribute('aria-describedby') || '').split(' ').filter(function (x) { return x && x !== err.id; });
-      if (bad) ids.unshift(err.id);
-      if (ids.length) field.setAttribute('aria-describedby', ids.join(' ')); else field.removeAttribute('aria-describedby');
-    };
-    [name, note].forEach(function (f) {
-      f.addEventListener('input', function () { if (f.getAttribute('aria-invalid') && f.value.trim()) mark(f, false); });
-    });
-
-    var busy = false;
-    var label = go.querySelector('span');
-    var done = function (n) {
-      var yours = $('gb-yours');
-      yours.textContent = '';
-      yours.appendChild(noteCard(n, 'Waiting to be read'));
-      form.hidden = true;
-      thanks.hidden = false;
-      card.classList.add('thanked');
-      thanks.classList.remove('settle');
-      void thanks.offsetWidth;
-      thanks.classList.add('settle');
-      $('gb-thanks-title').focus();
-    };
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (busy) return;
-      status.textContent = '';
-      var n = {
-        name: name.value.trim().slice(0, 40),
-        town: town.value.trim().slice(0, 40),
-        note: note.value.trim().slice(0, MAX),
-        stamp: (form.querySelector('input[name="stamp"]:checked') || {}).value || STAMPS[0],
-        approved: false
-      };
-      mark(name, !n.name);
-      mark(note, !n.note);
-      if (!n.name || !n.note) { (n.name ? note : name).focus(); return; }
-      /* a filled honeypot is a bot: it gets the thank-you, and nothing is sent */
-      if (trap.value) { done(n); return; }
-
-      busy = true;
-      label.textContent = 'Tucking it in…';
-      var send = LIVE
-        ? fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(n) })
-            .then(function (r) { if (!r.ok) throw new Error(r.status); })
-        : new Promise(function (resolve) { setTimeout(resolve, 700); });
-      send.then(function () { done(n); }, function () {
-        status.textContent = 'Hmm, your note didn’t go through. Try again in a minute, or email it to me at taya@webfaery.love.';
-      }).then(function () { busy = false; label.textContent = 'Sign the guestbook'; });
-    });
-
-    /* write another: the name and town stay, the note starts fresh */
-    $('gb-again').addEventListener('click', function () {
-      note.value = '';
-      tally();
-      thanks.hidden = true;
-      form.hidden = false;
-      card.classList.remove('thanked');
-      note.focus();
     });
   })();
 </script>

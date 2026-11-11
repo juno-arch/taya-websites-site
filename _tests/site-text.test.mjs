@@ -388,7 +388,7 @@ for (const page of PAGES) {
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
       mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up/, /Instagram feed/, /Email from your domain address, like you@yourbusiness\.com, covered/, /A small shop, up to 5 products/, /Gift cards, through Gift Up/, /A DoorDash button on your site/, /seasonal refresh/],
-      crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own back end, built around your business, with its own sign-in/, /Fuller direct ordering for food businesses/, /flyer for one event a month/, /yearly refresh/],
+      crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own portal, built around your business, with its own sign-in/, /Fuller direct ordering for food businesses/, /flyer for one event a month/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
     for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[k]} card doesn’t list ${re}`);
@@ -438,7 +438,7 @@ for (const page of PAGES) {
   }
   // 3. Planted gets free email forwarding; only sending from their own address needs Tended
   if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');
-  need('domain.html', /Sending from your own address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');
+  need('domain.html', /Sending from your (?:own|domain) address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');
   // 6. the Instagram feed is Tended and up: never in a Planted line or list item
   for (const page of PAGES) {
     for (const m of texts[page].matchAll(/<(p|li|small|td)\b[^>]*>([\s\S]*?)<\/\1>/g)) {

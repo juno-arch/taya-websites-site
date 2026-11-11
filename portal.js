@@ -115,7 +115,7 @@
   // each, from "What care includes" in pricing-oct2026.md (the full lists are on webfaery.love's price cards)
   const CARE_SAY = {
     maiden: 'Keeps your site healthy: hosting, your web address, backups, your changes as I follow your socials or whenever you email me, and a monthly check-in.',
-    mother: 'Tending as the seasons change: everything in the Planted subscription, plus your posts showing up everywhere, email from your own address and a seasonal refresh.',
+    mother: 'Tending as the seasons change: everything in the Planted subscription, plus your posts showing up everywhere, email from your domain address and a seasonal refresh.',
     crone: 'Keeps you in full bloom: everything in the Tended subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STAGES = [
@@ -125,8 +125,8 @@
   const STAGE_SAY = {
     getting_started: 'Your answers, photos and a few little setup bits.',
     call: 'I set up your accounts, in your name, and get everything ready to build.',
-    draft: 'I build your site. You look it over and tell me what to change.',
-    changes: 'I build your site. You look it over and tell me what to change.',
+    draft: 'I turn your mockup into your real site, and you can ask for changes any time. Two days before launch I send you a preview, and you tell me go, or not yet.',
+    changes: 'I turn your mockup into your real site, and you can ask for changes any time. Two days before launch I send you a preview, and you tell me go, or not yet.',
     launch: 'Your site goes live at your own web address, and I hand you your logins.',
     settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
   };
@@ -2470,7 +2470,9 @@
         return { key, label, date: st.date || '', est: '', until: '', turn: '', say: '', usual: 0, state: at === undefined || i < at ? 'done' : i === at ? 'now' : 'next' };
       });
     const lead = own.some((x) => x.key === 'mockup') ? [] : [{ key: 'mockup', label: 'Mockup sent', state: 'done' }, { key: 'choosing', label: 'Choosing', state: 'done' }];
-    const list = lead.concat(own);
+    // after settling in comes care (the same closing row as the site's timeline); a server that sends its own care row wins
+    const tail = own.some((x) => x.key === 'care') ? [] : [{ key: 'care', label: 'Care', say: '', state: live ? 'done' : 'next', until: '', est: '', date: '', turn: '', usual: 0 }];
+    const list = lead.concat(own, tail);
     $('#tl').replaceChildren(...list.map((s) => {
       const li = make('li', s.state);
       if (s.state === 'now') li.setAttribute('aria-current', 'step');
@@ -2497,6 +2499,7 @@
         else if (s.state === 'now') when = isPast(s.date) ? 'Since ' + d : 'About ' + d;
         else when = 'About ' + d;
       }
+      if (s.key === 'care' && !when) when = 'After settling in';
       body.append(make('span', estD ? 'when est' : 'when', when));
       if (s.usual && s.state !== 'done') body.append(make('span', 'usual', 'Usually ' + s.usual + (s.usual === 1 ? ' day' : ' days')));
       const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
