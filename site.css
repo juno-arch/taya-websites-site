@@ -895,14 +895,12 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 /* pass 4: one pattern per card, the whole card. No ribbon strip, no heavy veil; the pattern shows as it is. */
 .field { padding-top: var(--wf-section-pad); }
 .field::before { display: none; }
-.field.light { text-shadow: 0 0 6px rgb(255 255 255 / .9), 0 0 2px rgb(255 255 255 / .9); }
 .field.light .btn, .field.light .money, .field.light .founding-line { text-shadow: none; }
 .work { --veil: rgb(255 255 255 / .12); }
 .prices { --tex: url(images/texture/confetti.png); --tsize: 444px auto; --veil: rgb(255 255 255 / .0); }
 .tools { --veil: rgb(255 255 255 / .1); }
 .about { --veil: rgb(255 255 255 / .1); }
 .faq-sec { --veil: rgb(255 255 255 / .12); }
-.field.light .faq details, .field.light .piece p { text-shadow: 0 0 6px #fff, 0 0 3px #fff; }
 
 /* pass 4b: each price card is one whole pattern; words sit on cream highlighter strips so they read */
 .tiers { background: none; }
@@ -910,11 +908,6 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 .tier.mother { background: url(images/texture/fur.jpg) 0 0 / 380px auto; }
 .tier.crone { background: url(images/texture/swirl.jpg) 0 0 / 520px auto; }
 .tier .tier-art { background: none !important; height: auto; border-bottom: 0; }
-.field.light { text-shadow: none; }
-.field.light :is(p, li, h2, summary, .eyebrow, .money, small, .kind, dd, dt, span.note) { background: rgb(255 247 251 / .93); box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: .05em .35em; width: fit-content; max-width: 100%; }
-.field.light .btn, .field.light .btn * { background-clip: border-box; }
-.field.light .btn { background-color: #c8156f; padding: revert; }
-.field.light .btn.ghost { background: rgb(255 247 251 / .93); }
 
 /* holographic foil from Pollen's pick: the In Bloom tools band */
 .tools { --tex: url(images/texture/foil.png); --tsize: 520px auto; --veil: rgb(255 255 255 / 0); }
@@ -931,10 +924,48 @@ html.lava-on .disco { animation: disco-pulse .6s ease-in-out infinite alternate;
 
 /* fruity cereal from Pollen's pick: the Recent work band */
 .work { --tex: url(images/texture/cereal.png); --tsize: 380px auto; --veil: rgb(255 255 255 / 0); }
-.field.light :is(h3, h4, blockquote, cite, figcaption, .who, .link, p a) { background: rgb(255 247 251 / .93); box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: .05em .35em; width: fit-content; max-width: 100%; }
-.field.light p a { background: none; padding: 0; }
-.field.light .piece a:not(.btn) { background: rgb(255 247 251 / .93); padding: .05em .35em; display: inline-block; }
 
 /* Chicle sets small for its size; match the x-height of a regular face so buttons and nav don't shrink */
 h1, h2, h3, .btn, .brand, .tier-art h3, .eyebrow + h2 { font-size-adjust: 0.52; font-weight: 400; }
 .btn, .brand { letter-spacing: .01em; }
+
+/* pass 6: every block of words sits in one solid card with a wavy lava-wax border */
+:root { --wv-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16'%3E%3Cpath d='M0 8Q12 0 24 8T48 8V16H0Z'/%3E%3C/svg%3E"); --wv-bot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='16'%3E%3Cpath d='M0 8Q12 16 24 8T48 8V0H0Z'/%3E%3C/svg%3E"); --wv-lef: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='48'%3E%3Cpath d='M8 0Q0 12 8 24T8 48H16V0Z'/%3E%3C/svg%3E"); --wv-rig: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='48'%3E%3Cpath d='M8 0Q16 12 8 24T8 48H0V0Z'/%3E%3C/svg%3E"); }
+.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card { position: relative; isolation: isolate; background: none; box-shadow: none; border: 0; border-radius: 0; text-shadow: none;
+  padding: clamp(28px, 4.5vw, 44px) clamp(26px, 4.5vw, 44px); margin-block: 10px;
+  --wf-ink: #2a1236; --wf-ink-soft: #3e2148; --wf-eyebrow: #b80f64; --wf-italic: #b80f64; --wf-link: #00697a; --wf-gold-hi: #00697a; --wf-text-shadow: none; --wf-text-shadow-strong: none;
+  --wf-c-ink: #2a1236; --wf-c-text: #3a1f45; --wf-c-soft: #55385f; --wf-c-rose: #b80f64; --wf-c-link: #00697a; --wf-c-rule: rgb(42 18 54 / .3); --wf-c-gold: #7a3d00; --wf-c-ghost-edge: #2a1236;
+  color: #2a1236; }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::before, :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after { content: ''; display: block; position: absolute; z-index: -1; pointer-events: none;
+  -webkit-mask: var(--wv-top) 0 0 / 48px 16px repeat-x, var(--wv-bot) 0 100% / 48px 16px repeat-x, var(--wv-lef) 0 0 / 16px 48px repeat-y, var(--wv-rig) 100% 0 / 16px 48px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 16px) calc(100% - 16px) no-repeat;
+  mask: var(--wv-top) 0 0 / 48px 16px repeat-x, var(--wv-bot) 0 100% / 48px 16px repeat-x, var(--wv-lef) 0 0 / 16px 48px repeat-y, var(--wv-rig) 100% 0 / 16px 48px repeat-y, linear-gradient(#000, #000) 50% 50% / calc(100% - 16px) calc(100% - 16px) no-repeat; }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::before { inset: -6px; background: linear-gradient(120deg, #ff4fa3, #ff9a3c 30%, #ffd93d 50%, #44e0d0 70%, #b36bff); }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after { inset: 0; background: #fff7fb; }
+/* inside a card the old flattening and light-on-dark rules step aside */
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) a:not(.btn) { color: #00697a; }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) .btn.ghost { color: #2a1236; border-color: #2a1236; background: transparent; }
+:is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) .ready-line, :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card) .how-main * { color: inherit; }
+.scene-body { max-width: 640px; margin-inline: auto; }
+.field .tiers { gap: 34px; border: 0; background: none; }
+.field .tier { border-left: 0; padding: 0 0 28px; overflow: visible; }
+.field .tier .tier-art { margin: 22px 22px 0; border: 3px solid #2a1236; }
+.field .tier .tier-body { padding: 20px 26px 0; }
+.field .tier.maiden { background: none; } .field .tier.mother { background: none; } .field .tier.crone { background: none; }
+.field .tier.maiden .tier-art { background: url(images/texture/portals.jpg) 0 0 / 260px auto !important; }
+.field .tier.mother .tier-art { background: url(images/texture/fur.jpg) 0 0 / 380px auto !important; }
+.field .tier.crone .tier-art { background: url(images/texture/swirl.jpg) 0 0 / 420px auto !important; }
+.field .tier .tier-art { height: 130px; }
+.field .money, .field .founding-line { background: #f6e9f5; }
+/* the dark bands' old light-on-dark colors step aside inside the cards */
+.field.dark .how-main .card, .field.dark .how-main .card .btn.ghost { --wf-c-ink: #2a1236; --wf-c-text: #3a1f45; --wf-c-soft: #55385f; --wf-c-rose: #b80f64; --wf-c-link: #00697a; --wf-c-rule: rgb(42 18 54 / .3); --wf-c-ghost-edge: #2a1236; color: #3a1f45; }
+.field.dark .how-main .card h3 { color: #2a1236; }
+.how .ready-line, .how .ready-line b { color: #3a1f45; }
+.how .ready-line b { color: #b80f64; }
+.scene .contact-card { max-width: 640px; margin-inline: auto; padding: clamp(28px, 4.5vw, 44px); }
+.scene .contact-card h2, .scene .contact-card h2 em { text-shadow: none; }
+.scene .contact-card h2 { color: #2a1236; }
+.scene .contact-card h2 em { color: #b80f64; }
+.scene .contact-card .eyebrow { color: #b80f64; }
+.scene .contact-card p, .scene .contact-card .lede { color: #3a1f45; }
+.scene .contact-card .contact-links a { color: #00697a; }
+.scene-body { max-width: none; padding-block: 24px; }
