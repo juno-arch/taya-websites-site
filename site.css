@@ -1371,3 +1371,13 @@ body::before { display: none !important; }
 .site-foot li a { color: #00697a; text-decoration: underline; }
 .site-foot .fine { color: #3a1f45; font-size: calc(var(--wf-text) * .94); }
 .site-foot .brand .wm { font-size: 28px; }
+
+/* every link that acts as a button looks like the buttons: a cream pill, a bold sans label, a black outline and a hard black offset shadow */
+a.quiet, a.visit, .contact-links a, .panel .quiz a, p > a[href="#care-includes"] {
+  display: inline-flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; font-family: var(--wf-font-read); font-weight: 800; font-size: 16px; letter-spacing: 0; text-transform: none; text-decoration: none; text-shadow: none;
+  background: #fff7fb; color: #1a1420; border: 2px solid #1a1420; border-radius: 999px; box-shadow: 4px 4px 0 #1a1420; padding: 11px 22px; margin-top: 6px; transition: translate .15s ease, box-shadow .15s ease; }
+a.quiet:hover, a.visit:hover, .contact-links a:hover, .panel .quiz a:hover, p > a[href="#care-includes"]:hover { translate: -1px -1px; box-shadow: 5px 5px 0 #1a1420; text-decoration: none; }
+a.quiet:active, a.visit:active, .contact-links a:active, .panel .quiz a:active, p > a[href="#care-includes"]:active { translate: 3px 3px; box-shadow: 1px 1px 0 #1a1420; }
+.hero a.quiet { background: #fff7fb; color: #1a1420; }
+.contact-links { margin-top: 18px; }
+@media (prefers-reduced-motion: reduce) { a.quiet, a.visit, .contact-links a, .panel .quiz a, p > a[href="#care-includes"] { transition: none; } }
