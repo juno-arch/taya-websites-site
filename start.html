@@ -31,9 +31,9 @@
   address, a booking app, will you sell, a newsletter?), then shows a short list with only what they need,
   so it never feels like homework (Pollen's goal: "Your list: 4 things, about 30 minutes"):
     1. Sign and hold your spot: their build (a card to confirm when Taya's link chose it) with its build
-       price and its care price, name and email (the only musts anywhere), the one-page agreement, then
+       price and its care price, name and email, then an answer to every question (“I don't know” counts), the one-page agreement, then
        the right deposit button unlocks
-    2. A few quick things: four short, optional answers. Every build's words are written from a few
+    2. A few quick things: four short answers. Every build's words are written from a few
        easy questions by email, so the rest of their story is gathered there, not here
     3. Your look and photos (only the parts that apply)
     4. Your accounts: only the bits that have to be them (pricing-oct2026.md, "Account setup flow"):
@@ -1148,7 +1148,7 @@
         <div id="build-slot-sign"></div>
 
         <h3 class="sub-h">About you</h3>
-        <p class="hint sub-hint" id="you-hint">Your name and email are the only musts on this whole page.</p>
+        <p class="hint sub-hint" id="you-hint">Every question has an answer, and “I don’t know” counts.</p>
         <!-- what Taya's link already told us (full, email, biz, site): one line, not fields to fill again -->
         <p class="known" id="you-known" hidden>I have you as <b id="you-known-text"></b>. <button type="button" class="later" id="you-change" aria-label="Change your name, email, business or website">Change</button></p>
         <div class="pair you-pair">
@@ -1167,7 +1167,7 @@
             <input type="text" id="f-biz" name="business" autocomplete="organization" maxlength="160">
           </div>
           <div class="q" data-known="f-site">
-            <label class="main" for="f-site">Your website now <span class="opt-tag">(if you have one)</span></label>
+            <label class="main" for="f-site">Your website now <span class="opt-tag">(or “none yet”)</span></label>
             <input type="text" id="f-site" name="website" inputmode="url" autocomplete="url" maxlength="300" spellcheck="false" placeholder="yourname.com">
           </div>
         </div>
@@ -1287,7 +1287,7 @@
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body few" id="b-work">
-        <p class="lead-in">Just a head start. I write your words from these answers, and I’ll email you if I need more. <b>A line or two each is plenty</b>, and every one is optional. If it’s already correct on your mockup, don’t worry about writing it here.</p>
+        <p class="lead-in">Just a head start. I write your words from these answers, and I’ll email you if I need more. <b>A line or two each is plenty</b>. Each one needs an answer, and “I don’t know” counts. If it’s already correct on your mockup, say so in a few words.</p>
         <p class="kind-note"><img src="taya.jpg" width="256" height="256" alt="" decoding="async"><span>I’ll ask the rest over email.</span></p>
         <!-- with a mockup (Taya's link says mockup=key): their words and photos are already on it, so instead of retyping
              anything they just check it and say what's off (Pollen, Oct 1) -->
@@ -1303,7 +1303,7 @@
           </div>
           <p class="lead-in">Your mockup already has your words and photos, so there’s nothing to retype. Just have a look:
             <a id="mock-link" target="_blank" rel="noopener">your mockup</a></p>
-          <label class="main" for="f-mock">Anything wrong or missing? <span class="opt-tag">optional</span></label>
+          <label class="main" for="f-mock">Anything wrong or missing?</label>
           <textarea id="f-mock" name="mock_changes" rows="4" placeholder="Like: my Tuesday hours changed, or swap the second photo."></textarea>
         </div>
         <div class="q">
@@ -1629,7 +1629,7 @@
             <input type="text" id="f-owned" name="domain_owned" maxlength="200" spellcheck="false" placeholder="like “yourname.com, at GoDaddy”">
           </div>
           <div class="q" data-if="dom-wish">
-            <label class="main" for="f-domain">Any ideas for your web address? <span class="opt-tag">(if you like)</span></label>
+            <label class="main" for="f-domain">Any ideas for your web address?</label>
             <p class="hint" id="h-domain">Choosing one together is one of my favorite parts. The first year comes with every build, and the
                <a href="domain.html">web address guide</a> has more.</p>
             <input type="text" id="f-domain" name="domain_wish" maxlength="200" spellcheck="false" aria-describedby="h-domain" placeholder="a couple of ideas, or “help me choose”">
@@ -1702,7 +1702,7 @@
         <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, all finished</span></button>
           <button type="button" class="later" data-skip>Skip for now</button>
-          <p class="foot-hint">Anything you’re not sure of? Leave it, and we’ll finish it together over email.</p>
+          <p class="foot-hint">Not sure of one? Tap “I don’t know”, and we’ll sort it out together over email.</p>
         </div>
       </div>
     </li>
@@ -1712,7 +1712,7 @@
   <section class="send-sec" id="send" aria-labelledby="send-title">
     <svg class="moon-big" aria-hidden="true"><use href="#i-full"/></svg>
     <h2 id="send-title" tabindex="-1">Ready when you are</h2>
-    <p>Send it whenever you’ve done what you can. Anything still open, we’ll finish together over email.</p>
+    <p>Send it once every question has an answer, and “I don’t know” counts. Anything you weren’t sure of, we’ll sort out together over email.</p>
     <ul class="open-list" id="open-list"></ul>
     <p class="open-note" id="open-note"></p>
     <div class="next-wrap">
@@ -2868,6 +2868,30 @@
   }
   const emailOk = (s) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s);
   // each check returns the first field to fix, or null when all is well
+  // Every question needs an answer (Pollen, Nov 10 2026), and "I don’t know" counts: each text box gets a small button
+  // that fills it in, so nobody waits on a half-finished list. A few boxes are answered another way and are left out:
+  // the signature (the agreement check), the name and email (their own checks), the email for their accounts (blank means
+  // their contact email) and the album link (the other way to send photos).
+  const IDK = 'I don’t know';
+  const NOT_ASKED = new Set(['f-hp', 'f-sig', 'f-name', 'f-email', 'f-acctemail', 'f-album']);
+  const askedBoxes = () => [...form.querySelectorAll('input[type="text"], textarea')].filter((el) => el.id && !NOT_ASKED.has(el.id));
+  askedBoxes().forEach((el) => {
+    const q = el.parentElement;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'later idk'; b.textContent = IDK;
+    b.setAttribute('aria-label', IDK + ': ' + ((q.querySelector('label, .main') || {}).textContent || 'this question').trim().slice(0, 80));
+    b.addEventListener('click', () => {
+      el.value = IDK;
+      el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true }));
+      setErr(el, document.getElementById('e-' + el.id), '');
+    });
+    const err = document.createElement('p'); err.className = 'err'; err.id = 'e-' + el.id; err.hidden = true;
+    el.after(b, err);
+  });
+  const applicable = (el) => {
+    if (planHidden(el)) return false;
+    for (let n = el; n && n !== form; n = n.parentElement) if (!n.classList.contains('step-body') && getComputedStyle(n).display === 'none') return false;
+    return true;
+  };
   const CHECKS = {
     build() {
       const ok = !!radio('build');
@@ -2888,6 +2912,19 @@
       const b = linkBuild ? CHECKS.build() : null;
       const y = CHECKS.you(), a = CHECKS.agree(true);
       return b || y || a;
+    },
+    // every question needs an answer, and "I don’t know" counts
+    answers() {
+      let first = null;
+      askedBoxes().forEach((el) => {
+        const msg = document.getElementById('e-' + el.id);
+        const fine = !applicable(el) || !!el.value.trim();
+        setErr(el, msg, fine ? '' : 'This one needs an answer. “I don’t know” counts.');
+        if (!fine) first = first || el;
+      });
+      const bk = form.querySelector('input[name="x_booking"]');
+      if (bk && applicable(bk) && !radio('x_booking')) first = first || bk;
+      return first;
     },
     // the email for their accounts is optional (blank = their contact email), but if they type one it should work
     accounts() {
@@ -3312,17 +3349,18 @@
     e.preventDefault();
     const status = $('#send-status'), btn = $('#send-btn');
     status.className = 'status'; status.textContent = '';
-    // the only musts: a name and an email (and a signature that's whole, if they started one)
+    // a name and an email (and a signature that's whole, if they started one), then an answer to every question
     // (both live in "Sign and hold your spot"), plus an email for their accounts that works, if they typed one
     // (it's what I make their accounts with, so a typo would send their confirm-your-email messages astray)
-    const problems = [['you', CHECKS.you()], ['agree', CHECKS.agree(false)], ['accounts', CHECKS.accounts()]].filter((p) => p[1]);
+    const problems = [['you', CHECKS.you()], ['agree', CHECKS.agree(false)], ['accounts', CHECKS.accounts()], ['answers', CHECKS.answers()]].filter((p) => p[1]);
     if (problems.length) {
       const [id, field] = problems[0];
-      const s = $(id === 'accounts' ? '#s-accounts' : '#s-sign');
+      const s = id === 'answers' ? field.closest('.step') : $(id === 'accounts' ? '#s-accounts' : '#s-sign');
       setOpen(s, true);
       status.className = 'status err';
       const n = shown().indexOf(s) + 1;
       status.textContent = id === 'you' ? 'Just one thing first: your name and email in step ' + n + ', so I know who this is from.'
+        : id === 'answers' ? 'Every question needs an answer, and “I don’t know” counts. There’s one waiting in step ' + n + '.'
         : id === 'accounts' ? 'One small thing in step ' + n + ': the email for your accounts doesn’t look quite right. Or leave it blank, and I’ll use your contact email.'
         : 'One small thing in step ' + n + ': the agreement is half signed.';
       field.focus();
