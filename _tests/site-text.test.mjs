@@ -438,7 +438,7 @@ for (const page of PAGES) {
   }
   // 3. Planted gets free email forwarding; only sending from their own address needs Tended
   if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');
-  need('domain.html', /Sending from your own address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');
+  need('domain.html', /Sending from your (?:own|domain) address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');
   // 6. the Instagram feed is Tended and up: never in a Planted line or list item
   for (const page of PAGES) {
     for (const m of texts[page].matchAll(/<(p|li|small|td)\b[^>]*>([\s\S]*?)<\/\1>/g)) {

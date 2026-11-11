@@ -94,7 +94,7 @@ const findQ = (re, what) => {
 const Q_SAY = findQ(/how much do you have to tell/i, '"how much to tell"');
 const Q_GATHER = findQ(/gather/i, '"gather anything"');
 const Q_BOOK = findQ(/\bbook\b/i, '"book or pay"');
-const Q_MAIL = findQ(/own address|newsletter/i, '"own address or newsletter"');
+const Q_MAIL = findQ(/(?:own|domain) address|newsletter/i, '"own address or newsletter"');
 const sortAnswers = (qi, sorter) => QUESTIONS[qi].answers.map((a, i) => {
   const k = sorter(a);
   if (!k) failures.push(`question ${qi + 1}, answer ${i + 1} ("${a.t}"): the test doesn’t know what it means; teach the sorter in this file`);
@@ -113,7 +113,7 @@ const BOOK = sortAnswers(Q_BOOK, (a) => {
 const MAIL = sortAnswers(Q_MAIL, (a) => {
   if (/^no\b/i.test(a.t)) return { own: false, news: false };
   if (/^both/i.test(a.t)) return { own: true, news: true };
-  if (/own address/i.test(a.t)) return { own: true, news: false };
+  if (/(?:own|domain) address/i.test(a.t)) return { own: true, news: false };
   if (/newsletter/i.test(a.t)) return { own: false, news: true };
   return null;
 });
