@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="wf-tokens.css?v=20261110e">
 <link rel="stylesheet" href="ceiling.css?v=20261110zzzzs">
 <style>
+  :root { --mush: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='mc'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ffd0e0'/%3E%3Cstop%20offset='.55'%20stop-color='%23ff9fb0'/%3E%3Cstop%20offset='1'%20stop-color='%23f5967a'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='ms'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23fff8f1'/%3E%3Cstop%20offset='1'%20stop-color='%23e5d6ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath%20d='M36%2054C35%2070%2033%2082%2030%2090C40%2097%2060%2097%2070%2090C67%2082%2065%2070%2064%2054Z'%20fill='url(%23ms)'%20stroke='%232a1f5c'%20stroke-width='4'%20stroke-linejoin='round'/%3E%3Cpath%20d='M38%2066Q50%2072%2062%2066'%20fill='none'%20stroke='%232a1f5c'%20stroke-width='2.4'%20stroke-linecap='round'%20opacity='.45'/%3E%3Cpath%20d='M8%2056C5%2028%2026%207%2050%207C74%207%2095%2028%2092%2056C80%2062%2020%2062%208%2056Z'%20fill='url(%23mc)'%20stroke='%232a1f5c'%20stroke-width='4'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='29'%20cy='36'%20r='7.5'%20fill='%23fff'%20stroke='%232a1f5c'%20stroke-width='2'/%3E%3Ccircle%20cx='54'%20cy='24'%20r='6'%20fill='%23fff'%20stroke='%232a1f5c'%20stroke-width='2'/%3E%3Ccircle%20cx='72'%20cy='40'%20r='8'%20fill='%23fff'%20stroke='%232a1f5c'%20stroke-width='2'/%3E%3Ccircle%20cx='50'%20cy='46'%20r='5'%20fill='%23fff'%20stroke='%232a1f5c'%20stroke-width='2'/%3E%3Cpath%20d='M22%2022Q30%2013%2042%2011'%20fill='none'%20stroke='%23fff'%20stroke-width='4.5'%20stroke-linecap='round'%20opacity='.85'/%3E%3Cpath%20d='M86%2012Q86%2018%2092%2018Q86%2018%2086%2024Q86%2018%2080%2018Q86%2018%2086%2012Z'%20fill='%23fff'%20stroke='%232a1f5c'%20stroke-width='1.2'%20stroke-linejoin='round'/%3E%3Cpath%20d='M14%2074Q14%2078%2018%2078Q14%2078%2014%2082Q14%2078%2010%2078Q14%2078%2014%2074Z'%20fill='%23fff'%20stroke='%232a1f5c'%20stroke-width='1.2'%20stroke-linejoin='round'/%3E%3C/svg%3E"); }
   html, body { margin: 0; background: #d6c8f5; }
   body { font-family: 'Instrument Sans', 'Nunito', system-ui, sans-serif; color: #2a1236; }
   .note { max-width: 720px; margin: 0 auto; padding: 36px 20px 28px; }
@@ -26,7 +27,8 @@
   .sign .s1 { display: block; font: 400 clamp(30px, 6vw, 40px)/1 'Manufacturing Consent', system-ui, sans-serif; color: #fff2a8; text-shadow: 0 0 6px #fff2a8, 0 0 16px #ffd37a, 0 0 30px #ffb48a; }
   .sign .s2 { display: block; margin: 6px 0 10px; font: 400 clamp(76px, 15vw, 104px)/.95 'Manufacturing Consent', system-ui, sans-serif; color: #fbd6e8; text-shadow: 0 0 4px #ffb4d8, 0 0 14px #f7a9b4, 0 0 32px #f5967a, 0 0 56px #f5967a; }
   .sign .s3 { display: block; font: 700 11.5px/1.5 'Silkscreen', ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: #fff8f1; }
-  .sign .s3 a { color: #f7c6e8; text-decoration: none; border-bottom: 2px solid #f5967a; padding: 12px 0 2px; margin-left: 4px; }
+  .sign .s3 .lbl { display: block; margin-bottom: 4px; }
+  .sign .s3 a { color: #f7c6e8; text-decoration: none; border-bottom: 2px solid #f5967a; padding: 12px 0 2px; }
   .sign .s3 a:hover { color: #fff; }
   .sign .s3 a:focus-visible { outline: 3px solid #ffd37a; outline-offset: 4px; }
   .stk { position: absolute; width: clamp(54px, 8vw, 86px); aspect-ratio: 1; background: center / contain no-repeat; pointer-events: none; z-index: 1;
@@ -44,12 +46,12 @@
   <div class="sign">
     <span class="s1">web faery</span>
     <span class="s2">open</span>
-    <span class="s3">Now building! <a href="start.html">Start yours &rarr;</a></span>
+    <span class="s3"><span class="lbl">Now building!</span> <a href="start.html">Start yours &rarr;</a></span>
   </div>
   <i class="stk" style="left:9%;top:16%;background-image:var(--st6);rotate:-9deg" aria-hidden="true"></i>
   <i class="stk" style="right:10%;top:12%;background-image:var(--st3);rotate:8deg" aria-hidden="true"></i>
   <i class="stk hide-s" style="left:5%;bottom:10%;background-image:var(--st2);rotate:11deg" aria-hidden="true"></i>
-  <i class="stk" style="right:6%;bottom:9%;background-image:var(--st0);rotate:-12deg" aria-hidden="true"></i>
+  <i class="stk" style="right:6%;bottom:9%;background-image:var(--mush);rotate:-12deg" aria-hidden="true"></i>
   <i class="stk hide-s" style="left:24%;bottom:6%;background-image:var(--st5);rotate:6deg" aria-hidden="true"></i>
   <i class="stk hide-s" style="right:25%;top:7%;background-image:var(--st1);rotate:-6deg" aria-hidden="true"></i>
 </section>
