@@ -1313,3 +1313,23 @@ body::before { display: none !important; }
 :is(.field .sec-head, .piece-text, .field .tier, .field .every-plan, .field .panel, .tools-card, .how-main, .about-text, .faq, .scene .contact-card)::after,
 .site-foot .wrap::after { background: var(--paper), #fff8f1; }
 .about .sec-head::after { background: var(--paper), #fff8f1; }
+
+/* Taya's photo in a Lisa Frank frame: a pastel rainbow border, a black outline, a hard offset shadow and sticker corners (like Linnea's photo frames) */
+.about-grid { grid-template-rows: auto auto; }
+.about-grid .sec-head { grid-column: 1; grid-row: 1; }
+.about-grid .portrait { grid-column: 1; grid-row: 2; }
+.about-grid .about-text { grid-column: 2; grid-row: 1 / span 2; }
+.portrait { position: relative; margin: 14px 8px 8px; padding: 14px; background: linear-gradient(135deg, #ffb3d6 0%, #ffd37a 25%, #b5e3c8 50%, #9fd0ff 75%, #c9b0ff 100%); border: 3px solid #1a1420; border-radius: 26px; box-shadow: 7px 7px 0 #1a1420; transform: rotate(-2.2deg); }
+.portrait img { display: block; width: 100%; height: auto; aspect-ratio: 404 / 360; object-fit: cover; border: 3px solid #1a1420; border-radius: 16px; background: #fff; }
+.portrait::before, .portrait::after { content: ''; position: absolute; width: 58px; height: 58px; background-size: contain; background-repeat: no-repeat; pointer-events: none; z-index: 2;
+  filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(2px 3px 0 rgb(42 31 92 / .3)); }
+.portrait::before { background-image: var(--st0); left: -24px; top: -24px; transform: rotate(-14deg); }
+.portrait::after { background-image: var(--st5); right: -22px; bottom: -22px; transform: rotate(12deg); }
+@media (max-width: 900px) { .about-grid .portrait, .about-grid .about-text { grid-column: 1; grid-row: auto; } .portrait { max-width: 440px; margin-inline: auto; } }
+
+/* the frame like the reference: a pastel pink-lilac frame covered in tiny coded stickers, a thick black outline, a hard black offset shadow */
+.portrait { padding: 22px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130'%3E%3Cpolygon points='24.0%2C12.0 26.6%2C18.4 33.5%2C18.9 28.2%2C23.4 29.9%2C30.1 24.0%2C26.4 18.1%2C30.1 19.8%2C23.4 14.5%2C18.9 21.4%2C18.4' fill='%23ffd37a' stroke='%232a1f5c' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cpath transform='translate%2892 26%29 scale%281%29' d='M0 8C-12 -2 -8 -12 0 -5C8 -12 12 -2 0 8Z' fill='%23ff8fa8' stroke='%232a1f5c' stroke-width='1.60' stroke-linejoin='round'/%3E%3Cpath d='M62 62Q62 70 70 70Q62 70 62 78Q62 70 54 70Q62 70 62 62Z' fill='%23fff' stroke='%232a1f5c' stroke-width='1.4' stroke-linejoin='round'/%3E%3Cpath transform='translate%28104 102%29 scale%281%29' d='M2 -10A10 10 0 1 0 10 6A8 8 0 0 1 2 -10Z' fill='%23fff09a' stroke='%232a1f5c' stroke-width='1.60' stroke-linejoin='round'/%3E%3Cpolygon transform='translate%2826 100%29 scale%281%29' points='3%2C-10 -7%2C2 -1%2C2 -4%2C10 8%2C-3 1%2C-3' fill='%23ffc04a' stroke='%232a1f5c' stroke-width='1.60' stroke-linejoin='round'/%3E%3Cpath transform='translate%2866 118%29 scale%280.7%29' d='M0 8C-12 -2 -8 -12 0 -5C8 -12 12 -2 0 8Z' fill='%239fd0ff' stroke='%232a1f5c' stroke-width='2.29' stroke-linejoin='round'/%3E%3Cpolygon points='112.0%2C54.0 113.5%2C57.9 117.7%2C58.1 114.5%2C60.8 115.5%2C64.9 112.0%2C62.6 108.5%2C64.9 109.5%2C60.8 106.3%2C58.1 110.5%2C57.9' fill='%23b5e3c8' stroke='%232a1f5c' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cpath d='M12 58Q12 62 16 62Q12 62 12 66Q12 62 8 62Q12 62 12 58Z' fill='%23fff' stroke='%232a1f5c' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0 / 130px 130px, #f3d3ec; border: 3px solid #1a1420; border-radius: 30px; box-shadow: 9px 9px 0 #1a1420; transform: rotate(-1.6deg); }
+.portrait img { border-radius: 14px; border: 3px solid #1a1420; }
+.portrait::before { background-image: var(--st3); left: -26px; top: -26px; transform: rotate(-12deg); }
+.portrait::after { background-image: var(--st5); right: -24px; bottom: -24px; transform: rotate(10deg); }
+.portrait img { filter: grayscale(1) contrast(1.06); }
