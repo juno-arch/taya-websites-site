@@ -140,7 +140,7 @@ for (const m of js.matchAll(/icon\('(i-[a-z]+)'/g)) if (!ids.has(m[1])) fail(`po
 // the tabs (Oct 14 2026): every tab's icon is in the sprite, and every section on the project page belongs to a tab
 const pageBlock = (js.match(/const PAGES = \[([\s\S]*?)\];/) || [])[1] || '';
 const pageIds = [...pageBlock.matchAll(/id: '([a-z]+)'/g)].map((m) => m[1]);
-if (!pageIds.includes('home') || pageIds.length < 8) fail('portal.js: PAGES (the tabs) not found');
+if (!pageIds.includes('project') || pageIds.length < 8) fail('portal.js: PAGES (the tabs) not found');
 for (const m of pageBlock.matchAll(/icon: '(i-[a-z]+)'/g)) if (!ids.has(m[1])) fail(`portal.js: the tab icon #${m[1]} isn't in portal.html's sprite`);
 const project = (html.match(/<div id="v-project" hidden>([\s\S]*?)\n  <\/div>\n<\/main>/) || [])[1] || '';
 if (!project) fail('portal.html: #v-project not found');

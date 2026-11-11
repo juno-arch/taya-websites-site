@@ -598,7 +598,7 @@
       setBrand('');
       hideTabs();
     }
-    $('#hello').hidden = inside && page !== 'home';
+    $('#hello').hidden = inside && page !== 'project';
   };
   const announce = (text) => {
     const l = $('#live');
@@ -890,7 +890,6 @@
      reload opens the same place. On a phone the tabs sit in a dock at the bottom: up to five, or the first four
      and More. Ask Taya (asking for a change) is the bar's own button. */
   const PAGES = [
-    { id: 'home', label: 'Home', icon: 'i-home' },
     { id: 'project', label: 'Your project', short: 'Project', icon: 'i-path' },
     { id: 'orders', label: 'Orders', icon: 'i-box' },
     { id: 'products', label: 'Products', icon: 'i-leaf' },
@@ -906,25 +905,57 @@
     { id: 'brand', label: 'Brand kit', short: 'Brand', icon: 'i-palette' },
     { id: 'accounts', label: 'Your accounts', short: 'Accounts', icon: 'i-key' },
     { id: 'payments', label: 'Payments', icon: 'i-receipt' },
+    { id: 'webfaery', label: 'Web Faery', icon: 'i-star' },
     { id: 'ask', label: 'Ask Taya', icon: 'i-ask' }
   ];
   const SHOP_PAGES = ['orders', 'products', 'codes', 'bookings', 'gifts', 'newsletter'];
-  let page = 'home';
+  let page = 'project';
+  let landed = false;
+  // (Nov 11 2026) no Home page: the portal opens on Your project while we build, and on their first tool once live
+  // (their project is then in the Web Faery tab). The gold count on that tab says what's waiting.
+  // Still being built: Your project. Launched (settling in, or in care): their shop if they have one, else their bookings,
+  // else their first tool; with no tools at all, Your project.
+  const landing = () => {
+    const launched = !!me && stageIndex(me.timeline.current) >= 5;
+    if (!launched) return 'project';
+    const tool = ['orders', 'bookings'].find(pageHas) || barIds().find((id) => TOOL_RANK.includes(id));
+    return tool || 'project';
+  };
   let pagesSig = '';
   const pageInfo = (id) => PAGES.find((x) => x.id === id) || PAGES[0];
-  const pageHas = (id) => id === 'home' || $$('#v-project > [data-page="' + id + '"]').some((el) => !el.hidden);
+  const pageHas = (id) => id === 'project' ? true : $$('#v-project > [data-page="' + id + '"]').some((el) => !el.hidden);
   // the order: while we build, their project comes right after Home; once the site is live, their own shop,
   // booking or newsletter comes first (that's what they'll open most)
-  function pageList() {
+  // (Nov 11 2026) The bottom bar is their tools: the four they use most (orders, bookings, products, newsletter,
+  // visitors, gifts, codes, in that order, for what they have). A fifth tab, Web Faery, holds everything about their
+  // project with me (to-dos, payments, papers, brand, accounts, how-tos) and any tool that didn't fit. While we build
+  // and they have no tools yet, the bar is filled from their project pages instead. Messages has no tab: the
+  // Ask Taya button opens it. There is no Home page: the portal opens on Your project.
+  const TOOL_RANK = ['orders', 'bookings', 'products', 'newsletter', 'visitors', 'gifts', 'codes'];
+  function wfOrder() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    // (Oct 20 2026) Messages: right after their project while we build, right after their own pages once live
-    // (Oct 21 2026) Resources: after their papers, before Payments
-    const order = live ? ['home'].concat(SHOP_PAGES, ['messages', 'visitors', 'receipts', 'papers', 'resources', 'brand', 'accounts', 'project', 'payments', 'ask']) : ['home', 'project', 'messages'].concat(SHOP_PAGES, ['visitors', 'receipts', 'papers', 'resources', 'brand', 'accounts', 'payments', 'ask']);
-    return order.filter(pageHas).map(pageInfo);
+    return (live ? ['payments', 'papers', 'receipts', 'brand', 'accounts', 'resources', 'project'] : ['project', 'payments', 'papers', 'brand', 'accounts', 'resources', 'receipts']).filter(pageHas);
+  }
+  function barIds() {
+    const tools = TOOL_RANK.filter(pageHas);
+    const bar = tools.slice(0, 4);
+    if (bar.length < 4) wfOrder().forEach((id) => { if (bar.length < 4) bar.push(id); });
+    return bar;
+  }
+  function hubGroups() {
+    const bar = barIds();
+    return { tools: TOOL_RANK.filter((id) => pageHas(id) && !bar.includes(id)), wf: wfOrder().filter((id) => !bar.includes(id)) };
+  }
+  function pageList() {
+    const bar = barIds(), g = hubGroups();
+    const hub = g.tools.length || g.wf.length ? ['webfaery'] : [];
+    const order = bar.concat(hub, g.tools, g.wf, ['messages']);
+    return order.filter((id, k) => (id === 'webfaery' || pageHas(id) || (id === 'messages' && pageHas('ask'))) && order.indexOf(id) === k).map(pageInfo);
   }
   // which page the address names: #orders, #bookings-hours, #newsletter-sent, or a section's own id
   function hashPage() {
     const h = (location.hash || '').slice(1);
+    if (h === 'ask') return 'messages'; // the old Ask Taya address
     if (/^bookings(?:-[a-z]+)?$/.test(h)) return 'bookings';
     if (/^newsletter(?:-[a-z]+)?$/.test(h)) return 'newsletter';
     if (/^receipts(?:-[a-z]+)?$/.test(h)) return 'receipts';
@@ -976,6 +1007,7 @@
   }
   function hideTabs() {
     pagesSig = '';
+    landed = false;
     $('#tabs').hidden = true;
     $('#dock').hidden = true;
     $('#more').hidden = true;
@@ -991,13 +1023,18 @@
   function syncPages() {
     if (!me || $('#v-project').hidden) return;
     const list = pageList();
-    const tabs = list.filter((x) => x.id !== 'ask');
+    const barSet = barIds().concat(list.some((x) => x.id === 'webfaery') ? ['webfaery'] : []);
+    const tabs = barSet.map(pageInfo);
     const counts = pageCounts();
-    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (pageHas('ask') ? '|ask' : '') + '|m' + msgUnread();
+    const grp = hubGroups();
+    counts.webfaery = grp.tools.concat(grp.wf).reduce((s, id) => s + (counts[id] || 0), 0);
+    const canAsk = pageHas('messages') || pageHas('ask');
+    const sig = tabs.map((x) => x.id + ':' + (counts[x.id] || 0)).join(',') + (canAsk ? '|ask' : '') + '|m' + msgUnread();
     if (sig !== pagesSig) {
       pagesSig = sig;
       $('#tabs').replaceChildren(...tabs.map((x) => tabLink(x, counts[x.id] || 0, false)));
       const dockN = tabs.length <= 5 ? tabs.length : 4;
+      renderHub(grp, counts);
       const inDock = tabs.slice(0, dockN), inMore = tabs.slice(dockN);
       const dockKids = inDock.map((x) => tabLink(x, counts[x.id] || 0, true));
       if (inMore.length) {
@@ -1016,17 +1053,18 @@
       }
       $('#dock').replaceChildren(...dockKids);
       $('#more-list').replaceChildren(...inMore.map((x) => { const li = make('li'); li.append(tabLink(x, counts[x.id] || 0, false)); return li; }));
-      // Ask Taya: the bar's button, when they can ask for a change
+      // Ask Taya (Messages): the bar's button
       let ask = $('#top-ask');
-      if (pageHas('ask')) {
+      if (canAsk) {
         if (!ask) {
           ask = make('a', 'ask');
           ask.id = 'top-ask';
-          ask.href = '#ask';
-          ask.dataset.page = 'ask';
-          ask.append(icon('i-ask'), make('span', null, 'Ask Taya'));
+          ask.href = '#messages';
+          ask.dataset.page = 'messages';
           $('#top-nav').prepend(ask);
         }
+        ask.replaceChildren(icon('i-ask'), make('span', null, 'Ask Taya'));
+        if (msgUnread() > 0) ask.append(msgDot());
       } else if (ask) ask.remove();
     }
     $('#tabs').hidden = false;
@@ -1035,22 +1073,61 @@
     document.documentElement.classList.add('wf-tabs');
     document.body.classList.add('wf-tabs');
     const want = hashPage();
+    if (!landed) { landed = true; if (!want) { openPage(landing(), { scroll: false }); return; } } // the first draw after signing in
     if (want && want !== page && list.some((x) => x.id === want)) openPage(want, { scroll: true });
-    else if (!list.some((x) => x.id === page)) openPage('home', { scroll: true });
+    else if (!list.some((x) => x.id === page)) openPage(landing(), { scroll: true });
     else openPage(page, { scroll: false });
+  }
+  // the Web Faery tab: a short list of everything about their project with me, and any tool that didn't fit the bar
+  const HUB_SAY = {
+    project: 'Your to-dos and where we are', payments: 'What’s paid and what’s coming', papers: 'Your agreement and business papers',
+    receipts: 'Receipts and records', brand: 'Your colors, fonts and logo', accounts: 'Your logins and where things live',
+    resources: 'Short how-to videos', orders: 'Your orders', bookings: 'Your bookings', products: 'Your products',
+    newsletter: 'Your newsletter', visitors: 'Who’s visiting your site', gifts: 'Gift certificates', codes: 'Discount codes'
+  };
+  function renderHub(grp, counts) {
+    const box = $('#wf-hub');
+    if (!box) return;
+    const group = (title, ids) => {
+      if (!ids.length) return null;
+      const wrap = make('div', 'wf-group');
+      if (title) wrap.append(make('h3', 'small-h', title));
+      const ul = make('ul', 'ledger');
+      ids.forEach((id) => {
+        const li = make('li');
+        const a = make('a', 'row-link');
+        a.href = '#' + id;
+        const what = make('span', 'what');
+        what.append(make('b', null, pageInfo(id).label));
+        if (HUB_SAY[id]) what.append(make('small', null, HUB_SAY[id]));
+        a.append(what);
+        if (counts[id]) { const c = make('span', 'cnt', String(counts[id])); c.append(make('span', 'sr-only', ' to do')); a.append(c); }
+        a.append(make('span', 'go', ''));
+        li.append(a);
+        ul.append(li);
+      });
+      wrap.append(ul);
+      return wrap;
+    };
+    box.replaceChildren(...[group(grp.tools.length ? 'More of your tools' : '', grp.tools), group(grp.tools.length ? 'Web Faery' : '', grp.wf)].filter(Boolean));
   }
   function openPage(id, how) {
     how = how || {};
-    if (!pageList().some((x) => x.id === id)) id = 'home';
+    if (!pageList().some((x) => x.id === id)) id = landing();
     page = id;
     $$('#v-project > [data-page]').forEach((el) => el.classList.toggle('off-page', el.dataset.page !== id));
-    $('#hello').hidden = !$('#v-project').hidden && id !== 'home';
+    $('#hello').hidden = !$('#v-project').hidden && id !== 'project';
+    // a page that lives in the Web Faery tab (or a tool that didn't fit the bar) lights that tab, and shows a way back
+    const grp = hubGroups(), inHub = grp.tools.includes(id) || grp.wf.includes(id);
+    const lit = inHub ? 'webfaery' : id;
     $$('#tabs a, #dock a, #more-list a, #top-ask').forEach((a) => {
-      if (a.dataset.page === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      if (a.dataset.page === lit) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
+    const back = $('#wf-back');
+    if (back) back.hidden = !inHub;
     const more = $('#more-btn');
     if (more) { if (more.dataset.pages.split(' ').includes(id)) more.setAttribute('aria-current', 'page'); else more.removeAttribute('aria-current'); }
-    document.title = (id === 'home' ? 'Your project' : pageInfo(id).label) + ' · Web Faery';
+    document.title = pageInfo(id).label + ' · Web Faery';
     if (how.scroll) window.scrollTo(0, 0);
     // a narrow screen with many tabs: the open one slides into view, and a soft fade shows there are more
     const bar = $('#tabs'), cur = $('#tabs a[aria-current]');
@@ -1095,7 +1172,7 @@
     const followAddress = () => {
       closeMore(false);
       if (!me || $('#v-project').hidden) return;
-      const want = hashPage() || ((location.hash || '').length <= 1 ? 'home' : '');
+      const want = hashPage() || ((location.hash || '').length <= 1 ? landing() : '');
       if (!want || want === page) return;
       openPage(want, { scroll: true });
       focusEl($('#main'), true);
@@ -1198,7 +1275,7 @@
     setHidden($('#needs'), !rows.length);
     // nothing waiting: a calm line, unless their turn on the mockup is right above it
     setHidden($('#needs-calm'), rows.length > 0);
-    setHidden(sec, !rows.length && !$('#sec-turn').hidden);
+    setHidden(sec, true); // (Nov 11 2026) no Needs you card: the count on the tab and the to-do list say it
   }
 
   /* ================= signing in ================= */
@@ -1250,7 +1327,7 @@
     $('#in-nl-subject').value = ''; $('#in-nl-pre').value = ''; $('#in-nl-body').value = '';
     $('#nl-people').replaceChildren();
     heroSignedOut();
-    page = 'home';
+    page = 'project';
     const n = $('#email-notice');
     n.textContent = notice || '';
     n.hidden = !notice;
@@ -3743,6 +3820,16 @@
       bookings: arr(x.bookings).slice(0, 40).map((b) => (b ? { time: str(b.time, 20), name: str(b.name, 120), service_name: str(b.service_name, 80) } : null)).filter(Boolean) };
   }
   const shortTime = (t) => str(t, 20).replace(/\s*([ap])\.?m\.?/i, (m, x) => x.toLowerCase()).replace(/:00(?=[ap]|$)/, '');
+  // Payment days on the booking calendar (Nov 11 2026): a little mushroom on the day their subscription begins,
+  // or on the day Stripe will charge it next. Read from their own payments; nothing is saved or sent.
+  function payDays() {
+    const out = {};
+    const c = me && arr(me.pay).find((x) => x.key === 'care');
+    if (!c) return out;
+    const d = c.state === 'active' ? c.next_on : (c.starts_on || '').slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d) && !isPast(d)) out[d] = c.state === 'active' ? 'Your subscription payment' : 'Your subscription begins';
+    return out;
+  }
   const dayWord = (d) => (d.state === 'closed' ? 'Off' : d.full ? 'Full' : '');
   function dayAria(d) {
     const bits = [d.label];
@@ -3753,6 +3840,7 @@
     if (d.full) bits.push('full');
     if (d.bookings.length) bits.push(plural(d.bookings.length, 'booking', 'bookings'));
     if (d.busy.length && d.state !== 'past') bits.push('busy in your calendar');
+    if (payDays()[d.date]) bits.push(payDays()[d.date].toLowerCase());
     return bits.join(', ');
   }
   function renderMonth() {
@@ -3763,6 +3851,7 @@
       const lead = (new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay() + 6) % 7;
       for (let i = 0; i < lead; i++) kids.push(make('span', 'bk-cd-blank'));
     }
+    const pays = payDays();
     bkMonthDays.forEach((d) => {
       const b = make('button', 'bk-cd bk-cd-' + d.state + (d.override ? ' bk-cd-own' : ''));
       b.type = 'button';
@@ -3776,6 +3865,7 @@
       if (!w && live) line.textContent = shortTime(d.bookings[0].time);
       b.append(line);
       if (!w && live && d.bookings.length > 1) b.append(make('span', 'bk-cd-w bk-cd-more', '+' + (d.bookings.length - 1)));
+      if (pays[d.date]) b.append(icon('i-mushroom', 'bk-cd-pay'));
       if (d.busy.length && d.state !== 'past' && d.state !== 'closed') { const dot = make('span', 'bk-cd-busy'); dot.setAttribute('aria-hidden', 'true'); b.append(dot); }
       b.addEventListener('click', () => { bkDay = d.date; renderMonth(); renderDayInfo(true); });
       kids.push(b);
@@ -3798,6 +3888,7 @@
     if (d.time_off.length) kids.push(line('Time off', d.time_off.join(', ')));
     if (d.blocks.length) kids.push(line('Repeating block', d.blocks.join(', ')));
     if (d.busy.length) kids.push(line('Busy in your calendar', d.busy.join(', ')));
+    if (payDays()[d.date]) kids.push(line('Payment', payDays()[d.date] + ' (the little mushroom).'));
     if (d.full) kids.push(line('Full', 'This day has as many bookings as your limit allows.'));
     if (d.bookings.length) {
       const ul = make('ul', 'bk-day-books');
@@ -5434,13 +5525,18 @@
       else {
         name = 'Subscription';
         amt = money(p.amount) + (p.period === 'year' ? ' a year' : ' a month');
-        sub = (CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes as I follow your socials or whenever you email me.') +
-          (p.state === 'due' && starts ? ' Your subscription begins ' + starts + ', right where settling in leaves off.' : '');
+        sub = CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes as I follow your socials or whenever you email me.';
         payLabel = 'Start my subscription';
         thanks = 'Set up? Thank you! It shows here once it’s running. No need to do it again.';
       }
       if (c.founding && p.key !== 'care') sub += ' Founding price.';
       div.append(make('span', 'p-name', name), make('span', 'p-amt', p.amount ? amt : ''), make('span', 'p-sub', sub));
+      // the start date stands on its own line (Nov 11 2026), not tucked into the paragraph
+      if (p.key === 'care' && p.state === 'due' && starts) {
+        const st0 = make('span', 'p-start');
+        st0.append(icon('i-mushroom', 'p-start-i'), make('span', 'p-start-l', 'Your subscription begins'), make('span', 'p-start-d', starts));
+        div.append(st0);
+      }
       const st = make('div', 'p-state');
       if (p.state === 'paid') {
         const s = make('span', 'p-paid');

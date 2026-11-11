@@ -330,6 +330,10 @@ details.done-fold { margin-top: 10px; }
 .payrow .p-name { font-family: var(--wf-font-display); font-size: 19px; line-height: 1.3; }
 .payrow .p-amt { font-family: var(--wf-font-display); font-size: 22px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .payrow .p-sub { grid-column: 1 / -1; font-size: 15px; line-height: 1.45; color: var(--wf-b-ink-soft); }
+.payrow .p-start { grid-column: 1 / -1; display: flex; flex-wrap: nowrap; align-items: center; gap: 4px 10px; margin-top: 12px; padding: 10px 14px; border: 2px solid var(--wf-b-due-edge); border-radius: 14px; background: var(--wf-b-well); }
+.payrow .p-start-i { width: 28px; height: 28px; flex: none; }
+.payrow .p-start-l { min-width: 0; font-size: 12px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--wf-b-ink-soft); }
+.payrow .p-start-d { font-family: var(--wf-font-display); font-size: 24px; line-height: 1.1; color: var(--wf-b-ink); margin-left: auto; white-space: nowrap; }
 .payrow .p-state { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 10px; font-size: 15.5px; }
 .p-paid { display: inline-flex; align-items: center; gap: 7px; font-weight: 500; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--wf-b-done); }
 .p-paid svg { width: 15px; height: 15px; }
@@ -669,6 +673,10 @@ details.done-fold { margin-top: 10px; }
 .bk-cd-closed .bk-cd-n { color: var(--wf-b-ink-soft); text-decoration: line-through; font-weight: 400; }
 .bk-cd-closed .bk-cd-w { color: var(--wf-b-ink); }
 .bk-cd-own .bk-cd-n { text-decoration: underline; text-decoration-color: var(--wf-b-link); text-underline-offset: 3px; }
+.bk-cd-pay { position: absolute; top: 3px; left: 3px; width: 17px; height: 17px; pointer-events: none; }
+@media (min-width: 760px) { .bk-cd-pay { width: 20px; height: 20px; } }
+.bk-pay-key { display: flex; align-items: center; gap: 6px; }
+.bk-key-i { width: 18px; height: 18px; flex: none; }
 .bk-cd-blank { min-height: 1px; }
 .bk-cal-key { margin-top: 10px; }
 .bk-dayinfo { margin: 14px 0 0; padding: 12px 16px; }
@@ -1085,6 +1093,15 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 .acct-eye .eye-slash { display: block; }
 .acct-eye[aria-pressed="true"] .eye-slash { display: none; }
 .acct-eye:focus-visible { outline: 2px solid var(--wf-b-ink); outline-offset: 1px; }
+
+/* (Nov 11 2026) the Web Faery tab, the way back to it, and the bell */
+.wf-back { display: inline-flex; align-items: center; min-height: 44px; margin: 0 0 6px; font-weight: 600; text-decoration: none; color: var(--wf-b-link); }
+.wf-back:hover { text-decoration: underline; text-underline-offset: 3px; }
+.wf-hub .wf-group + .wf-group { margin-top: 18px; }
+.wf-hub .ledger { margin: 6px 0 0; }
+.wf-hub .row-link .cnt { flex: none; }
+.top .ask .msg-dot { position: absolute; top: -3px; right: -3px; }
+.top .ask { position: relative; }
 
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and

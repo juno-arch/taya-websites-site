@@ -59,14 +59,17 @@ h1 em, h2 em, h3 em { font-family: var(--nl-read); font-style: italic; font-weig
 .top { background: #f9b9a0; color: #1a1420; box-shadow: none; overflow: visible; margin-bottom: 14px; }
 .top-art, .top::before { display: none; }
 .top::after {
-  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 13px; pointer-events: none;
-  background: radial-gradient(circle at 50% 0, #f9b9a0 0 9px, #1a1420 9.5px 12.5px, transparent 13px) 0 0 / 26px 13px repeat-x;
+  content: ""; position: absolute; left: 0; right: 0; top: calc(100% - 1px); height: 14px; pointer-events: none;
+  /* one drawn scallop per tile (a half circle with its black edge), tiles rounded so a whole number fit the width and the last one is never cut off */
+  background: linear-gradient(#f9b9a0, #f9b9a0) 0 0 / 100% 1px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 13' width='26' height='13'%3E%3Cpath d='M0 0A 13 13 0 0 0 26 0' fill='%23f9b9a0' stroke='%231a1420' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") 0 1px / 26px 13px round no-repeat;
 }
 .top .brand, .top .via, .top-nav a, .top-nav button, .tabs a, .top .ask { text-shadow: none; }
 .brand, .top .brand { color: #1a1420; }
-.wm > span { color: #8f2c3a; font-weight: 700; }
-.wm-spark { background: none; }
-.wm-spark::before { background: #fff8f1; box-shadow: 0 0 0 1px #1a1420; clip-path: none; border-radius: 50%; inset: 2px; }
+/* the wordmark is the main site's: bold, "Faery" upright in wine, and the gold four-point star (a thin dark edge so it reads on peach and mint) */
+.wm { font-weight: 700; }
+@media (min-width: 761px) { .wm { font-size: 26px; } }
+.wm > span { color: #8f2c3a; font-weight: 700; font-style: normal; font-family: inherit; }
+.wm-spark { background: none; width: 14px; height: 14px; filter: drop-shadow(0 0 .5px #1a1420) drop-shadow(0 0 .5px #1a1420); }
 .via { color: #2a1236; }
 .top-nav a, .top-nav button { color: #1a1420; font-weight: 700; }
 .top-nav a:hover, .top-nav button:hover { color: #1a1420; }
@@ -225,12 +228,16 @@ input[type="checkbox"], input[type="radio"] { accent-color: #2a1236; }
 /* ============ the foot: a mint band, the lilac page hanging into it in a black scalloped lip ============ */
 .site-foot { position: relative; margin-top: 70px; padding: 56px var(--wf-b-gut) calc(44px + env(safe-area-inset-bottom)); background: #b5e3c8; color: #2a1236; }
 .site-foot::before {
-  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 14px; pointer-events: none;
-  background: radial-gradient(circle at 50% 0, #d6c8f5 0 10px, #1a1420 10.5px 13.5px, transparent 14px) 0 0 / 28px 14px repeat-x;
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 15px; pointer-events: none;
+  background: linear-gradient(#d6c8f5, #d6c8f5) 0 0 / 100% 1px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 14' width='28' height='14'%3E%3Cpath d='M0 0A 14 14 0 0 0 28 0' fill='%23d6c8f5' stroke='%231a1420' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") 0 1px / 28px 14px round no-repeat;
 }
 .site-foot .foot-in { max-width: calc(var(--wf-wrap, 880px) - 2 * var(--wf-b-gut)); padding: 30px 40px 26px; margin-top: 0; border-top: 0; }
 .site-foot .brand { color: #2a1236; }
 .site-foot .wm > span { color: #8f2c3a; }
+/* the footer's wordmark: as big as the main site's footer, and a star with a firmer edge so it shows on the cream card */
+.site-foot .wm { font-size: 30px; padding-right: 20px; }
+.site-foot .wm-spark::before { background: #f2b030; }
+.site-foot .wm-spark { width: 17px; height: 17px; top: -7px; filter: drop-shadow(0 0 .7px #1a1420) drop-shadow(0 0 .7px #1a1420) drop-shadow(0 0 .7px #1a1420); }
 .site-foot a:not(.brand) { color: #00606f; }
 .site-foot .fine { color: #2a1236; }
 body.wf-tabs .site-foot { margin-bottom: 0; }
