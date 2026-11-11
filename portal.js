@@ -119,14 +119,14 @@
     crone: 'Keeps you in full bloom: everything in the Tended subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STAGES = [
-    ['getting_started', 'Getting started'], ['call', 'Your story'], ['draft', 'Draft'],
-    ['changes', 'Changes'], ['launch', 'Launch'], ['settling_in', 'Settling in']
+    ['getting_started', 'Getting started'], ['call', 'Setup'], ['draft', 'Build and review'],
+    ['changes', 'Build and review'], ['launch', 'Launch'], ['settling_in', 'Settling in']
   ];
   const STAGE_SAY = {
     getting_started: 'Your answers, photos and a few little setup bits.',
-    call: 'A few easy questions by email. I do the writing after.',
-    draft: 'I’m building your draft. You’ll get a private link to peek.',
-    changes: 'Send changes by email; one email with everything in it is easiest.',
+    call: 'I set up your accounts, in your name, and get everything ready to build.',
+    draft: 'I build your site. You look it over and tell me what to change.',
+    changes: 'I build your site. You look it over and tell me what to change.',
     launch: 'Your site goes live at your own web address, and I hand you your logins.',
     settling_in: '30 days of tweaks, on me, and I’ll check in to see how it’s all feeling.'
   };
@@ -348,7 +348,7 @@
     // (field and at: kept for older server answers; the editors were retired Oct 5 2026)
     if (data && typeof data.field === 'string') e.field = data.field.slice(0, 20);
     if (data && Number.isInteger(data.at) && data.at >= 0 && data.at < 100) e.at = data.at;
-    // the shop's back end (Oct 10 2026) says what to fix in its own words, and 409 "taken" for a code name in use
+    // the shop's server (Oct 10 2026) says what to fix in its own words, and 409 "taken" for a code name in use
     if (data && typeof data.message === 'string') e.msg = cleanLine(data.message, 200);
     // a client's bookings (Oct 10 2026) say why too (no_payments, not_set_up)
     if (data && typeof data.why === 'string') e.why = data.why.slice(0, 20);
@@ -1522,7 +1522,8 @@
         current: str(tl.current, 20) || 'getting_started',
         stages: arr(tl.stages).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), date: str(s && s.date, 30), state: str(s && s.state, 8) })),
         // the five steps (add 22 / 25): same source as the Studio's timeline; an older server sends none, and the six stages above are drawn
-        steps: arr(tl.steps).slice(0, 5).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), est: str(s && s.est, 10), until: str(s && s.until, 30),
+        steps: arr(tl.steps).slice(0, 7).map((s) => ({ key: str(s && s.key, 20), label: str(s && s.label, 40), say: str(s && s.say, 200), date: str(s && s.date, 30), est: str(s && s.est, 10), until: str(s && s.until, 30),
+          usual: s && Number.isFinite(+s.usual_days) && +s.usual_days >= 1 && +s.usual_days <= 120 ? Math.round(+s.usual_days) : 0,
           turn: s && (s.turn === 'you' || s.turn === 'me') ? s.turn : '', state: s && (s.state === 'done' || s.state === 'now') ? s.state : 'next' })),
         care_since: str(tl.care_since, 30),
         // (Nov 2 2026, ADD 40) "Last update: <day>, <one line>" under the current step; the server sends it only when Pollen's switch is on
@@ -2457,13 +2458,19 @@
     const cur = me.timeline.current;
     const ci = stageIndex(cur);
     const live = cur === 'care' || cur === 'resting';
-    // the five steps come from the server (the same source as the Studio's timeline); an older server sends the six stages
-    const five = arr(me.timeline.steps).length === 5;
-    const list = five ? me.timeline.steps.map((s) => ({ key: s.key, label: s.label, date: s.date || '', est: str(s.est, 10), until: s.until || '', turn: s.turn || '', say: s.say || '', state: s.state }))
-      : STAGES.map(([key, label], i) => {
-        const s = me.timeline.stages.find((x) => x.key === key) || {};
-        return { key, label: s.label || label, date: s.date || '', state: i < ci ? 'done' : i === ci ? 'now' : 'next' };
+    // the steps come from the server (the same source as the Studio's timeline). Mockup sent and Choosing are always behind a client
+    // who is in their portal, so they show as done when the server does not send them. An older server sends only the stages, and the
+    // steps are worked out from the stage they are in.
+    const sent = arr(me.timeline.steps);
+    const FALLBACK = [['getting_started', 'Getting started'], ['setup', 'Setup'], ['build', 'Build and review'], ['launch', 'Launch'], ['settling_in', 'Settling in']];
+    const at = { getting_started: 0, call: 1, draft: 2, changes: 2, launch: 3, settling_in: 4 }[cur];
+    const own = sent.length ? sent.map((s) => ({ key: s.key, label: s.label, date: s.date || '', est: str(s.est, 10), until: s.until || '', turn: s.turn || '', say: s.say || '', usual: s.usual || 0, state: s.state }))
+      : FALLBACK.map(([key, label], i) => {
+        const st = me.timeline.stages.find((x) => x.key === (key === 'setup' ? 'call' : key === 'build' ? 'draft' : key)) || {};
+        return { key, label, date: st.date || '', est: '', until: '', turn: '', say: '', usual: 0, state: at === undefined || i < at ? 'done' : i === at ? 'now' : 'next' };
       });
+    const lead = own.some((x) => x.key === 'mockup') ? [] : [{ key: 'mockup', label: 'Mockup sent', state: 'done' }, { key: 'choosing', label: 'Choosing', state: 'done' }];
+    const list = lead.concat(own);
     $('#tl').replaceChildren(...list.map((s) => {
       const li = make('li', s.state);
       if (s.state === 'now') li.setAttribute('aria-current', 'step');
@@ -2476,7 +2483,7 @@
       if (s.state === 'now') name.append(make('span', 'now-pill', 'Now'));
       else if (s.state === 'done') name.append(make('span', 'sr-only', '(done)'));
       body.append(name);
-      const d = shortDate(five && s.key === 'settling_in' && s.until ? s.until : s.date);
+      const d = shortDate(s.key === 'settling_in' && s.until ? s.until : s.date);
       // the draft link is already here: its date is when it's finished, not when it arrives
       const draftHere = (s.key === 'draft' || s.key === 'build') && s.state === 'now' && !!me.things.draft;
       let when = '';
@@ -2491,6 +2498,7 @@
         else when = 'About ' + d;
       }
       body.append(make('span', estD ? 'when est' : 'when', when));
+      if (s.usual && s.state !== 'done') body.append(make('span', 'usual', 'Usually ' + s.usual + (s.usual === 1 ? ' day' : ' days')));
       const say = draftHere ? 'Your draft is growing. Peek anytime with your private link.' : (s.say || STAGE_SAY[s.key]);
       if (s.state === 'now' && say) body.append(make('p', 'say', say));
       if (s.state === 'now' && s.turn) body.append(make('p', 'turn', s.turn === 'you' ? 'Your turn' : 'My turn'));
@@ -2498,7 +2506,7 @@
       li.append(dot, body);
       return li;
     }));
-    // once the site is live, the six finished steps fold away into one line
+    // once the site is live, the finished steps fold away into one line
     $('#h-where').textContent = cur === 'care' ? 'Live, and in good hands' : cur === 'resting' ? 'All done, and all yours' : 'Your site, step by step';
     $('#tl').hidden = live;
     const more = $('#b-tl-more');
@@ -3021,7 +3029,7 @@
   }
 
   /* ---- your shop's discount codes, free shipping and the packing slip line (Oct 10 2026) ----
-     Codes live on Web Faery's server, in the owner's own back end: % or $ off, a smallest order, first and last
+     Codes live on Web Faery's server, in the owner's own portal: % or $ off, a smallest order, first and last
      days, a limit, once per buyer, on or off. Checkout checks them and puts them on the Stripe receipt; a use
      counts once the order is paid. */
   let codes = null;          // { settings, codes: [...] } as the server last sent it (cleaned)
