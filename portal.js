@@ -1091,17 +1091,17 @@
   // WORDING IS A PLACEHOLDER until the voice check and Pollen's OK.
   const BLOOM = [
     { id: 'shop', has: ['orders', 'products'], title: 'A small shop',
-      say: 'Your products, your orders and what to pack, in one place.',
-      mock: ['Speckled mug', '$28', '2 orders to pack'], ask: 'I’m curious about the shop. Could you tell me more?' },
+      say: 'Your products, your orders and what to pack, together in your portal.',
+      mock: ['Speckled mug', '$28', '2 orders to pack'], ask: 'Hi Taya! I’d love a shop on my site. How would that work?' },
     { id: 'bookings', has: ['bookings'], title: 'Online booking',
-      say: 'People can book a time with you online, and it lands in your calendar.',
-      mock: ['Tuesday 10:30', '', 'A first visit'], ask: 'I’m curious about online booking. Could you tell me more?' },
+      say: 'People can book a time with you online, and each booking comes with an Add to calendar button.',
+      mock: ['Tuesday 10:30', '', 'A first visit'], ask: 'Hi Taya! Can people book appointments with me through my site? How does that work?' },
     { id: 'newsletter', has: ['newsletter'], title: 'A newsletter',
-      say: 'Write an update and it goes out to your list.',
-      mock: ['Spring classes are open', '', 'A draft, ready to look over'], ask: 'I’m curious about a newsletter. Could you tell me more?' },
+      say: 'You can write an update and send it to your list.',
+      mock: ['Draft: Spring classes are open', '', ''], ask: 'Hi Taya! Can you help me start a newsletter? How would that work?' },
     { id: 'gifts', has: ['gifts'], title: 'Gift certificates',
-      say: 'Sold on your site and spent at your door.',
-      mock: ['Gift certificate', '$50', 'For Sam'], ask: 'I’m curious about gift certificates. Could you tell me more?' }
+      say: 'People can buy one on your site, and you can check any code’s balance in your portal.',
+      mock: ['$50 certificate', '', 'For Sam'], ask: 'Hi Taya! Could I sell gift certificates on my site? How does that work?' }
   ];
   const bloomList = () => BLOOM.filter((b) => !b.has.some(pageHas));
   function askAbout(line) {
@@ -1141,7 +1141,8 @@
       mock.setAttribute('inert', '');
       const row = make('div', 'bloom-row');
       row.append(make('b', null, b.mock[0]), make('span', null, b.mock[1]));
-      mock.append(row, make('small', null, b.mock[2]));
+      mock.append(row);
+      if (b.mock[2]) mock.append(make('small', null, b.mock[2]));
       const ask = make('button', 'later bloom-ask', 'Ask Taya about this');
       ask.type = 'button';
       ask.setAttribute('aria-label', 'Ask Taya about ' + b.title.toLowerCase());
