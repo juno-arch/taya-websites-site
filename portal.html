@@ -22,17 +22,14 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#f9b9a0">
+<meta name="theme-color" content="#1a1420">
 <meta name="color-scheme" content="light">
-<link rel="stylesheet" href="fonts/fonts.css?v=20261110e">
 <link rel="stylesheet" href="fonts/brand/brand-fonts.css?v=20261104a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261110e">
 <link rel="stylesheet" href="wf-backend.css?v=20261110e">
 <link rel="stylesheet" href="portal.css?v=20261111b">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <link rel="stylesheet" href="portal-schedule.css?v=20261022b">
-<link rel="stylesheet" href="ceiling.css?v=20261110zzzzr">
-<link rel="stylesheet" href="portal-newlook.css?v=20261111d">
 <!--
   portal.html: a client's own page, their portal (built Sep 30, 2026; tabs and the light twilight look Oct 14, 2026).
   They sign in with a one-time code sent to their email (or a password they chose), then move between short pages with the tabs
@@ -57,10 +54,12 @@
   (everything that happens), portal-demo.js (a sample client, loaded only while DEMO = true in portal.js).
   Not in sitemap.xml.
 -->
+<link rel="stylesheet" href="reband.css?v=20261112a">
+<link rel="stylesheet" href="reband-app.css?v=20261112a">
+<link rel="stylesheet" href="reband-portal.css?v=20261112a">
 </head>
 <body>
 <!-- coded pastel stickers in the margins of wide screens only, behind everything (ceiling.css); none on a phone -->
-<div class="ceiling" aria-hidden="true"><i style="--x:3%;--y:8%;--s:26px;--r:-12deg"></i><i style="--x:96%;--y:15%;--s:28px;--r:14deg"></i><i style="--x:4%;--y:30%;--s:24px;--r:10deg"></i><i style="--x:96%;--y:42%;--s:26px;--r:-10deg"></i><i style="--x:3%;--y:56%;--s:28px;--r:12deg"></i><i style="--x:96%;--y:66%;--s:24px;--r:-14deg"></i><i style="--x:4%;--y:80%;--s:26px;--r:9deg"></i><i style="--x:96%;--y:90%;--s:28px;--r:-8deg"></i></div>
 <a class="skip-link" href="#main">Skip to your project</a>
 
 <!-- little drawings used more than once -->
@@ -113,7 +112,7 @@
     <a class="brand" href="index.html" id="top-brand">
       <!-- LOGO SLOT: when Pollen's logo arrives, an img with class "logo" goes here, just before the name,
            36 px tall (wf-backend.css .brand .logo) -->
-      <span class="wm wm-lamp" id="top-wm"><img class="lamp" src="images/web-faery-lamp.svg" width="28" height="57" alt="">Web Faery</span>
+      <span class="wm wm-lamp" id="top-wm"><img class="lamp" src="brand/egg.svg?v=13" width="44" height="44" alt="">Web Faery</span>
       <!-- signed in: their business name leads the bar, "your site, from Web Faery" beside it (portal.js setBrand) -->
       <span class="biz" id="top-biz" hidden></span>
     </a>
@@ -129,8 +128,7 @@
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261022b"></script>
 <script src="portal.js?v=20261111b"></script>
-<script src="zigzag.js?v=20261110a" defer></script>
-<script src="tracer.js?v=20261111a" defer></script>
+<script src="brand/wf-shapes.js?v=20261112a"></script><script src="brand/wf-trail.js?v=20261112a"></script>
 
 <main class="page" id="main" tabindex="-1">
   <!-- only in a Studio preview (Oct 19 2026, portal.js "read only view"): whose page this is, and that it changes nothing -->
@@ -1256,7 +1254,7 @@
 
 <footer class="site-foot">
   <div class="foot-in">
-    <a class="brand" href="index.html"><span class="wm wm-lamp"><img class="lamp" src="images/web-faery-lamp.svg" width="28" height="57" alt="">Web Faery</span></a>
+    <a class="brand" href="index.html"><span class="wm wm-lamp"><img class="lamp" src="brand/egg.svg?v=13" width="44" height="44" alt="">Web Faery</span></a>
     <ul>
       <li><a href="start.html">Getting started</a></li>
       <li><a href="welcome.html">What happens next</a></li>

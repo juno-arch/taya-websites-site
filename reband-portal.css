@@ -1,0 +1,87 @@
+/* The client portal in the new look (Nov 12 2026). Same layout as before: a header band with tabs, then one centered
+   column of pixel-cut cards. Only how it looks changes. Loaded after reband.css and portal.css. */
+html,body{background:var(--rb-pg,#c7b3f2) radial-gradient(circle at 12px 12px,rgba(26,20,32,.28) 2px,transparent 2.5px) 0 0/24px 24px!important}
+body{display:block}
+.ceiling,.top-art{display:none!important}
+
+/* header band: ink bar, the egg and the business name, tabs as key labels */
+.top{position:sticky;top:0;z-index:30;background:var(--rb-ink)!important;border-bottom:3px solid var(--rb-ink);box-shadow:none!important;padding:0!important;color:#fff8f1}
+.top::before,.top::after{display:none!important}
+.top-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:8px 18px;flex-wrap:wrap}
+.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff!important}
+.top .brand .wm,.top .brand .biz{font-family:var(--rb-head)!important;font-weight:700;font-size:20px;letter-spacing:.06em;color:#fff!important;-webkit-text-stroke:0;text-shadow:none;display:inline-flex;align-items:center;gap:8px;line-height:1;white-space:normal}
+.top .brand .wm span,.top .brand .wm i{color:var(--rb-lav)!important}
+.top .brand img.lamp{height:44px!important;width:44px!important;margin:-4px 0}
+.top .via{font:400 11px var(--rb-key);letter-spacing:.1em;text-transform:uppercase;color:var(--rb-lav)!important}
+.top-nav{margin-left:auto;display:flex;gap:6px;align-items:center}
+.top-nav a,.top-nav button{font:400 12px var(--rb-key)!important;letter-spacing:.1em;text-transform:uppercase!important;color:var(--rb-lav)!important;background:none!important;border:0!important;box-shadow:none!important;text-decoration:none!important;padding:8px 8px!important;cursor:pointer;min-height:0!important}
+.top-nav a:hover,.top-nav button:hover{color:var(--rb-butter)!important}
+.top-nav button::before,.top-nav button::after{display:none!important}
+.tabs{max-width:880px;margin:0 auto;gap:2px;padding:0 18px;overflow-x:auto;border:0!important;background:none!important;scrollbar-width:thin}
+.tabs[hidden]{display:none}
+@media(min-width:761px){.tabs:not([hidden]){display:flex}}
+@media(max-width:760px){.tabs,.top .via{display:none!important}}
+.tabs a{flex:none;display:inline-flex;align-items:center;gap:7px;font:400 12px var(--rb-key)!important;letter-spacing:.08em;text-transform:uppercase;color:#fff8f1!important;background:none!important;border:0!important;border-bottom:4px solid transparent!important;border-radius:0!important;box-shadow:none!important;padding:11px 12px 9px!important;text-decoration:none!important;white-space:nowrap}
+.tabs a svg{width:16px;height:16px;color:var(--rb-lav)}
+.tabs a:hover{color:var(--rb-butter)!important}
+.tabs a[aria-current=page]{color:var(--rb-butter)!important;border-bottom-color:var(--rb-red)!important}
+.tabs .cnt{background:var(--rb-butter);color:#1a1420;border:2px solid var(--rb-ink);font:400 10px var(--rb-key);padding:0 5px;border-radius:0}
+/* on a phone the tabs sit in the dock at the bottom */
+.dock{background:var(--rb-ink)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-top:3px solid var(--rb-ink)!important;box-shadow:none!important}
+.dock a{font:400 10px var(--rb-key)!important;letter-spacing:.06em;text-transform:uppercase;color:var(--rb-lav)!important;border-radius:0!important}
+.dock a[aria-current=page]{color:var(--rb-butter)!important;background:none!important;box-shadow:inset 0 3px 0 var(--rb-red)!important}
+
+/* the page and its one column */
+main.page{max-width:680px;margin:0 auto;padding:26px 18px 80px;color:#1a1420}
+main.page h1,main.page h2,main.page h3{color:#1a1420}
+main.page .kicker,main.page .eyebrow{display:inline-block;background:var(--rb-butter);border:2px solid var(--rb-ink);padding:2px 8px;margin-bottom:8px}
+main.page>h1,.page-head h1,.hi h1,h1#hello{background:var(--rb-pg);display:table;padding-right:10px;font-size:clamp(32px,6vw,52px);line-height:1.05}
+.preview-pill,.preview-flag{font:400 10px var(--rb-key)!important;letter-spacing:.08em;text-transform:uppercase;background:var(--rb-butter)!important;color:#1a1420!important;border:2px solid var(--rb-ink)!important;border-radius:0!important}
+.demo-list{background:var(--rb-butter)!important;border:3px solid var(--rb-ink)!important;border-radius:0!important;color:#1a1420}
+
+/* cards */
+.p-card{margin:0 0 26px!important;padding:20px 22px 22px!important;--rb-sh:#8d77c9}
+main.page>.p-card:nth-of-type(3n+2),section.p-card:nth-of-type(3n+2){--rb-sh:#e58fb5}
+main.page>.p-card:nth-of-type(3n),section.p-card:nth-of-type(3n){--rb-sh:#7fc4a6}
+.p-card .face,img.face{border-radius:0!important;border:3px solid var(--rb-ink)!important;image-rendering:auto}
+.taya-note{--rb-sh:#e58fb5}
+.p-card h2,.p-card h3{font-family:var(--rb-head)!important;font-weight:700}
+.p-card :is(small,.soft,.hint,.fine,.meta){color:#1a1420!important}
+
+/* buttons the portal makes itself */
+.open-btn,.p-card button.primary,button.primary,.btn-main,button.add,label.pick-btn,.pick-btn,button.small-btn,button.ghost,.p-card .btn,button.later-btn{--d:3px;--b:var(--rb-paper);--t:#1a1420;position:relative;isolation:isolate;display:inline-block;font-family:var(--rb-key)!important;font-weight:400!important;font-size:13px!important;line-height:1.1;letter-spacing:.08em;text-transform:uppercase!important;color:var(--t)!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;min-height:0!important;padding:10px 14px 9px!important;margin:0 0 3px;text-decoration:none!important;cursor:pointer;filter:none!important;transition:transform .08s}
+.open-btn::before,.p-card button.primary::before,button.primary::before,.btn-main::before,button.add::before,label.pick-btn::before,.pick-btn::before,button.small-btn::before,button.ghost::before,.p-card .btn::before,button.later-btn::before{content:"";display:block!important;position:absolute;z-index:-2;inset:-3px -3px calc(-3px - var(--d));background:var(--rb-ink);clip-path:polygon(6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px),0 6px,6px 6px)}
+.open-btn::after,.p-card button.primary::after,button.primary::after,.btn-main::after,button.add::after,label.pick-btn::after,.pick-btn::after,button.small-btn::after,button.ghost::after,.p-card .btn::after,button.later-btn::after{content:"";display:block!important;position:absolute;z-index:-1;inset:0;background:var(--b);box-shadow:inset 3px 3px 0 rgba(255,255,255,.8),inset -3px -3px 0 color-mix(in srgb,var(--b) 72%,#1a1420);clip-path:polygon(3px 0,calc(100% - 3px) 0,calc(100% - 3px) 3px,100% 3px,100% calc(100% - 3px),calc(100% - 3px) calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,3px calc(100% - 3px),0 calc(100% - 3px),0 3px,3px 3px)}
+.open-btn:hover,button.primary:hover,.pick-btn:hover{transform:translateY(-1px)}
+.open-btn:active,button.primary:active,.pick-btn:active{--d:0px;transform:translateY(3px)}
+.open-btn.primary,button.primary,.btn-main{--b:var(--rb-red);--t:#fff8f1}
+.open-btn svg,.pick-btn svg,.ico{border-radius:0!important}
+.ico{background:var(--rb-butter)!important;border:2px solid var(--rb-ink)!important;color:#1a1420!important}
+
+/* small circles and ticks on the to-do list become squares */
+.tick,.check,.todo-box,.circle,.dot{border-radius:0!important;border:3px solid var(--rb-ink)!important;background:#fff!important}
+details>summary{cursor:pointer}
+.later{background:none!important;border:0!important;box-shadow:none!important;font-family:var(--rb-body)!important;color:#1a1420!important;text-decoration:underline;text-decoration-color:var(--rb-red);text-decoration-thickness:2px;text-underline-offset:3px}
+@media(max-width:700px){.top-in{padding:6px 12px}.top .brand .wm,.top .brand .biz{font-size:17px}main.page{padding:18px 12px 96px}.p-card{padding:16px 14px 18px!important}}
+main.page h1 em,main.page h2 em{color:#e63b2e!important;font-style:normal!important}
+.demo-switch summary,.demo-pick summary,details.demo summary{border-radius:0!important}
+
+/* to-do markers: square ticks, butter when it is a payment, mint when sent */
+.todo .mk,.mk{border-radius:0!important;width:22px!important;height:22px!important;box-shadow:none!important;background:#fff!important;border:3px solid var(--rb-ink)!important;margin-top:2px}
+.todo.sent .mk{background:linear-gradient(90deg,#fff 50%,var(--rb-mint) 50%)!important}
+.todo.pay .mk{background:var(--rb-butter)!important}
+.todo.done .mk,.todo.complete .mk{background:var(--rb-mint)!important}
+.m{border-radius:0!important}
+details>summary,details summary{border-radius:0!important}
+
+/* every corner is a pixel step: no rounding anywhere in the portal (round avatars stay round-free too) */
+main.page *,main.page *::before,main.page *::after,dialog,dialog *,.toast,[role=dialog],[role=dialog] *,.sheet,.modal{border-radius:0!important}
+main.page svg,main.page svg *{border-radius:0}
+:root,main.page{--wf-b-bg:#fff;--wf-b-sheet:#fff;--wf-b-well:#fff8f1;--wf-b-field:#fff;--wf-b-rule:#1a1420;--wf-b-edge:#1a1420;--wf-b-leaf:#12706b;--wf-b-leaf-tint:#a8e3c8;--wf-b-due:#f7e07a;--wf-b-due-edge:#1a1420;--wf-b-due-tint:#f7e07a;--wf-b-due-ink:#1a1420;--wf-b-note-bg:#fff8f1;--wf-b-shadow:none;--wf-b-trouble:#b3261e;--wf-b-done:#12706b}
+main.page :is(.ledger,.pp-list,.payrow,.bkit-sw,.bkit-chip,.swatch,.paper,.pp,.row){border-color:#1a1420}
+.payrow,.bkit-sw,.pp-list{border:3px solid var(--rb-ink)!important;background:#fff!important;box-shadow:3px 3px 0 var(--rb-ink)}
+.bkit-chip{border:2px solid var(--rb-ink)!important;background:var(--rb-butter)!important;font-family:var(--rb-key);text-transform:uppercase;letter-spacing:.08em}
+.payrow{padding:12px 14px!important;margin:0 0 14px}
+.st-paid{background:var(--rb-mint)!important}.st-later{background:#fff!important}.st-due{background:var(--rb-butter)!important}
+main.page :is(hr,.rule){border:0;border-top:3px dotted var(--rb-ink)}
+.toast{background:var(--rb-ink)!important;color:#fff8f1!important;border:3px solid var(--rb-ink)}

@@ -3,7 +3,7 @@
 //   node _tests/site-text.test.mjs
 //
 // The pricing model (Oct 5 2026, per Pollen; the source of truth is web-faery-kit/pricing-oct2026.md):
-//   builds Planted $600 / Tended $1,200 / In Bloom $1,800 (founding $300 / $600 / $900, half off the
+//   builds Pocket $600 / Color $1,200 / Advance $1,800 (founding $300 / $600 / $900, half off the
 //     build only, 5 spots through Dec 31, 2026), half to start, half at launch;
 //   a subscription comes with every site (called "care" until Oct 6 2026, when Pollen switched the word), monthly
 //     only, matching the build: $12 / $45 / $90 a month, starting after the 30 days of settling in; changes are the
@@ -17,12 +17,12 @@
 // Fails (exit 1) if any page (or a string in its scripts, or mark.js):
 //   - shows an old name or price (Maiden / Mother / Crone, $69, $690, $35, $350, $49, $490, $22 / $44 / $66,
 //     $400 / $650 / $950, $95), the subscription as optional, pay as you go, an hourly rate, a yearly subscription,
-//     the old name "care" for the subscription ("Tended care", "then care", "care comes with every site"...),
+//     the old name "care" for the subscription ("Color care", "then care", "care comes with every site"...),
 //     trades, self-editing, a retired offer (Photo Day, tending visits, Wildflower, Websites by Taya, half off
 //     care, free hosting forever), an offer of a call or chat (email only), Stripe at "about 3%", or a dash
 //     (mark.js keeps its "as sent" words on purpose: the already-emailed mockups show what they were sent)
 //   - shows a monthly price other than the subscription's $12 / $45 / $90, or a side cost "paid by you" (email from their
-//     own address comes with Tended and In Bloom; a Planted client who wants it moves up to Tended, Oct 5 2026).
+//     own address comes with Color and Advance; a Pocket client who wants it moves up to Color, Oct 5 2026).
 //     The one exception is the main page's small print of what other apps cost on their own (class="tools-costs",
 //     Oct 15 2026): those are other companies' prices, so the old-price and monthly-price checks skip it
 //   - (the main page) leaves out the three subscription prices, the reply time, "quoted first", the settling-in start,
@@ -32,11 +32,11 @@
 //     the old holiday line ("a heads-up before holidays so your hours stay right")
 //   - drifts from the small rules decided Oct 5 2026 (pricing-oct2026.md): the booking ladder (1, Oct 6 2026
 //     afternoon, Pollen: "yes add the booking link to planted", which reversed that morning's "no Book button on
-//     Planted"): every build's Book button opens the booking app they already use, Planted too (with no app, people
-//     call, text or email); a free Cal.com set up for them is Tended; In Bloom puts booking right on the site,
-//     running on Taya's own server, or they keep their own app: their choice (Oct 15 2026, In Bloom's tools on her
+//     Pocket"): every build's Book button opens the booking app they already use, Pocket too (with no app, people
+//     call, text or email); a free Cal.com set up for them is Color; Advance puts booking right on the site,
+//     running on Taya's own server, or they keep their own app: their choice (Oct 15 2026, Advance's tools on her
 //     server); email forwarding free on
-//     Planted (3); the Instagram feed Tended and up (6); no phone field on intake.html (7); texts.html's
+//     Pocket (3); the Instagram feed Color and up (6); no phone field on intake.html (7); texts.html's
 //     "Replies" line kept exactly as is, since it matches the texting registration (8)
 //   - shows the founding count ("N left") anywhere but once, inside id="founding" on the main page
 //   - has JSON-LD that doesn't parse, or offers that don't match the page
@@ -50,7 +50,7 @@
 //     password they already use; the old "Please do it for me" / forward-me-the-code / sign-up-yourself steps
 //     are gone; Google: the owner adds Taya as a manager, or Taya builds it and makes them its owner at launch;
 //     Stripe the client makes, then adds Taya as a Developer; hosting: GitHub Pages, or Cloudflare Pages for an
-//     In Bloom site that takes payments or runs a shop
+//     Advance site that takes payments or runs a shop
 // (Folders starting with "_" are not published by GitHub Pages.)
 
 import fs from 'node:fs';
@@ -61,7 +61,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 // 404.html (Oct 7 2026): what GitHub Pages shows at any address that isn't on the site, a mockup not pushed yet too
 const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html', '404.html'];
 const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html'];
-const TIERS = { 'Planted': [600, 300, 12], 'Tended': [1200, 600, 45], 'In Bloom': [1800, 900, 90] };
+const TIERS = { 'Pocket': [600, 300, 12], 'Color': [1200, 600, 45], 'Advance': [1800, 900, 90] };
 const CARE = Object.values(TIERS).map((t) => t[2]);
 
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
@@ -90,13 +90,13 @@ const plainOf = (text) => text.replace(/<[^>]+>/g, ' ').replace(/&cent;/g, '¢')
   .replace(/&nbsp;/g, ' ').replace(/\s+([.,;:)])/g, '$1').replace(/\s+/g, ' ');
 
 const FORBIDDEN = [
-  [/\bMaiden\b|\bMother\b|\bCrone\b/, 'an old tier name (Planted, Tended, In Bloom now)'],
+  [/\bMaiden\b|\bMother\b|\bCrone\b/, 'an old tier name (Pocket, Color, Advance now)'],
   [/\$69\b|\$690|\$35\b|\$350|\$49\b|\$490|\$444|\$666|\$888|\$588|\$22\b|\$44\b|\$66\b|\$400\b|\$650\b|\$950\b|\$95\b/, 'an old price'],
   [/care is optional|optional care|care,? optional|skip care|with or without care|without care|no care\b|subscription is optional|optional subscription|subscription,? optional|skip (?:the |your )?subscription|with or without a subscription|no subscription\b/i, 'the subscription as optional (it comes with every site now)'],
   [/looked after if you like|care,? if you (?:like|want)|subscription,? if you (?:like|want)|only if you want it/i, 'the subscription as optional (it comes with every site now)'],
   [/Photo Day|tending visit|Wildflower|Websites by Taya|half off care|free hosting forever|Message Taya/i, 'a retired name or offer'],
   [/edit your own site|swappable photos?/i, 'self-editing (not offered)'],
-  [/\$3 a month/i, 'the old $3 a month own-address email (it comes with Tended and In Bloom)'],
+  [/\$3 a month/i, 'the old $3 a month own-address email (it comes with Color and Advance)'],
   [/\babout 3%/i, 'Stripe at "about 3%" (it’s about 2.9% + 30¢ per payment)'],
   [/\ba year after launch\b/i, 'a yearly total (care is monthly only)'],
   [/pay(?:ing)? as you go/i, 'pay as you go'],
@@ -107,17 +107,17 @@ const FORBIDDEN = [
   // the monthly part is a "subscription" since Oct 6 2026 (Pollen: "subscription makes more sense to people"), so the
   // old rule against that word is retired, and "care" as the plan's name is what can't come back. Ordinary care
   // (skin care, aftercare, "I take care of it", the Garden care eyebrow) is fine.
-  [/\b(?:Planted|Tended|In Bloom)(?:’s)? care\b|\bcare (?:comes with|is part of) every site|\bthen care\b|\bmonthly care\b|\bcare plan\b|What does care include|What (?:each )?care includes|\bstop care\b/i, 'the old name "care" for the subscription (it’s "subscription" since Oct 6 2026)'],
-  [/paid by you/i, 'a side cost "paid by you" (no add-ons: own-address email comes with Tended and In Bloom)'],
+  [/\b(?:Pocket|Color|Advance)(?:’s)? care\b|\bcare (?:comes with|is part of) every site|\bthen care\b|\bmonthly care\b|\bcare plan\b|What does care include|What (?:each )?care includes|\bstop care\b/i, 'the old name "care" for the subscription (it’s "subscription" since Oct 6 2026)'],
+  [/paid by you/i, 'a side cost "paid by you" (no add-ons: own-address email comes with Color and Advance)'],
   // Oct 20 2026 (Pollen): the one public line is "Healing arts practitioners: ask me about a trade for a website build."; any other trade wording stays private
   [/(?<!ask me about a )\btrad(?:e|es|ed|ing)\b/i, 'trades (only ever offered privately, except the one "ask me about a trade" line)'],
   [/founding spots last/i, 'open-ended founding wording (show the count and the deadline)'],
   [/\bon call\b/i, '"on call"'],
   [/\b(?:book a call|a quick call|45-minute call|want to chat|a chat|hop on a call|video call|phone call|chat with|free chat|30-minute chat|rather talk)\b|Let’s talk/i, 'an offer of a call or chat (email only)'],
-  [/setting up booking for you is part of In Bloom|booking fully set up for you|In Bloom sets it all up/i, 'booking setup tied to In Bloom (Cal.com booking is set up with Tended and In Bloom; small rule 1)'],
-  // the booking ladder's Oct 6 morning version (no Book button on Planted) was reversed that afternoon (Pollen: "yes add
+  [/setting up booking for you is part of Advance|booking fully set up for you|Advance sets it all up/i, 'booking setup tied to Advance (Cal.com booking is set up with Color and Advance; small rule 1)'],
+  // the booking ladder's Oct 6 morning version (no Book button on Pocket) was reversed that afternoon (Pollen: "yes add
   // the booking link to planted"): every build's Book button opens the booking app they already use
-  [/no Book (?:now )?button|skips the Book (?:now )?button|Book (?:now )?button (?:comes with|is part of) Tended|Book (?:now )?button is part of Tended and In Bloom/i, 'the old “no Book button on Planted” rule (since Oct 6 2026 afternoon, every build’s Book button opens the booking app they already use)'],
+  [/no Book (?:now )?button|skips the Book (?:now )?button|Book (?:now )?button (?:comes with|is part of) Color|Book (?:now )?button is part of Color and Advance/i, 'the old “no Book button on Pocket” rule (since Oct 6 2026 afternoon, every build’s Book button opens the booking app they already use)'],
   // the holiday line every plan includes since Oct 6 2026 ("Holiday heads-ups, with your hours updated on your site
   // and your Google profile") replaced the old "a heads-up before holidays so your hours stay right"
   // the two every-plan lines "Anything broken, I fix free" and "I keep an eye on your site, and if it goes down, I know
@@ -145,7 +145,7 @@ for (const page of PAGES) {
     const m = seen.match(re);
     if (m) fail(`${page}: contains ${what}: "${seen.slice(Math.max(0, m.index - 40), m.index + 40).replace(/\s+/g, ' ')}"`);
   }
-  // every monthly price is care's ($12 / $45 / $90); no side costs (the old $3 own-address email for Planted is gone)
+  // every monthly price is care's ($12 / $45 / $90); no side costs (the old $3 own-address email for Pocket is gone)
   const mine = plainOf(othersOut(text));
   for (const m of mine.matchAll(/\$(\d+) a month/g)) {
     if (!CARE.includes(+m[1])) fail(`${page}: shows $${m[1]} a month: "${mine.slice(Math.max(0, m.index - 60), m.index + 20)}"`);
@@ -295,6 +295,8 @@ for (const page of PAGES) {
     if (/^(https?:|mailto:|tel:|data:)/.test(ref)) continue;
     const [pathPart, hash] = ref.split('#');
     const file = (pathPart.split('?')[0]) || page;
+    // Work, Prices and How it works are the Brand desk's new pages (Nov 12 2026); the rebranded nav links to them. Remove this line once they are merged.
+    if (['work.html', 'prices.html', 'how.html'].includes(file.replace(/^\//, ''))) continue;
     if (!fs.existsSync(path.join(root, file))) { fail(`${page}: links to ${ref}, which doesn't exist`); continue; }
     if (hash && /\.html$/.test(file) && !idsOf(file).has(hash)) fail(`${page}: links to ${ref}, but ${file} has no id="${hash}"`);
   }
@@ -312,7 +314,7 @@ for (const page of ['index.html', 'welcome.html']) {
 }
 // big new changes are quoted first (ADD 54, Nov 2 2026: no "two rounds" wording any more)
 atLeast('index.html', /anything big and new[^.]{0,40}quote/i, 1, 'doesn’t say big new changes are quoted first');
-// card fees: Stripe's rate, said the same way everywhere ("per payment", or "a payment" in the In Bloom tools section's
+// card fees: Stripe's rate, said the same way everywhere ("per payment", or "a payment" in the Advance tools section's
 // words, written and fact-checked Oct 14 2026)
 for (const page of PAGES) {
   for (const m of plain[page].matchAll(/\d+(?:\.\d+)?% \+ 30¢[^.]*/g)) {
@@ -353,48 +355,48 @@ for (const page of PAGES) {
   need('start.html', /hand you the logins/, 'doesn’t say I hand over the logins at launch');
   need('start.html', /ID, tax number and bank account/, 'doesn’t say why Stripe has to be them (their own ID, tax number and bank account)');
   need('start.html', /Developer/, 'doesn’t ask them to add me to Stripe as a Developer');
-  need('start.html', /GitHub Pages[^.]*Cloudflare Pages/, 'the agreement doesn’t say where sites are hosted (GitHub Pages; Cloudflare Pages for In Bloom with payments or a shop)');
+  need('start.html', /GitHub Pages[^.]*Cloudflare Pages/, 'the agreement doesn’t say where sites are hosted (GitHub Pages; Cloudflare Pages for Advance with payments or a shop)');
   need('welcome.html', /won’t ask for a password you already use/, 'doesn’t promise I won’t ask for a password they already use');
   need('welcome.html', /logins to the accounts I set up for you/, 'doesn’t say the logins come at launch');
   need('intake.html', /Buttondown account \(it’s your list\), which I set up for you with your email/, 'doesn’t say I set up their Buttondown with their email');
   need('intake.html', /Cal\.com account, free for one person, which I set up for you with your email/, 'doesn’t say I set up their Cal.com with their email');
-  need('domain.html', /GitHub Pages[^.]*\. An In Bloom site that takes payments or runs a shop lives on Cloudflare Pages/, 'doesn’t say In Bloom sites with payments or a shop live on Cloudflare Pages');
+  need('domain.html', /GitHub Pages[^.]*\. An Advance site that takes payments or runs a shop lives on Cloudflare Pages/, 'doesn’t say Advance sites with payments or a shop live on Cloudflare Pages');
   need('domain.html', /register it with your own email/, 'doesn’t say the web address is registered with their own email');
 }
 
 // ---- the small rules decided Oct 5 2026 (pricing-oct2026.md, Pollen: "yes to all") ----
 {
   const need = (page, re, what) => { if (!re.test(plain[page])) fail(`${page}: ${what}`); };
-  // 1. the booking ladder (Oct 6 2026 afternoon): Cal.com booking is set up for Tended (booking tied to In Bloom
-  // alone is caught by FORBIDDEN); every build's Book button, Planted's too, opens the app they already use; with no
-  // app, a Planted page says call, text or email; In Bloom puts booking right on the site, running on Taya's server,
-  // or they keep their own app, their choice (Oct 15 2026: In Bloom's tools run on her server, no Cal.com)
-  need('index.html', /free Cal\.com I set up for you/, 'the Tended card doesn’t offer a free Cal.com I set up (small rule 1)');
-  need('index.html', /With Tended, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Tended (small rule 1)');
+  // 1. the booking ladder (Oct 6 2026 afternoon): Cal.com booking is set up for Color (booking tied to Advance
+  // alone is caught by FORBIDDEN); every build's Book button, Pocket's too, opens the app they already use; with no
+  // app, a Pocket page says call, text or email; Advance puts booking right on the site, running on Taya's server,
+  // or they keep their own app, their choice (Oct 15 2026: Advance's tools run on her server, no Cal.com)
+  need('index.html', /free Cal\.com I set up for you/, 'the Color card doesn’t offer a free Cal.com I set up (small rule 1)');
+  need('index.html', /With Color, I set you up with Cal\.com/, 'doesn’t say Cal.com is set up with Color (small rule 1)');
   need('index.html', /Whichever build you pick, your Book button opens the booking app you already use/, 'doesn’t say every build’s Book button opens the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
-  need('index.html', /keep it simple with Planted: people call, text or email you/, 'doesn’t say a Planted page with no booking app has people call, text or email (the booking ladder)');
+  need('index.html', /keep it simple with Pocket: people call, text or email you/, 'doesn’t say a Pocket page with no booking app has people call, text or email (the booking ladder)');
   need('intake.html', /Whichever build you pick, your Book now button opens it/, 'doesn’t say every build’s Book now button opens the booking app they already use (the booking ladder)');
   need('start.html', /Whichever build you pick, your Book now button opens it/, 'doesn’t say every build’s Book now button opens the booking app they already use (the booking ladder)');
-  need('index.html', /With In Bloom, booking can sit right on your site[^.]*my server[^.]*keep your own app\. That’s your choice/, 'doesn’t say In Bloom puts booking right on the site, on my server, or they keep their own app, their choice (the booking ladder, Oct 15 2026)');
+  need('index.html', /With Advance, booking can sit right on your site[^.]*my server[^.]*keep your own app\. That’s your choice/, 'doesn’t say Advance puts booking right on the site, on my server, or they keep their own app, their choice (the booking ladder, Oct 15 2026)');
   // 2. (folded into 1 on Oct 6 2026)
-  // every tier card on the main page lists everything its subscription includes (pricing-oct2026.md; Tended's
+  // every tier card on the main page lists everything its subscription includes (pricing-oct2026.md; Color's
   // "Post once, show up everywhere" replaced "Your Google profile kept fresh" on Oct 6 2026), and what every plan's
   // subscription also includes (Oct 6 2026) is said once, in its own card right under the three, so the cards don't
-  // crowd ("I follow your socials and update your site as you post, or you email me" (Oct 7 2026; it was "Email me anytime and I make your changes") moved there from the Planted card, and "Holiday heads-ups"
-  // replaced Planted's "A heads-up before holidays")
+  // crowd ("I follow your socials and update your site as you post, or you email me" (Oct 7 2026; it was "Email me anytime and I make your changes") moved there from the Pocket card, and "Holiday heads-ups"
+  // replaced Pocket's "A heads-up before holidays")
   {
     const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
-      mother: [/Everything in Planted/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up/, /Instagram feed/, /Email from your domain address, like you@yourbusiness\.com, covered/, /A small shop, up to 5 products/, /Gift cards, through Gift Up/, /A DoorDash button on your site/, /seasonal refresh/],
-      crone: [/Everything in Tended/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own portal, built around your business, with its own sign-in/, /Fuller direct ordering for food businesses/, /flyer for one event a month/, /yearly refresh/],
+      mother: [/Everything in Pocket/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up/, /Instagram feed/, /Email from your domain address, like you@yourbusiness\.com, covered/, /A small shop, up to 5 products/, /Gift cards, through Gift Up/, /A DoorDash button on your site/, /seasonal refresh/],
+      crone: [/Everything in Color/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own portal, built around your business, with its own sign-in/, /Fuller direct ordering for food businesses/, /flyer for one event a month/, /yearly refresh/],
     };
     if (cards.length !== 3) fail(`index.html: found ${cards.length} tier cards; want 3`);
-    for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[k]} card doesn’t list ${re}`);
+    for (const [k, t] of cards) for (const re of INCLUDES[k] || []) if (!re.test(t)) fail(`index.html: the ${{ maiden: 'Pocket', mother: 'Color', crone: 'Advance' }[k]} card doesn’t list ${re}`);
     const planted = (cards.find((c) => c[0] === 'maiden') || [])[1] || '';
-    if (/Cal\.com/.test(planted)) fail('index.html: the Planted card mentions Cal.com (setting one up is Tended and In Bloom; the booking ladder)');
-    if (!/call, text or email/.test(planted)) fail('index.html: the Planted card doesn’t say people call, text or email');
-    if (!/Book button to the booking app you already use, if you have one/.test(planted)) fail('index.html: the Planted card doesn’t offer a Book button to the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
+    if (/Cal\.com/.test(planted)) fail('index.html: the Pocket card mentions Cal.com (setting one up is Color and Advance; the booking ladder)');
+    if (!/call, text or email/.test(planted)) fail('index.html: the Pocket card doesn’t say people call, text or email');
+    if (!/Book button to the booking app you already use, if you have one/.test(planted)) fail('index.html: the Pocket card doesn’t offer a Book button to the booking app they already use (the booking ladder, Oct 6 2026 afternoon)');
     // what every plan's subscription also includes: once, right under the three cards, word for word
     const EVERY_PLAN = ['I follow your socials and update your site as you post, or you email me', 'Changes usually within 2 business days',
       'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
@@ -412,7 +414,7 @@ for (const page of PAGES) {
     // each card's list ends with a small pointer down to that card, so on a phone, where it comes after all three
     // moons, the shared lines still read as part of every plan
     for (const m of html.matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)) {
-      if (!/<\/ul>\s*<p class="gets-more">[^<]*every plan[^<]*<\/p>/i.test(m[0])) fail(`index.html: the ${{ maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }[m[1]]} card’s list doesn’t end with the pointer to what every plan includes (class="gets-more")`);
+      if (!/<\/ul>\s*<p class="gets-more">[^<]*every plan[^<]*<\/p>/i.test(m[0])) fail(`index.html: the ${{ maiden: 'Pocket', mother: 'Color', crone: 'Advance' }[m[1]]} card’s list doesn’t end with the pointer to what every plan includes (class="gets-more")`);
     }
     // the "What does your subscription include?" answer: bullets, plan by plan, the same lines in the same words as
     // the cards and the every-plan card (the costs and accounts lines stay plain text after them)
@@ -423,7 +425,7 @@ for (const page of PAGES) {
       const cardLis = [...html.matchAll(/<article class="tier (?:maiden|mother|crone)\b[\s\S]*?<\/article>/g)].flatMap((m) => lisOf(m[0]));
       const want = cardLis.concat(every ? lisOf(every[1]) : []);
       if (faqLis.join('|') !== want.join('|')) fail('index.html: the “What does your subscription include?” bullets don’t match the plan cards and the every-plan card, line for line');
-      for (const name of ['Planted, $12 a month', 'Tended, $45 a month', 'In Bloom, $90 a month', 'Every plan’s subscription also includes']) {
+      for (const name of ['Pocket, $12 a month', 'Color, $45 a month', 'Advance, $90 a month', 'Every plan’s subscription also includes']) {
         if (!plainOf(answer[1]).includes(name)) fail(`index.html: the “What does your subscription include?” answer lacks “${name}”`);
       }
     }
@@ -433,16 +435,16 @@ for (const page of PAGES) {
     if (!startEvery) fail('start.html: no CARE_EVERY list (what every plan’s subscription includes)');
     else if ([...startEvery.matchAll(/'([^']*)'/g)].map((m) => m[1]).join('|') !== EVERY_PLAN.join('|')) fail('start.html: CARE_EVERY doesn’t match the every-plan card on the main page, line for line');
     const ld = (read('index.html').match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1] || '';
-    if (!ld.includes('Every plan’s subscription also includes: ' + EVERY_PLAN[0])) fail('index.html: the Planted subscription JSON-LD doesn’t carry the every-plan card’s first line (socials first, then email)');
+    if (!ld.includes('Every plan’s subscription also includes: ' + EVERY_PLAN[0])) fail('index.html: the Pocket subscription JSON-LD doesn’t carry the every-plan card’s first line (socials first, then email)');
   }
-  // 3. Planted gets free email forwarding; only sending from their own address needs Tended
-  if (!/Email forwarding[\s\S]{0,200}?<td data-col="Planted">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Planted (small rule 3: only sending needs Tended)');
-  need('domain.html', /Sending from your (?:own|domain) address[^.]*Tended/, 'doesn’t say sending from their own address comes with Tended (small rule 3)');
-  // 6. the Instagram feed is Tended and up: never in a Planted line or list item
+  // 3. Pocket gets free email forwarding; only sending from their own address needs Color
+  if (!/Email forwarding[\s\S]{0,200}?<td data-col="Pocket">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Pocket (small rule 3: only sending needs Color)');
+  need('domain.html', /Sending from your (?:own|domain) address[^.]*Color/, 'doesn’t say sending from their own address comes with Color (small rule 3)');
+  // 6. the Instagram feed is Color and up: never in a Pocket line or list item
   for (const page of PAGES) {
     for (const m of texts[page].matchAll(/<(p|li|small|td)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
       const t = plainOf(m[2]).trim();
-      if (/^(?:🌱\s*)?Planted\b/.test(t) && /Instagram/.test(t)) fail(`${page}: a Planted line mentions the Instagram feed (Tended and up; small rule 6): "${t.slice(0, 90)}"`);
+      if (/^(?:🌱\s*)?Pocket\b/.test(t) && /Instagram/.test(t)) fail(`${page}: a Pocket line mentions the Instagram feed (Color and up; small rule 6): "${t.slice(0, 90)}"`);
     }
   }
   // 7. intake.html asks for no phone number (email only), and nothing reads or sends one

@@ -108,15 +108,15 @@
   const CHANGE_MAX = 10 * MB, CHANGE_FILES = 3, WHAT_MAX = 2000, ANSWER_MAX = 1000;
   const SAFE_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
 
-  const BUILDS = { maiden: 'Planted', mother: 'Tended', crone: 'In Bloom' }; // keys stay; only the words changed (Oct 5 2026)
+  const BUILDS = { maiden: 'Pocket', mother: 'Color', crone: 'Advance' }; // keys stay; only the words changed (Oct 5 2026)
   // each build's little sign, the same three as the price cards and answers on webfaery.love (a bud, a fern, a bloom)
   const BUILD_SIGN = { maiden: '🌱', mother: '🌿', crone: '🌸' };
   // what care does for each build, in the garden words of its name (the care row under Payments); one short line
   // each, from "What care includes" in pricing-oct2026.md (the full lists are on webfaery.love's price cards)
   const CARE_SAY = {
     maiden: 'Keeps your site healthy: hosting, your web address, backups, your changes as I follow your socials or whenever you email me, and a monthly check-in.',
-    mother: 'Tending as the seasons change: everything in the Planted subscription, plus your posts showing up everywhere, email from your domain address and a seasonal refresh.',
-    crone: 'Keeps you in full bloom: everything in the Tended subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
+    mother: 'Tending as the seasons change: everything in the Pocket subscription, plus your posts showing up everywhere, email from your domain address and a seasonal refresh.',
+    crone: 'Keeps you in full bloom: everything in the Color subscription, plus your booking, payments or shop kept running, a flyer for one event a month, made and posted for you, and a yearly refresh.'
   };
   const STAGES = [
     ['getting_started', 'Getting started'], ['call', 'Setup'], ['draft', 'Build and review'],
@@ -140,9 +140,9 @@
   const HOWTO = {
     // (pricing-oct2026.md, "Account setup flow": the owner adds Taya as a manager; no profile yet, Taya builds it.
     // Newsletter and booking accounts Taya sets up herself, in the client's name, and hands over at launch.
-    // Those come with Tended and In Bloom only, so `after` is picked by their build: maiden (Planted) promises no
+    // Those come with Color and Advance only, so `after` is picked by their build: maiden (Pocket) promises no
     // newsletter or Cal.com, only the Book now button to a booking app they already use (the booking ladder, Oct 6
-    // 2026 afternoon), mother covers Tended and In Bloom both, and other is for a build not picked yet.)
+    // 2026 afternoon), mother covers Color and Advance both, and other is for a build not picked yet.)
     accounts: {
       steps: [
         'Go to business.google.com and sign in with the Google account that owns your profile.',
@@ -157,7 +157,7 @@
     },
     work: { steps: ['A few lines is plenty: what you offer, when and where, and any words you love. Just reply to any email from me.'] },
     look: { steps: ['Colors you love (or don’t), and a site or two you like the feel of. Just reply to any email from me.'] },
-    build: { steps: ['Planted (one page), Tended (a full site) or In Bloom (booking, payments or a small shop). Not sure yet? We’ll pick together over email.'] },
+    build: { steps: ['Pocket (one page), Color (a full site) or Advance (booking, payments or a small shop). Not sure yet? We’ll pick together over email.'] },
     call: { steps: ['Nothing to book. I’ll email you a few easy questions, and you answer whenever suits you.'] }
   };
   const ASK_STATUS = { new: 'New', seen: 'Seen', quoted: 'Priced', doing: 'Working on it', done: 'Done', declined: 'Not this time' };
@@ -638,7 +638,7 @@
     if (em) h.append(make('em', null, em));
     const l = $('#hero-lede');
     l.textContent = '';
-    // their build's little sign (a bud for Planted, a fern for Tended, a bloom for In Bloom) sits just before its name
+    // their build's little sign (a bud for Pocket, a fern for Color, a bloom for Advance) sits just before its name
     const parts = lede.split('\u0001');
     l.append(parts[0]);
     if (parts.length > 1) {
@@ -2165,7 +2165,7 @@
         const ol = make(how.steps.length > 1 ? 'ol' : 'ul');
         how.steps.forEach((x) => ol.append(make('li', null, x)));
         d.append(ol);
-        // a line picked by their build (Tended and In Bloom share one), or the same line for everyone
+        // a line picked by their build (Color and Advance share one), or the same line for everyone
         const b = me.client.build;
         const after = how.after && typeof how.after === 'object'
           ? how.after[b === 'maiden' ? 'maiden' : BUILDS[b] ? 'mother' : 'other']

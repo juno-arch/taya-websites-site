@@ -39,3 +39,17 @@ body { margin: 0; min-height: 100vh; background: var(--ground); color: var(--ink
   .inv-acts, .inv-fine { display: none; }
   .inv-from, .inv-sub, .inv-meta dt, .inv-notes { color: #333; }
 }
+
+/* Nov 12 2026: the new Web Faery brand (reband.css loads first): pixel-cut sheet, key button */
+html,body{background:var(--rb-pg,#c7b3f2) radial-gradient(circle at 12px 12px,rgba(26,20,32,.28) 2px,transparent 2.5px) 0 0/24px 24px!important}
+body{display:block}
+.inv-sheet{position:relative;isolation:isolate;background:none;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(7px 7px 0 #8d77c9)}
+.inv-sheet::before{content:"";position:absolute;z-index:-2;inset:-3px;background:#1a1420;clip-path:polygon(9px 0,calc(100% - 9px) 0,calc(100% - 9px) 9px,100% 9px,100% calc(100% - 9px),calc(100% - 9px) calc(100% - 9px),calc(100% - 9px) 100%,9px 100%,9px calc(100% - 9px),0 calc(100% - 9px),0 9px,9px 9px)}
+.inv-sheet::after{content:"";position:absolute;z-index:-1;inset:0;background:#fff;clip-path:polygon(6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px),0 6px,6px 6px)}
+.inv-h{font-family:'Pixelify Sans','Nunito',sans-serif;font-weight:700}
+.inv-from{color:#1a1420;font-weight:400}
+.inv-rule,.inv-lines,.inv-line,.inv-sum.is-due{border-color:#1a1420}
+.inv-note-pay{border:3px solid #1a1420;border-radius:0;background:#f7e07a}
+.inv-pay{border:3px solid #1a1420;border-radius:0;background:#e63b2e;color:#fff8f1;font-family:'Silkscreen',monospace;font-weight:400;text-transform:uppercase;letter-spacing:.08em;box-shadow:4px 4px 0 #1a1420}
+.inv-status.is-paid{color:#12706b}.inv-status.is-overdue{color:#b3261e}
+@media print{.rb-nav{display:none}.inv-sheet::before,.inv-sheet::after{display:none}.inv-sheet{filter:none}html,body{background:#fff!important}}

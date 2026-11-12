@@ -8,7 +8,7 @@
    Demo sign-in: demo@webfaery.love, code 000000. Any other code gets the wrong-code message. The real
    server has no fixed code and no demo account: this file is the only place either exists.
 
-   The sample: Rosa Linden of Fern & Clay Pottery, a founding Tended client (build $600 founding, deposit
+   The sample: Rosa Linden of Fern & Clay Pottery, a founding Color client (build $600 founding, deposit
    $300; care $45 a month, always full price). Four moments in her project, picked from "Show me":
      mockup    her first visit (Oct 2 2026 flow): "Your turn: look over your mockup", nothing to sign or pay
      waiting   she tapped Done on her mockup: "My turn: that's it for you for now"
@@ -67,7 +67,7 @@
 
   /* ---------------- the four moments ---------------- */
   var CLIENT = {
-    first_name: 'Rosa', business: 'Fern & Clay Pottery', build: 'mother', build_label: 'Tended', founding: true,
+    first_name: 'Rosa', business: 'Fern & Clay Pottery', build: 'mother', build_label: 'Color', founding: true,
     care: 'monthly', care_active: false, site_url: '', email: EMAIL
   };
   function stages(dates, current) {
@@ -303,7 +303,7 @@
     agreement: function () {
       return pdf('Our agreement (sample)', [
         'Between Taya of Web Faery and Rosa Linden, Fern & Clay Pottery.', '',
-        'What we are building: a Tended build. A full site with a contact form,',
+        'What we are building: a Color build. A full site with a contact form,',
         'newsletter signup and a Book now button to your booking app.', '',
         'Price: $600, a founding price (half off the build).',
         'Half to start, half at launch.', '',
@@ -335,8 +335,8 @@
     receipt: function (name) {
       var r = [RECEIPT_DEPOSIT, RECEIPT_BALANCE, RECEIPT_CARE].filter(function (x) { return x.name === name; })[0];
       if (!r) return null;
-      var lines = r === RECEIPT_DEPOSIT ? ['Deposit for a Tended build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.deposit || today()) + ' by card']
-        : r === RECEIPT_BALANCE ? ['Second half of a Tended build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.balance || today()) + ' by card']
+      var lines = r === RECEIPT_DEPOSIT ? ['Deposit for a Color build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.deposit || today()) + ' by card']
+        : r === RECEIPT_BALANCE ? ['Second half of a Color build (founding price)', 'Amount: $300.00', 'Paid ' + spoken(receiptDays.balance || today()) + ' by card']
           : ['Subscription, one month', 'Amount: $45.00', 'Paid ' + spoken(receiptDays.care || today()) + ' by card'];
       return pdf('Web Faery receipt (sample)', lines.concat(['', 'Thank you, Rosa!', '', SAMPLE]));
     }

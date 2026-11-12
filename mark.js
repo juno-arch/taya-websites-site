@@ -1305,7 +1305,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   // emailed must keep showing exactly what they were sent). The contract, also written down in
   // web-faery-kit/pricing-oct2026.md under "Mockup page contract":
   //   On each "See it as" tier button, .vseg button[data-view="maiden|mother|crone"], a repriced page sets
-  //     data-tier-name="Planted"   the visible name
+  //     data-tier-name="Pocket"   the visible name
   //     data-tier-price="600"      full build price, digits only
   //     data-tier-founding="300"   founding build price, digits only
   //     data-tier-price="0"        a written 0 is a real price, not an unset attribute: no build fee (a trade or a
@@ -1327,12 +1327,12 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
   };
   // webfaery.love's own words for each tier, used when a repriced page doesn't give its own data-tier-what
   // (the booking ladder, Oct 6 2026 afternoon: every build's Book button opens the booking app they already use,
-  // Planted's too; Tended's can open a free Cal.com set up for them; In Bloom's booking sits right on the site.
-  // Planted's line below doesn't name the Book button, so it stays true either way; the mockups' own words come later)
+  // Pocket's too; Color's can open a free Cal.com set up for them; Advance's booking sits right on the site.
+  // Pocket's line below doesn't name the Book button, so it stays true either way; the mockups' own words come later)
   const WHAT_NOW = {
-    maiden: 'One page, planted and kept healthy: who you are, what you offer, and how to reach you, with a tap to call, text or email, or a Book button to the booking app you already use.',
-    mother: 'A full site, tended as the seasons change: your pages, a contact form, a newsletter sign-up and a Book button that opens your booking page.',
-    crone: 'Your site in full bloom, doing business for you: everything in Tended, plus booking right on your site, payments or a small shop.',
+    maiden: 'One page, small enough for your pocket: who you are, what you offer, and how to reach you, with a tap to call, text or email, or a Book button to the booking app you already use.',
+    mother: 'A full site, in full color: your pages, a contact form, a newsletter sign-up and a Book button that opens your booking page.',
+    crone: 'Your site, advanced and doing business for you: everything in Color, plus booking right on your site, payments or a small shop.',
   };
   const num = (v) => { const n = parseInt(String(v || '').replace(/[^0-9]/g, ''), 10); return n > 0 ? n : 0; };
   const zero = (v) => v !== undefined && /^\s*0+\s*$/.test(String(v)); // a written "0", not a missing attribute
@@ -1435,7 +1435,7 @@ document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textCont
         if (t && t.nodeType === 3 && / \(preview\)\s*$/.test(t.nodeValue)) { n.dataset.wfmWords = t.nodeValue; n.dataset.wfmReal = t.nodeValue.replace(/ \(preview\)\s*$/, ''); }
       });
       // little lines that only explain the mockup ("With Mother, ...", "On your real site ...", "preview")
-      const MOCK_LINE = /^\s*(With (Maiden|Mother|Crone|Planted|Tended|In Bloom)\b|On your real site|On the one-page build|Sample tiles|These three are stand-ins|Preview\b|preview\b)/;
+      const MOCK_LINE = /^\s*(With (Maiden|Mother|Crone|Pocket|Color|Advance)\b|On your real site|On the one-page build|Sample tiles|These three are stand-ins|Preview\b|preview\b)/;
       document.querySelectorAll('.demo-note, p.pv, p.gbp, span.sample').forEach((n) => { if (!ours(n) && MOCK_LINE.test(n.textContent) && !/[Nn]othing (is|was) (charged|sent)/.test(n.textContent)) n.setAttribute('data-mock-only', ''); }); // a pretend checkout keeps its "nothing is charged"
     }
     document.querySelectorAll('[data-wfm-words]').forEach((n) => { n.lastChild.nodeValue = on ? n.dataset.wfmReal : n.dataset.wfmWords; });

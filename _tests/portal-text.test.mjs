@@ -80,7 +80,7 @@ const FORBIDDEN = [
   [/pay(?:ing)? as you go|without care|optional care|care is optional|skip (?:it|care)|only if you want it|optional subscription|subscription is optional|skip (?:the |your )?subscription/i, 'the subscription as optional (it comes with every site now)'],
   [/two months free|care[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}care|subscription[^.]{0,40}\ba year\b|\ba year\b[^.]{0,40}subscription/i, 'a yearly subscription (it is monthly only)'],
   [/founding[^.]{0,60}\b(?:care|subscription)\b|\b(?:care|subscription)\b[^.]{0,60}founding/i, 'a founding subscription price (founding is half off the build only)'],
-  [/\b(?:Maiden|Mother|Crone)\b/, 'an old build name (Planted / Tended / In Bloom now)'],
+  [/\b(?:Maiden|Mother|Crone)\b/, 'an old build name (Pocket / Color / Advance now)'],
   [/\bchat\b|a call\b|pick a time|rather talk|on the phone|phone call|let(?:’|\\')s talk/i, 'an offer of a call or a chat (email only)'],
   [/(?:change|edit|update) (?:it|these|them|this) yourself|coming soon|do it yourself/i, 'do-it-yourself editing (Taya makes every change)'],
 ];

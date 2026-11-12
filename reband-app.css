@@ -1,0 +1,54 @@
+/* The new look for the pages that DO things: getting started (start.html), booking (book.html), the link door (my/),
+   and the client portal (portal.html). Loaded after reband.css. It only changes how things look; markup and scripts are untouched. */
+
+/* pixel-cut cards: white, 3px ink outline, hard shadow, stepped corners */
+:is(.qc,.step,.send-sec,.pay-card,.sum-card,.fit-card,.love-it,.magic-it,.acct,.agreement-doc,.founding,.drop,.receipt,.from-qc,.kind-note,.wordmark,.clip-box,.b-card,.p-card,.portal-card,.rb-pxc){position:relative;isolation:isolate;overflow:visible!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;backdrop-filter:none!important;filter:drop-shadow(6px 6px 0 var(--rb-sh,#8d77c9));color:#1a1420}
+:is(.qc,.step,.send-sec,.pay-card,.sum-card,.fit-card,.love-it,.magic-it,.acct,.agreement-doc,.founding,.drop,.receipt,.from-qc,.kind-note,.wordmark,.clip-box,.b-card,.p-card,.portal-card,.rb-pxc)::before{content:"";display:block!important;position:absolute;z-index:-2;inset:-3px;background:var(--rb-ink);clip-path:polygon(9px 0,calc(100% - 9px) 0,calc(100% - 9px) 9px,100% 9px,100% calc(100% - 9px),calc(100% - 9px) calc(100% - 9px),calc(100% - 9px) 100%,9px 100%,9px calc(100% - 9px),0 calc(100% - 9px),0 9px,9px 9px);pointer-events:none;transform:none;width:auto;height:auto;mask:none;-webkit-mask:none}
+:is(.qc,.step,.send-sec,.pay-card,.sum-card,.fit-card,.love-it,.magic-it,.acct,.agreement-doc,.founding,.drop,.receipt,.from-qc,.kind-note,.wordmark,.clip-box,.b-card,.p-card,.portal-card,.rb-pxc)::after{content:"";display:block!important;position:absolute;z-index:-1;inset:0;background:#fff;clip-path:polygon(6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px),0 6px,6px 6px);pointer-events:none;transform:none;width:auto;height:auto;mask:none;-webkit-mask:none}
+.step:nth-of-type(3n+2){--rb-sh:#e58fb5}.step:nth-of-type(3n){--rb-sh:#7fc4a6}
+.founding,.kind-note,.from-qc{--rb-sh:#d8bb3a}
+:is(.qc,.step,.send-sec,.pay-card,.sum-card,.fit-card,.love-it,.magic-it,.acct,.agreement-doc,.founding,.drop,.receipt,.from-qc,.kind-note,.wordmark,.clip-box) :is(h1,h2,h3,h4,p,li,span,label,summary,small,strong,b,div){color:inherit}
+.step{margin:26px 0 0;padding:0!important}.step-toggle{border-radius:0!important;background:none!important;border:0!important;box-shadow:none!important;color:#1a1420!important}
+.step.done,.step[data-done=true]{--rb-sh:#7fc4a6}
+
+/* small controls: square ink-outlined keys, mint when picked */
+:is(.qc-a,.pick,.fx-b,.open-list a,.again,.opt-tag,.later){border-radius:0!important}
+.qc-a,.pick,.fx-b,.again,.open-list a{font-family:var(--rb-body)!important;font-weight:800!important;color:#1a1420!important;background:#fff!important;border:3px solid var(--rb-ink)!important;box-shadow:3px 3px 0 var(--rb-ink)!important;padding:9px 14px!important}
+.qc-a:hover,.pick:hover,.fx-b:hover,.again:hover,.open-list a:hover{background:var(--rb-butter)!important;translate:-1px -1px;box-shadow:4px 4px 0 var(--rb-ink)!important}
+.qc-a[aria-pressed=true],.qc-a.on,.qc-a.picked,.qc-a[aria-checked=true],.fx-b[aria-pressed=true],.fx-b.on{background:var(--rb-mint)!important}
+.later{background:none!important;border:0!important;box-shadow:none!important;font-family:var(--rb-body)!important;color:#1a1420!important;text-decoration:underline;text-decoration-color:var(--rb-red);text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer}
+.opt-tag,.k,.lbl,.tick,.state{font-family:var(--rb-key)!important;text-transform:uppercase;letter-spacing:.08em;font-weight:400!important}
+.num,.sn{font-family:var(--rb-key)!important;font-weight:400!important;border-radius:0!important;background:var(--rb-butter)!important;color:#1a1420!important;border:3px solid var(--rb-ink)!important}
+.track,.bar,.meter,progress{border-radius:0!important;border:3px solid var(--rb-ink)!important;background:#fff!important}
+.track>*,.fill,.bar>i{border-radius:0!important;background:var(--rb-red)!important}
+.hello{max-width:680px;margin:0 0 6px}
+.hello .kicker{display:inline-block;background:var(--rb-butter);border:2px solid var(--rb-ink);padding:3px 10px;margin:0 0 12px}
+.hello h1{font-size:clamp(34px,6vw,58px);line-height:1.04;margin:0 0 10px;background:var(--rb-pg);display:table;padding-right:10px}
+.hello .lede{font-weight:700;font-size:18px;background:var(--rb-pg);display:table;padding-right:8px;margin:0 0 14px}
+.wrap.wide{max-width:860px}
+hr,.rule{border:0;border-top:3px dotted var(--rb-ink)}
+.err,.error{color:#b3261e!important;font-weight:800}
+.sr-only{position:absolute!important}
+.skip-link{border-radius:0!important}
+
+/* the top of their list, the progress bar, the build picker */
+:is(.intro,.progress,.build,.sign,.confirm){position:relative;isolation:isolate;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;overflow:visible!important;filter:drop-shadow(6px 6px 0 var(--rb-sh,#8d77c9));color:#1a1420}
+:is(.intro,.progress,.build,.sign)::before{content:"";display:block!important;position:absolute;z-index:-2;inset:-3px;background:var(--rb-ink);clip-path:polygon(9px 0,calc(100% - 9px) 0,calc(100% - 9px) 9px,100% 9px,100% calc(100% - 9px),calc(100% - 9px) calc(100% - 9px),calc(100% - 9px) 100%,9px 100%,9px calc(100% - 9px),0 calc(100% - 9px),0 9px,9px 9px);pointer-events:none;transform:none;opacity:1;width:auto;height:auto}
+:is(.intro,.progress,.build,.sign)::after{content:"";display:block!important;position:absolute;z-index:-1;inset:0;background:#fff;clip-path:polygon(6px 0,calc(100% - 6px) 0,calc(100% - 6px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 6px) calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 6px),0 calc(100% - 6px),0 6px,6px 6px);pointer-events:none;transform:none;opacity:1;width:auto;height:auto;content:""!important}
+.build[data-build=maiden],[data-build=maiden] .b-sky{--rb-sh:#7fc4a6;--bk:var(--rb-mint)}
+.build[data-build=mother],[data-build=mother] .b-sky{--rb-sh:#e58fb5;--bk:var(--rb-pink)}
+.build[data-build=crone],[data-build=crone] .b-sky{--rb-sh:#d8bb3a;--bk:var(--rb-butter)}
+.b-sky{background:var(--bk,var(--rb-mint)) radial-gradient(circle at 12px 12px,rgba(26,20,32,.22) 2px,transparent 2.5px) 0 0/24px 24px!important;border:3px solid var(--rb-ink)!important;border-radius:0!important;-webkit-mask:none!important;mask:none!important}
+.b-sky img,.b-sky picture{display:none!important}
+.b-sky::after{display:none!important}
+.build:has(input:checked),.build.on{--rb-sh:#e63b2e}
+.build:has(input:checked)::after,.build.on::after{background:#fffbe6}
+.build .b-check{background:var(--rb-red)!important;color:#fff8f1!important;border-radius:0!important;border:3px solid var(--rb-ink)!important}
+.b-price,.b-name,.step-name,.sub-h{font-family:var(--rb-head)!important}
+.progress{padding:12px 16px 14px;margin:26px 0 0}
+.progress .moon,.progress i,.progress .dot{border-radius:0!important}
+.clip-play,.clip-box button{border-radius:0!important}
+
+/* padding for the cards on the booking page and the link door */
+.b-card,.p-card.door,.p-card.signin{padding:22px 24px 24px;margin:0 0 26px}
+.b-main{max-width:680px;margin:0 auto}
