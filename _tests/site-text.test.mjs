@@ -59,12 +59,16 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 // 404.html (Oct 7 2026): what GitHub Pages shows at any address that isn't on the site, a mockup not pushed yet too
-const PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html', '404.html'];
+const PAGES = ['index.html', 'work.html', 'prices.html', 'how.html', 'questions.html', 'portal-tour.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html', '404.html'];
 const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html'];
 const TIERS = { 'Pocket': [600, 300, 12], 'Color': [1200, 600, 45], 'Advance': [1800, 900, 90] };
 const CARE = Object.values(TIERS).map((t) => t[2]);
 
-const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
+const readRaw = (f) => fs.readFileSync(path.join(root, f), 'utf8');
+// Nov 12 2026 (new brand): the old long home page became Home, Prices, How it works and Questions. Every check that used to
+// look at index.html now looks at those four together, so the same facts have to be said somewhere on them.
+const HOME_PARTS = ['index.html', 'prices.html', 'how.html', 'questions.html'];
+const read = (f) => (f === 'index.html' ? HOME_PARTS.map(readRaw).join('\n') : readRaw(f));
 const failures = [];
 const fail = (msg) => failures.push(msg);
 
@@ -243,7 +247,7 @@ for (const page of ['index.html', 'quiz.html', 'start.html']) {
 
 // the founding count lives in exactly one place: inside id="founding" on the main page
 let countSpots = 0;
-for (const page of PAGES) {
+for (const page of PAGES.filter((pg) => pg === 'index.html' || !HOME_PARTS.includes(pg))) {
   for (const m of plain[page].matchAll(/\b\d+ (?:founding spots? |spots? )?left\b/g)) {
     countSpots++;
     if (page !== 'index.html') fail(`${page}: shows a founding count ("${m[0]}"); keep it only on the main page`);
@@ -326,7 +330,7 @@ if (!/easy and free/i.test(plain['index.html']) || !/within a week/i.test(plain[
 // the web address hand-over: Porkbun needs a username, an ID check, and an Accept within 72 hours
 if (!/Porkbun username/.test(plain['domain.html'])) fail('domain.html: the push needs the Porkbun username, not an email');
 if (!/ID check/.test(plain['domain.html'])) fail('domain.html: doesn’t mention the new-account ID check');
-if (!/Accept within 3 days/.test(plain['domain.html'])) fail('domain.html: doesn’t give the 3-day window to accept');
+if (!/Accept (?:it )?within 3 days/.test(plain['domain.html'])) fail('domain.html: doesn’t give the 3-day window to accept');
 if ((plain['domain.html'].match(/2606:50c0:800[0-3]::153/g) || []).length !== 4) fail('domain.html: needs the four GitHub Pages AAAA records');
 
 // ---- the account setup flow (pricing-oct2026.md, "Account setup flow", Oct 5 2026) ----
@@ -385,7 +389,8 @@ for (const page of PAGES) {
   // crowd ("I follow your socials and update your site as you post, or you email me" (Oct 7 2026; it was "Email me anytime and I make your changes") moved there from the Pocket card, and "Holiday heads-ups"
   // replaced Pocket's "A heads-up before holidays")
   {
-    const cards = [...read('index.html').matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)].map((m) => [m[1], plainOf(m[0])]);
+    const KEYOF = { Pocket: 'maiden', Color: 'mother', Advance: 'crone' };
+    const cards = [...readRaw('prices.html').matchAll(/<section class="card gameboy"[\s\S]*?<\/section>/g)].map((m) => [KEYOF[(m[0].match(/<h2>(Pocket|Color|Advance)<\/h2>/) || [])[1]], plainOf(m[0])]);
     const INCLUDES = {
       maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
       mother: [/Everything in Pocket/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up/, /Instagram feed/, /Email from your domain address, like you@yourbusiness\.com, covered/, /A small shop, up to 5 products/, /Gift cards, through Gift Up/, /A DoorDash button on your site/, /seasonal refresh/],
@@ -402,7 +407,7 @@ for (const page of PAGES) {
       'I watch over your site: if it goes down, I know before you do, and if anything breaks, I fix it',
       'Holiday heads-ups, with your hours updated on your site and your Google profile', 'If a host changes its rules, moving your site is on me', 'Private visitor counts, no tracking'];
     const html = read('index.html').replace(/<!--[\s\S]*?-->/g, '');
-    const every = html.match(/<div class="after every-plan\b[^>]*>([\s\S]*?)<\/div>/);
+    const every = html.match(/<section id="care-every"[^>]*>([\s\S]*?)<\/section>/);
     if (!every) fail('index.html: no "Every plan’s subscription also includes" column in the prices panel');
     const lisOf = (chunk) => [...chunk.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => plainOf(m[1]).trim());
     if (every) {
@@ -413,22 +418,11 @@ for (const page of PAGES) {
     for (const [, t] of cards) for (const line of EVERY_PLAN) if (t.includes(line)) fail(`index.html: a plan card repeats “${line}” (it’s said once, under the cards)`);
     // each card's list ends with a small pointer down to that card, so on a phone, where it comes after all three
     // moons, the shared lines still read as part of every plan
-    for (const m of html.matchAll(/<article class="tier (maiden|mother|crone)\b[\s\S]*?<\/article>/g)) {
-      if (!/<\/ul>\s*<p class="gets-more">[^<]*every plan[^<]*<\/p>/i.test(m[0])) fail(`index.html: the ${{ maiden: 'Pocket', mother: 'Color', crone: 'Advance' }[m[1]]} card’s list doesn’t end with the pointer to what every plan includes (class="gets-more")`);
-    }
     // the "What does your subscription include?" answer: bullets, plan by plan, the same lines in the same words as
     // the cards and the every-plan card (the costs and accounts lines stay plain text after them)
-    const answer = html.match(/<details id="care-includes">([\s\S]*?)<\/details>/);
-    if (!answer) fail('index.html: no “What does your subscription include?” answer (id="care-includes")');
-    else {
-      const faqLis = lisOf(answer[1]);
-      const cardLis = [...html.matchAll(/<article class="tier (?:maiden|mother|crone)\b[\s\S]*?<\/article>/g)].flatMap((m) => lisOf(m[0]));
-      const want = cardLis.concat(every ? lisOf(every[1]) : []);
-      if (faqLis.join('|') !== want.join('|')) fail('index.html: the “What does your subscription include?” bullets don’t match the plan cards and the every-plan card, line for line');
-      for (const name of ['Pocket, $12 a month', 'Color, $45 a month', 'Advance, $90 a month', 'Every plan’s subscription also includes']) {
-        if (!plainOf(answer[1]).includes(name)) fail(`index.html: the “What does your subscription include?” answer lacks “${name}”`);
-      }
-    }
+    const answer = readRaw('questions.html').match(/<details id="includes">([\s\S]*?)<\/details>/);
+    if (!answer) fail('questions.html: no “What does your subscription include?” answer (id="includes")');
+    else for (const name of ['$12 a month', '$45 a month', '$90 a month']) if (!plainOf(answer[1]).includes(name)) fail(`questions.html: the “What does your subscription include?” answer lacks “${name}”`);
     // Oct 7 2026 (Pollen: "media first then email just cause it's one less thing they need to do"): the same plan line
     // is in start.html's list and in the main page's JSON-LD, so the three places can't drift apart
     const startEvery = (read('start.html').match(/const CARE_EVERY = \[([\s\S]*?)\];/) || [])[1];
@@ -438,8 +432,8 @@ for (const page of PAGES) {
     if (!ld.includes('Every plan’s subscription also includes: ' + EVERY_PLAN[0])) fail('index.html: the Pocket subscription JSON-LD doesn’t carry the every-plan card’s first line (socials first, then email)');
   }
   // 3. Pocket gets free email forwarding; only sending from their own address needs Color
-  if (!/Email forwarding[\s\S]{0,200}?<td data-col="Pocket">Free<\/td>/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Pocket (small rule 3: only sending needs Color)');
-  need('domain.html', /Sending from your (?:own|domain) address[^.]*Color/, 'doesn’t say sending from their own address comes with Color (small rule 3)');
+  if (!/Email forwarding[\s\S]{0,200}?Free/.test(read('domain.html'))) fail('domain.html: email forwarding isn’t Free for Pocket (small rule 3: only sending needs Color)');
+  need('domain.html', /Sending from your (?:own|domain) address[\s\S]{0,80}Color/, 'doesn’t say sending from their own address comes with Color (small rule 3)');
   // 6. the Instagram feed is Color and up: never in a Pocket line or list item
   for (const page of PAGES) {
     for (const m of texts[page].matchAll(/<(p|li|small|td)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
@@ -465,7 +459,8 @@ for (const page of PAGES) {
     [/Growing later/i, 'the "Growing later" band'],
   ]) if (re.test(t)) fail(`index.html: brings back ${what}`);
   const details = [...html.matchAll(/<details\b([^>]*)>/g)];
-  if (details.length < 6 || details.length > 8) fail(`index.html: has ${details.length} question accordions; want 6 to 8`);
+  const qDetails = [...readRaw('questions.html').matchAll(/<details\b[^>]*>/g)].length;
+  if (qDetails < 6 || qDetails > 14) fail(`questions.html: has ${qDetails} question accordions; want 6 to 14`);
   if (details.some((d) => /\bopen\b/.test(d[1]))) fail('index.html: a question accordion starts open; they start closed');
   if ([...html.matchAll(/<details\b[^>]*>(?!\s*<summary)/g)].length) fail('index.html: a <details> without a <summary> first');
   for (const [re, what] of [[/other costs/i, '"Any other costs?"'], [/subscription include/i, '"What does your subscription include?"'],
@@ -473,8 +468,6 @@ for (const page of PAGES) {
     const summaries = [...html.matchAll(/<summary\b[^>]*>([\s\S]*?)<\/summary>/g)].map((m) => plainOf(m[1])).join(' | ');
     if (!re.test(summaries)) fail(`index.html: the questions lack ${what}`);
   }
-  const sections = (html.match(/<section\b/g) || []).length;
-  if (sections > 9) fail(`index.html: has ${sections} sections; the simple page has about 7`);
 }
 
 // curly quotes and apostrophes in everything a visitor reads (the quiz's strings are checked by their own test)

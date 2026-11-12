@@ -84,3 +84,12 @@ in touch, every page points to the free mockup (`intake.html`) or to taya@webfae
 Tests (not published; folders starting with `_` are skipped by GitHub Pages):
 `node _tests/quiz-paths.test.mjs`, `node _tests/site-text.test.mjs`, `node _tests/portal-text.test.mjs` and
 `node _tests/door-text.test.mjs`
+
+
+## The new look (Nov 12 2026)
+The site wears the new Web Faery brand (pixel Game Boy / circuit-board look: colored dot-grid pages, white pixel-cut cards, key buttons; Pixelify Sans, Silkscreen, Nunito, all self-hosted in `fonts/`). Builds are Pocket (was Planted), Color (was Tended) and Advance (was In Bloom); the internal keys stay maiden / mother / crone.
+- `index.html`, `work.html`, `prices.html`, `how.html`, `questions.html`, `domain.html`, `portal-tour.html` (a made-up sample portal; the real portal is `portal.html`) use `brand-site.css` + `brand-faces.css` and the scripts in `brand/`.
+- Every page that does things (`start`, `intake`, `quiz`, `welcome`, `privacy`, `404`, `texts`, `book`, `invoice`, `my/`, `portal`) uses `reband.css` (+ `reband-app.css`, `reband-portal.css`).
+- The old long home page is now Home + Prices + How it works + Questions: `_tests/site-text.test.mjs` reads those four together wherever it says index.html.
+- The founding count (like "3 left") lives once, in `#founding` on `prices.html`, in step with `FOUNDING_LEFT` in `mark.js` (paid deposits only).
+- Playroom (and the Pocket Faery game) are not on the site yet. The old twilight files (site.css, newlook.css, ceiling.css, wf-tokens.css ...) stay until the last page that needs them moves.
