@@ -124,13 +124,13 @@ try {
   bar.setAttribute('data-wf-pollen', '1');
   bar.hidden = true; // nothing is drawn until the server has said this pass is genuine: a forged one leaves the page exactly as it was
   const head = mk('div', 'display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 6px');
-  head.append(mk('strong', 'color:#ffe0a0', 'Only you see this'));
+  head.append(mk('strong', 'color:#ffb48a', 'Only you see this'));
   const closeB = mk('button', 'background:none;border:1px solid rgba(243,239,255,.5);color:#f3efff;border-radius:8px;padding:2px 10px;cursor:pointer', 'Hide'); closeB.type = 'button';
   closeB.addEventListener('click', () => { bar.hidden = true; });
   head.append(closeB);
   const list = mk('div');
   bar.append(head, list);
-  const say = (t) => { list.textContent = ''; list.append(mk('div', 'color:#ffe0a0', t)); };
+  const say = (t) => { list.textContent = ''; list.append(mk('div', 'color:#ffb48a', t)); };
   async function post(path, body) {
     let res;
     try { res = await fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ pm: pass, page: PAGE }, body)), mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' }); }
@@ -156,7 +156,7 @@ try {
       const row = mk('div', 'display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid rgba(243,239,255,.2)');
       const txt = mk('div', 'flex:1;min-width:0');
       txt.append(mk('div', 'overflow-wrap:anywhere', (i + 1) + '. ' + it.text));
-      if (it.flagged && it.can_make) txt.append(mk('div', 'color:#ffe0a0;font-size:12px', 'Mentions money, legal wording or deleting. Check it yourself first.'));
+      if (it.flagged && it.can_make) txt.append(mk('div', 'color:#ffb48a;font-size:12px', 'Mentions money, legal wording or deleting. Check it yourself first.'));
       row.append(txt);
       const st = it.route_status;
       if (it.can_make || it.can_retry) {
@@ -912,9 +912,9 @@ try {
   const el = (tag, cls, text) => { const x = document.createElement(tag); if (cls) x.className = cls; if (text != null) x.textContent = text; return x; };
   const ours = (n) => !!(n && n.closest && n.closest('.wfm, .wfm-bar, .wfm-pop, .wfm-panel, .wfm-pin, .wfm-tab, [class^="wf-"], [class*=" wf-"]'));
   const linkBtn = (cls, text, href) => { const a = el('a', cls, text); a.href = href; return a; };
-  // "Back to my back end" (Oct 16 2026): the door at webfaery.love/my/ with their own key after the #, exactly as "Open my
+  // "Back to my portal" (Oct 16 2026): the door at webfaery.love/my/ with their own key after the #, exactly as "Open my
   // newest" does; the key stays in the address fragment (never sent to a server) and the door takes it out at once.
-  const backEnd = () => (key ? linkBtn('wfm-btn ghost', 'Back to my back end', DOOR + '#wf=' + key) : null);
+  const backEnd = () => (key ? linkBtn('wfm-btn ghost', 'Back to my portal', DOOR + '#wf=' + key) : null);
   const exitUrl = location.pathname + location.search.replace(/[?&]mark=1/, '').replace(/^&/, '?') + location.hash;
   const HOUSE_KEY = 'It’s like a house key, just for you, so please keep passwords out of notes.';
 
