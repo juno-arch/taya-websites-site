@@ -1085,7 +1085,7 @@
     resources: 'Short how-to videos', orders: 'Your orders', bookings: 'Your bookings', products: 'Your products',
     newsletter: 'Your newsletter', visitors: 'Who’s visiting your site', gifts: 'Gift certificates', codes: 'Discount codes'
   };
-  // "See what else is in bloom" (Nov 11 2026): in the Web Faery tab, the tools this client doesn't have, as greyed
+  // "See what else Web Faery can do" (Nov 11 2026): in the Web Faery tab, the tools this client doesn't have, as greyed
   // previews with made-up examples. Nothing in a preview works; the only thing to tap is "Ask Taya about this", which
   // opens Messages with one soft line typed in (never over words they already wrote). Shown the whole time, build included.
   // WORDING IS A PLACEHOLDER until the voice check and Pollen's OK.
@@ -1129,7 +1129,7 @@
     const list = bloomList();
     box.hidden = !list.length;
     if (!list.length) { box.replaceChildren(); return; }
-    const head = make('h3', 'small-h', 'See what else is in bloom');
+    const head = make('h3', 'small-h', 'See what else Web Faery can do');
     const lede = make('p', 'bloom-lede', 'These are other things a Web Faery site can do. They are previews with made-up examples, so nothing here works yet.');
     const ul = make('ul', 'bloom-list');
     list.forEach((b) => {

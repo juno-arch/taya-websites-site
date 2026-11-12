@@ -32,7 +32,8 @@ for (const p of pages) {
   const rest = block ? html.replace(block, '') : html;
   if (block) {
     if (crypto.createHash('sha256').update(block).digest('hex') !== LOADER_SHA) failures.push(`${rel}: the loader isn't the documented block`);
-    const head = (html.match(/<head[^>]*>([\s\S]*)/i) || [])[1] || html;
+    const noComments = html.replace(/<!--[\s\S]*?-->/g, '');   // a comment can mention <head> (the documented loader file does)
+    const head = (noComments.match(/<head[^>]*>([\s\S]*)/i) || [])[1] || noComments;
     const before = head.slice(0, head.indexOf(block)).replace(/<!--[\s\S]*?-->/g, '').replace(/<meta charset="[^"]*">/i, '').trim();
     if (before) failures.push(`${rel}: the loader isn't first in <head> (right after <meta charset>)`);
   }
