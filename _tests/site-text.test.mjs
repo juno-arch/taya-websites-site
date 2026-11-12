@@ -392,7 +392,7 @@ for (const page of PAGES) {
     const KEYOF = { Pocket: 'maiden', Color: 'mother', Advance: 'crone' };
     const cards = [...readRaw('prices.html').matchAll(/<section class="card gameboy"[\s\S]*?<\/section>/g)].map((m) => [KEYOF[(m[0].match(/<h2>(Pocket|Color|Advance)<\/h2>/) || [])[1]], plainOf(m[0])]);
     const INCLUDES = {
-      maiden: [/Hosting, your web address, security and backups/, /Your magic site, yours for good: whenever something small needs changing, you just message me through it/, /your changes are up/, /monthly check-in/, /New reviews/],
+      maiden: [/Hosting, your web address, security and backups/, /Whenever something small needs changing, message me through your portal/, /your changes are up/, /monthly check-in/, /New reviews/],
       mother: [/Everything in Pocket/, /Post once, show up everywhere/, /I only post what you’ve made or said yes to/, /newsletter sign-up/, /Instagram feed/, /Email from your domain address, like you@yourbusiness\.com, covered/, /A small shop, up to 5 products/, /Gift cards, through Gift Up/, /A DoorDash button on your site/, /seasonal refresh/],
       crone: [/Everything in Color/, /Your booking, shop, gift certificates and waivers, running on my server/, /Your own portal, built around your business, with its own sign-in/, /Fuller direct ordering for food businesses/, /flyer for one event a month/, /yearly refresh/],
     };
