@@ -75,6 +75,15 @@ function foundingLeftWords() {
     : 'all ' + FOUNDING_TOTAL + ' spots are taken';
 }
 document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textContent = foundingLeftWords(); });
+// Nov 12 2026: the count now follows the server (paid founding deposits), so it goes down by itself with each yes that pays.
+// The number above stays as the fallback if the server can't be reached (a client site with its own CSP may block this call).
+try {
+  fetch('https://bookings.gardenfaery.love/api/webfaery/founding', { credentials: 'omit' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    if (!d || typeof d.left !== 'number') return;
+    FOUNDING_LEFT = d.left;
+    document.querySelectorAll('.wf-founding-left').forEach(function (n) { n.textContent = foundingLeftWords(); });
+  }).catch(function () {});
+} catch (e) {}
 
 /* Pollen's link (ADD 81, Nov 7 2026): a link ONLY Pollen has, made in her Studio on a tap ("Open as Pollen" on a client still in
    the build stages) and good for 30 minutes: webfaery.love/peek/SLUG/?mark=1#pm=PASS. It is not the client's link and carries no

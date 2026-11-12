@@ -1062,14 +1062,8 @@
           </ul>
         </details>
 
-        <div class="founding" id="founding-box" hidden>
-          <label class="switch">
-            <input type="checkbox" id="f-founding" name="founding" value="yes" role="switch" aria-describedby="h-founding">
-            <span class="track" aria-hidden="true"></span>
-            <span class="sw-text">I’m a founding client</span>
-          </label>
-          <p class="hint" id="h-founding">You have one of my 5 founding spots, so this is on for you: half off your build. Your subscription stays at its usual monthly price.</p>
-        </div>
+        <!-- founding is automatic (Nov 12 2026, Pollen): no switch for the client. This hidden box is on while a founding spot is open (CONFIG.foundingOpen, then the live count below) and off when the last one is taken. -->
+        <input type="checkbox" id="f-founding" name="founding" value="yes" hidden>
 
         <!-- care: part of every site, so there's nothing to choose. Its price follows the build (the script fills in
              the price and what it covers for the build they picked, or all three before they pick) -->
@@ -1932,7 +1926,7 @@
       mother: { regular: 'https://buy.stripe.com/28E3co3Eo6W37BrgzBfEk06', founding: 'https://buy.stripe.com/cNi9AM6QA6W3bRH979fEk07' },
       crone:  { regular: 'https://buy.stripe.com/6oU4gs3Eo4NV3lb3MPfEk08', founding: 'https://buy.stripe.com/5kQcMY4IsgwD3lbbfhfEk09' }
     },
-    foundingOpen: true,   // founding spots still open: everyone sees founding prices, like the home page (turn off when the 5 are taken)
+    foundingOpen: true,   // the starting point: founding spots open, so everyone sees founding prices. The live count (/api/webfaery/founding) turns it off by itself when the 5 are taken
     magicSite: true,    // the magic mockup is live (Oct 1 2026): their link is webfaery.love/peek/KEY/?mark=1
     helperEmail: 'taya@webfaery.love',          // the address clients add as a manager or helper
     server: 'https://bookings.gardenfaery.love', // PocketBase
@@ -2623,7 +2617,6 @@
     $('#kit-box').hidden = !(have.kit === 'yes' || (have.kit == null && $('#f-has-kit').checked));
     // with the build card, the card shows the founding price; the switch still shows when her link says
     // founding=1 but it opened off (answers saved from an earlier visit), so she can turn it on
-    $('#founding-box').hidden = !(foundingLink || $('#f-founding').checked) || (md.confirm && !foundingAsk);
 
     // the accounts: only the ones their build needs and their site leans on
     const need = acctNeeds(c);
@@ -3726,9 +3719,18 @@
     const linkFounding = /^(1|yes|true)$/i.test(qs.get('founding') || '');
     foundingLink = linkFounding || (CONFIG.foundingOpen && !/^(0|no|false)$/i.test(qs.get('founding') || ''));
     if (who) { foundingLink = false; $('#f-founding').checked = !!who.founding; $('#f-founding').disabled = true; } // with their link, the server says
-    if (!linkFounding && foundingLink) $('#h-founding').textContent = 'I’m taking 5 founding clients through Dec 31, 2026, and while a spot’s open, this is on for you: half off your build. Your subscription stays at its usual monthly price.';
-    if (foundingLink && !saved && !who) $('#f-founding').checked = true;
-    foundingAsk = foundingLink && !$('#f-founding').checked;
+    if (!who) $('#f-founding').checked = foundingLink;   // automatic: on while a spot is open, whatever an earlier visit saved
+    foundingAsk = false;
+    // the live founding count (Nov 12 2026): the server counts paid founding deposits, so when the last of the 5 is taken
+    // (or Dec 31 2026 passes) the half-off price switches off by itself, with no one touching this page. If it can't be
+    // reached, CONFIG.foundingOpen stands. (With their private link the server already decides: `who`.)
+    if (!who && typeof fetch === 'function') {
+      fetch(CONFIG.server + '/api/webfaery/founding').then((r) => (r.ok ? r.json() : null)).then((d) => {
+        if (!d || d.open !== false || !CONFIG.foundingOpen) return;
+        CONFIG.foundingOpen = false; foundingLink = false;
+        const cb = $('#f-founding'); cb.checked = false; cb.dispatchEvent(new Event('change', { bubbles: true })); cb.dispatchEvent(new Event('input', { bubbles: true }));
+      }).catch(() => {});
+    }
     // what they already have: the link answers these unless they've answered them on the page themselves
     for (const [k, v] of Object.entries(haveFromLink(qs))) if (haveBy[k] !== 'you') { have[k] = v; haveBy[k] = 'link'; }
     // a mockup already holds their words, photos and look: check it instead of retyping (Pollen, Oct 1)
