@@ -86,3 +86,15 @@ main.page :is(.ledger,.pp-list,.payrow,.bkit-sw,.bkit-chip,.swatch,.paper,.pp,.r
 main.page :is(hr,.rule){border:0;border-top:3px dotted var(--rb-ink)}
 .toast{background:var(--rb-ink)!important;color:#fff8f1!important;border:3px solid var(--rb-ink)}
 html,body{overflow-x:clip}
+
+/* Nov 12 2026 (Pollen: "in the portal only use the pixel font for headlines, it's not the easiest on the eyes"):
+   the pixel face stays on h1 to h3 and the small headings; names, amounts, dates and row titles read in the body face. */
+.tl .name, .thing .t-name, .payrow .p-name, .payrow .p-amt, .payrow .p-start-d, .order .o-total,
+.dc .dc-name, .dc .dc-off, .gift-left, .pr .pr-title, .bk .o-date, .bk-dayname, .bk-month, .nl-row .nl-subj,
+.bloom-title, .glance dd {
+  font-family: var(--wf-font-read, 'Nunito', system-ui, sans-serif); font-weight: 700; letter-spacing: 0;
+}
+/* the pixel face is for the page's main headline; section headings read in the body face, heavy */
+main.page :is(h2, h3, h4), .p-card :is(h2, h3, h4), .sh, .small-h, .got-h, .sub-h, .step-name {
+  font-family: var(--wf-font-read, 'Nunito', system-ui, sans-serif) !important; font-weight: 800 !important; letter-spacing: 0;
+}
