@@ -59,7 +59,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 // 404.html (Oct 7 2026): what GitHub Pages shows at any address that isn't on the site, a mockup not pushed yet too
-const PAGES = ['index.html', 'work.html', 'prices.html', 'how.html', 'questions.html', 'portal-tour.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html', '404.html'];
+const PAGES = ['index.html', 'work.html', 'prices.html', 'how.html', 'questions.html', 'portal-tour.html', 'playroom.html', 'quiz.html', 'intake.html', 'welcome.html', 'domain.html', 'start.html', 'texts.html', '404.html'];
 const CARE_PAGES = ['index.html', 'quiz.html', 'intake.html', 'welcome.html', 'start.html'];
 const TIERS = { 'Pocket': [600, 300, 12], 'Color': [1200, 600, 45], 'Advance': [1800, 900, 90] };
 const CARE = Object.values(TIERS).map((t) => t[2]);
