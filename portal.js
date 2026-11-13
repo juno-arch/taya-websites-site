@@ -700,6 +700,18 @@
     const logos = {};
     ['light', 'dark'].forEach((k) => { const l = b.logos && b.logos[k]; if (logoSrc(l)) logos[k] = l.kind === 'svg' ? { kind: 'svg', text: l.text } : { kind: l.kind, b64: l.b64 }; });
     if (Object.keys(logos).length) out.logos = logos;
+    // Nov 13 2026: icons, links and designs (names + whitelisted file names only; the server cleaned them already, this keeps the page strict too)
+    const FILE = /^[a-z0-9-]{1,40}\/[a-z0-9._@-]{1,60}\.(png|jpg|jpeg|svg|webp|pdf)$/;
+    const ex = {}, bx = b.extras && typeof b.extras === 'object' ? b.extras : {};
+    const xl = (list, kind) => arr(list).slice(0, 12).map((x) => {
+      if (!x || typeof x !== 'object') return null;
+      const name = str(x.name || x.label, 60), file = FILE.test(str(x.file, 100)) ? str(x.file, 100) : '', url = /^https:\/\/[a-z0-9.-]+(\/[^\s<>"']{0,160})?$/i.test(str(x.url, 200)) ? str(x.url, 200) : '';
+      if (!name) return null;
+      if (kind === 'links') return url ? (file ? { label: name, url: url, file: file } : { label: name, url: url }) : null;
+      return file ? { name: name, file: file } : null;
+    }).filter(Boolean);
+    ['icons', 'designs', 'links'].forEach((k) => { const l = xl(bx[k], k); if (l.length) ex[k] = l; });
+    if (Object.keys(ex).length) out.extras = ex;
     if (b.sheet === true) out.sheet = true;
     return Object.keys(out).length ? out : null;
   }
