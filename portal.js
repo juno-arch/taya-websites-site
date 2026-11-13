@@ -1126,6 +1126,9 @@
   function renderBloom() {
     const box = $('#wf-bloom');
     if (!box) return;
+    // Nov 13 2026 (Pollen): "hide see what else Web Faery can do right now for everyone". Switch back on by making this true.
+    const BLOOM_SHOWN = false;
+    if (!BLOOM_SHOWN) { box.hidden = true; box.replaceChildren(); return; }
     const list = bloomList();
     box.hidden = !list.length;
     if (!list.length) { box.replaceChildren(); return; }
