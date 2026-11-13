@@ -6,6 +6,21 @@
    (--st0 to --st7); without it only the stars show. Nothing here is read from or sent to anywhere. */
 (function () {
   'use strict';
+  /* The on/off switch (Nov 13 2026, Pollen): a button marked data-tracer-switch (the portal footer has one) turns the trail off and on.
+     The choice is kept in this browser only (localStorage "wf-tracer"). Hidden on touch and with reduced motion, where there is no trail. */
+  var PREF = 'wf-tracer', trailOn = true;
+  try { trailOn = localStorage.getItem(PREF) !== 'off'; } catch (x) {}
+  function paintSwitch() {
+    [].forEach.call(document.querySelectorAll('[data-tracer-switch]'), function (b) {
+      b.setAttribute('aria-pressed', trailOn ? 'true' : 'false'); b.textContent = 'Cursor trail: ' + (trailOn ? 'on' : 'off');
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest && e.target.closest('[data-tracer-switch]'); if (!b) return;
+    trailOn = !trailOn; try { localStorage.setItem(PREF, trailOn ? 'on' : 'off'); } catch (x) {}
+    paintSwitch(); window.dispatchEvent(new Event('wf-tracer-change'));
+  });
+  paintSwitch();
   if (!window.matchMedia || !('PointerEvent' in window) || !window.requestAnimationFrame || !document.body) return;
   var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (rm.matches || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
@@ -101,7 +116,7 @@
   }
 
   var last = 0, lx = -99, ly = -99, hot = null, hotT = 0, hx = -99, hy = -99;
-  function ok(e) { return e.pointerType === 'mouse' && !document.hidden && !rm.matches; }
+  function ok(e) { return trailOn && e.pointerType === 'mouse' && !document.hidden && !rm.matches; }
   document.addEventListener('pointermove', function (e) {
     if (!ok(e)) return;
     var t = e.target; if (!t || !t.closest || t.closest(QUIET)) { hot = null; return; }
@@ -126,6 +141,7 @@
   }, { passive: true });
   document.addEventListener('pointerout', function (e) { if (!e.relatedTarget) { hot = null; lx = -99; ly = -99; } }, { passive: true });
   document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
+  window.addEventListener('wf-tracer-change', function () { if (!trailOn) stop(); });
   window.addEventListener('resize', function () { vw = window.innerWidth; }, { passive: true });
   var onRm = function () { if (rm.matches) stop(); };
   if (rm.addEventListener) rm.addEventListener('change', onRm); else if (rm.addListener) rm.addListener(onRm);
