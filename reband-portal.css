@@ -103,3 +103,28 @@ main.page :is(h1, h2, h3), .p-card :is(h2, h3), .sh, .small-h, .got-h, .sub-h, .
 .bk-tabs { flex-wrap: wrap !important; gap: 6px !important; border-radius: 0 !important; max-width: 100%; min-width: 0; }
 .bk-tab { flex: 0 1 auto !important; min-width: 0; white-space: nowrap; border-radius: 0 !important; }
 @media (max-width: 759px) { .bk-tabs { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); } .bk-tab { white-space: normal; } }
+
+/* ---------- Nov 13 (Pollen): colored keys, and spreadsheet-style alternating rows in every list ---------- */
+.open-btn, .p-card button.primary, button.primary, .btn-main { --b: var(--rb-red); --t: #fff8f1; }
+button.add, .p-card button.add { --b: var(--rb-mint); --t: #1a1420; }
+label.pick-btn, .pick-btn { --b: var(--rb-blue); --t: #1a1420; }
+button.small-btn { --b: var(--rb-butter); --t: #1a1420; }
+button.ghost { --b: var(--rb-lav); --t: #1a1420; }
+button.later-btn { --b: var(--rb-pink); --t: #1a1420; }
+.p-card .btn { --b: var(--rb-butter); --t: #1a1420; }
+.bk-tab { background: var(--rb-paper) !important; border: 2px solid var(--rb-ink) !important; color: #1a1420 !important; font-family: var(--rb-key); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; box-shadow: 2px 2px 0 var(--rb-ink); }
+.bk-tab:nth-child(4n+1) { background: var(--rb-blue) !important; } .bk-tab:nth-child(4n+2) { background: var(--rb-mint) !important; }
+.bk-tab:nth-child(4n+3) { background: var(--rb-pink) !important; } .bk-tab:nth-child(4n) { background: var(--rb-lav) !important; }
+.bk-tab[aria-selected="true"] { background: var(--rb-butter) !important; }
+.row-link .go { background: var(--rb-butter) !important; border: 2px solid var(--rb-ink) !important; border-radius: 0 !important; box-shadow: 2px 2px 0 var(--rb-ink); }
+
+/* lists read like a spreadsheet: full rows, white then lilac then mint, a thin ink line between */
+:is(.payrow, .thing, .order, .dc, .pr, .nl-row, .bk-row, .bk-item, .demo-list > *, .bloom-card, .cust-row, .gift-row):nth-child(3n+1) { background: #fff; }
+:is(.payrow, .thing, .order, .dc, .pr, .nl-row, .bk-row, .bk-item, .demo-list > *, .gift-row):nth-child(3n+2) { background: #efe8fb; }
+:is(.payrow, .thing, .order, .dc, .pr, .nl-row, .bk-row, .bk-item, .demo-list > *, .gift-row):nth-child(3n) { background: #dff4ea; }
+:is(.payrow, .thing, .order, .dc, .pr, .nl-row, .bk-row, .bk-item, .gift-row) { padding: 12px 14px !important; margin: 0 !important; border: 0 !important; border-bottom: 2px solid var(--rb-ink) !important; border-radius: 0 !important; }
+.tl li:nth-child(even) { background: #efe8fb; } .tl li:nth-child(odd) { background: #fff; }
+.tl li { padding: 10px 12px; }
+main.page table tbody tr:nth-child(odd) > * { background: #fff; } main.page table tbody tr:nth-child(even) > * { background: #e9defb; }
+main.page table { border: 2px solid var(--rb-ink); border-collapse: collapse; width: 100%; }
+main.page table th { font-family: var(--rb-key); font-weight: 400; letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; background: var(--rb-butter); border-bottom: 2px solid var(--rb-ink); }
