@@ -98,3 +98,8 @@ html,body{overflow-x:clip}
 main.page :is(h1, h2, h3), .p-card :is(h2, h3), .sh, .small-h, .got-h, .sub-h, .step-name {
   font-family: var(--rb-head, 'Pixelify Sans', 'Nunito', system-ui, sans-serif) !important; font-weight: 700 !important; letter-spacing: .02em;
 }
+
+/* Nov 13: the Bookings tabs (seven of them) ran past the card's edge at desktop width; they wrap onto a second line instead */
+.bk-tabs { flex-wrap: wrap !important; gap: 6px !important; border-radius: 0 !important; max-width: 100%; min-width: 0; }
+.bk-tab { flex: 0 1 auto !important; min-width: 0; white-space: nowrap; border-radius: 0 !important; }
+@media (max-width: 759px) { .bk-tabs { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); } .bk-tab { white-space: normal; } }
