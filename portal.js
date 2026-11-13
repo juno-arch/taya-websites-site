@@ -2764,7 +2764,8 @@
     const hasFonts = !!(br && (br.heading || br.body));
     const hasLogo = !!(br && br.logos && (br.logos.light || br.logos.dark));
     const hasSheet = !!(br && br.sheet) || !!(me && me.things && me.things.brand_sheet);
-    if (!me || (!colors.length && !hasFonts && !hasLogo && !hasSheet)) { setHidden(sec, true); body.replaceChildren(); return; }
+    const hasExtras = !!(br && br.extras && Object.keys(br.extras).length);
+    if (!me || (!colors.length && !hasFonts && !hasLogo && !hasSheet && !hasExtras)) { setHidden(sec, true); body.replaceChildren(); return; }
     const parts = [];
     if (colors.length) {
       const h = make('h3', 'small-h', 'Colors');
@@ -2822,6 +2823,52 @@
         card.append(plate, make('span', 'bkit-flabel', label), bkitDownload(l, ((me.client.business || 'logo').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'logo') + '-' + file, 'Download ' + fmt));
         wrap.append(card);
       });
+      parts.push(wrap);
+    }
+    // Nov 13 2026 (Pollen, Tera's kit): icons, your site address with its QR code and link picture, and your card and merch designs.
+    // Files are static assets of this site (brand/clients/<folder>/<file>); the server only ever sends names from its own whitelist.
+    const ex = (br && br.extras) || {};
+    const exUrl = (f) => 'brand/clients/' + String(f).replace(/[^a-z0-9._@\/-]/gi, '');
+    const exCard = (name, f, kind) => {
+      const card = make('div', 'bkit-xcard');
+      const plate = make('div', 'bkit-xplate');
+      const im = make('img'); im.src = exUrl(f); im.alt = name; im.loading = 'lazy'; im.decoding = 'async';
+      im.addEventListener('error', () => { card.remove(); });
+      plate.append(im);
+      const a = make('a', 'open-btn', null);
+      a.href = exUrl(f); a.download = String(f).split('/').pop(); a.rel = 'noopener';
+      a.dataset.read = '1';
+      a.append(make('span', null, 'Download'), icon('i-doc'));
+      a.setAttribute('aria-label', 'Download ' + name);
+      card.append(plate, make('span', 'bkit-flabel', name), a);
+      return card;
+    };
+    if (ex.icons && ex.icons.length) {
+      parts.push(make('h3', 'small-h', 'Icons'));
+      const wrap = make('div', 'bkit-xgrid');
+      ex.icons.forEach((x) => wrap.append(exCard(x.name, x.file)));
+      parts.push(wrap);
+    }
+    if (ex.links && ex.links.length) {
+      parts.push(make('h3', 'small-h', 'Your site address'));
+      ex.links.forEach((x) => {
+        const row = make('div', 'bkit-link');
+        const top = make('div', 'bkit-linktop');
+        const cp = make('button', 'bkit-sw bkit-urlcopy'); cp.type = 'button'; cp.dataset.read = '1';
+        const u = make('span', 'bkit-hex', x.url.replace(/^https:\/\//, ''));
+        cp.append(make('span', 'bkit-name', x.label), u);
+        const was = u.textContent;
+        cp.addEventListener('click', () => { bkitCopy(x.url, x.label); u.textContent = 'Copied!'; cp.classList.add('copied'); setTimeout(() => { u.textContent = was; cp.classList.remove('copied'); }, 1600); });
+        top.append(cp);
+        row.append(top);
+        if (x.file) row.append(exCard(/\.svg$/.test(x.file) ? 'QR code for ' + x.label : x.label + ' picture', x.file));
+        parts.push(row);
+      });
+    }
+    if (ex.designs && ex.designs.length) {
+      parts.push(make('h3', 'small-h', 'Your cards and merch'));
+      const wrap = make('div', 'bkit-xgrid wide');
+      ex.designs.forEach((x) => wrap.append(exCard(x.name, x.file)));
       parts.push(wrap);
     }
     if (hasSheet) {
