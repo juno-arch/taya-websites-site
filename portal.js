@@ -2777,10 +2777,15 @@
         const chip = make('span', 'bkit-chip'); chip.style.background = c.hex; chip.setAttribute('aria-hidden', 'true');
         b.append(chip, make('span', 'bkit-name', c.name || c.hex.toUpperCase()), make('span', 'bkit-hex', c.hex.toUpperCase()));
         b.setAttribute('aria-label', (c.name || 'Color') + ' ' + c.hex.toUpperCase() + ', tap to copy');
-        b.addEventListener('click', () => bkitCopy(c.hex.toUpperCase(), (c.name || 'color') + ' code'));
+        const hexEl = b.querySelector('.bkit-hex'), hexWas = hexEl ? hexEl.textContent : '';
+        b.addEventListener('click', () => {
+          bkitCopy(c.hex.toUpperCase(), (c.name || 'color') + ' code');
+          // Nov 13 2026 (Pollen): say it on the swatch itself, so a click always visibly does something
+          if (hexEl) { hexEl.textContent = 'Copied!'; b.classList.add('copied'); setTimeout(() => { hexEl.textContent = hexWas; b.classList.remove('copied'); }, 1600); }
+        });
         li.append(b); ul.append(li);
       });
-      parts.push(h, ul, make('p', 'bkit-hint', 'Tap a color to copy its code.'));
+      parts.push(h, ul, make('p', 'bkit-hint', 'Click or tap a color to copy its code.'));
     }
     if (hasFonts) {
       parts.push(make('h3', 'small-h', 'Fonts'));
