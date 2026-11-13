@@ -2835,7 +2835,9 @@
     if (!hasFonts) missing.push('fonts');
     if (!hasLogo) missing.push('logo');
     if (!hasSheet) missing.push('brand sheet');
-    if (missing.length) parts.push(make('p', 'bkit-soon', 'Still to come at launch: ' + missing.join(', ') + '.'));
+    const isLive = stageIndex(me.timeline.current) >= 5;
+    // Nov 13 2026 (Pollen, Tera is live): after launch it is not "still to come at launch"
+    if (missing.length) parts.push(make('p', 'bkit-soon', isLive ? 'Taya is still putting together: ' + missing.join(', ') + '.' : 'Still to come at launch: ' + missing.join(', ') + '.'));
     body.replaceChildren(...parts);
     setHidden(sec, false);
   }
