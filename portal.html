@@ -22,12 +22,17 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="portal.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Web Faery">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#1a1420">
 <meta name="color-scheme" content="light">
 <link rel="stylesheet" href="fonts/brand/brand-fonts.css?v=20261104a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261110e">
 <link rel="stylesheet" href="wf-backend.css?v=20261110e">
-<link rel="stylesheet" href="portal.css?v=20261111b">
+<link rel="stylesheet" href="portal.css?v=20261115b">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <link rel="stylesheet" href="portal-schedule.css?v=20261022b">
 <!--
@@ -127,7 +132,8 @@
 <script src="portal-rich.js?v=20261020a"></script>
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261022b"></script>
-<script src="portal.js?v=20261113e"></script>
+<script src="portal-alerts.js?v=20261115a"></script>
+<script src="portal.js?v=20261115b"></script>
 <script src="brand/wf-shapes.js?v=20261112a"></script><script src="brand/wf-trail.js?v=20261112a"></script>
 
 <main class="page" id="main" tabindex="-1">
@@ -305,6 +311,53 @@
     <section class="p-card" id="sec-coming" data-page="project" aria-labelledby="h-coming" hidden>
       <h2 class="sh" id="h-coming">Coming up</h2>
       <ul class="coming" id="coming-body"></ul>
+    </section>
+
+    <!-- phone alerts (Nov 14 2026): only for an owner whose bookings run here. On an iPhone in Safari it shows the Add to
+         Home Screen steps first (Apple allows alerts only for a site on the Home Screen, iOS 16.4 or newer). portal-alerts.js -->
+    <section class="p-card alerts" id="sec-alerts" data-page="project" aria-labelledby="h-alerts" hidden>
+      <span class="kicker">Alerts</span>
+      <h2 id="h-alerts" tabindex="-1">Turn on alerts</h2>
+      <div id="al-install" hidden>
+        <p class="al-why">When someone books, changes or cancels, your phone can buzz when it happens. It takes about a minute, once.</p>
+        <ol class="al-steps">
+          <li>In Safari, tap the <b>Share</b> button (the square with an arrow).</li>
+          <li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li>
+          <li>Open <b>Web Faery</b> from your Home Screen, sign in, and tap <b>Turn on alerts</b> here.</li>
+        </ol>
+      </div>
+      <div id="al-ask" hidden>
+        <p class="al-why">When someone books, changes or cancels, your phone buzzes when it happens. Tap the button, then tap <b>Allow</b>.</p>
+        <button type="button" class="btn" id="b-al-on"><span>Turn on alerts</span></button>
+      </div>
+      <div id="al-on" hidden>
+        <p class="al-why">Your phone will buzz when someone books, changes or cancels. The alert only says to open your schedule, so nothing private shows on your lock screen.</p>
+        <button type="button" class="btn secondary" id="b-al-test"><span>Send me a test alert</span></button>
+        <button type="button" class="later" id="b-al-off">Turn off alerts on this phone</button>
+      </div>
+      <div id="al-blocked" hidden>
+        <p class="al-why">This phone is set to block alerts from Web Faery. To change that, open your phone’s Settings, find Web Faery, tap Notifications and switch them on. Then come back here.</p>
+      </div>
+      <div id="al-sorry" hidden>
+        <p class="al-why">This phone or browser can’t get alerts from a website. Your emails still come as before, and you can ask me about other ways 💛</p>
+      </div>
+      <!-- texts too (Nov 15 2026): shows once the server has texts switched on; the words she agrees to come from the server -->
+      <div id="al-text" class="al-text" hidden>
+        <h3 id="al-text-h">Get a text too</h3>
+        <div id="al-text-on" hidden>
+          <p class="al-why" id="al-text-now"></p>
+          <button type="button" class="btn secondary" id="b-al-text-test"><span>Send me a test text</span></button>
+          <button type="button" class="later" id="b-al-text-off">Turn off texts</button>
+        </div>
+        <form id="f-al-text" novalidate hidden>
+          <p class="al-why">Want a text as well? It only says to open your schedule, nothing about your customers.</p>
+          <label class="field-label" for="in-al-cell">Your cell number</label>
+          <input id="in-al-cell" name="cell" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" placeholder="707 555 0123">
+          <label class="texts-agree"><input type="checkbox" id="in-al-agree"> <span id="al-text-consent"></span></label>
+          <p class="err" id="al-text-err" hidden></p>
+          <button class="btn" type="submit" id="b-al-text"><span>Turn on texts</span></button>
+        </form>
+      </div>
     </section>
 
     <!-- numbers at a glance (Oct 14 2026): only for a client whose shop, booking or gift certificates run here -->

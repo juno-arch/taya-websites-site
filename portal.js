@@ -3544,6 +3544,8 @@
     try {
       bk = cleanBk(await bookCall('/overview'));
       renderBk();
+      // phone alerts (Nov 14 2026, portal-alerts.js): a booking owner gets the card, and her phone is registered again on every open
+      if (bk && window.wfAlerts) window.wfAlerts.sync({ call: (path, body) => postJSON(path, body, token), server: SERVER, name: (me && me.client && me.client.business) || '', toast: toast });
       try { document.dispatchEvent(new CustomEvent('wf-bk-updated')); } catch (e) { /* the Schedule tab just doesn't refresh by itself */ }
       if (bk && bkTab === 'calendar') loadMonth(bkMonth);
     } catch (err) {
