@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261115c">
+<link rel="stylesheet" href="reband-app.css?v=20261115d">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -1045,6 +1045,7 @@
           <p class="err" id="e-build" role="alert" hidden></p>
           <p class="soft-note">Ready-in times count from the day your deposit clears, and move if your content comes later.</p>
         </fieldset>
+        <details class="build-explain" id="build-explain" hidden><summary id="be-sum">What this build is made of</summary><p id="be-text"></p></details>
         <details class="more every">
           <summary>What every build comes with</summary>
           <ul class="checks">
@@ -1077,7 +1078,7 @@
         <p class="soft-note" id="sell-note" hidden></p>
         <button type="button" class="toggle-more" id="price-toggle" aria-expanded="false" aria-controls="price-more" data-if="build-in-sign">Your price in full, and what your site will do</button>
         <div id="price-more">
-        <fieldset class="group">
+        <fieldset class="group" data-if="off" hidden>
           <legend class="main">What your site will do</legend>
           <p class="hint">So I know what your site needs, and which build it comes with. The price below follows along.</p>
           <div class="opts">
@@ -1116,144 +1117,22 @@
     </li>
 
     <!-- ================= sign and hold your spot ================= -->
-    <li class="step" id="s-sign" data-step="sign" data-min="7">
-      <h2 class="step-h"><button type="button" class="step-toggle" id="t-sign" aria-expanded="false" aria-controls="b-sign">
+    <li class="step" id="s-tier" data-step="tier" data-min="6">
+      <h2 class="step-h"><button type="button" class="step-toggle" id="t-tier" aria-expanded="false" aria-controls="b-tier">
         <span class="num" aria-hidden="true"><span>2</span><svg><use href="#i-check"/></svg></span>
-        <span class="step-name"><span class="sr-only sn">Step 2: </span><span class="st">Sign and hold your spot</span></span>
-        <span class="step-meta"><span class="time">About 7 minutes</span><span class="state"></span></span>
+        <span class="step-name"><span class="sr-only sn">Step 2: </span><span class="st">What your build includes</span></span>
+        <span class="step-meta"><span class="time">About 6 minutes</span><span class="state"></span></span>
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
-      <div class="step-body" id="b-sign">
-        <p class="lead-in" data-if="build-in-sign">Check your build<span data-who>, tell me who you are,</span> and sign our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
-        <p class="lead-in" data-if="build-own-step"><span data-who>Tell me who you are and sign</span><span data-who-known hidden>Sign</span> our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
-        <div id="build-slot-sign"></div>
-
-        <h3 class="sub-h">About you</h3>
-        <p class="hint sub-hint" id="you-hint">Take your time.</p>
-        <!-- what Taya's link already told us (full, email, biz, site): one line, not fields to fill again -->
-        <p class="known" id="you-known" hidden>I have you as <b id="you-known-text"></b>. <button type="button" class="later" id="you-change" aria-label="Change your name, email, business or website">Change</button></p>
-        <div class="pair you-pair">
-          <div class="q" data-known="f-name">
-            <label class="main" for="f-name">Your full name</label>
-            <input type="text" id="f-name" name="name" autocomplete="name" maxlength="120" aria-required="true">
-            <p class="err" id="e-f-name" hidden></p>
-          </div>
-          <div class="q" data-known="f-email">
-            <label class="main" for="f-email">Best email</label>
-            <input type="email" id="f-email" name="email" autocomplete="email" maxlength="200" aria-required="true" spellcheck="false">
-            <p class="err" id="e-f-email" hidden></p>
-          </div>
-          <div class="q" data-known="f-biz">
-            <label class="main" for="f-biz">Your business name <span class="opt-tag">(if it’s just your name, that counts)</span></label>
-            <input type="text" id="f-biz" name="business" autocomplete="organization" maxlength="160">
-          </div>
-          <div class="q" data-known="f-site">
-            <label class="main" for="f-site">Your website now <span class="opt-tag">(or “none yet”)</span></label>
-            <input type="text" id="f-site" name="website" inputmode="url" autocomplete="url" maxlength="300" spellcheck="false" placeholder="yourname.com">
-          </div>
-        </div>
-
-        <h3 class="sub-h">Our agreement, in short</h3>
-        <ul class="in-short">
-          <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
-          <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
-          <li><span class="k">Timing</span><span>Once your deposit clears, I email you your launch date. Please send your answers and photos within a week. Two days before launch I send you a preview, and you tell me go, or not yet. If your content comes later, the launch date moves back by the same number of days.</span></li>
-          <li><span class="k">Changes</span><span>While I’m building, send me anything you’d like changed, on your mockup or by email; anything big and new I quote first, and nothing starts until you say yes. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need, and your subscription covers them.</span></li>
-          <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
-          <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">your subscription, at your build’s monthly price</span>. If anything breaks, or I got something wrong, I fix it.</span></li>
-          <li><span class="k">Yours</span><span>Everything is in your name. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.</span></li>
-        </ul>
-
-        <details class="full-text">
-          <summary>Read the whole agreement</summary>
-          <div class="agreement-doc">
-            <h3>Our agreement</h3>
-            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of November 10, 2026.</p>
-            <ol>
-              <li><b>What I’ll make.</b> Your <span data-a="build">build</span>: <span data-a="does">the site we choose together</span>
-                  Every build comes with your words written for you from your answers, a phone-first design,
-                  the Google basics (clear titles and descriptions, business details Google can read, a photo preview when someone texts your link),
-                  your Google profile set up, a slim top banner for news, a one-page brand sheet (your colors and fonts, and your logo if you have one, ready for any designer), your web address’s
-                  first year, 30 days of settling-in tweaks, and a one-page “Your site” hand-off sheet. Color and Advance include up to 11 pages. Past that, we agree the price together before I add any.</li>
-              <li><b>The price.</b> <span data-a="price">The price of your build</span>. Half to start (<span data-a="deposit">your deposit</span>),
-                  which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By US bank account.</li>
-              <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. Once your deposit clears, I email you your launch date. Please send your answers, photos (or a yes to free stock photos) and account steps within a week. I make your changes as we go, and anything big and new I quote first, and nothing starts until you say yes. Two days before launch I send you a preview on a private link. You have those two days to look it over and tell me go, or not yet, plus any changes you’d like. If it is not yet, I tell you whether your launch date still works or we pick a new one. If your content comes later, your launch date moves back by the same number of days.</li>
-              <li><b>If life gets busy.</b> If your content isn’t in 30 days after you say yes, I’ll nudge you gently. At 60 days the project closes,
-                  so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
-                  it counts toward finishing.</li>
-              <li><b>Launch.</b> Your site goes live at your own web address, I hand you the logins to the accounts I set up for you, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
-              <li><b>After launch.</b> <span data-a="after-long">Your subscription, at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span>
-                  Your subscription doesn’t cover Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (like Square,
-                  Vagaro or Acuity), ads, or the paid plan of your newsletter tool, Buttondown.</li>
-              <li><b>What’s yours.</b> Everything: your site, your words, your photos, your web address (with you as its legal owner, even while
-                  I hold it and renew it for you as part of your subscription), your Google profile,
-                  your newsletter list, and your booking and payment accounts. Any account I set up for you, like your newsletter or booking,
-                  is made in your name, with your email, and its own strong password, which I hand you at launch for you to change. A Google
-                  profile I build for you is yours at launch too: I make you its owner. After that, where I need a way in, I’m added
-                  as a helper. Taking payments? Stripe needs your own ID, tax number and bank account, so you make
-                  that account yourself, with my help over email, and add me as a Developer. I won’t ask for a password you already use. If you ever cancel your subscription,
-                  your site is still yours: I hand over every file and login within a week, your web address too, and your site stays up the whole time. With Advance, your booking,
-                  payments or shop can’t keep running on my server without a subscription, so I help you move them into your own accounts. Your subscription is monthly, and it ends at the
-                  end of the month you’ve paid for.</li>
-              <li><b>Hosting.</b> Hosting is part of your subscription, so there’s nothing else to pay for it. Most sites live on GitHub Pages; an Advance site
-                  that takes payments or runs a shop lives on Cloudflare Pages. If either one ever changes its rules or prices, moving your site is
-                  part of your subscription too. If you ever cancel it, your files are yours to host anywhere you like.</li>
-              <li><b>Your part.</b> Send only photos, logos and words you have the right to use, and tell me if anything on your site is wrong.
-                  While I build, click the one or two confirm-your-email messages from the accounts I set up for you.</li>
-              <li><b>Honest limits.</b> I build carefully for Google, but no one can promise a ranking or a number of new clients. Outside services
-                  (Google, your booking app, your payment company, your newsletter app, Porkbun) have their own rules and prices, which can change; the prices here are
-                  estimates as of October 2026.</li>
-              <li><b>Upgrading later.</b> If you outgrow your build, what you paid counts toward a bigger one.</li>
-              <li><b>Privacy.</b> What you share here is only for building your site. I don’t share or sell it.</li>
-            </ol>
-            <p class="copy-note">Once you send this page, I’ll email you a copy of this agreement, signed by me too.</p>
-          </div>
-        </details>
-
-        <div class="sign">
-          <label class="tick"><input type="checkbox" name="agree" value="yes" id="f-agree"> I’ve read it, and I agree.</label>
-          <p class="err" id="e-f-agree" hidden></p>
-          <div class="q" id="sig-typed" style="margin-top: 12px">
-            <label class="main" for="f-sig">Type your full name to sign</label>
-            <input type="text" id="f-sig" name="signature" class="sig" autocomplete="name" maxlength="120">
-            <p class="err" id="e-f-sig" hidden></p>
-            <p class="dated" id="sig-date">Signed today</p>
-          </div>
-          <!-- Taya's link gave their name (full): one tap signs with it. signed_by_tap keeps how it was signed -->
-          <input type="hidden" name="signed_by_tap" id="f-sig-tap" value="">
-          <div class="tap-sign" id="tap-sign" hidden>
-            <p class="tap-hint" id="tap-hint">Tick the box, and you can sign with one tap.</p>
-            <button type="button" class="btn" id="tap-sign-btn" hidden><span id="tap-sign-label">Sign</span></button>
-            <p class="signed-as" id="tap-signed" tabindex="-1" hidden><svg aria-hidden="true"><use href="#i-check"/></svg><span id="tap-signed-text"></span></p>
-            <p class="err" id="e-tap-sign" hidden></p>
-            <p class="dated" id="tap-date">Dated today</p>
-            <button type="button" class="later" id="sig-own">Not you? Sign with your own name</button>
-          </div>
-          <div class="opt-line">
-            <label class="tick"><input type="checkbox" name="show_in_work" value="yes"> It’s fine to show my finished site in your recent work (optional, and you can change your mind).</label>
-          </div>
-        </div>
-
-        <h3 class="sub-h">Your deposit</h3>
-        <div class="pay-card" id="pay-card">
-          <p class="pay-amt" id="pay-amt">$0</p>
-          <p class="pay-what" id="pay-what">Pick your build, and your deposit shows up here.</p>
-          <a class="btn" id="pay-btn" target="_blank" rel="noopener" hidden><span id="pay-label">Pay my deposit</span></a>
-          <p class="gate" id="pay-gate" hidden>Please sign the agreement just above first. It’s short, I promise.</p>
-          <p class="preview-say" id="pay-preview" role="status"></p>
-          <p class="pay-note" id="pay-note" hidden>It opens in a new tab, so this page stays right here. It takes a US bank account, and your bank details go to Stripe, not to me.</p>
-        </div>
-        <div class="ticks" style="margin-top: 12px">
-          <label class="tick"><input type="checkbox" name="deposit_paid" value="yes"> I’ve paid my deposit</label>
-        </div>
+      <div class="step-body" id="b-tier" hidden>
+        <p class="lead-in" id="tier-intro">Pick your build first, and I’ll ask only what that build needs.</p>
+        <div id="tier-q"></div>
         <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, next step</span></button>
-          <button type="button" class="later" data-skip>Skip for now</button>
-          <p class="foot-hint">Questions about the agreement? Skip it, and email me. We’ll go through it together.</p>
+          <button type="button" class="later" data-skip hidden>Skip for now</button>
         </div>
       </div>
     </li>
-
 
     <!-- ================= a few quick things (the rest of their story comes by email) ================= -->
     <li class="step" id="s-work" data-step="work" data-min="5">
@@ -1430,6 +1309,144 @@
                 <div class="step-foot">
           <button type="button" class="btn" data-next><span>Done, next step</span></button>
           <button type="button" class="later" data-skip>Skip for now</button>
+        </div>
+      </div>
+    </li>
+
+    <li class="step" id="s-sign" data-step="sign" data-min="7">
+      <h2 class="step-h"><button type="button" class="step-toggle" id="t-sign" aria-expanded="false" aria-controls="b-sign">
+        <span class="num" aria-hidden="true"><span>2</span><svg><use href="#i-check"/></svg></span>
+        <span class="step-name"><span class="sr-only sn">Step 2: </span><span class="st">Sign and hold your spot</span></span>
+        <span class="step-meta"><span class="time">About 7 minutes</span><span class="state"></span></span>
+        <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button></h2>
+      <div class="step-body" id="b-sign">
+        <p class="lead-in" data-if="build-in-sign">Check your build<span data-who>, tell me who you are,</span> and sign our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
+        <p class="lead-in" data-if="build-own-step"><span data-who>Tell me who you are and sign</span><span data-who-known hidden>Sign</span> our short agreement. Then your deposit button unlocks, and paying it holds your spot.</p>
+        <div id="build-slot-sign"></div>
+
+        <h3 class="sub-h">About you</h3>
+        <p class="hint sub-hint" id="you-hint">Take your time.</p>
+        <!-- what Taya's link already told us (full, email, biz, site): one line, not fields to fill again -->
+        <p class="known" id="you-known" hidden>I have you as <b id="you-known-text"></b>. <button type="button" class="later" id="you-change" aria-label="Change your name, email, business or website">Change</button></p>
+        <div class="pair you-pair">
+          <div class="q" data-known="f-name">
+            <label class="main" for="f-name">Your full name</label>
+            <input type="text" id="f-name" name="name" autocomplete="name" maxlength="120" aria-required="true">
+            <p class="err" id="e-f-name" hidden></p>
+          </div>
+          <div class="q" data-known="f-email">
+            <label class="main" for="f-email">Best email</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" maxlength="200" aria-required="true" spellcheck="false">
+            <p class="err" id="e-f-email" hidden></p>
+          </div>
+          <div class="q" data-known="f-biz">
+            <label class="main" for="f-biz">Your business name <span class="opt-tag">(if it’s just your name, that counts)</span></label>
+            <input type="text" id="f-biz" name="business" autocomplete="organization" maxlength="160">
+          </div>
+          <div class="q" data-known="f-site">
+            <label class="main" for="f-site">Your website now <span class="opt-tag">(or “none yet”)</span></label>
+            <input type="text" id="f-site" name="website" inputmode="url" autocomplete="url" maxlength="300" spellcheck="false" placeholder="yourname.com">
+          </div>
+        </div>
+
+        <h3 class="sub-h">Our agreement, in short</h3>
+        <ul class="in-short">
+          <li><span class="k">What</span><span>Your <b data-a="build">build</b>, plus everything every build comes with.</span></li>
+          <li><span class="k">Price</span><span><b data-a="price">The price of your build</b>: half to start (<span data-a="deposit">your deposit</span>, which holds your spot), and half at launch.</span></li>
+          <li><span class="k">Timing</span><span>Once your deposit clears, I email you your launch date. Please send your answers and photos within a week. Two days before launch I send you a preview, and you tell me go, or not yet. If your content comes later, the launch date moves back by the same number of days.</span></li>
+          <li><span class="k">Changes</span><span>While I’m building, send me anything you’d like changed, on your mockup or by email; anything big and new I quote first, and nothing starts until you say yes. Once you’re live, if you post on Instagram or Facebook, I can follow along and put your updates on your website and Google profile (I don’t post on your socials for you), or you can tap it on your site or email me your changes, as often as you need, and your subscription covers them.</span></li>
+          <li><span class="k">If life gets busy</span><span>A gentle nudge 30 days after you say yes. At 60 days the project closes; your deposit covers the work done so far, and if you pick it back up within a year, it counts toward finishing.</span></li>
+          <li><span class="k">After launch</span><span>30 days of settling-in tweaks, then <span data-a="after">your subscription, at your build’s monthly price</span>. If anything breaks, or I got something wrong, I fix it.</span></li>
+          <li><span class="k">Yours</span><span>Everything is in your name. If you ever cancel your subscription, your site is still yours, and I hand over every file and login.</span></li>
+        </ul>
+
+        <details class="full-text">
+          <summary>Read the whole agreement</summary>
+          <div class="agreement-doc">
+            <h3>Our agreement</h3>
+            <p class="between">Between Taya of Web Faery (Humboldt County, California) and <span data-a="client">you</span>. Version of November 10, 2026.</p>
+            <ol>
+              <li><b>What I’ll make.</b> Your <span data-a="build">build</span>: <span data-a="does">the site we choose together</span>
+                  Every build comes with your words written for you from your answers, a phone-first design,
+                  the Google basics (clear titles and descriptions, business details Google can read, a photo preview when someone texts your link),
+                  your Google profile set up, a slim top banner for news, a one-page brand sheet (your colors and fonts, and your logo if you have one, ready for any designer), your web address’s
+                  first year, 30 days of settling-in tweaks, and a one-page “Your site” hand-off sheet. Color and Advance include up to 11 pages. Past that, we agree the price together before I add any.</li>
+              <li><b>The price.</b> <span data-a="price">The price of your build</span>. Half to start (<span data-a="deposit">your deposit</span>),
+                  which holds your spot, and half at launch (<span data-a="balance">the balance</span>). By US bank account.</li>
+              <li><b>How we’ll work.</b> You send your content: the answers on this page and your photos. Once your deposit clears, I email you your launch date. Please send your answers, photos (or a yes to free stock photos) and account steps within a week. I make your changes as we go, and anything big and new I quote first, and nothing starts until you say yes. Two days before launch I send you a preview on a private link. You have those two days to look it over and tell me go, or not yet, plus any changes you’d like. If it is not yet, I tell you whether your launch date still works or we pick a new one. If your content comes later, your launch date moves back by the same number of days.</li>
+              <li><b>If life gets busy.</b> If your content isn’t in 30 days after you say yes, I’ll nudge you gently. At 60 days the project closes,
+                  so my calendar stays fair to everyone waiting. Your deposit covers the work done so far, and if you pick it back up within a year,
+                  it counts toward finishing.</li>
+              <li><b>Launch.</b> Your site goes live at your own web address, I hand you the logins to the accounts I set up for you, and the second half is due. Then 30 days of settling-in tweaks are included.</li>
+              <li><b>After launch.</b> <span data-a="after-long">Your subscription, at your build’s monthly price ($12, $45 or $90 a month), starting after your 30 days of settling in.</span>
+                  Your subscription doesn’t cover Stripe’s card fee (about 2.9% + 30¢ per payment, taken from your own sales), paid plans of apps you already use (like Square,
+                  Vagaro or Acuity), ads, or the paid plan of your newsletter tool, Buttondown.</li>
+              <li><b>What’s yours.</b> Everything: your site, your words, your photos, your web address (with you as its legal owner, even while
+                  I hold it and renew it for you as part of your subscription), your Google profile,
+                  your newsletter list, and your booking and payment accounts. Any account I set up for you, like your newsletter or booking,
+                  is made in your name, with your email, and its own strong password, which I hand you at launch for you to change. A Google
+                  profile I build for you is yours at launch too: I make you its owner. After that, where I need a way in, I’m added
+                  as a helper. Taking payments? Stripe needs your own ID, tax number and bank account, so you make
+                  that account yourself, with my help over email, and add me as a Developer. I won’t ask for a password you already use. If you ever cancel your subscription,
+                  your site is still yours: I hand over every file and login within a week, your web address too, and your site stays up the whole time. With Advance, your booking,
+                  payments or shop can’t keep running on my server without a subscription, so I help you move them into your own accounts. Your subscription is monthly, and it ends at the
+                  end of the month you’ve paid for.</li>
+              <li><b>Hosting.</b> Hosting is part of your subscription, so there’s nothing else to pay for it. Most sites live on GitHub Pages; an Advance site
+                  that takes payments or runs a shop lives on Cloudflare Pages. If either one ever changes its rules or prices, moving your site is
+                  part of your subscription too. If you ever cancel it, your files are yours to host anywhere you like.</li>
+              <li><b>Your part.</b> Send only photos, logos and words you have the right to use, and tell me if anything on your site is wrong.
+                  While I build, click the one or two confirm-your-email messages from the accounts I set up for you.</li>
+              <li><b>Honest limits.</b> I build carefully for Google, but no one can promise a ranking or a number of new clients. Outside services
+                  (Google, your booking app, your payment company, your newsletter app, Porkbun) have their own rules and prices, which can change; the prices here are
+                  estimates as of October 2026.</li>
+              <li><b>Upgrading later.</b> If you outgrow your build, what you paid counts toward a bigger one.</li>
+              <li><b>Privacy.</b> What you share here is only for building your site. I don’t share or sell it.</li>
+            </ol>
+            <p class="copy-note">Once you send this page, I’ll email you a copy of this agreement, signed by me too.</p>
+          </div>
+        </details>
+
+        <div class="sign">
+          <label class="tick"><input type="checkbox" name="agree" value="yes" id="f-agree"> I’ve read it, and I agree.</label>
+          <p class="err" id="e-f-agree" hidden></p>
+          <div class="q" id="sig-typed" style="margin-top: 12px">
+            <label class="main" for="f-sig">Type your full name to sign</label>
+            <input type="text" id="f-sig" name="signature" class="sig" autocomplete="name" maxlength="120">
+            <p class="err" id="e-f-sig" hidden></p>
+            <p class="dated" id="sig-date">Signed today</p>
+          </div>
+          <!-- Taya's link gave their name (full): one tap signs with it. signed_by_tap keeps how it was signed -->
+          <input type="hidden" name="signed_by_tap" id="f-sig-tap" value="">
+          <div class="tap-sign" id="tap-sign" hidden>
+            <p class="tap-hint" id="tap-hint">Tick the box, and you can sign with one tap.</p>
+            <button type="button" class="btn" id="tap-sign-btn" hidden><span id="tap-sign-label">Sign</span></button>
+            <p class="signed-as" id="tap-signed" tabindex="-1" hidden><svg aria-hidden="true"><use href="#i-check"/></svg><span id="tap-signed-text"></span></p>
+            <p class="err" id="e-tap-sign" hidden></p>
+            <p class="dated" id="tap-date">Dated today</p>
+            <button type="button" class="later" id="sig-own">Not you? Sign with your own name</button>
+          </div>
+          <div class="opt-line">
+            <label class="tick"><input type="checkbox" name="show_in_work" value="yes"> It’s fine to show my finished site in your recent work (optional, and you can change your mind).</label>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Your deposit</h3>
+        <div class="pay-card" id="pay-card">
+          <p class="pay-amt" id="pay-amt">$0</p>
+          <p class="pay-what" id="pay-what">Pick your build, and your deposit shows up here.</p>
+          <a class="btn" id="pay-btn" target="_blank" rel="noopener" hidden><span id="pay-label">Pay my deposit</span></a>
+          <p class="gate" id="pay-gate" hidden>Please sign the agreement just above first. It’s short, I promise.</p>
+          <p class="preview-say" id="pay-preview" role="status"></p>
+          <p class="pay-note" id="pay-note" hidden>It opens in a new tab, so this page stays right here. It takes a US bank account, and your bank details go to Stripe, not to me.</p>
+        </div>
+        <div class="ticks" style="margin-top: 12px">
+          <label class="tick"><input type="checkbox" name="deposit_paid" value="yes"> I’ve paid my deposit</label>
+        </div>
+        <div class="step-foot">
+          <button type="button" class="btn" data-next><span>Done, next step</span></button>
+          <button type="button" class="later" data-skip>Skip for now</button>
+          <p class="foot-hint">Questions about the agreement? Skip it, and email me. We’ll go through it together.</p>
         </div>
       </div>
     </li>
@@ -2001,26 +2018,6 @@
       a: [['own', 'Yes'], ['stock', 'Free stock photos are fine'], ['mix', 'A mix'], ['idk', 'I don’t know']],
       said: { own: 'your own photos', stock: 'free stock photos', mix: 'your photos plus free ones', idk: 'not sure about photos' },
       reply: { stock: 'Easy. I’ll pick calm ones that fit your work, and whenever you have your own, just email them and I’ll swap them in.' } },
-    { id: 'domain', q: 'A web address already?', small: 'Like yourname.com.',
-      a: [['yes', 'Yes'], ['no', 'No'], ['unsure', 'I don’t know']],
-      said: { yes: 'a web address', no: 'no web address yet', unsure: 'maybe a web address' },
-      reply: { yes: 'Lovely. It stays yours: we point it at your new site, or move it in with mine so your subscription renews it.',
-        no: 'Then we’ll choose one together. The first year comes with your build, and your subscription looks after it from then on.', unsure: 'No problem. We’ll check together over email.' } },
-    { id: 'booking', q: 'A booking app you use now?',
-      a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking'], ['idk', 'I don’t know']],
-      said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking', idk: 'not sure about booking' },
-      reply: { has: 'Lovely. Whichever build you pick, your Book now button opens it, so nothing changes for you or your clients. With Advance, you can keep it, or have booking run right on your site instead, on my server.', want: 'Lovely. With Color, I’ll set you up with Cal.com, free and in your name, and your Book now button goes straight to it. With Advance, booking runs right on your site, on my server.' } },
-    { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true, sub: true,
-      a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
-      said: Object.assign({}, APPS, { other: 'your booking app' }) },
-    { id: 'sell', q: 'Will you sell anything online?', small: 'Like gift certificates, deposits or a few products.',
-      a: [['yes', 'Yes'], ['no', 'No'], ['idk', 'I don’t know']],
-      said: { yes: 'selling online', no: 'no selling online', idk: 'not sure about selling online' },
-      reply: { yes: 'Selling on your site is part of Advance: a small shop, up to 20 items, in your own accounts.' } },
-    { id: 'news', q: 'And a newsletter, to write to your people now and then?',
-      a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No'], ['idk', 'I don’t know']],
-      said: { yes: 'yes to a newsletter', later: 'a newsletter maybe later', no: 'no newsletter', idk: 'not sure about a newsletter' },
-      reply: { yes: 'A newsletter sign-up comes with Color and Advance, with your list in your own free Buttondown account. I set it up for you, in your name.', later: 'Easy to add anytime.' } }
   ];
   // which build their answers point to (Pollen, Oct 1: people should know what they're signing up for as they answer)
   const BUILD_NAME = { maiden: BUILDS.maiden.name, mother: BUILDS.mother.name, crone: BUILDS.crone.name };
@@ -2760,6 +2757,7 @@
   $('#pay-btn').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !$('#pay-btn').href) { e.preventDefault(); $('#pay-btn').click(); } });
 
   function renderAll() {
+    applyTier(); syncLegacy(); renderExplain();
     const c = choices(), m = priceModel(c);
     renderBuildPrices(c); renderReceipt(c, m); renderPlan(c); renderAgreement(c, m); renderDeposit(c, m);
     renderSteps();
@@ -2840,6 +2838,177 @@
   // that fills it in, so nobody waits on a half-finished list. A few boxes are answered another way and are left out:
   // the signature (the agreement check), the name and email (their own checks), the email for their accounts (blank means
   // their contact email) and the album link (the other way to send photos).
+  /* ================= what the build includes: the build's own questions (Nov 15 2026, Pollen) =================
+     Asked before the agreement and deposit, once each, only for their build. Every question is required and has
+     "I don’t know". Their answers ride along in extras.tier_answers; the old extras (email, newsletter, booking,
+     selling) are worked out from them, so the price and the Studio read the same as before. */
+  const YN = [['yes', 'Yes'], ['no', 'No'], ['idk', 'I don’t know']];
+  const P_ = ['maiden'], C_ = ['mother'], A_ = ['crone'], MC_ = ['mother', 'crone'], ALL_ = ['maiden', 'mother', 'crone'];
+  const BOOK_TOOLS = [['vagaro', 'Vagaro'], ['square', 'Square'], ['acuity', 'Acuity'], ['mindbody', 'Mindbody'], ['calcom', 'Cal.com'], ['other', 'Another one (type its name)'], ['idk', 'I don’t know']];
+  const NEWS_TOOLS = [['kit', 'Kit'], ['mailchimp', 'Mailchimp'], ['substack', 'Substack'], ['beehiiv', 'beehiiv'], ['mailerlite', 'MailerLite'], ['flodesk', 'Flodesk'],
+    ['klaviyo', 'Klaviyo'], ['cc', 'Constant Contact'], ['sqwix', 'Squarespace or Wix email'], ['other', 'Another one (type its name)'], ['idk', 'I don’t know']];
+  // the fine print for a newsletter tool they keep (Research, checked Nov 15 2026; a star on the lines we can't promise)
+  const NEWS_STARS = {
+    mailchimp: '* Mailchimp’s free plan is 250 contacts; past that you pay Mailchimp, and a Mailchimp badge shows on the free plan.',
+    substack: '* Substack’s sign-up form can’t be restyled to match your site.',
+    beehiiv: '* Moving a beehiiv list to Buttondown isn’t something Buttondown documents; a simple spreadsheet export usually works.',
+    mailerlite: '* MailerLite’s free plan is 250 subscribers, and its logo stays on the form.',
+    flodesk: '* I can’t confirm which Flodesk plans allow a sign-up form on another site, so we’ll check together.',
+    klaviyo: '* I can’t build this one in: it’s made for online stores. I’ll move your list to Buttondown, or link to your sign-up page.',
+    cc: '* I can’t build this one in, and it has no free plan. I’ll move your list to Buttondown, or link to your sign-up page.',
+    sqwix: '* I can’t build this one into another site. I’ll move your list to Buttondown, or link to your sign-up page.'
+  };
+  const BD_STAR = '* Buttondown is free for your first 100 subscribers, then Buttondown’s own plan, in your own account.';
+  const TQ = [
+    // Pocket
+    { k: 'radio', n: 't_pbook', tiers: P_, q: 'Do you have a booking or ordering page now?', opts: [['yes', 'Yes'], ['no', 'No, I don’t need one'], ['want', 'No, I’d like one'], ['idk', 'I don’t know']] },
+    { k: 'text', id: 'f-t-plink', tiers: P_, when: ['t_pbook', ['yes']], q: 'Paste its link, or tell me which app', hint: 'Your Book now button links to it.', ph: 'a link, or Vagaro, Square…' },
+    { k: 'note', tiers: P_, when: ['t_pbook', ['want']], text: 'I suggest Cal.com, free for one person. You set it up in your own name and send me your booking link. Your Book now button will link to it.' },
+    { k: 'radio', n: 't_previews', tiers: P_, q: 'Show your reviews on your site?', hint: 'New ones are added as they come in.', opts: YN },
+    { k: 'radio', n: 't_pholidays', tiers: P_, q: 'Update your holiday hours on your site and your Google profile?', opts: YN },
+    // Color: booking
+    { k: 'radio', n: 't_cbook', tiers: C_, q: 'Do you use a booking tool now?', opts: YN },
+    { k: 'radio', n: 't_cbookapp', tiers: C_, when: ['t_cbook', ['yes']], q: 'Which one?', opts: BOOK_TOOLS },
+    { k: 'text', id: 'f-t-cbookother', tiers: C_, when: ['t_cbookapp', ['other']], q: 'What’s it called?', ph: 'the name of your booking tool' },
+    { k: 'radio', n: 't_cbookkeep', tiers: C_, when: ['t_cbook', ['yes']], q: 'Keep it, or have me set up a free Cal.com instead?', opts: [['keep', 'Keep it, my Book now button opens it'], ['cal', 'Set up a free Cal.com for me'], ['idk', 'I don’t know']] },
+    { k: 'radio', n: 't_cbookwant', tiers: C_, when: ['t_cbook', ['no']], q: 'Want me to set up a free Cal.com in your name?', hint: 'Free for one person. Clients pick a time, and you both get reminders.', opts: [['yes', 'Yes'], ['no', 'No, I don’t need booking'], ['idk', 'I don’t know']] },
+    // Advance: booking
+    { k: 'radio', n: 't_abook', tiers: A_, q: 'How should booking work?', hint: 'Built into your site runs on my server, in your name.', opts: [['built', 'Built into your site'], ['keep', 'Keep my booking app (Book now opens it)'], ['none', 'No online booking'], ['idk', 'I don’t know']] },
+    { k: 'text', id: 'f-t-abookapp', tiers: A_, when: ['t_abook', ['keep']], q: 'Which booking app?', ph: 'Vagaro, Square, Acuity…' },
+    { k: 'radio', n: 't_abookmove', tiers: A_, when: ['t_abook', ['built']], q: 'Do you have clients booked in another app now that we should move across?', hint: 'Moving them is included.', opts: YN },
+    // Color and Advance: newsletter and the shared lines
+    { k: 'radio', n: 't_news', tiers: MC_, q: 'Do you have a newsletter now?', opts: YN },
+    { k: 'radio', n: 't_newsapp', tiers: MC_, when: ['t_news', ['yes']], q: 'Which one?', opts: NEWS_TOOLS },
+    { k: 'text', id: 'f-t-newsother', tiers: MC_, when: ['t_newsapp', ['other']], q: 'What’s it called?', ph: 'the name of your newsletter tool' },
+    { k: 'radio', n: 't_newskeep', tiers: MC_, when: ['t_news', ['yes']], q: 'Keep it, or move to a Buttondown list I set up for you?', opts: [['keep', 'Keep it, the sign-up on my site connects to it'], ['move', 'Move to a Buttondown list'], ['idk', 'I don’t know']] },
+    { k: 'note', tiers: MC_, dyn: () => (radio('t_news') === 'yes' && radio('t_newskeep') !== 'move' ? (NEWS_STARS[radio('t_newsapp')] || '') : '') },
+    { k: 'radio', n: 't_newswant', tiers: MC_, when: ['t_news', ['no']], q: 'Want a sign-up on your site, with a Buttondown list I set up for you?', opts: YN },
+    { k: 'note', tiers: MC_, dyn: () => ((radio('t_news') === 'yes' && radio('t_newskeep') === 'move') || (radio('t_news') === 'no' && radio('t_newswant') === 'yes') ? BD_STAR : '') },
+    { k: 'radio', n: 't_email', tiers: MC_, q: 'Email from your domain address, like you@yourbusiness.com?', opts: YN },
+    { k: 'radio', n: 't_form', tiers: MC_, q: 'A contact form, so people can message you from your site?', opts: YN },
+    { k: 'radio', n: 't_ig', tiers: MC_, q: 'Your Instagram feed on your site, filling itself in as you post?', opts: YN },
+    { k: 'text', id: 'f-t-ig', tiers: MC_, when: ['t_ig', ['yes']], q: 'Your Instagram handle', ph: '@yourbusiness' },
+    { k: 'radio', n: 't_gp', tiers: MC_, q: 'Your Instagram or Facebook posts shown on your Google profile too?', hint: 'I only post what you’ve made or said yes to.', opts: YN },
+    // Color: its own small shop and gift cards
+    { k: 'radio', n: 't_shop', tiers: C_, q: 'A small shop, up to 5 products, with buy buttons?', hint: 'It runs through your own Stripe account, and Stripe’s normal card fee applies.', opts: YN },
+    { k: 'radio', n: 't_shopwhere', tiers: C_, when: ['t_shop', ['yes']], q: 'Do you already sell somewhere?', opts: [['link', 'Yes, link to where I sell'], ['setup', 'No, set up the small shop for me'], ['idk', 'I don’t know']] },
+    { k: 'radio', n: 't_gift', tiers: C_, q: 'Gift cards, through Gift Up in your own account?', hint: 'Gift Up’s small fee applies.', opts: YN },
+    // Advance: its own booking-adjacent lines
+    { k: 'radio', n: 't_pay', tiers: A_, q: 'Take payments on your site, through your own Stripe?', hint: 'The money goes straight to you. Stripe keeps about 2.9% + 30¢ per payment.', opts: YN },
+    { k: 'radio', n: 't_ashop', tiers: A_, q: 'A shop, up to about 20 items, in your own Stripe?', opts: YN },
+    { k: 'radio', n: 't_ashopwhere', tiers: A_, when: ['t_ashop', ['yes']], q: 'Do you sell somewhere else now?', opts: [['move', 'Yes, move it onto my site'], ['link', 'Yes, link to where I sell'], ['new', 'No, I’m starting fresh'], ['idk', 'I don’t know']] },
+    { k: 'radio', n: 't_acert', tiers: A_, q: 'Gift certificates sold through your own Stripe?', opts: YN },
+    { k: 'radio', n: 't_flyer', tiers: A_, q: 'A monthly event flyer, made and posted for you?', opts: YN },
+    // food and drink (Color and Advance)
+    { k: 'radio', n: 't_food', tiers: MC_, q: 'Is your business food or drink?', opts: [['yes', 'Yes'], ['no', 'No']] },
+    { k: 'radio', n: 't_menu', tiers: MC_, when: ['t_food', ['yes']], q: 'Your menu on your Google profile, kept matching your site?', opts: YN },
+    { k: 'radio', n: 't_dd', tiers: C_, when: ['t_food', ['yes']], q: 'Do you use DoorDash?', hint: 'A DoorDash button on your site links to your page.', opts: YN },
+    { k: 'text', id: 'f-t-ddlink', tiers: C_, when: ['t_dd', ['yes']], q: 'Paste your DoorDash page link', ph: 'https://…' },
+    { k: 'radio', n: 't_order', tiers: A_, when: ['t_food', ['yes']], q: 'Fuller direct ordering, with DoorDash’s free online ordering built into your site?', opts: YN },
+    // everyone
+    { k: 'radio', n: 't_domain', tiers: ALL_, q: 'Do you have a web address already?', hint: 'Like yourname.com.', opts: [['yes', 'Yes'], ['no', 'No, help me pick one'], ['idk', 'I don’t know']] },
+    { k: 'text', id: 'f-t-domain', tiers: ALL_, when: ['t_domain', ['yes']], q: 'Paste it here', ph: 'yourname.com' }
+  ];
+  const TQ_BY = {};
+  (function buildTier() {
+    const box = document.getElementById('tier-q');
+    TQ.forEach((it) => {
+      let el;
+      if (it.k === 'radio') {
+        el = make('fieldset', 'group tq');
+        el.append(Object.assign(make('legend', 'main'), { textContent: it.q }));
+        if (it.hint) el.append(make('p', 'hint', it.hint));
+        const opts = make('div', 'opts');
+        it.opts.forEach(([v, label]) => {
+          const l = make('label', 'opt'), i = document.createElement('input');
+          i.type = 'radio'; i.name = it.n; i.value = v;
+          l.append(i, make('span', null, label)); opts.append(l);
+        });
+        el.append(opts);
+        const err = make('p', 'err'); err.id = 'e-' + it.n; err.hidden = true; el.append(err);
+        TQ_BY[it.n] = it;
+      } else if (it.k === 'text') {
+        el = make('div', 'q tq');
+        const lab = make('label', 'main', it.q); lab.htmlFor = it.id;
+        const inp = document.createElement('input'); inp.type = 'text'; inp.id = it.id; inp.name = it.id.replace(/^f-/, '').replace(/-/g, '_'); inp.maxLength = 300;
+        if (it.ph) inp.placeholder = it.ph;
+        el.append(lab);
+        if (it.hint) el.append(make('p', 'hint', it.hint));
+        el.append(inp);
+      } else {
+        el = make('p', 'soft-note tq-note'); if (it.text) el.textContent = it.text;
+      }
+      el.hidden = true; it.el = el; box.append(el);
+    });
+  })();
+  // which of them show: only their build's, and a follow-up only when its parent shows and was answered that way
+  function applyTier() {
+    const b = radio('build'), known = !!BUILDS[b];
+    $('#tier-intro').textContent = known ? 'These are the choices for ' + BUILDS[b].name + '. Every one needs an answer, and “I don’t know” counts.'
+      : b === 'unsure' ? 'No problem. We’ll decide your build over email, so there’s nothing to answer here yet.' : 'Pick your build first, and I’ll ask only what that build needs.';
+    TQ.forEach((it) => {
+      let on = known && it.tiers.includes(b);
+      if (on && it.when) { const par = TQ_BY[it.when[0]]; on = !!par && !par.el.hidden && it.when[1].includes(radio(it.when[0])); }
+      if (on && it.dyn) { const t = it.dyn(); it.el.textContent = t; on = !!t; }
+      it.el.hidden = !on;
+    });
+  }
+  const tierLeft = () => TQ.find((it) => it.k === 'radio' && !it.el.hidden && !radio(it.n));
+  // the old extras the price and the Studio read, worked out from what they said
+  function syncLegacy() {
+    const b = radio('build'); if (!BUILDS[b]) return;
+    const a = radio;
+    let booking = 'none', news = false, email = false, sell = false;
+    if (b === 'maiden') booking = (a('t_pbook') === 'yes' || a('t_pbook') === 'want') ? 'current' : 'none';
+    else {
+      email = a('t_email') === 'yes';
+      news = a('t_news') === 'yes' ? a('t_newskeep') === 'move' : a('t_newswant') === 'yes';
+      if (b === 'mother') {
+        booking = a('t_cbook') === 'yes' ? (a('t_cbookkeep') === 'cal' ? 'calcom' : 'current') : (a('t_cbookwant') === 'yes' ? 'calcom' : 'none');
+        sell = a('t_shop') === 'yes';
+      } else {
+        booking = { built: 'calcom', keep: 'current' }[a('t_abook')] || 'none';
+        sell = a('t_pay') === 'yes' || a('t_ashop') === 'yes' || a('t_acert') === 'yes';
+      }
+    }
+    const setBox = (name, on) => { const el = form.querySelector('input[name="' + name + '"]'); if (el) el.checked = on; };
+    setBox('x_email', email); setBox('x_news', news); setBox('x_sell', sell);
+    const r = form.querySelector('input[name="x_booking"][value="' + booking + '"]'); if (r) r.checked = true;
+  }
+  function tierAnswers() {
+    const out = {};
+    TQ.forEach((it) => {
+      if (it.el.hidden) return;
+      if (it.k === 'radio') { const v = radio(it.n); if (v) out[it.n] = v; }
+      else if (it.k === 'text') { const v = (document.getElementById(it.id).value || '').trim(); if (v) out[it.id.replace(/^f-/, '').replace(/-/g, '_')] = v; }
+    });
+    return out;
+  }
+  function tierRows() {
+    const rows = [];
+    TQ.forEach((it) => {
+      if (it.el.hidden) return;
+      if (it.k === 'radio') { const v = radio(it.n), o = it.opts.find((x) => x[0] === v); rows.push([it.q, o ? o[1] : '']); }
+      else if (it.k === 'text') rows.push([it.q, (document.getElementById(it.id).value || '').trim()]);
+    });
+    return rows;
+  }
+  // the build explainer: a dropdown that opens when they pick
+  const BUILD_MADE = {
+    maiden: 'One page with who you are, what you offer and how to reach you. Your Book now button opens the booking page you already have.',
+    mother: 'A full site, built with outside tools that stay in your own accounts: Cal.com for booking, Buttondown for your newsletter, Stripe if you sell. Next I’ll ask what you already use, so we keep what works.',
+    crone: 'Everything in Color, plus booking, payments or a shop built right into your site (up to about 20 items), through your own accounts. Next I’ll ask, piece by piece, whether to build it in or keep what you use now.'
+  };
+  let lastBuildShown = '';
+  function renderExplain() {
+    const b = radio('build'), box = document.getElementById('build-explain');
+    if (!BUILDS[b]) { box.hidden = true; lastBuildShown = ''; return; }
+    box.hidden = false;
+    document.getElementById('be-sum').textContent = 'What ' + BUILDS[b].name + ' is made of';
+    document.getElementById('be-text').textContent = BUILD_MADE[b];
+    if (b !== lastBuildShown) { box.open = true; lastBuildShown = b; }
+  }
+
   const IDK = 'I don’t know';
   const NOT_ASKED = new Set(['f-hp', 'f-sig', 'f-name', 'f-email', 'f-acctemail', 'f-album']);
   const askedBoxes = () => [...form.querySelectorAll('input[type="text"], textarea')].filter((el) => el.id && !NOT_ASKED.has(el.id));
@@ -2893,9 +3062,19 @@
       const y = CHECKS.you(), a = CHECKS.agree(true);
       return b || y || a;
     },
+    tier() {
+      let first = null;
+      TQ.forEach((it) => {
+        if (it.k !== 'radio') return;
+        const bad = !it.el.hidden && !radio(it.n);
+        setErr(null, document.getElementById('e-' + it.n), bad ? 'This one needs an answer. “I don’t know” counts.' : '');
+        if (bad && !first) first = it.el.querySelector('input');
+      });
+      return first;
+    },
     // every question needs an answer, and "I don’t know" counts
     answers() {
-      let first = null;
+      let first = CHECKS.tier();
       askedBoxes().forEach((el) => {
         const msg = document.getElementById('e-' + el.id);
         const fine = !applicable(el) || !!el.value.trim();
@@ -3086,11 +3265,11 @@
     return {
       // (phone stays in the record for the same PocketBase fields; it's always empty now, since everything is by email)
       name: val('f-name'), business: val('f-biz'), email: val('f-email'), phone: '',
-      website: val('f-site'), domain_wish: said('f-domain'),
+      website: val('f-site'), domain_wish: said('f-domain') || val('f-t-domain'),
       // care is part of every build now (monthly, at the build's price), so this is always 'monthly' and the
       // server's select field (monthly, yearly, none) still fits
       build: c.build, founding: c.founding, care: 'monthly',
-      extras: { send_email: c.email, newsletter: c.news, booking: c.booking || 'none', selling: c.sell },
+      extras: { send_email: c.email, newsletter: c.news, booking: c.booking || 'none', selling: c.sell, tier_answers: tierAnswers() },
       work: Object.assign({}, work, { mockup_changes: said('f-mock') }),
       look: { moods: have.kit === 'yes' ? [] : $$('input[name="moods"]:checked').map((i) => i.value), colors_love: said('f-love'), colors_avoid: said('f-avoid'), sites: said('f-sites'),
         has_brand_kit: kit, has_logo: have.logo || (files.logo.length ? 'yes' : ''), anything_to_change: said('f-change') },
@@ -3133,7 +3312,7 @@
     const extras = [r.extras.send_email && 'email from my domain address', r.extras.newsletter && 'a newsletter', bookingName !== 'No online booking' && bookingName.toLowerCase().replace('cal.com', 'Cal.com'), r.extras.selling && 'taking payments online'].filter(Boolean);
     const stepName = (id) => $('.step-name', $('[data-step="' + id + '"]')).textContent.replace(/^Step \d+: /, '');
     const fileList = (k) => files[k].length ? files[k].map((f) => f.name).join(', ') : '';
-    const answerOf = (id) => { const q = qcById[id], a = q.a.find((x) => x[0] === have[id]); return a ? a[1] : ''; };
+    const answerOf = (id) => { const q = qcById[id]; if (!q) return ''; const a = q.a.find((x) => x[0] === have[id]); return a ? a[1] : ''; };
     const kitYes = have.kit === 'yes', photoStep = have.photos !== 'stock';
     const logo = have.logo === 'no' ? 'Not yet, my name in a nice font is fine'
       : fileList('logo') || (have.logo === 'yes' ? (kitYes ? (fileList('kit') ? 'With my brand kit' : 'Yes, with my brand kit') : 'Yes, not added yet') : '');
@@ -3156,6 +3335,7 @@
         ['In all', m.total]
       ]],
       ['You', [['Name', r.name], ['Business', r.business], ['Email', r.email], ['Website now', r.website]]],
+      ['What my build includes (my answers)', tierRows()],
       ['A few quick things', Q_WORK.map((id) => [labelOf(id), val(id)])],
       ['Your look', rows([
         !kitYes && ['Moods', r.look.moods.join(', ')], !kitYes && ['Colors you love', r.look.colors_love], !kitYes && ['Colors to avoid', r.look.colors_avoid], !kitYes && ['Pinterest mood board, or sites you like', r.look.sites],
@@ -3358,6 +3538,7 @@
       status.textContent = '';
       showDone(r);
     } catch (err) {
+      console.error('send failed', err && err.stack || err);
       status.className = 'status err';
       status.innerHTML = 'Hmm, that didn’t go through. Everything is still saved on this device, so nothing is lost. Try again in a minute, or email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out.';
     } finally {
@@ -3754,7 +3935,7 @@
       $('#mock-link').href = url; $('#mock-link').textContent = 'webfaery.love/peek/' + mock;
       $('#mock-q').hidden = false; $('#b-work').classList.add('has-mock');
       $('#s-work .st').textContent = 'Check your mockup';
-      $('#s-look').hidden = true;
+      $('#s-look').hidden = true; $('#s-tier').hidden = true;
       // (Oct 21 2026, Pollen via Process) with a mockup the page asks only for choices: the build, the agreement, then the
       // deposit last. What we already know is corrected on their magic site; their accounts are set up by Taya, and the
       // few hard steps they do come as short videos in their portal. So the work, look and accounts steps stay out of it.
