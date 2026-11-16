@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261115a">
+<link rel="stylesheet" href="reband-app.css?v=20261115b">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -934,7 +934,6 @@
     </div>
     <p class="sr-only" id="qc-live" aria-live="polite"></p>
     <div class="qc-foot">
-      <button type="button" class="later" id="qc-skip">Skip this and show me everything</button>
       <p class="qc-saved">Saves as you go</p>
     </div>
   </section>
@@ -1289,17 +1288,17 @@
           <p class="hint" id="h-offer">One line each: “60-minute massage, $90.”</p>
           <textarea id="f-offer" name="offer" class="short" aria-describedby="h-offer"></textarea>
         </div>
-        <div class="q">
+        <div class="q" data-if="off" hidden>
           <label class="main" for="f-when">Your hours, or the area you serve</label>
           <p class="hint" id="h-when">Rough is fine. Work from home? Your street address stays off your site.</p>
           <textarea id="f-when" name="when_where" class="short" aria-describedby="h-when"></textarea>
         </div>
-        <div class="q">
+        <div class="q" data-if="off" hidden>
           <label class="main" for="f-policies">Anything you want people to know</label>
           <p class="hint" id="h-policies">Like what to bring, how to book, or your cancellation policy.</p>
           <textarea id="f-policies" name="policies" class="short" aria-describedby="h-policies"></textarea>
         </div>
-        <div class="q">
+        <div class="q" data-if="off" hidden>
           <label class="main" for="f-words">Words you love, and words that make you cringe</label>
           <p class="hint" id="h-words">This shapes how your site sounds.</p>
           <textarea id="f-words" name="words" class="short" aria-describedby="h-words"></textarea>
@@ -1349,7 +1348,7 @@
         </div>
 
         <!-- the look questions, when there's no brand kit to go by -->
-        <div data-if="kit-not-yes">
+        <div data-if="off" hidden>
           <fieldset class="group first">
             <legend class="main">Which moods feel like you?</legend>
             <p class="hint">Pick any that ring true.</p>
@@ -1413,7 +1412,7 @@
             <p class="file-count" data-count="photos"></p>
           </div>
           <p class="again" data-again="photos" hidden></p>
-          <div class="q">
+          <div class="q" data-if="off" hidden>
             <label class="main" for="f-album">Or share a link to an album <span class="opt-tag">(handy for lots of photos)</span></label>
             <input type="text" id="f-album" name="album_link" inputmode="url" maxlength="500" spellcheck="false" placeholder="a Google Photos, iCloud or Dropbox link">
           </div>
@@ -1988,36 +1987,36 @@
   const APPS = { vagaro: 'Vagaro', square: 'Square', acuity: 'Acuity', mindbody: 'Mindbody', calcom: 'Cal.com', other: 'another app' };
   const QC = [
     { id: 'logo', q: 'Do you have a logo?',
-      a: [['yes', 'Yes'], ['no', 'Not yet, my name in a nice font is fine']],
-      said: { yes: 'a logo', no: 'your name in a nice font (no logo needed)' },
+      a: [['yes', 'Yes'], ['no', 'Not yet, my name in a nice font is fine'], ['idk', 'I don’t know']],
+      said: { yes: 'a logo', no: 'your name in a nice font (no logo needed)', idk: 'not sure about a logo' },
       reply: { no: 'That works well. Your name set in a lovely font, chosen with your site, makes a simple wordmark. If you ever want a real logo, a logo or brand designer can make one, and your site will welcome it.' } },
     { id: 'kit', q: 'A brand kit from a designer?', small: 'Colors, fonts, logo files, that kind of thing.',
-      a: [['yes', 'Yes'], ['no', 'No']],
-      said: { yes: 'a brand kit', no: 'no brand kit' },
+      a: [['yes', 'Yes'], ['no', 'No'], ['idk', 'I don’t know']],
+      said: { yes: 'a brand kit', no: 'no brand kit', idk: 'not sure about a brand kit' },
       reply: { yes: 'Wonderful. That makes the look part quick.' } },
     { id: 'photos', q: 'Photos of your own to use?',
-      a: [['own', 'Yes'], ['stock', 'Free stock photos are fine'], ['mix', 'A mix']],
-      said: { own: 'your own photos', stock: 'free stock photos', mix: 'your photos plus free ones' },
+      a: [['own', 'Yes'], ['stock', 'Free stock photos are fine'], ['mix', 'A mix'], ['idk', 'I don’t know']],
+      said: { own: 'your own photos', stock: 'free stock photos', mix: 'your photos plus free ones', idk: 'not sure about photos' },
       reply: { stock: 'Easy. I’ll pick calm ones that fit your work, and whenever you have your own, just email them and I’ll swap them in.' } },
     { id: 'domain', q: 'A web address already?', small: 'Like yourname.com.',
-      a: [['yes', 'Yes'], ['no', 'No'], ['unsure', 'Not sure']],
+      a: [['yes', 'Yes'], ['no', 'No'], ['unsure', 'I don’t know']],
       said: { yes: 'a web address', no: 'no web address yet', unsure: 'maybe a web address' },
       reply: { yes: 'Lovely. It stays yours: we point it at your new site, or move it in with mine so your subscription renews it.',
         no: 'Then we’ll choose one together. The first year comes with your build, and your subscription looks after it from then on.', unsure: 'No problem. We’ll check together over email.' } },
     { id: 'booking', q: 'A booking app you use now?',
-      a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking']],
-      said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking' },
+      a: [['has', 'Yes'], ['want', 'No, I’d like one'], ['no-need', 'No, I don’t need booking'], ['idk', 'I don’t know']],
+      said: { has: 'your booking app', want: 'a booking app to set up', 'no-need': 'no online booking', idk: 'not sure about booking' },
       reply: { has: 'Lovely. Whichever build you pick, your Book now button opens it, so nothing changes for you or your clients. With Advance, you can keep it, or have booking run right on your site instead, on my server.', want: 'Lovely. With Color, I’ll set you up with Cal.com, free and in your name, and your Book now button goes straight to it. With Advance, booking runs right on your site, on my server.' } },
     { id: 'app', q: 'Which one?', when: (h) => h.booking === 'has', apps: true, sub: true,
       a: Object.keys(APPS).map((k) => [k, k === 'other' ? 'Other' : APPS[k]]),
       said: Object.assign({}, APPS, { other: 'your booking app' }) },
     { id: 'sell', q: 'Will you sell anything online?', small: 'Like gift certificates, deposits or a few products.',
-      a: [['yes', 'Yes'], ['no', 'No']],
-      said: { yes: 'selling online', no: 'no selling online' },
+      a: [['yes', 'Yes'], ['no', 'No'], ['idk', 'I don’t know']],
+      said: { yes: 'selling online', no: 'no selling online', idk: 'not sure about selling online' },
       reply: { yes: 'Selling on your site is part of Advance: a small shop, up to 20 items, in your own accounts.' } },
     { id: 'news', q: 'And a newsletter, to write to your people now and then?',
-      a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No']],
-      said: { yes: 'yes to a newsletter', later: 'a newsletter maybe later', no: 'no newsletter' },
+      a: [['yes', 'Yes'], ['later', 'Maybe later'], ['no', 'No'], ['idk', 'I don’t know']],
+      said: { yes: 'yes to a newsletter', later: 'a newsletter maybe later', no: 'no newsletter', idk: 'not sure about a newsletter' },
       reply: { yes: 'A newsletter sign-up comes with Color and Advance, with your list in your own free Buttondown account. I set it up for you, in your name.', later: 'Easy to add anytime.' } }
   ];
   // which build their answers point to (Pollen, Oct 1: people should know what they're signing up for as they answer)
@@ -3440,7 +3439,7 @@
     if (complete) $('#qc-count').append(make('b', null, 'All ' + main.length + ' answered, thank you!'), ' Your list: ' + sizeText() + '.');
     else $('#qc-count').append(make('b', null, done + ' of ' + main.length), ' answered');
     $('#qc-meter').style.width = (100 * done / main.length).toFixed(1) + '%';
-    $('#qc-skip').hidden = complete;
+    
     if (!qcOpen) { qcShownReplies = new Set(); return; }
 
     const list = $('#qc-list');
@@ -3495,7 +3494,7 @@
     requestAnimationFrame(() => { scrollToEl($('#qc')); $('#qc-title').focus({ preventScroll: true }); });
   }
   $('#qc-go').addEventListener('click', showList);
-  $('#qc-skip').addEventListener('click', () => { qcSkipped = true; showList(); });
+  
   $('#qc-change').addEventListener('click', openQC);
   $$('[data-qc-change]').forEach((b) => b.addEventListener('click', openQC));
   $('#build-change').addEventListener('click', () => {
@@ -3744,8 +3743,9 @@
       // (Oct 21 2026, Pollen via Process) with a mockup the page asks only for choices: the build, the agreement, then the
       // deposit last. What we already know is corrected on their magic site; their accounts are set up by Taya, and the
       // few hard steps they do come as short videos in their portal. So the work, look and accounts steps stay out of it.
-      if (SIMPLE_START) { $('#s-work').hidden = true; $('#s-accounts').hidden = true; }
+      if (SIMPLE_START) { $('#s-work').hidden = true; }
     }
+    $('#s-accounts').hidden = true; // Nov 15 2026: accounts are portal to-dos now, not start-page questions
     // what Taya's link knows about them (read from the fragment at the very top): filled in, unless they've
     // already typed something there themselves or opened it to change
     if (!opened.you) {
