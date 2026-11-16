@@ -53,7 +53,7 @@
   sec.style.setProperty('--pp-a', accent); sec.style.setProperty('--pp-on', on);
   sec.innerHTML = '<div class="pp-wrap"><span class="pp-tag">A sample, not your real one</span><h2 id="pp-h">A peek at your portal</h2>' +
     '<p class="pp-sub">When you say yes, I open a private portal for ' + biz.replace(/</g, '') + ': your to-dos in order, your agreement and your project in one place, so nothing gets lost in an email. Try it below.</p>' +
-    '<div class="pp-card"><div class="pp-tabs" role="tablist"><button role="tab" aria-selected="true" data-t="todos">Your to-dos</button><button role="tab" aria-selected="false" data-t="agree">Your agreement</button><button role="tab" aria-selected="false" data-t="proj">Your project</button><button role="tab" aria-selected="false" data-t="biz" id="pp-biz-tab" hidden>Your business <small>(In Bloom)</small></button></div><div class="pp-body"></div></div>' +
+    '<div class="pp-card"><div class="pp-tabs" role="tablist"><button role="tab" aria-selected="true" data-t="todos">Your to-dos</button><button role="tab" aria-selected="false" data-t="agree">Your agreement</button><button role="tab" aria-selected="false" data-t="proj">Your project</button><button role="tab" aria-selected="false" data-t="biz" id="pp-biz-tab" hidden>Your business <small>(Advance)</small></button></div><div class="pp-body"></div></div>' +
     '<p class="pp-foot">Already have one? <a href="https://webfaery.love/portal.html">Log in</a>. Nothing here is sent or saved anywhere.</p></div>';
   var foot = document.querySelector('footer');
   if (foot && foot.parentNode) foot.parentNode.insertBefore(sec, foot); else (document.querySelector('main') || document.body).appendChild(sec);
@@ -84,7 +84,7 @@
     body.innerHTML = '<p>Your project page shows where things stand, so you never have to ask.</p><div class="pp-steps">' + steps.map(function (s, i) { return '<span class="' + (i < 1 ? 'done' : i === 1 ? 'now' : '') + '">' + s + '</span>'; }).join('') + '</div><p class="pp-foot">The step glows when I am waiting on you, and goes quiet when it is my turn.</p>';
   }
   function bizTab() {
-    var h = '<p>With <b>In Bloom</b>, your bookings, shop and gift certificates live in the same portal, running on my server, with nothing separate to pay for. These are made-up examples.</p>';
+    var h = '<p>With <b>Advance</b>, your bookings, shop and gift certificates live in the same portal, running on my server, with nothing separate to pay for. These are made-up examples.</p>';
     if (BZ.b.length) { h += '<p><b>' + BZ.bl + '</b></p><ul>'; BZ.b.forEach(function (x, i) { h += '<li><div><label>' + x[0] + '</label><br><span style="opacity:.8">' + x[1] + '</span></div><button type="button" class="pp-btn ghost" data-block="' + i + '" style="margin-left:auto">Block this time</button></li>'; }); h += '</ul>'; }
     if (BZ.s.length) { h += '<p><b>Your shop</b></p><ul>'; BZ.s.forEach(function (x, i) { h += '<li><div><label>' + x[0] + '</label><br><span style="opacity:.8" data-st="' + i + '">' + x[1] + '</span></div><button type="button" class="pp-btn ghost" data-sold="' + i + '" style="margin-left:auto">Mark sold out</button></li>'; }); h += '</ul>'; }
     if (BZ.g) h += '<p><b>Gift certificates</b></p><p><input class="pp-in" id="pp-gc" placeholder="Look up a code, like GIFT-4821" aria-label="Look up a gift certificate code"> <button type="button" class="pp-btn ghost" data-gc>Look up</button></p><div class="pp-msg" role="status"></div>';
