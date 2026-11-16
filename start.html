@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261116a">
+<link rel="stylesheet" href="reband-app.css?v=20261116c">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -1419,7 +1419,7 @@
           <p class="pay-amt" id="pay-amt">$0</p>
           <p class="pay-what" id="pay-what">Pick your build, and your deposit shows up here.</p>
           <a class="btn" id="pay-btn" target="_blank" rel="noopener" hidden><span id="pay-label">Pay my deposit</span></a>
-          <p class="gate" id="pay-gate" hidden>Please sign the agreement just above first. It’s short, I promise.</p>
+          <p class="gate" id="pay-gate" hidden>Please tick the box and sign the agreement just above first. It’s short, I promise.</p>
           <p class="preview-say" id="pay-preview" role="status"></p>
           <p class="pay-note" id="pay-note" hidden>It opens in a new tab, so this page stays right here. It takes a US bank account, and your bank details go to Stripe, not to me.</p>
         </div>
@@ -2734,7 +2734,13 @@
     const c = choices(), b = BUILDS[c.build];
     const agreed = $('#f-agree').checked && !!val('f-sig');
     const link = depositLinkFor(c, priceModel(c));
-    if (!agreed) { e.preventDefault(); $('#pay-preview').textContent = ''; $('#pay-gate').hidden = false; return; }
+    if (!agreed) {
+      e.preventDefault(); $('#pay-preview').textContent = ''; $('#pay-gate').hidden = false;
+      // take them to the agreement: the box to tick and the name to sign
+      const tap = $('#tap-sign-btn'), target = $('#f-agree').checked && tap && !tap.closest('[hidden]') ? tap : ($('#f-agree').checked ? $('#f-sig') : $('#f-agree'));
+      const box = target.closest('.sign') || target; window.scrollTo({ top: box.getBoundingClientRect().top + window.scrollY - 90, behavior: 'auto' }); try { target.focus({ preventScroll: true }); } catch (_) {}
+      return;
+    }
     if (!isLink(link)) { e.preventDefault(); $('#pay-preview').textContent = 'Preview: the payment link isn’t added yet, so nothing opens. (' + link + ')'; }
   });
   $('#pay-btn').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !$('#pay-btn').href) { e.preventDefault(); $('#pay-btn').click(); } });
