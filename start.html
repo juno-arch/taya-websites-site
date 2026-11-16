@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261116d">
+<link rel="stylesheet" href="reband-app.css?v=20261116e">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -2881,6 +2881,7 @@
     { k: 'radio', n: 't_ig', tiers: MC_, q: 'Your Instagram feed on your site, filling itself in as you post?', opts: YN },
     { k: 'text', id: 'f-t-ig', tiers: MC_, when: ['t_ig', ['yes']], q: 'Your Instagram handle', ph: '@yourbusiness' },
     { k: 'radio', n: 't_gp', tiers: MC_, q: 'Your Instagram or Facebook posts shown on your Google profile too?', hint: 'I only post what you’ve made or said yes to.', opts: YN },
+    { k: 'text', id: 'f-t-gplink', tiers: MC_, when: ['t_gp', ['yes']], q: 'The link to your Instagram or Facebook page', ph: 'https://instagram.com/yourbusiness' },
     // Color: its own small shop and gift cards
     { k: 'radio', n: 't_shop', tiers: C_, q: 'A small shop, up to 5 products, with buy buttons?', hint: 'It runs through your own Stripe account, and Stripe’s normal card fee applies.', opts: YN },
     { k: 'radio', n: 't_shopwhere', tiers: C_, when: ['t_shop', ['yes']], q: 'Do you already sell somewhere?', opts: [['link', 'Yes, link to where I sell'], ['setup', 'No, set up the small shop for me'], ['idk', 'I don’t know']] },
