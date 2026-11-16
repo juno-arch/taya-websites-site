@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261116e">
+<link rel="stylesheet" href="reband-app.css?v=20261116f">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -2885,11 +2885,13 @@
     // Color: its own small shop and gift cards
     { k: 'radio', n: 't_shop', tiers: C_, q: 'A small shop, up to 5 products, with buy buttons?', hint: 'It runs through your own Stripe account, and Stripe’s normal card fee applies.', opts: YN },
     { k: 'radio', n: 't_shopwhere', tiers: C_, when: ['t_shop', ['yes']], q: 'Do you already sell somewhere?', opts: [['link', 'Yes, link to where I sell'], ['setup', 'No, set up the small shop for me'], ['idk', 'I don’t know']] },
+    { k: 'text', id: 'f-t-shopurl', tiers: C_, when: ['t_shopwhere', ['link']], q: 'Where do you sell? Paste the link', ph: 'https://etsy.com/shop/yourshop' },
     { k: 'radio', n: 't_gift', tiers: C_, q: 'Gift cards, through Gift Up in your own account?', hint: 'Gift Up’s small fee applies.', opts: YN },
     // Advance: its own booking-adjacent lines
     { k: 'radio', n: 't_pay', tiers: A_, q: 'Take payments on your site, through your own Stripe?', hint: 'The money goes straight to you. Stripe keeps about 2.9% + 30¢ per payment.', opts: YN },
     { k: 'radio', n: 't_ashop', tiers: A_, q: 'A shop, up to about 20 items, in your own Stripe?', opts: YN },
     { k: 'radio', n: 't_ashopwhere', tiers: A_, when: ['t_ashop', ['yes']], q: 'Do you sell somewhere else now?', opts: [['move', 'Yes, move it onto my site'], ['link', 'Yes, link to where I sell'], ['new', 'No, I’m starting fresh'], ['idk', 'I don’t know']] },
+    { k: 'text', id: 'f-t-ashopurl', tiers: A_, when: ['t_ashopwhere', ['move', 'link']], q: 'Where do you sell now? Paste the link', ph: 'https://etsy.com/shop/yourshop' },
     { k: 'radio', n: 't_acert', tiers: A_, q: 'Gift certificates sold through your own Stripe?', opts: YN },
     { k: 'radio', n: 't_flyer', tiers: A_, q: 'A monthly event flyer, made and posted for you?', opts: YN },
     // food and drink (Color and Advance)
