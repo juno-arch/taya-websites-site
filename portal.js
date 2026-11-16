@@ -59,7 +59,8 @@
   'use strict';
 
   /* ================= CONFIG ================= */
-  const DEMO = false;                                 // LIVE since Oct 1 2026 (server side switched on)
+  // (Nov 16 2026) the real portal as a made-up client: portal.html?demo=1 (or #demo) runs every tool on sample data (portal-sample.js), nothing is sent anywhere.
+  const DEMO = /[?&]demo(=1)?(&|$)/.test(location.search) || location.hash === '#demo'; // otherwise LIVE since Oct 1 2026
   const SERVER = 'https://bookings.gardenfaery.love'; // PocketBase (the page's security line allows only this)
   const SMS_SIGNIN = false;                           // true once WF_SMS_ENABLED=1 on the server
   const START_PAGE = 'start.html';
@@ -902,7 +903,7 @@
      reload opens the same place. On a phone the tabs sit in a dock at the bottom: up to five, or the first four
      and More. Ask Taya (asking for a change) is the bar's own button. */
   const PAGES = [
-    { id: 'project', label: 'Your project', short: 'Project', icon: 'i-path' },
+    { id: 'project', label: 'Web Faery', short: 'Web Faery', icon: 'i-star' }, // (Nov 16 2026, Pollen) the page about their build and me is called Web Faery
     { id: 'orders', label: 'Orders', icon: 'i-box' },
     { id: 'products', label: 'Products', icon: 'i-leaf' },
     { id: 'codes', label: 'Codes', icon: 'i-tag' },
@@ -934,7 +935,11 @@
     return tool || 'project';
   };
   let pagesSig = '';
-  const pageInfo = (id) => PAGES.find((x) => x.id === id) || PAGES[0];
+  // (Nov 16 2026) the project page is now called Web Faery; while it sits on the bar itself, the catch-all tab beside it says More
+  const pageInfo = (id) => {
+    const p = PAGES.find((x) => x.id === id) || PAGES[0];
+    return id === 'webfaery' && barIds().includes('project') ? Object.assign({}, p, { label: 'More', short: 'More', icon: 'i-more' }) : p;
+  };
   const pageHas = (id) => id === 'project' ? true : $$('#v-project > [data-page="' + id + '"]').some((el) => !el.hidden);
   // the order: while we build, their project comes right after Home; once the site is live, their own shop,
   // booking or newsletter comes first (that's what they'll open most)
@@ -3013,7 +3018,6 @@
   let shop = null;           // { shop: { name, test }, orders: [...] } as the server last sent it (cleaned)
   let ordersBusy = false;
   async function loadOrders() {
-    if (DEMO) { $('#sec-orders').hidden = true; return; } // the preview has no shop
     if (ordersBusy) return;
     ordersBusy = true;
     try {
@@ -3255,7 +3259,6 @@
   let codes = null;          // { settings, codes: [...] } as the server last sent it (cleaned)
   let codeEditing = '';      // the id of the code in the form ('' for a new one)
   async function loadCodes() {
-    if (DEMO) { $('#sec-codes').hidden = true; return; }
     try {
       const d = await api.shopCodes();
       codes = cleanCodes(d);
@@ -3538,7 +3541,6 @@
   const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
   const BK_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   async function loadBookings() {
-    if (DEMO) { $('#sec-bookings').hidden = true; return; }
     if (bkBusy) return;
     bkBusy = true;
     try {
@@ -4972,7 +4974,7 @@
   }
   const clQuery = () => cleanLine($('#in-bk-cl-q').value, 80).toLowerCase();
   async function loadClients(more) {
-    if (DEMO || clBusy) return;
+    if (clBusy) return;
     const q = clQuery();
     const searching = !!q && !!cl && cl.more;
     let cur = searching ? clFound : cl;
@@ -5143,7 +5145,7 @@
   }
   // the short form: under "Add a client" for someone new, or inside their open line for Edit. One at a time.
   function openClForm(p, box) {
-    if (DEMO || !bk) return;
+    if (!bk) return;
     const addBtn = $('#b-bk-cl-add');
     const wasAdd = !!$('#bk-cl-add-box .bk-cl-form');
     $$('.bk-cl-form').forEach((f) => f.remove());
@@ -5276,7 +5278,7 @@
   let prEditing = null;      // the product in the editor (null: a new one)
   let prPics = [];           // the editor's photos, in order: { name, src } kept, or { blob, src, ext } new
   let prBusy = false;
-  const prFileUrl = (u) => { const s = str(u, 300); return PR_FILE_RE.test(s) ? SERVER + s : ''; };
+  const prFileUrl = (u) => { const s = str(u, 300); if (DEMO && /^(blob:https?:\/\/[^\s"'<>]+|data:image\/[a-z+]+;[^\s"'<>]+)$/.test(s)) return s; return PR_FILE_RE.test(s) ? SERVER + s : ''; };
   const prInt = (v) => (Number.isInteger(v) ? v : null);
   function cleanProduct(p) {
     if (!p || typeof p !== 'object' || !/^[a-z0-9]{15}$/.test(str(p.id))) return null;
@@ -5293,7 +5295,6 @@
     };
   }
   async function loadProducts() {
-    if (DEMO) { $('#sec-products').hidden = true; return; }
     try {
       const d = await prodApi.list();
       prods = d && d.shop ? { products: arr(d.products).slice(0, 300).map(cleanProduct).filter(Boolean) } : null;
@@ -5923,7 +5924,6 @@
   const NL_STATES = ['draft', 'scheduled', 'sending', 'sent', 'stopped'];
   const nlNum = (v) => Math.max(0, Math.floor(+v || 0));
   async function loadNews() {
-    if (DEMO) { $('#sec-news').hidden = true; return; }
     if (nlBusy) return;
     nlBusy = true;
     try {
@@ -6387,7 +6387,6 @@
   let giftNonce = '';
   const GIFT_STATES = ['paid', 'sent', 'partly_redeemed', 'redeemed', 'refunded', 'pending', 'canceled'];
   async function loadGifts() {
-    if (DEMO) { $('#sec-gifts').hidden = true; return; }
     try {
       const d = await api.giftOwner();
       gifts = cleanGifts(d);
@@ -6853,7 +6852,6 @@
     };
   }
   async function loadReceipts(month) {
-    if (DEMO) { $('#sec-receipts').hidden = true; return; }
     if (rcBusy) return;
     rcBusy = true;
     try {
@@ -8164,16 +8162,22 @@
   /* ================= the preview: the sample client ================= */
   function loadDemo() {
     return new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = 'portal-demo.js';
-      s.onload = () => (window.WFPortalDemo ? resolve(window.WFPortalDemo) : reject(new Error('no demo')));
-      s.onerror = reject;
-      document.head.append(s);
+      // the pretend server first, then one file per tool (the shop, bookings, newsletter, the rest), then the sample project
+      const files = ['portal-sample.js', 'portal-sample-shop.js', 'portal-sample-bookings.js', 'portal-sample-news.js', 'portal-sample-misc.js', 'portal-demo.js'];
+      const next = (i) => {
+        if (i >= files.length) { window.WFPortalDemo ? resolve(window.WFPortalDemo) : reject(new Error('no demo')); return; }
+        const t = document.createElement('script');
+        t.src = files[i];
+        t.onload = () => next(i + 1);
+        t.onerror = () => (/portal-sample-/.test(files[i]) ? next(i + 1) : reject(new Error('no ' + files[i])));
+        document.head.append(t);
+      };
+      next(0);
     });
   }
 
   function wireDemo(D) {
-    api = D.api;
+    api = Object.assign({}, realApi, D.api); // the project comes from portal-demo.js, every tool from portal-sample.js (a pretend server)
     $('#demo-bar').hidden = false;
     $$('.demo-hint').forEach((el) => { el.hidden = false; });
     const mark = () => $$('#demo-menu [data-demo]').forEach((b) => b.setAttribute('aria-current', String(b.dataset.demo === D.scenario())));
@@ -8191,6 +8195,7 @@
       }
     }));
     const signInQuietly = () => { if (!token) { token = D.signIn(); store.set(token); } };
+    if (/[?&]tour(=1)?(&|$)/.test(location.search)) { D.setScenario('care'); signInQuietly(); } // the public tour: already signed in, live with a subscription
     $$('#demo-menu [data-demo]').forEach((b) => b.addEventListener('click', async () => {
       const k = b.dataset.demo;
       $('#demo-menu').open = false;

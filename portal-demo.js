@@ -131,6 +131,7 @@
         ],
         care_manage_url: '',
         care: { can_ask: false, requests: [] },
+        messages_unread: 1,
         session: { expires_at: '' }
       };
     },
@@ -166,6 +167,7 @@
         ],
         care_manage_url: '',
         care: { can_ask: false, requests: [] },
+        messages_unread: 1,
         session: { expires_at: '' }
       };
     },
@@ -200,6 +202,7 @@
         ],
         care_manage_url: '',
         care: { can_ask: true, requests: [] },
+        messages_unread: 1,
         session: { expires_at: '' }
       };
     },
@@ -240,6 +243,7 @@
               status: 'done', taya_reply: 'Done! Your class times are up on your site and your Google profile. 🌿', created: day(-10), files_count: 0 }
           ]
         },
+        messages_unread: 1,
         session: { expires_at: '' }
       };
     }
@@ -259,7 +263,8 @@
       pay: [],
       care_manage_url: '',
       care: { can_ask: false, requests: [] },
-      session: { expires_at: '' }
+      messages_unread: 1,
+        session: { expires_at: '' }
     };
   }
   var scene = SCENES[ss.get(SCENE_KEY)] ? ss.get(SCENE_KEY) : 'mid';
