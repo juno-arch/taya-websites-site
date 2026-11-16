@@ -264,7 +264,7 @@
   .tagcard .buy button:hover, .tagcard .buy a:hover { background: var(--btn-hover); color: var(--btn-ink); border-color: var(--btn-hover); }
   .tagcard .buy .b-ask:hover, .tagcard .buy .b-text:hover { background: var(--mist); color: var(--mag-deep); }
   .tagcard[hidden] { display: none; }
-  /* which buy button shows in each view: Planted texts, Tended asks, In Bloom adds to the bag */
+  /* which buy button shows in each view: Pocket texts, Color asks, Advance adds to the bag */
   .b-text, .b-ask, .b-add { display: none !important; }
   html[data-view="maiden"] .b-text { display: inline-flex !important; }
   html[data-view="mother"] .b-ask { display: inline-flex !important; }
@@ -278,7 +278,7 @@
   @media (max-width: 760px) { .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; } .notes3 { grid-template-columns: minmax(0, 1fr); } .tagcard h3 { font-size: 17.5px; } .tagcard .body { padding: 11px 10px 12px; } }
   @media (max-width: 520px) { .tagcard .pic { aspect-ratio: 1; } .tagcard h3 { font-size: 16.5px; } .tagcard .d { font-size: 13px; } .tagcard .buy button, .tagcard .buy a { font-size: 13.5px; padding: 8px 8px; } }
 
-  /* the bag and checkout (In Bloom) */
+  /* the bag and checkout (Advance) */
   .bag { position: fixed; inset: 0; z-index: 50; display: flex; justify-content: flex-end; background: rgba(26, 18, 12, 0.5); }
   .bag-in { box-sizing: border-box; width: min(440px, 100%); height: 100%; overflow: auto; background: var(--ground); padding: 22px 22px 28px; box-shadow: -24px 0 50px -30px rgba(0, 0, 0, 0.7); }
   .bag-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
@@ -736,9 +736,9 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your soaps and prices, the Ape and its hours, how it is made, kind words, where to find you, and a Text to order button so people order the way they do today."><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Planted, plus the What needs cleaning? finder, an Ask to order list and wholesale inquiries, a newsletter, FAQ and your Instagram feed."><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your shop in full bloom, doing business for you: everything in Tended, plus a bag and checkout paid right on your site into your own Stripe, so an order no longer waits on a DM and an invoice."><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Pocket" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your soaps and prices, the Ape and its hours, how it is made, kind words, where to find you, and a Text to order button so people order the way they do today."><b>Pocket</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Color" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Pocket, plus the What needs cleaning? finder, an Ask to order list and wholesale inquiries, a newsletter, FAQ and your Instagram feed."><b>Color</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="Advance" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your shop in full bloom, doing business for you: everything in Color, plus a bag and checkout paid right on your site into your own Stripe, so an order no longer waits on a DM and an invoice."><b>Advance</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep sitkasoap.com: I can hold and renew it for you so it&rsquo;s one less thing to remember (it stays legally yours), or you can keep it where it is if you&rsquo;d rather. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -751,7 +751,7 @@
 <main>
 <section id="finder" class="finder-sec gutter" tabindex="-1" data-show="mother crone all" data-fold data-thing="the What needs cleaning? finder">
   <div class="wrap">
-    <p class="label with-pill"><span>What needs cleaning?</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>What needs cleaning?</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Tell the bear <em>what needs cleaning</em></h2>
     <p class="measure" style="margin-top:14px">Pick what you&rsquo;re washing and the bear rides to the bar that does the job. Every answer comes from the way you describe your own soap.</p>
     <p class="fq" id="fq">I need to wash&hellip;</p>
@@ -770,7 +770,7 @@
   <div class="wrap">
     <div class="shop-head">
       <div>
-        <p class="label with-pill"><span>The soap shop</span> <span class="tag" data-go="maiden">Every build</span> <span class="tag" data-go="crone" data-show="crone all">Selling right here: In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+        <p class="label with-pill"><span>The soap shop</span> <span class="tag" data-go="maiden">Every build</span> <span class="tag" data-go="crone" data-show="crone all">Selling right here: Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
         <h2 class="reveal">Soap that <em>aims to clean</em></h2>
         <p class="soft measure" style="margin-top:14px">Small-batch bars, body oil, toothpaste cubes, and the things that ride along in the Ape: towels, robes, hats and more.</p>
       </div>
@@ -787,9 +787,9 @@
     <ul class="shop-grid" id="shop-grid"></ul>
     <p class="shop-more">More is always rolling in at the Ape. <a href="#find">See where to find it</a></p>
     <div class="notes3">
-      <div class="bk-note" data-show="maiden" hidden><b>Text to order</b>Planted: each tag has a Text to order button, so people order the way they do today, by text to (907) 738-3434. Nothing about how you invoice changes.</div>
-      <div class="bk-note" data-show="mother" hidden><b>Ask to order</b>Tended: each tag adds the item to a request on your contact form. You get it by email and send your usual Square invoice, so nothing new to learn.</div>
-      <div class="bk-note" data-show="crone all"><b>Sell right here</b>In Bloom: add to the bag, check out through your own Stripe, and your online checkout is back. Orders and shipping addresses live in your own Stripe, with a short heads-up email for each. Stripe&rsquo;s card fee comes out of each sale.</div>
+      <div class="bk-note" data-show="maiden" hidden><b>Text to order</b>Pocket: each tag has a Text to order button, so people order the way they do today, by text to (907) 738-3434. Nothing about how you invoice changes.</div>
+      <div class="bk-note" data-show="mother" hidden><b>Ask to order</b>Color: each tag adds the item to a request on your contact form. You get it by email and send your usual Square invoice, so nothing new to learn.</div>
+      <div class="bk-note" data-show="crone all"><b>Sell right here</b>Advance: add to the bag, check out through your own Stripe, and your online checkout is back. Orders and shipping addresses live in your own Stripe, with a short heads-up email for each. Stripe&rsquo;s card fee comes out of each sale.</div>
       <div class="bk-note" data-show="crone all"><b>Local delivery</b>Free local delivery in Sitka is a choice at checkout, so the people near the Ape who text you today can order here too.</div>
     </div>
     <p class="tier-note mock-note wf-note">Here are twenty of your things, with your own names and words, and your own photos where I have a real one (a plain tag is waiting on a photo). Prices are dotted blanks until you tell me yours: your July 2025 post said $5 for the travel bar, is that still right? A new bar or a new scent: I can follow your socials and update as you post, or you can email me a photo and a price, and it&rsquo;s in.</p>
@@ -860,7 +860,7 @@
 <section id="insta" class="wash gutter" data-show="mother crone all" data-fold data-thing="your Instagram feed">
   <div class="wrap">
     <div class="ig-head">
-      <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Instagram</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Fresh from <em><svg class="ig-glyph" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@sitkasoapco</em></h2>
       <p class="soft" style="margin-top:10px">Follow along on Instagram for new bars, new arrivals at the Ape and the season&rsquo;s hours.</p>
     </div>
@@ -878,7 +878,7 @@
 <section id="faq" class="gutter" data-show="mother crone all" data-fold>
   <div class="wrap two">
     <div>
-      <p class="label with-pill"><span>Good to know</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Good to know</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h2 class="reveal">Questions, <em>answered</em></h2>
       <div class="faq-list">
         <details><summary>Which bar is right for me?</summary><div class="ans">The Original bar, also called the Everything bar, washes you, your dishes, your boat or truck and your gear. The Coffee Sugar bar scrubs, and the Adventure Buddy bar is for dogs and cats. Try the finder above and the bear will point the way.</div></details>
@@ -893,7 +893,7 @@
     </div>
     <div class="news" id="news">
       <img class="bear-water" src="images/bear-rider.png" alt="" width="900" height="710" loading="lazy">
-      <p class="label with-pill"><span>Newsletter</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <p class="label with-pill"><span>Newsletter</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
       <h3>Fresh batches, <em>in your inbox</em></h3>
       <p style="margin-top:10px">A note when new bars, scents and the season&rsquo;s hours land. Sent with Buttondown, and the list is yours.</p>
       <form class="stack" id="nl-form" novalidate>
@@ -908,7 +908,7 @@
 
 <section id="contact" class="wash gutter" data-show="mother crone all" data-fold>
   <div class="wrap">
-    <p class="label with-pill"><span>Orders, questions and wholesale</span> <span class="tag" data-go="mother">Tended + In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+    <p class="label with-pill"><span>Orders, questions and wholesale</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
     <h2 class="reveal">Send a <em>note</em></h2>
     <div class="card" style="margin-top:26px;max-width:720px">
       <form class="stack" id="ct-form" novalidate style="margin-top:0">
@@ -1002,7 +1002,7 @@
     <div class="foot-mark"><picture><source type="image/webp" srcset="images/bear-rider.webp"><img src="images/bear-rider.png" width="900" height="710" alt="" loading="lazy"></picture><b>Sitka Soap Company</b><button type="button" class="foot-bee" id="foot-bee" aria-label="A little bee">&#128029;</button></div>
     <p>Sitka Soap Company <span aria-hidden="true">&middot;</span> <span class="nw">4 Lincoln Street,</span> <span class="nw">Sitka, Alaska 99835</span></p>
     <p class="foot-reach"><a href="mailto:sitkasoap@gmail.com">sitkasoap@gmail.com</a> <span aria-hidden="true">&middot;</span> <a href="sms:+19077383434">(907) 738-3434</a> <span aria-hidden="true">&middot;</span> <a href="https://www.instagram.com/sitkasoapco/" target="_blank" rel="noopener">Instagram<span class="vh"> (opens in a new tab)</span></a> <span aria-hidden="true">&middot;</span> <a href="https://www.facebook.com/sitkasoapcompany" target="_blank" rel="noopener">Facebook<span class="vh"> (opens in a new tab)</span></a></p>
-    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Planted<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: your soaps and prices, the Ape and its hours, Text to order), <span class="tag" data-go="mother">Tended<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: the finder, Ask to order, wholesale, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">In Bloom<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (the bag and checkout on your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
+    <p class="legend">Tags show which Web Faery build includes each piece, at your founding price, half off the build: <span class="tag" data-go="maiden">Pocket<span class="tag-p"><span aria-hidden="true">&middot;</span> $300</span></span> (one page: your soaps and prices, the Ape and its hours, Text to order), <span class="tag" data-go="mother">Color<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span> (full site: the finder, Ask to order, wholesale, newsletter, FAQ, Instagram), <span class="tag" data-go="crone">Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span> (the bag and checkout on your own Stripe). The status banner up top comes with <span class="tag" data-go="maiden">Every build</span>.<span data-js hidden> Tap any tag to see your site as that build.</span></p>
     <p class="foot-login"><a href="https://webfaery.love/portal.html">Log in</a></p>
   </div>
 </footer>
@@ -1017,9 +1017,9 @@
       <p class="views-price">Your founding build price, half off</p>
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
-      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Planted" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Planted</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Tended" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Tended</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="In Bloom" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>In Bloom</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Pocket" data-tier-price="600" data-tier-founding="300" data-tier-care="12"><b>Pocket</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Color" data-tier-price="1200" data-tier-founding="600" data-tier-care="45"><b>Color</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="Advance" data-tier-price="1800" data-tier-founding="900" data-tier-care="90"><b>Advance</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and you&rsquo;d keep sitkasoap.com: I can hold and renew it for you so it&rsquo;s one less thing to remember (it stays legally yours), or you can keep it where it is if you&rsquo;d rather. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1117,7 +1117,7 @@
         P.forEach(function (p) { cards[p.id].li.hidden = !(cat === 'all' || p.cat === cat); });
       });
     });
-    /* the Tended request list */
+    /* the Color request list */
     var askBtn = document.getElementById('ask-jump'), askN = document.getElementById('ask-count'), ctList = document.getElementById('ct-list'), ctEmpty = document.getElementById('ct-list-empty');
     function renderAsks() {
       askN.textContent = asks.length;
@@ -1141,7 +1141,7 @@
     document.addEventListener('ex:view', renderAsks);
     renderAsks();
 
-    /* the bag, checkout and done (In Bloom) */
+    /* the bag, checkout and done (Advance) */
     var bagEl = document.getElementById('bag'), bagBody = document.getElementById('bag-body'), bagOpen = document.getElementById('bag-open'), bagCount = document.getElementById('bag-count'), steps = document.getElementById('bsteps');
     var step = 1, ship = 'ship', lastFocus = null;
     function total(prefix) {
@@ -1461,7 +1461,7 @@
   })();
 </script>
 <script>
-  /* see your site as Planted, Tended, In Bloom or Everything (keys: maiden, mother, crone, all) */
+  /* see your site as Pocket, Color, Advance or Everything (keys: maiden, mother, crone, all) */
   (function () {
     var root = document.documentElement, body = document.body;
     function $(id) { return document.getElementById(id); }
@@ -1469,9 +1469,9 @@
     if (!bar || !vp || !pill || !panel || !live || !('IntersectionObserver' in window)) return;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
-      maiden: { name: 'Planted', price: '$300', what: 'one page, planted and kept healthy, with your soaps and prices, the Ape and its hours, how it is made, kind words, where to find you, and a Text to order button so people order the way they do today.', next: 'mother' },
-      mother: { name: 'Tended', price: '$600', what: 'a full site, tended through the seasons, with everything in Planted plus the What needs cleaning? finder, an Ask to order list and wholesale inquiries, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
-      crone: { name: 'In Bloom', price: '$900', what: 'your shop in full bloom, with everything in Tended plus a bag and checkout paid right on your site into your own Stripe, so an order no longer waits on a DM and an invoice. That’s every piece on this page.' },
+      maiden: { name: 'Pocket', price: '$300', what: 'one page, planted and kept healthy, with your soaps and prices, the Ape and its hours, how it is made, kind words, where to find you, and a Text to order button so people order the way they do today.', next: 'mother' },
+      mother: { name: 'Color', price: '$600', what: 'a full site, tended through the seasons, with everything in Pocket plus the What needs cleaning? finder, an Ask to order list and wholesale inquiries, a newsletter, FAQ and your Instagram feed.', next: 'crone' },
+      crone: { name: 'Advance', price: '$900', what: 'your shop in full bloom, with everything in Color plus a bag and checkout paid right on your site into your own Stripe, so an order no longer waits on a DM and an invoice. That’s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
@@ -1485,8 +1485,8 @@
     function note(v) {
       if (v === 'all') return { lead: 'everything', text: ', each piece tagged with the build that includes it. Tap a build, or any tag on the page, to see just what it includes.' };
       var rest = '';
-      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Tended, ' + more('maiden', 'crone') + ' with In Bloom.';
-      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with In Bloom.';
+      if (v === 'maiden') rest = ' ' + moreText(more('maiden', 'mother')) + ' with Color, ' + more('maiden', 'crone') + ' with Advance.';
+      if (v === 'mother') rest = ' ' + moreText(more('mother', 'crone')) + ' with Advance.';
       return { lead: V[v].name, text: ': ' + V[v].what + rest };
     }
     [].forEach.call(document.querySelectorAll('span.tag[data-go]'), function (t) {
