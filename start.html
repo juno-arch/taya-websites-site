@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261115b">
+<link rel="stylesheet" href="reband-app.css?v=20261115c">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -1264,7 +1264,7 @@
         <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
       </button></h2>
       <div class="step-body few" id="b-work">
-        <p class="lead-in">I write your words from these answers. <b>A line or two each is plenty</b>. If it’s already correct on your mockup, say so in a few words.</p>
+        <p class="lead-in">I write your words from these answers. <b>A line or two each is plenty</b>.</p>
         <p class="kind-note"><img src="taya.jpg" width="256" height="256" alt="" decoding="async"><span>I’ll ask the rest over email.</span></p>
         <!-- with a mockup (Taya's link says mockup=key): their words and photos are already on it, so instead of retyping
              anything they just check it and say what's off (Pollen, Oct 1) -->
@@ -1347,6 +1347,13 @@
           <textarea id="f-change" name="look_change" class="short" aria-describedby="h-change"></textarea>
         </div>
 
+        <div data-if="kit-not-yes">
+          <div class="q">
+            <label class="main" for="f-sites">A Pinterest mood board <span class="opt-tag">(shows me your colors, feel and photos in one go)</span></label>
+            <p class="hint" id="h-sites">Paste the link to a board you love. No board? Tap “I don’t know”, or paste a site or two you like instead.</p>
+            <textarea id="f-sites" name="sites" class="short" aria-describedby="h-sites" placeholder="https://pinterest.com/yourname/your-board"></textarea>
+          </div>
+        </div>
         <!-- the look questions, when there's no brand kit to go by -->
         <div data-if="off" hidden>
           <fieldset class="group first">
@@ -1371,11 +1378,7 @@
               <input type="text" id="f-avoid" name="colors_avoid" maxlength="300" placeholder="no neon, please">
             </div>
           </div>
-          <div class="q">
-            <label class="main" for="f-sites">A website or two you like <span class="opt-tag">(any kind)</span></label>
-            <p class="hint" id="h-sites">A few words on what you like helps: the colors, the calm, the photos.</p>
-            <textarea id="f-sites" name="sites" class="short" aria-describedby="h-sites"></textarea>
-          </div>
+
         </div>
 
         <!-- their logo: only when they have one (with a brand kit, it comes with the kit). Taya doesn't make logos. -->
@@ -1695,7 +1698,7 @@
       <p class="small-h">What happens next</p>
       <ol class="next-path">
         <li><b>Setup.</b> I set up your accounts, in your name.</li>
-        <li><b>Build and review.</b> Your mockup becomes your real site, and you can ask for changes any time. Two days before launch I send you a preview, and you tell me go, or not yet.</li>
+        <li><b>Build and review.</b> I build your site, and you can ask for changes any time. Two days before launch I send you a preview, and you tell me go, or not yet.</li>
         <li><b>Launch.</b> Your site goes live, and I hand you your brand sheet, your “Your site” sheet and your logins. Your launch date comes in an email once your deposit clears.</li>
         <li><b>Settling in.</b> 30 days of tweaks are on me, and I check in to see how it feels.</li>
         <li><b>Care.</b> Your subscription starts, <span data-a="care">at your build’s monthly price</span>. I follow your socials and update your website and Google profile as you post, or you email me what’s changing.</li>
@@ -2852,6 +2855,18 @@
     const err = document.createElement('p'); err.className = 'err'; err.id = 'e-' + el.id; err.hidden = true;
     el.after(b, err);
   });
+  // "What you offer and your prices": a button for people who already list it on their site (Nov 15 2026)
+  (() => {
+    const o = document.getElementById('f-offer'); if (!o) return;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'later idk'; b.textContent = 'Listed on my site';
+    b.setAttribute('aria-label', 'Listed on my site: what I offer and my prices are already there');
+    b.addEventListener('click', () => {
+      o.value = 'Listed on my site';
+      o.dispatchEvent(new Event('input', { bubbles: true })); o.dispatchEvent(new Event('change', { bubbles: true }));
+      setErr(o, document.getElementById('e-f-offer'), '');
+    });
+    const idk = o.nextElementSibling; (idk && idk.classList.contains('idk') ? idk : o).after(b);
+  })();
   const applicable = (el) => {
     if (planHidden(el)) return false;
     for (let n = el; n && n !== form; n = n.parentElement) if (!n.classList.contains('step-body') && getComputedStyle(n).display === 'none') return false;
@@ -3143,7 +3158,7 @@
       ['You', [['Name', r.name], ['Business', r.business], ['Email', r.email], ['Website now', r.website]]],
       ['A few quick things', Q_WORK.map((id) => [labelOf(id), val(id)])],
       ['Your look', rows([
-        !kitYes && ['Moods', r.look.moods.join(', ')], !kitYes && ['Colors you love', r.look.colors_love], !kitYes && ['Colors to avoid', r.look.colors_avoid], !kitYes && ['Sites you like', r.look.sites],
+        !kitYes && ['Moods', r.look.moods.join(', ')], !kitYes && ['Colors you love', r.look.colors_love], !kitYes && ['Colors to avoid', r.look.colors_avoid], !kitYes && ['Pinterest mood board, or sites you like', r.look.sites],
         (kitYes || r.look.has_brand_kit) && ['Brand kit', fileList('kit') || (r.look.has_brand_kit ? 'Yes, not added yet' : '')],
         kitYes && ['Anything to change', r.look.anything_to_change],
         ['Logo', logo]
