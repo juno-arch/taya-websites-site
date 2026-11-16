@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261116c">
+<link rel="stylesheet" href="reband-app.css?v=20261116d">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -2866,13 +2866,16 @@
     { k: 'text', id: 'f-t-abookapp', tiers: A_, when: ['t_abook', ['keep']], q: 'Which booking app?', ph: 'Vagaro, Square, Acuity…' },
     { k: 'radio', n: 't_abookmove', tiers: A_, when: ['t_abook', ['built']], q: 'Do you have clients booked in another app now that we should move across?', hint: 'Moving them is included.', opts: YN },
     // Color and Advance: newsletter and the shared lines
-    { k: 'radio', n: 't_news', tiers: MC_, q: 'Do you have a newsletter now?', opts: YN },
-    { k: 'radio', n: 't_newsapp', tiers: MC_, when: ['t_news', ['yes']], q: 'Which one?', opts: NEWS_TOOLS },
-    { k: 'text', id: 'f-t-newsother', tiers: MC_, when: ['t_newsapp', ['other']], q: 'What’s it called?', ph: 'the name of your newsletter tool' },
-    { k: 'radio', n: 't_newskeep', tiers: MC_, when: ['t_news', ['yes']], q: 'Keep it, or move to a Buttondown list I set up for you?', opts: [['keep', 'Keep it, the sign-up on my site connects to it'], ['move', 'Move to a Buttondown list'], ['idk', 'I don’t know']] },
-    { k: 'note', tiers: MC_, dyn: () => (radio('t_news') === 'yes' && radio('t_newskeep') !== 'move' ? (NEWS_STARS[radio('t_newsapp')] || '') : '') },
-    { k: 'radio', n: 't_newswant', tiers: MC_, when: ['t_news', ['no']], q: 'Want a sign-up on your site, with a Buttondown list I set up for you?', opts: YN },
-    { k: 'note', tiers: MC_, dyn: () => ((radio('t_news') === 'yes' && radio('t_newskeep') === 'move') || (radio('t_news') === 'no' && radio('t_newswant') === 'yes') ? BD_STAR : '') },
+    { k: 'radio', n: 't_news', tiers: C_, q: 'Do you have a newsletter now?', opts: YN },
+    { k: 'radio', n: 't_newsapp', tiers: C_, when: ['t_news', ['yes']], q: 'Which one?', opts: NEWS_TOOLS },
+    { k: 'text', id: 'f-t-newsother', tiers: C_, when: ['t_newsapp', ['other']], q: 'What’s it called?', ph: 'the name of your newsletter tool' },
+    { k: 'radio', n: 't_newskeep', tiers: C_, when: ['t_news', ['yes']], q: 'Keep it, or move to a Buttondown list I set up for you?', opts: [['keep', 'Keep it, the sign-up on my site connects to it'], ['move', 'Move to a Buttondown list'], ['idk', 'I don’t know']] },
+    { k: 'note', tiers: C_, dyn: () => (radio('t_news') === 'yes' && radio('t_newskeep') !== 'move' ? (NEWS_STARS[radio('t_newsapp')] || '') : '') },
+    { k: 'radio', n: 't_newswant', tiers: C_, when: ['t_news', ['no']], q: 'Want a sign-up on your site, with a Buttondown list I set up for you?', opts: YN },
+    { k: 'note', tiers: C_, dyn: () => ((radio('t_news') === 'yes' && radio('t_newskeep') === 'move') || (radio('t_news') === 'no' && radio('t_newswant') === 'yes') ? BD_STAR : '') },
+    // Advance: the newsletter is built into the site (ours), so no tool to choose
+    { k: 'radio', n: 't_anews', tiers: A_, q: 'A newsletter built into your site?', hint: 'People sign up right on your site, and you send from your own portal. No other app to pay for.', opts: YN },
+    { k: 'radio', n: 't_anewsmove', tiers: A_, when: ['t_anews', ['yes']], q: 'Do you have a list in another app now that we should move across?', hint: 'Moving it is included.', opts: YN },
     { k: 'radio', n: 't_email', tiers: MC_, q: 'Email from your domain address, like you@yourbusiness.com?', opts: YN },
     { k: 'radio', n: 't_form', tiers: MC_, q: 'A contact form, so people can message you from your site?', opts: YN },
     { k: 'radio', n: 't_ig', tiers: MC_, q: 'Your Instagram feed on your site, filling itself in as you post?', opts: YN },
@@ -2951,7 +2954,7 @@
     if (b === 'maiden') booking = (a('t_pbook') === 'yes' || a('t_pbook') === 'want') ? 'current' : 'none';
     else {
       email = a('t_email') === 'yes';
-      news = a('t_news') === 'yes' ? a('t_newskeep') === 'move' : a('t_newswant') === 'yes';
+      news = b === 'crone' ? a('t_anews') === 'yes' : a('t_news') === 'yes' ? a('t_newskeep') === 'move' : a('t_newswant') === 'yes';
       if (b === 'mother') {
         booking = a('t_cbook') === 'yes' ? (a('t_cbookkeep') === 'cal' ? 'calcom' : 'current') : (a('t_cbookwant') === 'yes' ? 'calcom' : 'none');
         sell = a('t_shop') === 'yes';
