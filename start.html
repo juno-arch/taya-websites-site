@@ -881,7 +881,7 @@
   #main { min-height: 100vh; min-height: 100svh; }
 </style>
 <link rel="stylesheet" href="reband.css?v=20261112h">
-<link rel="stylesheet" href="reband-app.css?v=20261115d">
+<link rel="stylesheet" href="reband-app.css?v=20261116a">
 </head>
 <body class="nl-start">
 <a class="skip-link" href="#steps">Skip to the steps</a>
@@ -914,35 +914,12 @@
   <noscript><div class="card"><p>This page needs JavaScript to save your answers and send them. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out together over email.</p></div></noscript>
 
-  <!-- the quick check: a one-minute look at what they already have, so the list only has what they need.
-       Every question shows at once, like a short form. The script draws them (QC below); Taya's link can answer
-       some or all of them ahead of time, and those show as already picked. -->
-  <section class="qc" id="qc" aria-labelledby="qc-title" hidden>
-    <div class="qc-head">
-      <img class="qc-face" src="taya.jpg" width="256" height="256" alt="" decoding="async">
-      <div>
-        <span class="eyebrow">A one-minute check</span>
-        <h2 id="qc-title" tabindex="-1">Let’s see what you already have</h2>
-      </div>
-    </div>
-    <p class="qc-sub"><span id="qc-total">7 quick questions</span>, so your list only has what you need. Tap your answers; there are no wrong ones.</p>
-    <ol class="qc-list" id="qc-list"></ol>
-    <div class="qc-end">
-      <span class="qc-meter" aria-hidden="true"><i id="qc-meter"></i></span>
-      <p class="qc-count" id="qc-count">0 of 7 answered</p>
-      <button type="button" class="btn" id="qc-go"><span>Show my list</span></button>
-    </div>
-    <p class="sr-only" id="qc-live" aria-live="polite"></p>
-    <div class="qc-foot">
-      <p class="qc-saved">Saves as you go</p>
-    </div>
-  </section>
 
   <section class="intro" aria-labelledby="intro-title" hidden>
     <div class="list-head">
       <span class="eyebrow">Made for you</span>
       <h2 id="intro-title" tabindex="-1">Your list: <span class="sum" id="list-sum">a few things</span></h2>
-      <p class="made-from"><span id="made-from">Made from what you told me.</span> <button type="button" class="later" id="qc-change">Change</button></p>
+      <p class="made-from" hidden><span id="made-from">Made from what you told me.</span> <button type="button" class="later" id="qc-change">Change</button></p>
       <p class="fit-line" id="fit-line" hidden></p>
     </div>
     <ul class="promises">
@@ -1200,6 +1177,12 @@
       <div class="step-body" id="b-look">
         <p class="lead-in" data-if="kit-yes">You already have a look, so this part is quick.</p>
         <p class="lead-in" data-if="kit-not-yes">A feel for your look, and the photos you have. Tap and type as little as you like.</p>
+
+        <!-- the three look questions, right here in the one flow -->
+        <div class="q qc-inline" id="qc-box">
+          <ol class="qc-list" id="qc-list"></ol>
+          <p class="err" id="e-qc" role="alert"></p>
+        </div>
 
         <!-- a brand kit: asked here only when the quick check didn't already answer it -->
         <div class="q" data-if="kit-ask" style="margin-top: 20px">
@@ -3075,6 +3058,11 @@
     // every question needs an answer, and "I don’t know" counts
     answers() {
       let first = CHECKS.tier();
+      if (!qcComplete()) {
+        setErr(null, $('#e-qc'), 'These three need an answer. “I don’t know” counts.');
+        const open = qcMain().find((q) => have[q.id] == null);
+        first = first || $('#qc-list [data-key^="' + open.id + ':"]');
+      }
       askedBoxes().forEach((el) => {
         const msg = document.getElementById('e-' + el.id);
         const fine = !applicable(el) || !!el.value.trim();
@@ -3490,7 +3478,7 @@
   function showDone(r) {
     drawSummary(r);
     document.body.classList.add('sent');
-    form.hidden = true; $('#qc').hidden = true; $('.intro').hidden = true; $('#progress').hidden = true;
+    form.hidden = true; $('.intro').hidden = true; $('#progress').hidden = true;
     $('#done').hidden = false;
     $('#done-preview').hidden = LIVE;
     const h = $('#done-title');
@@ -3606,37 +3594,12 @@
     return wrap;
   }
   function renderQC(focusKey) {
-    const complete = qcComplete(), ready = complete || qcSkipped;
-    // the list shows once the check is done (or they've asked for it); until then, just the questions
-    $('#qc').hidden = !qcOpen;
-    $('.intro').hidden = !ready; $('#progress').hidden = !ready; form.hidden = !ready;
-    const skip = $('.skip-link');
-    skip.href = qcOpen ? '#qc-title' : '#intro-title';
-    skip.textContent = qcOpen ? 'Skip to the quick check' : 'Skip to your list';
-
-    // the one line at the top of the list
-    const told = phrases(qcQuestions());
-    const mine = qcQuestions().some((q) => haveBy[q.id] === 'you');
-    const fit = fitReady() && fitsBuild() ? ' That fits ' + BUILD_NAME[fitsBuild()] + '.' : '';
-    $('#made-from').textContent = complete
-      ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(told) + '.' + fit
-      : told.length
-        ? (mine ? 'Made from what you told me: ' : 'I already noted what you have: ') + listOf(told) + '.' + fit + ' The rest is all here; skip whatever doesn’t fit.'
-        : 'You skipped the quick check, so everything’s here. Skip whatever doesn’t fit.';
-    $('#qc-change').textContent = complete || told.length ? 'Change' : 'Do the quick check';
-    $('#qc-change').setAttribute('aria-label', complete || told.length ? 'Change what you already have' : 'Do the quick check');
+    // one flow: the whole form is always showing, and the three look questions sit at the top of the look step
+    $('.intro').hidden = false; $('#progress').hidden = false; form.hidden = false;
     $$('.build').forEach((l) => { l.classList.toggle('fits', fitReady() && l.dataset.build === fitsBuild()); });
     showFit(fitReady());
-
-    // how far along, and the way out
-    const main = qcMain(), done = main.filter((q) => have[q.id] != null).length;
-    $('#qc-total').textContent = main.length + ' quick questions';
-    $('#qc-count').textContent = '';
-    if (complete) $('#qc-count').append(make('b', null, 'All ' + main.length + ' answered, thank you!'), ' Your list: ' + sizeText() + '.');
-    else $('#qc-count').append(make('b', null, done + ' of ' + main.length), ' answered');
-    $('#qc-meter').style.width = (100 * done / main.length).toFixed(1) + '%';
-    
-    if (!qcOpen) { qcShownReplies = new Set(); return; }
+    const main = qcMain();
+    const err = $('#e-qc'); if (err && qcComplete()) err.textContent = '';
 
     const list = $('#qc-list');
     const seen = list.childElementCount > 0;   // only things that newly appear drift in
@@ -3671,27 +3634,9 @@
     if (qcComplete()) qcSkipped = false;
     applyHave(); renderAll();
     renderQC(id + ':' + (focusV || v));
-    const main = qcMain(), done = main.filter((x) => have[x.id] != null).length;
-    const reply = v != null && q.reply && q.reply[v];
-    $('#qc-live').textContent = (reply ? reply + ' ' : '') + done + ' of ' + main.length + ' answered.';
     saveNow();
   }
-  function showList() {
-    // unanswered questions just keep their items on the list, like skipping
-    if (!qcComplete()) qcSkipped = true;
-    qcOpen = false;
-    renderQC();
-    requestAnimationFrame(() => { scrollToEl($('.intro')); $('#intro-title').focus({ preventScroll: true }); });
-    saveNow();
-  }
-  function openQC() {
-    qcOpen = true;
-    renderQC();
-    requestAnimationFrame(() => { scrollToEl($('#qc')); $('#qc-title').focus({ preventScroll: true }); });
-  }
-  $('#qc-go').addEventListener('click', showList);
-  
-  $('#qc-change').addEventListener('click', openQC);
+  function openQC() { scrollToEl($('#qc-box')); }
   $$('[data-qc-change]').forEach((b) => b.addEventListener('click', openQC));
   $('#build-change').addEventListener('click', () => {
     buildChanging = true;
@@ -3796,7 +3741,7 @@
     if (!wrap) { fxOpen = false; if (after) after(); return; }
     const hiddenBefore = [...wrap.children].map((n) => n.hidden);
     [...wrap.children].forEach((n) => { n.hidden = true; });
-    const qcBox = document.getElementById('qc'), qcWas = qcBox ? qcBox.hidden : false; if (qcBox) qcBox.hidden = true;
+    const qcBox = null, qcWas = false;
     const card = make('div', 'card fx-card'); card.setAttribute('role', 'region'); card.setAttribute('aria-label', 'Your choices');
     card.append(make('h2', null, 'What would you like on your site?'));
     card.append(make('p', null, 'Thank you for your deposit! Tap Yes please or No thanks for each one. It takes a minute. You can change your mind any time by emailing me, and it doesn’t change your price.'));
@@ -3865,7 +3810,7 @@
     const wrap = main && main.querySelector('.wrap');
     if (!wrap) return;
     [...wrap.children].forEach((n) => { n.hidden = true; });
-    const qcBox = document.getElementById('qc'); if (qcBox) qcBox.hidden = true;
+    
     const card = make('div', 'card'); card.setAttribute('role', 'status');
     card.append(make('h2', null, title), make('p', null, words));
     if (href) { const p2 = make('p'); const a = make('a', 'btn', href.indexOf('#wf=') > 0 ? 'Open my newest' : 'Get my link'); a.href = href; p2.append(a); card.append(p2); }
@@ -3971,7 +3916,6 @@
 
   applyHave();
   // the quick check opens first, unless it's already answered (by the link, or on an earlier visit) or skipped
-  qcOpen = !(qcComplete() || qcSkipped);
   ['photos', 'logo', 'kit'].forEach(renderFiles);
   // "Check if one's free": opens Porkbun's search with their first idea already typed in
   $('#domain-check').addEventListener('click', () => {
