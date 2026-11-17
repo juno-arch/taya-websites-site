@@ -753,14 +753,14 @@
       </div>
       <div class="wf-note">
         <b class="h">Your schedule, typed once</b>
-        <p>Every class here comes straight from your site today (Oct 2), open spots included. It feeds this week view and the month calendar below, so they always match.</p>
+        <p>Every class here comes straight from your site today (Nov 17), open spots included. It feeds this week view and the month calendar below, so they always match.</p>
         <p>With care, a spot fills or a class moves, you email me &ldquo;Tuesday 3:30 Beginning is full&rdquo; and it changes here.</p>
       </div>
     </div>
 
     <div class="cal" id="calendar">
       <div class="cal-h">
-        <h3 id="cal-title">October 2026</h3>
+        <h3 id="cal-title">November 2026</h3>
         <div class="cal-nav"><button type="button" id="cal-prev" aria-label="Previous month">&lsaquo;</button><button type="button" id="cal-next" aria-label="Next month">&rsaquo;</button></div>
       </div>
       <div class="cal-grid" id="cal-grid" role="group" aria-labelledby="cal-title"></div>
@@ -783,6 +783,7 @@
     <p style="margin-top:16px">Jumping, climbing and fort building their days away! Free choice play, group games, arts and crafts, obstacle courses and much more. Ages 4&frac12; to 12.</p>
     <div class="when">
       <div><span class="k">Dates</span><span>Nov 23 to 25</span></div>
+      <div><span class="k">Next up</span><span>Winter Break camp, Dec 21 to 23 and Dec 28 to 30, same hours and prices</span></div>
       <div><span class="k">Full days</span><span>9 am to 3 pm</span></div>
       <div><span class="k">Half days</span><span>9 am to 12 pm, or 12 to 3 pm</span></div>
       <div><span class="k">Bring</span><span>Lunch, snacks and a water bottle</span></div>
@@ -1227,11 +1228,11 @@
     var prev = document.getElementById('cal-prev'), next = document.getElementById('cal-next');
     var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var base = new Date(now.getFullYear(), now.getMonth(), 1), off = 0, sel = null;
-    var CAMP = { y: 2026, m: 10, d: [23, 24, 25] };
+    var CAMPS = [{ y: 2026, m: 10, d: [23, 24, 25], t: 'Thanksgiving Break camp' }, { y: 2026, m: 11, d: [21, 22, 23, 28, 29, 30], t: 'Winter Break camp' }];
     function itemsFor(dt) {
       var dw = dt.getDay(), out = [];
-      var isCamp = dt.getFullYear() === CAMP.y && dt.getMonth() === CAMP.m && CAMP.d.indexOf(dt.getDate()) > -1;
-      if (isCamp && (filt === 'all' || filt === 'pre' || filt === 'rec')) out.push({ g: 'cp', t: 'Thanksgiving Break camp', s: '9 am to 3 pm, half days too' });
+      var camp = CAMPS.filter(function (c) { return dt.getFullYear() === c.y && dt.getMonth() === c.m && c.d.indexOf(dt.getDate()) > -1; })[0];
+      if (camp && (filt === 'all' || filt === 'pre' || filt === 'rec')) out.push({ g: 'cp', t: camp.t, s: '9 am to 3 pm, half days too' });
       S.forEach(function (s) { if (s[0] !== dw) return; var c = C[s[3]]; if (filt !== 'all' && c.g !== filt) return; out.push({ g: c.g, t: c.n, s: FF.range(s[1], s[2]) }); });
       if ((dw === 0 || dw === 6) && filt === 'all') out.push({ g: 'py', t: 'Birthday parties', s: 'Afternoons, by reservation' });
       return out;
