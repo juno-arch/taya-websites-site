@@ -94,7 +94,7 @@ nav .brand span::after{content:"";position:absolute;left:0;right:0;bottom:calc(2
 <script>
 var board=document.getElementById('board');
 var S=Math.max(64,Math.min(130,Math.round(innerWidth/11)));
-var ITEMS=[['s1','chip','mint',1.0,[5,8]],['s2','disc','butter',.9,[22,6]],['s3','triangle','pink',.9,[42,5]],['s4','square','lav',.75,[63,8]],['s5','checker','blue',.75,[82,9]],
+var ITEMS=[['s1','chip','mint',1.0,[5,8]],['s2','disc','butter',.9,[22,6]],['s3','triangle','pink',.9,[42,5]],['s4','square','mint',.75,[63,8]],['s5','checker','blue',.75,[82,9]],
  ['s6','jaguar','pink',1.05,[5,40]],['s7','target','blue',.85,[86,40]],['s8','chip','blue',.95,[8,70]],['s9','dots','red',.9,[27,74]],['s10','hatched','butter',.75,[60,72]],['s11','peak','red',.6,[82,68]],['s12','wave','lav',1.25,[40,80]],['s13','zigzag','butter',1.2,[66,24]]];
 if(innerWidth<700) ITEMS=ITEMS.filter(function(i){return ['s1','s2','s4','s6','s7','s9','s11','s12'].indexOf(i[0])>=0});
 ITEMS.forEach(function(it){var d=document.createElement('div');d.className='sh';d.dataset.wire=it[0];d.dataset.shape=it[1];d.dataset.color=it[2];d.dataset.size=Math.round(S*it[3]);board.insertBefore(d,board.querySelector('.hint'))});
