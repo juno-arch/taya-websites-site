@@ -226,6 +226,9 @@
     transition: background-color 0.4s ease, border-color 0.4s ease, opacity 0.4s ease; }
   .door:hover { background: rgba(247, 236, 231, 0.1); border-color: rgba(247, 236, 231, 0.45); }
   .door svg { width: 92px; height: 132px; overflow: visible; color: #f7ece7; transition: transform 0.7s cubic-bezier(.2,.8,.2,1); }
+  .door svg.door-hamsa { width: 112px; height: 134px; }
+  .door-hamsa .hand path { stroke-width: 1.5; }
+  @media (max-width: 760px) { .door svg.door-hamsa { width: 84px; height: 100px; } }
   .door { --hand-fill: #2a140d; --hand-sw: 2.2; }
   .door b { font-family: 'Rokkitt', Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 31px); line-height: 1.1; }
   .door small { font-size: 15px; line-height: 1.45; color: rgba(247, 236, 231, 0.8); max-width: 30ch; }
@@ -705,6 +708,7 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="hand" viewBox="0 0 26 46"><g class="hand"><path d="M5.6 30.5 1.7 22.3c-.9-1.8 1.4-3.2 2.7-1.7l3 3.6V8.6c0-2.6 3.5-2.6 3.5 0v8.2-12c0-2.6 3.6-2.6 3.6 0v12-10.6c0-2.6 3.6-2.6 3.6 0v10.6-6c0-2.6 3.5-2.6 3.5 0v16.4c0 3.6-1.3 5.6-3.3 7.3z"/><rect x="6" y="31.4" width="15" height="12.6" rx="1.6"/><path class="cuff-dash" d="M8.6 35.4h2.6M13.4 35.4h2.4M18 35.4h.9M9.4 39.6h2.2M14 39.6h3.2" fill="none"/></g></symbol>
+  <symbol id="hamsa" viewBox="0 0 60 72"><g class="hand"><path d="M30 71 L22 71 C20.5 71 20 67 19.5 62 C12 60.5 5 55 4.6 45 C4.3 36 5.5 29 8.2 27 C11 25.5 13.2 29 13.6 34 L14.8 43 L17 41 L17 17 C17 11.5 25 11.5 25 17 L25 32 L26.4 32 L26.4 9 C26.4 3.5 33.6 3.5 33.6 9 L33.6 32 L35 32 L35 17 C35 11.5 43 11.5 43 17 L43 41 L45.2 43 L46.4 34 C46.8 29 49 25.5 51.8 27 C54.5 29 55.7 36 55.4 45 C55 55 48 60.5 40.5 62 C40 67 39.5 71 38 71 Z"/></g></symbol>
   <symbol id="star" viewBox="0 0 24 24"><path class="star" d="M12 0l2.1 7.9L21.5 4l-3.9 7.4L24 12l-6.4.6 3.9 7.4-7.4-3.9L12 24l-2.1-7.9L2.5 20l3.9-7.4L0 12l6.4-.6L2.5 4l7.4 3.9z"/></symbol>
   <symbol id="lhmark" viewBox="0 0 64 48"><use href="#hand" x="1" y="4" width="22" height="40"/><g transform="translate(63 0) scale(-1 1)"><use href="#hand" x="1" y="4" width="22" height="40"/></g><path class="spark" d="M34 22l-5 10h3.6l-2.4 9 6.2-11.4h-3.7l2.6-7.6z"/><g transform="translate(26.5 1)"><use href="#star" width="11" height="11"/></g></symbol>
 </svg>
@@ -858,7 +862,7 @@
     <div data-show="mother crone all" data-fold data-thing="the two hands guide, with its hours tracker">
       <div class="doors" id="doors" role="group" aria-label="Choose your way in">
         <button type="button" class="door" data-path="learn" aria-pressed="false" aria-controls="path-card">
-          <svg viewBox="0 0 26 46" aria-hidden="true" focusable="false"><use href="#hand"/></svg>
+          <svg class="door-hamsa" viewBox="0 0 60 72" aria-hidden="true" focusable="false"><use href="#hamsa"/></svg>
           <b>I want to learn massage</b>
           <small>Become a student: from your enrollment interview to your first Swedish class.</small>
         </button>
@@ -867,7 +871,7 @@
           <span>or</span>
         </div>
         <button type="button" class="door" data-path="clinic" aria-pressed="false" aria-controls="path-card">
-          <svg viewBox="0 0 26 46" aria-hidden="true" focusable="false" style="transform-origin:center"><g transform="translate(26 0) scale(-1 1)"><use href="#hand"/></g></svg>
+          <svg class="door-hamsa" viewBox="0 0 60 72" aria-hidden="true" focusable="false"><use href="#hamsa"/></svg>
           <b>I want a massage</b>
           <small>Book a student clinic session: a supervised, discounted hour on the table.</small>
         </button>
