@@ -8195,7 +8195,7 @@
       }
     }));
     const signInQuietly = () => { if (!token) { token = D.signIn(); store.set(token); } };
-    if (/[?&]tour(=1)?(&|$)/.test(location.search)) { D.setScenario('care'); signInQuietly(); } // the public tour: already signed in, live with a subscription
+    if (/[?&]tour(=1)?(&|$)/.test(location.search)) { D.setScenario('care'); signInQuietly(); const tq = document.createElement('style'); tq.textContent = '#sec-critique{display:none!important}'; document.head.append(tq); /* (Nov 16, Pollen) no critique card on the public tour */ } // the public tour: already signed in, live with a subscription
     $$('#demo-menu [data-demo]').forEach((b) => b.addEventListener('click', async () => {
       const k = b.dataset.demo;
       $('#demo-menu').open = false;
