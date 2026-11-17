@@ -1022,14 +1022,13 @@
     <h2 class="reveal">Flash, specials &amp; <em>expo weekends</em></h2>
     <div class="flash-grid" style="margin-top:36px">
       <div class="flash-side">
-        <figure class="poster reveal"><img src="images/flash-halloween.jpg" alt="Poster: Nor Cal Tattoo Halloween Flash Day, Oct 31st, 12 to 6pm. Tattoo flash $75 to $150, piercing specials, trick or treat prize bags" width="360" height="420" loading="lazy"><figcaption>From the shop</figcaption></figure>
         <div class="pager" id="pager" role="group" aria-labelledby="pg-name">
           <svg class="pg-z l" viewBox="0 0 14 46" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5c-5 5-5 31 0 36"/><path d="M4 12c-3 5-3 17 0 22"/></svg>
           <svg class="pg-z r" viewBox="0 0 14 46" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5c-5 5-5 31 0 36"/><path d="M4 12c-3 5-3 17 0 22"/></svg>
           <div class="pg-body">
             <div class="pg-top"><span class="pg-brand" id="pg-name">Nor Cal <b>707</b><span class="vh"> pager</span></span><span class="pg-led" aria-hidden="true"></span></div>
-            <div class="pg-screen" aria-hidden="true"><span class="pg-l" id="pg-l1">Halloween flash day</span><span class="pg-l" id="pg-l2">Sat 10/31 12 to 6</span></div>
-            <p class="vh">Halloween Flash Day, Saturday October 31, 12 to 6. Walk-ins welcome. $150 minimum, consults always free. Six artists, three piercers. 1618 G St, Arcata, est. 2007.</p>
+            <div class="pg-screen" aria-hidden="true"><span class="pg-l" id="pg-l1">Flash days</span><span class="pg-l" id="pg-l2">See @norcaltattoo707</span></div>
+            <p class="vh">Flash days are posted on @norcaltattoo707. Walk-ins welcome. $150 minimum, consults always free. Six artists, three piercers. 1618 G St, Arcata, est. 2007.</p>
             <div class="pg-foot"><span class="pg-n" id="pg-n" aria-hidden="true">1/5</span><button type="button" class="pg-btn" id="pg-next" hidden>Next<span class="vh"> page</span> <span aria-hidden="true">&#9656;</span></button></div>
           </div>
           <p class="vh" role="status" id="pg-live"></p>
@@ -1037,16 +1036,10 @@
       </div>
       <div>
         <div class="event reveal">
-          <div class="date"><small>Oct</small><b>31</b><i>Sat</i></div>
+          <div class="date"><small>Next</small><b>IG</b><i>flash day</i></div>
           <div>
-            <h3>Halloween <em>Flash Day</em></h3>
-            <ul><li>12 to 6pm, at the shop</li><li>Tattoo flash $75 to $150</li><li>Piercing specials</li><li>Trick or treat prize bags</li></ul>
-          </div>
-        </div>
-        <div class="event reveal">
-          <div class="date"><small>Fri</small><b>FF</b><i>weekly</i></div>
-          <div>
-            <h3>Flash <em>Friday</em></h3>
+            <h3>Flash days &amp; <em>specials</em></h3>
+            <p>Follow along on Instagram for the next one: <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener">@norcaltattoo707<span class="vh"> (opens in a new tab)</span></a>.</p>
           </div>
         </div>
         <div class="event reveal">
@@ -1248,7 +1241,6 @@
     </div>
     <div class="feed">
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-raven.jpg" alt="A black and grey raven in flight" width="600" height="750" loading="lazy"></a>
-      <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/flash-halloween.jpg" alt="Halloween Flash Day poster" width="360" height="420" loading="lazy"></a>
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-rose.jpg" alt="A blue rose on a pink starry background" width="600" height="750" loading="lazy"></a>
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/hero-cactus.jpg" alt="A blooming prickly pear cactus with a dragonfly" width="720" height="960" loading="lazy"></a>
       <a href="https://www.instagram.com/norcaltattoo707/" target="_blank" rel="noopener"><img src="images/w-kestrel.jpg" alt="A kestrel diving in color" width="600" height="750" loading="lazy"></a>
@@ -1394,7 +1386,7 @@
     var STATES = {
       open: { label: 'Walk-ins welcome today', cta: 'How to book', href: '#book' },
       full: { label: 'Books are full for November', cta: 'Get on the list for December', href: '#waitlist' },
-      flash: { label: 'Halloween Flash Day, Sat Oct 31, 12 to 6', cta: 'Flash $75 to $150', href: '#flash' },
+      flash: { label: 'Flash day at the shop', cta: 'See the flash days', href: '#flash' },
       guest: { label: 'Guest artist in this week', cta: 'Grab a spot while they’re here', href: '#artists' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
@@ -1608,31 +1600,21 @@
 </script>
 
 <script>
-  /* the shop pager: real shop news, a live countdown to Halloween Flash Day, and it buzzes when the banner changes */
+  /* the shop pager: real shop news, and it buzzes when the banner changes */
   (function () {
     function $(id) { return document.getElementById(id); }
     var pg = $('pager'), l1 = $('pg-l1'), l2 = $('pg-l2'), num = $('pg-n'), next = $('pg-next'), live = $('pg-live');
     if (!pg || !l1 || !l2 || !num || !next || !live) return;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var START = Date.parse('2026-10-31T12:00:00-07:00'), END = Date.parse('2026-10-31T18:00:00-07:00');
     var BANNER = {
       open: ['Walk-ins welcome', 'Today at 1618 G St', 'Walk-ins welcome today.'],
       full: ['Books full for Nov', 'Dec list is open', 'Books are full for November. The December list is open.'],
-      flash: ['Flash day Sat 10/31', '$75 to $150, 12 to 6', 'Halloween Flash Day, Saturday October 31, 12 to 6. Flash $75 to $150.'],
+      flash: ['Flash day', 'See the shop IG', 'Flash day at the shop. See @norcaltattoo707 for the details.'],
       guest: ['Guest artist in', 'This week only', 'A guest artist is in this week.']
     };
     var banner = 'open';
     function two(x) { return (x < 10 ? '0' : '') + x; }
-    function flashDay() {
-      var now = Date.now();
-      if (now < START) {
-        var s = Math.floor((START - now) / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
-        var t = (d ? d + 'd ' : '') + (reduce ? two(h) + 'h ' + two(m) + 'm' : two(h) + ':' + two(m) + ':' + two(s % 60));
-        return ['Halloween flash day', 'In ' + t, 'Halloween Flash Day, Saturday October 31, 12 to 6. It starts in ' + (d ? d + (d === 1 ? ' day, ' : ' days, ') : '') + h + (h === 1 ? ' hour.' : ' hours.')];
-      }
-      if (now < END) return ['Flash day is on', 'Till 6pm at G St', 'Halloween Flash Day is on now, until 6pm.'];
-      return ['Flash Fridays', '@norcaltattoo707', 'Flash Fridays: see @norcaltattoo707.'];
-    }
+    function flashDay() { return ['Flash days', 'See @norcaltattoo707', 'Follow @norcaltattoo707 on Instagram for the next flash day.']; }
     var PAGES = [
       flashDay,
       function () { return BANNER[banner] || BANNER.open; },
