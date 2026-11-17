@@ -247,6 +247,7 @@
   .cl ol { margin: 4px 0 6px 20px; color: var(--ink-soft); }
   .cl ol li { padding: 2px 0; }
   .cl ol b { color: var(--ink); font-weight: 600; }
+  #classes.is-past .cl .price > span[data-show] { display: none !important; }
   .cl .seats, .seats { font-size: 13.5px; font-weight: 600; color: var(--alizarin); letter-spacing: 0.04em; }
   :root[data-theme="dark"] .seats { color: #ff9a8f; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .seats { color: #ff9a8f; } }
@@ -705,17 +706,17 @@
 <a class="skip" href="#classes">Skip to the classes</a>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="open"><a href="#classes" id="status-link"><b id="status-label">Fall classes begin Tuesday, Oct 6</b> <em><span id="status-cta">Reserve your easel</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="open"><a href="#classes" id="status-link"><b id="status-label">Small fine art classes, six weeks at a time</b> <em><span id="status-cta">See the classes</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
       <p class="status-q"><span id="status-q">Banner demo</span> <span class="tag" data-go="maiden">Every build</span></p>
       <div class="seg status-seg" role="group" aria-labelledby="status-q">
-        <button type="button" data-state="open" aria-pressed="true">New session</button>
+        <button type="button" data-state="open" aria-pressed="true">Classes</button>
         <button type="button" data-state="late" aria-pressed="false">Almost full</button>
         <button type="button" data-state="closed" aria-pressed="false">Closed</button>
       </div>
-      <p class="status-note">A new session, two easels left, a week off: I follow your socials and the banner says so, or you email me.</p>
+      <p class="status-note">A new session, a few easels left, a week off: I follow your socials and the banner says so, or you email me.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -792,14 +793,14 @@
         <h1>A new <em>color</em> for the Healdsburg palette</h1>
         <p class="lede">Small fine art classes for every level, from your first pencil line to your first oil glaze. Drawing, watercolor and still life painting with Nella Rubinstien, plus live model mornings, guest workshops and art parties.</p>
         <div class="cta-row">
-          <a class="btn" href="#classes">See this fall&rsquo;s classes</a>
+          <a class="btn" href="#classes">See the classes</a>
           <a class="btn quiet" href="#parties">Host an art party</a>
         </div>
         <p class="since">453 Hudson Street, Healdsburg &middot; (707) 791-4028</p>
       </div>
     </div>
   </main>
-  <a class="ha-marq" id="ha-marq" href="#workshops" aria-label="Coming up at the atelier: see the workshops"><span class="ham-tag" aria-hidden="true">Coming up</span><span class="ham-win" aria-hidden="true"><span class="ham-run" id="ham-run"><span>This fall at the atelier</span></span></span></a>
+  <a class="ha-marq" id="ha-marq" href="#workshops" aria-label="Coming up at the atelier: see the workshops"><span class="ham-tag" aria-hidden="true">Coming up</span><span class="ham-win" aria-hidden="true"><span class="ham-run" id="ham-run"><span>Classes, live model mornings and workshops at the atelier</span></span></span></a>
 </div>
 <script>
   /* COMING UP: built from the classes and workshops on this page, so it stays in sync */
@@ -836,13 +837,13 @@
         x.bits.filter(Boolean).forEach(function (s) { sp.appendChild(document.createTextNode(', ' + s)); });
         if (!(last && k === items.length - 1)) sp.appendChild(document.createElement('i'));
       });
-      if (!items.length) sp.textContent = 'New classes and workshops coming soon';
+      if (!items.length) sp.textContent = 'Classes, live model mornings and workshops at the atelier';
       return sp;
     }
     run.textContent = '';
     for (var n = 0; n < (still ? 1 : 2); n++) run.appendChild(paint(still));
     run.style.setProperty('--dur', Math.max(18, run.firstChild.textContent.length * 0.22).toFixed(1) + 's');
-    hm.setAttribute('aria-label', items.length ? 'Coming up at the atelier: ' + items.map(function (x) { return x.name + ', ' + x.bits.filter(Boolean).join(', '); }).join('; ') + '. See the workshops.' : 'New classes and workshops coming soon. See the workshops.');
+    hm.setAttribute('aria-label', items.length ? 'Coming up at the atelier: ' + items.map(function (x) { return x.name + ', ' + x.bits.filter(Boolean).join(', '); }).join('; ') + '. See the workshops.' : 'Classes, live model mornings and workshops at the atelier. See the workshops.');
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { hm.classList.toggle('on', e.isIntersecting); }); }).observe(hm);
     else hm.classList.add('on');
   });
@@ -887,41 +888,40 @@
         <h2 class="reveal">Six weeks, a small table, <em>and real skills</em></h2>
         <p class="soft measure" style="margin-top:14px">Every course is six sessions, materials included, with room for beginners and the highly advanced at the same table. Coffee and tea are always on.</p>
       </div>
-      <p class="season-pill" id="season-pill">Fall 2026</p>
+      <p class="season-pill" id="season-pill">Winter 2027</p>
     </div>
 
     <div class="classes">
       <article class="cl reveal" style="--c:var(--ink)">
         <h3>Drawing Fundamentals</h3>
-        <p class="when">Tuesdays, 10 to 12<span class="dates" data-fall="Oct 6 to Nov 10, 2026" data-winter="">Oct 6 to Nov 10, 2026</span></p>
+        <p class="when">Tuesdays, 10 to 12<span class="dates ph" data-fall="Oct 6 to Nov 10, 2026" data-winter="">Your winter dates, 2027</span></p>
         <p>We begin with line and the geometric shapes hiding inside every form, then build volume with value. You&rsquo;ll place an object on the page with the block in method while watching positive and negative space, and leave with the tools to draw with calm and confidence.</p>
         <ul class="facts"><li>6 sessions</li><li>Materials included</li><li>Can start in week two</li></ul>
         <div class="price"><span><b>$275</b><small>for six</small></span>
-          <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Drawing Fundamentals" data-price="275" data-when="Tuesdays 10 to 12, from Oct 6" data-thing="reserving and paying for a class online">Reserve</button></span>
+          <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Drawing Fundamentals" data-price="275" data-when="Tuesdays 10 to 12" data-thing="reserving and paying for a class online">Reserve</button></span>
           <span data-show="mother" hidden><a class="chip-btn" href="https://cal.com/" target="_blank" rel="noopener">Reserve<span class="vh"> Drawing Fundamentals on Cal.com (opens in a new tab)</span></a></span>
           <span data-show="maiden" hidden><a class="chip-btn ghost tel" href="tel:+17077914028">Call or text</a></span>
         </div>
       </article>
       <article class="cl reveal" style="--c:var(--ultra)">
         <h3>Watercolor Fundamentals</h3>
-        <p class="when">Fridays, 10 to 12<span class="dates" data-fall="Oct 9 to Nov 13, 2026" data-winter="">Oct 9 to Nov 13, 2026</span></p>
+        <p class="when">Fridays, 10 to 12<span class="dates ph" data-fall="Oct 9 to Nov 13, 2026" data-winter="">Your winter dates, 2027</span></p>
         <p>For anyone just starting their watercolor journey. Mixing harmonious colors, brushwork and glazing, texture, and a sweet little painting to finish.</p>
         <details><summary>The six Fridays</summary><ol><li><b>Color theory.</b> A color wheel from the primaries, and how to mix.</li><li><b>Techniques.</b> The six basic watercolor techniques, charted.</li><li><b>Textures.</b> Loaded washes, additives, tools and brushwork.</li><li><b>Composition.</b> Perspective, depth and design.</li><li><b>Landscape.</b> An 8 by 10 watercolor landscape.</li><li><b>Still life.</b> Everything together, in one painting.</li></ol></details>
         <ul class="facts"><li>6 sessions</li><li>Materials included</li><li>Beginners</li></ul>
         <div class="price"><span><b>$275</b><small>for six</small></span>
-          <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Watercolor Fundamentals" data-price="275" data-when="Fridays 10 to 12, from Oct 9">Reserve</button></span>
+          <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Watercolor Fundamentals" data-price="275" data-when="Fridays 10 to 12">Reserve</button></span>
           <span data-show="mother" hidden><a class="chip-btn" href="https://cal.com/" target="_blank" rel="noopener">Reserve<span class="vh"> Watercolor Fundamentals on Cal.com (opens in a new tab)</span></a></span>
           <span data-show="maiden" hidden><a class="chip-btn ghost tel" href="tel:+17077914028">Call or text</a></span>
         </div>
       </article>
       <article class="cl reveal" style="--c:var(--ochre)">
         <h3>Fine Art Oil Painting</h3>
-        <p class="when">Mondays, 10 to 1<span class="dates" data-fall="Oct 19 to Nov 23, 2026" data-winter="">Oct 19 to Nov 23, 2026</span></p>
+        <p class="when">Mondays, 10 to 1<span class="dates ph" data-fall="Oct 19 to Nov 23, 2026" data-winter="">Your winter dates, 2027</span></p>
         <p>A six session course in oil, all still life, painted from a light box in a beautiful studio. Beginners welcome. Six easels, so the class stays small.</p>
         <ul class="facts"><li>6 sessions</li><li>6 easels</li><li>Beginners welcome</li></ul>
-        <p class="seats" data-show="crone all">2 easels left</p>
-        <div class="price"><span><b>$330</b><small>for six</small></span>
-          <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Fine Art Oil Painting" data-price="330" data-when="Mondays 10 to 1, from Oct 19" data-max="2">Reserve</button></span>
+                <div class="price"><span><b>$330</b><small>for six</small></span>
+          <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Fine Art Oil Painting" data-price="330" data-when="Mondays 10 to 1">Reserve</button></span>
           <span data-show="mother" hidden><a class="chip-btn" href="https://cal.com/" target="_blank" rel="noopener">Reserve<span class="vh"> Fine Art Oil Painting on Cal.com (opens in a new tab)</span></a></span>
           <span data-show="maiden" hidden><a class="chip-btn ghost tel" href="tel:+17077914028">Call or text</a></span>
         </div>
@@ -929,8 +929,8 @@
     </div>
     <p class="mock-note wf-note tier-note" data-show="mother" data-thing="Reserve and Book buttons to your own Cal.com page" hidden style="margin-top:26px">With Color, every Reserve, Save my spot and Book a party button opens your own free Cal.com page, set up in your name with each class, workshop and party on it. People pay the way they do now. In this preview the buttons open Cal.com itself. <span class="tag" data-go="mother">Color<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></p>
     <div class="mock-note wf-note tier-note" data-show="all" style="margin-top:26px">
-      <p>Your site lists dates without a year right now, so a visitor can&rsquo;t tell this fall from last fall. Here every session carries its year, and when the next one is set, I can follow your socials and update as you post, or you can email me the dates. Tap Winter to see the swap. <span class="tag">Subscription<span class="tag-p"><span aria-hidden="true">&middot;</span> from $12/mo</span></span></p>
-      <div class="season-seg" role="group" aria-label="Try the next session (preview)"><button type="button" data-season="fall" aria-pressed="true">Fall 2026</button><button type="button" data-season="winter" aria-pressed="false">Winter 2027</button></div>
+      <p>Your site lists dates without a year right now, so a visitor can&rsquo;t tell this fall from last fall. Here every session carries its year, and when the next one is set, I can follow your socials and update as you post, or you can email me the dates. Tap Fall to see the session that just ended. <span class="tag">Subscription<span class="tag-p"><span aria-hidden="true">&middot;</span> from $12/mo</span></span></p>
+      <div class="season-seg" role="group" aria-label="Try the next session (preview)"><button type="button" data-season="fall" aria-pressed="false">Fall 2026</button><button type="button" data-season="winter" aria-pressed="true">Winter 2027</button></div>
     </div>
   </div>
 </section>
@@ -942,11 +942,11 @@
       <h2 class="reveal">Line, then value, <em>then light</em></h2>
       <p style="margin-top:18px" class="measure">Every painting starts as a drawing. In the Monday oil course we set a still life in the light box and build it the way Nella teaches it: line and block in, then value, a first wash of color, glaze over glaze, and last of all the light. The drawing class gives you the first two, watercolor the wash, and oil the rest.</p>
       <div class="facts-row">
-        <span><b>Mondays</b>10 to 1</span><span><b>Six weeks</b>Oct 19 to Nov 23</span><span><b>Six easels</b>$330</span>
+        <span><b>Mondays</b>10 to 1</span><span><b>Six weeks</b><span class="ph">your session dates</span></span><span><b>Six easels</b>$330</span>
       </div>
       <p class="pull">&ldquo;We are all working together to create beauty and light.&rdquo;<small>From the studio&rsquo;s own words</small></p>
       <div class="cta-row" style="margin-top:22px">
-        <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Fine Art Oil Painting" data-price="330" data-when="Mondays 10 to 1, from Oct 19" data-max="2">Reserve an easel</button></span>
+        <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Fine Art Oil Painting" data-price="330" data-when="Mondays 10 to 1">Reserve an easel</button></span>
         <span data-show="mother" hidden><a class="chip-btn" href="https://cal.com/" target="_blank" rel="noopener">Reserve an easel<span class="vh"> on Cal.com (opens in a new tab)</span></a></span>
         <span data-show="maiden" hidden><a class="chip-btn ghost tel" href="tel:+17077914028">Text (707) 791-4028</a></span>
       </div>
@@ -1025,29 +1025,8 @@
   <div class="wrap">
     <p class="label with-pill"><span>Workshops &amp; open studio</span> <span class="tag" data-go="maiden">Every build</span> <span class="tag" data-go="crone" data-show="crone all">Save a spot here: Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Guest artists, <em>open doors</em></h2>
-    <p class="soft measure" style="margin-top:14px">We think of ourselves as a community space first. Guest artists teach full day workshops, and this October the studio doors open for Art Trails, two weekends running.</p>
+    <p class="soft measure" style="margin-top:14px">We think of ourselves as a community space first. Guest artists teach full day workshops, and the studio doors open for Sonoma County Art Trails each fall.</p>
     <div class="events">
-      <article class="ev reveal">
-        <div class="ev-date"><small>Oct</small><b>10</b></div>
-        <div>
-          <h3>Sonoma County Art Trails</h3>
-          <span class="where-tag">Studio 6 &middot; Oct 10, 11, 17 &amp; 18</span>
-          <p>Two weekends of open studios, 10 to 5. Come see Nella&rsquo;s oil paintings where they&rsquo;re made, watch a demo, and say hello. Free.</p>
-        </div>
-      </article>
-      <article class="ev reveal">
-        <div class="ev-date"><small>Nov</small><b>14</b></div>
-        <div>
-          <h3>Celebrating Birds, with Sue Sweet</h3>
-          <span class="where-tag">Watercolor workshop &middot; Sat, 10 to 4</span>
-          <p>Sue shares her tips on planning, composition, tools and techniques for painting our lovely feathered friends. $175 for the day.</p>
-          <div class="ev-act">
-            <span data-show="crone all"><button type="button" class="chip-btn" data-reserve="Celebrating Birds with Sue Sweet" data-price="175" data-when="Saturday Nov 14, 10 to 4" data-thing="saving workshop spots online">Save my spot</button></span>
-            <span data-show="mother" hidden><a class="chip-btn" href="https://cal.com/" target="_blank" rel="noopener">Save my spot<span class="vh"> in Celebrating Birds on Cal.com (opens in a new tab)</span></a></span>
-            <span data-show="maiden" hidden><a class="chip-btn ghost tel" href="tel:+17077914028">Call to save a spot</a></span>
-          </div>
-        </div>
-      </article>
       <article class="ev reveal">
         <div class="ev-date wide"><small>First</small><b>Thursdays</b></div>
         <div>
@@ -1068,6 +1047,9 @@
     <div class="past reveal">
       <p class="label" style="margin-bottom:4px">Lately in the studio</p>
       <ul>
+        <li>Celebrating Birds with Sue Sweet<span>a full day watercolor workshop, Nov 14</span></li>
+        <li>Halloween painting party<span>at Comstock Winery, Dry Creek Valley, Oct 25</span></li>
+        <li>Sonoma County Art Trails<span>open studio at Studio 6, two October weekends</span></li>
         <li>Collage workshop with Laurie<span>a fun, expressive day, $175</span></li>
         <li>Creating with Clay<span>kids 6 to 12, keepsakes and magnets, $55</span></li>
         <li>Painting in the vineyard<span>at Martorana Family Winery</span></li>
@@ -1342,7 +1324,7 @@
           <div class="serp-q"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>watercolor class Healdsburg</div>
           <div class="serp-site"><span class="serp-fav" aria-hidden="true">A</span><span><b>Healdsburg Art Atelier</b><small>healdsburgartatelier.com</small></span></div>
           <p class="serp-title">Healdsburg Art Atelier&nbsp;| Drawing, Watercolor and Oil Painting Classes in Healdsburg</p>
-          <p class="serp-desc">Small fine art classes for every level with painter Nella Rubinstien. Fall 2026 sessions start Oct 6. Live model mornings, guest workshops and art parties.</p>
+          <p class="serp-desc">Small fine art classes for every level with painter Nella Rubinstien. Live model mornings, guest workshops and art parties.</p>
         </div>
       </figure>
       <figure class="reveal found-card">
@@ -1427,9 +1409,9 @@
   (function () {
     function $(id) { return document.getElementById(id); }
     var STATES = {
-      open: { label: 'Fall classes begin Tuesday, Oct 6', cta: 'Reserve your easel', href: '#classes' },
-      late: { label: 'Two easels left in Monday oil painting', cta: 'Save one', href: '#lightbox' },
-      closed: { label: 'Studio closed Thanksgiving week', cta: 'Classes back Monday, Nov 30', href: '#classes' }
+      open: { label: 'Small fine art classes, six weeks at a time', cta: 'See the classes', href: '#classes' },
+      late: { label: 'Only a few easels left in oil painting', cta: 'Save one', href: '#lightbox' },
+      closed: { label: 'Studio closed for the holiday week', cta: 'See the classes', href: '#classes' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
@@ -1518,6 +1500,7 @@
         else { d.textContent = 'Your winter dates, 2027'; d.classList.add('ph'); }
       });
       pill.textContent = s === 'fall' ? 'Fall 2026' : 'Winter 2027';
+      var cs = document.getElementById('classes'); if (cs) cs.classList.toggle('is-past', s === 'fall');
       btns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
     }); });
   })();
