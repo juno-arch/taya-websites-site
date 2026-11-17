@@ -684,13 +684,14 @@
 <a class="skip" href="#new">Skip to the paintings</a>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="hours"><a href="#lab" id="status-link"><svg class="strip-eye" viewBox="0 0 250 250" aria-hidden="true"><use href="#re-eye"/></svg><b id="status-label">The Lab is open Thursday to Monday, 12 to 5 &middot; 405 Main Street, Ferndale</b> <em><span id="status-cta">Plan a visit</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="house"><a href="#lab" id="status-link"><svg class="strip-eye" viewBox="0 0 250 250" aria-hidden="true"><use href="#re-eye"/></svg><b id="status-label">Art and Merch Open House, Saturday Nov 28 at 10 am &middot; 405 Main Street, Ferndale</b> <em><span id="status-cta">Plan a visit</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
       <p class="status-q"><span id="status-q">Banner demo</span> <span class="tag" data-go="maiden">Every build</span></p>
       <div class="seg" role="group" aria-labelledby="status-q">
-        <button type="button" data-state="hours" aria-pressed="true">Hours</button>
+        <button type="button" data-state="house" aria-pressed="true">Open house</button>
+        <button type="button" data-state="hours" aria-pressed="false">Hours</button>
         <button type="button" data-state="surf" aria-pressed="false">Out surfing</button>
         <button type="button" data-state="new" aria-pressed="false">New work</button>
       </div>
@@ -1130,6 +1131,7 @@
           <div><dt>Thursday to Monday</dt><dd>12 to 5</dd></div>
           <div><dt>Tuesday and Wednesday</dt><dd>Closed</dd></div>
         </dl>
+        <p class="soft hours-note" id="lab-house" data-end="2026-11-28" style="margin-top:12px"><b style="color:var(--on-night)">Small Business Saturday, Art and Merch Open House:</b> Saturday, November 28, at 10 am, at the gallery, 405 Main Street.</p>
         <p class="soft hours-note" style="margin-top:12px">Hours may vary during bouts of good surf. In town on a day I&rsquo;m closed? Write to me, and if I&rsquo;m around I&rsquo;d be glad to come down and show you around.</p>
         <div class="lab-where">
           <div><b>The gallery and studio</b>405 Main Street<br>Ferndale, California<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Redeye+Laboratories+405+Main+St+Ferndale+CA" target="_blank" rel="noopener">Map<span class="vh"> to the Lab (opens in a new tab)</span></a></div>
@@ -1403,6 +1405,8 @@
     document.addEventListener('rl:banner', function (e) { surfing = e.detail && e.detail.state === 'surf'; picked = null; paint(false); });
     paint(false);
     setInterval(function () { if (picked === null && !surfing) paint(false); }, 60000);
+    /* the open house line tucks itself away once Saturday Nov 28 has passed */
+    (function () { var el = document.getElementById('lab-house'); if (!el) return; var n = new Date(), t = n.getFullYear() * 10000 + (n.getMonth() + 1) * 100 + n.getDate(); if (t > +el.getAttribute('data-end').replace(/-/g, '')) el.hidden = true; })();
   })();
 </script>
 
@@ -1411,13 +1415,14 @@
   (function () {
     function $(id) { return document.getElementById(id); }
     var STATES = {
+      house: { label: 'Art and Merch Open House, Saturday Nov 28 at 10 am · 405 Main Street, Ferndale', cta: 'Plan a visit', href: '#lab' },
       hours: { label: 'The Lab is open Thursday to Monday, 12 to 5 · 405 Main Street, Ferndale', cta: 'Plan a visit', href: '#lab' },
       surf: { label: function () { return 'Out surfing today · the Lab opens again ' + (window.rlNextOpenWords ? window.rlNextOpenWords() : 'soon') + ' at noon'; }, cta: 'Shop online', href: '#shop', maiden: { cta: 'See the art', href: '#work' } },
       new: { label: 'New on the easel: Veiled Cosmic Jelly and The Crow and the Cat', cta: 'See what’s new', href: '#new' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
-    var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'hours';
+    var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'house';
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function setState(k, announce) {
       var s = STATES[k]; if (!s) return; var m = viewNow() === 'maiden' && s.maiden ? s.maiden : s;
@@ -1429,6 +1434,8 @@
       if (changed || announce) { try { document.dispatchEvent(new CustomEvent('rl:banner', { detail: { state: k } })); } catch (e) {} }
     }
     btns.forEach(function (b) { b.addEventListener('click', function () { setState(b.dataset.state, true); }); });
+    /* the open house banner steps aside by itself once Saturday Nov 28 has passed */
+    (function () { var n = new Date(), t = n.getFullYear() * 10000 + (n.getMonth() + 1) * 100 + n.getDate(); if (t > 20261128) { var h = panel.querySelector('[data-state="house"]'); if (h) h.hidden = true; setState('hours', false); } })();
     document.addEventListener('ex:view', function () { setState(current, false); });
     document.addEventListener('rl:surf', function () { if (current === 'surf') setState('hours', false); });
     function openPanel(o) { panel.hidden = !o; tryBtn.setAttribute('aria-expanded', o ? 'true' : 'false'); }
