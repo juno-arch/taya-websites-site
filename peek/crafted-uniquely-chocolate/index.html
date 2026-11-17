@@ -366,7 +366,7 @@
   .bk-note b { display: block; color: var(--ink); font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2px; font-weight: 800; }
 
   /* WEEKEND TREATS */
-  .drops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 40px; }
+  .drops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin-top: 40px; }
   .drop { overflow: hidden; display: flex; flex-direction: column; position: relative; }
   .drop .photo { border-radius: 0; aspect-ratio: 4 / 3; }
   .drop-in { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
@@ -1028,17 +1028,9 @@
         <p class="label with-pill"><span>Weekend treats</span> <span class="tag" data-go="maiden">Every build</span></p>
         <h2 class="reveal">Small batches, <em>for Eureka pickup</em></h2>
       </div>
-      <p class="soft measure">Every so often I make a small batch of something fun. Limited quantities, for pickup in Eureka.</p>
+      <p class="soft measure">Every so often I make a small batch of something fun. Limited quantities, for pickup in Eureka. Follow along on Instagram for the next one.</p>
     </div>
     <div class="drops">
-      <article class="drop ccard reveal">
-        <figure class="photo" data-lightbox><img src="images/ghosts-640.webp" data-full="images/ghosts.webp" width="640" height="464" alt="Three white chocolate ghosts with little pumpkins, beside a skull, in front of a pumpkin print backdrop" loading="lazy" style="object-position:45% 60%"></figure>
-        <div class="drop-in">
-          <h3>Peanut butter filled chocolate ghosts</h3>
-          <p>These little ghosts are hiding something... peanut butter. Made by hand in Eureka, in limited quantities.</p>
-          <div class="claim"><a class="btn quiet" href="https://www.instagram.com/crafteduniquelychocolate/" target="_blank" rel="noopener">Message me to order<span class="vh"> (opens Instagram in a new tab)</span></a></div>
-        </div>
-      </article>
       <article class="drop ccard g reveal">
         <figure class="photo" data-lightbox><img src="images/cookie-pops-640.webp" data-full="images/cookie-pops.webp" width="640" height="284" alt="Four cookie pops: two in chocolate with sprinkles, two in white chocolate topped with cereal" loading="lazy"></figure>
         <div class="drop-in">
@@ -1070,7 +1062,7 @@
     <div class="cart-done fade-in" id="cart-done" data-show="crone all" hidden>
       <div class="dep"><h4 id="cart-done-h" tabindex="-1">They&rsquo;re yours: <span id="cart-what">your treats</span></h4><p>I&rsquo;ll message you with the pickup time in Eureka.</p><p class="demo-note">Preview only: nothing was charged. On your real site, it&rsquo;s paid into your own Stripe, the stamp says sold out when the last one goes, and you get a short heads-up email for each (what, how many, and the name for pickup).</p><div class="bk-nav"><button type="button" class="bk-go ghost" id="cart-again">Try it again</button></div></div>
     </div>
-    <p class="tier-note mock-note wf-note">These are your real September treats and prices, standing in. When you post a new batch, it goes up here: I can follow your socials and update as you post, or you can email me.<span data-show="crone all"> Advance: people claim and pay right here, and it&rsquo;s pickup only, so there&rsquo;s no address to collect.</span></p>
+    <p class="tier-note mock-note wf-note">These are real treats and prices from your recent batches, standing in until the next one. When you post a new batch, it goes up here: I can follow your socials and update as you post, or you can email me.<span data-show="crone all"> Advance: people claim and pay right here, and it&rsquo;s pickup only, so there&rsquo;s no address to collect.</span></p>
   </div>
 </section>
 
@@ -1168,7 +1160,7 @@
     <h2 class="reveal">Made in <em>Eureka</em></h2>
     <div class="where">
       <div class="ccard reveal"><b class="h">Pickup</b>Eureka, California<p class="soft" style="font-size:15px;margin-top:6px">Orders are picked up in Eureka, unless we agree on something else.</p></div>
-      <div class="ccard g reveal"><b class="h">Markets and pop-ups</b>Now and then, around Humboldt, like these:<ul><li><b>Arcata Friday Night Market</b>, on the Plaza, 5:30 to 8:30</li><li><b>Humboldt Artisans Crafts and Music Festival</b>, at Redwood Acres</li></ul><p class="soft" style="font-size:15px;margin-top:8px">Each one goes up here and on Instagram.</p></div>
+      <div class="ccard g reveal"><b class="h">Markets and pop-ups</b>Now and then, around Humboldt. Past favorites:<ul><li><b>Arcata Friday Night Market</b>, on the Plaza, in summer</li><li><b>Humboldt Artisans Crafts and Music Festival</b>, at Redwood Acres, in December</li></ul><p class="soft" style="font-size:15px;margin-top:8px">Follow along on Instagram for the next one.</p></div>
       <div class="ccard reveal"><b class="h">Order or ask</b><span class="reach" style="margin-top:4px"><a href="mailto:crafteduniquelychocolate@gmail.com">Email me</a><a href="https://www.instagram.com/crafteduniquelychocolate/" target="_blank" rel="noopener">@crafteduniquelychocolate<span class="vh"> on Instagram (opens in a new tab)</span></a></span><p class="soft" style="font-size:15px;margin-top:10px;overflow-wrap:anywhere">crafteduniquelychocolate@gmail.com</p></div>
     </div>
     <p class="tier-note mock-note wf-note">Market nights go up here and in the banner up top. I can follow your socials and update as you post, or you can email me the dates.</p>
@@ -1310,7 +1302,7 @@
     var STATES = {
       open: { label: 'Taking custom orders · about 2 weeks ahead', cta: 'Start your order', href: '#order' },
       treats: { label: 'Weekend treats are ready for Eureka pickup', cta: 'See the treats', href: '#treats' },
-      market: { label: 'Find me at the Arcata Friday Night Market tonight, 5:30 to 8:30', cta: 'Where to find me', href: '#find' }
+      market: { label: 'Find me at the market tonight', cta: 'Where to find me', href: '#find' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
