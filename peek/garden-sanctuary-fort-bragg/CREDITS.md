@@ -1,0 +1,2 @@
+# Photo credits: The Garden at Road's End (Nov 17 2026)
+Every photo is John's own, from his Airbnb listing (https://www.airbnb.com/rooms/613434), downloaded at the largest size Airbnb serves (1200x900 or 1024x768) and exported at no more than 1.25x with a gentle sharpen. No stock, none with words on it, none showing a guest's face. Full list and sources: prospects/batch18/garden-sanctuary-fort-bragg/CREDITS.md. Fonts: Linden Hill and Gantari (Google Fonts, SIL OFL).
