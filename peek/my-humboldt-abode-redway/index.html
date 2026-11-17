@@ -532,6 +532,22 @@
   .reiki-words p { margin-top: 12px; max-width: 58ch; color: var(--ink-soft); }
   .reiki-words .rw-facts { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; color: var(--ink-soft); }
   .reiki-words .rw-src { margin-top: 12px; font-size: 13.5px; }
+  .avail { margin-top: 34px; padding: 22px; border: 1px solid var(--hair); border-radius: 10px; background: color-mix(in srgb, var(--paper, #fff) 70%, transparent); }
+  .avail h3 { font-family: 'Yrsa', Georgia, serif; font-size: 24px; margin: 6px 0 2px; }
+  .avail .av-tabs { display: flex; gap: 8px; margin-top: 14px; }
+  .avail .av-tabs button { padding: 8px 14px; border: 1px solid var(--hair); border-radius: 999px; background: none; color: inherit; font: inherit; font-size: 14px; cursor: pointer; }
+  .avail .av-tabs button[aria-pressed="true"] { background: var(--plum); border-color: var(--plum); color: #fff; }
+  .avail .av-head { display: flex; align-items: center; justify-content: space-between; max-width: 420px; margin-top: 18px; }
+  .avail .av-head button { width: 38px; height: 38px; border: 1px solid var(--hair); border-radius: 50%; background: none; color: inherit; font-size: 18px; cursor: pointer; }
+  .avail .av-head b { font-weight: 600; }
+  .avail .av-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; max-width: 420px; margin-top: 10px; }
+  .avail .av-dow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; color: var(--ink-soft); }
+  .avail .av-d { aspect-ratio: 1; display: grid; place-items: center; font-size: 14px; border-radius: 6px; border: 1px solid var(--hair); }
+  .avail .av-d.off { border-color: transparent; }
+  .avail .av-d.past { opacity: 0.35; }
+  .avail .av-d.taken { background: repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0 5px, rgba(0,0,0,0) 5px 10px); text-decoration: line-through; color: var(--ink-soft); }
+  .avail .av-key { margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
+  .avail .av-go { margin-top: 16px; }
   .sec-note { margin-top: 26px; font-size: 15px; color: var(--ink-soft); max-width: 62ch; }
 
 
@@ -1018,6 +1034,20 @@
           </div>
         </div>
       </article>
+    </div>
+    <div class="avail reveal" id="avail" data-show="mother crone all" data-fold>
+      <p class="label with-pill"><span>Open nights</span> <span class="bk-demo">sample dates</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <h3>See which nights are open</h3>
+      <p class="soft">Pick a place and a month. Struck-through nights are taken. Booking stays on Airbnb.</p>
+      <div class="av-tabs" role="group" aria-label="Choose a place to stay">
+        <button type="button" data-av="studio" aria-pressed="true">The Studio</button>
+        <button type="button" data-av="bungalow" aria-pressed="false">The Bungalow</button>
+      </div>
+      <div class="av-head"><button type="button" id="av-prev" aria-label="Earlier month">&lsaquo;</button><b id="av-month" aria-live="polite"></b><button type="button" id="av-next" aria-label="Later month">&rsaquo;</button></div>
+      <div class="av-grid" id="av-grid"></div>
+      <p class="av-key">Open nights are plain. Taken nights are struck through. <span class="ph">(live dates once your Airbnb calendar link is connected)</span></p>
+      <div class="av-go"><a class="btn" id="av-book" href="https://www.airbnb.com/h/myhumboldtabode" target="_blank" rel="noopener">Book on Airbnb<span class="vh"> (opens in a new tab)</span></a></div>
+      <p class="sec-note mock-note wf-note" style="margin-top:20px">The dates above are samples. Send me your Airbnb calendar link for each place (Calendar, Availability, Connect calendars, Export calendar) and the real open nights show here on their own, refreshing every few hours.</p>
     </div>
     <div class="gallery" data-lightbox>
       <a class="lb-thumb reveal" href="images/bungalow.jpg"><picture><source type="image/webp" srcset="images/bungalow.webp"><img src="images/bungalow.jpg" width="1440" height="1080" alt="The craftsman bungalow in its redwood grove" loading="lazy"></picture></a>
@@ -2068,6 +2098,38 @@
 </script>
 <script src="/lightbox.js?v=2" defer></script>
 <script>if(/[?&]mark=1(&|$)/.test(location.search)){var s=document.createElement("script");s.src="/mark.js?v=6";s.defer=true;document.head.appendChild(s);}</script>
+<script>
+/* Open nights calendar: sample dates now; her Airbnb calendar links make them live. Reads and writes nothing. */
+(function () {
+  var root = document.getElementById('avail'); if (!root) return;
+  var grid = document.getElementById('av-grid'), title = document.getElementById('av-month'), place = 'studio';
+  var LINK = { studio: 'https://www.airbnb.com/h/myhumboldtabode', bungalow: 'https://www.airbnb.com/h/a-craftsmanbungalow' };
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var cur = new Date(today.getFullYear(), today.getMonth(), 1);
+  function taken(d) { var n = Math.floor(d / 864e5), k = place === 'studio' ? 3 : 5; return ((n * 7 + k * 11) % 9) < 3 || ((n + k) % 13) < 2; }
+  function draw() {
+    var y = cur.getFullYear(), m = cur.getMonth(), first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate(), h = '';
+    title.textContent = cur.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(function (d) { h += '<span class="av-dow" aria-hidden="true">' + d + '</span>'; });
+    for (var i = 0; i < first; i++) h += '<span class="av-d off"></span>';
+    for (var d = 1; d <= days; d++) {
+      var dt = new Date(y, m, d), past = dt < today, t = !past && taken(dt.getTime());
+      h += '<span class="av-d' + (past ? ' past' : '') + (t ? ' taken' : '') + '" aria-label="' + dt.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) + (past ? ', past' : t ? ', taken' : ', open') + '">' + d + '</span>';
+    }
+    grid.innerHTML = h;
+    document.getElementById('av-prev').disabled = cur <= new Date(today.getFullYear(), today.getMonth(), 1);
+  }
+  document.getElementById('av-prev').addEventListener('click', function () { cur = new Date(cur.getFullYear(), cur.getMonth() - 1, 1); draw(); });
+  document.getElementById('av-next').addEventListener('click', function () { cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1); draw(); });
+  [].forEach.call(root.querySelectorAll('[data-av]'), function (b) {
+    b.addEventListener('click', function () {
+      place = b.dataset.av; [].forEach.call(root.querySelectorAll('[data-av]'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      document.getElementById('av-book').href = LINK[place]; draw();
+    });
+  });
+  draw();
+})();
+</script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
 <script src="/note-motion.js?v=1" defer></script>
 
