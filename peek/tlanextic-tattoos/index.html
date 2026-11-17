@@ -934,26 +934,6 @@
     </div></div>
     <p class="claim-note" id="claim-note" role="status"></p>
 
-    <div class="event reveal" id="fundraiser">
-      <div class="event-copy">
-        <p class="label">Oct 10 &middot; Domestic Violence Awareness Month</p>
-        <h3>Flash fundraiser for Humboldt Domestic Violence Services</h3>
-        <p class="soft" style="margin-top:10px">Two flash sheets, $175 each, and 75% of every tattoo goes to Humboldt Domestic Violence Services. Black and gray, up to 5 by 5 inches, small changes welcome.</p>
-        <p class="q" id="slot-q" style="margin-top:16px">Five spots that day</p>
-        <div class="slots" role="group" aria-labelledby="slot-q">
-          <button type="button" class="slot" aria-pressed="false">8 am</button><button type="button" class="slot" aria-pressed="false">11 am</button><button type="button" class="slot" aria-pressed="false">2 pm</button><button type="button" class="slot" aria-pressed="false">5 pm</button><button type="button" class="slot" aria-pressed="false">8 pm</button>
-        </div>
-        <p class="claim-note" id="slot-note" role="status" style="margin-top:10px"></p>
-        <dl class="event-facts">
-          <div><dt>Where</dt><dd>Her studio, 1433 11th St, Suite G, Arcata</dd></div>
-          <div><dt>To book</dt><dd>Direct message <a href="https://www.instagram.com/tlanextic.tattoos/" target="_blank" rel="noopener">@tlanextic.tattoos</a></dd></div>
-        </dl>
-      </div>
-      <div class="event-pics" data-lightbox>
-        <figure class="photo"><img src="images/f-fundraiser-jaguar.webp" width="1000" height="963" alt="Fundraiser flash sheet: a climbing jaguar, a black sun, a lotus, a dandelion and a spiky sea flower" loading="lazy" style="object-fit:contain"></figure>
-        <figure class="photo"><img src="images/f-fundraiser-axolotl.webp" width="1000" height="1000" alt="Fundraiser flash sheet: frogs, an axolotl, a dragonfly, a butterfly and a beetle with flames" loading="lazy" style="object-fit:contain"></figure>
-      </div>
-    </div>
     <p class="mock-note wf-note" style="margin-top:28px;font-size:14.5px">Flash days get a card here.<span data-show="crone all"> With Advance, spots are claimed with a deposit.</span></p>
   </div>
 </section>
@@ -1078,7 +1058,7 @@
         <div class="seg" role="group" aria-label="Choose one"><button type="button" data-mode="dep" aria-pressed="true">Pay my deposit</button><button type="button" data-mode="gift" aria-pressed="false">Gift card</button></div>
         <div id="pay-dep" class="stack" style="margin-top:18px">
           <div class="dep-box"><span>Holds your appointment, and comes off your final price</span><b><span class="ph">your deposit</span></b></div>
-          <div class="fld-row"><label class="fld">Your name<input id="pay-name" autocomplete="off" value="Ana R."></label><label class="fld">Your appointment<input id="pay-when" autocomplete="off" value="Sat, Oct 24"></label></div>
+          <div class="fld-row"><label class="fld">Your name<input id="pay-name" autocomplete="off" value="Ana R."></label><label class="fld">Your appointment<input id="pay-when" autocomplete="off" value="Sat, Nov 21"></label></div>
         </div>
         <div id="pay-gift" class="stack" style="margin-top:18px" hidden>
           <p class="q" id="pay-amt-q">Choose an amount</p>
@@ -1465,7 +1445,7 @@
     var STATES = {
       open: { label: ['Books open', 'Agenda abierta'], cta: ['Send your idea', 'Envía tu idea'], href: '#request' },
       closed: { label: ['Books are closed for now', 'La agenda está cerrada por ahora'], cta: ['Hear first when they open', 'Entérate primero cuando abra'], href: '#alerts' },
-      event: { label: ['Oct 10: flash fundraiser', '10 de oct: flash solidario'], cta: ['See the flash and the spots', 'Ve el flash y los lugares'], href: '#fundraiser' }
+      event: { label: ['Flash day', 'Día de flash'], cta: ['See the flash', 'Ve el flash'], href: '#flash' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
@@ -1476,7 +1456,7 @@
       if (k === 'closed' && v === 'maiden') return { label: L(s.label), cta: L(['Follow along on Instagram', 'Síguela en Instagram']), href: '#visit' };
       return { label: L(s.label), cta: L(s.cta), href: s.href };
     }
-    var B88 = { open: [['\u273F books open', '\u273F agenda abierta'], ['send your idea', 'envía tu idea']], closed: [['books closed', 'agenda cerrada'], ['hear first', 'entérate primero']], event: [['oct 10', '10 de oct'], ['flash day', 'día de flash']] };
+    var B88 = { open: [['\u273F books open', '\u273F agenda abierta'], ['send your idea', 'envía tu idea']], closed: [['books closed', 'agenda cerrada'], ['hear first', 'entérate primero']], event: [['flash day', 'día de flash'], ['see the flash', 'ver el flash']] };
     function paint88(k, s) {
       var a = $('b88-books'); if (!a) return; var x = B88[k], v = view();
       if (v === 'maiden') x = k === 'open' ? [x[0], ['dm or email', 'dm o correo']] : k === 'closed' ? [x[0], ['follow along', 'síguela']] : x;
@@ -1989,7 +1969,7 @@
     /* the demo's filled in answers, swapped only while nobody has typed over them */
     var VALS = {
       'rq-idea': 'Un cempasúchil con una monarca posándose en él, de línea fina, quizá con un poco de sombreado de puntos.',
-      'rq-place': 'Antebrazo exterior', 'rq-size': '5 por 3', 'rq-budget': '$250 a $350', 'rq-days': 'Fines de semana, o después de las 3', 'pay-when': 'sáb 24 de oct'
+      'rq-place': 'Antebrazo exterior', 'rq-size': '5 por 3', 'rq-budget': '$250 a $350', 'rq-days': 'Fines de semana, o después de las 3', 'pay-when': 'sáb 21 de nov'
     };
     var TITLE = ['Tlanextic Tattoos | Roxanne Andrade, Tattoo Artist in Arcata', 'Tlanextic Tattoos | Roxanne Andrade, tatuadora en Arcata'];
     /* kept in English on purpose: Taya's notes, the build tags and every mockup tool; and the parts the page's own scripts fill in (they listen for tt:lang) */
