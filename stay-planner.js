@@ -24,6 +24,7 @@
   function total() { var t = 0; Object.keys(S.picks).forEach(function (k) { var s = svc(k.split('|')[1]); if (s && +k.split('|')[0] < dayCount()) t += s.price || 0; }); return t; }
   function slotName(k) { var r = slots.filter(function (x) { return x[0] === k; })[0]; return r ? r[1] : ''; }
   function stayName() { return S.stay === 'visit' ? ((C.visit && C.visit.name) || 'Services only') : (stayOf(S.stay) || {}).name; }
+  function priceLabel(s) { return s.price == null ? '(price)' : (s.price ? money + s.price : 'free'); }   // price: null = not known yet, shown as a dotted blank
   function ok1() { return !!S.stay; }
   function consentText() { return C.consentText || ('Yes, ' + (C.host || 'the host') + ' may email me about future stays, treatments and events at ' + (C.place || 'this place') + '. I can unsubscribe any time.'); }
 
@@ -72,7 +73,7 @@
         var grp = el('div', 'sp-grp'); grp.appendChild(el('span', 'sp-cat', cat));
         (C.services || []).filter(function (s) { return s.cat === cat; }).forEach(function (s) {
           var k = i + '|' + s.key, on = !!S.picks[k], b = btn('', 'sp-chip', function () { if (S.picks[k]) delete S.picks[k]; else S.picks[k] = slots[0][0]; draw(); });
-          b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.appendChild(el('span', '', s.name)); b.appendChild(el('i', '', s.price ? money + s.price : 'free')); grp.appendChild(b);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.appendChild(el('span', '', s.name)); b.appendChild(el('i', s.price == null ? 'sp-tbd' : '', priceLabel(s))); grp.appendChild(b);
           if (on) { var seg = el('div', 'sp-seg'); seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', 'Time of day for ' + s.name);
             slots.forEach(function (sl) { var q = btn(sl[1], '', function () { S.picks[k] = sl[0]; draw(); }); q.setAttribute('aria-pressed', S.picks[k] === sl[0] ? 'true' : 'false'); seg.appendChild(q); }); grp.appendChild(seg); }
         }); day.appendChild(grp);
@@ -90,7 +91,7 @@
     return w;
   }
   function bundle() {
-    var days = []; for (var i = 0; i < dayCount(); i++) days.push({ date: iso(i), label: dayLabel(i), items: picksOf(i).map(function (p) { return { key: p.s.key, name: p.s.name, slot: p.slot, price: p.s.price || 0 }; }) });
+    var days = []; for (var i = 0; i < dayCount(); i++) days.push({ date: iso(i), label: dayLabel(i), items: picksOf(i).map(function (p) { return { key: p.s.key, name: p.s.name, slot: p.slot, price: p.s.price == null ? null : p.s.price }; }) });
     return { place: C.place, stay: S.stay === 'visit' ? null : { unit: S.stay, name: stayName(), arrive: S.date || null, nights: S.n }, services_only: S.stay === 'visit', days: days, total: total(), contact: { name: S.name, email: S.mail, phone: S.phone, consent_email: !!S.consent, consent_text: S.consent ? consentText() : null }, note: S.note };
   }
   function nav() {
@@ -121,7 +122,7 @@
       var list = el('ol', 'sp-tk-days' + (S.stay === 'visit' ? ' visit' : ''));
       for (var i = 0; i < dayCount(); i++) { var li = el('li', 'sp-tk-day'), p = picksOf(i); li.appendChild(el('b', '', dayLabel(i)));
         if (!p.length) li.appendChild(el('span', 'sp-tk-free', S.stay === 'visit' ? 'nothing yet' : 'free day'));
-        p.forEach(function (x) { var r = el('div', 'sp-tk-line'); r.appendChild(el('span', '', x.s.name + ' · ' + slotName(x.slot).toLowerCase())); r.appendChild(el('i', '', x.s.price ? money + x.s.price : 'free')); li.appendChild(r); });
+        p.forEach(function (x) { var r = el('div', 'sp-tk-line'); r.appendChild(el('span', '', x.s.name + ' · ' + slotName(x.slot).toLowerCase())); r.appendChild(el('i', x.s.price == null ? 'sp-tbd' : '', priceLabel(x.s))); li.appendChild(r); });
         list.appendChild(li); }
       ticket.appendChild(list); var t = el('div', 'sp-tk-total'); t.appendChild(el('span', '', noun.charAt(0).toUpperCase() + noun.slice(1) + 's total')); t.appendChild(el('b', '', money + total())); ticket.appendChild(t);
       if (C.stayNote && S.stay !== 'visit') ticket.appendChild(el('p', 'sp-tk-fine', 'Stay nights are confirmed on the booking site you use today.'));
