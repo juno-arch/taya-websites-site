@@ -1,7 +1,7 @@
 /* Web Faery stay + services planner. One shared module for hosts who rent rooms AND sell treatments, classes or tours.
    A guest picks a stay (or just services), the dates, then what they want on each day of the stay. The plan builds live as an
    itinerary ticket, and the request lands as ONE bundle. Preview only: nothing is sent. The page sets window.STAY_PLANNER first.
-   Config: { mount, host, place, stays:[{key,name,sleeps,blurb}], visit:{name,blurb}|null, services:[{key,cat,name,price,mins}],
+   Config: { mount, host, place, owner, endpoint, consentText, stays:[{key,name,sleeps,blurb}], visit:{name,blurb}|null, services:[{key,cat,name,price,mins}],
              slots:[[key,label]], maxNights, noun:'treatment'|'class'|'session', stayNote, doneNote, inbox:true }
    On "send" it fires a CustomEvent "stayplanner:request" on the mount with detail = the bundle (the shape the portal will read). */
 (function () {
@@ -10,7 +10,7 @@
   var DN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var slots = C.slots || [['am', 'Morning'], ['pm', 'Afternoon'], ['eve', 'Evening']], noun = C.noun || 'treatment', money = C.currency || '$';
   var maxN = C.maxNights || 7, S;
-  function fresh() { return { step: 1, stay: null, n: 2, date: '', picks: {}, name: '', mail: '', phone: '', note: '', sent: false, open: 0 }; }
+  function fresh() { return { step: 1, stay: null, n: 2, date: '', picks: {}, name: '', mail: '', phone: '', note: '', consent: false, sent: false, open: 0 }; }
   S = fresh();
   function el(t, cls, txt) { var e = document.createElement(t); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
   function btn(txt, cls, fn) { var b = el('button', cls, txt); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
@@ -25,6 +25,7 @@
   function slotName(k) { var r = slots.filter(function (x) { return x[0] === k; })[0]; return r ? r[1] : ''; }
   function stayName() { return S.stay === 'visit' ? ((C.visit && C.visit.name) || 'Services only') : (stayOf(S.stay) || {}).name; }
   function ok1() { return !!S.stay; }
+  function consentText() { return C.consentText || ('Yes, ' + (C.host || 'the host') + ' may email me about future stays, treatments and events at ' + (C.place || 'this place') + '. I can unsubscribe any time.'); }
 
   root.classList.add('sp'); root.textContent = '';
   var flow = el('div', 'sp-flow'), ticket = el('aside', 'sp-ticket'), live = el('p', 'sp-vh'); live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite');
@@ -84,18 +85,24 @@
     function fld(label, key, type, ph) { var f = el('label', 'sp-fld', label), i = el(type === 'textarea' ? 'textarea' : 'input'); if (type !== 'textarea') i.type = type; else i.rows = 3; i.value = S[key]; if (ph) i.placeholder = ph; i.addEventListener('input', function () { S[key] = i.value; }); f.appendChild(i); return f; }
     var r = el('div', 'sp-row'); r.appendChild(fld('Your name', 'name', 'text')); r.appendChild(fld('Email', 'mail', 'email')); w.appendChild(r);
     w.appendChild(fld('Phone (optional)', 'phone', 'tel')); w.appendChild(fld('Anything ' + (C.host || 'we') + ' should know', 'note', 'textarea', 'Celebrating an anniversary, vegetarian breakfast, arriving late'));
+    var cw = el('label', 'sp-consent'), cb = el('input'); cb.type = 'checkbox'; cb.checked = !!S.consent; cb.addEventListener('change', function () { S.consent = cb.checked; });
+    cw.appendChild(cb); cw.appendChild(el('span', '', consentText())); w.appendChild(cw);
     return w;
   }
   function bundle() {
     var days = []; for (var i = 0; i < dayCount(); i++) days.push({ date: iso(i), label: dayLabel(i), items: picksOf(i).map(function (p) { return { key: p.s.key, name: p.s.name, slot: p.slot, price: p.s.price || 0 }; }) });
-    return { place: C.place, stay: S.stay === 'visit' ? null : { unit: S.stay, name: stayName(), arrive: S.date || null, nights: S.n }, services_only: S.stay === 'visit', days: days, total: total(), contact: { name: S.name, email: S.mail, phone: S.phone }, note: S.note };
+    return { place: C.place, stay: S.stay === 'visit' ? null : { unit: S.stay, name: stayName(), arrive: S.date || null, nights: S.n }, services_only: S.stay === 'visit', days: days, total: total(), contact: { name: S.name, email: S.mail, phone: S.phone, consent_email: !!S.consent, consent_text: S.consent ? consentText() : null }, note: S.note };
   }
   function nav() {
     var n = el('div', 'sp-nav');
     if (S.step > 1) n.appendChild(btn('Back', 'sp-go ghost', function () { S.step--; draw(); }));
     var next = btn(S.step === 3 ? 'Send my request (preview)' : 'Next', 'sp-go', function () {
       if (S.step < 3) { S.step++; S.open = 0; draw(); return; }
-      S.sent = true; var b = bundle(); try { root.dispatchEvent(new CustomEvent('stayplanner:request', { detail: b, bubbles: true })); } catch (e) {} draw();
+      S.sent = true; var b = bundle(); try { root.dispatchEvent(new CustomEvent('stayplanner:request', { detail: b, bubbles: true })); } catch (e) {}
+      if (C.endpoint) { /* live portal only; mockups have no endpoint, so nothing is sent. Prices are recomputed on the server from the keys. */
+        try { fetch(C.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ owner: C.owner || null, bundle: b }), keepalive: true }).catch(function () {}); } catch (e) {}
+      }
+      draw();
     });
     if (S.step === 1 && !ok1()) next.disabled = true; n.appendChild(next); return n;
   }
