@@ -745,17 +745,17 @@
 </svg>
 
 <div class="status" id="status">
-  <p class="status-strip" data-state="open"><a href="#quote" id="status-link"><b id="status-label">Taking new clients, Trinidad to Rio Dell</b> <em><span id="status-cta">Get a free quote</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
+  <p class="status-strip" data-state="special"><a href="#quote" id="status-link"><b id="status-label">Holiday cleaning appointments are booking now</b> <em><span id="status-cta">Get a free quote</span><span aria-hidden="true">&nbsp;&rarr;</span></em></a></p>
   <div class="status-tab"><button type="button" class="status-try" id="status-try" aria-expanded="false" aria-controls="status-panel">Try the banner<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 3.5 3 3 3-3"/></svg></button><div class="theme-tab" id="theme-tab" role="group" aria-labelledby="theme-q" hidden><span class="vh" id="theme-q">Light or dark, for this preview</span><button type="button" data-theme="light" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Light</button><button type="button" data-theme="dark" aria-pressed="false"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>Dark</button></div></div>
   <div class="status-panel gutter" id="status-panel" hidden>
     <div class="wrap status-panel-in">
       <p class="status-q"><span id="status-q">Banner demo</span> <span class="tag" data-go="maiden">Every build</span></p>
       <div class="seg status-seg" role="group" aria-labelledby="status-q">
-        <button type="button" data-state="open" aria-pressed="true">Open</button>
+        <button type="button" data-state="open" aria-pressed="false">Open</button>
         <button type="button" data-state="full" aria-pressed="false">Full</button>
-        <button type="button" data-state="special" aria-pressed="false">Special</button>
+        <button type="button" data-state="special" aria-pressed="true">Special</button>
       </div>
-      <p class="status-note">Taking new clients, booked up for the week, a holiday deep clean special: post it, or email me, and the banner says so.</p>
+      <p class="status-note">Taking new clients, booked up for the week, holiday cleaning appointments booking now: post it, or email me, and the banner says so.</p>
     </div>
   </div>
   <div class="status-panel gutter" id="theme-panel" hidden>
@@ -1430,11 +1430,11 @@
     var STATES = {
       open: { label: 'Taking new clients, Trinidad to Rio Dell', cta: 'Get a free quote', href: '#quote' },
       full: { label: 'This week is full', cta: 'Join the waitlist', href: '#waitlist' },
-      special: { label: 'Holiday deep cleans: 10% off', cta: 'Get a free quote', href: '#quote' }
+      special: { label: 'Holiday cleaning appointments are booking now', cta: 'Get a free quote', href: '#quote' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
-    var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'open';
+    var btns = [].slice.call(panel.querySelectorAll('[data-state]')), current = 'special';
     function viewNow() { return document.documentElement.getAttribute('data-view') || 'all'; }
     function stateFor(k) {
       var s = STATES[k], v = viewNow();
