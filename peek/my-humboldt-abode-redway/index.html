@@ -1023,16 +1023,8 @@
   <div class="wrap">
     <p class="label with-pill"><span>Plan your retreat</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Swim, spa, stay: <em>set your days</em></h2>
-    <p style="margin-top:14px;max-width:60ch">Choose where you&rsquo;d like to stay and what you&rsquo;d like each day. Every treatment you pick lands on the river as a stone, and the water spreads out from it. Give it a try:</p>
+    <p style="margin-top:14px;max-width:60ch">Choose where you&rsquo;d like to stay and what you&rsquo;d like each day. Then send it as one tidy request. Give it a try:</p>
     <div class="rp">
-      <div class="rp-card river-card" style="padding:14px">
-        <div class="river" id="rp-river" role="img" aria-label="A river with a stone for each treatment you pick">
-          <div class="flow"></div><div class="flow slow"></div>
-          <p class="hint" id="rp-hint">Pick a stay or a treatment, and a stone drops in.</p>
-          <div class="bank"></div>
-          <div class="bed" id="rp-bed"></div>
-        </div>
-      </div>
       <div class="rp-card" id="rp-card">
         <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your stay</button><button type="button" data-s="2" disabled>2 Your days</button><button type="button" data-s="3" disabled>3 Your details</button></div>
         <div id="rp-s1">
@@ -1631,10 +1623,10 @@
 </script>
 
 <script>
-  /* THE SIGNATURE: set your days on the river. Every treatment you pick lands on the river as a stone; the water rings out from it. */
+  /* The retreat planner: a plain booking form (stay, days, details). */
   (function () {
     function $(id) { return document.getElementById('rp-' + id); }
-    var card = $('card'), go = $('go'), river = $('river'), bed = $('bed'); if (!card || !go || !river || !bed) return;
+    var card = $('card'), go = $('go'); if (!card || !go) return;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var TREAT = [
@@ -1672,14 +1664,7 @@
       $('nights-wrap').hidden = st.stay === 'visit';
       $('hint-msg').textContent = '';
     }
-    /* ---- the river ---- */
-    function ripple(x, y) {
-      if (reduce) return;
-      ['', ' r2'].forEach(function (c) {
-        var r = document.createElement('span'); r.className = 'ripple' + c; r.style.left = x + '%'; r.style.bottom = (y + 8) + 'px';
-        bed.appendChild(r); setTimeout(function () { if (r.parentNode) r.parentNode.removeChild(r); }, 2000);
-      });
-    }
+    function ripple() {}
     function list() {
       var out = [];
       if (st.stay && st.stay !== 'visit') out.push({ id: 'stay', k: 'stay', label: 'Stay', day: 0, order: -1, text: 'Stay' });
@@ -1688,27 +1673,7 @@
       }
       return out;
     }
-    function layout(animateNew) {
-      var items = list(), n = items.length, step = Math.min(13, 88 / Math.max(n, 1)), start = 50 - (step * (n - 1)) / 2;
-      var keep = {};
-      items.forEach(function (it, i) {
-        keep[it.id] = true; var x = n === 1 ? 50 : start + i * step, y = 12 + ((i * 7) % 4) * 9;
-        var el = stones[it.id];
-        if (!el) {
-          el = document.createElement('span'); el.className = 'stone' + (animateNew && !reduce ? ' drop' : ''); el.dataset.k = it.k;
-          el.textContent = it.k === 'stay' ? 'Stay' : it.label; el.setAttribute('aria-hidden', 'true'); stones[it.id] = el; bed.appendChild(el);
-          if (animateNew) ripple(x, y);
-        }
-        el.style.left = x + '%'; el.style.bottom = y + 'px';
-      });
-      Object.keys(stones).forEach(function (id) {
-        if (keep[id]) return; var el = stones[id]; delete stones[id];
-        if (reduce) { if (el.parentNode) el.parentNode.removeChild(el); return; }
-        el.classList.remove('drop'); el.classList.add('out'); setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
-      });
-      river.classList.toggle('has', n > 0);
-      river.setAttribute('aria-label', n ? 'A river with ' + n + ' stone' + (n === 1 ? '' : 's') + ': ' + items.map(function (i) { return i.text; }).join(', ') : 'A river with a stone for each treatment you pick');
-    }
+    function layout() {}
     function lines() {
       var out = [];
       if (st.stay) out.push(st.stay === 'visit' ? 'Treatments only, no stay' : 'Staying in ' + STAYS[st.stay] + ', ' + st.nights + ' night' + (st.nights === 1 ? '' : 's') + (($('date').value) ? ', arriving ' + dayLabel(0) : ''));
