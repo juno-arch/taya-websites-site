@@ -548,6 +548,7 @@
   .avail .av-d.taken { background: repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0 5px, rgba(0,0,0,0) 5px 10px); text-decoration: line-through; color: var(--ink-soft); }
   .avail .av-key { margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
   .avail .av-go { margin-top: 16px; }
+  #stay-planner { --sp-bg: var(--band-2); --sp-ink: var(--on-band); --sp-soft: rgba(238, 243, 238, 0.74); --sp-line: rgba(238, 243, 238, 0.24); --sp-accent: #8fc5b8; --sp-accent-ink: #0d2524; --sp-wash: rgba(255, 255, 255, 0.07); --sp-ticket: rgba(0, 0, 0, 0.22); --sp-rail: #f0c772; --sp-radius: 10px; margin-top: 26px; }
   .sec-note { margin-top: 26px; font-size: 15px; color: var(--ink-soft); max-width: 62ch; }
 
 
@@ -1069,55 +1070,8 @@
   <div class="wrap">
     <p class="label with-pill"><span>Plan your retreat</span> <span class="bk-demo">preview</span> <span class="tag" data-go="crone">Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
     <h2 class="reveal">Swim, spa, stay: <em>set your days</em></h2>
-    <p style="margin-top:14px;max-width:60ch">Choose where you&rsquo;d like to stay and what you&rsquo;d like each day. Then send it as one tidy request. Give it a try:</p>
-    <div class="rp">
-      <div class="rp-card" id="rp-card">
-        <div class="bk-steps" role="group" aria-label="Steps, tap one you have done to go back"><button type="button" data-s="1" class="on" aria-current="step">1 Your stay</button><button type="button" data-s="2" disabled>2 Your days</button><button type="button" data-s="3" disabled>3 Your details</button></div>
-        <div id="rp-s1">
-          <p class="bk-q" style="margin-top:0">Where would you like to stay?</p>
-          <div class="rp-opts three">
-            <button type="button" class="bk-opt" data-stay="studio"><b>The Studio</b><span>Sleeps up to 4</span></button>
-            <button type="button" class="bk-opt" data-stay="bungalow"><b>The Bungalow</b><span>Sleeps up to 6</span></button>
-            <button type="button" class="bk-opt" data-stay="visit"><b>Just treatments</b><span>I live nearby</span></button>
-          </div>
-          <div id="rp-nights-wrap">
-            <p class="bk-q">How many nights?</p>
-            <div class="nights" role="group" aria-label="Number of nights"><button type="button" data-n="1" aria-pressed="false">1</button><button type="button" data-n="2" aria-pressed="false">2</button><button type="button" data-n="3" aria-pressed="false">3</button><button type="button" data-n="4" aria-pressed="false">4</button><button type="button" data-n="5" aria-pressed="false">5</button></div>
-          </div>
-          <label class="fld" style="margin-top:16px;max-width:260px">Arriving (optional)<input type="date" id="rp-date"></label>
-        </div>
-        <div id="rp-s2" hidden>
-          <p class="bk-q" style="margin-top:0">What would you like each day?</p>
-          <div id="rp-days"></div>
-          <p class="rp-total" id="rp-total" role="status"></p>
-        </div>
-        <div id="rp-s3" hidden>
-          <div class="bk-form">
-            <div class="fld-row">
-              <label class="fld" for="rp-name">Your name<input id="rp-name" autocomplete="off" value="Sam W."></label>
-              <label class="fld" for="rp-mail">Email<input id="rp-mail" type="email" autocomplete="off" value="sam@example.com"></label>
-            </div>
-            <label class="fld" for="rp-note">Anything Samantha should know<textarea id="rp-note" rows="3" placeholder="Celebrating an anniversary, vegetarian breakfast, arriving late"></textarea></label>
-          </div>
-          <ol class="rp-list" id="rp-list"></ol>
-        </div>
-        <p class="hint" id="rp-hint-msg" role="status"></p>
-        <div class="bk-nav" id="rp-nav"><button type="button" class="bk-go" id="rp-go" disabled>Next</button><button type="button" class="bk-go ghost" id="rp-back" hidden>Back</button></div>
-        <div class="bk-done" id="rp-done" hidden>
-          <h3 id="rp-done-h" tabindex="-1">Your retreat request is sent!</h3>
-          <p id="rp-summary"></p>
-          <p style="margin-top:10px;font-size:15px">Samantha writes back to confirm the days and times. Stays still book on Airbnb, so nothing about your nights changes.</p>
-          <div class="bk-nav"><button type="button" class="bk-go ghost" id="rp-again">Try it again</button><button type="button" class="bk-go ghost" id="rp-edit">Change something</button></div>
-        </div>
-      </div>
-      <div class="rp-side">
-        <div class="bk-note"><b>What you see</b>A tidy request lands in your inbox with the stay, the days and the treatments already lined up, so there is no back and forth to sort out who wants what on which day.</div>
-        <div class="bk-inbox" id="rp-inbox"><div class="from">New retreat request</div><div id="rp-inboxtext">Waiting for a request&hellip; try it on the left</div></div>
-        <div class="bk-note"><b>Instead of the email button</b>Your site&rsquo;s &ldquo;Book your retreat&rdquo; button opens a blank email today. This asks the questions for you.</div>
-        <div class="bk-note"><b>Deposits and packages</b>Do you take a deposit for retreats? If you do, a Stripe payment goes right here, into your own Stripe. <span class="ph">(your deposit, or none)</span></div>
-        <p style="font-size:12.5px;color:rgba(238,243,238,0.74)">Planner preview: nothing here sends a real request. The prices are the ones on your site today.</p>
-      </div>
-    </div>
+    <p style="margin-top:14px;max-width:60ch">Choose where you&rsquo;d like to stay, then what you&rsquo;d like on each day of your stay. Your treatments line up with your nights, and it all goes to Samantha as one request. Give it a try:</p>
+    <div id="stay-planner"></div>
     <div class="tier-note mock-note wf-note" style="margin-top:28px" data-show="all" data-fold>With Color or Pocket, this spot is your &ldquo;Book your retreat&rdquo; email button, like your site has now, and your Airbnb buttons stay as they are. <span class="tag" data-go="mother">Color<span class="tag-p"><span aria-hidden="true">&middot;</span> $600</span></span></div>
   </div>
 </section>
@@ -1662,132 +1616,6 @@
   })();
 </script>
 
-<script>
-  /* The retreat planner: a plain booking form (stay, days, details). */
-  (function () {
-    function $(id) { return document.getElementById('rp-' + id); }
-    var card = $('card'), go = $('go'); if (!card || !go) return;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
-    var TREAT = [
-      { key: 'massage60', k: 'massage', name: 'Massage, 1 hour', price: 111 },
-      { key: 'massage90', k: 'massage', name: 'Massage, 90 minutes', price: 155 },
-      { key: 'reiki60', k: 'reiki', name: 'Reiki, 1 hour', price: 111 },
-      { key: 'reiki90', k: 'reiki', name: 'Reiki, 90 minutes', price: 155 },
-      { key: 'forest60', k: 'forest', name: 'Forest bathing, 1 hour', price: 55 },
-      { key: 'tour', k: 'tour', name: 'Tour planning', price: 0 }
-    ];
-    var STAYS = { studio: 'the Studio', bungalow: 'the Craftsman Bungalow', visit: 'treatments only' };
-    var st, stones = {};
-    function fresh() { return { s: 1, max: 1, stay: null, nights: 0, picks: {} }; }
-    st = fresh();
-    var DN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    function dayCount() { return st.stay === 'visit' ? 1 : st.nights + 1; }
-    function dayLabel(i) {
-      var v = $('date').value; if (!v) return 'Day ' + (i + 1);
-      var p = v.split('-'); var d = new Date(+p[0], +p[1] - 1, +p[2] + i);
-      return DN[d.getDay()] + ', ' + MN[d.getMonth()] + ' ' + d.getDate();
-    }
-    function ready1() { return !!st.stay && (st.stay === 'visit' || st.nights > 0); }
-    function canGo(n) { return n === 1 || (n === 2 ? ready1() && st.max >= 2 : ready1() && st.max >= 3); }
-    function steps() {
-      st.max = Math.max(st.max, st.s);
-      card.querySelectorAll('.bk-steps [data-s]').forEach(function (sp) {
-        var n = +sp.dataset.s, on = n === st.s; sp.classList.toggle('on', on);
-        if (on) sp.setAttribute('aria-current', 'step'); else sp.removeAttribute('aria-current');
-        sp.disabled = !on && !canGo(n);
-      });
-      $('back').hidden = st.s === 1;
-      [1, 2, 3].forEach(function (n) { $('s' + n).hidden = st.s !== n; });
-      go.textContent = st.s === 3 ? 'Send my request (preview)' : 'Next';
-      go.disabled = st.s === 1 ? !ready1() : false;
-      $('nights-wrap').hidden = st.stay === 'visit';
-      $('hint-msg').textContent = '';
-    }
-    function ripple() {}
-    function list() {
-      var out = [];
-      if (st.stay && st.stay !== 'visit') out.push({ id: 'stay', k: 'stay', label: 'Stay', day: 0, order: -1, text: 'Stay' });
-      for (var d = 0; d < dayCount(); d++) {
-        TREAT.forEach(function (t, ti) { if (st.picks[d + ':' + t.key]) out.push({ id: d + ':' + t.key, k: t.k, label: String(d + 1), day: d, order: d * 10 + ti, text: t.name }); });
-      }
-      return out;
-    }
-    function layout() {}
-    function lines() {
-      var out = [];
-      if (st.stay) out.push(st.stay === 'visit' ? 'Treatments only, no stay' : 'Staying in ' + STAYS[st.stay] + ', ' + st.nights + ' night' + (st.nights === 1 ? '' : 's') + (($('date').value) ? ', arriving ' + dayLabel(0) : ''));
-      for (var d = 0; d < dayCount(); d++) {
-        var names = TREAT.filter(function (t) { return st.picks[d + ':' + t.key]; }).map(function (t) { return t.name; });
-        out.push(dayLabel(d) + ': ' + (names.length ? names.join(', ') : 'nothing planned, free to swim'));
-      }
-      return out;
-    }
-    function total() {
-      var sum = 0, tours = 0;
-      Object.keys(st.picks).forEach(function (k) { var key = k.split(':')[1]; var t = TREAT.filter(function (x) { return x.key === key; })[0]; if (t) { sum += t.price; if (t.key === 'tour') tours++; } });
-      return { sum: sum, tours: tours };
-    }
-    function paintTotal() {
-      var t = total(), el = $('total');
-      el.textContent = t.sum || t.tours ? ('Treatments so far: $' + t.sum + (t.tours ? ', plus tour planning to be quoted' : '') + '.') : 'Tap a treatment to add it to a day. You can leave a day open, too.';
-    }
-    /* ---- step 1 ---- */
-    var stayBtns = [].slice.call(card.querySelectorAll('[data-stay]')), nightBtns = [].slice.call(card.querySelectorAll('.nights [data-n]'));
-    function paint1() {
-      stayBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.stay === st.stay ? 'true' : 'false'); });
-      nightBtns.forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.n === st.nights ? 'true' : 'false'); });
-    }
-    function prune() { Object.keys(st.picks).forEach(function (k) { if (+k.split(':')[0] >= dayCount()) delete st.picks[k]; }); }
-    stayBtns.forEach(function (b) { b.addEventListener('click', function () { st.stay = b.dataset.stay; if (st.stay === 'visit') st.nights = 0; prune(); paint1(); layout(true); steps(); }); });
-    nightBtns.forEach(function (b) { b.addEventListener('click', function () { st.nights = +b.dataset.n; prune(); paint1(); layout(false); steps(); }); });
-    /* ---- step 2 ---- */
-    function drawDays() {
-      var box = $('days'); while (box.firstChild) box.removeChild(box.firstChild);
-      for (var d = 0; d < dayCount(); d++) (function (d) {
-        var row = document.createElement('div'); row.className = 'day-row';
-        var h = document.createElement('h4'); h.textContent = dayLabel(d); row.appendChild(h);
-        var chips = document.createElement('div'); chips.className = 'chips'; chips.setAttribute('role', 'group'); chips.setAttribute('aria-label', dayLabel(d) + ', treatments');
-        TREAT.forEach(function (t) {
-          var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.dataset.id = d + ':' + t.key;
-          b.setAttribute('aria-pressed', st.picks[b.dataset.id] ? 'true' : 'false'); b.appendChild(document.createTextNode(t.name));
-          var sm = document.createElement('small'); sm.textContent = t.price ? '$' + t.price : 'ask'; b.appendChild(sm);
-          b.addEventListener('click', function () {
-            if (st.picks[b.dataset.id]) delete st.picks[b.dataset.id]; else st.picks[b.dataset.id] = true;
-            b.setAttribute('aria-pressed', st.picks[b.dataset.id] ? 'true' : 'false'); layout(true); paintTotal();
-          });
-          chips.appendChild(b);
-        });
-        row.appendChild(chips); box.appendChild(row);
-      })(d);
-      paintTotal();
-    }
-    function drawList() { var ol = $('list'); while (ol.firstChild) ol.removeChild(ol.firstChild); lines().forEach(function (t) { var li = document.createElement('li'); li.textContent = t; ol.appendChild(li); }); }
-    function focusStep() { var box = $('s' + st.s); quietFocus(box.querySelector('[aria-pressed="true"]') || box.querySelector('button, input, textarea') || go); }
-    function jump(n) { st.s = n; if (n === 2) drawDays(); if (n === 3) drawList(); steps(); focusStep(); }
-    card.querySelectorAll('.bk-steps [data-s]').forEach(function (sp) { sp.addEventListener('click', function () { var n = +sp.dataset.s; if (n !== st.s && canGo(n)) jump(n); }); });
-    $('back').addEventListener('click', function () { if (st.s > 1) jump(st.s - 1); });
-    go.addEventListener('click', function () {
-      if (st.s < 3) { jump(st.s + 1); return; }
-      var name = ($('name').value || 'A new guest').trim(), note = $('note').value.trim(), L = lines();
-      $('summary').textContent = 'Here is what you asked for: ' + L.join('. ') + '.' + (note ? ' Your note: ' + note : '');
-      $('inboxtext').textContent = name + ' asked for a retreat. ' + L.join('. ') + '.' + (note ? ' Note: ' + note : '');
-      [1, 2, 3].forEach(function (n) { $('s' + n).hidden = true; });
-      $('nav').hidden = true; card.querySelector('.bk-steps').hidden = true; $('done').hidden = false; quietFocus($('done-h'));
-    });
-    $('edit').addEventListener('click', function () {
-      $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
-      $('inboxtext').textContent = 'Waiting for a request… try it on the left'; st.s = 3; drawList(); steps(); quietFocus(go);
-    });
-    function reset() {
-      st = fresh(); $('date').value = ''; paint1(); layout(false); $('done').hidden = true; $('nav').hidden = false; card.querySelector('.bk-steps').hidden = false;
-      $('inboxtext').textContent = 'Waiting for a request… try it on the left'; steps();
-    }
-    $('again').addEventListener('click', function () { reset(); $('note').value = ''; quietFocus(stayBtns[0]); });
-    $('date').addEventListener('change', function () { if (st.s === 2) drawDays(); });
-    paint1(); steps();
-  })();
-</script>
 
 <script>
   /* contact, mailing list, and the secret (Humboldt Time) */
@@ -2125,6 +1953,28 @@
 })();
 </script>
 <script>/* anonymous open count for Taya's outreach list: no cookies, nothing personal. Skipped for magic links, framed pages, a device marked wf-me (webfaery.love/peek/me/), repeat visits within 30 minutes, and anything with no real touch, scroll or key press (link previews and bots). */addEventListener("load",function(){var done=0,run=function(){if(done)return;done=1;try{var m=location.pathname.match(/^\/peek\/([a-z0-9-]{1,40})\/?$/);if(!m||m[1]==="me"||/[?&]mark=1(&|$)/.test(location.search)||window.top!==window.self)return;var k="wf-open:"+m[1],n=Date.now(),t=0;try{if(localStorage.getItem("wf-me")==="1")return;t=+localStorage.getItem(k)||0;}catch(e){}if(t&&n>=t&&n-t<18e5)return;try{localStorage.setItem(k,String(n));}catch(e){}fetch(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"/api/webfaery/peek-open":"https://bookings.gardenfaery.love/api/webfaery/peek-open",{method:"POST",mode:"cors",credentials:"omit",cache:"no-store",keepalive:true,referrerPolicy:"no-referrer",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:m[1]})}).catch(function(){});}catch(e){}};if(navigator.webdriver)return;["pointerdown","touchstart","keydown","wheel","scroll","mousemove"].forEach(function(t){addEventListener(t,function(ev){if(ev.isTrusted)setTimeout(run,1500)},{once:true,passive:true})})});</script>
+<link rel="stylesheet" href="/stay-planner.css?v=1">
+<script>
+window.STAY_PLANNER = {
+  mount: '#stay-planner', host: 'Samantha', place: 'My Humboldt Abode', noun: 'treatment', maxNights: 6,
+  stays: [
+    { key: 'studio', name: 'The Studio', sleeps: 'Sleeps up to 4', blurb: 'Wood stove, full kitchen, breakfast' },
+    { key: 'bungalow', name: 'The Craftsman Bungalow', sleeps: 'Sleeps up to 6', blurb: 'River rock hearth, yoga deck' }
+  ],
+  visit: { name: 'Just treatments', blurb: 'I live nearby' },
+  services: [
+    { key: 'massage60', cat: 'Massage', name: 'Holistic massage, 1 hour', price: 111, mins: 60 },
+    { key: 'massage90', cat: 'Massage', name: 'Holistic massage, 90 minutes', price: 155, mins: 90 },
+    { key: 'reiki60', cat: 'Reiki', name: 'Usui Ryoho Reiki, 1 hour', price: 111, mins: 60 },
+    { key: 'reiki90', cat: 'Reiki', name: 'Usui Ryoho Reiki, 90 minutes', price: 155, mins: 90 },
+    { key: 'forest60', cat: 'Forest bathing', name: 'Forest bathing, 1 hour', price: 55, mins: 60 },
+    { key: 'tour', cat: 'Tours', name: 'Plan a Lost Coast or Avenue of the Giants day', price: 0 }
+  ],
+  stayNote: 'Stays are booked on Airbnb, so nothing about your nights changes.',
+  doneNote: 'Samantha writes back to confirm the days and times. Stays still book on Airbnb, so nothing about your nights changes.'
+};
+</script>
+<script src="/stay-planner.js?v=1" defer></script>
 <script src="/note-motion.js?v=1" defer></script>
 
 </body>

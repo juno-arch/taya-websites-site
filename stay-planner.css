@@ -1,0 +1,71 @@
+/* Web Faery stay + services planner. Themed by the page: set these on #stay-planner (or :root) to match each client's own look. */
+.sp { --sp-bg: #fff; --sp-ink: #1c1c1a; --sp-soft: #5d5d58; --sp-line: #d9d6cc; --sp-accent: #2d6a5f; --sp-accent-ink: #fff; --sp-wash: #f3f1ea; --sp-radius: 12px;
+  --sp-ticket: #fbf9f3; --sp-rail: var(--sp-accent);
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr); gap: 28px; align-items: start; font-family: inherit; color: var(--sp-ink); }
+.sp * { box-sizing: border-box; }
+.sp-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.sp-flow { background: var(--sp-bg); border: 1px solid var(--sp-line); border-radius: var(--sp-radius); padding: 22px; }
+.sp-steps { list-style: none; display: flex; gap: 6px; margin: 0 0 20px; padding: 0; flex-wrap: wrap; }
+.sp-step { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sp-soft); padding: 6px 12px 6px 6px; border-radius: 999px; }
+.sp-step.done { cursor: pointer; }
+.sp-step .sp-n { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--sp-line); font-size: 12px; }
+.sp-step.on { color: var(--sp-ink); background: var(--sp-wash); }
+.sp-step.on .sp-n, .sp-step.done .sp-n { background: var(--sp-accent); border-color: var(--sp-accent); color: var(--sp-accent-ink); }
+.sp-q { font-size: 20px; margin: 0 0 12px; font-weight: 600; }
+.sp-hint, .sp-note { font-size: 14px; color: var(--sp-soft); margin: 0 0 14px; }
+.sp-note { margin-top: 14px; }
+.sp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.sp-card { text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 14px; border: 1.5px solid var(--sp-line); border-radius: var(--sp-radius); background: var(--sp-bg); color: inherit; font: inherit; cursor: pointer; }
+.sp-card b { font-size: 16px; } .sp-card span, .sp-card em { font-size: 13px; color: var(--sp-soft); font-style: normal; }
+.sp-card[aria-pressed="true"] { border-color: var(--sp-accent); background: color-mix(in srgb, var(--sp-accent) 10%, var(--sp-bg)); box-shadow: 0 0 0 1px var(--sp-accent) inset; }
+.sp-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
+.sp-fld { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--sp-soft); margin-top: 0; }
+.sp-pane > .sp-fld { margin-top: 14px; }
+.sp-fld input, .sp-fld textarea { font: inherit; font-size: 16px; padding: 11px 12px; border: 1px solid var(--sp-line); border-radius: 8px; background: var(--sp-bg); color: var(--sp-ink); width: 100%; }
+.sp-stepper { display: inline-flex; align-items: center; gap: 12px; }
+.sp-stepper output { min-width: 28px; text-align: center; font-size: 20px; font-weight: 600; color: var(--sp-ink); }
+.sp-sm { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--sp-line); background: var(--sp-bg); color: var(--sp-ink); font-size: 20px; cursor: pointer; }
+.sp-day { border-left: 3px solid var(--sp-rail); padding: 4px 0 4px 16px; margin: 0 0 18px; }
+.sp-dayhead { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 0; margin: 0; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.sp-count { margin-left: auto; font-size: 13px; color: var(--sp-soft); }
+.sp-caret { width: 24px; height: 24px; display: grid; place-items: center; border: 1.5px solid var(--sp-line); border-radius: 50%; font-size: 16px; line-height: 1; }
+.sp-day:not(.open) { margin-bottom: 4px; }
+.sp-dayhead b { font-size: 16px; }
+.sp-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sp-accent); border: 1px solid var(--sp-accent); border-radius: 999px; padding: 1px 8px; }
+.sp-grp { margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sp-cat { flex: 0 0 100%; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sp-soft); }
+.sp-chip { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border: 1.5px solid var(--sp-line); border-radius: 999px; background: var(--sp-bg); color: inherit; font: inherit; font-size: 15px; cursor: pointer; }
+.sp-chip i { font-style: normal; font-size: 13px; color: var(--sp-soft); }
+.sp-chip[aria-pressed="true"] { background: var(--sp-accent); border-color: var(--sp-accent); color: var(--sp-accent-ink); }
+.sp-chip[aria-pressed="true"] i { color: inherit; opacity: 0.85; }
+.sp-seg { flex: 0 0 100%; display: inline-flex; gap: 0; margin: 0 0 4px; }
+.sp-seg button { padding: 6px 14px; font: inherit; font-size: 13px; border: 1px solid var(--sp-line); background: var(--sp-bg); color: inherit; cursor: pointer; }
+.sp-seg button:first-child { border-radius: 8px 0 0 8px; } .sp-seg button:last-child { border-radius: 0 8px 8px 0; } .sp-seg button + button { border-left: 0; }
+.sp-seg button[aria-pressed="true"] { background: var(--sp-wash); font-weight: 600; box-shadow: 0 -2px 0 var(--sp-accent) inset; }
+.sp-nav { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.sp-go { padding: 13px 22px; border-radius: 999px; border: 1.5px solid var(--sp-accent); background: var(--sp-accent); color: var(--sp-accent-ink); font: inherit; font-weight: 600; cursor: pointer; }
+.sp-go.ghost { background: transparent; color: var(--sp-ink); border-color: var(--sp-line); }
+.sp-go:disabled { opacity: 0.45; cursor: not-allowed; }
+.sp button:focus-visible, .sp input:focus-visible, .sp textarea:focus-visible, .sp-step:focus-visible { outline: 3px solid color-mix(in srgb, var(--sp-accent) 55%, transparent); outline-offset: 2px; }
+.sp-done p { color: var(--sp-soft); max-width: 52ch; }
+/* the itinerary ticket */
+.sp-ticket { position: sticky; top: 90px; background: var(--sp-ticket); border: 1px solid var(--sp-line); border-radius: var(--sp-radius); padding: 22px 22px 18px; }
+.sp-ticket::before, .sp-ticket::after { content: ""; position: absolute; left: 24px; right: 24px; height: 0; border-top: 2px dashed var(--sp-line); }
+.sp-ticket::before { top: 52px; } .sp-ticket::after { display: none; }
+.sp-tk-k { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sp-soft); margin: 0 0 20px; }
+.sp-tk-h { font-size: 20px; margin: 14px 0 2px; } .sp-tk-d { font-size: 14px; color: var(--sp-soft); margin: 0 0 10px; }
+.sp-tk-empty { font-size: 15px; color: var(--sp-soft); margin: 14px 0; }
+.sp-tk-days { list-style: none; margin: 12px 0 0; padding: 0 0 0 14px; border-left: 3px solid var(--sp-rail); }
+.sp-tk-days.visit { border-left-style: dotted; }
+.sp-tk-day { padding: 6px 0 10px; } .sp-tk-day b { display: block; font-size: 14px; }
+.sp-tk-free { font-size: 13px; color: var(--sp-soft); font-style: italic; }
+.sp-tk-line { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; padding: 2px 0; } .sp-tk-line i { font-style: normal; color: var(--sp-soft); }
+.sp-tk-total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1.5px solid var(--sp-ink); margin-top: 8px; padding-top: 10px; } .sp-tk-total b { font-size: 22px; }
+.sp-tk-fine { font-size: 12.5px; color: var(--sp-soft); margin: 12px 0 0; }
+.sp-inbox { margin-top: 16px; padding: 12px 14px; border: 1px dashed var(--sp-line); border-radius: 8px; background: var(--sp-bg); }
+.sp-ib-k { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sp-soft); } .sp-inbox p { margin: 4px 0 0; font-size: 14.5px; }
+@media (max-width: 860px) { .sp { grid-template-columns: 1fr; } .sp-ticket { position: static; } }
+@media (prefers-reduced-motion: no-preference) { .sp-chip, .sp-card, .sp-go { transition: background 0.15s, border-color 0.15s, transform 0.1s; } .sp-chip:active, .sp-card:active { transform: scale(0.98); } }
+.sp-consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; font-size: 14px; color: var(--sp-soft); cursor: pointer; }
+.sp-consent input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--sp-accent); flex: none; }
+.sp .sp-tbd { font-style: italic; border-bottom: 1px dotted currentColor; }
