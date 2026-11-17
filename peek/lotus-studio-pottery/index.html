@@ -1014,7 +1014,7 @@
       <p class="label">Who you&rsquo;ll find here</p>
       <h2 class="reveal">Mary, <em>and the clay</em></h2>
       <p class="soft" style="margin-top:18px">Lotus Studio is Mary Bancud-Bettis&rsquo;s studio. In 2009 she signed her kids up for a city pottery class, and on the first day the teacher asked if she could stay and help. It was the first time she ever touched clay.</p>
-      <p class="soft">She&rsquo;s been creating with clay ever since, and in 2014 she opened Lotus Studio in Old Town.</p>
+      <p class="soft">She&rsquo;s been creating with clay ever since, and Lotus Studio has been in Old Town since 2014.</p>
       <p class="pull">&ldquo;It&rsquo;s all about having fun!&rdquo;</p>
       <p class="soft" style="margin-top:16px;font-size:16px">Mary photographs Humboldt too: her prints are in the shop below.</p>
     </div>
@@ -1170,7 +1170,7 @@
       <div class="bk-side mock-note wf-note">
         <div class="bk-note"><b>What you see</b>Every new booking lands in your inbox and your phone calendar the moment it happens.</div>
         <div class="bk-inbox" id="tb-inbox"><div class="from">New booking</div><div id="tb-inboxtext">Waiting for a booking&hellip; try it on the left</div></div>
-        <div class="bk-note"><b>Your hours, your way</b>These times come from the summer hours on your site (Thursday and Friday afternoons, Saturday and Sunday from 12:30). Tell me your real hours and only those show.</div>
+        <div class="bk-note"><b>Your hours, your way</b>These times come from the hours on your site. Tell me your real hours and only those show.</div>
         <div class="bk-note"><b>Fewer no-shows</b>Reminders go out on their own, and your $30 late cancellation fee can be part of booking.</div>
         <p style="font-size:13.5px;color:var(--ink-soft)">Booking preview: nothing here books real wheel time. On a real site this runs on my server, with your hours and a back end of your own with its own sign-in.</p>
       </div>
@@ -1497,7 +1497,7 @@
     var STATES = {
       open: { label: 'Open by appointment in Old Town', cta: 'Reserve the wheel', href: '#booking' },
       full: { label: 'This weekend is full', cta: 'Get the next open spot', href: '#waitlist' },
-      away: { label: 'Away until Nov 3', cta: 'The shop is still open', href: '#shop' }
+      away: { label: 'Away until ' + (function () { var b = new Date(); b.setDate(b.getDate() + 14); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][b.getMonth()] + ' ' + b.getDate(); })(), cta: 'The shop is still open', href: '#shop' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;

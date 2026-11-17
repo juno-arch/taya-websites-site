@@ -1408,7 +1408,7 @@
     var STATES = {
       open: { label: 'Now booking in Redway', cta: 'Book a visit', href: 'https://exhalewellness.glossgenius.com' },
       full: { label: 'The book is full for now', cta: 'Join the waitlist', href: '#waitlist' },
-      away: { label: 'Away until Nov 3', cta: 'Gift certificates are still available', href: '#gift' }
+      away: { label: 'Away until ' + (function () { var b = new Date(); b.setDate(b.getDate() + 14); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][b.getMonth()] + ' ' + b.getDate(); })(), cta: 'Gift certificates are still available', href: '#gift' }
     };
     var strip = document.querySelector('.status-strip'), link = $('status-link'), tryBtn = $('status-try'), panel = $('status-panel');
     if (!strip || !link || !tryBtn || !panel) return;
