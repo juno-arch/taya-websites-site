@@ -700,7 +700,7 @@
     if (/^#[0-9a-f]{6}$/i.test(str(b.accent, 7))) out.accent = str(b.accent, 7).toLowerCase();
     if (BRAND_FONTS[str(b.heading, 30)]) out.heading = str(b.heading, 30);
     if (BRAND_FONTS[str(b.body, 30)]) out.body = str(b.body, 30);
-    const colors = arr(b.colors).slice(0, 8).map((c) => (c && /^#[0-9a-f]{6}$/i.test(str(c.hex, 7)) ? { name: str(c.name, 30), hex: str(c.hex, 7).toLowerCase() } : null)).filter(Boolean);
+    const colors = arr(b.colors).slice(0, 16).map((c) => (c && /^#[0-9a-f]{6}$/i.test(str(c.hex, 7)) ? { name: str(c.name, 30), hex: str(c.hex, 7).toLowerCase() } : null)).filter(Boolean);
     if (colors.length) out.colors = colors;
     const logos = {};
     ['light', 'dark'].forEach((k) => { const l = b.logos && b.logos[k]; if (logoSrc(l)) logos[k] = l.kind === 'svg' ? { kind: 'svg', text: l.text } : { kind: l.kind, b64: l.b64 }; });
@@ -718,6 +718,8 @@
     ['icons', 'designs', 'links'].forEach((k) => { const l = xl(bx[k], k); if (l.length) ex[k] = l; });
     if (Object.keys(ex).length) out.extras = ex;
     if (b.sheet === true) out.sheet = true;
+    // (Nov 18 2026, Tera's new brand sheet) the sheet as a page on Web Faery's own server, only when the address is exactly that shape
+    if (/^https:\/\/bookings\.gardenfaery\.love\/brand-sheet\/[a-z0-9]{16,40}\/$/.test(str(b.sheet_url, 120))) out.sheet_url = str(b.sheet_url, 120);
     return Object.keys(out).length ? out : null;
   }
   /* ---- Your accounts (Nov 4 2026, ADD 58) ---- */
@@ -2839,7 +2841,7 @@
     if (br && br.accent && !colors.some((c) => c.hex === br.accent)) colors.unshift({ name: 'Accent', hex: br.accent });
     const hasFonts = !!(br && (br.heading || br.body));
     const hasLogo = !!(br && br.logos && (br.logos.light || br.logos.dark));
-    const hasSheet = !!(br && br.sheet) || !!(me && me.things && me.things.brand_sheet);
+    const hasSheet = !!(br && (br.sheet || br.sheet_url)) || !!(me && me.things && me.things.brand_sheet);
     const hasExtras = !!(br && br.extras && Object.keys(br.extras).length);
     if (!me || (!colors.length && !hasFonts && !hasLogo && !hasSheet && !hasExtras)) { setHidden(sec, true); body.replaceChildren(); return; }
     const parts = [];
@@ -2950,7 +2952,7 @@
     if (hasSheet) {
       parts.push(make('h3', 'small-h', 'Brand sheet'));
       const row = make('div', 'bkit-sheet');
-      row.append(make('p', null, 'Your colors, fonts and logo files, all on one sheet.'), fileButton('brand_sheet', null, 'Open', 'brand sheet'));
+      row.append(make('p', null, 'Your colors, fonts and logo files, all on one sheet.'), br && br.sheet_url ? sheetLink(br.sheet_url) : fileButton('brand_sheet', null, 'Open', 'brand sheet'));
       parts.push(row);
     }
     const missing = [];
@@ -3008,8 +3010,9 @@
       }
     }
 
-    row('i-palette', 'Your brand sheet', th.brand_sheet ? 'Your colors, fonts and logo files' : 'Comes at launch',
-      th.brand_sheet ? [fileButton('brand_sheet', null, 'Open', 'brand sheet')] : null, !th.brand_sheet);
+    const sheetUrl = me.brand && me.brand.sheet_url;
+    row('i-palette', 'Your brand sheet', th.brand_sheet || sheetUrl ? 'Your colors, fonts and logo files' : 'Comes at launch',
+      sheetUrl ? [sheetLink(sheetUrl)] : th.brand_sheet ? [fileButton('brand_sheet', null, 'Open', 'brand sheet')] : null, !th.brand_sheet && !sheetUrl);
     row('i-key', 'The “Your site” sheet', th.handoff_sheet ? 'What lives where, and which logins are yours' : 'Comes at launch',
       th.handoff_sheet ? [fileButton('handoff_sheet', null, 'Open', 'site sheet')] : null, !th.handoff_sheet);
 
@@ -3028,6 +3031,17 @@
     $('#things').replaceChildren(...rows);
   }
 
+  // (Nov 18 2026) the brand sheet as a web page of its own: a plain link in a new tab, no file to fetch
+  function sheetLink(href) {
+    const a = make('a', 'open-btn');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.dataset.read = '1';
+    a.append(make('span', null, 'Open'), icon('i-doc'));
+    a.setAttribute('aria-label', 'Open your brand sheet');
+    return a;
+  }
   function fileButton(thing, name, label, what, cls) {
     const b = make('button', cls || 'open-btn', null);
     b.type = 'button';
