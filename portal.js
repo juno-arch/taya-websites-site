@@ -5662,11 +5662,12 @@
       const div = make('div', 'payrow st-' + (tapped ? 'tapped' : p.state));
       div.id = 'pay-' + p.key;
       let name, sub, amt, payLabel, thanks = PAY_THANKS;
-      const starts = p.starts_on && !isPast(p.starts_on) ? shortDate(p.starts_on) : '';
+      const starts = p.starts_on ? shortDate(p.starts_on) : '';
+      const startsPast = !!p.starts_on && isPast(p.starts_on); // Nov 18 2026: the date always shows, even once it has passed
       if (p.key === 'deposit') { name = 'Deposit'; sub = 'Half the build. It holds your spot.'; amt = money(p.amount); payLabel = 'Pay the deposit'; }
       else if (p.key === 'balance') { name = 'Second half'; sub = 'The other half of the build, due at launch.'; amt = money(p.amount); payLabel = 'Pay the second half'; }
       else {
-        name = 'Subscription';
+        name = 'Web Faery subscription';
         amt = money(p.amount) + (p.period === 'year' ? ' a year' : ' a month');
         sub = CARE_SAY[c.build] || 'Hosting, your web address, backups, and your changes as I follow your socials or whenever you email me.';
         payLabel = 'Start my subscription';
@@ -5677,7 +5678,7 @@
       // the start date stands on its own line (Nov 11 2026), not tucked into the paragraph
       if (p.key === 'care' && p.state === 'due' && starts) {
         const st0 = make('span', 'p-start');
-        st0.append(icon('i-mushroom', 'p-start-i'), make('span', 'p-start-l', 'Your subscription begins'), make('span', 'p-start-d', starts));
+        st0.append(icon('i-mushroom', 'p-start-i'), make('span', 'p-start-l', startsPast ? 'Was set to start' : 'Starts'), make('span', 'p-start-d', starts));
         div.append(st0);
       }
       const st = make('div', 'p-state');
@@ -5715,7 +5716,7 @@
         let later = 'I’ll send the link soon';
         if (p.key === 'deposit' && !me.things.agreement) later = 'After you sign our agreement';
         if (p.key === 'balance') later = 'Due at launch' + (launchAbout ? ', about ' + launchAbout : '');
-        if (p.key === 'care') later = 'Starts after settling in' + (starts || settle || settleAbout ? ', about ' + (starts || settle || settleAbout) : '');
+        if (p.key === 'care') later = starts ? (startsPast ? 'Was set to start ' : 'Starts ') + starts : 'Starts after settling in' + (settle || settleAbout ? ', about ' + (settle || settleAbout) : '');
         st.append(make('span', 'p-later', later));
       }
       div.append(st);
@@ -8195,7 +8196,7 @@
       }
     }));
     const signInQuietly = () => { if (!token) { token = D.signIn(); store.set(token); } };
-    if (/[?&]tour(=1)?(&|$)/.test(location.search)) { D.setScenario('care'); signInQuietly(); const tq = document.createElement('style'); tq.textContent = '#sec-critique{display:none!important}'; document.head.append(tq); /* (Nov 16, Pollen) no critique card on the public tour */ } // the public tour: already signed in, live with a subscription
+    if (/[?&]tour(=1)?(&|$)/.test(location.search)) { D.setScenario((location.search.match(/[?&]scene=(\w+)/) || [])[1] || 'care'); signInQuietly(); const tq = document.createElement('style'); tq.textContent = '#sec-critique{display:none!important}'; document.head.append(tq); /* (Nov 16, Pollen) no critique card on the public tour */ } // the public tour: already signed in, live with a subscription
     $$('#demo-menu [data-demo]').forEach((b) => b.addEventListener('click', async () => {
       const k = b.dataset.demo;
       $('#demo-menu').open = false;
