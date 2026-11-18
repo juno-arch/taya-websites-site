@@ -4,6 +4,7 @@ All photos are the shop's own, from its Facebook page (StitchCraft Haberdashery 
 
 | File | What it shows | Source |
 |---|---|---|
+| images/hero | The shop wall of jars on pine boards with the raven emblem (the full-bleed hero) | Facebook photo, posted September 12 (viewed full screen, 1280 px wide) |
 | images/jar-shelf | The herb wall: coral shelf and black cabinet of labeled jars | Facebook photo, posted July 6 |
 | images/books-and-bottles | Bookcase, dropper bottles, jars, candles | Facebook photo |
 | images/incense-and-ravens | Incense, brass pot, cauldron, raven banner on the purple wall | Facebook photo |

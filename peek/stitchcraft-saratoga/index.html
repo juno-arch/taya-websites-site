@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="StitchCraft Haberdashery &amp; Mercantile in Saratoga, Wyoming: alterations, repairs, leatherwork and custom clothing, plus bulk herbs, teas, incense and books.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%231d0f26'/%3E%3Cpath d='M8 20c4-8 12-8 16 0' fill='none' stroke='%23e0b24a' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='3 3'/%3E%3C/svg%3E">
-<link rel="preload" as="image" type="image/webp" href="images/jar-shelf.webp" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="images/hero.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Stint+Ultra+Condensed&family=Caveat:wght@600&display=swap">
@@ -262,43 +262,41 @@
   /* the mark in the nav, and the hero */
   .mark img { display: block; height: 40px; width: auto; }
   .hero { position: relative; overflow: hidden; min-height: 92vh; min-height: 92svh; display: flex; flex-direction: column; background: #1d0f26; color: #f7ecd6; isolation: isolate; }
-  .hero-bg { position: absolute; inset: 0; z-index: 0; margin: 0; overflow: hidden; }
-  .hero-bg img { width: 100%; height: 100%; object-fit: cover; display: block; filter: blur(26px) saturate(1.15) brightness(0.55); scale: 1.18; }
+  .hero-photo { position: absolute; inset: 0; z-index: 0; margin: 0; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 46% 50%; display: block; }
+  /* a veil only under the words, on the left; the photo itself is not softened or darkened elsewhere */
   .hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: radial-gradient(70% 80% at 72% 50%, rgba(201, 69, 45, 0.18) 0, rgba(29, 15, 38, 0) 62%), linear-gradient(180deg, rgba(20, 8, 28, 0.6) 0, rgba(20, 8, 28, 0) 160px), linear-gradient(90deg, rgba(29, 15, 38, 0.5), rgba(29, 15, 38, 0.1) 60%); }
+    background: linear-gradient(90deg, rgba(29, 15, 38, 0.9) 0, rgba(29, 15, 38, 0.82) 30%, rgba(29, 15, 38, 0.38) 50%, rgba(29, 15, 38, 0) 64%), linear-gradient(180deg, rgba(20, 8, 28, 0.55) 0, rgba(20, 8, 28, 0) 150px); }
   .hero > .gutter { position: relative; z-index: 3; }
   .hero .wrap { max-width: 1220px; }
-  .hero-main { flex: 1; display: flex; align-items: center; padding-block: 36px 84px; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(28px, 6vw, 80px); align-items: center; }
-  .hero-copy { max-width: 600px; }
+  .hero-main { flex: 1; display: flex; align-items: center; padding-block: 40px 90px; }
+  .hero-copy { max-width: 560px; }
   .hero .label { color: #f0c457; margin-bottom: 18px; text-shadow: 0 1px 14px rgba(20, 5, 28, 0.6); }
   .hero h1 { font-size: clamp(46px, 6.6vw, 92px); line-height: 0.98; color: #fbf1da; text-shadow: 0 2px 30px rgba(20, 5, 28, 0.6); }
   .hero h1 em { color: #f08a6b; }
   .hero .lede { margin: 24px 0 0; font-size: clamp(19px, 2vw, 22px); line-height: 1.55; color: #eadcc0; max-width: 36ch; text-shadow: 0 1px 14px rgba(20, 5, 28, 0.75); }
   .hero .btn { background: #f7ecd6; color: #2a1233; border-color: #f7ecd6; }
   .hero .btn:hover { background: #ffffff; border-color: #ffffff; }
-  .hero .btn.quiet { background: rgba(29, 15, 38, 0.35); color: #f7ecd6; border-color: rgba(247, 236, 214, 0.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  .hero .btn.quiet:hover { background: rgba(29, 15, 38, 0.6); }
+  .hero .btn.quiet { background: rgba(29, 15, 38, 0.5); color: #f7ecd6; border-color: rgba(247, 236, 214, 0.55); }
+  .hero .btn.quiet:hover { background: rgba(29, 15, 38, 0.7); }
   .hero a:focus-visible { outline-color: #f7ecd6; }
-  .hero-arch { margin: 0; justify-self: center; width: min(100%, 400px); position: relative; }
-  .hero-arch .arch { position: relative; aspect-ratio: 4 / 5.3; border-radius: 999px 999px 10px 10px; overflow: hidden; border: 2px solid #e0b24a; box-shadow: 0 0 0 8px rgba(224, 178, 74, 0.14), 0 40px 80px -30px rgba(0, 0, 0, 0.8); background: #2a1634; }
-  .hero-arch img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
-  .hero-arch figcaption { margin-top: 14px; text-align: center; font-size: 15px; letter-spacing: 0.04em; color: #d9c8a6; font-style: italic; }
-  .hero.wait .hero-bg, .hero.wait::after, .hero.wait .label, .hero.wait h1, .hero.wait .lede, .hero.wait .cta-row, .hero.wait .hero-arch { opacity: 0; }
-  .hero.go .hero-bg { animation: hero-fade 3s ease both; }
-  .hero.go::after { animation: hero-fade 2.4s ease 0.5s both; }
-  .hero.go .hero-arch { animation: hero-rise 3s cubic-bezier(.22,1,.36,1) 0.6s both; }
-  .hero.go .label { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.5s both; }
-  .hero.go h1 { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 1.8s both; }
-  .hero.go .lede { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 2.7s both; }
-  .hero.go .cta-row { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.3s both; }
+  .hero.wait .hero-photo, .hero.wait::after, .hero.wait .label, .hero.wait h1, .hero.wait .lede, .hero.wait .cta-row { opacity: 0; }
+  .hero.go .hero-photo { animation: hero-photo 4s cubic-bezier(.22,1,.36,1) both; }
+  .hero.go::after { animation: hero-fade 2.4s ease 0.7s both; }
+  .hero.go .label { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 1.6s both; }
+  .hero.go h1 { animation: hero-rise 2.4s cubic-bezier(.22,1,.36,1) 1.9s both; }
+  .hero.go .lede { animation: hero-rise-sm 2.2s cubic-bezier(.22,1,.36,1) 2.8s both; }
+  .hero.go .cta-row { animation: hero-rise-sm 2s cubic-bezier(.22,1,.36,1) 3.4s both; }
+  @keyframes hero-photo { from { opacity: 0; transform: scale(1.04); } 25% { opacity: 1; } to { opacity: 1; transform: none; } }
   @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hero-rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
   @keyframes hero-rise-sm { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-  @media (max-width: 860px) {
-    .hero-grid { grid-template-columns: minmax(0, 1fr); }
-    .hero-arch { order: -1; width: min(70%, 290px); }
-    .hero-main { align-items: flex-start; padding-block: 0 48px; }
+  @media (max-width: 760px) {
+    .hero { min-height: 100vh; min-height: 100svh; }
+    .hero-photo img { object-position: 44% 30%; }
+    .hero::after { background: linear-gradient(180deg, rgba(20, 8, 28, 0.6) 0, rgba(20, 8, 28, 0) 140px), linear-gradient(180deg, rgba(29, 15, 38, 0) 34%, rgba(29, 15, 38, 0.8) 54%, rgba(29, 15, 38, 0.94) 80%); }
+    .hero-main { align-items: flex-end; padding-block: 0 46px; }
+    .hero .lede { max-width: none; }
   }
   @media (max-width: 480px) { .hero .cta-row .btn { flex: 1 1 100%; text-align: center; } }
 
@@ -494,7 +492,7 @@
   /* type sizes for Stint Ultra Condensed (a narrow face, so it runs bigger than a normal serif) */
   h1, h2, h3, h4 { letter-spacing: 0.03em; }
   h2 { font-size: clamp(50px, 7vw, 80px); line-height: 0.98; }
-  .hero h1 { font-size: clamp(62px, 9vw, 128px); line-height: 0.94; }
+  .hero h1 { font-size: clamp(60px, 7.4vw, 108px); line-height: 0.94; }
   .door h3 { font-size: 40px; }
   .parch h3 { font-size: clamp(48px, 6.4vw, 66px); }
   .parch h4 { font-size: 34px; }
@@ -512,7 +510,7 @@
   .bk-done h3, .bk-card h3 { font-size: 38px; }
   .nl-done h4 { font-size: 32px; }
   .stripe-card b { font-size: 30px; }
-  @media (max-width: 560px) { .parch .row { font-size: 20px; } .hero h1 { font-size: clamp(58px, 17vw, 80px); } }
+  @media (max-width: 560px) { .parch .row { font-size: 20px; } .hero h1 { font-size: clamp(46px, 14vw, 64px); } }
 
 
   /* ---------- STICKY NAV (Oct 7 2026): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; styled from this page's own colors and fonts ---------- */
@@ -600,31 +598,27 @@
 </header>
 </div>
 <div class="hero" id="top">
-  <figure class="hero-bg" aria-hidden="true"><img src="images/incense-and-ravens.jpg" alt="" width="856" height="690"></figure>
+  <figure class="hero-photo">
+    <picture><source type="image/webp" srcset="images/hero.webp"><img src="images/hero.jpg" width="1280" height="708" alt="Inside StitchCraft: a wall of labeled glass jars of dried herbs on black shelves against warm pine boards, with a black raven emblem and two framed mountain pictures above the counter" fetchpriority="high"></picture>
+  </figure>
   <div class="snav-gap" aria-hidden="true"></div>
   <div class="hero-main gutter">
     <div class="wrap" style="width:100%">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="label"><span class="nw">StitchCraft Haberdashery &amp; Mercantile</span><span class="sep" aria-hidden="true"> &middot; </span><span class="nw place">Saratoga, Wyoming</span></p>
-          <h1>Saratoga&rsquo;s one-stop <em>stitchy witchy</em> shop</h1>
-          <p class="lede">Alterations, repairs, leatherwork and custom clothing, next to bulk herbs, teas, incense, books and more.</p>
-          <div class="cta-row">
-            <a class="btn" href="#book">Book a fitting</a>
-            <a class="btn quiet" href="#visit">Hours and where to find us</a>
-          </div>
+      <div class="hero-copy">
+        <p class="label"><span class="nw">StitchCraft Haberdashery &amp; Mercantile</span><span class="sep" aria-hidden="true"> &middot; </span><span class="nw place">Saratoga, Wyoming</span></p>
+        <h1>Saratoga&rsquo;s <span class="nw">one-stop</span> <em>stitchy witchy</em> shop</h1>
+        <p class="lede">Alterations, repairs, leatherwork and custom clothing, next to bulk herbs, teas, incense, books and more.</p>
+        <div class="cta-row">
+          <a class="btn" href="#book">Book a fitting</a>
+          <a class="btn quiet" href="#visit">Hours and where to find us</a>
         </div>
-        <figure class="hero-arch">
-          <div class="arch"><picture><source type="image/webp" srcset="images/jar-shelf.webp"><img src="images/jar-shelf.jpg" width="856" height="1087" alt="The herb wall inside the shop: a coral shelf and a black cabinet lined with glass jars of dried herbs, flowers and teas, each with a gold label, against an aubergine wall" fetchpriority="high"></picture></div>
-          <figcaption>The herb wall, on the shop&rsquo;s plum-colored wall</figcaption>
-        </figure>
       </div>
     </div>
   </div>
 </div>
 <script>
   (function () {
-    var h = document.querySelector('.hero'), img = h && h.querySelector('.hero-arch img');
+    var h = document.querySelector('.hero'), img = h && h.querySelector('.hero-photo img');
     if (!h || !img || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
     h.classList.add('wait');
     var started = false;
