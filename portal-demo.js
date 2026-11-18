@@ -201,6 +201,7 @@
           { key: 'care', amount: 45, period: 'month', state: 'later', paid_on: '', starts_on: d[5], url: '' }
         ],
         care_manage_url: '',
+        care_cancel_live: true, // demo only: the real server sends this once /care-cancel is deployed
         care: { can_ask: true, requests: [] },
         messages_unread: 1,
         session: { expires_at: '' }
@@ -234,6 +235,7 @@
           { key: 'care', amount: 45, period: 'month', state: 'active', paid_on: d[5], starts_on: '', url: '' }
         ],
         care_manage_url: 'https://billing.stripe.com/sample-link-for-the-preview',
+        care_cancel_live: true, // demo only: the real server sends this once /care-cancel is deployed
         care: {
           can_ask: true,
           requests: [
@@ -383,6 +385,7 @@
 
   /* ---------------- the same eight calls as the real server ---------------- */
   var api = {
+    careCancel: function () { return wait(500).then(function () { return { ok: true, stopped: true }; }); },
     requestCode: function (who) {
       var p = pending(); if (p) return refuse(p, 700);
       return wait(700).then(function () {

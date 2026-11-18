@@ -489,6 +489,10 @@
     resources: () => postJSON('/resources', {}, token),
     // a fresh Stripe billing portal link for their own subscription (Oct 16 2026): { url } on billing.stripe.com
     careManage: () => postJSON('/care-manage', {}, token),
+    // stop their own Web Faery subscription, right away (Nov 18 2026, PROPOSED route: the server half is not built, so the
+    // button stays hidden until the server sends care_cancel_live). Agreed with the Studio builder (Nov 18, the server answers /care-cancel and /care-stop alike; this uses /care-cancel):
+    // { ok: true, stopped: true, stopped_on: 'YYYY-MM-DD' [, already: true] }; 404 not_found / 503 not_ready mean "no button for them"; 502 stripe: safe to retry
+    careCancel: () => postJSON('/care-cancel', {}, token),
     // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
     // more message from them; plain text both ways
     messages: () => postJSON('/messages', {}, token),
@@ -1728,6 +1732,8 @@
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
+      care_cancel_live: d.care_cancel_live === true, // the server can stop the subscription (POST /care-cancel); false until deployed
+      care_stopped_on: /^\d{4}-\d{2}-\d{2}/.test(str(d.care_stopped_at || d.care_stopped_on, 30)) ? str(d.care_stopped_at || d.care_stopped_on, 30).slice(0, 10) : '', // the day they stopped it (the server saves care_stopped_at; a bare day works too)
       manage_sub: d.manage_sub === true,
       // portal messages (Oct 20 2026): how many of Taya's they haven't opened; null on a server without messages (no tab)
       messages_unread: Number.isInteger(d.messages_unread) && d.messages_unread >= 0 ? Math.min(d.messages_unread, 999) : null,
@@ -5682,7 +5688,13 @@
         div.append(st0);
       }
       const st = make('div', 'p-state');
-      if (p.state === 'paid') {
+      if (p.key === 'care' && me.care_stopped_on) {
+        // they stopped it (Nov 18 2026): nothing more is taken, no pay button, no cancel button
+        div.classList.add('st-stopped');
+        const s = make('span', 'p-paid');
+        s.append(icon('i-check'), make('span', null, 'Stopped, nothing more will be taken'));
+        st.append(s);
+      } else if (p.state === 'paid') {
         const s = make('span', 'p-paid');
         s.append(icon('i-check'), make('span', null, 'Paid' + (p.paid_on ? ' ' + shortDate(p.paid_on) : '')));
         st.append(s);
@@ -5719,9 +5731,44 @@
         if (p.key === 'care') later = starts ? (startsPast ? 'Was set to start ' : 'Starts ') + starts : 'Starts after settling in' + (settle || settleAbout ? ', about ' + (settle || settleAbout) : '');
         st.append(make('span', 'p-later', later));
       }
+      if (p.key === 'care' && !me.care_stopped_on && me.care_cancel_live && typeof api.careCancel === 'function' && p.state !== 'paid') st.append(cancelControl());
       div.append(st);
       return div;
     }));
+  }
+
+  // "Cancel my subscription" (Nov 18 2026): one gentle confirm, then the server stops it right away. Hidden until the
+  // server says it can (care_cancel_live), so nothing is live before the route exists.
+  function cancelControl() {
+    const box = make('div', 'p-cancel');
+    const ask = make('button', 'later p-cancel-b', 'Cancel my subscription');
+    ask.type = 'button';
+    box.append(ask);
+    ask.addEventListener('click', () => {
+      const q = make('p', 'p-cancel-q', 'Stop your subscription? Nothing more will be taken.');
+      q.setAttribute('role', 'status');
+      const yes = make('button', 'later p-cancel-yes', 'Yes, stop it');
+      const no = make('button', 'later p-cancel-no', 'Keep it');
+      yes.type = no.type = 'button';
+      no.addEventListener('click', () => box.replaceChildren(ask));
+      yes.addEventListener('click', async () => {
+        if (yes.getAttribute('aria-busy') === 'true') return;
+        yes.setAttribute('aria-busy', 'true');
+        try {
+          const d = await api.careCancel();
+          if (!d || d.stopped !== true) throw fail('server', 502);
+          me.care_stopped_on = /^\d{4}-\d{2}-\d{2}$/.test(str(d.stopped_on, 10)) ? str(d.stopped_on, 10) : new Date().toISOString().slice(0, 10); // shown at once; the next portal read says it too
+          renderPay();
+        } catch (err) {
+          if (err.code === 'signed_out') { quietSignOut(true); return; }
+          if (err.status === 404 || err.status === 503) { me.care_cancel_live = false; renderPay(); return; } // no plan to stop, or the server isn't ready: no button
+          toast(err.status === 429 ? 'That’s a few taps in a row. Give it a minute and try again.' : err.status === 502 || err.status === 500 ? 'That didn’t go through just now, and nothing was changed. Try again in a few minutes, or email me at ' + TAYA + '.' : words(err));
+        } finally { yes.removeAttribute('aria-busy'); }
+      });
+      box.replaceChildren(q, yes, no);
+      yes.focus();
+    });
+    return box;
   }
 
   // "Update your card or subscription" through the server (Oct 16 2026): each tap asks for a fresh Stripe billing
