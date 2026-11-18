@@ -111,6 +111,17 @@
     // the magic mockup step: getting started is closed, so no list, no payments, and the turn card on top
     mockup: function () { return mockupScene(''); },
     waiting: function () { return mockupScene(today()); },
+    // a NEW client whose deposit is due and who may take the bank-account care auto-start (Nov 18 2026; demo only: a real server sends care_deposit_live)
+    deposit: function () {
+      var s = SCENES.mid();
+      s.pay = [
+        { key: 'deposit', amount: 300, period: '', state: 'due', paid_on: '', starts_on: '', url: STRIPE },
+        { key: 'balance', amount: 300, period: '', state: 'later', paid_on: '', starts_on: '', url: '' },
+        { key: 'care', amount: 45, period: 'month', state: 'later', paid_on: '', starts_on: '', url: '' }
+      ];
+      s.care_deposit_live = true;
+      return s;
+    },
     'new': function () {
       return {
         ok: true,
@@ -385,6 +396,8 @@
 
   /* ---------------- the same eight calls as the real server ---------------- */
   var api = {
+    careAgreement: function () { return wait(400).then(function () { return { ok: true, tier: 'Color', amount: 45, start_on: day(30), text: 'This is sample wording for the preview. The real words come from Web Faery and say what you agree to.\n\nYour care plan would start on a day you can see here, from your bank account.' }; }); },
+    careDeposit: function () { return wait(500).then(function () { return { ok: true, url: 'https://checkout.stripe.com/sample-for-the-preview' }; }); },
     careCancel: function () { return wait(500).then(function () { return { ok: true, stopped: true }; }); },
     requestCode: function (who) {
       var p = pending(); if (p) return refuse(p, 700);

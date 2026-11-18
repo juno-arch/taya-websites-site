@@ -405,6 +405,17 @@
     if (!res.ok) throw errorFrom(res.status, data);
     return data;
   };
+  // a plain read (GET) with their sign-in: the care agreement words (Nov 18 2026); a Studio preview asks for nothing here
+  const getJSON = async (path, key) => {
+    if (PREVIEW) return stayQuiet();
+    let res;
+    try {
+      res = await fetch(BASE + path, { method: 'GET', headers: { 'X-WF-Session': key }, mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer' });
+    } catch (e) { throw fail('network'); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw errorFrom(res.status, data);
+    return data;
+  };
   // pictures and files go as a form, with a progress report while they travel
   // [papers b24] base: another route family (the business papers' /add); BASE when not given, as before
   const sendForm = (path, fields, files, key, onProgress, base) => new Promise((resolve, reject) => {
@@ -493,6 +504,10 @@
     // button stays hidden until the server sends care_cancel_live). Agreed with the Studio builder (Nov 18, the server answers /care-cancel and /care-stop alike; this uses /care-cancel):
     // { ok: true, stopped: true, stopped_on: 'YYYY-MM-DD' [, already: true] }; 404 not_found / 503 not_ready mean "no button for them"; 502 stripe: safe to retry
     careCancel: () => postJSON('/care-cancel', {}, token),
+    // care auto-start for a NEW client (Nov 18 2026, server not deployed): GET /care-agreement -> { ok, tier, amount, start_on, text } (the words, filled in
+    // by the server, never written here); POST /care-deposit -> { ok, url } (a Stripe Checkout page for the deposit that keeps their bank account)
+    careAgreement: () => getJSON('/care-agreement', token),
+    careDeposit: () => postJSON('/care-deposit', {}, token),
     // their messages with Taya (Oct 20 2026): their own thread only (the server finds it from the sign-in), and one
     // more message from them; plain text both ways
     messages: () => postJSON('/messages', {}, token),
@@ -971,7 +986,7 @@
   }
   function pageList() {
     const bar = barIds(), g = hubGroups();
-    const hub = g.tools.length || g.wf.length || bloomList().length || noteRows().length ? ['webfaery'] : [];
+    const hub = g.tools.length || g.wf.length || bloomList().length || noteRows().length || !!(me && me.care_autostart_on && !me.care_stopped_on) ? ['webfaery'] : [];
     const order = bar.concat(hub, g.tools, g.wf, ['messages']);
     return order.filter((id, k) => (id === 'webfaery' || pageHas(id) || (id === 'messages' && pageHas('ask'))) && order.indexOf(id) === k).map(pageInfo);
   }
@@ -1302,8 +1317,9 @@
       rows.push({ key: 'care', title: 'Start your Web Faery subscription', date: d ? (isPast(care.starts_on) ? 'Was set to start ' : 'Starts ') + d : '', url: care.url, label: 'Start my subscription', pay: 'care' });
     }
     me.pay.forEach((p) => {
-      if ((p.key === 'deposit' || p.key === 'balance') && p.state === 'due' && p.url && !t[p.key]) {
-        rows.push({ key: p.key, title: p.key === 'deposit' ? 'Pay the deposit' : 'Pay the second half', date: p.key === 'balance' ? 'Due at launch' : '', url: p.url, label: p.key === 'deposit' ? 'Pay the deposit' : 'Pay the second half', pay: p.key });
+      const agree = p.key === 'deposit' && p.state === 'due' && me.care_deposit_live; // the agreement words come first, on the Payments page
+      if ((p.key === 'deposit' || p.key === 'balance') && p.state === 'due' && (p.url || agree) && !t[p.key]) {
+        rows.push({ key: p.key, title: p.key === 'deposit' ? 'Pay the deposit' : 'Pay the second half', date: p.key === 'balance' ? 'Due at launch' : '', url: agree ? '' : p.url, page: agree ? 'payments' : '', label: p.key === 'deposit' ? 'Pay the deposit' : 'Pay the second half', pay: p.key });
       }
     });
     notices.forEach((x) => {
@@ -1318,7 +1334,7 @@
     const sec = $('#sec-notes');
     if (!sec) return;
     const rows = noteRows();
-    const sig = JSON.stringify(rows.map((r) => [r.key, r.title, r.date, r.url, r.label]));
+    const sig = JSON.stringify(rows.map((r) => [r.key, r.title, r.date, r.url, r.label, r.page || '']));
     if (sig !== notesSig) {
       notesSig = sig;
       $('#wf-notes').replaceChildren(...rows.map((r) => {
@@ -1328,12 +1344,19 @@
         if (r.date) what.append(make('small', null, r.date));
         li.append(what);
         if (r.url) li.append(outLink(r.url, r.label, 'btn small', r.pay ? 'Stripe so you can pay' : 'a link from me', r.pay));
-        else { const b = make('button', 'btn small secondary', r.label); b.type = 'button'; b.dataset.read = '1'; b.addEventListener('click', () => goPage('project')); li.append(b); }
+        else { const b = make('button', 'btn small secondary', r.label); b.type = 'button'; b.dataset.read = '1'; b.addEventListener('click', () => goPage(r.page || 'project')); li.append(b); }
         return li;
       }));
       pagesSig = null; // the Web Faery page may now exist, or not
     }
     setHidden(sec, !rows.length);
+    // care auto-start (Nov 18 2026): once they have paid the deposit by bank, a calm line says when care starts
+    const cs = $('#sec-carestart');
+    if (cs) {
+      const on = !!(me && me.care_autostart_on && !me.care_stopped_on);
+      if (on) $('#carestart-line').textContent = careStartsLine();
+      setHidden(cs, !on);
+    }
   }
   function needRow(pageId, due, title, sub) {
     const li = make('li');
@@ -1787,6 +1810,9 @@
       // server can make a fresh "Update your card" link (POST /care-manage). Older servers send neither: both false.
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
+      care_deposit_live: d.care_deposit_live === true, // a NEW client may pay the deposit through the care auto-start; false until the server turns it on
+      care_autostart_on: /^\d{4}-\d{2}-\d{2}$/.test(str(d.care_autostart_on, 10)) ? str(d.care_autostart_on, 10) : '', // the day their care starts by itself
+      care_bank_last4: /^\d{4}$/.test(str(d.care_bank_last4, 4)) ? str(d.care_bank_last4, 4) : '', // PROPOSED field: the last four of the saved bank account
       care_cancel_live: d.care_cancel_live === true, // the server can stop the subscription (POST /care-cancel); false until deployed
       care_stopped_on: /^\d{4}-\d{2}-\d{2}/.test(str(d.care_stopped_at || d.care_stopped_on, 30)) ? str(d.care_stopped_at || d.care_stopped_on, 30).slice(0, 10) : '', // the day they stopped it (the server saves care_stopped_at; a bare day works too)
       manage_sub: d.manage_sub === true,
@@ -5755,7 +5781,13 @@
         div.append(st0);
       }
       const st = make('div', 'p-state');
-      if (p.key === 'care' && me.care_stopped_on) {
+      if (p.key === 'care' && !me.care_stopped_on && me.care_autostart_on) {
+        // their care starts by itself from the bank account they saved at the deposit
+        div.classList.add('st-autostart');
+        const s = make('span', 'p-paid');
+        s.append(icon('i-check'), make('span', null, careStartsLine()));
+        st.append(s);
+      } else if (p.key === 'care' && me.care_stopped_on) {
         // they stopped it (Nov 18 2026): nothing more is taken, no pay button, no cancel button
         div.classList.add('st-stopped');
         const s = make('span', 'p-paid');
@@ -5782,6 +5814,9 @@
         }
         if (me.care_manage_live && typeof api.careManage === 'function') st.append(manageButton());
         else if (me.care_manage_url) st.append(outLink(me.care_manage_url, 'Update your card or subscription', 'later', 'your Stripe subscription page'));
+      } else if (p.key === 'deposit' && p.state === 'due' && me.care_deposit_live && typeof api.careAgreement === 'function' && typeof api.careDeposit === 'function') {
+        // (Nov 18 2026) a NEW client with the care auto-start on: the agreement words first, then Stripe
+        st.append(agreementControl());
       } else if (p.state === 'due' && p.url && tapped) {
         // they already tapped it: a thank-you, and only a small way to pay again
         const s = make('p', 'p-thanks');
@@ -5804,6 +5839,63 @@
     }));
   }
 
+  // care auto-start (Nov 18 2026): "December 15, 2026" and the line the Web Faery page and the Payments row both say
+  const longDate = (s) => { const q = dayParts(s); return q && q.m >= 1 && q.m <= 12 ? BK_MONTHS[q.m - 1] + ' ' + q.d + ', ' + q.y : ''; };
+  const careStartsLine = () => 'Care starts on ' + longDate(me.care_autostart_on) + ', from your bank account' + (me.care_bank_last4 ? ' ending ' + me.care_bank_last4 : '') + '.';
+  // "Pay the deposit" for a client with the auto-start on: the server's own agreement words, an I agree, then Stripe. Nothing is
+  // charged until they agree and finish at Stripe; the words are never written in this file.
+  function agreementControl() {
+    const box = make('div', 'p-agree');
+    const ask = make('button', 'btn', 'Pay the deposit');
+    ask.type = 'button';
+    box.append(ask);
+    ask.addEventListener('click', async () => {
+      if (ask.getAttribute('aria-busy') === 'true') return;
+      ask.setAttribute('aria-busy', 'true');
+      let a = null;
+      try { a = await api.careAgreement(); } catch (err) {
+        ask.removeAttribute('aria-busy');
+        if (err.code === 'signed_out') { quietSignOut(true); return; }
+        if (err.status === 404 || err.status === 503) { me.care_deposit_live = false; renderPay(); return; } // not offered to them: back to the usual button
+        toast(err.status === 429 ? 'That’s a few taps in a row. Give it a minute and try again.' : 'That didn’t load just now. Try again in a few minutes, or email me at ' + TAYA + '.');
+        return;
+      }
+      ask.removeAttribute('aria-busy');
+      const text = str(a && a.text, 4000).trim();
+      if (!a || a.ok !== true || !text) { me.care_deposit_live = false; renderPay(); return; }
+      const h = make('h4', 'small-h', 'Before the deposit');
+      h.tabIndex = -1;
+      const words = make('div', 'p-agree-words');
+      text.split(/\n{2,}/).forEach((para) => words.append(make('p', null, para.trim())));
+      const label = make('label', 'p-agree-ok');
+      const cb = make('input'); cb.type = 'checkbox'; cb.id = 'in-care-agree';
+      label.append(cb, make('span', null, 'I agree'));
+      const go = make('button', 'btn', 'Continue to Stripe'); go.type = 'button'; go.disabled = true;
+      const no = make('button', 'later', 'Not now'); no.type = 'button';
+      const btns = make('div', 'p-agree-btns'); btns.append(go, no);
+      cb.addEventListener('change', () => { go.disabled = !cb.checked; });
+      no.addEventListener('click', () => box.replaceChildren(ask));
+      go.addEventListener('click', async () => {
+        if (!cb.checked || go.getAttribute('aria-busy') === 'true') return;
+        go.setAttribute('aria-busy', 'true');
+        try {
+          const d = await api.careDeposit();
+          if (DEMO) { me.care_autostart_on = /^\d{4}-\d{2}-\d{2}$/.test(str(a.start_on, 10)) ? str(a.start_on, 10) : me.care_autostart_on; toast('Preview: this is where Stripe opens.'); renderPay(); renderNotes(); return; }
+          const url = d && /^https:\/\/checkout\.stripe\.com\//.test(str(d.url, 1200)) ? str(d.url, 1200) : '';
+          if (!url) throw fail('server', 502);
+          window.location.href = url;
+        } catch (err) {
+          go.removeAttribute('aria-busy');
+          if (err.code === 'signed_out') { quietSignOut(true); return; }
+          if (err.status === 404 || err.status === 503) { me.care_deposit_live = false; renderPay(); return; }
+          toast(err.status === 429 ? 'That’s a few taps in a row. Give it a minute and try again.' : 'That didn’t go through just now, and nothing was charged. Try again in a few minutes, or email me at ' + TAYA + '.');
+        }
+      });
+      box.replaceChildren(h, words, label, btns);
+      focusEl(h);
+    });
+    return box;
+  }
   // "Cancel my subscription" (Nov 18 2026): one gentle confirm, then the server stops it right away. Hidden until the
   // server says it can (care_cancel_live), so nothing is live before the route exists.
   function cancelControl() {
@@ -8427,8 +8519,9 @@
       if (location.search) {
         const qs = new URLSearchParams(location.search);
         const v = qs.get('paid') || '';
-        paidReturn = ['1', 'deposit', 'balance', 'care'].includes(v) ? v : '';
-        backToPay = !paidReturn && qs.has('canceled');
+        const cv = qs.get('care') || ''; // (Nov 18 2026) back from the care deposit Checkout: ?care=ok or ?care=cancel
+        paidReturn = ['1', 'deposit', 'balance', 'care'].includes(v) ? v : (cv === 'ok' ? 'deposit' : '');
+        backToPay = !paidReturn && (qs.has('canceled') || cv === 'cancel');
         history.replaceState(null, '', location.pathname + location.hash);
       }
     } catch (e) { /* fine */ }
