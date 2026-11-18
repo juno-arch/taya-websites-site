@@ -969,7 +969,7 @@
   }
   function pageList() {
     const bar = barIds(), g = hubGroups();
-    const hub = g.tools.length || g.wf.length || bloomList().length ? ['webfaery'] : [];
+    const hub = g.tools.length || g.wf.length || bloomList().length || noteRows().length ? ['webfaery'] : [];
     const order = bar.concat(hub, g.tools, g.wf, ['messages']);
     return order.filter((id, k) => (id === 'webfaery' || pageHas(id) || (id === 'messages' && pageHas('ask'))) && order.indexOf(id) === k).map(pageInfo);
   }
@@ -1283,6 +1283,56 @@
   }
 
   /* ---- Needs you (Home): the few things waiting on them right now, each a row that opens its page ---- */
+  // "Notifications from me" (Nov 18 2026): first on the Web Faery page, what Taya needs them to do. Rows come from three places:
+  // their payments that are due now with a pay link (the subscription first, even after its start date has passed), then any
+  // open to-do Taya flagged as a notice (the flag is a PROPOSED server field). The Payments card keeps the money detail; this is the nudge.
+  // A flagged to-do whose link is the subscription's own pay link stands in for that row, so the same thing isn't shown twice.
+  function noteRows() {
+    if (!me || !me.pay) return [];
+    const t = taps.mine();
+    const rows = [];
+    const notices = me.list.open.filter((x) => x.notice && x.status !== 'sent' && !(x.kind === 'pay' && t[x.pay_key]));
+    const care = me.pay.find((p) => p.key === 'care');
+    const careDue = !!care && care.state === 'due' && !me.care_stopped_on && !!care.url;
+    const careFed = careDue && notices.some((x) => x.url && x.url === care.url);
+    if (careDue && !careFed) {
+      const d = care.starts_on ? shortDate(care.starts_on) : '';
+      rows.push({ key: 'care', title: 'Start your Web Faery subscription', date: d ? (isPast(care.starts_on) ? 'Was set to start ' : 'Starts ') + d : '', url: care.url, label: 'Start my subscription', pay: 'care' });
+    }
+    me.pay.forEach((p) => {
+      if ((p.key === 'deposit' || p.key === 'balance') && p.state === 'due' && p.url && !t[p.key]) {
+        rows.push({ key: p.key, title: p.key === 'deposit' ? 'Pay the deposit' : 'Pay the second half', date: p.key === 'balance' ? 'Due at launch' : '', url: p.url, label: p.key === 'deposit' ? 'Pay the deposit' : 'Pay the second half', pay: p.key });
+      }
+    });
+    notices.forEach((x) => {
+      const d = x.due_on ? shortDate(x.due_on) : '';
+      const paying = x.kind === 'pay' || (care && x.url && x.url === care.url);
+      rows.push({ key: 'n' + x.id, title: x.title, date: d ? (isPast(x.due_on) ? 'Was due ' : 'Due ') + d : '', url: x.url || '', label: paying ? 'Start my subscription' : x.url ? 'Open' : 'See my list', pay: paying && x.url ? 'care' : '' });
+    });
+    return rows;
+  }
+  let notesSig = null;
+  function renderNotes() {
+    const sec = $('#sec-notes');
+    if (!sec) return;
+    const rows = noteRows();
+    const sig = JSON.stringify(rows.map((r) => [r.key, r.title, r.date, r.url, r.label]));
+    if (sig !== notesSig) {
+      notesSig = sig;
+      $('#wf-notes').replaceChildren(...rows.map((r) => {
+        const li = make('li', 'wf-note');
+        const what = make('span', 'what');
+        what.append(make('b', null, r.title));
+        if (r.date) what.append(make('small', null, r.date));
+        li.append(what);
+        if (r.url) li.append(outLink(r.url, r.label, 'btn small', r.pay ? 'Stripe so you can pay' : 'a link from me', r.pay));
+        else { const b = make('button', 'btn small secondary', r.label); b.type = 'button'; b.dataset.read = '1'; b.addEventListener('click', () => goPage('project')); li.append(b); }
+        return li;
+      }));
+      pagesSig = null; // the Web Faery page may now exist, or not
+    }
+    setHidden(sec, !rows.length);
+  }
   function needRow(pageId, due, title, sub) {
     const li = make('li');
     const a = make('a', 'row-link');
@@ -1361,6 +1411,7 @@
       }
     }
     renderGlance();
+    renderNotes();
     // draw the rows only when they changed, so a row being pressed or focused stays put under the finger
     const sig = JSON.stringify(rows);
     if (sig !== needsSig) {
@@ -1671,7 +1722,9 @@
         video: /^[a-z0-9-]{1,40}$/.test(str(x.video, 40)) ? str(x.video, 40) : '', // (Oct 21 2026) the hard step this to-do has a video for
         choices: Array.isArray(x.choices) ? x.choices.map((c) => str(c, 90)).filter(Boolean).slice(0, 6) : [], // (Oct 22 2026) tap choices; the page adds Other (Oct 30: up to six, 90 characters)
         media: /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.mp4$/.test(str(x.media, 120)) ? str(x.media, 120) : '', // (Oct 30 2026) a how-to video, shown as a player under the words
-        group: str(x.group, 60)
+        group: str(x.group, 60),
+        notice: x.notice === true, // (Nov 18 2026) Taya flagged it for "Notifications from me"; the server field is PROPOSED, older servers send none
+        due_on: /^\d{4}-\d{2}-\d{2}/.test(str(x.due_on, 30)) ? str(x.due_on, 30).slice(0, 10) : ''
       };
     };
     const agreement = th.agreement && typeof th.agreement === 'object' ? {
