@@ -17,3 +17,5 @@ Text taken from the shop's own words: Facebook About and Services (specialties, 
 Not used: photos with words on them (price boards, flyers, special-offer graphics), the photo of a young person in a vest, the newspaper clipping photo, anything of another business. The smoking blend and pipes Jess posts about on her personal Instagram are left off the page until Pollen says.
 
 Raven emblem (images/raven-cream.svg, raven-dark.svg, raven-favicon.svg): traced by hand-tuned threshold from Jess's own raven and valknut mark on the shop's pine wall (a crop of her photo, sent by Pollen Nov 17). The wood and the plank lines are removed; it is one solid shape. Used as the nav and footer mark, the favicon, the secret, and the Apothecary card background.
+
+Added Nov 17 (later): images/jess-and-brad = the Carbon County Comet photo of Jess and Brad Doudna at the herb wall (Photo: Dana Davis, Carbon County Comet; sent by Pollen as Stitchcraft D1.jpg, 780x535; credited on the page). images/leather-scissors = tan leather, braided strap and tailor's shears (StitchCraft Facebook photo). images/sewing-wide = the sewing machine at a larger size (StitchCraft Facebook photo).

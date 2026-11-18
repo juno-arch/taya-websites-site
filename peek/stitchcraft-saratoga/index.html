@@ -562,6 +562,17 @@
   .hours li.today { background: color-mix(in srgb, var(--gold) 26%, transparent); }
   .egg { background: #1d0f26; }
 
+  /* about + around the shop */
+  .about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 52px; align-items: center; }
+  .about-photo .photo { aspect-ratio: 780 / 535; }
+  .about p + p { margin-top: 14px; }
+  .mosaic { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 34px; grid-auto-rows: 190px; }
+  .mosaic .photo { aspect-ratio: auto; height: 100%; }
+  .mosaic .m-wide { grid-column: span 2; grid-row: span 2; }
+  .mosaic .m-tall { grid-row: span 2; }
+  @media (max-width: 860px) { .about { grid-template-columns: minmax(0, 1fr); gap: 32px; } .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 160px; } .mosaic .m-wide { grid-column: span 2; grid-row: span 2; } }
+  .mosaic .photo:nth-last-child(-n+2) { grid-column: span 2; }
+
 
   /* ---------- STICKY NAV (Oct 7 2026): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; styled from this page's own colors and fonts ---------- */
   :root { --sn-h: 62px; --sn-bg: var(--ground); --sn-fg: var(--ink); }
@@ -641,6 +652,7 @@
       <a href="#fix">Alterations</a>
       <a href="#custom">Custom</a>
       <a href="#herbs" data-show="mother crone all">Herb wall</a>
+      <a href="#about">About</a>
       <a href="#book">Book</a>
       <a href="#visit">Visit</a>
     </nav>
@@ -708,7 +720,7 @@
     </div>
     <div class="doors" data-lightbox>
       <article class="door reveal">
-        <figure class="photo"><picture><source type="image/webp" srcset="images/sewing-machine.webp"><img src="images/sewing-machine.jpg" width="856" height="690" alt="An industrial sewing machine under a bright work lamp, a small pair of scissors resting on its table" loading="lazy"></picture></figure>
+        <figure class="photo"><picture><source type="image/webp" srcset="images/sewing-wide.webp"><img src="images/sewing-wide.jpg" width="1269" height="946" alt="An industrial sewing machine under a bright work lamp, a small pair of scissors resting on its table" loading="lazy"></picture></figure>
         <div class="door-in">
           <h3>Sewing &amp; leather</h3>
           <p>Alterations, repairs, restoration and custom clothing, for all garment types and all occasions. The weirder the better.</p>
@@ -790,7 +802,7 @@
 
 <section id="custom" class="gutter wash">
   <div class="wrap custom">
-    <figure class="photo reveal" data-lightbox><picture><source type="image/webp" srcset="images/sewing-machine.webp"><img src="images/sewing-machine.jpg" width="856" height="690" alt="Close view of the sewing machine&rsquo;s needle and presser foot lit by the work lamp" loading="lazy" style="object-position:30% 55%"></picture></figure>
+    <figure class="photo reveal" data-lightbox><picture><source type="image/webp" srcset="images/leather-scissors.webp"><img src="images/leather-scissors.jpg" width="1127" height="1064" alt="Soft tan leather with a braided strap and a long fringe, and a pair of black tailor&rsquo;s shears resting on top, in the shop with its shelves behind" loading="lazy" style="object-position:40% 60%"></picture></figure>
     <div>
       <p class="label with-pill"><span>Custom orders</span> <span class="tag" data-go="maiden">Every build</span></p>
       <h2 class="reveal">Bring whatcha got, <em>we&rsquo;ll make it worth wearing again</em></h2>
@@ -851,6 +863,40 @@
         <p class="sec-note mock-note wf-note">The jars here are the ones I could read from your photo of the herb wall. Send me the full list, and a photo of any shelf you add, and I&rsquo;ll add them. I can follow your socials and update as you post, or you can email me what&rsquo;s new on the wall.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="about" class="gutter">
+  <div class="wrap about">
+    <figure class="about-photo reveal" data-lightbox>
+      <div class="photo"><picture><source type="image/webp" srcset="images/jess-and-brad.webp"><img src="images/jess-and-brad.jpg" width="780" height="535" alt="Jess and Brad Doudna standing together in front of the shop&rsquo;s wall of labeled herb jars, smiling" loading="lazy"></picture></div>
+      <figcaption class="cap">Jess and Brad Doudna, at the herb wall. Photo: Dana Davis, Carbon County Comet.</figcaption>
+    </figure>
+    <div>
+      <p class="label with-pill"><span>About</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <h2 class="reveal">Meet <em>Jess and Brad</em></h2>
+      <p class="soft" style="margin-top:18px">StitchCraft is run by Jess and Brad Doudna, who opened it in downtown Saratoga as a one-stop shop for sewing and leather work, bulk herbs and teas, incense, books and a little magick.</p>
+      <p class="soft">Come in with a hem, a favorite jacket, or a list of teas, and stay for a look around.</p>
+      <p class="sec-note mock-note wf-note">A few lines in your own words about how StitchCraft started would go right here. I can follow your socials and update as you post, or you can email me the story and a favorite photo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="around" class="gutter wash">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="label with-pill"><span>Around the shop</span> <span class="tag" data-go="maiden">Every build</span></p>
+      <h2 class="reveal">A look <em>inside</em></h2>
+    </div>
+    <div class="mosaic" data-lightbox>
+      <figure class="photo m-wide reveal"><picture><source type="image/webp" srcset="images/hero.webp"><img src="images/hero.jpg" width="1280" height="708" alt="The wall of labeled glass jars of dried herbs on black shelves against pine boards, with the raven emblem above" loading="lazy"></picture></figure>
+      <figure class="photo m-tall reveal"><picture><source type="image/webp" srcset="images/jar-shelf.webp"><img src="images/jar-shelf.jpg" width="856" height="1087" alt="The coral shelf and black cabinet of herb jars with gold labels, against the aubergine wall" loading="lazy"></picture></figure>
+      <figure class="photo reveal"><picture><source type="image/webp" srcset="images/leather-scissors.webp"><img src="images/leather-scissors.jpg" width="1127" height="1064" alt="Tan leather with a braided strap and fringe, and black tailor&rsquo;s shears" loading="lazy"></picture></figure>
+      <figure class="photo reveal"><picture><source type="image/webp" srcset="images/incense-and-ravens.webp"><img src="images/incense-and-ravens.jpg" width="856" height="690" alt="Shelves of incense, a brass pot, a cauldron and a raven banner on the purple wall" loading="lazy"></picture></figure>
+      <figure class="photo reveal"><picture><source type="image/webp" srcset="images/books-and-bottles.webp"><img src="images/books-and-bottles.jpg" width="856" height="690" alt="A pine bookcase of books under a shelf of dropper bottles, jars and candles" loading="lazy"></picture></figure>
+      <figure class="photo reveal"><picture><source type="image/webp" srcset="images/sewing-wide.webp"><img src="images/sewing-wide.jpg" width="1269" height="946" alt="The industrial sewing machine under its work lamp" loading="lazy"></picture></figure>
+    </div>
+    <p class="sec-note mock-note wf-note">These are all your own photos, from your Facebook page. Send me more as you take them, and I&rsquo;ll add them here. I can follow your socials and update as you post.</p>
   </div>
 </section>
 
