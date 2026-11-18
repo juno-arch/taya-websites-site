@@ -2,7 +2,7 @@
    portal.html?demo=1: the BOOKINGS tool's pretend answers (Nov 16 2026).
    The made-up owner is Rosa Linden of Fern & Clay Pottery (pottery classes and studio visits, bookings on, Stripe in test
    mode, card no-show protection, new client intake, thank-you and book again notes, paid add-ons). Everything lives in
-   this tab's memory (S.bookings): Coming up, Schedule (week), Calendar (month), Hours, Services, Settings and Your clients
+   this tab's memory (S.bookings): Coming up, Schedule (day, week, month, year), Hours, Services, Settings and Your clients
    all read it, and every change (cancel, move, no-show, time off, hours, repeats, services, questions, add-ons, calendars,
    settings, clients) writes it, so the next view shows the change. Reload starts the sample fresh.
    Names are invented, emails end in @example.test, and nothing is sent anywhere. The answers have the shapes in the

@@ -3541,7 +3541,7 @@
   let bkMonth = '';          // the month on show, 'YYYY-MM'
   let bkMonthDays = [];
   let bkDay = '';            // the day open under the month
-  const BK_TABS = ['upcoming', 'schedule', 'calendar', 'hours', 'services', 'settings', 'clients'];
+  const BK_TABS = ['upcoming', 'schedule', 'hours', 'services', 'settings', 'clients'];
   const BK_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   const BK_WHERE = { studio: 'At your studio', home: 'Home visits', video: 'By video' };
   const BK_QTYPE = { text: 'Short answer', long: 'Longer answer', yesno: 'Yes or no', choice: 'Pick one' };
@@ -3555,7 +3555,6 @@
       // phone alerts (Nov 14 2026, portal-alerts.js): a booking owner gets the card, and her phone is registered again on every open
       if (bk && window.wfAlerts) window.wfAlerts.sync({ call: (path, body) => postJSON(path, body, token), server: SERVER, name: (me && me.client && me.client.business) || '', toast: toast });
       try { document.dispatchEvent(new CustomEvent('wf-bk-updated')); } catch (e) { /* the Schedule tab just doesn't refresh by itself */ }
-      if (bk && bkTab === 'calendar') loadMonth(bkMonth);
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       if (!bk) $('#sec-bookings').hidden = true;
@@ -3669,7 +3668,7 @@
   }
 
   // ---- the tabs
-  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); const k = m && m[1] === 'calendars' ? 'settings' : m && m[1]; return k && BK_TABS.includes(k) ? k : ''; }; // #bookings-calendars (the old tab) opens Settings
+  const hashTab = () => { const m = /^#bookings-([a-z]+)$/.exec(location.hash || ''); const k = m && m[1] === 'calendars' ? 'settings' : m && m[1] === 'calendar' ? 'schedule' : m && m[1]; return k && BK_TABS.includes(k) ? k : ''; }; // #bookings-calendars (the old tab) opens Settings, #bookings-calendar (the old Calendar tab, Nov 18 2026) opens Schedule
   function selectTab(key, focus, fromHash) {
     if (!BK_TABS.includes(key)) key = 'upcoming';
     bkTab = key;
@@ -3681,7 +3680,6 @@
     $$('#sec-bookings .bk-panel').forEach((p) => { p.hidden = p.id !== 'bk-p-' + key; });
     if (!fromHash) { try { history.replaceState(null, '', location.pathname + location.search + '#bookings-' + key); } catch (e) { /* fine */ } }
     if (focus) focusEl($('#bk-tab-' + key));
-    if (key === 'calendar' && bk) loadMonth(bkMonth);
     if (key === 'schedule' && bk && window.WFSchedule) window.WFSchedule.show(); // (Oct 22 2026) the Day and Week grid, portal-schedule.js
     if (key === 'clients' && bk) loadClients(false);
   }
@@ -3693,7 +3691,9 @@
     try { await bookCall('/sample-reset', {}); say.textContent = 'Back to the practice set.'; await loadBookings(); } catch (_) { say.textContent = 'That did not work. Try once more.'; }
     btn.disabled = false;
   });
-  window.WFBk = { call: bookCall, select: (k) => selectTab(k, true, false), data: () => bk, toast: (t) => toast(t), reload: () => loadBookings(), signedOut: () => quietSignOut(false) };
+  // (Nov 18 2026) the month grid and a day's hours / days off now sit inside the Schedule tab: it asks for them through here
+  window.WFBk = { month: (m) => loadMonth(m), monthOn: () => bkMonth, dayInfo: async (date) => { bkDay = date; await loadMonth(date.slice(0, 7)); if (bkDay === date && bkMonth === date.slice(0, 7)) renderDayInfo(false); else $('#bk-dayinfo').hidden = true; },
+    dayInfoOff: () => { bkDay = ''; $('#bk-dayinfo').hidden = true; }, call: bookCall, select: (k) => selectTab(k, true, false), data: () => bk, toast: (t) => toast(t), reload: () => loadBookings(), signedOut: () => quietSignOut(false) };
   function onTabKey(ev) {
     const i = BK_TABS.indexOf(bkTab);
     let n = -1;
@@ -4017,11 +4017,12 @@
       if (!w && live && d.bookings.length > 1) b.append(make('span', 'bk-cd-w bk-cd-more', '+' + (d.bookings.length - 1)));
       if (pays[d.date]) b.append(icon('i-mushroom', 'bk-cd-pay'));
       if (d.busy.length && d.state !== 'past' && d.state !== 'closed') { const dot = make('span', 'bk-cd-busy'); dot.setAttribute('aria-hidden', 'true'); b.append(dot); }
-      b.addEventListener('click', () => { bkDay = d.date; renderMonth(); renderDayInfo(true); });
+      // (Nov 18 2026) a day in the month opens that day in the Schedule's Day view, where its hours and days off now live
+      b.addEventListener('click', () => { if (window.WFSchedule) window.WFSchedule.openDay(d.date); });
       kids.push(b);
     });
     cal.replaceChildren(...kids);
-    if (bkDay && bkDay.slice(0, 7) === bkMonth) renderDayInfo(false); else $('#bk-dayinfo').hidden = true;
+    if (bkDay && bkDay.slice(0, 7) === bkMonth && window.WFSchedule && window.WFSchedule.view() === 'day') renderDayInfo(false); else $('#bk-dayinfo').hidden = true;
   }
   function renderDayInfo(focus) {
     const d = bkMonthDays.find((x) => x.date === bkDay);
@@ -4090,7 +4091,6 @@
       toast(overlapNote(r && r.overlaps, done), arr(r && r.overlaps).length ? 9000 : 0);
       bkDay = date;
       await loadBookings();
-      if (bkTab === 'calendar') { await loadMonth(date.slice(0, 7)); const b = $('#bk-cal [data-date="' + date + '"]'); if (b) focusEl(b, true); }
     } catch (e) {
       setBusy(btn, false);
       if (e.code === 'signed_out') { quietSignOut(false); return; }

@@ -1,4 +1,5 @@
-/* The owner's Schedule tab in the portal's Bookings (Oct 22 2026): a Day and Week hour grid of her visits, with Move, Cancel and Book for a client.
+/* The owner's Schedule tab in the portal's Bookings (Oct 22 2026): a Day and Week hour grid of her visits (Nov 18 2026: plus Month and Year,
+   which replace the old Calendar tab; a day tapped in Month or Year opens that day in Day view, under which its hours and days off live), with Move, Cancel and Book for a client.
    Ported in spirit from Pollen's own Studio calendar. Its own file beside portal.js: portal.js gives it a small bridge (window.WFBk: call, select,
    data, toast) and tells it when the tab opens (WFSchedule.show) and when the overview reloads ('wf-bk-updated'). Server routes (the client's own
    session): POST bookings/week, book-slots, book-for, slots, move, cancel. The browser does NO time zone math: every event comes with its date and
@@ -30,7 +31,12 @@
   const toMin = (s) => { const m = /^(\d{1,2}):(\d{2})$/.exec(String(s || '')); return m ? +m[1] * 60 + +m[2] : 0; };
   function h12(mins) { let h = Math.floor(mins / 60) % 24; const m = mins % 60; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + (m ? ':' + pad(m) : '') + ' ' + ap; }
   function range() { if (view === 'day') return { from: anchor, to: anchor }; const a = monday(anchor); return { from: a, to: plus(a, 6) }; }
+  const FULLMON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function addMonths(d, n) { const y = ymd(d); const c = new Date(Date.UTC(y.y, y.m - 1 + n, 1, 12)).toISOString().slice(0, 10); return today && c.slice(0, 7) === today.slice(0, 7) ? today : c; }
+  function addYears(d, n) { const c = (ymd(d).y + n) + '-01-01'; return today && c.slice(0, 4) === today.slice(0, 4) ? today : c; }
   function title() {
+    if (view === 'month') return FULLMON[ymd(anchor).m - 1] + ' ' + ymd(anchor).y;
+    if (view === 'year') return String(ymd(anchor).y);
     if (view === 'day') return dayWord(anchor) + ', ' + ymd(anchor).y;
     const a = monday(anchor), z = plus(a, 6);
     return MON3[ymd(a).m - 1] + ' ' + ymd(a).d + ' to ' + (ymd(a).m === ymd(z).m ? '' : MON3[ymd(z).m - 1] + ' ') + ymd(z).d + ', ' + ymd(z).y;
@@ -105,10 +111,21 @@
   }
   function render() {
     document.getElementById('sch-title').textContent = title();
-    ['day', 'week'].forEach((v) => document.getElementById('sch-v-' + v).setAttribute('aria-pressed', v === view ? 'true' : 'false'));
+    ['day', 'week', 'month', 'year'].forEach((v) => document.getElementById('sch-v-' + v).setAttribute('aria-pressed', v === view ? 'true' : 'false'));
     const host = document.getElementById('sch-grid');
     host.textContent = '';
+    // Month draws itself (portal.js owns its grid, so a day's hours and days off stay in one place); the others draw here
+    const monthOn = view === 'month';
+    const mv = document.getElementById('sch-monthview');
+    if (mv) mv.hidden = !monthOn;
+    host.hidden = monthOn;
+    document.getElementById('sch-sum').hidden = monthOn;
+    document.getElementById('sch-nav').hidden = monthOn; // the month has its own arrows and name
+    document.getElementById('sch-title').hidden = monthOn;
+    if (view !== 'day' && B().dayInfoOff) B().dayInfoOff();
     if (!data) return;
+    if (view === 'year') { drawYear(host); return; }
+    if (monthOn) return;
     const map = byDay();
     const dates = view === 'day' ? [anchor] : [0, 1, 2, 3, 4, 5, 6].map((i) => plus(monday(anchor), i));
     const wrap = el('div', 'sch-week');
@@ -156,6 +173,7 @@
     host.append(wrap);
     const n = (data.events || []).filter((e) => e.kind === 'session').length;
     document.getElementById('sch-sum').textContent = n ? n + (n === 1 ? ' visit' : ' visits') + ' in view. Times are ' + (data.zone || 'your') + ' time.' : 'No visits in view.';
+    if (view === 'day' && B().dayInfo) B().dayInfo(anchor);
     if (picked) showDetail(picked);
   }
 
@@ -172,6 +190,54 @@
     data = d; today = d.today; nowMin = d.now_min;
     if (first && d.today !== anchor) { anchor = d.today; await load(quiet); return; }
     render();
+    if (view === 'month' && B().month) B().month(anchor.slice(0, 7));
+    if (view === 'year') loadYear();
+  }
+
+  // ---------------------------------------------------------------- the year: twelve small months, each day opens that day
+  // one /month call a month (the same one the Month view uses), kept for the year on show; a month the server won't give stays a plain grid
+  let yearOf = '', yearMonths = {}, yearBusy = false;
+  async function loadYear() {
+    const y = String(ymd(anchor).y);
+    if (yearBusy) return;
+    yearBusy = true;
+    try {
+      if (yearOf !== y) { yearOf = y; yearMonths = {}; }
+      await Promise.all([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(async (m) => {
+        const key = y + '-' + pad(m);
+        try { const r = await B().call('/month', { month: key }); yearMonths[key] = {}; ((r && r.days) || []).forEach((d) => { yearMonths[key][d.date] = d; }); } catch (e) { yearMonths[key] = yearMonths[key] || null; }
+      }));
+    } finally { yearBusy = false; }
+    if (view === 'year' && String(ymd(anchor).y) === y) render();
+  }
+  function drawYear(host) {
+    const y = String(ymd(anchor).y);
+    const wrap = el('div', 'sch-year');
+    for (let m = 1; m <= 12; m++) {
+      const key = y + '-' + pad(m), info = yearOf === y ? yearMonths[key] : null;
+      const box = el('div', 'sch-ym');
+      const h = el('button', 'sch-ym-h', FULLMON[m - 1]); h.type = 'button'; h.dataset.go = key + '-01'; h.dataset.month = '1'; h.setAttribute('aria-label', 'Open ' + FULLMON[m - 1] + ' ' + y);
+      box.append(h);
+      const g = el('div', 'sch-ym-g');
+      ['M', 'T', 'W', 'T', 'F', 'S', 'S'].forEach((w) => { const s = el('span', 'sch-ym-w', w); s.setAttribute('aria-hidden', 'true'); g.append(s); });
+      const first = key + '-01', lead = dow(first), count = new Date(Date.UTC(+y, m, 0)).getUTCDate();
+      for (let i = 0; i < lead; i++) g.append(el('span', 'sch-ym-b'));
+      for (let n = 1; n <= count; n++) {
+        const date = key + '-' + pad(n), d = info && info[date];
+        const live = d && d.bookings && d.bookings.length && d.state !== 'past';
+        let cls = 'sch-yd';
+        if (date === today) cls += ' is-today';
+        if (d && d.state === 'closed') cls += ' is-off';
+        if (live) cls += ' is-booked';
+        const b = el('button', cls, n); b.type = 'button'; b.dataset.go = date;
+        b.setAttribute('aria-label', dayWord(date) + (live ? ', ' + d.bookings.length + (d.bookings.length === 1 ? ' booking' : ' bookings') : '') + (d && d.state === 'closed' ? ', off' : ''));
+        g.append(b);
+      }
+      box.append(g);
+      wrap.append(box);
+    }
+    host.append(wrap);
+    document.getElementById('sch-sum').textContent = 'Tap a day to open it. A dot under a day means a booking. A crossed-out day is off.';
   }
   function go(newAnchor, newView) {
     if (newView) view = newView;
@@ -296,11 +362,11 @@
     built = true;
     const r = root();
     const bar = el('div', 'sch-bar');
-    const nav = el('span', 'sch-nav');
+    const nav = el('span', 'sch-nav'); nav.id = 'sch-nav';
     [['sch-prev', '‹', 'Earlier'], ['sch-today', 'Today', ''], ['sch-next', '›', 'Later']].forEach(([id, t, aria]) => { const b = el('button', 'btn small ghost', t); b.type = 'button'; b.id = id; if (aria) b.setAttribute('aria-label', aria); nav.append(b); });
     const h = el('h4', 'sch-title'); h.id = 'sch-title';
     const views = el('span', 'sch-views'); views.setAttribute('role', 'group'); views.setAttribute('aria-label', 'View');
-    [['day', 'Day'], ['week', 'Week']].forEach(([v, t]) => { const b = el('button', 'btn small ghost', t); b.type = 'button'; b.id = 'sch-v-' + v; b.setAttribute('aria-pressed', v === view ? 'true' : 'false'); views.append(b); });
+    [['day', 'Day'], ['week', 'Week'], ['month', 'Month'], ['year', 'Year']].forEach(([v, t]) => { const b = el('button', 'btn small ghost', t); b.type = 'button'; b.id = 'sch-v-' + v; b.setAttribute('aria-pressed', v === view ? 'true' : 'false'); views.append(b); });
     const tools = el('span', 'sch-tools');
     const blk = el('button', 'btn small ghost', 'Block off time'); blk.type = 'button'; blk.id = 'sch-block';
     const bk = el('button', 'btn small', 'Book for a client'); bk.type = 'button'; bk.id = 'sch-book';
@@ -315,20 +381,23 @@
     r.addEventListener('click', (ev) => {
       const t = ev.target.closest('button');
       if (!t || !r.contains(t) || t.disabled) return;
+      if (t.dataset.month) { go(t.dataset.go.slice(0, 7) === (today || '').slice(0, 7) ? today : t.dataset.go, 'month'); return; }
       if (t.dataset.go) { go(t.dataset.go, 'day'); return; }
       if (t.classList.contains('sch-ev')) { const e = find(t.dataset.id); if (e) { document.getElementById('sch-form').hidden = true; showDetail(e); } return; }
       if (t.dataset.act === 'close-form') { closeAll(); return; }
       if (t.dataset.act) { act(t.dataset.act); return; }
-      if (t.id === 'sch-prev') go(plus(anchor, view === 'week' ? -7 : -1));
-      else if (t.id === 'sch-next') go(plus(anchor, view === 'week' ? 7 : 1));
+      if (t.id === 'sch-prev') go(view === 'year' ? addYears(anchor, -1) : plus(anchor, view === 'week' ? -7 : -1));
+      else if (t.id === 'sch-next') go(view === 'year' ? addYears(anchor, 1) : plus(anchor, view === 'week' ? 7 : 1));
       else if (t.id === 'sch-today') go(today || anchor);
       else if (t.id === 'sch-v-day') go(null, 'day');
       else if (t.id === 'sch-v-week') go(null, 'week');
+      else if (t.id === 'sch-v-month') go(null, 'month');
+      else if (t.id === 'sch-v-year') go(null, 'year');
       else if (t.id === 'sch-block') B().select('hours');
       else if (t.id === 'sch-book') openBook();
     });
   }
 
-  window.WFSchedule = { show() { if (!B()) return; build(); load(false); } };
+  window.WFSchedule = { show() { if (!B()) return; build(); load(false); }, view() { return view; }, openDay(d) { build(); go(d, 'day'); } };
   document.addEventListener('wf-bk-updated', () => { if (built && root() && !root().closest('[hidden]') && !busy) load(true); });
 })();
