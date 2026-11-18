@@ -15,3 +15,5 @@ All photos are the shop's own, from its Facebook page (StitchCraft Haberdashery 
 Text taken from the shop's own words: Facebook About and Services (specialties, wares, "the weirder the better"), the Custom Orders and Alterations price board images (prices, 4 to 6 week turnaround, "bring whatcha got"), the door hours sign (Instagram @jess.doudna), the tagline "Saratoga's one-stop stitchy witchy shop". Quote: Dana Davis, Carbon County Comet, Oct 11 2026.
 
 Not used: photos with words on them (price boards, flyers, special-offer graphics), the photo of a young person in a vest, the newspaper clipping photo, anything of another business. The smoking blend and pipes Jess posts about on her personal Instagram are left off the page until Pollen says.
+
+Raven emblem (images/raven-cream.svg, raven-dark.svg, raven-favicon.svg): traced by hand-tuned threshold from Jess's own raven and valknut mark on the shop's pine wall (a crop of her photo, sent by Pollen Nov 17). The wood and the plank lines are removed; it is one solid shape. Used as the nav and footer mark, the favicon, the secret, and the Apothecary card background.
