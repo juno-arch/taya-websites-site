@@ -203,34 +203,6 @@
     });
     if (mark) mark.addEventListener('click', function () { var n = Date.now(); taps = n - tapT < 900 ? taps + 1 : 1; tapT = n; if (taps >= 3) { taps = 0; open(); } });
   })();
-  /* loose leaf herb shop (Advance): ounces into a bag, ship or pick up, Stripe checkout preview */
-  (function () {
-    function $(id) { return document.getElementById(id); }
-    var grid = $('hgrid'); if (!grid) return;
-    var bag = {}, get = 'ship', list = $('bag-list'), go = $('bag-go');
-    function total() { var n = 0; for (var k in bag) n += bag[k]; return n; }
-    function paint() {
-      var names = Object.keys(bag).filter(function (k) { return bag[k] > 0; });
-      list.innerHTML = '';
-      if (!names.length) { var e = document.createElement('li'); e.className = 'empty'; e.textContent = 'Add an ounce to start.'; list.appendChild(e); }
-      names.forEach(function (k) { var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = k; var b = document.createElement('span'); b.textContent = bag[k] + ' oz'; li.appendChild(a); li.appendChild(b); list.appendChild(li); });
-      [].forEach.call(grid.querySelectorAll('.qty'), function (q) { q.querySelector('output').textContent = bag[q.dataset.h] || 0; });
-      $('bag-oz').textContent = total(); go.disabled = !total();
-    }
-    grid.addEventListener('click', function (e) {
-      var q = e.target.closest('.qty'); if (!q) return; var h = q.dataset.h, b = e.target.closest('button'); if (!b) return;
-      bag[h] = Math.max(0, (bag[h] || 0) + (b.classList.contains('q-plus') ? 1 : -1)); paint();
-    });
-    [].forEach.call(document.querySelectorAll('.bag-opts .bk-opt'), function (o) { o.addEventListener('click', function () { get = o.dataset.get; [].forEach.call(document.querySelectorAll('.bag-opts .bk-opt'), function (x) { x.setAttribute('aria-pressed', x === o ? 'true' : 'false'); }); }); });
-    go.addEventListener('click', function () {
-      var names = Object.keys(bag).filter(function (k) { return bag[k] > 0; }).map(function (k) { return bag[k] + ' oz ' + k.toLowerCase(); });
-      $('bag-sum').textContent = names.join(', ') + (get === 'pick' ? '. Ready to pick up at the shop.' : '. Standard shipping.');
-      $('bag-open').hidden = true; $('bag-done').hidden = false; try { $('bag-thanks').focus({ preventScroll: true }); } catch (x) {}
-    });
-    $('bag-again').addEventListener('click', function () { bag = {}; paint(); $('bag-done').hidden = true; $('bag-open').hidden = false; });
-    $('bag-edit').addEventListener('click', function () { $('bag-done').hidden = true; $('bag-open').hidden = false; });
-    paint();
-  })();
   /* alterations question form (Color) */
   (function () {
     function $(id) { return document.getElementById(id); }
@@ -275,6 +247,52 @@
       if (el.getBoundingClientRect().top > window.innerHeight * 0.92) { el.classList.add('pre'); io.observe(el); }
     });
   })();
+(function () {
+  /* the whole shop: filter by shelf, search, ounces or pieces into a bag, ship or pick up, Stripe checkout preview */
+  function $(id) { return document.getElementById(id); }
+  var grid = $('hgrid'); if (!grid) return;
+  var bag = {}, unit = {}, get = 'ship', list = $('bag-list'), go = $('bag-go'), cat = 'all', q = '';
+  var cards = [].slice.call(grid.querySelectorAll('.hcard'));
+  cards.forEach(function (c) { var w = c.querySelector('.qty'); unit[w.dataset.h] = w.dataset.u || ''; });
+  function total() { var n = 0; for (var k in bag) n += bag[k]; return n; }
+  function line(k, n) { return unit[k] === 'oz' ? n + ' oz ' + k.toLowerCase() : n + ' \u00d7 ' + k.toLowerCase(); }
+  function paint() {
+    var names = Object.keys(bag).filter(function (k) { return bag[k] > 0; });
+    list.textContent = '';
+    if (!names.length) { var e = document.createElement('li'); e.className = 'empty'; e.textContent = 'Add something to start.'; list.appendChild(e); }
+    names.forEach(function (k) { var li = document.createElement('li'), a = document.createElement('span'), b = document.createElement('span'); a.textContent = k; b.textContent = unit[k] === 'oz' ? bag[k] + ' oz' : '\u00d7 ' + bag[k]; li.appendChild(a); li.appendChild(b); list.appendChild(li); });
+    cards.forEach(function (c) { var w = c.querySelector('.qty'); w.querySelector('output').textContent = bag[w.dataset.h] || 0; });
+    $('bag-oz').textContent = total(); go.disabled = !total();
+    var j = $('bag-jump'); if (j) { j.hidden = !total(); j.textContent = 'Go to your bag (' + total() + ')'; }
+  }
+  function apply() {
+    var shown = 0;
+    cards.forEach(function (c) {
+      var ok = (cat === 'all' || c.dataset.cat === cat) && (!q || c.querySelector('b').textContent.toLowerCase().indexOf(q) > -1);
+      c.hidden = !ok; if (ok) shown++;
+    });
+    $('shop-count').textContent = 'Showing ' + shown + ' of ' + cards.length;
+    $('shop-none').hidden = shown > 0;
+  }
+  grid.addEventListener('click', function (e) {
+    var w = e.target.closest('.qty'); if (!w) return; var b = e.target.closest('button'); if (!b) return; var h = w.dataset.h;
+    bag[h] = Math.max(0, (bag[h] || 0) + (b.classList.contains('q-plus') ? 1 : -1)); paint();
+  });
+  [].forEach.call(document.querySelectorAll('.fchip'), function (c) {
+    c.addEventListener('click', function () { cat = c.dataset.cat; [].forEach.call(document.querySelectorAll('.fchip'), function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); }); apply(); });
+  });
+  $('shop-q').addEventListener('input', function (e) { q = e.target.value.trim().toLowerCase(); apply(); });
+  [].forEach.call(document.querySelectorAll('.bag-opts .bk-opt'), function (o) { o.addEventListener('click', function () { get = o.dataset.get; [].forEach.call(document.querySelectorAll('.bag-opts .bk-opt'), function (x) { x.setAttribute('aria-pressed', x === o ? 'true' : 'false'); }); }); });
+  go.addEventListener('click', function () {
+    var names = Object.keys(bag).filter(function (k) { return bag[k] > 0; }).map(function (k) { return line(k, bag[k]); });
+    $('bag-sum').textContent = names.join(', ') + (get === 'pick' ? '. Ready to pick up at the shop.' : '. Standard shipping.');
+    $('bag-open').hidden = true; $('bag-done').hidden = false; try { $('bag-thanks').focus({ preventScroll: true }); } catch (x) {}
+  });
+  $('bag-again').addEventListener('click', function () { bag = {}; paint(); $('bag-done').hidden = true; $('bag-open').hidden = false; });
+  $('bag-edit').addEventListener('click', function () { $('bag-done').hidden = true; $('bag-open').hidden = false; });
+  paint(); apply();
+})();
+
   /* see your site as Pocket, Color, Advance or Everything (keys: maiden, mother, crone, all) */
   (function () {
     var root = document.documentElement, body = document.body;
@@ -285,7 +303,7 @@
     var V = {
       maiden: { name: 'Pocket', price: '$300', what: 'the core of your site, planted and kept healthy, with your shop, your alteration prices, your custom orders, your hours and where to find you, and a Book button to the Calendly you already use.', next: 'mother' },
       mother: { name: 'Color', price: '$600', what: 'a full site, tended through the seasons, with everything in Pocket plus the herb wall list, a contact form, an alterations question form with a photo, FAQ and a New on the shelf list on your own Buttondown.', next: 'crone' },
-      crone: { name: 'Advance', price: '$900', what: 'your site in full bloom, with everything in Color plus booking right on your site, on my server, with your own portal and no separate booking app to pay for, plus your loose leaf herb shop. Custom order deposits and herb orders are paid into your own Stripe. That\u2019s every piece on this site.' },
+      crone: { name: 'Advance', price: '$900', what: 'your site in full bloom, with everything in Color plus booking right on your site, on my server, with your own portal and no separate booking app to pay for, plus your full shop, with every product on its own shelf. Custom order deposits and shop orders are paid into your own Stripe. That\u2019s every piece on this site.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };

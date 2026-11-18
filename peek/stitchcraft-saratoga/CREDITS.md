@@ -21,3 +21,5 @@ Raven emblem (images/raven-cream.svg, raven-dark.svg, raven-favicon.svg): traced
 Added Nov 17 (later): images/jess-and-brad = the Carbon County Comet photo of Jess and Brad Doudna at the herb wall (Photo: Dana Davis, Carbon County Comet; sent by Pollen as Stitchcraft D1.jpg, 780x535; credited on the page). images/leather-scissors = tan leather, braided strap and tailor's shears (StitchCraft Facebook photo). images/sewing-wide = the sewing machine at a larger size (StitchCraft Facebook photo).
 
 Multi-page rebuild (Nov 17, branch mockup-stitchcraft-pages): the one-page build became seven pages (index.html, alterations/, custom-orders/, apothecary/, about/, book/, visit/) sharing site.css and site.js. No new photos: every page reuses the photos above. Credit line stays on Home and About: Photo: Dana Davis, Carbon County Comet.
+
+Shop page (Nov 17): product names only, read from the jar labels in images/hero.jpg and images/jar-shelf.jpg, the shop Facebook Services and Wares list, and what is visible on the shelves in the other shop photos. No prices, no health claims. Whipped tallow and the names of oils and extracts are dotted blanks to confirm with Jess.
