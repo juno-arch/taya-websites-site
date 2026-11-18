@@ -573,6 +573,31 @@
   @media (max-width: 860px) { .about { grid-template-columns: minmax(0, 1fr); gap: 32px; } .mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 160px; } .mosaic .m-wide { grid-column: span 2; grid-row: span 2; } }
   .mosaic .photo:nth-last-child(-n+2) { grid-column: span 2; }
 
+  /* loose leaf herb shop */
+  .hshop { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr); gap: 34px; margin-top: 34px; align-items: start; }
+  .hgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .hcard { background: var(--paper); border: 1px solid var(--hair); border-radius: 3px; padding: 16px; display: grid; gap: 10px; }
+  .jl { background: #e0b24a; color: #231327; border: 1.5px solid #231327; border-radius: 2px; padding: 12px 10px; text-align: center; display: grid; gap: 2px; }
+  .jl b { font-family: 'Mystery Quest', Georgia, serif; font-weight: 400; font-size: 27px; line-height: 1.05; }
+  .jl span { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+  .hp { font-size: 15.5px; color: var(--ink-soft); text-align: center; }
+  .qty { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .qty button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--coral); background: transparent; color: var(--coral); font-size: 24px; line-height: 1; cursor: pointer; }
+  .qty button:hover { background: var(--coral); color: var(--btn-ink); }
+  .qty output { min-width: 2ch; text-align: center; font-weight: 700; font-size: 20px; }
+  .bag { background: var(--paper); border: 1px solid var(--hair); border-radius: 4px; padding: 22px; position: sticky; top: 90px; }
+  .bag h3 { font-size: 34px; margin-bottom: 8px; }
+  .bag-list { list-style: none; display: grid; gap: 6px; margin: 10px 0 16px; }
+  .bag-list li { display: flex; justify-content: space-between; gap: 10px; font-size: 18px; border-bottom: 1px dotted var(--hair); padding-bottom: 5px; }
+  .bag-list .empty { color: var(--ink-soft); font-style: italic; border: 0; }
+  .bag-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .bag-opts .bk-opt b { font-size: 22px; }
+  .bag-opts .bk-opt span { font-size: 14px; }
+  .bag .bk-go { width: 100%; margin-top: 14px; }
+  @media (max-width: 860px) { .hshop { grid-template-columns: minmax(0, 1fr); } .bag { position: static; } .hgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .fld select { font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--hair); border-radius: 3px; background: var(--paper); color: var(--ink); width: 100%; box-sizing: border-box; }
+  .fld input[type="file"] { padding: 8px; font-size: 15px; }
+
 
   /* ---------- STICKY NAV (Oct 7 2026): the top nav stays stuck while you scroll; on phones a slim bar with a Menu button; tucks up on the way down and returns on the way up; styled from this page's own colors and fonts ---------- */
   :root { --sn-h: 62px; --sn-bg: var(--ground); --sn-fg: var(--ink); }
@@ -652,6 +677,7 @@
       <a href="#fix">Alterations</a>
       <a href="#custom">Custom</a>
       <a href="#herbs" data-show="mother crone all">Herb wall</a>
+      <a href="#shop-herbs" data-show="crone all">Herb shop</a>
       <a href="#about">About</a>
       <a href="#book">Book</a>
       <a href="#visit">Visit</a>
@@ -698,8 +724,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="views-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Pocket" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your shop, your alteration prices, your custom orders, your hours and where to find you, and a Book button to the Calendly you already use."><b>Pocket</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Color" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Pocket, plus the herb wall list, a contact form, FAQ and a New on the shelf list on your own Buttondown."><b>Color</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="Advance" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Color, plus booking right on your site, on my server, with your own portal and no separate booking app to pay for. Custom order deposits are paid into your own Stripe."><b>Advance</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Color" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Pocket, plus the herb wall list, a contact form, an alterations question form with a photo, FAQ and a New on the shelf list on your own Buttondown."><b>Color</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="Advance" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Color, plus booking right on your site, on my server, with your own portal and no separate booking app to pay for, plus your loose leaf herb shop. Custom order deposits and herb orders are paid into your own Stripe."><b>Advance</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it stays legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -866,6 +892,51 @@
   </div>
 </section>
 
+<section id="shop-herbs" class="gutter" data-show="crone all" data-fold>
+  <div class="wrap">
+    <div class="sec-head" data-thing="the loose leaf herb shop">
+      <p class="label with-pill"><span>Loose leaf herb shop</span> <span class="tag" data-go="crone">Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> $900</span></span></p>
+      <h2 class="reveal">Herbs <em>by the ounce</em></h2>
+      <p class="soft" style="margin-top:18px">Loose-leaf herbs and teas from the wall, packed to order. Pick your ounces, and pay at checkout or pick them up at the shop.</p>
+    </div>
+    <div class="hshop" data-thing="the loose leaf herb shop">
+      <div class="hgrid" id="hgrid">
+        <article class="hcard"><div class="jl"><b>Rose</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Rose"><button type="button" class="q-minus" aria-label="Remove one ounce of Rose">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Rose">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Chamomile</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Chamomile"><button type="button" class="q-minus" aria-label="Remove one ounce of Chamomile">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Chamomile">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Lavender</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Lavender"><button type="button" class="q-minus" aria-label="Remove one ounce of Lavender">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Lavender">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Spearmint</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Spearmint"><button type="button" class="q-minus" aria-label="Remove one ounce of Spearmint">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Spearmint">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Lemon balm</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Lemon balm"><button type="button" class="q-minus" aria-label="Remove one ounce of Lemon balm">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Lemon balm">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Hibiscus</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Hibiscus"><button type="button" class="q-minus" aria-label="Remove one ounce of Hibiscus">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Hibiscus">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Hawthorn</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Hawthorn"><button type="button" class="q-minus" aria-label="Remove one ounce of Hawthorn">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Hawthorn">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Dandelion</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Dandelion"><button type="button" class="q-minus" aria-label="Remove one ounce of Dandelion">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Dandelion">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Hops</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Hops"><button type="button" class="q-minus" aria-label="Remove one ounce of Hops">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Hops">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Calendula</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Calendula"><button type="button" class="q-minus" aria-label="Remove one ounce of Calendula">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Calendula">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Oatstraw</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Oatstraw"><button type="button" class="q-minus" aria-label="Remove one ounce of Oatstraw">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Oatstraw">+</button></div></article>
+        <article class="hcard"><div class="jl"><b>Ginger</b><span>loose leaf</span></div><p class="hp"><span class="ph">price per ounce</span></p><div class="qty" data-h="Ginger"><button type="button" class="q-minus" aria-label="Remove one ounce of Ginger">&minus;</button><output aria-live="polite">0</output><button type="button" class="q-plus" aria-label="Add one ounce of Ginger">+</button></div></article>
+      </div>
+      <aside class="bag" aria-labelledby="bag-h">
+        <div id="bag-open">
+          <h3 id="bag-h">Your bag</h3>
+          <ul class="bag-list" id="bag-list" aria-live="polite"><li class="empty">Add an ounce to start.</li></ul>
+          <div class="bag-opts" role="group" aria-label="How you get it">
+            <button type="button" class="bk-opt" data-get="ship" aria-pressed="true"><b>Ship it</b><span>Standard shipping <span class="ph">flat amount</span></span></button>
+            <button type="button" class="bk-opt" data-get="pick" aria-pressed="false"><b>Pick up</b><span>At the shop, 112 E Bridge Ave</span></button>
+          </div>
+          <p class="bk-small" id="bag-total">Total: <span class="ph">price</span> for <b id="bag-oz">0</b> oz</p>
+          <button type="button" class="bk-go" id="bag-go" disabled>Checkout with Stripe (preview)</button>
+        </div>
+        <div class="fade-in" id="bag-done" hidden>
+          <h3 id="bag-thanks" tabindex="-1">Order placed</h3>
+          <p id="bag-sum"></p>
+          <p class="demo-note">Preview only: nothing was charged. On your real site, checkout runs on your own Stripe, which also collects the shipping address.</p>
+          <div class="bk-nav"><button type="button" class="bk-go ghost" id="bag-again">Try it again</button><button type="button" class="bk-go ghost" id="bag-edit">Change something</button></div>
+        </div>
+      </aside>
+    </div>
+    <p class="sec-note mock-note wf-note">Orders and shipping addresses live in your own Stripe, and I send you a short heads-up email for each one (what, how many ounces, and the city, with the full address in your Stripe). These are twelve of the jars on your wall, and a shop shows at most twenty. Send me your prices and any jars you want added or left out, and I can follow your socials and update as you post.</p>
+  </div>
+</section>
+
 <section id="about" class="gutter">
   <div class="wrap about">
     <figure class="about-photo reveal" data-lightbox>
@@ -975,6 +1046,38 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="ask" class="gutter" data-show="mother crone all" data-fold>
+  <div class="wrap touch">
+    <div data-thing="the alterations question form">
+      <p class="label with-pill"><span>Ask about an alteration</span> <span class="tag" data-go="mother">Color + Advance<span class="tag-p"><span aria-hidden="true">&middot;</span> from $600</span></span></p>
+      <h2 class="reveal">Not sure <em>what it needs?</em></h2>
+      <p class="measure soft" style="margin-top:14px">Tell us what you have and what you&rsquo;d like done, and add a photo if you can. We&rsquo;ll write back with what it takes and about what it costs.</p>
+      <div class="bk-card cf-card" style="margin-top:26px">
+        <form id="af" method="dialog" novalidate aria-label="Alterations question form, preview">
+          <div class="fld-row">
+            <label class="fld">Your name<input id="af-name" autocomplete="off" value="Sam W."></label>
+            <label class="fld">Email<input id="af-mail" type="email" autocomplete="off" value="sam@example.com"></label>
+          </div>
+          <label class="fld">What is it?<select id="af-what"><option>Pants or jeans</option><option>Shirt or top</option><option>Dress or skirt</option><option>Jacket or coat</option><option>Leather or gear</option><option>Something else</option></select></label>
+          <label class="fld">What would you like done?<textarea id="af-msg" rows="4">Hem a pair of work jeans, about 2 inches, and replace a broken zipper.</textarea></label>
+          <label class="fld">A photo, if you have one<input id="af-photo" type="file" accept="image/*"></label>
+          <p class="hint" id="af-hint" role="status"></p>
+          <button type="submit" class="bk-go">Send (preview)</button>
+        </form>
+        <div class="bk-done fade-in" id="af-done" hidden>
+          <h3 id="af-thanks" tabindex="-1">Thank you!</h3>
+          <p>Your question about <span id="af-sum">your alteration</span> is on its way to the shop.</p>
+          <p class="demo-note">Preview only: nothing was sent. On your real site this lands in your inbox, with the photo attached.</p>
+          <div class="bk-nav"><button type="button" class="bk-go ghost" id="af-again">Try it again</button><button type="button" class="bk-go ghost" id="af-edit">Change something</button></div>
+        </div>
+      </div>
+    </div>
+    <aside class="bk-side">
+      <p class="sec-note mock-note wf-note" style="margin-top:0">This form goes to your inbox, so people can ask before they come in. I can follow your socials and update as you post, or you can email me the questions you hear most and I&rsquo;ll add them to the Good to know list.</p>
+    </aside>
   </div>
 </section>
 
@@ -1088,8 +1191,8 @@
     </div>
     <div class="vseg" role="group" aria-labelledby="vp-q">
       <button type="button" data-view="maiden" aria-pressed="false" data-tier-name="Pocket" data-tier-price="600" data-tier-founding="300" data-tier-care="12" data-tier-what="One page, planted and kept healthy: your shop, your alteration prices, your custom orders, your hours and where to find you, and a Book button to the Calendly you already use."><b>Pocket</b><span class="pr"><span class="vh">, </span><strong>$300</strong> build <s><span class="vh">regular price </span>$600</s></span><span class="psub">comes with the $12&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Color" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Pocket, plus the herb wall list, a contact form, FAQ and a New on the shelf list on your own Buttondown."><b>Color</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
-      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="Advance" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Color, plus booking right on your site, on my server, with your own portal and no separate booking app to pay for. Custom order deposits are paid into your own Stripe."><b>Advance</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="mother" aria-pressed="false" data-tier-name="Color" data-tier-price="1200" data-tier-founding="600" data-tier-care="45" data-tier-what="A full site, tended through the seasons: everything in Pocket, plus the herb wall list, a contact form, an alterations question form with a photo, FAQ and a New on the shelf list on your own Buttondown."><b>Color</b><span class="pr"><span class="vh">, </span><strong>$600</strong> build <s><span class="vh">regular price </span>$1,200</s></span><span class="psub">comes with the $45&nbsp;a&nbsp;month subscription</span></button>
+      <button type="button" data-view="crone" aria-pressed="false" data-tier-name="Advance" data-tier-price="1800" data-tier-founding="900" data-tier-care="90" data-tier-what="Your site in full bloom: everything in Color, plus booking right on your site, on my server, with your own portal and no separate booking app to pay for, plus your loose leaf herb shop. Custom order deposits and herb orders are paid into your own Stripe."><b>Advance</b><span class="pr"><span class="vh">, </span><strong>$900</strong> build <s><span class="vh">regular price </span>$1,800</s></span><span class="psub">comes with the $90&nbsp;a&nbsp;month subscription</span></button>
       <button type="button" data-view="all" aria-pressed="true"><b>Everything</b><span class="pr"><span class="vh">, </span>with tags</span></button>
     </div>
     <div class="views-care"><b>Subscription</b><span class="care-what">Part of each build above, at the monthly price shown with it, to keep yours healthy. I follow your socials and update as you post, or you can email me any change, and it&rsquo;s done. Hosting and backups included, and so is your web address: I hold and renew it for you, and it stays legally yours. If you ever cancel, your site is still yours and I hand you every file and login.</span></div>
@@ -1313,6 +1416,52 @@
     if (mark) mark.addEventListener('click', function () { var n = Date.now(); taps = n - tapT < 900 ? taps + 1 : 1; tapT = n; if (taps >= 3) { taps = 0; open(); } });
   })();
 </script>
+<script>
+  /* loose leaf herb shop (Advance): ounces into a bag, ship or pick up, Stripe checkout preview */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var grid = $('hgrid'); if (!grid) return;
+    var bag = {}, get = 'ship', list = $('bag-list'), go = $('bag-go');
+    function total() { var n = 0; for (var k in bag) n += bag[k]; return n; }
+    function paint() {
+      var names = Object.keys(bag).filter(function (k) { return bag[k] > 0; });
+      list.innerHTML = '';
+      if (!names.length) { var e = document.createElement('li'); e.className = 'empty'; e.textContent = 'Add an ounce to start.'; list.appendChild(e); }
+      names.forEach(function (k) { var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = k; var b = document.createElement('span'); b.textContent = bag[k] + ' oz'; li.appendChild(a); li.appendChild(b); list.appendChild(li); });
+      [].forEach.call(grid.querySelectorAll('.qty'), function (q) { q.querySelector('output').textContent = bag[q.dataset.h] || 0; });
+      $('bag-oz').textContent = total(); go.disabled = !total();
+    }
+    grid.addEventListener('click', function (e) {
+      var q = e.target.closest('.qty'); if (!q) return; var h = q.dataset.h, b = e.target.closest('button'); if (!b) return;
+      bag[h] = Math.max(0, (bag[h] || 0) + (b.classList.contains('q-plus') ? 1 : -1)); paint();
+    });
+    [].forEach.call(document.querySelectorAll('.bag-opts .bk-opt'), function (o) { o.addEventListener('click', function () { get = o.dataset.get; [].forEach.call(document.querySelectorAll('.bag-opts .bk-opt'), function (x) { x.setAttribute('aria-pressed', x === o ? 'true' : 'false'); }); }); });
+    go.addEventListener('click', function () {
+      var names = Object.keys(bag).filter(function (k) { return bag[k] > 0; }).map(function (k) { return bag[k] + ' oz ' + k.toLowerCase(); });
+      $('bag-sum').textContent = names.join(', ') + (get === 'pick' ? '. Ready to pick up at the shop.' : '. Standard shipping.');
+      $('bag-open').hidden = true; $('bag-done').hidden = false; try { $('bag-thanks').focus({ preventScroll: true }); } catch (x) {}
+    });
+    $('bag-again').addEventListener('click', function () { bag = {}; paint(); $('bag-done').hidden = true; $('bag-open').hidden = false; });
+    $('bag-edit').addEventListener('click', function () { $('bag-done').hidden = true; $('bag-open').hidden = false; });
+    paint();
+  })();
+</script>
+<script>
+  /* alterations question form (Color) */
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    var f = $('af'); if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault(); var h = $('af-hint');
+      if (!$('af-name').value.trim()) { h.textContent = 'Please add your name.'; return; }
+      if (!/^\S+@\S+\.\S+$/.test($('af-mail').value)) { h.textContent = 'That email looks a little off.'; return; }
+      if (!$('af-msg').value.trim()) { h.textContent = 'Please tell us what you would like done.'; return; }
+      h.textContent = ''; $('af-sum').textContent = $('af-what').value.toLowerCase(); f.hidden = true; $('af-done').hidden = false; try { $('af-thanks').focus({ preventScroll: true }); } catch (x) {}
+    });
+    $('af-again').addEventListener('click', function () { f.reset(); $('af-done').hidden = true; f.hidden = false; });
+    $('af-edit').addEventListener('click', function () { $('af-done').hidden = true; f.hidden = false; });
+  })();
+</script>
 
 <script>
   /* photos drift a touch as you scroll; sections rise in */
@@ -1356,8 +1505,8 @@
     function quietFocus(el) { if (!el) return; try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
     var V = {
       maiden: { name: 'Pocket', price: '$300', what: 'one page, planted and kept healthy, with your shop, your alteration prices, your custom orders, your hours and where to find you, and a Book button to the Calendly you already use.', next: 'mother' },
-      mother: { name: 'Color', price: '$600', what: 'a full site, tended through the seasons, with everything in Pocket plus the herb wall list, a contact form, FAQ and a New on the shelf list on your own Buttondown.', next: 'crone' },
-      crone: { name: 'Advance', price: '$900', what: 'your site in full bloom, with everything in Color plus booking right on your site, on my server, with your own portal and no separate booking app to pay for. Custom order deposits are paid into your own Stripe. That\u2019s every piece on this page.' },
+      mother: { name: 'Color', price: '$600', what: 'a full site, tended through the seasons, with everything in Pocket plus the herb wall list, a contact form, an alterations question form with a photo, FAQ and a New on the shelf list on your own Buttondown.', next: 'crone' },
+      crone: { name: 'Advance', price: '$900', what: 'your site in full bloom, with everything in Color plus booking right on your site, on my server, with your own portal and no separate booking app to pay for, plus your loose leaf herb shop. Custom order deposits and herb orders are paid into your own Stripe. That\u2019s every piece on this page.' },
       all: { name: 'Everything' }
     };
     var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
