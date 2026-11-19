@@ -1149,6 +1149,29 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 .payrow .p-agree-btns .btn[aria-busy="true"] { cursor: wait; }
 .carestart-line { margin: 0; line-height: 1.5; color: var(--wf-b-ink); overflow-wrap: anywhere; }
 
+/* Nov 19 2026: Your clients as two panes. The list on the left, the person you tapped on the right; on a phone one at a time, with a Back link. */
+.bk-cl-wrap { display: grid; grid-template-columns: minmax(0, 250px) minmax(0, 1fr); gap: 8px 22px; align-items: start; }
+.bk-cl-detail { min-width: 0; }
+.bk-cl-btn[aria-current="true"] { background: var(--wf-b-well); }
+.bk-cl-detail #bk-cl-dbody:focus { outline: none; }
+.bk-cl-dh { margin: 0 0 8px; overflow-wrap: anywhere; }
+.bk-cl-facts { margin: 0 0 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5em, 1fr)); gap: 8px 14px; }
+.bk-cl-facts > div { min-width: 0; }
+.bk-cl-facts dt { color: var(--wf-b-ink-soft); font-size: 14.5px; }
+.bk-cl-facts dd { margin: 0; overflow-wrap: anywhere; }
+.bk-cl-intake { margin: 8px 0 14px; padding-top: 8px; border-top: 1px dashed var(--wf-b-rule); }
+.bk-cl-qa { margin: 4px 0 0; display: grid; gap: 6px; }
+.bk-cl-qa dt { color: var(--wf-b-ink-soft); font-size: 14.5px; overflow-wrap: anywhere; }
+.bk-cl-qa dd { margin: 0; overflow-wrap: anywhere; }
+@media (min-width: 760px) { .bk-cl-back { display: none; } }
+@media (max-width: 759px) {
+  .bk-cl-wrap { display: block; }
+  .bk-cl-detail { display: none; }
+  .bk-cl-wrap.has-detail .bk-cl-side { display: none; }
+  .bk-cl-wrap.has-detail .bk-cl-detail { display: block; }
+  .bk-cl-back { margin: 0 0 10px; }
+}
+
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
    --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).

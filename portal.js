@@ -5044,6 +5044,7 @@
     $('#b-bk-cl-more').addEventListener('click', () => loadClients(true));
     $('#b-bk-cl-csv').addEventListener('click', downloadClients);
     $('#b-bk-cl-add').addEventListener('click', () => openClForm(null, null));
+    $('#b-bk-cl-back').addEventListener('click', clBack);
   }
 
   /* ---- your clients (Oct 15 2026, hub DEPLOY.md section 74) ----
@@ -5053,8 +5054,10 @@
      nobody is missed. Tap a person to see their bookings under their line.
      Add by hand (Oct 16 2026, hub DEPLOY.md section 80): "Add a client" opens a short form under its button (name,
      email, phone, a note only she sees). People she added carry `added` from the server and get Edit and Remove in
-     their open line (Remove asks once more); someone whose email matches a booking stays one line ("Added by you
-     too"). The bookings themselves are still read only here. */
+     their detail (Remove asks once more); someone whose email matches a booking stays one line ("Added by you
+     too"). The bookings themselves are still read only here.
+     Nov 19 2026: two panes. The list on the left, the person you tapped on the right (history, facts, intake notes);
+     on a phone the list opens the person as a page of their own, with a Back link. */
   const CL_STALE = 60000;
   let cl = null;             // { people, page, more, total, at } with no search
   let clFound = null;        // the same, for the server's answer to a search { q, ... }
@@ -5115,6 +5118,7 @@
     const hit = (p) => !q || p.name.toLowerCase().includes(q) || p.email.includes(q) || (!!p.aName && p.aName.toLowerCase().includes(q));
     const list = src.people.filter(hit);
     $('#bk-cl-list').replaceChildren(...list.map(clRow));
+    if (!clSel) clShowDetail(false);
     const none = !list.length;
     $('#bk-cl-empty').hidden = !none;
     $('#bk-cl-empty-text').textContent = cl.total === 0
@@ -5127,14 +5131,14 @@
     $('#b-bk-cl-csv').hidden = cl.total === 0;
   }
   const visitsWord = (n) => (n ? plural(n, 'visit', 'visits') : 'No visits yet');
+  // (Nov 19 2026) two panes: the list, and the person you tapped. On a phone the person opens as a page of their own with a Back link.
+  let clSel = '';
   function clRow(p) {
     const li = make('li', 'bk-cl');
     li.dataset.key = p.key;
-    const id = 'bk-cl-d-' + (++clSeq);
     const btn = make('button', 'bk-cl-btn');
     btn.type = 'button';
-    btn.setAttribute('aria-controls', id);
-    btn.setAttribute('aria-expanded', clOpen[p.key] && clOpen[p.key].shown ? 'true' : 'false');
+    btn.setAttribute('aria-current', clSel === p.key ? 'true' : 'false');
     const top = make('span', 'bk-cl-top');
     const nm = make('span', 'bk-cl-name', p.name || p.email);
     if (p.regular) nm.append(' ', make('span', 'bk-cl-reg', 'Regular'));
@@ -5147,42 +5151,74 @@
     if (p.noshows) bits.push(plural(p.noshows, 'no-show', 'no-shows'));
     if (p.added) bits.push(p.both ? 'Added by you too' : 'Added by you');
     if (bits.length) btn.append(make('span', 'bk-cl-dates', bits.join(' · ')));
-    const box = make('div', 'bk-cl-d');
-    box.id = id;
-    box.hidden = !(clOpen[p.key] && clOpen[p.key].shown);
-    if (!box.hidden) fillClBox(box, clOpen[p.key], p);
-    btn.addEventListener('click', () => toggleCl(p, btn, box));
-    li.append(btn, box);
+    btn.addEventListener('click', () => selectCl(p, true));
+    li.append(btn);
     return li;
   }
-  async function toggleCl(p, btn, box) {
-    const st = clOpen[p.key] || (clOpen[p.key] = { shown: false, list: null, more: false });
-    st.shown = !st.shown;
-    btn.setAttribute('aria-expanded', st.shown ? 'true' : 'false');
-    box.hidden = !st.shown;
-    if (!st.shown) return;
-    if (st.list) { fillClBox(box, st, p); return; }
+  const clPerson = (key) => ((cl && cl.people) || []).concat((clFound && clFound.people) || []).find((x) => x.key === key) || null;
+  function clMarkRows() { $$('#bk-cl-list .bk-cl-btn').forEach((b) => { b.setAttribute('aria-current', b.closest('.bk-cl').dataset.key === clSel ? 'true' : 'false'); }); }
+  function clShowDetail(on) {
+    $('#bk-cl-wrap').classList.toggle('has-detail', on);
+    $('#bk-cl-dempty').hidden = on;
+    $('#bk-cl-dbody').hidden = !on;
+    $('#b-bk-cl-back').hidden = !on;
+  }
+  function clBack() {
+    clSel = '';
+    clMarkRows();
+    clShowDetail(false);
+    $('#bk-cl-dbody').replaceChildren();
+    const row = $$('#bk-cl-list .bk-cl-btn')[0];
+    focusEl(row || $('#in-bk-cl-q'));
+  }
+  async function selectCl(p, focus) {
+    clSel = p.key;
+    clMarkRows();
+    clShowDetail(true);
+    const box = $('#bk-cl-dbody');
+    const st = clOpen[p.key] || (clOpen[p.key] = { shown: true, list: null, more: false });
+    if (st.list) { fillClDetail(box, st, p); if (focus) focusEl(box, true); return; }
     // added by hand, no booking with her: nothing to look up
-    if (p.added && !p.both) { st.list = []; fillClBox(box, st, p); return; }
+    if (p.added && !p.both) { st.list = []; fillClDetail(box, st, p); if (focus) focusEl(box, true); return; }
     box.replaceChildren(make('p', 'orders-fine', 'Looking up their bookings…'));
     try {
       const d = await bookCall('/client', { email: p.key });
       st.list = arr(d.bookings).slice(0, 200).map((b) => (b && typeof b === 'object' ? { when: str(b.when, 60), service: str(b.service, 100), status: str(b.status, 12), word: str(b.status_word, 30) } : null)).filter(Boolean);
       st.more = !!d.more;
-      fillClBox(box, st, p);
+      if (clSel === p.key) { fillClDetail(box, st, p); if (focus) focusEl(box, true); }
     } catch (err) {
       if (err.code === 'signed_out') { quietSignOut(false); return; }
       st.list = null;
-      box.replaceChildren(make('p', 'err', words(err)));
-      if (p.added) box.append(clActs(p, box));
+      if (clSel === p.key) { box.replaceChildren(make('p', 'err', words(err))); if (p.added) box.append(clActs(p, box)); }
     }
   }
-  function fillClBox(box, st, p) {
-    if (!st.list) return;
+  // what they wrote on the intake questions, from the bookings the portal already holds (upcoming and the last 60 days). For the owner only:
+  // it is health-adjacent, so it is never drawn in a Studio view. The server's /client answer carries no answers, so nothing more is fetched.
+  function clIntake(p) {
+    if (PREVIEW || !bk) return null;
+    const rows = bk.upcoming.concat(bk.past).filter((b) => b.email.trim().toLowerCase() === p.key && (b.answers.length || b.client_reason || b.heads || b.answers_cleared));
+    rows.sort((x, y) => (x.starts_at < y.starts_at ? 1 : -1));
+    return rows;
+  }
+  function fillClDetail(box, st, p) {
     const kids = [];
-    // her own note first, for someone she added
-    if (p && p.added && p.note) kids.push(make('p', 'bk-cl-lbl', 'Your note, only you see it'), make('p', 'bk-cl-note', p.note));
-    if (!st.list.length) kids.push(make('p', 'orders-fine', p && p.added && !p.both ? 'No bookings with you yet.' : 'No bookings to show.'));
+    const h = make('h4', 'small-h bk-cl-dh', p.name || p.email);
+    if (p.regular) h.append(' ', make('span', 'bk-cl-reg', 'Regular'));
+    kids.push(h);
+    const facts = make('dl', 'bk-cl-facts');
+    const fact = (k, v) => { if (!v) return; const d = make('div'); d.append(make('dt', null, k), make('dd', null, v)); facts.append(d); };
+    fact('Email', p.email);
+    fact('Phone', p.phone);
+    fact('Visits', String(p.visits));
+    fact('First visit', p.first);
+    fact('Last visit', p.last);
+    fact('Next', p.next);
+    fact('No-shows', p.noshows ? String(p.noshows) : '');
+    fact('Where they came from', p.added ? (p.both ? 'Booked with you, and you added them too' : 'You added them') : 'Booked with you');
+    kids.push(facts);
+    if (p.added && p.note) kids.push(make('p', 'bk-cl-lbl', 'Your note, only you see it'), make('p', 'bk-cl-note', p.note));
+    kids.push(make('h5', 'small-h', 'All their visits'));
+    if (!st.list || !st.list.length) kids.push(make('p', 'orders-fine', p.added && !p.both ? 'No bookings with you yet.' : 'No bookings to show.'));
     else {
       const ul = make('ul', 'bk-cl-bks');
       st.list.forEach((b) => {
@@ -5193,7 +5229,24 @@
       kids.push(ul);
       if (st.more) kids.push(make('p', 'orders-fine', 'Showing their latest 200 bookings.'));
     }
-    if (p && p.added) kids.push(clActs(p, box));
+    const intake = clIntake(p);
+    if (intake) {
+      kids.push(make('h5', 'small-h', 'Intake notes'), make('p', 'orders-fine', 'Only you see these. They come from their upcoming bookings and the last 60 days.'));
+      if (!intake.length) kids.push(make('p', 'orders-fine', 'No intake notes saved for them.'));
+      intake.forEach((b) => {
+        const sec = make('div', 'bk-cl-intake');
+        sec.append(make('p', 'bk-cl-lbl', [b.when, b.service_name].filter(Boolean).join(' · ')));
+        if (b.client_reason) sec.append(make('p', 'bk-cl-note', 'Their note: ' + b.client_reason));
+        if (b.heads) sec.append(make('p', 'bk-cl-note', 'A heads-up: ' + b.heads));
+        if (b.answers.length) {
+          const dl = make('dl', 'bk-cl-qa');
+          b.answers.forEach((a) => { const d = make('div'); d.append(make('dt', null, a.label), make('dd', null, a.answer || 'No answer')); dl.append(d); });
+          sec.append(dl);
+        } else if (b.answers_cleared) sec.append(make('p', 'orders-fine', 'Their answers were cleared.'));
+        kids.push(sec);
+      });
+    }
+    if (p.added) kids.push(clActs(p, box));
     box.replaceChildren(...kids);
   }
 
@@ -5222,6 +5275,8 @@
     Object.keys(clOpen).forEach((k) => { delete clOpen[k]; });
     await loadClients(false);
     if (saved && cl && !cl.people.some((x) => x.key === saved.key)) { cl.people.unshift(saved); renderClients(); }
+    const again = clSel && clPerson(clSel);
+    if (again) selectCl(again, false); else if (clSel) { clSel = ''; clShowDetail(false); $('#bk-cl-dbody').replaceChildren(); }
   }
   async function removeCl(p, x) {
     // two taps: the first asks, the second removes (their bookings, if any, stay as they are)
@@ -5236,6 +5291,9 @@
     try {
       await bookCall('/people-remove', { id: p.id });
       toast(p.both ? 'Removed your note and details. They stay on the list from their bookings.' : 'Removed from your list.');
+      clSel = '';
+      clShowDetail(false);
+      $('#bk-cl-dbody').replaceChildren();
       await clRefresh(null);
       focusEl($('#b-bk-cl-add'), true);
     } catch (e) {
@@ -5265,7 +5323,7 @@
     const btns = make('div', 'dc-btns');
     const go = make('button', 'btn small'); go.type = 'submit'; go.append(make('span', null, 'Save'));
     const no = make('button', 'later', 'Cancel'); no.type = 'button';
-    const back = () => { const row = p && box.closest('.bk-cl'); return row ? row.querySelector('.bk-cl-btn') : addBtn; };
+    const back = () => (p ? $('#bk-cl-dbody') : addBtn);
     no.addEventListener('click', () => { f.remove(); addBtn.setAttribute('aria-expanded', 'false'); focusEl(back()); });
     btns.append(go, no);
     f.append(make('h4', 'small-h', p ? 'Edit ' + (p.aName || p.name) : 'Add a client'),
