@@ -1182,6 +1182,23 @@ html.wf-preview label:has(> .ro-off) { cursor: not-allowed; }
 @media (max-width: 600px) { .wf-calls .ledger { margin: 0 -18px 8px; } .wf-calls .wf-call { padding: 12px 18px; flex-direction: column; align-items: flex-start; } }
 @media (max-width: 380px) { .wf-calls .ledger { margin: 0 -16px 8px; } .wf-calls .wf-call { padding: 12px 16px; } }
 
+/* Nov 19 2026: "How it all works", a bright guide with colored cards, icons and step strips. Tokens only from the brand palette. */
+.wf-guide .gd-lede { margin: 6px 0 16px; color: var(--wf-b-ink-soft); max-width: 60ch; }
+.wf-guide .gd-video { margin: 0 0 18px; max-width: 640px; }
+.wf-guide .gd-video video { display: block; width: 100%; height: auto; border-radius: 14px; background: #000; aspect-ratio: 16 / 9; }
+.wf-guide .gd-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.wf-guide .gd-card { --gd: #a8e3c8; border: 2px solid #1a1420; border-radius: 18px; background: #fff; overflow: hidden; box-shadow: 4px 4px 0 var(--gd); min-width: 0; }
+.wf-guide .gd-pink { --gd: #f6a8c8; } .wf-guide .gd-yellow { --gd: #f7e07a; } .wf-guide .gd-lilac { --gd: #c7b3f2; } .wf-guide .gd-blue { --gd: #9ec5f0; }
+.wf-guide .gd-head { display: flex; align-items: center; gap: 10px; background: var(--gd); padding: 10px 14px; border-bottom: 2px solid #1a1420; color: #1a1420; }
+.wf-guide .gd-head h3 { margin: 0; font-size: 17px; line-height: 1.2; color: #1a1420; }
+.wf-guide .gd-ico { width: 26px; height: 26px; flex: none; }
+.wf-guide .gd-lines { margin: 0; padding: 12px 14px 4px 32px; display: grid; gap: 6px; font-size: 15px; line-height: 1.4; }
+.wf-guide .gd-steps { list-style: none; counter-reset: gd; margin: 0; padding: 8px 14px 14px; display: flex; flex-wrap: wrap; gap: 6px 4px; }
+.wf-guide .gd-steps li { counter-increment: gd; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 1.25; background: color-mix(in srgb, var(--gd) 35%, #fff); border-radius: 999px; padding: 4px 10px 4px 5px; }
+.wf-guide .gd-steps li::before { content: counter(gd); display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #1a1420; color: #fff; font-size: 12px; flex: none; }
+.wf-guide .gd-steps li:not(:last-child)::after { content: '\2192'; margin-left: 2px; opacity: .55; }
+@media (max-width: 600px) { .wf-guide .gd-cards { grid-template-columns: 1fr; } }
+
 /* ============ brand accent (Oct 16 2026, hub DEPLOY.md section 80) ============
    Only when Taya has set a color for this client: portal.js applyAccent puts data-wf-brand on <html> and
    --wf-b-brand (their color, or a darker shade of the same hue that reads at 4.5:1 on the paper and the ground).

@@ -30,6 +30,17 @@
   var SCENE_KEY = 'wf-portal-demo-scene';
   var IN_KEY = 'wf-portal-demo-in';
   var STRIPE = 'https://buy.stripe.com/sample-link-for-the-preview';
+  // (Nov 19 2026) a sample "How it all works" guide (Fern & Clay's own build). The real ones are written by Taya per client; no video here.
+  var GUIDE = {
+    intro: 'Everything about your shop and your classes, in one place. Short lines, so you can find what you need fast.',
+    cards: [
+      { icon: 'i-box', color: 'mint', title: 'An order comes in', lines: ['You get an email and a note here.', 'Pack it, then tap Shipped.', 'Your customer gets a tracking email by itself.'], steps: ['Order', 'Pack', 'Shipped'] },
+      { icon: 'i-cal', color: 'pink', title: 'How a class gets booked', lines: ['People book on your site and pay there.', 'It lands on your Schedule right away.', 'They can change or cancel from their email.'], steps: ['Choose a slot', 'Pay', 'Confirmed'] },
+      { icon: 'i-gift', color: 'yellow', title: 'Gift cards', lines: ['Buyers get a code by email.', 'You can see every code and what is left on it.'], steps: ['Buy', 'Code sent', 'Used'] },
+      { icon: 'i-receipt', color: 'lilac', title: 'Refunds', lines: ['Open the order and tap Refund.', 'The money goes back to the same card.', 'Your customer gets an email saying so.'] },
+      { icon: 'i-talk', color: 'blue', title: 'If something goes wrong', lines: ['Tap Ask Taya in your portal, or email me.', 'Tell me what you saw. A screenshot helps.', 'I read every one.'] }
+    ]
+  };
   var CALLS_URL = 'https://webfaery.love/book.html#k=abcdefghijklmnopqrstuvwxyz012345'; // sample only: the page shows 'for Web Faery clients' without a real key
   var CALLS = function (upcoming) { return { book_url: CALLS_URL, types: [{ kind: 'launch', minutes: 60 }], upcoming: upcoming || [] }; };
 
@@ -182,6 +193,7 @@
         care: { can_ask: false, requests: [] },
         messages_unread: 1,
         calls: CALLS(),
+        guide: GUIDE,
         session: { expires_at: '' }
       };
     },
@@ -219,6 +231,7 @@
         care: { can_ask: true, requests: [] },
         messages_unread: 1,
         calls: CALLS(),
+        guide: GUIDE,
         session: { expires_at: '' }
       };
     },
@@ -262,6 +275,7 @@
         },
         messages_unread: 1,
         calls: CALLS([{ kind: 'launch', type_name: 'Launch call', minutes: 60, starts_at: '', when: 'Mon, Nov 30, 11:00 AM', meet_url: 'https://meet.google.com/abc-defg-hij' }]),
+        guide: GUIDE,
         session: { expires_at: '' }
       };
     }

@@ -714,6 +714,51 @@
   // the approved video, if any (wf-videos.js is empty until Pollen approves one): only a webfaery.love/how address counts
   const VID_OK = /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.mp4$/, VTT_OK = /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.vtt$/;
   const startVideo = () => { const v = window.WF_VIDEOS && window.WF_VIDEOS.start; return v && VID_OK.test(v.src || '') ? { src: v.src, minutes: Math.max(0, Math.min(30, Math.round(+v.minutes || 0))) } : null; };
+  // (Nov 19 2026) "How it all works": Taya's guide to THIS client's build, as data from the server (me.guide):
+  // { intro, video: { url, vtt, approved }, cards: [{ icon, color, title, lines: [], steps: [] }] }. Icons and colors come from fixed lists;
+  // everything is plain text. A video shows only when it is approved and on webfaery.love/how.
+  const GD_ICONS = ['i-gift', 'i-cal', 'i-receipt', 'i-tray', 'i-mail', 'i-talk', 'i-key', 'i-doc', 'i-globe', 'i-tag', 'i-box', 'i-star', 'i-leaf', 'i-palette', 'i-eye', 'i-check', 'i-home', 'i-path', 'i-ask', 'i-bars'];
+  const GD_COLORS = ['mint', 'pink', 'yellow', 'lilac', 'blue'];
+  function cleanGuide(g) {
+    if (!g || typeof g !== 'object') return null;
+    const cards = arr(g.cards).slice(0, 16).map((c) => {
+      if (!c || typeof c !== 'object' || !str(c.title, 60)) return null;
+      return { icon: GD_ICONS.includes(c.icon) ? c.icon : 'i-star', color: GD_COLORS.includes(c.color) ? c.color : 'mint', title: str(c.title, 60),
+        lines: arr(c.lines).slice(0, 6).map((x) => str(x, 140)).filter(Boolean), steps: arr(c.steps).slice(0, 6).map((x) => str(x, 40)).filter(Boolean) };
+    }).filter(Boolean);
+    const v = g.video && typeof g.video === 'object' && g.video.approved === true && VID_OK.test(str(g.video.url, 120)) ? { url: str(g.video.url, 120), vtt: VTT_OK.test(str(g.video.vtt, 120)) ? str(g.video.vtt, 120) : '' } : null;
+    return cards.length ? { intro: str(g.intro, 240), video: v, cards } : null;
+  }
+  function renderGuide() {
+    const sec = $('#sec-guide');
+    if (!sec) return;
+    const g = me && me.guide;
+    if (g) {
+      $('#gd-lede').textContent = g.intro;
+      $('#gd-lede').hidden = !g.intro;
+      const vb = $('#gd-video');
+      if (g.video) {
+        const v = document.createElement('video');
+        v.controls = true; v.preload = 'metadata'; v.setAttribute('playsinline', ''); v.src = g.video.url;
+        v.setAttribute('aria-label', 'A walkthrough of your site and portal, from Taya');
+        if (g.video.vtt) { const t = document.createElement('track'); t.kind = 'captions'; t.srclang = 'en'; t.label = 'English'; t.src = g.video.vtt; t.default = true; v.append(t); }
+        const alt = make('a', 'open-btn', null); alt.href = g.video.url; alt.target = '_blank'; alt.rel = 'noopener noreferrer';
+        alt.append(make('span', null, 'Open the video in a new tab'), icon('i-out'));
+        vb.replaceChildren(v, alt);
+      } else vb.replaceChildren();
+      vb.hidden = !g.video;
+      $('#gd-cards').replaceChildren(...g.cards.map((c) => {
+        const card = make('article', 'gd-card gd-' + c.color);
+        const head = make('div', 'gd-head');
+        head.append(icon(c.icon, 'gd-ico'), make('h3', null, c.title));
+        card.append(head);
+        if (c.lines.length) { const ul = make('ul', 'gd-lines'); c.lines.forEach((x) => ul.append(make('li', null, x))); card.append(ul); }
+        if (c.steps.length) { const ol = make('ol', 'gd-steps'); c.steps.forEach((x) => ol.append(make('li', null, x))); card.append(ol); }
+        return card;
+      }));
+    }
+    setHidden(sec, !g);
+  }
   const CALL_BOOK = /^https:\/\/webfaery\.love\/book\.html#k=[A-Za-z0-9]{24,64}$/;
   const CALL_MEET = /^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/;
   function cleanCalls(c) {
@@ -948,6 +993,7 @@
     { id: 'newsletter', label: 'Newsletter', icon: 'i-mail' },
     { id: 'visitors', label: 'Visitors', icon: 'i-bars' },
     { id: 'receipts', label: 'Receipts', icon: 'i-tray' },
+    { id: 'guide', label: 'How it all works', short: 'How it works', icon: 'i-path' },
     { id: 'papers', label: 'Business papers', short: 'Papers', icon: 'i-doc' },
     { id: 'messages', label: 'Messages', icon: 'i-talk' },
     { id: 'resources', label: 'Resources', icon: 'i-play' },
@@ -991,7 +1037,7 @@
   const TOOL_RANK = ['orders', 'bookings', 'products', 'newsletter', 'visitors', 'gifts', 'codes'];
   function wfOrder() {
     const live = !!me && (me.timeline.current === 'care' || me.timeline.current === 'resting');
-    return (live ? ['payments', 'papers', 'receipts', 'brand', 'accounts', 'resources', 'project'] : ['project', 'payments', 'papers', 'brand', 'accounts', 'resources', 'receipts']).filter(pageHas);
+    return (live ? ['payments', 'guide', 'papers', 'receipts', 'brand', 'accounts', 'resources', 'project'] : ['project', 'guide', 'payments', 'papers', 'brand', 'accounts', 'resources', 'receipts']).filter(pageHas);
   }
   function barIds() {
     const tools = TOOL_RANK.filter(pageHas);
@@ -1140,7 +1186,7 @@
   }
   // the Web Faery tab: a short list of everything about their project with me, and any tool that didn't fit the bar
   const HUB_SAY = {
-    project: 'Your to-dos and where we are', payments: 'What’s paid and what’s coming', papers: 'Your agreement and business papers',
+    project: 'Your to-dos and where we are', payments: 'What’s paid and what’s coming', papers: 'Your agreement and business papers', guide: 'Your site, step by step',
     receipts: 'Receipts and records', brand: 'Your colors, fonts and logo', accounts: 'Your logins and where things live',
     resources: 'Short how-to videos', orders: 'Your orders', bookings: 'Your bookings', products: 'Your products',
     newsletter: 'Your newsletter', visitors: 'Who’s visiting your site', gifts: 'Gift certificates', codes: 'Discount codes'
@@ -1494,6 +1540,7 @@
     }
     renderGlance();
     renderNotes();
+    renderGuide();
     // draw the rows only when they changed, so a row being pressed or focused stays put under the finger
     const sig = JSON.stringify(rows);
     if (sig !== needsSig) {
@@ -1868,6 +1915,7 @@
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
       care_deposit_live: d.care_deposit_live === true, // a NEW client may pay the deposit through the care auto-start; false until the server turns it on
+      guide: cleanGuide(d.guide), // (Nov 19 2026) Taya's 'How it all works' guide for this client: null until the server sends one
       calls: cleanCalls(d.calls), // (Nov 19 2026) private sessions as calls with Taya: null until the server sends it
       care_autostart_on: /^\d{4}-\d{2}-\d{2}$/.test(str(d.care_autostart_on, 10)) ? str(d.care_autostart_on, 10) : '', // the day their care starts by itself
       care_bank_last4: /^\d{4}$/.test(str(d.care_bank_last4, 4)) ? str(d.care_bank_last4, 4) : '', // PROPOSED field: the last four of the saved bank account
