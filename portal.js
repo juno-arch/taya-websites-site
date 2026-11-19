@@ -952,7 +952,9 @@
   const landing = () => {
     const launched = !!me && stageIndex(me.timeline.current) >= 5;
     if (!launched) return 'project';
-    const tool = ['orders', 'bookings'].find(pageHas) || barIds().find((id) => TOOL_RANK.includes(id));
+    // (Nov 19 2026) a client who has booking on opens on Bookings; a per-client landing tab (me.landing_tab) wins if one is set
+    if (me && me.landing_tab && pageHas(me.landing_tab)) return me.landing_tab;
+    const tool = ['bookings', 'orders'].find(pageHas) || barIds().find((id) => TOOL_RANK.includes(id));
     return tool || 'project';
   };
   let pagesSig = '';
