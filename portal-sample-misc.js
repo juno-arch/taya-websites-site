@@ -272,6 +272,8 @@
   ];
   var CQ_THANKS = 'Thank you, this helps a lot.';
   W.on('critique/mine', function () {
+    // Nov 19 2026 (Pollen): the critique is Tidal Taxi only, so no demo or preview shows the card
+    if (true) return { eligible: false };
     return { eligible: true, read_only: false,
       intro: 'Thank you for telling me what you really think. Answer only the ones you want to. Each answer saves as you go, so you can leave and come back.',
       thanks: CQ_THANKS, prompts: W.clone(CQ_PROMPTS), fix_title: 'One thing I should fix first',
