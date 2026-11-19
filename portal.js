@@ -1116,8 +1116,8 @@
     document.documentElement.classList.add('wf-tabs');
     document.body.classList.add('wf-tabs');
     const want = hashPage();
-    if (!landed) { landed = true; if (!want) { const lp = landing(); autoPage = lp; autoUntil = Date.now() + 6000; openPage(lp, { scroll: false }); return; } } // the first draw after signing in
-    // their tools (bookings, orders) arrive a moment after the first draw: for the first few seconds, if they have not picked a page yet (no address, still on the page we opened), open the landing page again as it changes
+    if (!landed) { landed = true; if (!want) { const lp = landing(); autoPage = lp; autoUntil = Date.now() + 15000; openPage(lp, { scroll: false }); return; } } // the first draw after signing in
+    // their tools (bookings, orders) arrive a moment after the first draw: for the first 15 seconds, if they have not picked a page yet (no address, still on the page we opened), open the landing page again as it changes
     if (autoPage && !want && page === autoPage && Date.now() < autoUntil) { const lp = landing(); if (lp !== autoPage) { autoPage = lp; openPage(lp, { scroll: false }); return; } } else autoPage = '';
     if (want && want !== page && list.some((x) => x.id === want)) openPage(want, { scroll: true });
     else if (!list.some((x) => x.id === page)) openPage(landing(), { scroll: true });
