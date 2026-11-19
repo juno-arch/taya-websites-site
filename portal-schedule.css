@@ -26,7 +26,10 @@
 .sch-ev-w { color: var(--wf-b-ink-soft); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sch-ev.is-off, .sch-ev.is-busy { background: repeating-linear-gradient(135deg, rgb(0 0 0 / .05) 0 6px, transparent 6px 12px); border: 1px dashed var(--wf-b-edge); color: var(--wf-b-ink-soft); cursor: default; }
 .sch-ev:focus-visible { outline: 2px solid var(--wf-b-focus); outline-offset: 1px; }
-.sch-detail, .sch-form { margin: 10px 0; padding: 10px 0; border-top: 1px solid var(--wf-b-rule); border-bottom: 1px solid var(--wf-b-rule); max-width: 640px; }
+.sch-form { margin: 10px 0; padding: 10px 0; border-top: 1px solid var(--wf-b-rule); border-bottom: 1px solid var(--wf-b-rule); max-width: 640px; }
+/* one visit opens as a popup over the calendar (Nov 19 2026) */
+.sch-detail:not([hidden]) { position: fixed; z-index: 60; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(92vw, 460px); max-height: 86vh; overflow: auto; box-sizing: border-box;
+  margin: 0; padding: 18px 18px 14px; background: var(--wf-b-sheet); border: 1px solid var(--wf-b-edge); border-radius: 14px; box-shadow: 0 0 0 100vmax rgb(26 20 32 / .45), 0 10px 30px rgb(0 0 0 / .25); }
 .sch-dh { margin: 0 0 4px; font-size: 17px; color: var(--wf-b-ink); overflow-wrap: anywhere; }
 .sch-dw, .sch-hint { margin: 0 0 6px; color: var(--wf-b-ink); overflow-wrap: anywhere; }
 .sch-hint { color: var(--wf-b-ink-soft); }

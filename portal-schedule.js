@@ -258,8 +258,15 @@
     const acts = el('div', 'sch-acts');
     [['Move', 'move'], ['Cancel', 'cancel'], ['See the details', 'details'], ['Close', 'close-detail']].forEach(([l, a]) => { const b = el('button', 'btn small ghost', l); b.type = 'button'; b.dataset.act = a; acts.append(b); });
     box.append(acts, el('div', 'sch-dform'));
+    // a popup over the calendar: a dialog with focus inside, Escape or a tap outside closes it, and focus goes back to the visit
+    box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', ev.title);
+    if (!opener && document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('sch-ev')) opener = document.activeElement;
+    const first = acts.querySelector('button'); if (first) first.focus({ preventScroll: true });
   }
-  function closeDetail() { picked = null; const b = document.getElementById('sch-detail'); b.hidden = true; b.textContent = ''; }
+  let opener = null;
+  function closeDetail() { picked = null; const b = document.getElementById('sch-detail'); b.hidden = true; b.textContent = ''; if (opener && document.contains(opener)) opener.focus({ preventScroll: true }); opener = null; }
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && picked) { ev.preventDefault(); closeDetail(); } });
+  document.addEventListener('pointerdown', (ev) => { if (!picked) return; const b = document.getElementById('sch-detail'); if (b && !b.contains(ev.target) && !(ev.target.closest && ev.target.closest('.sch-ev'))) closeDetail(); }, true);
   function closeAll() { closeDetail(); const f = document.getElementById('sch-form'); f.hidden = true; f.textContent = ''; say(''); }
 
   async function act(action) {
