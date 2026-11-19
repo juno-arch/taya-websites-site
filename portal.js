@@ -945,6 +945,8 @@
   const SHOP_PAGES = ['orders', 'products', 'codes', 'bookings', 'gifts', 'newsletter'];
   let page = 'project';
   let landed = false;
+  let autoUntil = 0;
+  let autoPage = ''; // (Nov 19 2026) the page the portal opened on by itself; cleared once they choose a page or it lands on a tool
   // (Nov 11 2026) no Home page: the portal opens on Your project while we build, and on their first tool once live
   // (their project is then in the Web Faery tab). The gold count on that tab says what's waiting.
   // Still being built: Your project. Launched (settling in, or in care): their shop if they have one, else their bookings,
@@ -1048,6 +1050,7 @@
   function hideTabs() {
     pagesSig = '';
     landed = false;
+    autoPage = '';
     $('#tabs').hidden = true;
     $('#dock').hidden = true;
     $('#more').hidden = true;
@@ -1113,7 +1116,9 @@
     document.documentElement.classList.add('wf-tabs');
     document.body.classList.add('wf-tabs');
     const want = hashPage();
-    if (!landed) { landed = true; if (!want) { openPage(landing(), { scroll: false }); return; } } // the first draw after signing in
+    if (!landed) { landed = true; if (!want) { const lp = landing(); autoPage = lp; autoUntil = Date.now() + 6000; openPage(lp, { scroll: false }); return; } } // the first draw after signing in
+    // their tools (bookings, orders) arrive a moment after the first draw: for the first few seconds, if they have not picked a page yet (no address, still on the page we opened), open the landing page again as it changes
+    if (autoPage && !want && page === autoPage && Date.now() < autoUntil) { const lp = landing(); if (lp !== autoPage) { autoPage = lp; openPage(lp, { scroll: false }); return; } } else autoPage = '';
     if (want && want !== page && list.some((x) => x.id === want)) openPage(want, { scroll: true });
     else if (!list.some((x) => x.id === page)) openPage(landing(), { scroll: true });
     else openPage(page, { scroll: false });
