@@ -709,6 +709,18 @@
     if (l.kind === 'png' || l.kind === 'webp' || l.kind === 'jpeg') return typeof l.b64 === 'string' && /^[A-Za-z0-9+/]+={0,2}$/.test(l.b64) && l.b64.length < 150000 ? 'data:image/' + l.kind + ';base64,' + l.b64 : '';
     return '';
   }
+  // (Nov 19 2026) calls with Taya, from her private sessions (book.html). The server half is PROPOSED, not built: { book_url, types: [{ kind, minutes }],
+  // upcoming: [{ kind, type_name, minutes, starts_at, when, meet_url }] }. Only exact address shapes are kept.
+  const CALL_BOOK = /^https:\/\/webfaery\.love\/book\.html#k=[A-Za-z0-9]{24,64}$/;
+  const CALL_MEET = /^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/;
+  function cleanCalls(c) {
+    if (!c || typeof c !== 'object' || !CALL_BOOK.test(str(c.book_url, 120))) return null;
+    const kind = (k) => (k === 'start' || k === 'launch' ? k : '');
+    const types = arr(c.types).slice(0, 4).map((t) => (t && kind(t.kind) ? { kind: t.kind, minutes: Math.max(5, Math.min(180, Math.round(+t.minutes || 0))) } : null)).filter(Boolean);
+    const upcoming = arr(c.upcoming).slice(0, 6).map((u) => (u && kind(u.kind) && str(u.when, 60) ? { kind: u.kind, name: str(u.type_name, 60), minutes: Math.max(5, Math.min(180, Math.round(+u.minutes || 0))),
+      when: str(u.when, 60), meet: CALL_MEET.test(str(u.meet_url, 60)) ? str(u.meet_url, 60) : '' } : null)).filter(Boolean);
+    return { book_url: str(c.book_url, 120), types, upcoming };
+  }
   function cleanBrand(b) {
     if (!b || typeof b !== 'object') return null;
     const out = {};
@@ -990,7 +1002,7 @@
   }
   function pageList() {
     const bar = barIds(), g = hubGroups();
-    const hub = g.tools.length || g.wf.length || bloomList().length || noteRows().length || !!(me && me.care_autostart_on && !me.care_stopped_on) ? ['webfaery'] : [];
+    const hub = g.tools.length || g.wf.length || bloomList().length || noteRows().length || !!(me && me.care_autostart_on && !me.care_stopped_on) || !!(me && me.calls && me.calls.upcoming.length) ? ['webfaery'] : [];
     const order = bar.concat(hub, g.tools, g.wf, ['messages']);
     return order.filter((id, k) => (id === 'webfaery' || pageHas(id) || (id === 'messages' && pageHas('ask'))) && order.indexOf(id) === k).map(pageInfo);
   }
@@ -1323,6 +1335,14 @@
       const d = care.starts_on ? shortDate(care.starts_on) : '';
       rows.push({ key: 'care', title: 'Start your Web Faery subscription', date: d ? (isPast(care.starts_on) ? 'Was set to start ' : 'Starts ') + d : '', url: care.url, label: 'Start my subscription', pay: 'care' });
     }
+    // (Nov 19 2026) book a call with Taya: the getting-started call (30 minutes, optional) before launch, the launch call (60 minutes) as the build nears launch
+    const cl = me.calls;
+    if (cl) {
+      const idx = stageIndex(me.timeline.current), build = me.client.build, kept = !!(me.care_stopped_on);
+      const has = (k) => cl.types.find((t) => t.kind === k), booked = (k) => cl.upcoming.some((u) => u.kind === k);
+      if (has('start') && !booked('start') && idx <= 3) rows.push({ key: 'call-start', call: true, title: 'Book your getting-started call', date: has('start').minutes + ' minutes. Optional, only if you’d like to talk.', url: cl.book_url, label: 'Book a time' });
+      if (has('launch') && !booked('launch') && idx >= 3 && idx <= 5 && !kept) rows.push({ key: 'call-launch', call: true, title: 'Book your launch call', date: has('launch').minutes + ' minutes. ' + (build === 'maiden' ? 'Optional.' : 'Part of your build, and launch doesn’t wait for it.'), url: cl.book_url, label: 'Book a time' });
+    }
     me.pay.forEach((p) => {
       const agree = p.key === 'deposit' && p.state === 'due' && me.care_deposit_live; // the agreement words come first, on the Payments page
       if ((p.key === 'deposit' || p.key === 'balance') && p.state === 'due' && (p.url || agree) && !t[p.key]) {
@@ -1350,13 +1370,38 @@
         what.append(make('b', null, r.title));
         if (r.date) what.append(make('small', null, r.date));
         li.append(what);
-        if (r.url) li.append(outLink(r.url, r.label, 'btn small', r.pay ? 'Stripe so you can pay' : 'a link from me', r.pay));
+        if (r.call && DEMO) {
+          const b = make('button', 'btn small', r.label); b.type = 'button';
+          b.addEventListener('click', () => {
+            const k = r.key === 'call-start' ? 'start' : 'launch', t = me.calls.types.find((x) => x.kind === k);
+            me.calls.upcoming.push({ kind: k, name: k === 'start' ? 'Getting started call' : 'Launch call', minutes: t ? t.minutes : 30, when: (() => { const d = new Date(); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); return 'Mon, ' + MON[d.getMonth()] + ' ' + d.getDate() + ', 11:00 AM'; })(), meet: 'https://meet.google.com/abc-defg-hij' });
+            toast('Preview: this is where the booking page opens.'); renderNotes(); renderNeeds();
+          });
+          li.append(b);
+        } else if (r.url) li.append(outLink(r.url, r.label, r.call ? 'btn small' : 'btn small', r.pay ? 'Stripe so you can pay' : r.call ? 'your booking page' : 'a link from me', r.pay));
         else { const b = make('button', 'btn small secondary', r.label); b.type = 'button'; b.dataset.read = '1'; b.addEventListener('click', () => goPage(r.page || 'project')); li.append(b); }
         return li;
       }));
       pagesSig = null; // the Web Faery page may now exist, or not
     }
     setHidden(sec, !rows.length);
+    // your calls (Nov 19 2026): the calls they have booked, with the time and the Meet link
+    const cc = $('#sec-calls');
+    if (cc) {
+      const list = (me && me.calls && me.calls.upcoming) || [];
+      if (list.length) {
+        $('#calls-list').replaceChildren(...list.map((u) => {
+          const li = make('li', 'wf-call');
+          const what = make('span', 'what'); what.append(make('b', null, (u.name || (u.kind === 'start' ? 'Getting started call' : 'Launch call'))), make('small', null, u.when + ' Pacific time, ' + u.minutes + ' minutes'));
+          li.append(what);
+          if (u.meet) li.append(outLink(u.meet, 'Join on Google Meet', 'btn small', 'Google Meet', ''));
+          else li.append(make('small', 'wf-call-note', 'I’ll email you the link to join.'));
+          return li;
+        }));
+        const ch = $('#calls-change'); ch.href = me.calls.book_url;
+      }
+      setHidden(cc, !list.length);
+    }
     // care auto-start (Nov 18 2026): once they have paid the deposit by bank, a calm line says when care starts
     const cs = $('#sec-carestart');
     if (cs) {
@@ -1818,6 +1863,7 @@
       care_trouble: d.care_trouble === true,
       care_manage_live: d.care_manage_live === true,
       care_deposit_live: d.care_deposit_live === true, // a NEW client may pay the deposit through the care auto-start; false until the server turns it on
+      calls: cleanCalls(d.calls), // (Nov 19 2026) private sessions as calls with Taya: null until the server sends it
       care_autostart_on: /^\d{4}-\d{2}-\d{2}$/.test(str(d.care_autostart_on, 10)) ? str(d.care_autostart_on, 10) : '', // the day their care starts by itself
       care_bank_last4: /^\d{4}$/.test(str(d.care_bank_last4, 4)) ? str(d.care_bank_last4, 4) : '', // PROPOSED field: the last four of the saved bank account
       care_cancel_live: d.care_cancel_live === true, // the server can stop the subscription (POST /care-cancel); false until deployed

@@ -30,6 +30,8 @@
   var SCENE_KEY = 'wf-portal-demo-scene';
   var IN_KEY = 'wf-portal-demo-in';
   var STRIPE = 'https://buy.stripe.com/sample-link-for-the-preview';
+  var CALLS_URL = 'https://webfaery.love/book.html#k=abcdefghijklmnopqrstuvwxyz012345'; // sample only: the page shows 'for Web Faery clients' without a real key
+  var CALLS = function (upcoming) { return { book_url: CALLS_URL, types: [{ kind: 'start', minutes: 30 }, { kind: 'launch', minutes: 60 }], upcoming: upcoming || [] }; };
 
   var ss = {
     get: function (k) { try { return sessionStorage.getItem(k) || ''; } catch (e) { return ''; } },
@@ -179,6 +181,7 @@
         care_manage_url: '',
         care: { can_ask: false, requests: [] },
         messages_unread: 1,
+        calls: CALLS(),
         session: { expires_at: '' }
       };
     },
@@ -215,6 +218,7 @@
         care_cancel_live: true, // demo only: the real server sends this once /care-cancel is deployed
         care: { can_ask: true, requests: [] },
         messages_unread: 1,
+        calls: CALLS(),
         session: { expires_at: '' }
       };
     },
@@ -257,6 +261,7 @@
           ]
         },
         messages_unread: 1,
+        calls: CALLS([{ kind: 'launch', type_name: 'Launch call', minutes: 60, starts_at: '', when: 'Mon, Nov 30, 11:00 AM', meet_url: 'https://meet.google.com/abc-defg-hij' }]),
         session: { expires_at: '' }
       };
     }

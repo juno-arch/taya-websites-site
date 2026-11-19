@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="fonts/brand/brand-fonts.css?v=20261104a">
 <link rel="stylesheet" href="wf-tokens.css?v=20261110e">
 <link rel="stylesheet" href="wf-backend.css?v=20261110e">
-<link rel="stylesheet" href="portal.css?v=20261119b">
+<link rel="stylesheet" href="portal.css?v=20261119e">
 <link rel="stylesheet" href="portal-rich.css?v=20261020a">
 <link rel="stylesheet" href="portal-schedule.css?v=20261118a">
 <!--
@@ -61,7 +61,7 @@
 -->
 <link rel="stylesheet" href="reband.css?v=20261112h">
 <link rel="stylesheet" href="reband-app.css?v=20261112a">
-<link rel="stylesheet" href="reband-portal.css?v=20261119b">
+<link rel="stylesheet" href="reband-portal.css?v=20261119e">
 </head>
 <body>
 <!-- coded pastel stickers in the margins of wide screens only, behind everything (ceiling.css); none on a phone -->
@@ -133,7 +133,7 @@
 <script src="portal-brand.js?v=20261016c"></script>
 <script src="portal-schedule.js?v=20261118a"></script>
 <script src="portal-alerts.js?v=20261115a"></script>
-<script src="portal.js?v=20261119d"></script>
+<script src="portal.js?v=20261119e"></script>
 <script src="brand/wf-shapes.js?v=20261112a"></script><script src="brand/wf-trail.js?v=20261112a"></script>
 
 <main class="page" id="main" tabindex="-1">
@@ -279,6 +279,12 @@
     <section class="p-card wf-notes" id="sec-notes" data-page="webfaery" aria-labelledby="h-notes" hidden>
       <h2 class="sh" id="h-notes">Notifications from me</h2>
       <ul class="ledger" id="wf-notes"></ul>
+    </section>
+    <!-- (Nov 19 2026) your calls: the calls with Taya they have booked (private sessions), with the Meet link; portal.js renderNotes, hidden when there are none -->
+    <section class="p-card wf-calls" id="sec-calls" data-page="webfaery" aria-labelledby="h-calls" hidden>
+      <h2 class="sh" id="h-calls">Your calls with me</h2>
+      <ul class="ledger" id="calls-list"></ul>
+      <p class="orders-fine"><a id="calls-change" href="#" target="_blank" rel="noopener noreferrer">Change or cancel a call</a>. The link in your confirmation email works too.</p>
     </section>
     <!-- (Nov 18 2026) care auto-start: when their care starts by itself from the bank account they saved at the deposit; portal.js renderNotes, hidden otherwise -->
     <section class="p-card wf-carestart" id="sec-carestart" data-page="webfaery" aria-labelledby="h-carestart" hidden>

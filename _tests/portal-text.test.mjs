@@ -84,8 +84,11 @@ const FORBIDDEN = [
   [/\bchat\b|a call\b|pick a time|rather talk|on the phone|phone call|let(?:’|\\')s talk/i, 'an offer of a call or a chat (email only)'],
   [/(?:change|edit|update) (?:it|these|them|this) yourself|coming soon|do it yourself/i, 'do-it-yourself editing (Taya makes every change)'],
 ];
+// (Nov 19 2026, Pollen) calls ARE offered now, but only through private sessions: these exact phrases are the booking rows and card. Any other offer of a call stays forbidden.
+const CALL_OK = [/Book your getting-started call/gi, /Book your launch call/gi, /Your calls with me/gi, /Change or cancel a call/gi];
 for (const [file, strings] of sources) {
-  for (const s of strings) {
+  for (const s0 of strings) {
+    const s = CALL_OK.reduce((x, r) => x.replace(r, ' '), s0);
     for (const [re, what] of FORBIDDEN) {
       const m = s.match(re);
       if (m) fail(`${file}: ${what}: "${s.slice(Math.max(0, m.index - 40), m.index + 40)}"`);
