@@ -171,6 +171,13 @@
     .qc-end .btn { width: 100%; justify-content: center; }
   }
 
+  /* (Nov 19 2026) the getting-started video slot: only drawn once an approved video is set in wf-videos.js */
+  .wf-vid { margin: 28px 0 0; background: var(--card); border: 1px solid var(--edge); border-radius: 24px; padding: 22px 24px; box-shadow: 0 30px 60px -34px rgba(38, 42, 94, 0.3); }
+  .wf-vid h2 { margin: 0 0 14px; }
+  .wf-vid video { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 14px; background: #000; aspect-ratio: 16 / 9; }
+  .wf-vid .vid-fine { margin: 10px 0 0; }
+  @media (max-width: 600px) { .wf-vid { padding: 18px 16px; border-radius: 20px; } }
+
   /* ============ the top of their list: its size, what it's made from, three promises ============ */
   .intro {
     margin-top: 40px; background: var(--card); border: 1px solid var(--edge); border-radius: 24px;
@@ -911,6 +918,13 @@
     <h1 id="hello">Welcome <em>in.</em></h1>
     <p class="lede">You said yes, and I’m so glad. Everything we need to start your site is right here.</p>
   </div>
+  <!-- (Nov 19 2026) Pollen's getting-started video: the process, and picking a build. Hidden until she has approved one (wf-videos.js is empty until then). Captions on by default. -->
+  <section class="wf-vid" id="video" aria-labelledby="vid-title" hidden>
+    <h2 id="vid-title">A short hello from me</h2>
+    <video id="vid-player" controls playsinline preload="metadata" aria-label="Taya explains how it works and how to pick your build"></video>
+    <p class="vid-fine" id="vid-open-wrap"><a id="vid-open" target="_blank" rel="noopener noreferrer">Open the video in a new tab</a></p>
+  </section>
+
   <noscript><div class="card"><p>This page needs JavaScript to save your answers and send them. No problem at all:
     just email me at <a href="mailto:taya@webfaery.love">taya@webfaery.love</a> and we’ll sort it out together over email.</p></div></noscript>
 
@@ -4011,6 +4025,24 @@
     }
   }), { rootMargin: '120px 0px', threshold: 0.25 });
   clips.forEach(fig => io.observe(fig));
+})();
+</script>
+<script src="wf-videos.js?v=20261119a"></script>
+<script>
+(function () {
+  // (Nov 19 2026) the getting-started video: shown only when wf-videos.js holds an approved webfaery.love/how address
+  try {
+    var v = window.WF_VIDEOS && window.WF_VIDEOS.start;
+    if (!v || !/^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.mp4$/.test(v.src || '')) return;
+    var p = document.getElementById('vid-player');
+    p.src = v.src;
+    if (/^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.(jpg|png|webp)$/.test(v.poster || '')) p.poster = v.poster;
+    if (/^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.vtt$/.test(v.vtt || '')) {
+      var t = document.createElement('track'); t.kind = 'captions'; t.srclang = 'en'; t.label = 'English'; t.src = v.vtt; t.default = true; p.appendChild(t);
+    }
+    document.getElementById('vid-open').href = v.src;
+    document.getElementById('video').hidden = false;
+  } catch (e) { /* the page works the same without it */ }
 })();
 </script>
 <script src="tracer.js?v=20261113a" defer></script>

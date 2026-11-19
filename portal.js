@@ -711,6 +711,9 @@
   }
   // (Nov 19 2026) calls with Taya, from her private sessions (book.html). The server half is PROPOSED, not built: { book_url, types: [{ kind, minutes }],
   // upcoming: [{ kind, type_name, minutes, starts_at, when, meet_url }] }. Only exact address shapes are kept.
+  // the approved video, if any (wf-videos.js is empty until Pollen approves one): only a webfaery.love/how address counts
+  const VID_OK = /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.mp4$/, VTT_OK = /^https:\/\/webfaery\.love\/how\/[a-z0-9-]{1,60}\.vtt$/;
+  const startVideo = () => { const v = window.WF_VIDEOS && window.WF_VIDEOS.start; return v && VID_OK.test(v.src || '') ? { src: v.src, minutes: Math.max(0, Math.min(30, Math.round(+v.minutes || 0))) } : null; };
   const CALL_BOOK = /^https:\/\/webfaery\.love\/book\.html#k=[A-Za-z0-9]{24,64}$/;
   const CALL_MEET = /^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/;
   function cleanCalls(c) {
@@ -1335,12 +1338,14 @@
       const d = care.starts_on ? shortDate(care.starts_on) : '';
       rows.push({ key: 'care', title: 'Start your Web Faery subscription', date: d ? (isPast(care.starts_on) ? 'Was set to start ' : 'Starts ') + d : '', url: care.url, label: 'Start my subscription', pay: 'care' });
     }
-    // (Nov 19 2026) book a call with Taya: the getting-started call (30 minutes, optional) before launch, the launch call (60 minutes) as the build nears launch
+    // (Nov 19 2026) the getting-started video from Pollen stands in for the getting-started call (a call is still possible on request): a row only once an approved video is set in wf-videos.js
+    const sv = startVideo();
+    if (sv && stageIndex(me.timeline.current) <= 3) rows.push({ key: 'video-start', title: 'Watch my getting-started video', date: sv.minutes ? sv.minutes + ' minutes. How it all works, and picking your build.' : 'How it all works, and picking your build.', url: START_PAGE + '#video', label: 'Watch' });
+    // (Nov 19 2026) book a call with Taya: the launch call (60 minutes, required for Color and Advance, optional for Pocket) as the build nears launch. The getting-started call is on request only.
     const cl = me.calls;
     if (cl) {
       const idx = stageIndex(me.timeline.current), build = me.client.build, kept = !!(me.care_stopped_on);
       const has = (k) => cl.types.find((t) => t.kind === k), booked = (k) => cl.upcoming.some((u) => u.kind === k);
-      if (has('start') && !booked('start') && idx <= 3) rows.push({ key: 'call-start', call: true, title: 'Book your getting-started call', date: has('start').minutes + ' minutes. Optional, only if you’d like to talk.', url: cl.book_url, label: 'Book a time' });
       if (has('launch') && !booked('launch') && idx >= 3 && idx <= 5 && !kept) rows.push({ key: 'call-launch', call: true, title: 'Book your launch call', date: has('launch').minutes + ' minutes. ' + (build === 'maiden' ? 'Optional.' : 'Part of your build, and launch doesn’t wait for it.'), url: cl.book_url, label: 'Book a time' });
     }
     me.pay.forEach((p) => {
@@ -1373,7 +1378,7 @@
         if (r.call && DEMO) {
           const b = make('button', 'btn small', r.label); b.type = 'button';
           b.addEventListener('click', () => {
-            const k = r.key === 'call-start' ? 'start' : 'launch', t = me.calls.types.find((x) => x.kind === k);
+            const k = 'launch', t = me.calls.types.find((x) => x.kind === k);
             me.calls.upcoming.push({ kind: k, name: k === 'start' ? 'Getting started call' : 'Launch call', minutes: t ? t.minutes : 30, when: (() => { const d = new Date(); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); return 'Mon, ' + MON[d.getMonth()] + ' ' + d.getDate() + ', 11:00 AM'; })(), meet: 'https://meet.google.com/abc-defg-hij' });
             toast('Preview: this is where the booking page opens.'); renderNotes(); renderNeeds();
           });

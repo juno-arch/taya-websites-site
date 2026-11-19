@@ -31,7 +31,7 @@
   var IN_KEY = 'wf-portal-demo-in';
   var STRIPE = 'https://buy.stripe.com/sample-link-for-the-preview';
   var CALLS_URL = 'https://webfaery.love/book.html#k=abcdefghijklmnopqrstuvwxyz012345'; // sample only: the page shows 'for Web Faery clients' without a real key
-  var CALLS = function (upcoming) { return { book_url: CALLS_URL, types: [{ kind: 'start', minutes: 30 }, { kind: 'launch', minutes: 60 }], upcoming: upcoming || [] }; };
+  var CALLS = function (upcoming) { return { book_url: CALLS_URL, types: [{ kind: 'launch', minutes: 60 }], upcoming: upcoming || [] }; };
 
   var ss = {
     get: function (k) { try { return sessionStorage.getItem(k) || ''; } catch (e) { return ''; } },
